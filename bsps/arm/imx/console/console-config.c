@@ -222,7 +222,7 @@ static bool imx_uart_set_attributes(
 
   baud = rtems_termios_baud_to_number(term->c_ospeed);
 
-  if (baud != 0) {
+  if (0 && baud != 0) {
     ufcr = regs->ufcr;
     ufcr = IMX_UART_UFCR_RFDIV_SET(ufcr, 0x5);
     regs->ufcr = ufcr;
