@@ -117,7 +117,7 @@ imx_iomux_init(void)
 	struct iomux_softc *sc;
 
 	fdt = bsp_fdt_get();
-	node = fdt_node_offset_by_compatible(fdt, -1, "fsl,imx7d-iomuxc");
+	node = fdt_node_offset_by_compatible(fdt, -1, "fsl,imx6ul-iomuxc");
 	sc = iomux_sc;
 	sc->regs = imx_get_reg_of_node(fdt, node);
 }
