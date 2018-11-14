@@ -19,20 +19,20 @@
 
 uint32_t imx_ccm_ipg_hz(void)
 {
-  return IMX_CCM_IPG_HZ;
+  return 33000000;
 }
 
 uint32_t imx_ccm_uart_hz(void)
 {
-  return IMX_CCM_UART_HZ;
+  return 33000000;
 }
 
 uint32_t imx_ccm_ahb_hz(void)
 {
-  return IMX_CCM_AHB_HZ;
+  return 66000000;
 }
 
 uint32_t imx_ccm_sdhci_hz(void)
 {
-  return IMX_CCM_SDHCI_HZ;
+  return 198000000;
 }
