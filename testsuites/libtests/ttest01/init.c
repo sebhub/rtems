@@ -142,7 +142,18 @@ now(void)
 
 static const T_action actions[] = {
 	T_report_hash_sha256,
-	test_action
+	test_action,
+	T_check_file_descriptors,
+	T_check_rtems_barriers,
+	T_check_rtems_extensions,
+	T_check_rtems_message_queues,
+	T_check_rtems_partitions,
+	T_check_rtems_periods,
+	T_check_rtems_regions,
+	T_check_rtems_semaphores,
+	T_check_rtems_tasks,
+	T_check_rtems_timers,
+	T_check_posix_keys
 };
 
 static const T_config config = {
@@ -178,9 +189,21 @@ Init(rtems_task_argument arg)
 	rtems_test_exit(0);
 }
 
-#define CONFIGURE_APPLICATION_DOES_NOT_NEED_CLOCK_DRIVER
+#define CONFIGURE_APPLICATION_NEEDS_CLOCK_DRIVER
 
-#define CONFIGURE_MAXIMUM_TASKS 1
+#define CONFIGURE_LIBIO_MAXIMUM_FILE_DESCRIPTORS 4
+
+#define CONFIGURE_MAXIMUM_BARRIERS 1
+#define CONFIGURE_MAXIMUM_MESSAGE_QUEUES 1
+#define CONFIGURE_MAXIMUM_PARTITIONS 1
+#define CONFIGURE_MAXIMUM_PERIODS 1
+#define CONFIGURE_MAXIMUM_REGIONS 1
+#define CONFIGURE_MAXIMUM_SEMAPHORES 1
+#define CONFIGURE_MAXIMUM_TASKS 2
+#define CONFIGURE_MAXIMUM_TIMERS 1
+#define CONFIGURE_MAXIMUM_USER_EXTENSIONS 1
+
+#define CONFIGURE_MAXIMUM_POSIX_KEYS 1
 
 #define CONFIGURE_RTEMS_INIT_TASKS_TABLE
 
