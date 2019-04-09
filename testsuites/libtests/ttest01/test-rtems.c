@@ -64,6 +64,38 @@ T_TEST_CASE(rsc_success)
 	T_assert_rsc_success(RTEMS_INVALID_NUMBER);
 }
 
+#include "t-self-test.h"
+
+T_TEST_OUTPUT(timer,
+"B:timer\n"
+"P:0:0:UI1:test-rtems.c:26\n"
+"P:1:0:UI1:test-rtems.c:29\n"
+"P:2:0:UI1:test-rtems.c:33\n"
+"P:3:0:ISR:test-rtems.c:14\n"
+"P:4:0:ISR:test-rtems.c:15\n"
+"P:5:0:UI1:test-rtems.c:38\n"
+"P:6:0:UI1:test-rtems.c:39\n"
+"P:7:0:UI1:test-rtems.c:42\n"
+"E:timer:N:8:F:0:D:0.001000\n");
+
+T_TEST_OUTPUT(rsc,
+"B:rsc\n"
+"P:0:0:UI1:test-rtems.c:48\n"
+"F:1:0:UI1:test-rtems.c:49:RTEMS_INVALID_NUMBER == RTEMS_INVALID_ID\n"
+"F:*:0:UI1:test-rtems.c:51:RTEMS_INVALID_NUMBER == RTEMS_INVALID_ID\n"
+"P:2:0:UI1:test-rtems.c:52\n"
+"F:3:0:UI1:test-rtems.c:53:RTEMS_INVALID_NUMBER == RTEMS_INVALID_ID\n"
+"E:rsc:N:4:F:3:D:0.001000\n");
+
+T_TEST_OUTPUT(rsc_success,
+"B:rsc_success\n"
+"P:0:0:UI1:test-rtems.c:59\n"
+"F:1:0:UI1:test-rtems.c:60:RTEMS_INVALID_NUMBER == RTEMS_SUCCESSFUL\n"
+"F:*:0:UI1:test-rtems.c:62:RTEMS_INVALID_NUMBER == RTEMS_SUCCESSFUL\n"
+"P:2:0:UI1:test-rtems.c:63\n"
+"F:3:0:UI1:test-rtems.c:64:RTEMS_INVALID_NUMBER == RTEMS_SUCCESSFUL\n"
+"E:rsc_success:N:4:F:3:D:0.001000\n");
+
 /*
  * SPDX-License-Identifier: BSD-2-Clause
  * SPDX-License-Identifier: CC-BY-SA-4.0

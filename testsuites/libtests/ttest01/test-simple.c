@@ -14,6 +14,14 @@ T_TEST_CASE(a_test_case)
 	T_true(false, "a test failure message");
 }
 
+#include "t-self-test.h"
+
+T_TEST_OUTPUT(a_test_case,
+"B:a_test_case\n"
+"P:0:0:UI1:test-simple.c:13\n"
+"F:1:0:UI1:test-simple.c:14:a test failure message\n"
+"E:a_test_case:N:2:F:1:D:0.001000\n");
+
 /*
  * SPDX-License-Identifier: BSD-2-Clause
  * SPDX-License-Identifier: CC-BY-SA-4.0

@@ -16,6 +16,15 @@ T_TEST_CASE(verbosity_changes)
 	T_set_verbosity(verbosity);
 }
 
+#include "t-self-test.h"
+
+T_TEST_OUTPUT(verbosity_changes,
+"B:verbosity_changes\n"
+"F:3:0:UI1:test-verbosity.c:12:normal: check fails -> with output\n"
+"P:4:0:UI1:test-verbosity.c:14\n"
+"F:5:0:UI1:test-verbosity.c:15:verbose: check fails -> with output\n"
+"E:verbosity_changes:N:6:F:3:D:0.001000\n");
+
 /*
  * SPDX-License-Identifier: BSD-2-Clause
  * SPDX-License-Identifier: CC-BY-SA-4.0

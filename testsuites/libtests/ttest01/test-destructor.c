@@ -15,6 +15,13 @@ T_TEST_CASE(destructor)
 	T_add_destructor(&dtor, destroy);
 }
 
+#include "t-self-test.h"
+
+T_TEST_OUTPUT(destructor,
+"B:destructor\n"
+"P:0:0:UI1:test-destructor.c:7\n"
+"E:destructor:N:1:F:0:D:0.001000\n");
+
 /*
  * SPDX-License-Identifier: BSD-2-Clause
  * SPDX-License-Identifier: CC-BY-SA-4.0
