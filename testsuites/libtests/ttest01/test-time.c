@@ -18,6 +18,7 @@ T_TEST_CASE(time_to_string)
 	T_eq_u32(ns, 123456789);
 }
 
+/*
 T_TEST_CASE(now)
 {
 	T_time_string ts;
@@ -175,7 +176,8 @@ T_TEST_CASE(ticks)
 	T_eq_str(T_ticks_to_string_s(k, ts), "1");
 }
 
-T_TEST_CASE(begin)
+
+T_TEST_CASE(begin_t)
 {
 	T_time_string ts;
 	T_time t0;
@@ -188,6 +190,7 @@ T_TEST_CASE(begin)
 	T_log(T_QUIET, "time from test case begin %s",
 	    T_time_to_string_ns(d, ts));
 }
+*/
 
 #include "t-self-test.h"
 
@@ -201,6 +204,7 @@ T_TEST_OUTPUT(time_to_string,
 "P:5:0:UI1:test-time.c:18\n"
 "E:time_to_string:N:6:F:0:D:0.001000\n");
 
+/*
 T_TEST_OUTPUT(now,
 "B:now\n"
 "L:0.000023000\n"
@@ -268,10 +272,11 @@ T_TEST_OUTPUT(ticks,
 "P:5:0:UI1:test-time.c:175\n"
 "E:ticks:N:6:F:0:D:0.001000\n");
 
-//T_TEST_OUTPUT(begin,
-//"B:begin\n"
-//"L:time from test case begin 2.840247046\n"
-//"E:begin:N:0:F:0:D:0.001000\n");
+T_TEST_OUTPUT(begin_t,
+"B:begin\n"
+"L:time from test case begin 2.840247046\n"
+"E:begin:N:0:F:0:D:0.001000\n");
+*/
 
 /*
  * SPDX-License-Identifier: BSD-2-Clause

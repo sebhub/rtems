@@ -54,7 +54,7 @@ static test_context test_instance;
 static void
 test_failed(int line, const char *e)
 {
-#if 0
+#if 1
 	printk("FAILED:%i:%s\n", line, e);
 	rtems_test_exit(1);
 #endif
