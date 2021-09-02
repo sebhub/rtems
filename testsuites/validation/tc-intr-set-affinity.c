@@ -63,7 +63,7 @@
  * @defgroup RTEMSTestCaseRtemsIntrReqSetAffinity \
  *   spec:/rtems/intr/req/set-affinity
  *
- * @ingroup RTEMSTestSuiteTestsuitesValidation0
+ * @ingroup RTEMSTestSuiteTestsuitesValidationIntr
  *
  * @{
  */
@@ -161,6 +161,12 @@ typedef struct {
   cpu_set_t *cpuset;
 
   struct {
+    /**
+     * @brief This member defines the pre-condition indices for the next
+     *   action.
+     */
+    size_t pci[ 4 ];
+
     /**
      * @brief This member defines the pre-condition states for the next action.
      */
@@ -625,6 +631,21 @@ static inline RtemsIntrReqSetAffinity_Entry RtemsIntrReqSetAffinity_PopEntry(
   ];
 }
 
+static void RtemsIntrReqSetAffinity_SetPreConditionStates(
+  RtemsIntrReqSetAffinity_Context *ctx
+)
+{
+  ctx->Map.pcs[ 0 ] = ctx->Map.pci[ 0 ];
+  ctx->Map.pcs[ 1 ] = ctx->Map.pci[ 1 ];
+  ctx->Map.pcs[ 2 ] = ctx->Map.pci[ 2 ];
+
+  if ( ctx->Map.entry.Pre_CanSetAffinity_NA ) {
+    ctx->Map.pcs[ 3 ] = RtemsIntrReqSetAffinity_Pre_CanSetAffinity_NA;
+  } else {
+    ctx->Map.pcs[ 3 ] = ctx->Map.pci[ 3 ];
+  }
+}
+
 static void RtemsIntrReqSetAffinity_TestVariant(
   RtemsIntrReqSetAffinity_Context *ctx
 )
@@ -632,10 +653,7 @@ static void RtemsIntrReqSetAffinity_TestVariant(
   RtemsIntrReqSetAffinity_Pre_Vector_Prepare( ctx, ctx->Map.pcs[ 0 ] );
   RtemsIntrReqSetAffinity_Pre_CPUSetKind_Prepare( ctx, ctx->Map.pcs[ 1 ] );
   RtemsIntrReqSetAffinity_Pre_CPUSet_Prepare( ctx, ctx->Map.pcs[ 2 ] );
-  RtemsIntrReqSetAffinity_Pre_CanSetAffinity_Prepare(
-    ctx,
-    ctx->Map.entry.Pre_CanSetAffinity_NA ? RtemsIntrReqSetAffinity_Pre_CanSetAffinity_NA : ctx->Map.pcs[ 3 ]
-  );
+  RtemsIntrReqSetAffinity_Pre_CanSetAffinity_Prepare( ctx, ctx->Map.pcs[ 3 ] );
   RtemsIntrReqSetAffinity_Action( ctx );
   RtemsIntrReqSetAffinity_Post_Status_Check( ctx, ctx->Map.entry.Post_Status );
   RtemsIntrReqSetAffinity_Post_SetAffinity_Check(
@@ -659,26 +677,27 @@ T_TEST_CASE_FIXTURE(
   ctx->Map.index = 0;
 
   for (
-    ctx->Map.pcs[ 0 ] = RtemsIntrReqSetAffinity_Pre_Vector_Valid;
-    ctx->Map.pcs[ 0 ] < RtemsIntrReqSetAffinity_Pre_Vector_NA;
-    ++ctx->Map.pcs[ 0 ]
+    ctx->Map.pci[ 0 ] = RtemsIntrReqSetAffinity_Pre_Vector_Valid;
+    ctx->Map.pci[ 0 ] < RtemsIntrReqSetAffinity_Pre_Vector_NA;
+    ++ctx->Map.pci[ 0 ]
   ) {
     for (
-      ctx->Map.pcs[ 1 ] = RtemsIntrReqSetAffinity_Pre_CPUSetKind_Valid;
-      ctx->Map.pcs[ 1 ] < RtemsIntrReqSetAffinity_Pre_CPUSetKind_NA;
-      ++ctx->Map.pcs[ 1 ]
+      ctx->Map.pci[ 1 ] = RtemsIntrReqSetAffinity_Pre_CPUSetKind_Valid;
+      ctx->Map.pci[ 1 ] < RtemsIntrReqSetAffinity_Pre_CPUSetKind_NA;
+      ++ctx->Map.pci[ 1 ]
     ) {
       for (
-        ctx->Map.pcs[ 2 ] = RtemsIntrReqSetAffinity_Pre_CPUSet_Valid;
-        ctx->Map.pcs[ 2 ] < RtemsIntrReqSetAffinity_Pre_CPUSet_NA;
-        ++ctx->Map.pcs[ 2 ]
+        ctx->Map.pci[ 2 ] = RtemsIntrReqSetAffinity_Pre_CPUSet_Valid;
+        ctx->Map.pci[ 2 ] < RtemsIntrReqSetAffinity_Pre_CPUSet_NA;
+        ++ctx->Map.pci[ 2 ]
       ) {
         for (
-          ctx->Map.pcs[ 3 ] = RtemsIntrReqSetAffinity_Pre_CanSetAffinity_Yes;
-          ctx->Map.pcs[ 3 ] < RtemsIntrReqSetAffinity_Pre_CanSetAffinity_NA;
-          ++ctx->Map.pcs[ 3 ]
+          ctx->Map.pci[ 3 ] = RtemsIntrReqSetAffinity_Pre_CanSetAffinity_Yes;
+          ctx->Map.pci[ 3 ] < RtemsIntrReqSetAffinity_Pre_CanSetAffinity_NA;
+          ++ctx->Map.pci[ 3 ]
         ) {
           ctx->Map.entry = RtemsIntrReqSetAffinity_PopEntry( ctx );
+          RtemsIntrReqSetAffinity_SetPreConditionStates( ctx );
           RtemsIntrReqSetAffinity_Prepare( ctx );
           RtemsIntrReqSetAffinity_TestVariant( ctx );
         }
