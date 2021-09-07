@@ -13,8 +13,6 @@ links: []
 source:
 - testsuites/validation/tc-event-send-receive.c
 - testsuites/validation/tc-object.c
-- testsuites/validation/tc-signal-catch.c
-- testsuites/validation/tc-signal-send.c
 - testsuites/validation/tc-task-construct-errors.c
 - testsuites/validation/tc-task-create-errors.c
 - testsuites/validation/tr-event-send-receive.c
