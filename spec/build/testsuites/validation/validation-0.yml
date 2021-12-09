@@ -12,7 +12,6 @@ ldflags: []
 links: []
 source:
 - testsuites/validation/tc-event-send-receive.c
-- testsuites/validation/tc-object.c
 - testsuites/validation/tr-event-send-receive.c
 - testsuites/validation/ts-validation-0.c
 stlib: []
