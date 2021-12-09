@@ -12,7 +12,6 @@ ldflags: []
 links: []
 source:
 - testsuites/validation/tc-event-send-receive.c
-- testsuites/validation/tc-message-construct-errors.c
 - testsuites/validation/tc-object.c
 - testsuites/validation/tc-signal-catch.c
 - testsuites/validation/tc-signal-send.c
