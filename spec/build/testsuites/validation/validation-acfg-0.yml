@@ -11,11 +11,10 @@ includes: []
 ldflags: []
 links: []
 source:
-- testsuites/validation/tc-acfg-one-cpu.c
-- testsuites/validation/tc-score-fatal.c
-- testsuites/validation/ts-validation-one-cpu-0.c
+- testsuites/validation/tc-acfg-default.c
+- testsuites/validation/ts-validation-acfg-0.c
 stlib: []
-target: testsuites/validation/ts-validation-one-cpu-0.exe
+target: testsuites/validation/ts-validation-acfg-0.exe
 type: build
 use-after: []
 use-before: []
