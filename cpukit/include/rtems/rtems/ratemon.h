@@ -572,6 +572,10 @@ rtems_status_code rtems_rate_monotonic_get_status(
  * @parblock
  * The following constraints apply to this directive:
  *
+ * - The directive is not included in the pre-qualified feature set of RTEMS.
+ *   Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the directive.
+ *
  * - The directive may be called from within task context.
  *
  * - The directive may be called from within interrupt context.
@@ -605,6 +609,10 @@ rtems_status_code rtems_rate_monotonic_get_statistics(
  * @parblock
  * The following constraints apply to this directive:
  *
+ * - The directive is not included in the pre-qualified feature set of RTEMS.
+ *   Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the directive.
+ *
  * - The directive may be called from within task context.
  *
  * - The directive may be called from within interrupt context.
@@ -628,6 +636,10 @@ rtems_status_code rtems_rate_monotonic_reset_statistics( rtems_id id );
  * @parblock
  * The following constraints apply to this directive:
  *
+ * - The directive is not included in the pre-qualified feature set of RTEMS.
+ *   Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the directive.
+ *
  * - The directive may be called from within task context.
  *
  * - The directive may obtain and release the object allocator mutex.  This may
@@ -649,6 +661,10 @@ void rtems_rate_monotonic_reset_all_statistics( void );
  * @par Constraints
  * @parblock
  * The following constraints apply to this directive:
+ *
+ * - The directive is not included in the pre-qualified feature set of RTEMS.
+ *   Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the directive.
  *
  * - The directive may be called from within task context.
  *
@@ -673,6 +689,10 @@ void rtems_rate_monotonic_report_statistics( void );
  * @par Constraints
  * @parblock
  * The following constraints apply to this directive:
+ *
+ * - The directive is not included in the pre-qualified feature set of RTEMS.
+ *   Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the directive.
  *
  * - The directive may be called from within task context.
  *
