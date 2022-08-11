@@ -244,6 +244,10 @@ typedef struct {
  * @parblock
  * The following constraints apply to this directive:
  *
+ * - The directive is not included in the pre-qualified feature set of RTEMS.
+ *   Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the directive.
+ *
  * - The directive may be called from within device driver initialization
  *   context.
  *
@@ -514,8 +518,8 @@ rtems_status_code rtems_message_queue_ident(
  * - When the directive operates on a global object, the directive sends a
  *   message to remote nodes. This may preempt the calling task.
  *
- * - The calling task does not have to be the task that created the object.
- *   Any local task that knows the object identifier can delete the object.
+ * - The calling task does not have to be the task that created the object. Any
+ *   local task that knows the object identifier can delete the object.
  *
  * - Where the object class corresponding to the directive is configured to use
  *   unlimited objects, the directive may free memory to the RTEMS Workspace.

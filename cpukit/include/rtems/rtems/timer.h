@@ -70,6 +70,15 @@ extern "C" {
  * @ingroup RTEMSAPIClassicTimer
  *
  * @brief This timer class bit indicates that the timer is not dormant.
+ *
+ * @par Constraints
+ * @parblock
+ * The following constraints apply to this constant:
+ *
+ * - The constant is not included in the pre-qualified feature set of RTEMS.
+ *   Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the constant.
+ * @endparblock
  */
 #define TIMER_CLASS_BIT_NOT_DORMANT 0x4
 
@@ -80,6 +89,15 @@ extern "C" {
  *
  * @brief This timer class bit indicates that the timer routine executes in a
  *   task context.
+ *
+ * @par Constraints
+ * @parblock
+ * The following constraints apply to this constant:
+ *
+ * - The constant is not included in the pre-qualified feature set of RTEMS.
+ *   Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the constant.
+ * @endparblock
  */
 #define TIMER_CLASS_BIT_ON_TASK 0x2
 
@@ -89,6 +107,15 @@ extern "C" {
  * @ingroup RTEMSAPIClassicTimer
  *
  * @brief This timer class bit indicates that the timer uses a time of day.
+ *
+ * @par Constraints
+ * @parblock
+ * The following constraints apply to this constant:
+ *
+ * - The constant is not included in the pre-qualified feature set of RTEMS.
+ *   Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the constant.
+ * @endparblock
  */
 #define TIMER_CLASS_BIT_TIME_OF_DAY 0x1
 
@@ -195,6 +222,10 @@ typedef struct {
  * @par Constraints
  * @parblock
  * The following constraints apply to this directive:
+ *
+ * - The directive is not included in the pre-qualified feature set of RTEMS.
+ *   Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the directive.
  *
  * - The directive may be called from within interrupt context.
  *
@@ -436,8 +467,8 @@ rtems_status_code rtems_timer_cancel( rtems_id id );
  *   Timer Server task calls. The directive releases the object allocator mutex
  *   while it waits.
  *
- * - The calling task does not have to be the task that created the object.
- *   Any local task that knows the object identifier can delete the object.
+ * - The calling task does not have to be the task that created the object. Any
+ *   local task that knows the object identifier can delete the object.
  *
  * - Where the object class corresponding to the directive is configured to use
  *   unlimited objects, the directive may free memory to the RTEMS Workspace.

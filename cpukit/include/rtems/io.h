@@ -215,6 +215,15 @@ typedef struct {
  * After a successful registration, the rtems_io_initialize() directive will be
  * called to initialize the device.
  * @endparblock
+ *
+ * @par Constraints
+ * @parblock
+ * The following constraints apply to this directive:
+ *
+ * - The directive is not included in the pre-qualified feature set of RTEMS.
+ *   Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the directive.
+ * @endparblock
  */
 rtems_status_code rtems_io_register_driver(
   rtems_device_major_number         major,
@@ -241,6 +250,15 @@ rtems_status_code rtems_io_register_driver(
  *
  * @par Notes
  * Currently no specific checks are made and the driver is not closed.
+ *
+ * @par Constraints
+ * @parblock
+ * The following constraints apply to this directive:
+ *
+ * - The directive is not included in the pre-qualified feature set of RTEMS.
+ *   Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the directive.
+ * @endparblock
  */
 rtems_status_code rtems_io_unregister_driver(
   rtems_device_major_number major
@@ -281,6 +299,15 @@ rtems_status_code rtems_io_unregister_driver(
  * hardware and data structures associated with a device. If necessary, it can
  * allocate memory to be used during other operations.
  * @endparblock
+ *
+ * @par Constraints
+ * @parblock
+ * The following constraints apply to this directive:
+ *
+ * - The directive is not included in the pre-qualified feature set of RTEMS.
+ *   Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the directive.
+ * @endparblock
  */
 rtems_status_code rtems_io_initialize(
   rtems_device_major_number major,
@@ -309,6 +336,15 @@ rtems_status_code rtems_io_initialize(
  *
  * @par Notes
  * The device is registered as a character device.
+ *
+ * @par Constraints
+ * @parblock
+ * The following constraints apply to this directive:
+ *
+ * - The directive is not included in the pre-qualified feature set of RTEMS.
+ *   Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the directive.
+ * @endparblock
  */
 rtems_status_code rtems_io_register_name(
   const char               *device_name,
@@ -341,6 +377,15 @@ rtems_status_code rtems_io_register_name(
  * @par Notes
  * The open entry point is commonly used by device drivers to provide exclusive
  * access to a device.
+ *
+ * @par Constraints
+ * @parblock
+ * The following constraints apply to this directive:
+ *
+ * - The directive is not included in the pre-qualified feature set of RTEMS.
+ *   Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the directive.
+ * @endparblock
  */
 rtems_status_code rtems_io_open(
   rtems_device_major_number major,
@@ -373,6 +418,15 @@ rtems_status_code rtems_io_open(
  * @par Notes
  * The close entry point is commonly used by device drivers to relinquish
  * exclusive access to a device.
+ *
+ * @par Constraints
+ * @parblock
+ * The following constraints apply to this directive:
+ *
+ * - The directive is not included in the pre-qualified feature set of RTEMS.
+ *   Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the directive.
+ * @endparblock
  */
 rtems_status_code rtems_io_close(
   rtems_device_major_number major,
@@ -407,6 +461,15 @@ rtems_status_code rtems_io_close(
  * Read operations typically require a buffer address as part of the argument
  * parameter block. The contents of this buffer will be replaced with data from
  * the device.
+ *
+ * @par Constraints
+ * @parblock
+ * The following constraints apply to this directive:
+ *
+ * - The directive is not included in the pre-qualified feature set of RTEMS.
+ *   Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the directive.
+ * @endparblock
  */
 rtems_status_code rtems_io_read(
   rtems_device_major_number major,
@@ -439,6 +502,15 @@ rtems_status_code rtems_io_read(
  * @par Notes
  * Write operations typically require a buffer address as part of the argument
  * parameter block. The contents of this buffer will be sent to the device.
+ *
+ * @par Constraints
+ * @parblock
+ * The following constraints apply to this directive:
+ *
+ * - The directive is not included in the pre-qualified feature set of RTEMS.
+ *   Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the directive.
+ * @endparblock
  */
 rtems_status_code rtems_io_write(
   rtems_device_major_number major,
@@ -476,6 +548,15 @@ rtems_status_code rtems_io_write(
  * device drivers are compatible. For example, an RS-232 driver I/O control
  * operation may change the baud of a serial line, while an I/O control
  * operation for a floppy disk driver may cause a seek operation.
+ *
+ * @par Constraints
+ * @parblock
+ * The following constraints apply to this directive:
+ *
+ * - The directive is not included in the pre-qualified feature set of RTEMS.
+ *   Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the directive.
+ * @endparblock
  */
 rtems_status_code rtems_io_control(
   rtems_device_major_number major,

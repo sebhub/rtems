@@ -358,8 +358,8 @@ rtems_status_code rtems_partition_ident(
  * - When the directive operates on a global object, the directive sends a
  *   message to remote nodes. This may preempt the calling task.
  *
- * - The calling task does not have to be the task that created the object.
- *   Any local task that knows the object identifier can delete the object.
+ * - The calling task does not have to be the task that created the object. Any
+ *   local task that knows the object identifier can delete the object.
  *
  * - Where the object class corresponding to the directive is configured to use
  *   unlimited objects, the directive may free memory to the RTEMS Workspace.
