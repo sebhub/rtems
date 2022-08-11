@@ -244,16 +244,20 @@ typedef struct {
  * @parblock
  * The following constraints apply to this directive:
  *
+ * - The directive is not included in the pre-qualified feature set of RTEMS.
+ *   Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the directive.
+ *
  * - The directive may be called from within device driver initialization
  *   context.
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  *
  * - When the directive operates on a global object, the directive sends a
- *   message to remote nodes.  This may preempt the calling task.
+ *   message to remote nodes. This may preempt the calling task.
  *
  * - The number of message queues available to the application is configured
  *   through the @ref CONFIGURE_MAXIMUM_MESSAGE_QUEUES application
@@ -356,11 +360,11 @@ rtems_status_code rtems_message_queue_create(
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  *
  * - When the directive operates on a global object, the directive sends a
- *   message to remote nodes.  This may preempt the calling task.
+ *   message to remote nodes. This may preempt the calling task.
  *
  * - The number of message queues available to the application is configured
  *   through the @ref CONFIGURE_MAXIMUM_MESSAGE_QUEUES application
@@ -508,14 +512,14 @@ rtems_status_code rtems_message_queue_ident(
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  *
  * - When the directive operates on a global object, the directive sends a
- *   message to remote nodes.  This may preempt the calling task.
+ *   message to remote nodes. This may preempt the calling task.
  *
- * - The calling task does not have to be the task that created the object.
- *   Any local task that knows the object identifier can delete the object.
+ * - The calling task does not have to be the task that created the object. Any
+ *   local task that knows the object identifier can delete the object.
  *
  * - Where the object class corresponding to the directive is configured to use
  *   unlimited objects, the directive may free memory to the RTEMS Workspace.
@@ -566,11 +570,11 @@ rtems_status_code rtems_message_queue_delete( rtems_id id );
  *
  * - The directive may be called from within interrupt context.
  *
- * - The directive may unblock a task.  This may cause the calling task to be
+ * - The directive may unblock a task. This may cause the calling task to be
  *   preempted.
  *
  * - When the directive operates on a remote object, the directive sends a
- *   message to the remote node and waits for a reply.  This will preempt the
+ *   message to the remote node and waits for a reply. This will preempt the
  *   calling task.
  * @endparblock
  */
@@ -623,11 +627,11 @@ rtems_status_code rtems_message_queue_send(
  *
  * - The directive may be called from within interrupt context.
  *
- * - The directive may unblock a task.  This may cause the calling task to be
+ * - The directive may unblock a task. This may cause the calling task to be
  *   preempted.
  *
  * - When the directive operates on a remote object, the directive sends a
- *   message to the remote node and waits for a reply.  This will preempt the
+ *   message to the remote node and waits for a reply. This will preempt the
  *   calling task.
  * @endparblock
  */
@@ -694,11 +698,11 @@ rtems_status_code rtems_message_queue_urgent(
  *
  * - The directive may be called from within interrupt context.
  *
- * - The directive may unblock a task.  This may cause the calling task to be
+ * - The directive may unblock a task. This may cause the calling task to be
  *   preempted.
  *
  * - When the directive operates on a remote object, the directive sends a
- *   message to the remote node and waits for a reply.  This will preempt the
+ *   message to the remote node and waits for a reply. This will preempt the
  *   calling task.
  * @endparblock
  */
@@ -806,7 +810,7 @@ rtems_status_code rtems_message_queue_broadcast(
  * - The timeout functionality of the directive requires a clock tick.
  *
  * - When the directive operates on a remote object, the directive sends a
- *   message to the remote node and waits for a reply.  This will preempt the
+ *   message to the remote node and waits for a reply. This will preempt the
  *   calling task.
  * @endparblock
  */
@@ -851,7 +855,7 @@ rtems_status_code rtems_message_queue_receive(
  * - The directive may be called from within interrupt context.
  *
  * - When the directive operates on a remote object, the directive sends a
- *   message to the remote node and waits for a reply.  This will preempt the
+ *   message to the remote node and waits for a reply. This will preempt the
  *   calling task.
  * @endparblock
  */

@@ -142,7 +142,7 @@ extern "C" {
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  *
  * - The number of barriers available to the application is configured through
@@ -239,11 +239,11 @@ rtems_status_code rtems_barrier_ident( rtems_name name, rtems_id *id );
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  *
- * - The calling task does not have to be the task that created the object.
- *   Any local task that knows the object identifier can delete the object.
+ * - The calling task does not have to be the task that created the object. Any
+ *   local task that knows the object identifier can delete the object.
  *
  * - Where the object class corresponding to the directive is configured to use
  *   unlimited objects, the directive may free memory to the RTEMS Workspace.
@@ -332,7 +332,7 @@ rtems_status_code rtems_barrier_wait( rtems_id id, rtems_interval timeout );
  *
  * - The directive may be called from within task context.
  *
- * - The directive may unblock a task.  This may cause the calling task to be
+ * - The directive may unblock a task. This may cause the calling task to be
  *   preempted.
  * @endparblock
  */
@@ -364,6 +364,10 @@ rtems_status_code rtems_barrier_release( rtems_id id, uint32_t *released );
  * @par Constraints
  * @parblock
  * The following constraints apply to this directive:
+ *
+ * - The directive is not included in the pre-qualified feature set of RTEMS.
+ *   Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the directive.
  *
  * - The directive may be called from within interrupt context.
  *

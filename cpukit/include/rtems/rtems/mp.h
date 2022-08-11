@@ -110,6 +110,10 @@ extern "C" {
  * @parblock
  * The following constraints apply to this directive:
  *
+ * - The directive is not included in the pre-qualified feature set of RTEMS.
+ *   Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the directive.
+ *
  * - The directive may be called from within interrupt context.
  *
  * - The directive may be called from within device driver initialization
@@ -117,7 +121,7 @@ extern "C" {
  *
  * - The directive may be called from within task context.
  *
- * - The directive may unblock a task.  This may cause the calling task to be
+ * - The directive may unblock a task. This may cause the calling task to be
  *   preempted.
  * @endparblock
  */
@@ -133,6 +137,15 @@ void rtems_multiprocessing_announce( void );
  *
  * In packets longer than this value, some of the extra data may be a user
  * message buffer which is not automatically endian swapped.
+ *
+ * @par Constraints
+ * @parblock
+ * The following constraints apply to this constant:
+ *
+ * - The constant is not included in the pre-qualified feature set of RTEMS.
+ *   Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the constant.
+ * @endparblock
  */
 #define RTEMS_MINIMUN_HETERO_CONVERSION MP_PACKET_MINIMUN_HETERO_CONVERSION
 
@@ -143,6 +156,15 @@ void rtems_multiprocessing_announce( void );
  *
  * @brief This constant defines the minimum packet size which must be supported
  *   by the MPCI.
+ *
+ * @par Constraints
+ * @parblock
+ * The following constraints apply to this constant:
+ *
+ * - The constant is not included in the pre-qualified feature set of RTEMS.
+ *   Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the constant.
+ * @endparblock
  */
 #define RTEMS_MINIMUM_PACKET_SIZE MP_PACKET_MINIMUM_PACKET_SIZE
 

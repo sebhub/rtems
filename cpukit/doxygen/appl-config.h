@@ -74,6 +74,12 @@
  * If this configuration option is undefined, then the described feature is not
  * enabled.
  *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
+ *
  * @par Notes
  * Each option of the Block Device Cache (bdbuf) configuration can be
  * explicitly set by the user with the configuration options below.  The Block
@@ -97,6 +103,11 @@
  * @par Constraints
  * @parblock
  * The following constraints apply to this configuration option:
+ *
+ * - The configuration option is not included in the pre-qualified feature set
+ *   of RTEMS. Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the application
+ *   configuration option.
  *
  * - The value of the configuration option shall be greater than or equal to
  *   zero.
@@ -124,6 +135,11 @@
  * @parblock
  * The following constraints apply to this configuration option:
  *
+ * - The configuration option is not included in the pre-qualified feature set
+ *   of RTEMS. Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the application
+ *   configuration option.
+ *
  * - The value of the configuration option shall be greater than or equal to
  *   zero.
  *
@@ -150,6 +166,11 @@
  * @parblock
  * The following constraints apply to this configuration option:
  *
+ * - The configuration option is not included in the pre-qualified feature set
+ *   of RTEMS. Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the application
+ *   configuration option.
+ *
  * - The value of the configuration option shall be greater than or equal to
  *   zero.
  *
@@ -175,6 +196,11 @@
  * @par Constraints
  * @parblock
  * The following constraints apply to this configuration option:
+ *
+ * - The configuration option is not included in the pre-qualified feature set
+ *   of RTEMS. Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the application
+ *   configuration option.
  *
  * - The value of the configuration option shall be greater than or equal to
  *   zero.
@@ -207,6 +233,11 @@
  * @parblock
  * The following constraints apply to this configuration option:
  *
+ * - The configuration option is not included in the pre-qualified feature set
+ *   of RTEMS. Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the application
+ *   configuration option.
+ *
  * - The value of the configuration option shall be greater than or equal to
  *   zero.
  *
@@ -229,9 +260,18 @@
  * The default value is 15.
  *
  * @par Constraints
- * The value of the configuration option shall be a valid Classic API task
- * priority.  The set of valid task priorities depends on the scheduler
- * configuration.
+ * @parblock
+ * The following constraints apply to this configuration option:
+ *
+ * - The configuration option is not included in the pre-qualified feature set
+ *   of RTEMS. Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the application
+ *   configuration option.
+ *
+ * - The value of the configuration option shall be a valid Classic API task
+ *   priority. The set of valid task priorities depends on the scheduler
+ *   configuration.
+ * @endparblock
  */
 #define CONFIGURE_BDBUF_READ_AHEAD_TASK_PRIORITY
 
@@ -252,6 +292,11 @@
  * @parblock
  * The following constraints apply to this configuration option:
  *
+ * - The configuration option is not included in the pre-qualified feature set
+ *   of RTEMS. Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the application
+ *   configuration option.
+ *
  * - The value of the configuration option shall be greater than or equal to
  *   @ref CONFIGURE_MINIMUM_TASK_STACK_SIZE.
  *
@@ -260,8 +305,8 @@
  *   the memory available to the application.
  *
  * - The value of the configuration option shall be small enough so that the
- *   task stack space calculation carried out by ``<rtems/confdefs.h>`` does
- *   not overflow an integer of type <a
+ *   task stack space calculation carried out by `<rtems/confdefs.h>` does not
+ *   overflow an integer of type <a
  *   href="https://en.cppreference.com/w/c/types/integer">uintptr_t</a>.
  * @endparblock
  */
@@ -283,6 +328,11 @@
  * @par Constraints
  * @parblock
  * The following constraints apply to this configuration option:
+ *
+ * - The configuration option is not included in the pre-qualified feature set
+ *   of RTEMS. Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the application
+ *   configuration option.
  *
  * - The value of the configuration option shall be greater than or equal to
  *   zero.
@@ -310,6 +360,11 @@
  * @parblock
  * The following constraints apply to this configuration option:
  *
+ * - The configuration option is not included in the pre-qualified feature set
+ *   of RTEMS. Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the application
+ *   configuration option.
+ *
  * - The value of the configuration option shall be greater than or equal to
  *   zero.
  *
@@ -332,9 +387,18 @@
  * The default value is 15.
  *
  * @par Constraints
- * The value of the configuration option shall be a valid Classic API task
- * priority.  The set of valid task priorities depends on the scheduler
- * configuration.
+ * @parblock
+ * The following constraints apply to this configuration option:
+ *
+ * - The configuration option is not included in the pre-qualified feature set
+ *   of RTEMS. Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the application
+ *   configuration option.
+ *
+ * - The value of the configuration option shall be a valid Classic API task
+ *   priority. The set of valid task priorities depends on the scheduler
+ *   configuration.
+ * @endparblock
  */
 #define CONFIGURE_SWAPOUT_TASK_PRIORITY
 
@@ -354,6 +418,11 @@
  * @par Constraints
  * @parblock
  * The following constraints apply to this configuration option:
+ *
+ * - The configuration option is not included in the pre-qualified feature set
+ *   of RTEMS. Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the application
+ *   configuration option.
  *
  * - The value of the configuration option shall be greater than or equal to
  *   zero.
@@ -378,9 +447,18 @@
  * The default value is 15.
  *
  * @par Constraints
- * The value of the configuration option shall be a valid Classic API task
- * priority.  The set of valid task priorities depends on the scheduler
- * configuration.
+ * @parblock
+ * The following constraints apply to this configuration option:
+ *
+ * - The configuration option is not included in the pre-qualified feature set
+ *   of RTEMS. Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the application
+ *   configuration option.
+ *
+ * - The value of the configuration option shall be a valid Classic API task
+ *   priority. The set of valid task priorities depends on the scheduler
+ *   configuration.
+ * @endparblock
  */
 #define CONFIGURE_SWAPOUT_WORKER_TASK_PRIORITY
 
@@ -576,6 +654,11 @@
  * @parblock
  * The following constraints apply to this configuration option:
  *
+ * - The configuration option is not included in the pre-qualified feature set
+ *   of RTEMS. Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the application
+ *   configuration option.
+ *
  * - The value of the configuration option shall be greater than or equal to
  *   zero.
  *
@@ -615,6 +698,11 @@
  * @par Constraints
  * @parblock
  * The following constraints apply to this configuration option:
+ *
+ * - The configuration option is not included in the pre-qualified feature set
+ *   of RTEMS. Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the application
+ *   configuration option.
  *
  * - The value of the configuration option shall be greater than or equal to
  *   zero.
@@ -716,8 +804,8 @@
  *   the memory available to the application.
  *
  * - The value of the configuration option shall be small enough so that the
- *   task stack space calculation carried out by ``<rtems/confdefs.h>`` does
- *   not overflow an integer of type <a
+ *   task stack space calculation carried out by `<rtems/confdefs.h>` does not
+ *   overflow an integer of type <a
  *   href="https://en.cppreference.com/w/c/types/integer">uintptr_t</a>.
  *
  * - The value of the configuration option may be defined through
@@ -1044,7 +1132,7 @@
  *
  * @par Constraints
  * The value of the configuration option shall be a valid Classic API task
- * priority.  The set of valid task priorities depends on the scheduler
+ * priority. The set of valid task priorities depends on the scheduler
  * configuration.
  */
 #define CONFIGURE_INIT_TASK_PRIORITY
@@ -1066,12 +1154,17 @@
  * @parblock
  * The following constraints apply to this configuration option:
  *
+ * - The configuration option is not included in the pre-qualified feature set
+ *   of RTEMS. Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the application
+ *   configuration option.
+ *
  * - The value of the configuration option shall be greater than or equal to
  *   @ref CONFIGURE_MINIMUM_TASK_STACK_SIZE.
  *
  * - The value of the configuration option shall be small enough so that the
- *   task stack space calculation carried out by ``<rtems/confdefs.h>`` does
- *   not overflow an integer of type <a
+ *   task stack space calculation carried out by `<rtems/confdefs.h>` does not
+ *   overflow an integer of type <a
  *   href="https://en.cppreference.com/w/c/types/integer">uintptr_t</a>.
  * @endparblock
  *
@@ -1186,8 +1279,17 @@
  * The default value is the empty list.
  *
  * @par Constraints
- * The value of the configuration option shall be a list of initializers for
- * structures of type ::rtems_driver_address_table.
+ * @parblock
+ * The following constraints apply to this configuration option:
+ *
+ * - The configuration option is not included in the pre-qualified feature set
+ *   of RTEMS. Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the application
+ *   configuration option.
+ *
+ * - The value of the configuration option shall be a list of initializers for
+ *   structures of type ::rtems_driver_address_table.
+ * @endparblock
  *
  * @par Notes
  * @parblock
@@ -1213,6 +1315,12 @@
  * @par Default Configuration
  * If this configuration option is undefined, then the described feature is not
  * enabled.
+ *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
  *
  * @par Notes
  * @parblock
@@ -1271,6 +1379,12 @@
  * If this configuration option is undefined, then the described feature is not
  * enabled.
  *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
+ *
  * @par Notes
  * @parblock
  * The Console Driver is responsible for providing the `/dev/console` device
@@ -1307,6 +1421,12 @@
  * If this configuration option is undefined, then the described feature is not
  * enabled.
  *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
+ *
  * @par Notes
  * @parblock
  * Most BSPs do not include support for a Frame Buffer Driver. This is because
@@ -1332,6 +1452,12 @@
  * If this configuration option is undefined, then the described feature is not
  * enabled.
  *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
+ *
  * @par Notes
  * @parblock
  * Most BSPs do not include support for an IDE Driver.
@@ -1356,6 +1482,12 @@
  * If this configuration option is undefined, then the described feature is not
  * enabled.
  *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
+ *
  * @par Notes
  * This device driver is supported by all BSPs.
  */
@@ -1374,6 +1506,12 @@
  * @par Default Configuration
  * If this configuration option is undefined, then the described feature is not
  * enabled.
+ *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
  *
  * @par Notes
  * @parblock
@@ -1399,6 +1537,12 @@
  * @par Default Configuration
  * If this configuration option is undefined, then the described feature is not
  * enabled.
+ *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
  *
  * @par Notes
  * @parblock
@@ -1439,6 +1583,12 @@
  * @par Default Configuration
  * If this configuration option is undefined, then the described feature is not
  * enabled.
+ *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
  *
  * @par Notes
  * @parblock
@@ -1489,6 +1639,12 @@
  * If this configuration option is undefined, then the described feature is not
  * enabled.
  *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
+ *
  * @par Notes
  * This device driver simply provides entry points that return successful and
  * is primarily a test fixture. It is supported by all BSPs.
@@ -1508,6 +1664,12 @@
  * @par Default Configuration
  * If this configuration option is undefined, then the described feature is not
  * enabled.
+ *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
  *
  * @par Notes
  * @parblock
@@ -1542,6 +1704,12 @@
  * If this configuration option is undefined, then the described feature is not
  * enabled.
  *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
+ *
  * @par Notes
  * @parblock
  * Most BSPs do not include support for a watchdog device driver. This is
@@ -1567,6 +1735,12 @@
  * If this configuration option is undefined, then the described feature is not
  * enabled.
  *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
+ *
  * @par Notes
  * This device driver is supported by all BSPs.
  */
@@ -1586,8 +1760,17 @@
  * The default value is the empty list.
  *
  * @par Constraints
- * The value of the configuration option shall be a list of initializers for
- * structures of type ::rtems_driver_address_table.
+ * @parblock
+ * The following constraints apply to this configuration option:
+ *
+ * - The configuration option is not included in the pre-qualified feature set
+ *   of RTEMS. Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the application
+ *   configuration option.
+ *
+ * - The value of the configuration option shall be a list of initializers for
+ *   structures of type ::rtems_driver_address_table.
+ * @endparblock
  *
  * @par Notes
  * @parblock
@@ -1614,9 +1797,18 @@
  * The default value is 140.
  *
  * @par Constraints
- * The value of the configuration option shall be a valid Classic API task
- * priority.  The set of valid task priorities depends on the scheduler
- * configuration.
+ * @parblock
+ * The following constraints apply to this configuration option:
+ *
+ * - The configuration option is not included in the pre-qualified feature set
+ *   of RTEMS. Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the application
+ *   configuration option.
+ *
+ * - The value of the configuration option shall be a valid Classic API task
+ *   priority. The set of valid task priorities depends on the scheduler
+ *   configuration.
+ * @endparblock
  *
  * @par Notes
  * This configuration option is only evaluated if the configuration option @ref
@@ -1637,6 +1829,12 @@
  * @par Default Configuration
  * If this configuration option is undefined, then the described feature is not
  * enabled.
+ *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
  *
  * @par Notes
  * @parblock
@@ -1705,6 +1903,11 @@
  * @parblock
  * The following constraints apply to this configuration option:
  *
+ * - The configuration option is not included in the pre-qualified feature set
+ *   of RTEMS. Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the application
+ *   configuration option.
+ *
  * - The value of the configuration option shall be less than or equal to <a
  *   href="https://en.cppreference.com/w/c/types/limits">SIZE_MAX</a>.
  *
@@ -1757,6 +1960,12 @@
  * If this configuration option is undefined, then the described feature is not
  * enabled.
  *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
+ *
  * @par Notes
  * The record extensions capture thread create, start, restart, delete, switch,
  * begin, exitted and terminate events.
@@ -1787,6 +1996,12 @@
  * If this configuration option is undefined, then the described feature is not
  * enabled.
  *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
+ *
  * @par Notes
  * This extension can be used to produce crash dumps.
  */
@@ -1814,6 +2029,12 @@
  * If this configuration option is undefined, then the described feature is not
  * enabled.
  *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
+ *
  * @par Notes
  * The zlib compression needs about 512KiB of RAM.  This extension can be used
  * to produce crash dumps.
@@ -1839,6 +2060,12 @@
  * If this configuration option is undefined, then the described feature is not
  * enabled.
  *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
+ *
  * @par Notes
  * The interrupt event recording generates interrupt entry and exit events when
  * interrupt entries are dispatched.
@@ -1861,6 +2088,11 @@
  * @par Constraints
  * @parblock
  * The following constraints apply to this configuration option:
+ *
+ * - The configuration option is not included in the pre-qualified feature set
+ *   of RTEMS. Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the application
+ *   configuration option.
  *
  * - The value of the configuration option shall be greater than or equal to
  *   16.
@@ -1930,6 +2162,12 @@
  * @par Default Configuration
  * If this configuration option is undefined, then the described feature is not
  * enabled.
+ *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
  */
 #define CONFIGURE_POSIX_TIMERS_FACE_BEHAVIOR
 
@@ -2002,6 +2240,12 @@
  * If this configuration option is undefined, then a base filesystem and the
  * configured filesystems are initialized during system initialization.
  *
+ * @par Constraints
+ * The configuration option is mandatory for the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall define the application
+ * configuration option.
+ *
  * @par Notes
  * Filesystems shall be initialized to support file descriptor based device
  * drivers and basic input/output functions such as printf(). Filesystems can
@@ -2036,6 +2280,12 @@
  * @par Default Configuration
  * If this configuration option is undefined, then the described feature is not
  * enabled.
+ *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
  */
 #define CONFIGURE_FILESYSTEM_ALL
 
@@ -2053,6 +2303,12 @@
  * @par Default Configuration
  * If this configuration option is undefined, then the described feature is not
  * enabled.
+ *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
  *
  * @par Notes
  * This filesystem requires a Block Device Cache configuration, see @ref
@@ -2074,6 +2330,12 @@
  * @par Default Configuration
  * If this configuration option is undefined, then the described feature is not
  * enabled.
+ *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
  */
 #define CONFIGURE_FILESYSTEM_FTPFS
 
@@ -2091,6 +2353,12 @@
  * @par Default Configuration
  * If this configuration option is undefined, then the described feature is not
  * enabled.
+ *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
  *
  * @par Notes
  * Applications will rarely need this configuration option.  This configuration
@@ -2114,6 +2382,12 @@
  * @par Default Configuration
  * If this configuration option is undefined, then the described feature is not
  * enabled.
+ *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
  */
 #define CONFIGURE_FILESYSTEM_JFFS2
 
@@ -2131,6 +2405,12 @@
  * @par Default Configuration
  * If this configuration option is undefined, then the described feature is not
  * enabled.
+ *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
  */
 #define CONFIGURE_FILESYSTEM_NFS
 
@@ -2148,6 +2428,12 @@
  * @par Default Configuration
  * If this configuration option is undefined, then the described feature is not
  * enabled.
+ *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
  *
  * @par Notes
  * This filesystem requires a Block Device Cache configuration, see @ref
@@ -2169,6 +2455,12 @@
  * @par Default Configuration
  * If this configuration option is undefined, then the described feature is not
  * enabled.
+ *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
  */
 #define CONFIGURE_FILESYSTEM_TFTPFS
 
@@ -2185,6 +2477,12 @@
  * @par Default Configuration
  * If this configuration option is undefined, then the root IMFS supports
  * changing the mode of files.
+ *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
  */
 #define CONFIGURE_IMFS_DISABLE_CHMOD
 
@@ -2201,6 +2499,12 @@
  * @par Default Configuration
  * If this configuration option is undefined, then the root IMFS supports
  * changing the ownership of files.
+ *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
  */
 #define CONFIGURE_IMFS_DISABLE_CHOWN
 
@@ -2217,6 +2521,12 @@
  * @par Default Configuration
  * If this configuration option is undefined, then the root IMFS supports hard
  * links.
+ *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
  */
 #define CONFIGURE_IMFS_DISABLE_LINK
 
@@ -2233,6 +2543,12 @@
  * @par Default Configuration
  * If this configuration option is undefined, then the root IMFS supports
  * making files.
+ *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
  */
 #define CONFIGURE_IMFS_DISABLE_MKNOD
 
@@ -2249,6 +2565,12 @@
  * @par Default Configuration
  * If this configuration option is undefined, then the root IMFS supports
  * making device files.
+ *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
  */
 #define CONFIGURE_IMFS_DISABLE_MKNOD_DEVICE
 
@@ -2265,6 +2587,12 @@
  * @par Default Configuration
  * If this configuration option is undefined, then the root IMFS supports
  * making regular files.
+ *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
  */
 #define CONFIGURE_IMFS_DISABLE_MKNOD_FILE
 
@@ -2281,6 +2609,12 @@
  * @par Default Configuration
  * If this configuration option is undefined, then the root IMFS supports
  * mounting other filesystems.
+ *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
  */
 #define CONFIGURE_IMFS_DISABLE_MOUNT
 
@@ -2298,6 +2632,12 @@
  * @par Default Configuration
  * If this configuration option is undefined, then the root IMFS supports
  * reading directories.
+ *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
  */
 #define CONFIGURE_IMFS_DISABLE_READDIR
 
@@ -2314,6 +2654,12 @@
  * @par Default Configuration
  * If this configuration option is undefined, then the root IMFS supports
  * reading symbolic links.
+ *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
  */
 #define CONFIGURE_IMFS_DISABLE_READLINK
 
@@ -2330,6 +2676,12 @@
  * @par Default Configuration
  * If this configuration option is undefined, then the root IMFS supports
  * renaming files.
+ *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
  */
 #define CONFIGURE_IMFS_DISABLE_RENAME
 
@@ -2346,6 +2698,12 @@
  * @par Default Configuration
  * If this configuration option is undefined, then the root IMFS supports
  * removing files.
+ *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
  */
 #define CONFIGURE_IMFS_DISABLE_RMNOD
 
@@ -2362,6 +2720,12 @@
  * @par Default Configuration
  * If this configuration option is undefined, then the root IMFS supports
  * creating symbolic links.
+ *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
  */
 #define CONFIGURE_IMFS_DISABLE_SYMLINK
 
@@ -2378,6 +2742,12 @@
  * @par Default Configuration
  * If this configuration option is undefined, then the root IMFS supports
  * unmounting other filesystems.
+ *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
  */
 #define CONFIGURE_IMFS_DISABLE_UNMOUNT
 
@@ -2394,6 +2764,12 @@
  * @par Default Configuration
  * If this configuration option is undefined, then the root IMFS supports
  * changing file times.
+ *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
  */
 #define CONFIGURE_IMFS_DISABLE_UTIME
 
@@ -2410,6 +2786,12 @@
  * @par Default Configuration
  * If this configuration option is undefined, then the root IMFS does not
  * support making FIFOs (no support for mkfifo()).
+ *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
  */
 #define CONFIGURE_IMFS_ENABLE_MKFIFO
 
@@ -2427,8 +2809,17 @@
  * The default value is 128.
  *
  * @par Constraints
- * The value of the configuration option shall be equal to 16, 32, 64, 128,
- * 256, or 512.
+ * @parblock
+ * The following constraints apply to this configuration option:
+ *
+ * - The configuration option is not included in the pre-qualified feature set
+ *   of RTEMS. Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the application
+ *   configuration option.
+ *
+ * - The value of the configuration option shall be equal to 16, 32, 64, 128,
+ *   256, or 512.
+ * @endparblock
  *
  * @par Notes
  * @parblock
@@ -2477,9 +2868,18 @@
  * The default value is 15.
  *
  * @par Constraints
- * The value of the configuration option shall be a valid Classic API task
- * priority.  The set of valid task priorities depends on the scheduler
- * configuration.
+ * @parblock
+ * The following constraints apply to this configuration option:
+ *
+ * - The configuration option is not included in the pre-qualified feature set
+ *   of RTEMS. Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the application
+ *   configuration option.
+ *
+ * - The value of the configuration option shall be a valid Classic API task
+ *   priority. The set of valid task priorities depends on the scheduler
+ *   configuration.
+ * @endparblock
  */
 #define CONFIGURE_JFFS2_DELAYED_WRITE_TASK_PRIORITY
 
@@ -2496,6 +2896,12 @@
  * @par Default Configuration
  * If this configuration option is undefined, then the described feature is not
  * enabled.
+ *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
  *
  * @par Notes
  * @parblock
@@ -2550,6 +2956,12 @@
  * If this configuration option is undefined, then the described feature is not
  * enabled.
  *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
+ *
  * @par Notes
  * @parblock
  * In case this configuration option is defined, then the following
@@ -2603,6 +3015,12 @@
  * @par Default Configuration
  * If this configuration option is undefined, then the described feature is not
  * enabled.
+ *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
  *
  * @par Notes
  * @parblock
@@ -2664,6 +3082,12 @@
  * If this configuration option is undefined, then the described feature is not
  * enabled.
  *
+ * @par Constraints
+ * The configuration option is mandatory for the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall define the application
+ * configuration option.
+ *
  * @par Notes
  * You can enable this option to reduce the size of the `TCB`.  Use this option
  * with care, since it can lead to race conditions and undefined system
@@ -2690,6 +3114,11 @@
  * @par Constraints
  * @parblock
  * The following constraints apply to this configuration option:
+ *
+ * - The configuration option is not included in the pre-qualified feature set
+ *   of RTEMS. Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the application
+ *   configuration option.
  *
  * - The value of the configuration option shall be greater than or equal to
  *   zero.
@@ -2726,12 +3155,17 @@
  * @parblock
  * The following constraints apply to this configuration option:
  *
+ * - The configuration option is not included in the pre-qualified feature set
+ *   of RTEMS. Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the application
+ *   configuration option.
+ *
  * - The value of the configuration option shall be greater than or equal to
  *   zero.
  *
  * - The value of the configuration option shall be small enough so that the
- *   task stack space calculation carried out by ``<rtems/confdefs.h>`` does
- *   not overflow an integer of type <a
+ *   task stack space calculation carried out by `<rtems/confdefs.h>` does not
+ *   overflow an integer of type <a
  *   href="https://en.cppreference.com/w/c/types/integer">uintptr_t</a>.
  * @endparblock
  *
@@ -2817,8 +3251,8 @@
  *   BSP-specific and application-specific minimum value.
  *
  * - The value of the configuration option shall be small enough so that the
- *   interrupt stack area calculation carried out by ``<rtems/confdefs.h>``
- *   does not overflow an integer of type <a
+ *   interrupt stack area calculation carried out by `<rtems/confdefs.h>` does
+ *   not overflow an integer of type <a
  *   href="https://en.cppreference.com/w/c/types/size_t">size_t</a>.
  *
  * - The value of the configuration option shall be aligned according to
@@ -2864,6 +3298,12 @@
  * If this configuration option is undefined, then the described feature is not
  * enabled.
  *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
+ *
  * @par Notes
  * The dirtying performed by this option is carried out for each successful
  * memory allocation from the C Program Heap in contrast to @ref
@@ -2888,6 +3328,11 @@
  * @par Constraints
  * @parblock
  * The following constraints apply to this configuration option:
+ *
+ * - A value of zero for the configuration option is mandatory for the
+ *   pre-qualified feature set of RTEMS. Applications which are restricted to
+ *   only use interfaces of the pre-qualified feature set of RTEMS shall define
+ *   the configuration option to zero.
  *
  * - The value of the configuration option shall be greater than or equal to
  *   zero.
@@ -3012,6 +3457,11 @@
  * @parblock
  * The following constraints apply to this configuration option:
  *
+ * - The configuration option is not included in the pre-qualified feature set
+ *   of RTEMS. Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the application
+ *   configuration option.
+ *
  * - The value of the configuration option shall be greater than or equal to
  *   zero.
  *
@@ -3054,6 +3504,11 @@
  * @parblock
  * The following constraints apply to this configuration option:
  *
+ * - The configuration option is not included in the pre-qualified feature set
+ *   of RTEMS. Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the application
+ *   configuration option.
+ *
  * - The value of the configuration option shall be greater than or equal to
  *   zero.
  *
@@ -3062,8 +3517,8 @@
  *   the memory available to the application.
  *
  * - The value of the configuration option shall be small enough so that the
- *   RTEMS Workspace size calculation carried out by ``<rtems/confdefs.h>``
- *   does not overflow an integer of type <a
+ *   RTEMS Workspace size calculation carried out by `<rtems/confdefs.h>` does
+ *   not overflow an integer of type <a
  *   href="https://en.cppreference.com/w/c/types/integer">uintptr_t</a>.
  * @endparblock
  *
@@ -3093,6 +3548,11 @@
  * @parblock
  * The following constraints apply to this configuration option:
  *
+ * - The configuration option is not included in the pre-qualified feature set
+ *   of RTEMS. Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the application
+ *   configuration option.
+ *
  * - The value of the configuration option shall be greater than or equal to
  *   zero.
  *
@@ -3101,8 +3561,8 @@
  *   the memory available to the application.
  *
  * - The value of the configuration option shall be small enough so that the
- *   RTEMS Workspace size calculation carried out by ``<rtems/confdefs.h>``
- *   does not overflow an integer of type <a
+ *   RTEMS Workspace size calculation carried out by `<rtems/confdefs.h>` does
+ *   not overflow an integer of type <a
  *   href="https://en.cppreference.com/w/c/types/integer">uintptr_t</a>.
  * @endparblock
  *
@@ -3226,8 +3686,8 @@
  * The following constraints apply to this configuration option:
  *
  * - The value of the configuration option shall be small enough so that the
- *   task stack space calculation carried out by ``<rtems/confdefs.h>`` does
- *   not overflow an integer of type <a
+ *   task stack space calculation carried out by `<rtems/confdefs.h>` does not
+ *   overflow an integer of type <a
  *   href="https://en.cppreference.com/w/c/types/integer">uintptr_t</a>.
  *
  * - The value of the configuration option shall be greater than or equal to a
@@ -3272,6 +3732,12 @@
  * @par Default Configuration
  * If this configuration option is undefined, then the described feature is not
  * enabled.
+ *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
  *
  * @par Notes
  * @parblock
@@ -3328,6 +3794,12 @@
  * If this configuration option is undefined, then there will be separate
  * memory pools for the RTEMS Workspace and C Program Heap.
  *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
+ *
  * @par Notes
  * @parblock
  * Having separate pools does have some advantages in the event a task blows a
@@ -3361,8 +3833,17 @@
  * The default value is 8.
  *
  * @par Constraints
- * The value of the configuration option shall meet the constraints of all
- * object classes to which it is applied.
+ * @parblock
+ * The following constraints apply to this configuration option:
+ *
+ * - The configuration option is not included in the pre-qualified feature set
+ *   of RTEMS. Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the application
+ *   configuration option.
+ *
+ * - The value of the configuration option shall meet the constraints of all
+ *   object classes to which it is applied.
+ * @endparblock
  *
  * @par Notes
  * @parblock
@@ -3388,6 +3869,12 @@
  * @par Default Configuration
  * If this configuration option is undefined, then the described feature is not
  * enabled.
+ *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
  *
  * @par Notes
  * @parblock
@@ -3417,6 +3904,12 @@
  * If this configuration option is undefined, then the described feature is not
  * enabled.
  *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
+ *
  * @par Notes
  * You may use this feature to debug system initialization issues.  The
  * printk() function is used to print the information.
@@ -3437,6 +3930,12 @@
  * @par Default Configuration
  * If this configuration option is undefined, then the described feature is not
  * enabled.
+ *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
  *
  * @par Notes
  * Zeroing memory can add significantly to the system initialization time. It
@@ -3569,8 +4068,8 @@
  *   BSP-specific and application-specific minimum value.
  *
  * - The value of the configuration option shall be small enough so that the
- *   IDLE task stack area calculation carried out by ``<rtems/confdefs.h>``
- *   does not overflow an integer of type <a
+ *   IDLE task stack area calculation carried out by `<rtems/confdefs.h>` does
+ *   not overflow an integer of type <a
  *   href="https://en.cppreference.com/w/c/types/size_t">size_t</a>.
  * @endparblock
  *
@@ -3676,6 +4175,11 @@
  * @parblock
  * The following constraints apply to this configuration option:
  *
+ * - The configuration option is not included in the pre-qualified feature set
+ *   of RTEMS. Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the application
+ *   configuration option.
+ *
  * - The value of the configuration option shall be greater than or equal to
  *   zero.
  *
@@ -3684,7 +4188,7 @@
  *
  * - The value of the configuration option shall be small enough so that the
  *   MPCI receive server stack area calculation carried out by
- *   ``<rtems/confdefs.h>`` does not overflow an integer of type <a
+ *   `<rtems/confdefs.h>` does not overflow an integer of type <a
  *   href="https://en.cppreference.com/w/c/types/size_t">size_t</a>.
  * @endparblock
  *
@@ -3708,6 +4212,12 @@
  * @par Default Configuration
  * If this configuration option is undefined, then the multiprocessing services
  * are not initialized.
+ *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
  *
  * @par Notes
  * This configuration option shall be undefined if the multiprocessing support
@@ -3733,6 +4243,11 @@
  * @par Constraints
  * @parblock
  * The following constraints apply to this configuration option:
+ *
+ * - The configuration option is not included in the pre-qualified feature set
+ *   of RTEMS. Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the application
+ *   configuration option.
  *
  * - The value of the configuration option shall be greater than or equal to
  *   zero.
@@ -3769,6 +4284,11 @@
  * @parblock
  * The following constraints apply to this configuration option:
  *
+ * - The configuration option is not included in the pre-qualified feature set
+ *   of RTEMS. Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the application
+ *   configuration option.
+ *
  * - The value of the configuration option shall be greater than or equal to
  *   zero.
  *
@@ -3799,6 +4319,11 @@
  * @par Constraints
  * @parblock
  * The following constraints apply to this configuration option:
+ *
+ * - The configuration option is not included in the pre-qualified feature set
+ *   of RTEMS. Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the application
+ *   configuration option.
  *
  * - The value of the configuration option shall be greater than or equal to
  *   zero.
@@ -3834,8 +4359,17 @@
  * The default value is `&MPCI_table`.
  *
  * @par Constraints
- * The value of the configuration option shall be a pointer to
- * ::rtems_mpci_table.
+ * @parblock
+ * The following constraints apply to this configuration option:
+ *
+ * - The configuration option is not included in the pre-qualified feature set
+ *   of RTEMS. Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the application
+ *   configuration option.
+ *
+ * - The value of the configuration option shall be a pointer to
+ *   ::rtems_mpci_table.
+ * @endparblock
  *
  * @par Notes
  * @parblock
@@ -3865,6 +4399,11 @@
  * @par Constraints
  * @parblock
  * The following constraints apply to this configuration option:
+ *
+ * - The configuration option is not included in the pre-qualified feature set
+ *   of RTEMS. Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the application
+ *   configuration option.
  *
  * - The value of the configuration option shall be greater than or equal to
  *   zero.
@@ -3920,6 +4459,11 @@
  * @parblock
  * The following constraints apply to this configuration option:
  *
+ * - The configuration option is not included in the pre-qualified feature set
+ *   of RTEMS. Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the application
+ *   configuration option.
+ *
  * - The value of the configuration option shall be greater than or equal to
  *   zero.
  *
@@ -3960,6 +4504,11 @@
  * @par Constraints
  * @parblock
  * The following constraints apply to this configuration option:
+ *
+ * - The configuration option is not included in the pre-qualified feature set
+ *   of RTEMS. Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the application
+ *   configuration option.
  *
  * - The value of the configuration option shall be greater than or equal to
  *   zero.
@@ -4007,6 +4556,11 @@
  * @parblock
  * The following constraints apply to this configuration option:
  *
+ * - The configuration option is not included in the pre-qualified feature set
+ *   of RTEMS. Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the application
+ *   configuration option.
+ *
  * - The value of the configuration option shall be greater than or equal to
  *   zero.
  *
@@ -4018,8 +4572,8 @@
  *   the memory available to the application.
  *
  * - The value of the configuration option shall be small enough so that the
- *   RTEMS Workspace size calculation carried out by ``<rtems/confdefs.h>``
- *   does not overflow an integer of type <a
+ *   RTEMS Workspace size calculation carried out by `<rtems/confdefs.h>` does
+ *   not overflow an integer of type <a
  *   href="https://en.cppreference.com/w/c/types/integer">uintptr_t</a>.
  *
  * - The value of the configuration option may be defined through
@@ -4053,6 +4607,11 @@
  * @parblock
  * The following constraints apply to this configuration option:
  *
+ * - The configuration option is not included in the pre-qualified feature set
+ *   of RTEMS. Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the application
+ *   configuration option.
+ *
  * - The value of the configuration option shall be greater than or equal to
  *   zero.
  *
@@ -4061,13 +4620,13 @@
  *   the memory available to the application.
  *
  * - The value of the configuration option shall be small enough so that the
- *   RTEMS Workspace size calculation carried out by ``<rtems/confdefs.h>``
- *   does not overflow an integer of type <a
+ *   RTEMS Workspace size calculation carried out by `<rtems/confdefs.h>` does
+ *   not overflow an integer of type <a
  *   href="https://en.cppreference.com/w/c/types/integer">uintptr_t</a>.
  *
  * - The value of the configuration option shall be zero if the POSIX API is
  *   not enabled (e.g. RTEMS was built without the `RTEMS_POSIX_API = True`
- *   build configuration option).  Otherwise a compile time error in the
+ *   build configuration option). Otherwise a compile time error in the
  *   configuration file will occur.
  * @endparblock
  *
@@ -4098,6 +4657,11 @@
  * @parblock
  * The following constraints apply to this configuration option:
  *
+ * - The configuration option is not included in the pre-qualified feature set
+ *   of RTEMS. Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the application
+ *   configuration option.
+ *
  * - The value of the configuration option shall be greater than or equal to
  *   zero.
  *
@@ -4109,8 +4673,8 @@
  *   the memory available to the application.
  *
  * - The value of the configuration option shall be small enough so that the
- *   RTEMS Workspace size calculation carried out by ``<rtems/confdefs.h>``
- *   does not overflow an integer of type <a
+ *   RTEMS Workspace size calculation carried out by `<rtems/confdefs.h>` does
+ *   not overflow an integer of type <a
  *   href="https://en.cppreference.com/w/c/types/integer">uintptr_t</a>.
  *
  * - The value of the configuration option may be defined through
@@ -4149,6 +4713,11 @@
  * @parblock
  * The following constraints apply to this configuration option:
  *
+ * - The configuration option is not included in the pre-qualified feature set
+ *   of RTEMS. Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the application
+ *   configuration option.
+ *
  * - The value of the configuration option shall be greater than or equal to
  *   zero.
  *
@@ -4160,8 +4729,8 @@
  *   the memory available to the application.
  *
  * - The value of the configuration option shall be small enough so that the
- *   RTEMS Workspace size calculation carried out by ``<rtems/confdefs.h>``
- *   does not overflow an integer of type <a
+ *   RTEMS Workspace size calculation carried out by `<rtems/confdefs.h>` does
+ *   not overflow an integer of type <a
  *   href="https://en.cppreference.com/w/c/types/integer">uintptr_t</a>.
  *
  * - The value of the configuration option may be defined through
@@ -4194,6 +4763,11 @@
  * @parblock
  * The following constraints apply to this configuration option:
  *
+ * - The configuration option is not included in the pre-qualified feature set
+ *   of RTEMS. Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the application
+ *   configuration option.
+ *
  * - The value of the configuration option shall be greater than or equal to
  *   zero.
  *
@@ -4205,8 +4779,8 @@
  *   the memory available to the application.
  *
  * - The value of the configuration option shall be small enough so that the
- *   task stack space calculation carried out by ``<rtems/confdefs.h>`` does
- *   not overflow an integer of type <a
+ *   task stack space calculation carried out by `<rtems/confdefs.h>` does not
+ *   overflow an integer of type <a
  *   href="https://en.cppreference.com/w/c/types/integer">uintptr_t</a>.
  * @endparblock
  *
@@ -4247,6 +4821,11 @@
  * @parblock
  * The following constraints apply to this configuration option:
  *
+ * - The configuration option is not included in the pre-qualified feature set
+ *   of RTEMS. Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the application
+ *   configuration option.
+ *
  * - The value of the configuration option shall be greater than or equal to
  *   zero.
  *
@@ -4264,7 +4843,7 @@
  *
  * - The value of the configuration option shall be zero if the POSIX API is
  *   not enabled (e.g. RTEMS was built without the `RTEMS_POSIX_API = True`
- *   build configuration option).  Otherwise a compile time error in the
+ *   build configuration option). Otherwise a compile time error in the
  *   configuration file will occur.
  * @endparblock
  *
@@ -4298,9 +4877,14 @@
  * @parblock
  * The following constraints apply to this configuration option:
  *
+ * - The configuration option is not included in the pre-qualified feature set
+ *   of RTEMS. Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the application
+ *   configuration option.
+ *
  * - The value of the configuration option shall be small enough so that the
- *   task stack space calculation carried out by ``<rtems/confdefs.h>`` does
- *   not overflow an integer of type <a
+ *   task stack space calculation carried out by `<rtems/confdefs.h>` does not
+ *   overflow an integer of type <a
  *   href="https://en.cppreference.com/w/c/types/integer">uintptr_t</a>.
  *
  * - The value of the configuration option shall be greater than or equal to a
@@ -4339,8 +4923,17 @@
  * The default value is `POSIX_Init`.
  *
  * @par Constraints
- * The value of the configuration option shall be defined to a valid function
- * pointer of the type `void *( *entry_point )( void * )`.
+ * @parblock
+ * The following constraints apply to this configuration option:
+ *
+ * - The configuration option is not included in the pre-qualified feature set
+ *   of RTEMS. Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the application
+ *   configuration option.
+ *
+ * - The value of the configuration option shall be defined to a valid function
+ *   pointer of the type `void *( *entry_point )( void * )`.
+ * @endparblock
  *
  * @par Notes
  * The application shall provide the function referenced by this configuration
@@ -4365,12 +4958,17 @@
  * @parblock
  * The following constraints apply to this configuration option:
  *
+ * - The configuration option is not included in the pre-qualified feature set
+ *   of RTEMS. Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the application
+ *   configuration option.
+ *
  * - The value of the configuration option shall be greater than or equal to
  *   @ref CONFIGURE_MINIMUM_TASK_STACK_SIZE.
  *
  * - The value of the configuration option shall be small enough so that the
- *   task stack space calculation carried out by ``<rtems/confdefs.h>`` does
- *   not overflow an integer of type <a
+ *   task stack space calculation carried out by `<rtems/confdefs.h>` does not
+ *   overflow an integer of type <a
  *   href="https://en.cppreference.com/w/c/types/integer">uintptr_t</a>.
  * @endparblock
  */
@@ -4389,6 +4987,12 @@
  * @par Default Configuration
  * If this configuration option is undefined, then the described feature is not
  * enabled.
+ *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
  *
  * @par Notes
  * @parblock
@@ -4465,6 +5069,11 @@
  * @par Constraints
  * @parblock
  * The following constraints apply to this configuration option:
+ *
+ * - The configuration option is not included in the pre-qualified feature set
+ *   of RTEMS. Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the application
+ *   configuration option.
  *
  * - The value of the configuration option shall be greater than or equal to
  *   zero.
@@ -4570,7 +5179,7 @@
  *
  *   The `scheduler_index` macro parameter shall be a valid index of the
  *   scheduler table defined by the @ref CONFIGURE_SCHEDULER_TABLE_ENTRIES
- *   configuration option.
+ *   application configuration option.
  *
  *   The `attributes` macro parameter shall be set to exactly one of the
  *   following constants:
@@ -4611,6 +5220,12 @@
  * If this configuration option is undefined, then the described feature is not
  * enabled.
  *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
+ *
  * @par Notes
  * @parblock
  * This scheduler configuration option is an advanced configuration option.
@@ -4638,6 +5253,12 @@
  * @par Default Configuration
  * If this configuration option is undefined, then the described feature is not
  * enabled.
+ *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
  *
  * @par Notes
  * @parblock
@@ -4800,6 +5421,12 @@
  * If this configuration option is undefined, then the described feature is not
  * enabled.
  *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
+ *
  * @par Notes
  * @parblock
  * This scheduler configuration option is an advanced configuration option.
@@ -4833,6 +5460,12 @@
  * @par Default Configuration
  * If this configuration option is undefined, then the described feature is not
  * enabled.
+ *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
  *
  * @par Notes
  * @parblock
@@ -4868,6 +5501,12 @@
  * If this configuration option is undefined, then the described feature is not
  * enabled.
  *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
+ *
  * @par Notes
  * @parblock
  * This scheduler configuration option is an advanced configuration option.
@@ -4895,6 +5534,12 @@
  * @par Default Configuration
  * If this configuration option is undefined, then the described feature is not
  * enabled.
+ *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
  *
  * @par Notes
  * @parblock
@@ -4925,6 +5570,12 @@
  * @par Default Configuration
  * If this configuration option is undefined, then the described feature is not
  * enabled.
+ *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
  *
  * @par Notes
  * @parblock
@@ -4983,7 +5634,7 @@
  *   href="https://docs.rtems.org/docs/main/c-user/config/scheduler-clustered.html#clustered-scheduler-configuration">Clustered
  *   Scheduler Configuration</a>.
  *
- *   The `obj_name` macro parameter shall be the scheduler object name.  It is
+ *   The `obj_name` macro parameter shall be the scheduler object name. It is
  *   recommended to define the scheduler object name through
  *   rtems_build_name().
  *
@@ -5017,6 +5668,12 @@
  * @par Default Configuration
  * If this configuration option is undefined, then the described feature is not
  * enabled.
+ *
+ * @par Constraints
+ * The configuration option is not included in the pre-qualified feature set of
+ * RTEMS. Applications which are restricted to only use interfaces of the
+ * pre-qualified feature set of RTEMS shall not use the application
+ * configuration option.
  *
  * @par Notes
  * @parblock
@@ -5185,9 +5842,18 @@
  * href="https://en.cppreference.com/w/c/types/NULL">NULL</a>.
  *
  * @par Constraints
- * The value of the configuration option shall be defined to a valid function
- * pointer of the type `void ( *initialize )( size_t )` or to <a
- * href="https://en.cppreference.com/w/c/types/NULL">NULL</a>.
+ * @parblock
+ * The following constraints apply to this configuration option:
+ *
+ * - The configuration option is not included in the pre-qualified feature set
+ *   of RTEMS. Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the application
+ *   configuration option.
+ *
+ * - The value of the configuration option shall be defined to a valid function
+ *   pointer of the type `void ( *initialize )( size_t )` or to <a
+ *   href="https://en.cppreference.com/w/c/types/NULL">NULL</a>.
+ * @endparblock
  *
  * @par Notes
  * @parblock
@@ -5249,11 +5915,20 @@
  * The default value is a macro which supports the system heap allocator.
  *
  * @par Constraints
- * The value of the configuration option shall be defined to a macro which
- * accepts exactly one parameter and returns an unsigned integer.  The
- * parameter will be an allocation size and the macro shall return this size
- * plus the overhead of the allocator to manage an allocation request for this
- * size.
+ * @parblock
+ * The following constraints apply to this configuration option:
+ *
+ * - The configuration option is not included in the pre-qualified feature set
+ *   of RTEMS. Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the application
+ *   configuration option.
+ *
+ * - The value of the configuration option shall be defined to a macro which
+ *   accepts exactly one parameter and returns an unsigned integer. The
+ *   parameter will be an allocation size and the macro shall return this size
+ *   plus the overhead of the allocator to manage an allocation request for
+ *   this size.
+ * @endparblock
  *
  * @par Notes
  * This configuration option may be used if a custom task stack allocator is

@@ -180,7 +180,7 @@ rtems_status_code rtems_signal_catch(
  *   cause the calling task to be preempted.
  *
  * - When the directive operates on a remote object, the directive sends a
- *   message to the remote node and waits for a reply.  This will preempt the
+ *   message to the remote node and waits for a reply. This will preempt the
  *   calling task.
  * @endparblock
  */

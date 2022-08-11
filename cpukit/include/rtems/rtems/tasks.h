@@ -626,11 +626,11 @@ typedef bool ( *rtems_task_visitor )( rtems_tcb *, void * );
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  *
  * - When the directive operates on a global object, the directive sends a
- *   message to remote nodes.  This may preempt the calling task.
+ *   message to remote nodes. This may preempt the calling task.
  *
  * - The number of tasks available to the application is configured through the
  *   @ref CONFIGURE_MAXIMUM_TASKS application configuration option.
@@ -744,11 +744,11 @@ rtems_status_code rtems_task_create(
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  *
  * - When the directive operates on a global object, the directive sends a
- *   message to remote nodes.  This may preempt the calling task.
+ *   message to remote nodes. This may preempt the calling task.
  *
  * - The number of tasks available to the application is configured through the
  *   @ref CONFIGURE_MAXIMUM_TASKS application configuration option.
@@ -925,7 +925,7 @@ rtems_id rtems_task_self( void );
  *
  * - The directive may be called from within task context.
  *
- * - The directive may unblock a task.  This may cause the calling task to be
+ * - The directive may unblock a task. This may cause the calling task to be
  *   preempted.
  * @endparblock
  */
@@ -991,10 +991,10 @@ rtems_status_code rtems_task_start(
  *
  * - The directive may be called from within task context.
  *
- * - The directive may change the priority of a task.  This may cause the
+ * - The directive may change the priority of a task. This may cause the
  *   calling task to be preempted.
  *
- * - The directive may unblock a task.  This may cause the calling task to be
+ * - The directive may unblock a task. This may cause the calling task to be
  *   preempted.
  * @endparblock
  */
@@ -1078,14 +1078,14 @@ rtems_status_code rtems_task_restart(
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  *
  * - When the directive operates on a global object, the directive sends a
- *   message to remote nodes.  This may preempt the calling task.
+ *   message to remote nodes. This may preempt the calling task.
  *
- * - The calling task does not have to be the task that created the object.
- *   Any local task that knows the object identifier can delete the object.
+ * - The calling task does not have to be the task that created the object. Any
+ *   local task that knows the object identifier can delete the object.
  *
  * - Where the object class corresponding to the directive is configured to use
  *   unlimited objects, the directive may free memory to the RTEMS Workspace.
@@ -1183,7 +1183,7 @@ RTEMS_NO_RETURN void rtems_task_exit( void );
  * - The directive may be called from within task context.
  *
  * - When the directive operates on a remote object, the directive sends a
- *   message to the remote node and waits for a reply.  This will preempt the
+ *   message to the remote node and waits for a reply. This will preempt the
  *   calling task.
  * @endparblock
  */
@@ -1221,11 +1221,11 @@ rtems_status_code rtems_task_suspend( rtems_id id );
  *
  * - The directive may be called from within task context.
  *
- * - The directive may unblock a task.  This may cause the calling task to be
+ * - The directive may unblock a task. This may cause the calling task to be
  *   preempted.
  *
  * - When the directive operates on a remote object, the directive sends a
- *   message to the remote node and waits for a reply.  This will preempt the
+ *   message to the remote node and waits for a reply. This will preempt the
  *   calling task.
  * @endparblock
  */
@@ -1329,11 +1329,11 @@ rtems_status_code rtems_task_is_suspended( rtems_id id );
  *
  * - The directive may be called from within task context.
  *
- * - The directive may change the priority of a task.  This may cause the
+ * - The directive may change the priority of a task. This may cause the
  *   calling task to be preempted.
  *
  * - When the directive operates on a remote object, the directive sends a
- *   message to the remote node and waits for a reply.  This will preempt the
+ *   message to the remote node and waits for a reply. This will preempt the
  *   calling task.
  * @endparblock
  */
@@ -1722,7 +1722,7 @@ rtems_status_code rtems_task_get_scheduler(
  *
  * - The directive may be called from within task context.
  *
- * - The directive may change the priority of a task.  This may cause the
+ * - The directive may change the priority of a task. This may cause the
  *   calling task to be preempted.
  * @endparblock
  */
@@ -1829,7 +1829,7 @@ rtems_status_code rtems_task_get_affinity(
  *
  * - The directive may be called from within task context.
  *
- * - The directive may change the processor affinity of a task.  This may cause
+ * - The directive may change the processor affinity of a task. This may cause
  *   the calling task to be preempted.
  * @endparblock
  */
@@ -1917,7 +1917,7 @@ rtems_status_code rtems_task_get_cpu_usage( rtems_id id, struct timespec *ts );
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  * @endparblock
  */
