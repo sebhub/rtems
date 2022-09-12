@@ -5,12 +5,13 @@ actions:
 build-type: option
 copyrights:
 - Copyright (C) 2020 embedded brains GmbH (http://www.embedded-brains.de)
-default: 134217728
-default-by-variant:
-- value: 135266304
-  variants:
+default:
+- enabled-by:
   - arm/stm32h747i-disco-m4
   - arm/stm32h757i-eval-m4
+  value: 135266304
+- enabled-by: true
+  value: 134217728
 description: |
   Origin address of the internal flash.
 enabled-by: true

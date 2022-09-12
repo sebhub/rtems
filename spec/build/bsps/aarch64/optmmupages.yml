@@ -8,8 +8,9 @@ actions:
 build-type: option
 copyrights:
 - Copyright (C) 2021 On-Line Applications Research (OAR)
-default: 64
-default-by-variant: []
+default:
+- enabled-by: true
+  value: 64
 description: |
   Defines the number of MMU translation table pages to provide.
 enabled-by: true

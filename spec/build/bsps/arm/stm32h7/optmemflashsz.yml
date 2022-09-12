@@ -5,12 +5,13 @@ actions:
 build-type: option
 copyrights:
 - Copyright (C) 2020 embedded brains GmbH (http://www.embedded-brains.de)
-default: 2097152
-default-by-variant:
-- value: 1048576
-  variants:
+default:
+- enabled-by:
   - arm/stm32h747i-disco-m4
   - arm/stm32h757i-eval-m4
+  value: 1048576
+- enabled-by: true
+  value: 2097152
 description: |
   Size of the internal flash in bytes.
 enabled-by: true

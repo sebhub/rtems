@@ -7,8 +7,9 @@ actions:
 build-type: option
 copyrights:
 - Copyright (C) 2022 On-Line Applications Research Corporation (OAR)
-default: 1151336448
-default-by-variant: []
+default:
+- enabled-by: true
+  value: 1151336448
 description: |
   base address of the AXI Quad SPI
 enabled-by: true

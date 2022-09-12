@@ -8,21 +8,20 @@ actions:
 build-type: option
 copyrights:
 - Copyright (C) 2020 embedded brains GmbH (http://www.embedded-brains.de)
-default: 2147483648
-default-by-variant:
-- value: 0
-  variants:
+default:
+- enabled-by:
   - riscv/noel32im
   - riscv/noel32imafd
   - riscv/noel64imac
   - riscv/noel64imafd
   - riscv/noel64imafdc
-- value: 1073741824
-  variants:
-  - riscv/griscv
-- value: 68719476736
-  variants:
-  - riscv/mpfs64imafdc
+  value: 0
+- enabled-by: riscv/griscv
+  value: 1073741824
+- enabled-by: riscv/mpfs64imafdc
+  value: 68719476736
+- enabled-by: true
+  value: 2147483648
 description: ''
 enabled-by: true
 format: '{:#010x}'
