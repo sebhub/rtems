@@ -9,8 +9,8 @@ default: 2097152
 default-by-variant:
 - value: 1048576
   variants:
-  - arm/stm32h757i-eval-m4
   - arm/stm32h747i-disco-m4
+  - arm/stm32h757i-eval-m4
 description: |
   Size of the internal flash in bytes.
 enabled-by: true

@@ -9,13 +9,14 @@ default: 0
 default-by-variant:
 - value: 14
   variants:
-  - arm/lm3s6965.*
+  - arm/lm3s6965
+  - arm/lm3s6965_qemu
 - value: 16
   variants:
-  - arm/lm3s3749.*
+  - arm/lm3s3749
 - value: 21
   variants:
-  - arm/lm4f120.*
+  - arm/lm4f120
 description: |
   crystal configuration for RCC register
 enabled-by: true
