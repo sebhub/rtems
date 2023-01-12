@@ -12,8 +12,8 @@ actions:
     record02: exclude
     sp47: exclude
     spstkalloc02: exclude
-    tftpfs: exclude
     terminate: exclude
+    tftpfs: exclude
     unit-no-clock-0: exclude
     userext: exclude
     validation-0: exclude

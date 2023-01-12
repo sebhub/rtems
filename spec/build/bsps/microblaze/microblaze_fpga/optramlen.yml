@@ -7,9 +7,9 @@ actions:
 build-type: option
 copyrights:
 - Copyright (C) 2022 On-Line Applications Research (OAR)
-default: 0x10000000
+default: 268435456
 default-by-variant:
-- value: 0x80000000
+- value: 2147483648
   variants:
   - microblaze/kcu105.*
 description: |

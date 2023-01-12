@@ -9,7 +9,7 @@ copyrights:
 - Copyright (C) 2020 On-Line Applications Research (OAR)
 default: 32768
 default-by-variant:
-- value: 0x0
+- value: 0
   variants:
   - aarch64/xilinx_zynqmp_lp64_cfc400x
   - aarch64/xilinx_zynqmp_lp64_zu3eg

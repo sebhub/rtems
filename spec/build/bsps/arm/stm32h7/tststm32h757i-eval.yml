@@ -1,8 +1,8 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 actions:
 - set-test-state:
-    linpack: exclude
     fsdosfsname01: exclude
+    linpack: exclude
     record02: exclude
 build-type: option
 copyrights:

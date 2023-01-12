@@ -13,8 +13,8 @@ default-by-variant:
 description: |
   Defines the initialization value of the CNTCR register of the memory-mapped
   system level ARM Generic Timer.
-format: '{:#010x}'
 enabled-by: true
+format: '{:#010x}'
 links: []
 name: ARM_GENERIC_TIMER_SYSTEM_CNTCR
 type: build

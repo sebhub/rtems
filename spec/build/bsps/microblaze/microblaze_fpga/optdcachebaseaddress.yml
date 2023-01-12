@@ -7,7 +7,7 @@ actions:
 build-type: option
 copyrights:
 - Copyright (C) 2021 On-Line Applications Research Corporation (OAR)
-default: 0x80000000
+default: 2147483648
 default-by-variant: []
 description: |
   base address of the data cache

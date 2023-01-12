@@ -1,7 +1,10 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 actions:
 - get-integer: null
 - env-assign: null
 build-type: option
+copyrights:
+- Copyright (C) 2020 embedded brains GmbH (http://www.embedded-brains.de)
 default: 0
 default-by-variant:
 - value: 33554432
@@ -10,13 +13,10 @@ default-by-variant:
   - arm/stm32h757i-eval-m4
   - arm/stm32h747i-disco
   - arm/stm32h747i-disco-m4
+description: |
+  Size of the SDRAM 2 in bytes.
 enabled-by: true
 format: '{:#010x}'
 links: []
 name: STM32H7_MEMORY_SDRAM_2_SIZE
-description: |
-  Size of the SDRAM 2 in bytes.
 type: build
-SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
-copyrights:
-- Copyright (C) 2020 embedded brains GmbH (http://www.embedded-brains.de)
