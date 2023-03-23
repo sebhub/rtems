@@ -81,7 +81,7 @@
  * @brief Do nothing by default.
  */
 #ifndef Clock_driver_support_at_tick
-  #define Clock_driver_support_at_tick()
+  #define Clock_driver_support_at_tick(arg) do { (void) arg; } while (0)
 #endif
 
 /**
@@ -152,11 +152,10 @@ void Clock_isr(void *arg);
 void Clock_isr(void *arg)
 {
 #else
-rtems_isr Clock_isr(rtems_vector_number vector);
-rtems_isr Clock_isr(
-  rtems_vector_number vector
-)
+rtems_isr Clock_isr(rtems_vector_number arg);
+rtems_isr Clock_isr(rtems_vector_number arg)
 {
+  (void) vector;
 #endif
   /*
    *  Accurate count of ISRs
@@ -194,7 +193,7 @@ rtems_isr Clock_isr(
         }
       }
 
-      Clock_driver_support_at_tick();
+      Clock_driver_support_at_tick(arg);
     }
   #else
     /*
@@ -202,7 +201,7 @@ rtems_isr Clock_isr(
      *
      *  The counter/timer may or may not be set to automatically reload.
      */
-    Clock_driver_support_at_tick();
+    Clock_driver_support_at_tick(arg);
 
     #if CLOCK_DRIVER_ISRS_PER_TICK
       /*
