@@ -99,8 +99,12 @@ void tms570_pom_remap(void)
    * table found in
    *   c/src/lib/libbsp/arm/shared/start/start.S
    */
+  rtems_cache_invalidate_multiple_data_lines(bsp_start_vector_table_begin, 64);
   memcpy((void*)vec_overlay_start, bsp_start_vector_table_begin, 64);
+  rtems_cache_flush_multiple_data_lines((void*)vec_overlay_start, 64);
+  rtems_cache_invalidate_multiple_instruction_lines((void*)vec_overlay_start, 64);
 
+	return;
   #if 0
   {
     /* Fill exception table by catch error infinite loop for debugging */
