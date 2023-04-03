@@ -94,7 +94,7 @@ static void raspberrypi_clock_initialize_hardware(void)
   rtems_timecounter_install(&raspberrypi_tc);
 }
 
-#define Clock_driver_support_at_tick() raspberrypi_clock_at_tick()
+#define Clock_driver_support_at_tick(arg) raspberrypi_clock_at_tick()
 
 #define Clock_driver_support_initialize_hardware() raspberrypi_clock_initialize_hardware()
 

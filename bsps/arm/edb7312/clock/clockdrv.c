@@ -20,7 +20,7 @@
 
 void Clock_isr(void * arg);
 
-#define Clock_driver_support_at_tick()                \
+#define Clock_driver_support_at_tick(arg)                \
   do {                                                \
     *EP7312_TC1EOI = 0xffffffff;                      \
   } while(0)

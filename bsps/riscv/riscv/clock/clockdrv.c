@@ -242,7 +242,7 @@ RTEMS_SYSINIT_ITEM(
   RTEMS_SYSINIT_ORDER_FIRST
 );
 
-#define Clock_driver_support_at_tick() riscv_clock_at_tick(&riscv_clock_tc)
+#define Clock_driver_support_at_tick(arg) riscv_clock_at_tick(&riscv_clock_tc)
 
 #define Clock_driver_support_initialize_hardware() riscv_clock_initialize()
 

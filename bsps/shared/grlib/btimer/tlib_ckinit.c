@@ -436,7 +436,7 @@ static const struct ops ops_irqamp = {
 #define Clock_driver_timecounter_tick() \
   tlib_clock_timecounter_tick()
 
-#define Clock_driver_support_at_tick() \
+#define Clock_driver_support_at_tick(arg) \
   do { \
     rtems_device_driver ret; \
     ret = tlib_clock_at_tick(); \

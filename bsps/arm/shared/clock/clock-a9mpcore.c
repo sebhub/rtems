@@ -38,23 +38,18 @@
 
 static struct timecounter a9mpcore_tc;
 
-/* This is defined in dev/clock/clockimpl.h */
-void Clock_isr(rtems_irq_hdl_param arg);
-
 __attribute__ ((weak)) uint32_t a9mpcore_clock_periphclk(void)
 {
   /* default to the BSP option. */
   return BSP_ARM_A9MPCORE_PERIPHCLK;
 }
 
-static void a9mpcore_clock_at_tick(void)
+static void a9mpcore_clock_at_tick(volatile a9mpcore_gt *gt)
 {
-  volatile a9mpcore_gt *gt = A9MPCORE_GT;
-
   gt->irqst = A9MPCORE_GT_IRQST_EFLG;
 }
 
-static void a9mpcore_clock_handler_install(void)
+static void a9mpcore_clock_handler_install(rtems_interrupt_handler handler)
 {
   rtems_status_code sc;
 
@@ -62,8 +57,8 @@ static void a9mpcore_clock_handler_install(void)
     A9MPCORE_IRQ_GT,
     "Clock",
     RTEMS_INTERRUPT_UNIQUE,
-    (rtems_interrupt_handler) Clock_isr,
-    NULL
+    handler,
+    RTEMS_DEVOLATILE(a9mpcore_gt *, A9MPCORE_GT)
   );
   if (sc != RTEMS_SUCCESSFUL) {
     bsp_fatal(BSP_ARM_A9MPCORE_FATAL_CLOCK_IRQ_INSTALL);
@@ -179,14 +174,14 @@ CPU_Counter_ticks _CPU_Counter_read(void)
   return gt->cntrlower;
 }
 
-#define Clock_driver_support_at_tick() \
-  a9mpcore_clock_at_tick()
+#define Clock_driver_support_at_tick(arg) \
+  a9mpcore_clock_at_tick(arg)
 
 #define Clock_driver_support_initialize_hardware() \
   a9mpcore_clock_initialize()
 
 #define Clock_driver_support_install_isr(isr) \
-  a9mpcore_clock_handler_install()
+  a9mpcore_clock_handler_install(isr)
 
 /* Include shared source clock driver code */
 #include "../../shared/dev/clock/clockimpl.h"

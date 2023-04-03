@@ -27,7 +27,7 @@ void au1x00_clock_init(void);
 
 #define CLOCK_VECTOR AU1X00_IRQ_TOY_MATCH2
 
-#define Clock_driver_support_at_tick()                        \
+#define Clock_driver_support_at_tick(arg)                        \
   do {                                                        \
     while (AU1X00_SYS_CNTCTRL(AU1X00_SYS_ADDR) & AU1X00_SYS_CNTCTRL_TM0); \
     last_match = AU1X00_SYS_TOYREAD(AU1X00_SYS_ADDR); \

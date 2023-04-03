@@ -118,7 +118,7 @@ RTEMS_SYSINIT_ITEM(
     (void) _online_processors; \
   } while (0)
 
-#define Clock_driver_support_at_tick() erc32_clock_at_tick()
+#define Clock_driver_support_at_tick(arg) erc32_clock_at_tick()
 
 #define Clock_driver_support_initialize_hardware() erc32_clock_init()
 
