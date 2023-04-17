@@ -88,6 +88,7 @@ void tms570_initialize_and_clear(void)
 void tms570_pom_remap(void)
 {
   uint32_t vec_overlay_start = pom_global_overlay_target_address_start;
+  void *addr_tab = (char *) bsp_start_vector_table_begin + 64;
 
   /*
    * Copy RTEMS the first level exception processing code
@@ -99,12 +100,11 @@ void tms570_pom_remap(void)
    * table found in
    *   c/src/lib/libbsp/arm/shared/start/start.S
    */
-  rtems_cache_invalidate_multiple_data_lines(bsp_start_vector_table_begin, 64);
-  memcpy((void*)vec_overlay_start, bsp_start_vector_table_begin, 64);
+  rtems_cache_invalidate_multiple_data_lines(addr_tab, 64);
+  memcpy((void*)vec_overlay_start, addr_tab, 64);
   rtems_cache_flush_multiple_data_lines((void*)vec_overlay_start, 64);
   rtems_cache_invalidate_multiple_instruction_lines((void*)vec_overlay_start, 64);
 
-	return;
   #if 0
   {
     /* Fill exception table by catch error infinite loop for debugging */
