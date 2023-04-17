@@ -77,6 +77,7 @@ bsp_start_vector_table_begin:
 	ldr	pc, .Lhandler_addr_irq
 	ldr	pc, .Lhandler_addr_fiq
 
+.balign 64
 .Lhandler_addr_reset:
 
 #ifdef BSP_START_RESET_VECTOR
