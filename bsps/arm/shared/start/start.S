@@ -399,7 +399,8 @@ _start:
 
 #endif /* ARM_MULTILIB_VFP */
 
-#if (__ARM_ARCH >= 7 && __ARM_ARCH_PROFILE == 'A') || __ARM_ARCH >= 8
+#if __ARM_ARCH >= 7
+#if __ARM_ARCH_PROFILE == 'A' || __ARM_ARCH >= 8
 	/*
 	 * Set VBAR to the vector table in the start section and make sure
 	 * SCTLR[M, I, A, C, V] are cleared.  Afterwards, exceptions are
@@ -409,8 +410,16 @@ _start:
 	dsb
 	mcr	p15, 0, r0, c12, c0, 0
 	mrc	p15, 0, r0, c1, c0, 0
-	bic	r1, r0, #0x2800
+	bic	r1, r0, #0x3000
 	bic	r1, r1, #0x7
+#else
+	/*
+	 * Make sure SCTLR[M, I, A, C, V] are cleared.
+	 */
+	mrc	p15, 0, r0, c1, c0, 0
+	bic	r1, r0, #0x1000
+	bic	r1, r1, #0x6
+#endif
 	mcr	p15, 0, r1, c1, c0, 0
 	isb
 
@@ -457,7 +466,14 @@ _start:
 	mcr	p15, 0, r0, c8, c7, 0
 	isb
 #endif
-#endif /* (__ARM_ARCH >= 7 && __ARM_ARCH_PROFILE == 'A') || __ARM_ARCH >= 8 */
+
+	/* Enable SCTLR[I, C] */
+	mrc	p15, 0, r0, c1, c0, 0
+	orr	r1, r0, #0x1000
+	orr	r1, r1, #0x4
+	mcr	p15, 0, r1, c1, c0, 0
+	isb
+#endif /* __ARM_ARCH >= 7 */
 
 	/*
 	 * Invoke the start hook 0.
