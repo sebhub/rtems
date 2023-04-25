@@ -1,0 +1,32 @@
+{
+  "SPDX-License-Identifier": "CC-BY-SA-4.0 OR BSD-2-Clause",
+  "build-type": "script",
+  "cflags": [],
+  "copyrights": [
+    "Copyright (C) 2020 embedded brains GmbH (http://www.embedded-brains.de)"
+  ],
+  "cppflags": [],
+  "do-build": "path = \"testsuites/libtests/dl09/\"\nobjs = []\nobjs.append(self.cc(bld, bic, path + \"dl09-o1.c\"))\nobjs.append(self.cc(bld, bic, path + \"dl09-o2.c\"))\nobjs.append(self.cc(bld, bic, path + \"dl09-o3.c\"))\nobjs.append(self.cc(bld, bic, path + \"dl09-o4.c\"))\nobjs.append(self.cc(bld, bic, path + \"dl09-o5.c\"))\ntar = path + \"dl09.tar\"\nself.tar(bld, objs, [path], tar)\ntar_c, tar_h = self.bin2c(bld, tar)\nobjs = []\nobjs.append(self.cc(bld, bic, tar_c))\nobjs.append(self.cc(bld, bic, path + \"init.c\", deps=[tar_h], cppflags=bld.env.TEST_DL09_CPPFLAGS))\nobjs.append(self.cc(bld, bic, path + \"dl-load.c\"))\ndl09_pre = path + \"dl09.pre\"\nself.link_cc(bld, bic, objs, dl09_pre)\ndl09_sym_o = path + \"dl09-sym.o\"\nobjs.append(dl09_sym_o)\nself.rtems_syms(bld, dl09_pre, dl09_sym_o)\nself.link_cc(bld, bic, objs, \"testsuites/libtests/dl09.exe\")\n",
+  "do-configure": null,
+  "enabled-by": [
+    {
+      "and": [
+        {
+          "not": "TEST_DL09_EXCLUDE"
+        },
+        "BUILD_LIBDL"
+      ]
+    }
+  ],
+  "includes": [
+    "testsuites/libtests/dl09"
+  ],
+  "ldflags": [],
+  "links": [],
+  "prepare-build": null,
+  "prepare-configure": null,
+  "stlib": [],
+  "type": "build",
+  "use-after": [],
+  "use-before": []
+}

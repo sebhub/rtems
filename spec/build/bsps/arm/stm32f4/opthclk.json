@@ -1,0 +1,31 @@
+{
+  "SPDX-License-Identifier": "CC-BY-SA-4.0 OR BSD-2-Clause",
+  "actions": [
+    {
+      "get-integer": null
+    },
+    {
+      "define": null
+    }
+  ],
+  "build-type": "option",
+  "copyrights": [
+    "Copyright (C) 2020 embedded brains GmbH (http://www.embedded-brains.de)"
+  ],
+  "default": [
+    {
+      "enabled-by": "arm/stm32f105rc",
+      "value": 8000000
+    },
+    {
+      "enabled-by": true,
+      "value": 16000000
+    }
+  ],
+  "description": "HCLK frequency in Hz\n",
+  "enabled-by": true,
+  "format": "{}",
+  "links": [],
+  "name": "STM32F4_HCLK",
+  "type": "build"
+}

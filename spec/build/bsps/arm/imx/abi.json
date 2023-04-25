@@ -1,0 +1,35 @@
+{
+  "SPDX-License-Identifier": "CC-BY-SA-4.0 OR BSD-2-Clause",
+  "actions": [
+    {
+      "get-string": null
+    },
+    {
+      "split": null
+    },
+    {
+      "env-append": null
+    }
+  ],
+  "build-type": "option",
+  "copyrights": [
+    "Copyright (C) 2020 embedded brains GmbH (http://www.embedded-brains.de)"
+  ],
+  "default": [
+    {
+      "enabled-by": true,
+      "value": [
+        "-march=armv7-a",
+        "-mthumb",
+        "-mfpu=neon",
+        "-mfloat-abi=hard",
+        "-mtune=cortex-a7"
+      ]
+    }
+  ],
+  "description": "ABI flags\n",
+  "enabled-by": true,
+  "links": [],
+  "name": "ABI_FLAGS",
+  "type": "build"
+}

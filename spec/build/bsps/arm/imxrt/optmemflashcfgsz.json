@@ -1,0 +1,27 @@
+{
+  "SPDX-License-Identifier": "CC-BY-SA-4.0 OR BSD-2-Clause",
+  "actions": [
+    {
+      "get-integer": null
+    },
+    {
+      "env-assign": null
+    }
+  ],
+  "build-type": "option",
+  "copyrights": [
+    "Copyright (C) 2020 embedded brains GmbH (http://www.embedded-brains.de)"
+  ],
+  "default": [
+    {
+      "enabled-by": true,
+      "value": 4096
+    }
+  ],
+  "description": "Size of the flash configuration area at the start of the FlexSPI / SEMC flash\nin bytes. Either 4 KByte for FlexSPI NOR / SEMC NOR or 1 Kbyte for most other.\nTake a look at the i.MX RT1050 Processor Reference Manual chapter 9.7 \"Program\nimage\" for details.\n",
+  "enabled-by": true,
+  "format": "{:#010x}",
+  "links": [],
+  "name": "IMXRT_MEMORY_FLASH_CFG_SIZE",
+  "type": "build"
+}

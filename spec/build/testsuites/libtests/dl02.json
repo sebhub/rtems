@@ -1,0 +1,32 @@
+{
+  "SPDX-License-Identifier": "CC-BY-SA-4.0 OR BSD-2-Clause",
+  "build-type": "script",
+  "cflags": [],
+  "copyrights": [
+    "Copyright (C) 2020 embedded brains GmbH (http://www.embedded-brains.de)"
+  ],
+  "cppflags": [],
+  "do-build": "path = \"testsuites/libtests/dl02/\"\nobjs = []\nobjs.append(self.cc(bld, bic, path + \"dl02-o1.c\"))\nobjs.append(self.cc(bld, bic, path + \"dl02-o2.c\"))\ntar = path + \"dl02.tar\"\nself.tar(bld, objs, [path], tar)\ntar_c, tar_h = self.bin2c(bld, tar)\nobjs = []\nobjs.append(self.cc(bld, bic, tar_c))\nobjs.append(self.cc(bld, bic, path + \"init.c\", deps=[tar_h], cppflags=bld.env.TEST_DL02_CPPFLAGS))\nobjs.append(self.cc(bld, bic, path + \"dl-load.c\"))\ndl02_pre = path + \"dl02.pre\"\nself.link_cc(bld, bic, objs, dl02_pre)\ndl02_sym_o = path + \"dl02-sym.o\"\nobjs.append(dl02_sym_o)\nself.rtems_syms(bld, dl02_pre, dl02_sym_o)\nself.link_cc(bld, bic, objs, \"testsuites/libtests/dl02.exe\")\n",
+  "do-configure": null,
+  "enabled-by": [
+    {
+      "and": [
+        {
+          "not": "TEST_DL02_EXCLUDE"
+        },
+        "BUILD_LIBDL"
+      ]
+    }
+  ],
+  "includes": [
+    "testsuites/libtests/dl02"
+  ],
+  "ldflags": [],
+  "links": [],
+  "prepare-build": null,
+  "prepare-configure": null,
+  "stlib": [],
+  "type": "build",
+  "use-after": [],
+  "use-before": []
+}

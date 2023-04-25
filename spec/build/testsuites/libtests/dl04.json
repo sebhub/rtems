@@ -1,0 +1,33 @@
+{
+  "SPDX-License-Identifier": "CC-BY-SA-4.0 OR BSD-2-Clause",
+  "build-type": "script",
+  "cflags": [],
+  "copyrights": [
+    "Copyright (C) 2020 embedded brains GmbH (http://www.embedded-brains.de)"
+  ],
+  "cppflags": [],
+  "cxxflags": [],
+  "do-build": "path = \"testsuites/libtests/dl04/\"\nobjs = []\nobjs.append(self.cxx(bld, bic, path + \"dl04-o4.cc\"))\ntar = path + \"dl04.tar\"\nself.tar(bld, objs, [path], tar)\ntar_c, tar_h = self.bin2c(bld, tar)\nobjs = []\nobjs.append(self.cc(bld, bic, tar_c))\nobjs.append(self.cc(bld, bic, path + \"init.c\", deps=[tar_h], cppflags=bld.env.TEST_DL04_CPPFLAGS))\nobjs.append(self.cc(bld, bic, path + \"dl-load.c\"))\ndl04_pre = path + \"dl04.pre\"\nself.link_cc(bld, bic, objs, dl04_pre)\ndl04_sym_o = path + \"dl04-sym.o\"\nobjs.append(dl04_sym_o)\nself.rtems_syms(bld, dl04_pre, dl04_sym_o)\nself.link_cc(bld, bic, objs, \"testsuites/libtests/dl04.exe\")\n",
+  "do-configure": null,
+  "enabled-by": [
+    {
+      "and": [
+        {
+          "not": "TEST_DL04_EXCLUDE"
+        },
+        "BUILD_LIBDL"
+      ]
+    }
+  ],
+  "includes": [
+    "testsuites/libtests/dl04"
+  ],
+  "ldflags": [],
+  "links": [],
+  "prepare-build": null,
+  "prepare-configure": null,
+  "stlib": [],
+  "type": "build",
+  "use-after": [],
+  "use-before": []
+}

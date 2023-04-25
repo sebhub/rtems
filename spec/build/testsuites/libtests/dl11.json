@@ -1,0 +1,32 @@
+{
+  "SPDX-License-Identifier": "CC-BY-SA-4.0 OR BSD-2-Clause",
+  "build-type": "script",
+  "cflags": [],
+  "copyrights": [
+    "Copyright (C) 2023 On-Line Applications Research (OAR)"
+  ],
+  "cppflags": [],
+  "do-build": "path = \"testsuites/libtests/dl11/\"\nobjs = []\nobjs.append(self.cc(bld, bic, path + \"dl11-o1.c\"))\ntar = path + \"dl11.tar\"\nself.tar(bld, objs, [path], tar)\ntar_c, tar_h = self.bin2c(bld, tar)\nobjs = []\nobjs.append(self.cc(bld, bic, tar_c))\nobjs.append(self.cc(bld, bic, path + \"init.c\", deps=[tar_h], cppflags=bld.env.TEST_DL11_CPPFLAGS))\nobjs.append(self.cc(bld, bic, path + \"dl-load.c\"))\ndl11_pre = path + \"dl11.pre\"\nself.link_cc(bld, bic, objs, dl11_pre)\ndl11_sym_o = path + \"dl11-sym.o\"\nobjs.append(dl11_sym_o)\nself.rtems_syms(bld, dl11_pre, dl11_sym_o)\nself.link_cc(bld, bic, objs, \"testsuites/libtests/dl11.exe\")\n",
+  "do-configure": null,
+  "enabled-by": [
+    {
+      "and": [
+        {
+          "not": "TEST_DL11_EXCLUDE"
+        },
+        "BUILD_LIBDL"
+      ]
+    }
+  ],
+  "includes": [
+    "testsuites/libtests/dl11"
+  ],
+  "ldflags": [],
+  "links": [],
+  "prepare-build": null,
+  "prepare-configure": null,
+  "stlib": [],
+  "type": "build",
+  "use-after": [],
+  "use-before": []
+}

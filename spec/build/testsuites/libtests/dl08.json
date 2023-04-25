@@ -1,0 +1,32 @@
+{
+  "SPDX-License-Identifier": "CC-BY-SA-4.0 OR BSD-2-Clause",
+  "build-type": "script",
+  "cflags": [],
+  "copyrights": [
+    "Copyright (C) 2020 embedded brains GmbH (http://www.embedded-brains.de)"
+  ],
+  "cppflags": [],
+  "do-build": "path = \"testsuites/libtests/dl08/\"\nobjs = []\nlib_objs = []\nlib_objs.append(self.cc(bld, bic, path + \"dl08-o2.c\"))\nlib_objs.append(self.cc(bld, bic, path + \"dl08-o4.c\"))\nobjs.append(self.ar(bld, lib_objs, path + \"libdl08_1.a\"))\nlib_objs = []\nlib_objs.append(self.cc(bld, bic, path + \"dl08-o3.c\"))\nlib_objs.append(self.cc(bld, bic, path + \"dl08-o5.c\"))\nlib_objs.append(self.cc(bld, bic, path + \"dl08-o6-123456789-123456789.c\"))\nobjs.append(self.ar(bld, lib_objs, path + \"libdl08_2.a\"))\nobjs.append(self.cc(bld, bic, path + \"dl08-o1.c\"))\ntar = path + \"dl08.tar\"\nself.tar(bld, [path + \"etc/libdl.conf\"] + objs, [path], tar)\ntar_c, tar_h = self.bin2c(bld, tar)\nobjs = []\nobjs.append(self.cc(bld, bic, tar_c))\nobjs.append(self.cc(bld, bic, path + \"init.c\", deps=[tar_h], cppflags=bld.env.TEST_DL08_CPPFLAGS))\nobjs.append(self.cc(bld, bic, path + \"dl-load.c\"))\ndl08_pre = path + \"dl08.pre\"\nself.link_cc(bld, bic, objs, dl08_pre)\ndl08_sym_o = path + \"dl08-sym.o\"\nobjs.append(dl08_sym_o)\nself.rtems_syms(bld, dl08_pre, dl08_sym_o)\nself.link_cc(bld, bic, objs, \"testsuites/libtests/dl08.exe\")\n",
+  "do-configure": null,
+  "enabled-by": [
+    {
+      "and": [
+        {
+          "not": "TEST_DL08_EXCLUDE"
+        },
+        "BUILD_LIBDL"
+      ]
+    }
+  ],
+  "includes": [
+    "testsuites/libtests/dl08"
+  ],
+  "ldflags": [],
+  "links": [],
+  "prepare-build": null,
+  "prepare-configure": null,
+  "stlib": [],
+  "type": "build",
+  "use-after": [],
+  "use-before": []
+}

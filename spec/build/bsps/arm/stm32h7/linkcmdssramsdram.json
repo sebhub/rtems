@@ -1,0 +1,14 @@
+{
+  "SPDX-License-Identifier": "CC-BY-SA-4.0 OR BSD-2-Clause",
+  "build-type": "script",
+  "copyrights": [
+    "Copyright (C) 2020 embedded brains GmbH (http://www.embedded-brains.de)"
+  ],
+  "do-build": "bld.install_as(\"${BSP_LIBDIR}/linkcmds.sram_sdram\", \"linkcmds.sram_sdram\")\n",
+  "do-configure": "content = \"\"\"INCLUDE linkcmds.memory\n\nREGION_ALIAS (\"REGION_START\", SRAM_AXI);\nREGION_ALIAS (\"REGION_VECTOR\", SRAM_AXI);\nREGION_ALIAS (\"REGION_TEXT\", SRAM_AXI);\nREGION_ALIAS (\"REGION_TEXT_LOAD\", SRAM_AXI);\nREGION_ALIAS (\"REGION_RODATA\", SRAM_AXI);\nREGION_ALIAS (\"REGION_RODATA_LOAD\", SRAM_AXI);\nREGION_ALIAS (\"REGION_DATA\", SRAM_AXI);\nREGION_ALIAS (\"REGION_DATA_LOAD\", SRAM_AXI);\nREGION_ALIAS (\"REGION_FAST_TEXT\", ITCM);\nREGION_ALIAS (\"REGION_FAST_TEXT_LOAD\", ITCM);\nREGION_ALIAS (\"REGION_FAST_DATA\", DTCM);\nREGION_ALIAS (\"REGION_FAST_DATA_LOAD\", DTCM);\nREGION_ALIAS (\"REGION_BSS\", SRAM_AXI);\nREGION_ALIAS (\"REGION_WORK\", SDRAM_2);\nREGION_ALIAS (\"REGION_STACK\", SRAM_AXI);\nREGION_ALIAS (\"REGION_NOCACHE\", SRAM_1);\nREGION_ALIAS (\"REGION_NOCACHE_LOAD\", SRAM_AXI);\n\nbsp_vector_table_in_start_section = 1;\n\"\"\"\n\nif conf.env.STM32H7_ENABLE_MPU_ALIGNMENT:\n    content += \"\"\"\nbsp_align_text_and_rodata_end_to_power_of_2 = 1;\n\"\"\"\n\ncontent += \"\"\"\nINCLUDE linkcmds.armv7m\n\"\"\"\nf = conf.bldnode.make_node(\n    conf.env.VARIANT + \"/linkcmds.sram_sdram\"\n)\nf.parent.mkdir()\nf.write(content)\nconf.env.append_value(\"cfg_files\", f.abspath())\n",
+  "enabled-by": true,
+  "links": [],
+  "prepare-build": null,
+  "prepare-configure": null,
+  "type": "build"
+}

@@ -1,0 +1,32 @@
+{
+  "SPDX-License-Identifier": "CC-BY-SA-4.0 OR BSD-2-Clause",
+  "build-type": "script",
+  "cflags": [],
+  "copyrights": [
+    "Copyright (C) 2020 embedded brains GmbH (http://www.embedded-brains.de)"
+  ],
+  "cppflags": [],
+  "do-build": "path = \"testsuites/libtests/dl07/\"\nobjs = []\nobjs.append(self.cc(bld, bic, path + \"dl07-o1.c\"))\nobjs.append(self.cc(bld, bic, path + \"dl07-o2.c\"))\nobjs.append(self.cc(bld, bic, path + \"dl07-o3.c\"))\nobjs.append(self.cc(bld, bic, path + \"dl07-o4.c\"))\nobjs.append(self.cc(bld, bic, path + \"dl07-o5.c\"))\ntar = path + \"dl07.tar\"\nself.tar(bld, objs, [path], tar)\ntar_c, tar_h = self.bin2c(bld, tar)\nobjs = []\nobjs.append(self.cc(bld, bic, tar_c))\nobjs.append(self.cc(bld, bic, path + \"init.c\", deps=[tar_h], cppflags=bld.env.TEST_DL07_CPPFLAGS))\nobjs.append(self.cc(bld, bic, path + \"dl-load.c\"))\ndl07_pre = path + \"dl07.pre\"\nself.link_cc(bld, bic, objs, dl07_pre)\ndl07_sym_o = path + \"dl07-sym.o\"\nobjs.append(dl07_sym_o)\nself.rtems_syms(bld, dl07_pre, dl07_sym_o)\nself.link_cc(bld, bic, objs, \"testsuites/libtests/dl07.exe\")\n",
+  "do-configure": null,
+  "enabled-by": [
+    {
+      "and": [
+        {
+          "not": "TEST_DL07_EXCLUDE"
+        },
+        "BUILD_LIBDL"
+      ]
+    }
+  ],
+  "includes": [
+    "testsuites/libtests/dl07"
+  ],
+  "ldflags": [],
+  "links": [],
+  "prepare-build": null,
+  "prepare-configure": null,
+  "stlib": [],
+  "type": "build",
+  "use-after": [],
+  "use-before": []
+}

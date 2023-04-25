@@ -1,0 +1,31 @@
+{
+  "SPDX-License-Identifier": "CC-BY-SA-4.0 OR BSD-2-Clause",
+  "actions": [
+    {
+      "get-integer": null
+    },
+    {
+      "env-assign": null
+    }
+  ],
+  "build-type": "option",
+  "copyrights": [
+    "Copyright (C) 2020 embedded brains GmbH (http://www.embedded-brains.de)"
+  ],
+  "default": [
+    {
+      "enabled-by": "arm/stm32h7b3i-dk",
+      "value": 65536
+    },
+    {
+      "enabled-by": true,
+      "value": 131072
+    }
+  ],
+  "description": "Size of the SRAM 2 (D2 domain) in bytes.\n",
+  "enabled-by": true,
+  "format": "{:#010x}",
+  "links": [],
+  "name": "STM32H7_MEMORY_SRAM_2_SIZE",
+  "type": "build"
+}

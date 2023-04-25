@@ -1,0 +1,13 @@
+{
+  "SPDX-License-Identifier": "CC-BY-SA-4.0 OR BSD-2-Clause",
+  "build-type": "config-file",
+  "content": "MEMORY {\n  RAM_MMU (AIW) : ORIGIN = 0x00100000, LENGTH = ${ARM_MMU_TRANSLATION_TABLE_SIZE}\n  RAM     (AIW) : ORIGIN = 0x00200000, LENGTH = ${RPI_RAM_LENGTH_AVAILABLE} - ${RPI_RAM_NOCACHE_LENGTH}\n}\n\nREGION_ALIAS (\"REGION_START\",          RAM);\nREGION_ALIAS (\"REGION_VECTOR\",         RAM);\nREGION_ALIAS (\"REGION_TEXT\",           RAM);\nREGION_ALIAS (\"REGION_TEXT_LOAD\",      RAM);\nREGION_ALIAS (\"REGION_RODATA\",         RAM);\nREGION_ALIAS (\"REGION_RODATA_LOAD\",    RAM);\nREGION_ALIAS (\"REGION_DATA\",           RAM);\nREGION_ALIAS (\"REGION_DATA_LOAD\",      RAM);\nREGION_ALIAS (\"REGION_FAST_TEXT\",      RAM);\nREGION_ALIAS (\"REGION_FAST_TEXT_LOAD\", RAM);\nREGION_ALIAS (\"REGION_FAST_DATA\",      RAM);\nREGION_ALIAS (\"REGION_FAST_DATA_LOAD\", RAM);\nREGION_ALIAS (\"REGION_BSS\",            RAM);\nREGION_ALIAS (\"REGION_WORK\",           RAM);\nREGION_ALIAS (\"REGION_STACK\",          RAM);\nREGION_ALIAS (\"REGION_NOCACHE\",        RAM);\nREGION_ALIAS (\"REGION_NOCACHE_LOAD\",   RAM);\n\nbsp_stack_abt_size = DEFINED (bsp_stack_abt_size) ? bsp_stack_abt_size : 1024;\n\nbsp_section_rwbarrier_align = DEFINED (bsp_section_rwbarrier_align) ? bsp_section_rwbarrier_align : 1M;\n\nbsp_vector_table_in_start_section = 1;\n\nbsp_translation_table_base = ORIGIN (RAM_MMU);\nbsp_translation_table_end = ORIGIN (RAM_MMU) + LENGTH (RAM_MMU);\n\nINCLUDE linkcmds.armv4\n",
+  "copyrights": [
+    "Copyright (C) 2020 embedded brains GmbH (http://www.embedded-brains.de)"
+  ],
+  "enabled-by": true,
+  "install-path": "${BSP_LIBDIR}",
+  "links": [],
+  "target": "linkcmds",
+  "type": "build"
+}

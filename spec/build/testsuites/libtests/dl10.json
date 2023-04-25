@@ -1,0 +1,32 @@
+{
+  "SPDX-License-Identifier": "CC-BY-SA-4.0 OR BSD-2-Clause",
+  "build-type": "script",
+  "cflags": [],
+  "copyrights": [
+    "Copyright (C) 2020 embedded brains GmbH (http://www.embedded-brains.de)"
+  ],
+  "cppflags": [],
+  "do-build": "path = \"testsuites/libtests/dl10/\"\nobjs = []\nlib_objs = []\nlib_objs.append(self.cc(bld, bic, path + \"dl10-o2.c\"))\nlib_objs.append(self.cc(bld, bic, path + \"dl10-o4.c\"))\nobjs.append(self.ar(bld, lib_objs, path + \"libdl10_1.a\"))\nlib_objs = []\nlib_objs.append(self.cc(bld, bic, path + \"dl10-o3.c\"))\nlib_objs.append(self.cc(bld, bic, path + \"dl10-o5.c\"))\nlib_objs.append(self.cc(bld, bic, path + \"dl10-o6.c\"))\nobjs.append(self.ar(bld, lib_objs, path + \"libdl10_2.a\"))\nobjs.append(self.cc(bld, bic, path + \"dl10-o1.c\"))\ntar = path + \"dl10.tar\"\nself.tar(bld, [path + \"etc/libdl.conf\"] + objs, [path], tar)\ntar_c, tar_h = self.bin2c(bld, tar)\nobjs = []\nobjs.append(self.cc(bld, bic, tar_c))\nobjs.append(self.cc(bld, bic, path + \"init.c\", deps=[tar_h], cppflags=bld.env.TEST_DL10_CPPFLAGS))\nobjs.append(self.cc(bld, bic, path + \"dl-load.c\"))\ndl10_pre = path + \"dl10.pre\"\nself.link_cc(bld, bic, objs, dl10_pre)\ndl10_sym_o = path + \"dl10-sym.o\"\nobjs.append(dl10_sym_o)\nself.rtems_syms(bld, dl10_pre, dl10_sym_o)\nself.link_cc(bld, bic, objs, \"testsuites/libtests/dl10.exe\")\n",
+  "do-configure": null,
+  "enabled-by": [
+    {
+      "and": [
+        {
+          "not": "TEST_DL10_EXCLUDE"
+        },
+        "BUILD_LIBDL"
+      ]
+    }
+  ],
+  "includes": [
+    "testsuites/libtests/dl10"
+  ],
+  "ldflags": [],
+  "links": [],
+  "prepare-build": null,
+  "prepare-configure": null,
+  "stlib": [],
+  "type": "build",
+  "use-after": [],
+  "use-before": []
+}

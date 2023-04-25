@@ -28,7 +28,7 @@
 
 from __future__ import print_function
 
-import pickle
+import json
 import os
 import re
 import stat
@@ -229,9 +229,8 @@ class Item(object):
             try:
                 self.do_build(bld, bic)
             except Exception as e:
-                raise type(e)(
-                    "Build error related to item spec:{}: {}".format(
-                        self.uid, str(e)))
+                raise type(e)("Build error related to item spec:{}: {}".format(
+                    self.uid, str(e)))
 
     def do_defaults(self, enabled):
         return
@@ -1146,111 +1145,56 @@ class BuildItemContext(object):
         self.objects = objects
 
 
-def is_one_item_newer(ctx, path, mtime):
-    try:
-        mtime2 = os.path.getmtime(path)
-        if mtime <= mtime2:
-            return True
-        names = os.listdir(path)
-    except Exception as e:
-        ctx.fatal("Cannot access build specification directory: {}".format(e))
-    for name in names:
-        path2 = os.path.join(path, name)
-        if name.endswith(".yml") and not name.startswith("."):
-            mtime2 = os.path.getmtime(path2)
-            if mtime <= mtime2:
-                return True
+ctors = {
+    "ada-test-program": AdaTestProgramItem,
+    "bsp": BSPItem,
+    "config-file": ConfigFileItem,
+    "config-header": ConfigHeaderItem,
+    "test-program": TestProgramItem,
+    "group": GroupItem,
+    "library": LibraryItem,
+    "objects": ObjectsItem,
+    "option": OptionItem,
+    "script": ScriptItem,
+    "start-file": StartFileItem,
+}
+
+
+def load_one_json_item(ctx, uid, path):
+    with open(path, "r", encoding="utf-8") as f:
+        try:
+            data = json.load(f)
+        except json.JSONDecodeError as err:
+            ctx.fatal(
+                "JSON error while loading specification item file "
+                "'{}': {}".format(path, str(err)))
         else:
-            mode = os.lstat(path2).st_mode
-            if stat.S_ISDIR(mode) and is_one_item_newer(ctx, path2, mtime):
-                return True
-    return False
+            if data["type"] == "build":
+                items[uid] = ctors[data["build-type"]](uid, data)
 
 
-def must_update_item_cache(ctx, path, cache_file):
-    try:
-        mtime = os.path.getmtime(cache_file)
-    except:
-        return True
-    return is_one_item_newer(ctx, path, mtime)
-
-
-def load_from_yaml(load, ctx, data_by_uid, base, path):
+def load_from_json(ctx, base, path):
     try:
         names = os.listdir(path)
     except Exception as e:
         ctx.fatal("Cannot list build specification directory: {}".format(e))
     for name in names:
         path2 = os.path.join(path, name)
-        if name.endswith(".yml") and not name.startswith("."):
-            uid = "/" + os.path.relpath(path2, base).replace(".yml", "")
-            with open(path2, "r") as f:
-                data_by_uid[uid] = load(f.read())
+        if name.endswith(".json") and not name.startswith("."):
+            uid = "/" + os.path.relpath(path2, base).replace(".json", "")
+            load_one_json_item(ctx, uid, path2)
         else:
             mode = os.lstat(path2).st_mode
             if stat.S_ISDIR(mode):
-                load_from_yaml(load, ctx, data_by_uid, base, path2)
-
-
-def load_items_in_directory(ctx, ctors, path):
-    p = "c4che/" + re.sub(r"[^\w]", "_", path) + ".pickle"
-    try:
-        f = ctx.bldnode.make_node(p)
-    except AttributeError:
-        f = ctx.path.make_node("build/" + p)
-    f.parent.mkdir()
-    cache_file = f.abspath()
-    data_by_uid = {}
-    if must_update_item_cache(ctx, path, cache_file):
-        from waflib import Logs
-
-        Logs.warn(
-            "Regenerate build specification cache (needs a couple of seconds)..."
-        )
-
-        #
-        # Do not use a system provided yaml module and instead import it from
-        # the project.  This reduces the host system requirements to a simple
-        # Python 2.7 or 3 installation without extra modules.
-        #
-        if sys.version_info[0] == 2:
-            yaml_path = "yaml/lib"
-        else:
-            yaml_path = "yaml/lib3"
-        sys.path += [yaml_path]
-        from yaml import safe_load
-
-        load_from_yaml(safe_load, ctx, data_by_uid, path, path)
-        with open(cache_file, "wb") as f:
-            pickle.dump(data_by_uid, f)
-    else:
-        with open(cache_file, "rb") as f:
-            data_by_uid = pickle.load(f)
-    for uid, data in data_by_uid.items():
-        if data["type"] == "build":
-            items[uid] = ctors[data["build-type"]](uid, data)
+                load_from_json(ctx, base, path2)
 
 
 def load_items(ctx, specs):
     if items:
         return
 
-    ctors = {
-        "ada-test-program": AdaTestProgramItem,
-        "bsp": BSPItem,
-        "config-file": ConfigFileItem,
-        "config-header": ConfigHeaderItem,
-        "test-program": TestProgramItem,
-        "group": GroupItem,
-        "library": LibraryItem,
-        "objects": ObjectsItem,
-        "option": OptionItem,
-        "script": ScriptItem,
-        "start-file": StartFileItem,
-    }
-
     for path in specs:
-        load_items_in_directory(ctx, ctors, path)
+        load_from_json(ctx, path, path)
 
 
 def load_items_from_options(ctx):

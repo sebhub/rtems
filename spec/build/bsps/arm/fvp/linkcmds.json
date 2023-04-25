@@ -1,0 +1,13 @@
+{
+  "SPDX-License-Identifier": "CC-BY-SA-4.0 OR BSD-2-Clause",
+  "build-type": "config-file",
+  "content": "MEMORY {\n  NULL : ORIGIN = 0x00000000, LENGTH = ${ARM_FVP_MEMORY_NULL_SIZE:#010x}\n  DRAM : ORIGIN = ${ARM_FVP_MEMORY_DRAM_BEGIN:#010x}, LENGTH = ${ARM_FVP_MEMORY_DRAM_SIZE:#010x}\n  DEVICE : ORIGIN = ${ARM_FVP_MEMORY_DEVICE_BEGIN:#010x}, LENGTH = ${ARM_FVP_MEMORY_DEVICE_SIZE:#010x}\n}\n\narm_fvp_memory_null_begin = ORIGIN (NULL);\narm_fvp_memory_null_end = ORIGIN (NULL) + LENGTH (NULL);\narm_fvp_memory_null_size = LENGTH (NULL);\n\narm_fvp_memory_dram_begin = ORIGIN (DRAM);\narm_fvp_memory_dram_end = ORIGIN (DRAM) + LENGTH (DRAM);\narm_fvp_memory_dram_size = LENGTH (DRAM);\n\narm_fvp_memory_device_begin = ORIGIN (DEVICE);\narm_fvp_memory_device_end = ORIGIN (DEVICE) + LENGTH (DEVICE);\narm_fvp_memory_device_size = LENGTH (DEVICE);\n\nREGION_ALIAS (\"REGION_START\", DRAM);\nREGION_ALIAS (\"REGION_VECTOR\", DRAM);\nREGION_ALIAS (\"REGION_TEXT\", DRAM);\nREGION_ALIAS (\"REGION_TEXT_LOAD\", DRAM);\nREGION_ALIAS (\"REGION_RODATA\", DRAM);\nREGION_ALIAS (\"REGION_RODATA_LOAD\", DRAM);\nREGION_ALIAS (\"REGION_DATA\", DRAM);\nREGION_ALIAS (\"REGION_DATA_LOAD\", DRAM);\nREGION_ALIAS (\"REGION_FAST_TEXT\", DRAM);\nREGION_ALIAS (\"REGION_FAST_TEXT_LOAD\", DRAM);\nREGION_ALIAS (\"REGION_FAST_DATA\", DRAM);\nREGION_ALIAS (\"REGION_FAST_DATA_LOAD\", DRAM);\nREGION_ALIAS (\"REGION_BSS\", DRAM);\nREGION_ALIAS (\"REGION_WORK\", DRAM);\nREGION_ALIAS (\"REGION_STACK\", DRAM);\nREGION_ALIAS (\"REGION_NOCACHE\", DRAM);\nREGION_ALIAS (\"REGION_NOCACHE_LOAD\", DRAM);\n\nbsp_section_xbarrier_align = DEFINED (bsp_section_xbarrier_align) ? bsp_section_xbarrier_align : 64;\nbsp_section_robarrier_align = DEFINED (bsp_section_robarrier_align) ? bsp_section_robarrier_align : 64;\nbsp_section_rwbarrier_align = DEFINED (bsp_section_rwbarrier_align) ? bsp_section_rwbarrier_align : 64;\n\nbsp_stack_abt_size = DEFINED (bsp_stack_abt_size) ? bsp_stack_abt_size : 1024;\n\nbsp_vector_table_in_start_section = 1;\n\nINCLUDE linkcmds.armv4\n",
+  "copyrights": [
+    "Copyright (C) 2020 embedded brains GmbH (http://www.embedded-brains.de)"
+  ],
+  "enabled-by": true,
+  "install-path": "${BSP_LIBDIR}",
+  "links": [],
+  "target": "linkcmds",
+  "type": "build"
+}

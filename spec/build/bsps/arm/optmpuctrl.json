@@ -1,0 +1,27 @@
+{
+  "SPDX-License-Identifier": "CC-BY-SA-4.0 OR BSD-2-Clause",
+  "actions": [
+    {
+      "get-string": null
+    },
+    {
+      "define-unquoted": null
+    }
+  ],
+  "build-type": "option",
+  "copyrights": [
+    "Copyright (C) 2023 Karel Gardas"
+  ],
+  "default": [
+    {
+      "enabled-by": true,
+      "value": "(ARMV7M_MPU_CTRL_ENABLE | ARMV7M_MPU_CTRL_PRIVDEFENA)"
+    }
+  ],
+  "description": "Default value of the ARM MPU CTRL register\n",
+  "enabled-by": true,
+  "format": "{}",
+  "links": [],
+  "name": "ARMV7M_MPU_CTRL_DEFAULT",
+  "type": "build"
+}

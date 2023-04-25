@@ -1,0 +1,27 @@
+{
+  "SPDX-License-Identifier": "CC-BY-SA-4.0 OR BSD-2-Clause",
+  "actions": [
+    {
+      "get-string": null
+    },
+    {
+      "script": "verbosities = {\n    \"Verbose\": \"T_VERBOSE\",\n    \"Normal\": \"T_NORMAL\",\n    \"Quiet\": \"T_QUIET\",\n}\nname = self.data[\"name\"]\ntry:\n    conf.define(name, verbosities[value], quote=False)\nexcept KeyError:\n    conf.fatal(\"The value of {} shall be one of {}\".format(\n               name, verbosities.keys()))\n"
+    }
+  ],
+  "build-type": "option",
+  "copyrights": [
+    "Copyright (C) 2020 embedded brains GmbH (http://www.embedded-brains.de)"
+  ],
+  "default": [
+    {
+      "enabled-by": true,
+      "value": "Normal"
+    }
+  ],
+  "description": "Sets the test verbosity of the RTEMS Test Framework.  Valid values are\n\"Verbose\", \"Normal\", and \"Quiet\".  For normal test runs you can use a\nverbosity of \"Normal\".  If you need a more detailed output, then you can set\nit to \"Verbose\".  For example, in case a regression occurred.  Reducing the\nverbosity level can significantly reduce the test duration especially on\ntargets with a slow serial output device.  All verbosity levels produce\nenough output to notice failed test cases.  In particular, the begin and end\nof test information is not affected by the verbosity level.\n",
+  "enabled-by": true,
+  "format": "{}",
+  "links": [],
+  "name": "RTEMS_TEST_VERBOSITY",
+  "type": "build"
+}

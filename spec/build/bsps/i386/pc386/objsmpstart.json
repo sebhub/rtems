@@ -1,0 +1,29 @@
+{
+  "SPDX-License-Identifier": "CC-BY-SA-4.0 OR BSD-2-Clause",
+  "asflags": [],
+  "build-type": "script",
+  "cflags": [],
+  "copyrights": [
+    "Copyright (C) 2020 embedded brains GmbH (http://www.embedded-brains.de)"
+  ],
+  "cppflags": [],
+  "do-build": "from waflib import TaskGen\n\n@TaskGen.feature(\"i386objcopy\")\n@TaskGen.after(\"process_rule\")\ndef process_i386objcopy(self):\n    self.compiled_tasks = self.tasks\n\nstartAP = \"bsps/i386/pc386/start/startAP\"\nstartAP_o = startAP + \".o\"\nself.asm(bld, bic, startAP + \".S\", startAP_o)\nstartAP_exe = startAP + \".exe\"\nldflags = \"-N -Ttext 0x70000 -e app_processor_start -nostdlib\"\nbld(\n    rule=\"${LD} \" + ldflags + \" -o ${TGT} ${SRC}\",\n    source=startAP_o,\n    target=startAP_exe,\n)\nappstart_bin = \"appstart.bin\"\nbld(\n    rule=\"${OBJCOPY} -O binary ${SRC} ${TGT}\",\n    source=startAP_exe,\n    target=appstart_bin,\n)\nappstart_o = \"appstart.o\"\nbld(\n    rule=\"${OBJCOPY} -I binary -O elf32-i386 -B i386 ${SRC} ${TGT}\",\n    source=appstart_bin,\n    target=appstart_o,\n    name=self.uid,\n    features=\"i386objcopy c\",\n)\nbic.objects.append(self.uid)\n",
+  "do-configure": null,
+  "enabled-by": [
+    "RTEMS_SMP"
+  ],
+  "includes": [],
+  "ldflags": [],
+  "links": [
+    {
+      "role": "build-dependency",
+      "uid": "../../optobjcopy"
+    }
+  ],
+  "prepare-build": null,
+  "prepare-configure": null,
+  "stlib": [],
+  "type": "build",
+  "use-after": [],
+  "use-before": []
+}

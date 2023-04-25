@@ -1,0 +1,13 @@
+{
+  "SPDX-License-Identifier": "CC-BY-SA-4.0 OR BSD-2-Clause",
+  "build-type": "config-file",
+  "content": "#\n# BSP specific settings. To be included in application Makefiles\n#\n# This support will be removed from RTEMS. Please consider other\n# ways to build applications.\n#\n\nRTEMS_API = ${__RTEMS_MAJOR__}\n\nRTEMS_CPU = ${ARCH}\nRTEMS_BSP = ${BSP_NAME}\n\nprefix = ${PREFIX}\nexec_prefix = $${prefix}/${ARCH}-rtems${__RTEMS_MAJOR__}\n\nCC_FOR_TARGET = ${ARCH}-rtems${__RTEMS_MAJOR__}-gcc\nCXX_FOR_TARGET = ${ARCH}-rtems${__RTEMS_MAJOR__}-g++\nAS_FOR_TARGET = ${ARCH}-rtems${__RTEMS_MAJOR__}-as\nAR_FOR_TARGET = ${ARCH}-rtems${__RTEMS_MAJOR__}-ar\nNM_FOR_TARGET = ${ARCH}-rtems${__RTEMS_MAJOR__}-nm\nLD_FOR_TARGET = ${ARCH}-rtems${__RTEMS_MAJOR__}-ld\nSIZE_FOR_TARGET = ${ARCH}-rtems${__RTEMS_MAJOR__}-size\nOBJCOPY_FOR_TARGET = ${ARCH}-rtems${__RTEMS_MAJOR__}-objcopy\n\nCC= $$(CC_FOR_TARGET)\nCXX= $$(CXX_FOR_TARGET)\nAS= $$(AS_FOR_TARGET)\nLD= $$(LD_FOR_TARGET)\nNM= $$(NM_FOR_TARGET)\nAR= $$(AR_FOR_TARGET)\nSIZE= $$(SIZE_FOR_TARGET)\nOBJCOPY= $$(OBJCOPY_FOR_TARGET)\n\nexport CC\nexport CXX\nexport AS\nexport LD\nexport NM\nexport AR\nexport SIZE\nexport OBJCOPY\n\nRTEMS_ROOT  ?= $$(prefix)\nPROJECT_ROOT = $$(RTEMS_ROOT)\nRTEMS_CUSTOM = $$(RTEMS_ROOT)/make/custom/$$(RTEMS_BSP).cfg\nRTEMS_SHARE  = $$(RTEMS_ROOT)/share/rtems$$(RTEMS_API)\n\nRTEMS_USE_OWN_PDIR = no\nRTEMS_HAS_POSIX_API = ${RTEMS_HAS_POSIX_API}\nRTEMS_HAS_ITRON_API = no\nRTEMS_HAS_CPLUSPLUS = yes\n\nexport RTEMS_BSP\nexport RTEMS_CUSTOM\nexport PROJECT_ROOT\n",
+  "copyrights": [
+    "Copyright (C) 2020 embedded brains GmbH (http://www.embedded-brains.de)"
+  ],
+  "enabled-by": true,
+  "install-path": "${PREFIX}/${ARCH}-rtems${__RTEMS_MAJOR__}/${BSP_NAME}",
+  "links": [],
+  "target": "Makefile.inc",
+  "type": "build"
+}

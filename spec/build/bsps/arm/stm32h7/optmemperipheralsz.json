@@ -1,0 +1,27 @@
+{
+  "SPDX-License-Identifier": "CC-BY-SA-4.0 OR BSD-2-Clause",
+  "actions": [
+    {
+      "get-integer": null
+    },
+    {
+      "env-assign": null
+    }
+  ],
+  "build-type": "option",
+  "copyrights": [
+    "Copyright (C) 2020 embedded brains GmbH (http://www.embedded-brains.de)"
+  ],
+  "default": [
+    {
+      "enabled-by": true,
+      "value": 536870912
+    }
+  ],
+  "description": "Size of the peripheral memory in bytes.\n",
+  "enabled-by": true,
+  "format": "{:#010x}",
+  "links": [],
+  "name": "STM32H7_MEMORY_PERIPHERAL_SIZE",
+  "type": "build"
+}

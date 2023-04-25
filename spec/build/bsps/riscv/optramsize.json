@@ -1,0 +1,51 @@
+{
+  "SPDX-License-Identifier": "CC-BY-SA-4.0 OR BSD-2-Clause",
+  "actions": [
+    {
+      "get-integer": null
+    },
+    {
+      "assert-uint64": null
+    },
+    {
+      "assert-aligned": 1048576
+    },
+    {
+      "env-assign": null
+    },
+    {
+      "format-and-define": null
+    }
+  ],
+  "build-type": "option",
+  "copyrights": [
+    "Copyright (C) 2020 embedded brains GmbH (http://www.embedded-brains.de)"
+  ],
+  "default": [
+    {
+      "enabled-by": [
+        "riscv/frdme310arty",
+        "riscv/mpfs64imafdc"
+      ],
+      "value": 268435456
+    },
+    {
+      "enabled-by": "riscv/griscv",
+      "value": 16777216
+    },
+    {
+      "enabled-by": "riscv/kendrytek210",
+      "value": 6291456
+    },
+    {
+      "enabled-by": true,
+      "value": 67108864
+    }
+  ],
+  "description": "",
+  "enabled-by": true,
+  "format": "{:#010x}",
+  "links": [],
+  "name": "RISCV_RAM_REGION_SIZE",
+  "type": "build"
+}

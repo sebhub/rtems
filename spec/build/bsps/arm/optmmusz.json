@@ -1,0 +1,36 @@
+{
+  "SPDX-License-Identifier": "CC-BY-SA-4.0 OR BSD-2-Clause",
+  "actions": [
+    {
+      "get-integer": null
+    },
+    {
+      "assert-ge": 16384
+    },
+    {
+      "assert-le": 33554432
+    },
+    {
+      "env-assign": null
+    },
+    {
+      "format-and-define": null
+    }
+  ],
+  "build-type": "option",
+  "copyrights": [
+    "Copyright (C) 2020 embedded brains GmbH (http://www.embedded-brains.de)"
+  ],
+  "default": [
+    {
+      "enabled-by": true,
+      "value": 16384
+    }
+  ],
+  "description": "Defines the size of the MMU translation table in bytes.  The translation\ntable size depends on the configured MMU granularity, for example 4KiB pages\nor 1MiB sections.\n",
+  "enabled-by": true,
+  "format": "{:#010x}",
+  "links": [],
+  "name": "ARM_MMU_TRANSLATION_TABLE_SIZE",
+  "type": "build"
+}

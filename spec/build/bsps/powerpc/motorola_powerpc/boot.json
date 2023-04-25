@@ -1,0 +1,14 @@
+{
+  "SPDX-License-Identifier": "CC-BY-SA-4.0 OR BSD-2-Clause",
+  "build-type": "script",
+  "copyrights": [
+    "Copyright (C) 2020 embedded brains GmbH (http://www.embedded-brains.de)"
+  ],
+  "do-build": "def cc(self, bld, bic, flags, source):\n    root, ext = os.path.splitext(source)\n    target = root + \".o\"\n    bld(\n        features=\"asm c\",\n        includes=bic.includes,\n        rule=\"${CC} \" + flags + \" ${CPPFLAGS} ${DEFINES_ST:DEFINES} ${CPPPATH_ST:INCPATHS} -c ${SRC} -o ${TGT}\",\n        source=source,\n        target=target,\n    )\n    return target\nflags = \"-D__BOOT__ -mrelocatable\"\nfor f in bld.env.ABI_FLAGS:\n      if f != \"-meabi\":\n          flags += \" \" + f\nasmflags = \"-DASM \" + flags\ncflags = \"-msoft-float -mstrict-align -fno-builtin -Wall -mmultiple -O2 -fomit-frame-pointer -ffixed-r13 -mno-sdata \" + flags\nsource = []\nsource.append(cc(self, bld, bic, asmflags, \"bsps/powerpc/motorola_powerpc/bootloader/head.S\"))\nsource.append(cc(self, bld, bic, asmflags, \"bsps/powerpc/motorola_powerpc/bootloader/exception.S\"))\nsource.append(cc(self, bld, bic, asmflags, \"bsps/powerpc/motorola_powerpc/bootloader/em86real.S\"))\nsource.append(cc(self, bld, bic, cflags, \"bsps/powerpc/motorola_powerpc/bootloader/misc.c\"))\nsource.append(cc(self, bld, bic, cflags, \"bsps/powerpc/motorola_powerpc/bootloader/pci.c\"))\nsource.append(cc(self, bld, bic, cflags, \"bsps/powerpc/motorola_powerpc/bootloader/zlib.c\"))\nsource.append(cc(self, bld, bic, cflags, \"bsps/powerpc/motorola_powerpc/bootloader/mm.c\"))\nsource.append(cc(self, bld, bic, cflags, \"bsps/powerpc/motorola_powerpc/bootloader/em86.c\"))\nsource.append(cc(self, bld, bic, cflags, \"bsps/powerpc/motorola_powerpc/console/polled_io.c\"))\nsource.append(cc(self, bld, bic, cflags, \"bsps/powerpc/motorola_powerpc/bootloader/lib.c\"))\ntarget = \"bootloader.o\"\nbld(\n    rule=\"${LD} -o ${TGT} -r ${SRC}\",\n    source=source,\n    target=target,\n)\nbld.install_files(\n    \"${BSP_LIBDIR}\",\n    [target, \"bsps/powerpc/motorola_powerpc/bootloader/ppcboot.lds\"],\n)\n",
+  "do-configure": null,
+  "enabled-by": true,
+  "links": [],
+  "prepare-build": null,
+  "prepare-configure": null,
+  "type": "build"
+}

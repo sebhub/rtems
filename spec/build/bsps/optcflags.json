@@ -1,0 +1,27 @@
+{
+  "SPDX-License-Identifier": "CC-BY-SA-4.0 OR BSD-2-Clause",
+  "actions": [
+    {
+      "set-value": "${BSP_OPTIMIZATION_FLAGS} ${COVERAGE_COMPILER_FLAGS}\n"
+    },
+    {
+      "substitute": null
+    },
+    {
+      "split": null
+    },
+    {
+      "env-assign": null
+    }
+  ],
+  "build-type": "option",
+  "copyrights": [
+    "Copyright (C) 2022 embedded brains GmbH (http://www.embedded-brains.de)"
+  ],
+  "default": [],
+  "description": "",
+  "enabled-by": true,
+  "links": [],
+  "name": "BSP_CFLAGS",
+  "type": "build"
+}

@@ -1,0 +1,31 @@
+{
+  "SPDX-License-Identifier": "CC-BY-SA-4.0 OR BSD-2-Clause",
+  "actions": [
+    {
+      "get-integer": null
+    },
+    {
+      "define": null
+    }
+  ],
+  "build-type": "option",
+  "copyrights": [
+    "Copyright (C) 2020 embedded brains GmbH (http://www.embedded-brains.de)"
+  ],
+  "default": [
+    {
+      "enabled-by": "powerpc/mpc5674fevb",
+      "value": 2
+    },
+    {
+      "enabled-by": true,
+      "value": 1
+    }
+  ],
+  "description": "system clock divider\n",
+  "enabled-by": true,
+  "format": "{}",
+  "links": [],
+  "name": "MPC55XX_SYSTEM_CLOCK_DIVIDER",
+  "type": "build"
+}

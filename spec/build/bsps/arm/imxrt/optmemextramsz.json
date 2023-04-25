@@ -1,0 +1,27 @@
+{
+  "SPDX-License-Identifier": "CC-BY-SA-4.0 OR BSD-2-Clause",
+  "actions": [
+    {
+      "get-integer": null
+    },
+    {
+      "env-assign": null
+    }
+  ],
+  "build-type": "option",
+  "copyrights": [
+    "Copyright (C) 2020 embedded brains GmbH (http://www.embedded-brains.de)"
+  ],
+  "default": [
+    {
+      "enabled-by": true,
+      "value": 33554432
+    }
+  ],
+  "description": "Size of the external RAM in bytes.  An external ram can be for example be a\nSDRAM connected to SEMC or a HyperRAM connected to FlexSPI.  The size has to\nbe at least big enough to hold the non cached section with size\nIMXRT_MEMORY_EXTRAM_NOCACHE_SIZE at the end of the RAM.\n",
+  "enabled-by": true,
+  "format": "{:#010x}",
+  "links": [],
+  "name": "IMXRT_MEMORY_EXTRAM_SIZE",
+  "type": "build"
+}

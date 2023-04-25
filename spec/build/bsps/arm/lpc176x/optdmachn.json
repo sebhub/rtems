@@ -1,0 +1,27 @@
+{
+  "SPDX-License-Identifier": "CC-BY-SA-4.0 OR BSD-2-Clause",
+  "actions": [
+    {
+      "get-integer": null
+    },
+    {
+      "define": null
+    }
+  ],
+  "build-type": "option",
+  "copyrights": [
+    "Copyright (C) 2020 embedded brains GmbH (http://www.embedded-brains.de)"
+  ],
+  "default": [
+    {
+      "enabled-by": true,
+      "value": 2
+    }
+  ],
+  "description": "DMA channel count\n",
+  "enabled-by": true,
+  "format": "{}",
+  "links": [],
+  "name": "LPC_DMA_CHANNEL_COUNT",
+  "type": "build"
+}

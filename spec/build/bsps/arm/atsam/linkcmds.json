@@ -1,0 +1,13 @@
+{
+  "SPDX-License-Identifier": "CC-BY-SA-4.0 OR BSD-2-Clause",
+  "build-type": "config-file",
+  "content": "MEMORY {\n  NULL      : ORIGIN = 0x00000000, LENGTH = ${ATSAM_MEMORY_NULL_SIZE}\n  ITCM      : ORIGIN = ${ATSAM_MEMORY_NULL_SIZE}, LENGTH = ((${ATSAM_MEMORY_TCM_SIZE} > ${ATSAM_MEMORY_NULL_SIZE}) ? (${ATSAM_MEMORY_TCM_SIZE} - ${ATSAM_MEMORY_NULL_SIZE}) : 0)\n  INTFLASH  : ORIGIN = 0x00400000, LENGTH = ${ATSAM_MEMORY_INTFLASH_SIZE}\n  DTCM      : ORIGIN = 0x20000000, LENGTH = ${ATSAM_MEMORY_TCM_SIZE}\n  INTSRAM   : ORIGIN = 0x20400000, LENGTH = ${ATSAM_MEMORY_INTSRAM_SIZE} - 2 * ${ATSAM_MEMORY_TCM_SIZE} - ${ATSAM_MEMORY_NOCACHE_SIZE}\n  NOCACHE   : ORIGIN = 0x20400000 + ${ATSAM_MEMORY_INTSRAM_SIZE} - 2 * ${ATSAM_MEMORY_TCM_SIZE} - ${ATSAM_MEMORY_NOCACHE_SIZE}, LENGTH = ${ATSAM_MEMORY_NOCACHE_SIZE}\n  SDRAM     : ORIGIN = 0x70000000, LENGTH = ${ATSAM_MEMORY_SDRAM_SIZE}\n  QSPIFLASH  : ORIGIN = 0x80000000, LENGTH = ${ATSAM_MEMORY_QSPIFLASH_SIZE}\n}\n\n/* Must be used only for MPU definitions */\n\natsam_memory_null_begin = ORIGIN (NULL);\natsam_memory_null_end = ORIGIN (NULL) + LENGTH (NULL);\natsam_memory_null_size = LENGTH (NULL);\n\natsam_memory_itcm_begin = ORIGIN (ITCM);\natsam_memory_itcm_end = ORIGIN (ITCM) + LENGTH (ITCM);\natsam_memory_itcm_size = LENGTH (ITCM);\n\natsam_memory_intflash_begin = ORIGIN (INTFLASH);\natsam_memory_intflash_end = ORIGIN (INTFLASH) + LENGTH (INTFLASH);\natsam_memory_intflash_size = LENGTH (INTFLASH);\n\natsam_memory_dtcm_begin = ORIGIN (DTCM);\natsam_memory_dtcm_end = ORIGIN (DTCM) + LENGTH (DTCM);\natsam_memory_dtcm_size = LENGTH (DTCM);\n\natsam_memory_intsram_begin = ORIGIN (INTSRAM);\natsam_memory_intsram_end = ORIGIN (INTSRAM) + LENGTH (INTSRAM);\natsam_memory_intsram_size = LENGTH (INTSRAM);\n\natsam_memory_nocache_begin = ORIGIN (NOCACHE);\natsam_memory_nocache_end = ORIGIN (NOCACHE) + LENGTH (NOCACHE);\natsam_memory_nocache_size = LENGTH (NOCACHE);\n\natsam_memory_sdram_begin = ORIGIN (SDRAM);\natsam_memory_sdram_end = ORIGIN (SDRAM) + LENGTH (SDRAM);\natsam_memory_sdram_size = LENGTH (SDRAM);\n\natsam_memory_qspiflash_begin = ORIGIN (QSPIFLASH);\natsam_memory_qspiflash_end = ORIGIN (QSPIFLASH) + LENGTH (QSPIFLASH);\natsam_memory_qspiflash_size = LENGTH (QSPIFLASH);\n",
+  "copyrights": [
+    "Copyright (C) 2020 embedded brains GmbH (http://www.embedded-brains.de)"
+  ],
+  "enabled-by": true,
+  "install-path": "${BSP_LIBDIR}",
+  "links": [],
+  "target": "linkcmds.memory",
+  "type": "build"
+}

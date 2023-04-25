@@ -1,0 +1,37 @@
+{
+  "SPDX-License-Identifier": "CC-BY-SA-4.0 OR BSD-2-Clause",
+  "actions": [
+    {
+      "get-integer": null
+    },
+    {
+      "assert-uint32": null
+    },
+    {
+      "env-assign": null
+    },
+    {
+      "format-and-define": null
+    }
+  ],
+  "build-type": "option",
+  "copyrights": [
+    "Copyright (C) 2021 Gedare Bloom <gedare@rtems.org>"
+  ],
+  "default": [
+    {
+      "enabled-by": "aarch64/xilinx_versal_qemu",
+      "value": 536870912
+    },
+    {
+      "enabled-by": true,
+      "value": 268435456
+    }
+  ],
+  "description": "base address of memory area available to the BSP\n",
+  "enabled-by": true,
+  "format": "{:#010x}",
+  "links": [],
+  "name": "BSP_XILINX_VERSAL_RAM_BASE",
+  "type": "build"
+}

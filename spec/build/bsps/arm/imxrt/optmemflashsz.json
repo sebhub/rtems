@@ -1,0 +1,30 @@
+{
+  "SPDX-License-Identifier": "CC-BY-SA-4.0 OR BSD-2-Clause",
+  "actions": [
+    {
+      "get-integer": null
+    },
+    {
+      "env-assign": null
+    },
+    {
+      "define-unquoted": "IMXRT_MEMORY_FLASH_SIZE"
+    }
+  ],
+  "build-type": "option",
+  "copyrights": [
+    "Copyright (C) 2020 embedded brains GmbH (http://www.embedded-brains.de)"
+  ],
+  "default": [
+    {
+      "enabled-by": true,
+      "value": 67108864
+    }
+  ],
+  "description": "Size of the external flash area in bytes.  Has to be big enough to hold the\ni.MXRT initial vector table (IVT) and configuration information.  The sizes of\nthese are defined with IMXRT_MEMORY_FLASH_IVT_SIZE and\nIMXRT_MEMORY_FLASH_CFG_SIZE.\n",
+  "enabled-by": true,
+  "format": "{:#010x}",
+  "links": [],
+  "name": "IMXRT_MEMORY_FLASH_SIZE",
+  "type": "build"
+}

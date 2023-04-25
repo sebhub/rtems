@@ -1,0 +1,26 @@
+{
+  "SPDX-License-Identifier": "CC-BY-SA-4.0 OR BSD-2-Clause",
+  "actions": [
+    {
+      "get-boolean": null
+    },
+    {
+      "define-condition": null
+    }
+  ],
+  "build-type": "option",
+  "copyrights": [
+    "Copyright (C) 2020 embedded brains GmbH (http://www.embedded-brains.de)"
+  ],
+  "default": [
+    {
+      "enabled-by": true,
+      "value": false
+    }
+  ],
+  "description": "target used for identify TMS570LS3137 board\n",
+  "enabled-by": true,
+  "links": [],
+  "name": "ARM_TMS570LS3137",
+  "type": "build"
+}

@@ -1,0 +1,14 @@
+{
+  "SPDX-License-Identifier": "CC-BY-SA-4.0 OR BSD-2-Clause",
+  "build-type": "script",
+  "copyrights": [
+    "Copyright (C) 2020 embedded brains GmbH (http://www.embedded-brains.de)"
+  ],
+  "do-build": "def cc(self, bld, bic, flags, source):\n    root, ext = os.path.splitext(source)\n    target = root + \".o\"\n    bld(\n        features=\"asm c\",\n        includes=bic.includes,\n        rule=\"${CC} ${CPPFLAGS} \" + flags + \" ${DEFINES_ST:DEFINES} ${CPPPATH_ST:INCPATHS} -c ${SRC} -o ${TGT}\",\n        source=source,\n        target=target,\n    )\n    return target\nfakerom_o = cc(self, bld, bic, \"-DASM\", \"bsps/powerpc/motorola_powerpc/bootloader/qemu_fakerom.S\")\nfakeres_o = cc(self, bld, bic, \"\", \"bsps/powerpc/motorola_powerpc/bootloader/qemu_fakeres.c\")\nrule = \"${LD} -o ${TGT} ${SRC} -nostdlib -Ttext 0xfff00000 --section-start=.romentry=0xfffffffc\"\nelf = \"qemu_fakerom.elf\"\nbld(\n    rule=rule,\n    source=[fakerom_o, fakeres_o],\n    target=elf,\n)\nbin = \"qemu_fakerom.bin\"\nbld(\n    rule=rule + \" --oformat binary\",\n    source=[fakerom_o, fakeres_o],\n    target=bin,\n)\nbld.install_files(\"${BSP_LIBDIR}\", [fakerom_o, elf, bin])\n",
+  "do-configure": null,
+  "enabled-by": true,
+  "links": [],
+  "prepare-build": null,
+  "prepare-configure": null,
+  "type": "build"
+}

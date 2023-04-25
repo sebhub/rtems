@@ -1,0 +1,13 @@
+{
+  "SPDX-License-Identifier": "CC-BY-SA-4.0 OR BSD-2-Clause",
+  "build-type": "config-file",
+  "content": "MEMORY {\n  RAM : ORIGIN = ${RISCV_RAM_REGION_BEGIN}, LENGTH = ${RISCV_RAM_REGION_SIZE}\n}\n\nREGION_ALIAS (\"REGION_START\", RAM);\nREGION_ALIAS (\"REGION_TEXT\", RAM);\nREGION_ALIAS (\"REGION_TEXT_LOAD\", RAM);\nREGION_ALIAS (\"REGION_FAST_TEXT\", RAM);\nREGION_ALIAS (\"REGION_FAST_TEXT_LOAD\", RAM);\nREGION_ALIAS (\"REGION_RODATA\", RAM);\nREGION_ALIAS (\"REGION_RODATA_LOAD\", RAM);\nREGION_ALIAS (\"REGION_DATA\", RAM);\nREGION_ALIAS (\"REGION_DATA_LOAD\", RAM);\nREGION_ALIAS (\"REGION_FAST_DATA\", RAM);\nREGION_ALIAS (\"REGION_FAST_DATA_LOAD\", RAM);\nREGION_ALIAS (\"REGION_RTEMSSTACK\", RAM);\nREGION_ALIAS (\"REGION_WORK\", RAM);\n\nINCLUDE linkcmds.base\n",
+  "copyrights": [
+    "Copyright (C) 2020 embedded brains GmbH (http://www.embedded-brains.de)"
+  ],
+  "enabled-by": true,
+  "install-path": "${BSP_LIBDIR}",
+  "links": [],
+  "target": "linkcmds",
+  "type": "build"
+}

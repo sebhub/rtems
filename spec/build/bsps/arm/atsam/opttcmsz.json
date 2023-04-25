@@ -1,0 +1,30 @@
+{
+  "SPDX-License-Identifier": "CC-BY-SA-4.0 OR BSD-2-Clause",
+  "actions": [
+    {
+      "get-integer": null
+    },
+    {
+      "format-and-define": null
+    },
+    {
+      "env-assign": null
+    }
+  ],
+  "build-type": "option",
+  "copyrights": [
+    "Copyright (C) 2020 embedded brains GmbH (http://www.embedded-brains.de)"
+  ],
+  "default": [
+    {
+      "enabled-by": true,
+      "value": 0
+    }
+  ],
+  "description": "Size of tightly coupled memories (TCM) in bytes.  Note that the ITCM is\nreduced by the ATSAM_MEMORY_NULL_SIZE option.  DTCM is unaffected.\n",
+  "enabled-by": true,
+  "format": "{:#010x}",
+  "links": [],
+  "name": "ATSAM_MEMORY_TCM_SIZE",
+  "type": "build"
+}

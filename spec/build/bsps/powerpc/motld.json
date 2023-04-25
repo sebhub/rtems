@@ -1,0 +1,17 @@
+{
+  "SPDX-License-Identifier": "CC-BY-SA-4.0 OR BSD-2-Clause",
+  "asflags": [],
+  "build-type": "script",
+  "copyrights": [
+    "Copyright (C) 2020 embedded brains GmbH (http://www.embedded-brains.de)"
+  ],
+  "cppflags": [],
+  "do-build": "preload_o = \"bsps/powerpc/shared/start/preload.o\"\nself.asm(bld, bic, \"bsps/powerpc/shared/start/preload.S\", preload_o)\nvectors_entry_o = \"bsps/powerpc/shared/start/vectors_entry.o\"\nself.asm(\n    bld, bic, \"bsps/powerpc/shared/start/vectors_entry.S\", vectors_entry_o\n)\ntarget = \"motld_start.o\"\nbld(\n    before=[\"cstlib\"],\n    rule=\"${LD} -o ${TGT} -r ${SRC}\",\n    source=[preload_o, vectors_entry_o, \"start.o\"],\n    target=target,\n)\nbld.install_files(\"${BSP_LIBDIR}\", target)\n",
+  "do-configure": null,
+  "enabled-by": true,
+  "includes": [],
+  "links": [],
+  "prepare-build": null,
+  "prepare-configure": null,
+  "type": "build"
+}

@@ -1,0 +1,30 @@
+{
+  "SPDX-License-Identifier": "CC-BY-SA-4.0 OR BSD-2-Clause",
+  "actions": [
+    {
+      "get-boolean": null
+    },
+    {
+      "define-condition": null
+    }
+  ],
+  "build-type": "option",
+  "copyrights": [
+    "Copyright (C) 2020 embedded brains GmbH (http://www.embedded-brains.de)"
+  ],
+  "default": [
+    {
+      "enabled-by": "arm/stm32f4",
+      "value": true
+    },
+    {
+      "enabled-by": true,
+      "value": false
+    }
+  ],
+  "description": "Chip belongs to the STM32F4XXXX family.\n",
+  "enabled-by": true,
+  "links": [],
+  "name": "STM32F4_FAMILY_F4XXXX",
+  "type": "build"
+}

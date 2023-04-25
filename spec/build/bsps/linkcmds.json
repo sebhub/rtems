@@ -1,0 +1,14 @@
+{
+  "SPDX-License-Identifier": "CC-BY-SA-4.0 OR BSD-2-Clause",
+  "build-type": "script",
+  "copyrights": [
+    "Copyright (C) 2020 embedded brains GmbH (http://www.embedded-brains.de)"
+  ],
+  "do-build": "bld.install_as(\n    \"${BSP_LIBDIR}/linkcmds\",\n    \"bsps/\" + bld.env.ARCH + \"/\" + bld.env.BSP_FAMILY +\n    \"/start/linkcmds.\" + bld.env.BSP_BASE\n)\n",
+  "do-configure": "conf.env.append_value(\n    \"LINKFLAGS\",\n    [\"-qnolinkcmds\", \"-T\", \"linkcmds.\" + conf.env.BSP_BASE]\n)\n",
+  "enabled-by": true,
+  "links": [],
+  "prepare-build": null,
+  "prepare-configure": null,
+  "type": "build"
+}

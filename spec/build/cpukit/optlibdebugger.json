@@ -1,0 +1,26 @@
+{
+  "SPDX-License-Identifier": "CC-BY-SA-4.0 OR BSD-2-Clause",
+  "actions": [
+    {
+      "set-value": true
+    },
+    {
+      "env-enable": null
+    }
+  ],
+  "build-type": "option",
+  "copyrights": [
+    "Copyright (C) 2021 Chris Johns (chrisj@rtems.org)"
+  ],
+  "default": [],
+  "description": "",
+  "enabled-by": [
+    "aarch64",
+    "arm",
+    "i386",
+    "microblaze"
+  ],
+  "links": [],
+  "name": "BUILD_LIBDEBUGGER",
+  "type": "build"
+}

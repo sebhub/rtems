@@ -1,0 +1,13 @@
+{
+  "SPDX-License-Identifier": "CC-BY-SA-4.0 OR BSD-2-Clause",
+  "build-type": "config-file",
+  "content": "include $$(RTEMS_ROOT)/make/custom/default.cfg\nCPU_DEFINES = -isystem$$(exec_prefix)/$$(RTEMS_BSP)/lib/include\nCPU_CFLAGS = ${ABI_FLAGS}\nCFLAGS_OPTIMIZE_V = ${OPTIMIZATION_FLAGS}\nLDFLAGS = -B$$(exec_prefix)/$$(RTEMS_BSP)/lib ${PKGCONFIG_LDFLAGS}\n",
+  "copyrights": [
+    "Copyright (C) 2020 embedded brains GmbH (http://www.embedded-brains.de)"
+  ],
+  "enabled-by": true,
+  "install-path": "${PREFIX}/make/custom",
+  "links": [],
+  "target": "${BSP_NAME}.cfg",
+  "type": "build"
+}
