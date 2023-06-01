@@ -10,7 +10,7 @@ rationale: null
 references: []
 requirement-type: non-functional
 text: |
-  The ${../if/get-ticks-per-second:/name} function shall
-  return the number of clock ticks per second which is defined indirectly
-  by the CONFIGURE_MICROSECONDS_PER_TICK configuration option..
+  The directive shall return the number of configured clock ticks per second as
+  defined by the ${/acfg/if/microseconds-per-tick:/name} application
+  configuration option.
 type: requirement
