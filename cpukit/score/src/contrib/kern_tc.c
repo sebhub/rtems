@@ -1523,6 +1523,7 @@ unlock:
 #endif /* __rtems__ */
 }
 
+#ifdef RTEMS_PPS_SYNC
 /* Report the frequency of the current timecounter. */
 uint64_t
 tc_getfrequency(void)
@@ -1530,6 +1531,7 @@ tc_getfrequency(void)
 
 	return (timehands->th_counter->tc_frequency);
 }
+#endif
 
 #ifndef __rtems__
 static bool
@@ -1909,6 +1911,7 @@ SYSCTL_PROC(_kern_timecounter, OID_AUTO, choice,
     "Timecounter hardware detected");
 #endif /* __rtems__ */
 
+#ifdef RTEMS_PPS_SYNC
 /*
  * RFC 2783 PPS-API implementation.
  */
@@ -2297,6 +2300,7 @@ pps_event(struct pps_state *pps, int event)
 	(*pps->wakeup)(pps);
 #endif /* __rtems__ */
 }
+#endif /* RTEMS_PPS_SYNC */
 
 /*
  * Timecounters need to be updated every so often to prevent the hardware
