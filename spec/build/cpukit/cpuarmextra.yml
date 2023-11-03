@@ -8,11 +8,11 @@ cxxflags: []
 enabled-by:
   not: RTEMS_QUAL
 includes: []
-install:
-- destination: ${BSP_INCLUDEDIR}/
-  source:
-  - contrib/cpukit/utf8proc/utf8proc.h
+install: []
 links: []
 source:
-- contrib/cpukit/utf8proc/utf8proc.c
+- cpukit/score/cpu/arm/aarch32-psma-init-default.c
+- cpukit/score/cpu/arm/aarch32-psma-init.c
+- cpukit/score/cpu/arm/arm-exception-frame-print.c
+- cpukit/score/cpu/arm/arm_exc_abort.S
 type: build

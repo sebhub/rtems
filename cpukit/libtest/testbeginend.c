@@ -41,10 +41,17 @@
 #endif
 
 #include <rtems/test-info.h>
-#include <rtems/test-printer.h>
 #include <rtems/version.h>
 
-static const char *const test_state_strings[] = {
+#if defined(RTEMS_QUAL)
+#include <rtems/bspIo.h>
+#include <rtems/dev/io.h>
+#else
+#include <rtems/test-printer.h>
+#endif
+
+static const char *const test_state_strings[] =
+{
   "EXPECTED_PASS",
   "EXPECTED_FAIL",
   "USER_INPUT",
@@ -54,8 +61,14 @@ static const char *const test_state_strings[] = {
 
 int rtems_test_begin( const char *name, const RTEMS_TEST_STATE state )
 {
+#if defined(RTEMS_QUAL)
+  return _IO_Printf(
+    rtems_put_char,
+    NULL,
+#else
   return rtems_printf(
     &rtems_test_printer,
+#endif
     "\n\n*** BEGIN OF TEST %s ***\n"
     "*** TEST VERSION: %s\n"
     "*** TEST STATE: %s\n"
@@ -91,8 +104,14 @@ int rtems_test_begin( const char *name, const RTEMS_TEST_STATE state )
 
 int rtems_test_end( const char *name )
 {
+#if defined(RTEMS_QUAL)
+  return _IO_Printf(
+    rtems_put_char,
+    NULL,
+#else
   return rtems_printf(
     &rtems_test_printer,
+#endif
     "\n*** END OF TEST %s ***\n\n",
     name
   );

@@ -26,7 +26,7 @@ do-configure: null
 enabled-by:
 - and:
   - not: TEST_dl13_EXCLUDE
-  - BUILD_LIBDL
+  - BUILD_LIBDL_TESTS
   - arm
   - not: bsps/arm/atsam
   - not: bsps/arm/efm32gg11

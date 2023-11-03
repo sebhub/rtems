@@ -29,7 +29,8 @@ cppflags:
 - -DFF_FS_READONLY=0
 - -DFF_LBA64=0
 cxxflags: []
-enabled-by: true
+enabled-by:
+  not: RTEMS_QUAL
 includes:
 - contrib/cpukit/fatfs
 install:

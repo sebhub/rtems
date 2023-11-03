@@ -6,7 +6,9 @@ copyrights:
 cppflags: []
 cxxflags: []
 enabled-by:
-- __RTEMS_ADA__
+  and:
+    - __RTEMS_ADA__
+    - not: RTEMS_QUAL
 includes: []
 install: []
 links: []
