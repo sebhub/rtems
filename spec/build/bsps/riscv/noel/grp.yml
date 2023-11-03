@@ -33,9 +33,9 @@ links:
 - role: build-dependency
   uid: obj
 - role: build-dependency
-  uid: objsmp
+  uid: objextra
 - role: build-dependency
-  uid: ../../objmem
+  uid: objsmp
 - role: build-dependency
   uid: ../optextirqmax
 - role: build-dependency

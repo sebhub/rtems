@@ -1,0 +1,22 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+build-type: objects
+cflags: []
+copyrights:
+- Copyright (C) 2024, 2026 embedded brains GmbH & Co. KG
+cppflags: []
+cxxflags: []
+enabled-by:
+  not: RTEMS_QUAL
+includes: []
+install:
+- destination: ${BSP_INCLUDEDIR}/libcpu
+  source:
+  - cpukit/score/cpu/riscv/include/libcpu/access.h
+  - cpukit/score/cpu/riscv/include/libcpu/byteorder.h
+links: []
+source:
+- cpukit/score/cpu/riscv/riscv-access.S
+- cpukit/score/cpu/riscv/riscv-context-validate.S
+- cpukit/score/cpu/riscv/riscv-context-volatile-clobber.S
+- cpukit/score/cpu/riscv/riscv-exception-frame-print.c
+type: build

@@ -1,0 +1,30 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+build-type: objects
+cflags:
+- -Wno-error
+copyrights:
+- Copyright (C) 2021 embedded brains GmbH & Co. KG
+cppflags: []
+cxxflags: []
+enabled-by: RTEMS_QUAL
+extra-files:
+- cpukit/libc/string/local.h
+includes: []
+install: []
+links: []
+source:
+- cpukit/libc/misc/errno.c
+- cpukit/libc/string/explicit_bzero.c
+- cpukit/libc/string/flsl.c
+- cpukit/libc/string/memcpy.c
+- cpukit/libc/string/memrchr.c
+- cpukit/libc/string/memset.c
+- cpukit/libc/string/strchr.c
+- cpukit/libc/string/strchrnul.c
+- cpukit/libc/string/strcmp.c
+- cpukit/libc/string/strlcpy.c
+- cpukit/libc/string/strlen.c
+- cpukit/libc/string/strncmp.c
+- cpukit/libc/string/strrchr.c
+- cpukit/libcsupport/src/alloconly.c
+type: build

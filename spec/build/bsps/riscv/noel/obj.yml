@@ -27,9 +27,7 @@ install:
   - bsps/riscv/include/grlib/io.h
 links: []
 source:
-- bsps/riscv/noel/console/console.c
 - bsps/riscv/noel/console/printk_support.c
-- bsps/riscv/noel/start/amba.c
 - bsps/riscv/noel/start/bsp_fatal_halt.c
 - bsps/riscv/noel/start/bspstart.c
 - bsps/riscv/shared/clock/clockdrv.c
@@ -37,11 +35,6 @@ source:
 - bsps/riscv/shared/start/bspgetworkarea-fromstack.c
 - bsps/riscv/shared/start/sendipi.c
 - bsps/shared/cache/nocache.c
-- bsps/shared/dev/btimer/btimer-cpucounter.c
-- bsps/shared/dev/getentropy/getentropy-cpucounter.c
-- bsps/shared/dev/serial/console-termios.c
 - bsps/shared/grlib/uart/apbuart_polled.c
-- bsps/shared/grlib/uart/apbuart_termios.c
 - bsps/shared/irq/irq-default-handler.c
-- bsps/shared/start/gettargethash-default.c
 type: build

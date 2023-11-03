@@ -1,0 +1,23 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+build-type: objects
+cflags: []
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+cppflags: []
+cxxflags: []
+enabled-by:
+  not: RTEMS_QUAL
+includes: []
+install: []
+links:
+- role: build-dependency
+  uid: ../../objmem
+source:
+- bsps/riscv/noel/console/console.c
+- bsps/riscv/noel/start/amba.c
+- bsps/shared/dev/btimer/btimer-cpucounter.c
+- bsps/shared/dev/getentropy/getentropy-cpucounter.c
+- bsps/shared/dev/serial/console-termios.c
+- bsps/shared/grlib/uart/apbuart_termios.c
+- bsps/shared/start/gettargethash-default.c
+type: build

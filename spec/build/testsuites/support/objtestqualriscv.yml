@@ -1,0 +1,19 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+build-type: objects
+cflags: []
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+cppflags: []
+cxxflags: []
+enabled-by:
+  and:
+  - riscv
+  - RTEMS_QUAL
+includes:
+- ${BSP_INCLUDES}
+install: []
+links: []
+source:
+- bsps/shared/start/gettargethash-default.c
+- cpukit/score/cpu/riscv/setjmp.S
+type: build

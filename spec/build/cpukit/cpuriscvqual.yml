@@ -1,0 +1,30 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+build-type: objects
+cflags:
+- -Wno-error
+copyrights:
+- Copyright (C) 2024, 2026 embedded brains GmbH & Co. KG
+cppflags: []
+cxxflags: []
+enabled-by: RTEMS_QUAL
+extra-files:
+- cpukit/compiler-rt/lib/builtins/int_endianness.h
+- cpukit/compiler-rt/lib/builtins/int_lib.h
+- cpukit/compiler-rt/lib/builtins/int_types.h
+- cpukit/compiler-rt/lib/builtins/int_util.h
+includes: []
+install: []
+links: []
+source:
+- cpukit/compiler-rt/lib/builtins/bswapdi2.c
+- cpukit/compiler-rt/lib/builtins/bswapsi2.c
+- cpukit/compiler-rt/lib/builtins/clzdi2.c
+- cpukit/compiler-rt/lib/builtins/clzsi2.c
+- cpukit/compiler-rt/lib/builtins/ctzdi2.c
+- cpukit/compiler-rt/lib/builtins/ctzsi2.c
+- cpukit/compiler-rt/lib/builtins/ffsdi2.c
+- cpukit/compiler-rt/lib/builtins/paritydi2.c
+- cpukit/compiler-rt/lib/builtins/popcountdi2.c
+- cpukit/libc/misc/init-array.c
+- cpukit/score/cpu/riscv/ffs.c
+type: build

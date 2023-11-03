@@ -1,0 +1,18 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+build-type: objects
+cflags: []
+copyrights:
+- Copyright (C) 2020 embedded brains GmbH & Co. KG
+cppflags: []
+cxxflags: []
+enabled-by:
+  not: RTEMS_QUAL
+includes: []
+install: []
+links: []
+source:
+- cpukit/score/cpu/arm/aarch32-psma-init-default.c
+- cpukit/score/cpu/arm/aarch32-psma-init.c
+- cpukit/score/cpu/arm/arm-exception-frame-print.c
+- cpukit/score/cpu/arm/arm_exc_abort.S
+type: build

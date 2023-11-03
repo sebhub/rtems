@@ -6,6 +6,8 @@ copyrights:
 cppflags: []
 cxxflags: []
 enabled-by: sparc
+extra-files:
+- testsuites/validation/bsps/tx-sparc-fsr.h
 includes: []
 install: []
 links: []

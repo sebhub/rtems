@@ -9,10 +9,6 @@ enabled-by:
 - riscv
 includes: []
 install:
-- destination: ${BSP_INCLUDEDIR}/libcpu
-  source:
-  - cpukit/score/cpu/riscv/include/libcpu/access.h
-  - cpukit/score/cpu/riscv/include/libcpu/byteorder.h
 - destination: ${BSP_INCLUDEDIR}/rtems
   source:
   - cpukit/score/cpu/riscv/include/rtems/asm.h
@@ -24,16 +20,16 @@ install:
   - contrib/cpukit/riscv-opcodes/encoding.h
   - cpukit/score/cpu/riscv/include/rtems/score/riscv-utility.h
   - cpukit/score/cpu/riscv/include/rtems/score/riscv.h
-links: []
+links:
+- role: build-dependency
+  uid: cpuriscvextra
+- role: build-dependency
+  uid: cpuriscvqual
 source:
 - cpukit/score/cpu/riscv/cpu.c
-- cpukit/score/cpu/riscv/riscv-access.S
 - cpukit/score/cpu/riscv/riscv-context-initialize.c
 - cpukit/score/cpu/riscv/riscv-context-switch.S
-- cpukit/score/cpu/riscv/riscv-context-validate.S
-- cpukit/score/cpu/riscv/riscv-context-volatile-clobber.S
 - cpukit/score/cpu/riscv/riscv-counter.S
-- cpukit/score/cpu/riscv/riscv-exception-frame-print.c
 - cpukit/score/cpu/riscv/riscv-exception-handler.S
 - cpukit/score/cpu/riscv/riscv-exception-resume.S
 type: build

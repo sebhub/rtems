@@ -8,6 +8,15 @@ build-type: option
 copyrights:
 - Copyright (C) 2020 embedded brains GmbH & Co. KG
 default:
+- enabled-by: RTEMS_QUAL
+  value:
+  - -nodefaultlibs
+  - -Wl,--start-group
+  - -lrtemsbsp
+  - -lrtemscpu
+  - -lgcc
+  - -Wl,--end-group
+  - -Wl,--gc-sections
 - enabled-by: true
   value:
   - -Wl,--gc-sections

@@ -5,7 +5,8 @@ copyrights:
 - Copyright (C) 2020 embedded brains GmbH & Co. KG
 cppflags: []
 cxxflags: []
-enabled-by: true
+enabled-by:
+  not: RTEMS_QUAL
 includes: []
 install:
 - destination: ${BSP_INCLUDEDIR}/bsp
@@ -15,9 +16,6 @@ install:
 - destination: ${BSP_INCLUDEDIR}/drvmgr
   source:
   - bsps/sparc/include/drvmgr/leon2_amba_bus.h
-- destination: ${BSP_INCLUDEDIR}/grlib
-  source:
-  - bsps/sparc/include/grlib/io.h
 ldflags: []
 links: []
 type: build
