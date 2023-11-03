@@ -1,0 +1,22 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+build-type: objects
+cflags:
+- -Wno-error
+copyrights:
+- Copyright (C) 2021 embedded brains GmbH & Co. KG
+cppflags: []
+cxxflags: []
+enabled-by: RTEMS_QUAL
+extra-files:
+- cpukit/compiler-rt/lib/builtins/int_div_impl.inc
+- cpukit/compiler-rt/lib/builtins/int_endianness.h
+- cpukit/compiler-rt/lib/builtins/int_lib.h
+- cpukit/compiler-rt/lib/builtins/int_types.h
+- cpukit/compiler-rt/lib/builtins/int_util.h
+- cpukit/libc/string/local.h
+includes: []
+install: []
+links: []
+source:
+- cpukit/libcsupport/src/alloconly.c
+type: build

@@ -1,0 +1,26 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+build-type: objects
+cflags: []
+copyrights:
+- Copyright (C) 2020 embedded brains GmbH & Co. KG
+cppflags: []
+cxxflags: []
+enabled-by:
+  not: RTEMS_QUAL
+includes: []
+install: []
+links: []
+source:
+- testsuites/support/src/t-test-checks-eno.c
+- testsuites/support/src/t-test-checks-psx.c
+- testsuites/support/src/t-test-rtems-fds.c
+- testsuites/support/src/t-test-rtems-heap.c
+- testsuites/support/src/t-test-rtems-posix-keys.c
+- testsuites/support/src/testbusy.c
+- testsuites/support/src/testexit.c
+- testsuites/support/src/testextension.c
+- testsuites/support/src/testparallel.c
+- testsuites/support/src/testprinter.c
+- testsuites/support/src/testrun.c
+- testsuites/support/src/testwrappers.c
+type: build
