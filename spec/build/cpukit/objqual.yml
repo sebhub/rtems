@@ -18,5 +18,8 @@ includes: []
 install: []
 links: []
 source:
+- cpukit/libc/string/flsl.c
+- cpukit/libc/string/memcpy.c
+- cpukit/libc/string/memset.c
 - cpukit/libcsupport/src/alloconly.c
 type: build
