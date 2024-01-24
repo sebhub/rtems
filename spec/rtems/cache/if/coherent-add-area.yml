@@ -10,7 +10,7 @@ definition:
     params:
     - void *${.:/params[0]/name}
     - ${/c/if/uintptr_t:/name} ${.:/params[1]/name}
-    return: void
+    return: ${../../status/if/code:/name}
   variants: []
 description: null
 enabled-by: true
@@ -40,5 +40,13 @@ params:
     is the size in bytes of the cache coherent memory area to add.
   dir: null
   name: size
-return: null
+return:
+  return: null
+  return-values:
+  - description: |
+      The requested operation was successful.
+    value: ${../../status/if/successful:/name}
+  - description: |
+      The requested operation was not successful.
+    value: ${../../status/if/unsatisfied:/name}
 type: interface
