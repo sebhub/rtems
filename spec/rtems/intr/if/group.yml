@@ -116,6 +116,10 @@ links:
 - role: placement-order
   uid: clear
 - role: placement-order
+  uid: get-priority
+- role: placement-order
+  uid: set-priority
+- role: placement-order
   uid: get-affinity
 - role: placement-order
   uid: set-affinity

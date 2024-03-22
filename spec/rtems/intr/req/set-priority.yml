@@ -1,0 +1,216 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2024 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: action
+links:
+- role: interface-function
+  uid: ../if/set-priority
+post-conditions:
+- name: Status
+  states:
+  - name: Ok
+    test-code: |
+      ctx->expected_status = RTEMS_SUCCESSFUL;
+    text: |
+      The return status of ${../if/set-priority:/name} shall be
+      ${../../status/if/successful:/name}.
+  - name: InvId
+    test-code: |
+      ctx->expected_status = RTEMS_INVALID_ID;
+    text: |
+      The return status of ${../if/set-priority:/name} shall be
+      ${../../status/if/invalid-id:/name}.
+  - name: InvPrio
+    test-code: |
+      ctx->expected_status = RTEMS_INVALID_PRIORITY;
+    text: |
+      The return status of ${../if/set-priority:/name} shall be
+      ${../../status/if/invalid-priority:/name}.
+  - name: Unsat
+    test-code: |
+      ctx->expected_status = RTEMS_UNSATISFIED;
+    text: |
+      The return status of ${../if/set-priority:/name} shall be
+      ${../../status/if/unsatisfied:/name}.
+  test-epilogue: null
+  test-prologue: null
+pre-conditions:
+- name: Vector
+  states:
+  - name: Valid
+    test-code: |
+      ctx->valid_vector = true;
+    text: |
+      While the ${../if/set-priority:/params[0]/name} parameter is
+      associated with an interrupt vector.
+  - name: Invalid
+    test-code: |
+      ctx->valid_vector = false;
+    text: |
+      While the ${../if/set-priority:/params[0]/name} parameter is not
+      associated with an interrupt vector.
+  test-epilogue: null
+  test-prologue: null
+- name: Priority
+  states:
+  - name: Valid
+    test-code: |
+      ctx->valid_priority = true;
+    text: |
+      While the ${../if/set-priority:/params[1]/name} parameter is a valid
+      priority value.
+  - name: Invalid
+    test-code: |
+      ctx->valid_priority = false;
+    text: |
+      While the ${../if/set-priority:/params[1]/name} parameter is an invalid
+      priority value.
+  test-epilogue: null
+  test-prologue: null
+- name: CanSetPriority
+  states:
+  - name: 'Yes'
+    test-code: |
+      ctx->can_set_priority = true;
+    text: |
+      While setting the priority for the interrupt vector specified by
+      ${../if/set-priority:/params[0]/name} parameter is supported.
+  - name: 'No'
+    test-code: |
+      ctx->can_set_priority = false;
+    text: |
+      While setting the priority for the interrupt vector specified by
+      ${../if/set-priority:/params[0]/name} parameter is not supported.
+  test-epilogue: null
+  test-prologue: null
+rationale: null
+references: []
+requirement-type: functional
+skip-reasons: {}
+test-action: |
+  /* Action carried out by CheckSetPriority() */
+test-brief: null
+test-cleanup: |
+  if ( ctx->valid_vector ) {
+    rtems_vector_number vector;
+
+    for (
+      vector = 0;
+      vector < BSP_INTERRUPT_VECTOR_COUNT;
+      ++vector
+    ) {
+      rtems_interrupt_attributes attr;
+      rtems_status_code          sc;
+
+      memset( &attr, 0, sizeof( attr ) );
+      sc = rtems_interrupt_get_attributes( vector, &attr );
+
+      if ( sc == RTEMS_INVALID_ID ) {
+        continue;
+      }
+
+      T_rsc_success( sc );
+
+      if ( attr.can_set_priority != ctx->can_set_priority ) {
+        continue;
+      }
+
+      CheckSetPriority( ctx, vector );
+    }
+  } else {
+    CheckSetPriority( ctx, BSP_INTERRUPT_VECTOR_COUNT );
+  }
+test-context:
+- brief: |
+    If this member is true, then the ${../if/set-priority:/params[0]/name}
+    parameter shall be valid.
+  description: null
+  member: |
+    bool valid_vector
+- brief: |
+    If this member is true, then the ${../if/set-priority:/params[1]/name}
+    parameter shall be valid.
+  description: null
+  member: |
+    bool valid_priority
+- brief: |
+    If this member is true, then setting the priority shall be supported.
+  description: null
+  member: |
+    bool can_set_priority
+- brief: |
+    This member specifies the expected status.
+  description: null
+  member: |
+    rtems_status_code expected_status
+test-context-support: null
+test-description: null
+test-header: null
+test-includes:
+- rtems.h
+- bsp/irq-generic.h
+test-local-includes:
+- tx-support.h
+test-prepare: null
+test-setup: null
+test-stop: null
+test-support: |
+  typedef ${.:/test-context-type} Context;
+
+  static void CheckSetPriority( Context *ctx, rtems_vector_number vector )
+  {
+    rtems_status_code sc;
+    uint32_t          priority;
+
+    if ( ctx->valid_priority ) {
+      (void) rtems_interrupt_get_priority( vector, &priority );
+    } else {
+      priority = UINT32_MAX;
+    }
+
+    sc = rtems_interrupt_set_priority( vector, priority );
+    T_rsc( sc, ctx->expected_status );
+  }
+test-target: testsuites/validation/tc-intr-set-priority.c
+test-teardown: null
+text: ${.:text-template}
+transition-map:
+- enabled-by: true
+  post-conditions:
+    Status: Ok
+  pre-conditions:
+    Vector:
+    - Valid
+    Priority:
+    - Valid
+    CanSetPriority:
+    - 'Yes'
+- enabled-by: true
+  post-conditions:
+    Status: InvPrio
+  pre-conditions:
+    Vector:
+    - Valid
+    Priority:
+    - Invalid
+    CanSetPriority:
+    - 'Yes'
+- enabled-by: true
+  post-conditions:
+    Status: InvId
+  pre-conditions:
+    Vector:
+    - Invalid
+    Priority: N/A
+    CanSetPriority: N/A
+- enabled-by: true
+  post-conditions:
+    Status: Unsat
+  pre-conditions:
+    Vector:
+    - Valid
+    Priority: N/A
+    CanSetPriority:
+    - 'No'
+type: requirement

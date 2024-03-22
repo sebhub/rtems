@@ -41,6 +41,9 @@ notes: |
   ${stack-checker-enabled:/name}.  However, using a too small interrupt stack
   size may still result in undefined behaviour.
 
+  The interrupt stack size may depend on the interrupt priority settings, see
+  also ${/rtems/intr/if/set-priority:/name}.
+
   In releases before RTEMS 5.1 the default value was
   ${min-task-stack-size:/name} instead of
   ${/score/cpu/if/stack-minimum-size:/name}.

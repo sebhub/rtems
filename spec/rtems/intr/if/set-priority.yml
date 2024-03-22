@@ -1,0 +1,123 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Sets the priority of the interrupt vector.
+copyrights:
+- Copyright (C) 2024 embedded brains GmbH & Co. KG
+definition:
+  default:
+    attributes: null
+    body: null
+    params:
+    - ${vector-number:/name} ${.:/params[0]/name}
+    - ${/c/if/uint32_t:/name} ${.:/params[1]/name}
+    return: ${../../status/if/code:/name}
+  variants: []
+description: |
+  This directive sets the priority of the interrupt specified by
+  ${.:/params[0]/name} to the priority specified by ${.:/params[1]/name}.
+
+  For processor-specific interrupts, the priority of the interrupt specific to
+  a processor executing the directive call will be set.
+enabled-by: true
+index-entries: []
+interface-type: function
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+- role: constraint
+  uid: /constraint/directive-ctx-isr
+- role: constraint
+  uid: /constraint/directive-ctx-devinit
+- role: constraint
+  uid: /constraint/directive-ctx-task
+- role: constraint
+  uid: /constraint/directive-no-preempt
+name: rtems_interrupt_set_priority
+notes: |
+  The ${get-priority:/name} directive may be used to get the priority
+  associated with an interrupt vector.
+
+  The interrupt prioritization support depends on the interrupt controller of
+  the ${/glossary/target:/term}.  It is strongly recommended to read the
+  relevant hardware documentation.  What happens when the priority of a pending
+  or active interrupt is changed, depends on the interrupt controller.  In
+  general, you should set the interrupt priority of an interrupt vector before
+  a handler is installed.  On some interrupt controllers, setting the priority
+  to the maximum value (lowest importance) effectively disables the interrupt.
+
+  On some architectures, a range of interrupt priority values may be not
+  disabled by the interrupt disable directives such as ${disable:/name} and
+  ${local-disable:/name}.  These interrupts are called non-maskable interrupts.
+  Handlers of non-maskable interrupts shall not use operating system services.
+  In addition, non-maskable interrupts may be not installable through
+  ${entry-install:/name} or ${handler-install:/name}, and may require
+  architecture-specific prologue and epilogue code.
+
+  The interrupt priority settings affect the maximum nesting depth while
+  servicing interrupts.  The interrupt stack size calculation needs to take
+  this into account, see also ${/acfg/if/interrupt-stack-size:/name}.
+
+  For the ARM Generic Interrupt Controller (GIC), an 8-bit priority value is
+  supported.  The granularity of the priority levels depends on the interrupt
+  controller configuration.  Some low-order bits of a priority value may be
+  read-as-zero (RAZ) and writes are ignored (WI).  Where group 0 (FIQ) and
+  group 1 (IRQ) interrupts are used, it is recommended to use the lower half of
+  the supported priority value range for the group 0 interrupts and the upper
+  half for group 1 interrupts.  This ensures that group 1 interrupts cannot
+  preempt group 0 interrupts.
+
+  For the Armv7-M Nested Vector Interrupt Controller (NVIC), an 8-bit priority
+  value is supported.  The granularity of the priority levels depends on the
+  interrupt controller configuration.  Some lower bits of a priority value may
+  be read-as-zero (RAZ) and writes are ignored (WI).  Interrupts with a
+  priority value less than 128 are not disabled by the RTEMS interrupt disable
+  directives.  Handlers of such interrupts shall not use operating system
+  services.
+
+  For the RISC-V Platform-Level Interrupt Controller (PLIC), all priority
+  values from 0 up to and including the 0xffffffff are supported since the
+  priority for the PLIC is defined by a write-any-read-legal (WARL) register.
+  Please note that for this directive in contrast to the PLIC, a higher
+  priority value is associated with a lower importance.  The maximum priority
+  value (mapped to the value 0 for the PLIC) is reserved to mean "never
+  interrupt" and effectively disables the interrupt.
+
+  For the QorIQ Multicore Programmable Interrupt Controller (MPIC), a 4-bit
+  priority value is supported.  Please note that for this directive in contrast
+  to the MPIC, a higher priority value is associated with a lower importance.
+  The maximum priority value of 15 (mapped to the value 0 for the MPIC)
+  inhibits signalling of this interrupt.
+
+  Consult the *RTEMS CPU Architecture Supplement* and the
+  ${/glossary/bsp:/term} documentation in the *RTEMS User Manual* for further
+  information.
+params:
+- description: |
+    is the interrupt vector number.
+  dir: null
+  name: vector
+- description: |
+    is the new priority for the interrupt vector.
+  dir: null
+  name: priority
+return:
+  return: null
+  return-values:
+  - description: |
+      The requested operation was successful.
+    value: ${../../status/if/successful:/name}
+  - description: |
+      There was no interrupt vector associated with the number specified by
+      ${.:/params[0]/name}.
+    value: ${../../status/if/invalid-id:/name}
+  - description: |
+      The priority specified by ${.:/params[1]/name} was not a valid new
+      priority for the interrupt vector.
+    value: ${../../status/if/invalid-priority:/name}
+  - description: |
+      The request to set the priority of the interrupt vector has not been
+      satisfied.
+    value: ${../../status/if/unsatisfied:/name}
+type: interface

@@ -2,7 +2,7 @@ SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 brief: |
   This structure provides the attributes of an interrupt vector.
 copyrights:
-- Copyright (C) 2021 embedded brains GmbH & Co. KG
+- Copyright (C) 2021, 2024 embedded brains GmbH & Co. KG
 definition:
 - default:
     brief: |
@@ -146,6 +146,38 @@ definition:
       ${raise:/name}, or ${raise-on:/name}.
     kind: member
     name: trigger_signal
+  variants: []
+- default:
+    brief: |
+      This member is true, if the priority of the interrupt vector can be
+      obtained by ${get-priority:/name}, otherwise it is false.
+    definition: bool ${.:name}
+    description: null
+    kind: member
+    name: can_get_priority
+  variants: []
+- default:
+    brief: |
+      This member is true, if the priority of the interrupt vector can be
+      set by ${set-priority:/name}, otherwise it is false.
+    definition: bool ${.:name}
+    description: null
+    kind: member
+    name: can_set_priority
+  variants: []
+- default:
+    brief: |
+      This member represents the maximum priority value of the interrupt
+      vector.  By convention, the minimum priority value is zero.  Lower
+      priority values shall be associated with a higher importance.  The higher
+      the priority value, the less important is the service of the associated
+      interrupt vector.  Where nested interrupts are supported, interrupts with
+      a lower priority value may preempt other interrupts having a higher
+      priority value.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: maximum_priority
   variants: []
 definition-kind: typedef-only
 description: |
