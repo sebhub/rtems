@@ -1,0 +1,17 @@
+SPDX-License-Identifier: CC-BY-SA-4.0
+copyrights:
+- Copyright (C) 2024 embedded brains GmbH & Co. KG
+enabled-by: bsps/arm/xilinx-zynqmp-rpu
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: /req/fatal-error
+- role: requirement-refinement
+  uid: group
+rationale: null
+requirement-type: functional
+text: |
+  If the installation of the clock interrupt entry fails, then the system shall
+  terminate with the ${/score/interr/if/source-bsp:/name} fatal source and the
+  ${/bsp/if/fatal-xil-clock-ttc-irq-install:/name} fatal code.
+type: requirement

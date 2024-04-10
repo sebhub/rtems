@@ -1,0 +1,15 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2024 embedded brains GmbH & Co. KG
+enabled-by: bsps/arm/xilinx-zynqmp-rpu
+identifier: RTEMSDriverClockXilTTC
+links:
+- role: interface-ingroup
+  uid: ../../req/group
+non-functional-type: design-group
+rationale: null
+requirement-type: non-functional
+text: |
+  The clock driver implementation component shall have a component containing the
+  Xilinx Triple Timer Counter (TTC) clock driver implementation.
+type: requirement
