@@ -1,0 +1,15 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2024 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: kernel-printflike
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  The integer conversions of a ${../glossary/kernel-printflike:/term} directive
+  shall take a left-justify request of the current conversion into account.
+type: requirement

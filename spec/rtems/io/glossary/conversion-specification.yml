@@ -1,0 +1,15 @@
+SPDX-License-Identifier: CC-BY-SA-4.0
+copyrights:
+- Copyright (C) 2024 embedded brains GmbH & Co. KG
+enabled-by: true
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+term: conversion specification
+text: |
+  A *conversion specification* contained in a ${format-string:/term} of a
+  ${kernel-printflike:/term} directive starts with a '%' character followed by
+  optional width, sign, precision, and alternate form elements and ends with a
+  conversion specifier. They define how associated arguments are printed.
+type: glossary

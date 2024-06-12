@@ -1,0 +1,16 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2024 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: kernel-printflike-pointer
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  While the width of the current conversion is zero, a
+  ${../glossary/conversion-pointer:/term} shall print the pointer integer in
+  alternate form.
+type: requirement

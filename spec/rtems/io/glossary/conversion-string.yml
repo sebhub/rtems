@@ -1,0 +1,13 @@
+SPDX-License-Identifier: CC-BY-SA-4.0
+copyrights:
+- Copyright (C) 2024 embedded brains GmbH & Co. KG
+enabled-by: true
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+term: string conversion
+text: |
+  A *string conversion* is a ${conversion-specification:/term} which prints a
+  string referenced by a string pointer argument.
+type: glossary

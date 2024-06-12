@@ -1,0 +1,15 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2024 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: kernel-printflike-string
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  A ${../glossary/conversion-string:/term} shall take the width of the current
+  conversion into account.
+type: requirement

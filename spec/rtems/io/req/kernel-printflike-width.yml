@@ -1,0 +1,15 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2024 embedded brains GmbH & Co. KG
+enabled-by: true
+links:
+- role: requirement-refinement
+  uid: kernel-printflike
+non-functional-type: design
+rationale: null
+references: []
+requirement-type: non-functional
+text: |
+  The width of a ${../glossary/conversion-specification:/term} shall be specified
+  by the conversion specification itself or through an integer type argument.
+type: requirement

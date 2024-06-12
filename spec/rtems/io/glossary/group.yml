@@ -1,0 +1,13 @@
+SPDX-License-Identifier: CC-BY-SA-4.0
+copyrights:
+- Copyright (C) 2024 embedded brains GmbH & Co. KG
+enabled-by: true
+glossary-type: group
+links:
+- role: requirement-refinement
+  uid: /req/glossary
+name: I/O Manager
+text: |
+  The system shall have a glossary for terms used specifically by the
+  ${../if/group:/name}.
+type: glossary

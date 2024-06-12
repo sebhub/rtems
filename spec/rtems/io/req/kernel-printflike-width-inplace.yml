@@ -1,0 +1,19 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2024 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: kernel-printflike-width
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  While a ${../glossary/kernel-printflike:/term} directive processes a
+  ${../glossary/conversion-specification:/term}, while no '.' character was
+  consumed in the current conversion, when the directive consumes a '1', '2',
+  '3', '4', '5', '6', '7', '8', '9', or a non-leading '0' character from the
+  ${../glossary/format-string:/term}, the directive shall set the width of the
+  current conversion to the decimal number at this location of the format string.
+type: requirement

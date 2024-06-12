@@ -1,0 +1,15 @@
+SPDX-License-Identifier: CC-BY-SA-4.0
+copyrights:
+- Copyright (C) 2024 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: function
+links:
+- role: interface-function
+  uid: ../if/vprintk
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  The ${../if/vprintk:/name} directive shall output the characters using
+  ${../if/putc:/name}.
+type: requirement

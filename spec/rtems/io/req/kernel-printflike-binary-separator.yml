@@ -1,0 +1,16 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: kernel-printflike-conversion
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  A ${../glossary/kernel-printflike:/term} directive shall print the string
+  referenced by the second next argument between two elements of a
+  ${../glossary/conversion-binary:/term}.
+type: requirement

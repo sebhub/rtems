@@ -1,0 +1,18 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2024 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: kernel-printflike-string
+- role: requirement-refinement
+  uid: kernel-printflike-precision
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  While a precision was specified for a ${../glossary/conversion-string:/term}, a
+  ${../glossary/kernel-printflike:/term} directive shall print at most precision
+  count of characters of the argument string.
+type: requirement

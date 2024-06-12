@@ -1,0 +1,13 @@
+SPDX-License-Identifier: CC-BY-SA-4.0
+copyrights:
+- Copyright (C) 2024 embedded brains GmbH & Co. KG
+enabled-by: true
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+term: binary conversion
+text: |
+  A *binary conversion* is a ${conversion-specification:/term} which prints a
+  sequence of unsigned characters referenced by a pointer type argument.
+type: glossary

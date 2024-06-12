@@ -1,0 +1,13 @@
+SPDX-License-Identifier: CC-BY-SA-4.0
+copyrights:
+- Copyright (C) 2024 embedded brains GmbH & Co. KG
+enabled-by: true
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+term: kernel-printflike
+text: |
+  A *kernel-printflike* directive is a function which implements the formatted
+  output specified by ${../req/kernel-printflike:/spec}.
+type: glossary

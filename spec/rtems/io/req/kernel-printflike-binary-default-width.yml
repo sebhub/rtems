@@ -1,0 +1,15 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2024 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: kernel-printflike-binary
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  The default width of a ${../glossary/conversion-binary:/term} of a
+  ${../glossary/kernel-printflike:/term} directive shall be 16.
+type: requirement

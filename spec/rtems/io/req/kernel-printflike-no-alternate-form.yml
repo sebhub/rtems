@@ -1,0 +1,19 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2024 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: kernel-printflike-alternate-form
+- role: requirement-refinement
+  uid: kernel-printflike-decimal
+- role: requirement-refinement
+  uid: kernel-printflike-unsigned
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  A 'd', 'i', or 'u' ${../glossary/conversion-integer:/term} shall have no
+  alternate form.
+type: requirement

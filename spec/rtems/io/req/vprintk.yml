@@ -1,0 +1,19 @@
+SPDX-License-Identifier: CC-BY-SA-4.0
+copyrights:
+- Copyright (C) 2024 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: function
+links:
+- role: interface-function
+  uid: ../if/vprintk
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  The ${../if/vprintk:/name} directive shall be a
+  ${../glossary/kernel-printflike:/term} function using the
+  ${../if/vprintk:/params[0]/name} parameter as the
+  ${../glossary/format-string:/term} parameter and
+  ${../if/vprintk:/params[1]/name} parameter as a pointer to a variable argument
+  list as required by the format string.
+type: requirement

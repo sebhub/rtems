@@ -1,0 +1,19 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: kernel-printflike-width
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  While a ${../glossary/kernel-printflike:/term} directive processes a
+  ${../glossary/conversion-specification:/term}, while no '.' character was
+  consumed in the current conversion, while the integer value of the next
+  argument is negative, when the directive consumes a '\*' character from the
+  ${../glossary/format-string:/term}, the directive shall invert the left-justify
+  request of the current conversion.
+type: requirement

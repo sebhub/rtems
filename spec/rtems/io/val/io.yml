@@ -1,0 +1,323 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2024 embedded brains GmbH & Co. KG
+enabled-by: true
+links: []
+test-actions:
+- action-brief: |
+    Call ${../if/printk:/name} with a format string which outputs a newline to
+    notice the ${../if/putc:/name} newline translation.
+  action-code: |
+    KernelPrintflikeControl      *control;
+    BSP_output_char_function_type output_char;
+    int                           rv;
+
+    control = &kernel_printflike_control;
+    memset( control->buf, '\0', sizeof( control->buf ) );
+    control->buf_index = 0;
+    output_char = BSP_output_char;
+    BSP_output_char = Putc;
+    rv = printk( "\n" );
+    BSP_output_char = output_char;
+  checks:
+  - brief: |
+      Check that ${../if/printk:/name} used ${../if/putc:/name} for output.
+    code: |
+      T_eq_int( rv, 1 );
+      T_eq_str( control->buf, "\r\n" );
+    links:
+    - role: validation
+      uid: ../req/printk-putc
+  links: []
+- action-brief: |
+    Call ${../if/vprintk:/name} with a format string which outputs a newline to
+    notice the ${../if/putc:/name} newline translation.
+  action-code: |
+    KernelPrintflikeControl      *control;
+    BSP_output_char_function_type output_char;
+    int                           rv;
+
+    control = &kernel_printflike_control;
+    memset( control->buf, '\0', sizeof( control->buf ) );
+    control->buf_index = 0;
+    output_char = BSP_output_char;
+    BSP_output_char = Putc;
+    rv = CallVprintk( "\n" );
+    BSP_output_char = output_char;
+  checks:
+  - brief: |
+      Check that ${../if/vprintk:/name} used ${../if/putc:/name} for output.
+    code: |
+      T_eq_int( rv, 1 );
+      T_eq_str( control->buf, "\r\n" );
+    links:
+    - role: validation
+      uid: ../req/vprintk-putc
+  links: []
+- action-brief: |
+    Check that ${../if/printk:/name} is a ${../glossary/kernel-printflike:/term}
+    function.
+  action-code: |
+    KernelPrintflikeControl *control;
+
+    control = &kernel_printflike_control;
+    control->print_no_arg = PrintkNoArg;
+    control->print_int = PrintkInt;
+    control->print_int_int = PrintkIntInt;
+    control->print_long = PrintkLong;
+    control->print_intmax = PrintkIntmax;
+    control->print_string = PrintkString;
+    control->print_binary = PrintkBinary;
+    ${kernel-printflike:/test-run}( control );
+  checks: []
+  links:
+  - role: validation
+    uid: ../req/printk
+- action-brief: |
+    Check that ${../if/vprintk:/name} is a ${../glossary/kernel-printflike:/term}
+    function.
+  action-code: |
+    KernelPrintflikeControl *control;
+
+    control = &kernel_printflike_control;
+    control->print_no_arg = VprintkNoArg;
+    control->print_int = VprintkInt;
+    control->print_int_int = VprintkIntInt;
+    control->print_long = VprintkLong;
+    control->print_intmax = VprintkIntmax;
+    control->print_string = VprintkString;
+    control->print_binary = VprintkBinary;
+    ${kernel-printflike:/test-run}( control );
+  checks: []
+  links:
+  - role: validation
+    uid: ../req/vprintk
+test-brief: |
+  Tests the ${../glossary/kernel-printflike:/term} directives.
+test-context: []
+test-context-support: null
+test-description: null
+test-header: null
+test-includes:
+- stdarg.h
+- string.h
+- rtems/bspIo.h
+test-local-includes:
+- tr-io-kernel-printflike.h
+test-setup: null
+test-stop: null
+test-support: |
+  static KernelPrintflikeControl kernel_printflike_control;
+
+  static void Putc( char c )
+  {
+    KernelPrintflikeControl *control;
+    size_t index;
+
+    control = &kernel_printflike_control;
+    index = control->buf_index;
+
+    if ( index < sizeof( control->buf ) - 2 ) {
+      control->buf[ index ] = c;
+      control->buf_index = index + 1;
+    }
+  }
+
+  static void PutcIgnoreCR( char c )
+  {
+    if ( c == '\r' ) {
+      return;
+    }
+
+    Putc( c );
+  }
+
+  static int PrintkNoArg( const char *fmt )
+  {
+    BSP_output_char_function_type output_char;
+    int rv;
+
+    output_char = BSP_output_char;
+    BSP_output_char = PutcIgnoreCR;
+    rv = printk( fmt );
+    BSP_output_char = output_char;
+    return rv;
+  }
+
+  static int PrintkInt( const char *fmt, int arg )
+  {
+    BSP_output_char_function_type output_char;
+    int rv;
+
+    output_char = BSP_output_char;
+    BSP_output_char = PutcIgnoreCR;
+    rv = printk( fmt, arg );
+    BSP_output_char = output_char;
+    return rv;
+  }
+
+  static int PrintkIntInt( const char *fmt, int arg, int arg_2 )
+  {
+    BSP_output_char_function_type output_char;
+    int rv;
+
+    output_char = BSP_output_char;
+    BSP_output_char = PutcIgnoreCR;
+    rv = printk( fmt, arg, arg_2 );
+    BSP_output_char = output_char;
+    return rv;
+  }
+
+  static int PrintkLong( const char *fmt, long arg )
+  {
+    BSP_output_char_function_type output_char;
+    int rv;
+
+    output_char = BSP_output_char;
+    BSP_output_char = PutcIgnoreCR;
+    rv = printk( fmt, arg );
+    BSP_output_char = output_char;
+    return rv;
+  }
+
+  static int PrintkIntmax( const char *fmt, intmax_t arg )
+  {
+    BSP_output_char_function_type output_char;
+    int rv;
+
+    output_char = BSP_output_char;
+    BSP_output_char = PutcIgnoreCR;
+    rv = printk( fmt, arg );
+    BSP_output_char = output_char;
+    return rv;
+  }
+
+  static int PrintkString( const char *fmt, const char *arg )
+  {
+    BSP_output_char_function_type output_char;
+    int rv;
+
+    output_char = BSP_output_char;
+    BSP_output_char = PutcIgnoreCR;
+    rv = printk( fmt, arg );
+    BSP_output_char = output_char;
+    return rv;
+  }
+
+  static int PrintkBinary(
+    const char          *fmt,
+    const unsigned char *data,
+    const char          *sep
+  )
+  {
+    BSP_output_char_function_type output_char;
+    int rv;
+
+    output_char = BSP_output_char;
+    BSP_output_char = PutcIgnoreCR;
+    rv = printk( fmt, data, sep );
+    BSP_output_char = output_char;
+    return rv;
+  }
+
+  static int CallVprintk( const char *fmt, ... )
+  {
+    va_list ap;
+    int     rv;
+
+    va_start( ap, fmt );
+    rv = vprintk( fmt, ap );
+    va_end( ap );
+    return rv;
+  }
+
+  static int VprintkNoArg( const char *fmt )
+  {
+    BSP_output_char_function_type output_char;
+    int rv;
+
+    output_char = BSP_output_char;
+    BSP_output_char = PutcIgnoreCR;
+    rv = CallVprintk( fmt );
+    BSP_output_char = output_char;
+    return rv;
+  }
+
+  static int VprintkInt( const char *fmt, int arg )
+  {
+    BSP_output_char_function_type output_char;
+    int rv;
+
+    output_char = BSP_output_char;
+    BSP_output_char = PutcIgnoreCR;
+    rv = CallVprintk( fmt, arg );
+    BSP_output_char = output_char;
+    return rv;
+  }
+
+  static int VprintkIntInt( const char *fmt, int arg, int arg_2 )
+  {
+    BSP_output_char_function_type output_char;
+    int rv;
+
+    output_char = BSP_output_char;
+    BSP_output_char = PutcIgnoreCR;
+    rv = CallVprintk( fmt, arg, arg_2 );
+    BSP_output_char = output_char;
+    return rv;
+  }
+
+  static int VprintkLong( const char *fmt, long arg )
+  {
+    BSP_output_char_function_type output_char;
+    int rv;
+
+    output_char = BSP_output_char;
+    BSP_output_char = PutcIgnoreCR;
+    rv = CallVprintk( fmt, arg );
+    BSP_output_char = output_char;
+    return rv;
+  }
+
+  static int VprintkIntmax( const char *fmt, intmax_t arg )
+  {
+    BSP_output_char_function_type output_char;
+    int rv;
+
+    output_char = BSP_output_char;
+    BSP_output_char = PutcIgnoreCR;
+    rv = CallVprintk( fmt, arg );
+    BSP_output_char = output_char;
+    return rv;
+  }
+
+  static int VprintkString( const char *fmt, const char *arg )
+  {
+    BSP_output_char_function_type output_char;
+    int rv;
+
+    output_char = BSP_output_char;
+    BSP_output_char = PutcIgnoreCR;
+    rv = CallVprintk( fmt, arg );
+    BSP_output_char = output_char;
+    return rv;
+  }
+
+  static int VprintkBinary(
+    const char          *fmt,
+    const unsigned char *data,
+    const char          *sep
+  )
+  {
+    BSP_output_char_function_type output_char;
+    int rv;
+
+    output_char = BSP_output_char;
+    BSP_output_char = PutcIgnoreCR;
+    rv = CallVprintk( fmt, data, sep );
+    BSP_output_char = output_char;
+    return rv;
+  }
+test-target: testsuites/validation/tc-io.c
+test-teardown: null
+type: test-case

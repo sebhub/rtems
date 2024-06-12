@@ -1,0 +1,2274 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2024 embedded brains GmbH & Co. KG
+enabled-by: true
+links: []
+test-actions:
+- action-brief: |
+    Call a kernel-printflike function with a ${/c/if/null:/name} format string
+    pointer.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_no_arg )( NULL );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 11 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "(fmt null)\n" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-null-format
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a '%' character.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_no_arg )( "%%%%" );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 2 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "%%" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-percent
+    - role: validation
+      uid: ../req/kernel-printflike-specifier-end
+  links: []
+- action-brief: |
+    Call a kernel-printflike function with a 'D' conversion with a default width.
+  action-code: |
+    static const unsigned char binary[] =
+      { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_binary )( "%D", binary, ":" );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 47 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str(
+        ctx->control->buf,
+        "00:01:02:03:04:05:06:07:08:09:0a:0b:0c:0d:0e:0f"
+      );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-binary
+    - role: validation
+      uid: ../req/kernel-printflike-binary-separator
+    - role: validation
+      uid: ../req/kernel-printflike-binary-length
+    - role: validation
+      uid: ../req/kernel-printflike-specifier-two-arguments
+    - role: validation
+      uid: ../req/kernel-printflike-specifier-end
+    - role: validation
+      uid: ../req/kernel-printflike-binary-default-width
+  links: []
+- action-brief: |
+    Call a kernel-printflike function with a 'D' conversion with a specified width.
+  action-code: |
+    static const unsigned char binary[] = { 255 };
+    int                        rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_binary )( "%1D", binary, "?" );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 2 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "ff" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-binary
+  links: []
+- action-brief: |
+    Call a kernel-printflike function with an invalid format string.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_no_arg )( "%0.0?%i" );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 7 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "%0.0?%i" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-unexpected
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a character.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_int )( "%c", 'c' );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 1 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "c" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-char
+    - role: validation
+      uid: ../req/kernel-printflike-specifier-one-argument
+    - role: validation
+      uid: ../req/kernel-printflike-specifier-end
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a character with a width.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_int )( "%10c", 'c' );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 10 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "         c" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-char-width
+    - role: validation
+      uid: ../req/kernel-printflike-pad-default
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a character with a width argument.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_int_int )( "%0*c", 2, 'c' );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 2 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "0c" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-char-width
+    - role: validation
+      uid: ../req/kernel-printflike-width-arg-non-negative
+    - role: validation
+      uid: ../req/kernel-printflike-asterisk-argument
+    - role: validation
+      uid: ../req/kernel-printflike-pad-zero
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a character with left-justify and a
+    non-default width.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_int )( "%-2.c", 'c' );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 2 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "c " );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-char-left-justify
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a character with a negative width.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_int_int )( "%*c", -2, 'c' );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 2 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "c " );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-char-left-justify
+    - role: validation
+      uid: ../req/kernel-printflike-width-arg-negative
+    - role: validation
+      uid: ../req/kernel-printflike-width-arg-negative-left-justify
+    - role: validation
+      uid: ../req/kernel-printflike-asterisk-argument
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a character with left-justify and
+    the default width.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_int )( "%-c", 'c' );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 1 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "c" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-char-left-justify
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a string.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_string )( "%s", "str" );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 3 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "str" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-string
+    - role: validation
+      uid: ../req/kernel-printflike-specifier-one-argument
+    - role: validation
+      uid: ../req/kernel-printflike-specifier-end
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a string with a NULL pointer
+    argument.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_string )( "%s", NULL );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 6 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "(null)" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-string-null
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a string with a width.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_string )( "%5s", "str" );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 5 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "  str" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-string-width
+    - role: validation
+      uid: ../req/kernel-printflike-width-inplace
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a string with a width and
+    left-justify.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_string )( "%-5s", "str" );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 5 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "str  " );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-string-left-justify
+    - role: validation
+      uid: ../req/kernel-printflike-string-width
+    - role: validation
+      uid: ../req/kernel-printflike-width-inplace
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a string with a sufficient precision
+    and left-justify.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_string )( "%-.5s", "str" );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 3 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "str" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-string-left-justify
+    - role: validation
+      uid: ../req/kernel-printflike-string-precision
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a string with an insufficient
+    precision.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_string )( "%.1s", "str" );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 1 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "s" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-string-precision
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a pointer integer.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_string )( "%+p", (void *) (uintptr_t) 0x1234 );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 6 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "0x1234" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-pointer
+    - role: validation
+      uid: ../req/kernel-printflike-specifier-one-argument
+    - role: validation
+      uid: ../req/kernel-printflike-specifier-end
+    - role: validation
+      uid: ../req/kernel-printflike-pointer-no-sign
+    - role: validation
+      uid: ../req/kernel-printflike-pointer-width-zero
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a pointer integer with a width.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_string )( "%6p", (void *) (uintptr_t) 0x1234 );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 6 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "  1234" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-pointer
+    - role: validation
+      uid: ../req/kernel-printflike-pointer-width-non-zero
+    - role: validation
+      uid: ../req/kernel-printflike-width-inplace
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a zero integer in alternate form.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_int )( "%#o", 0 );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 1 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "0" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-octal
+    - role: validation
+      uid: ../req/kernel-printflike-specifier-one-argument
+    - role: validation
+      uid: ../req/kernel-printflike-specifier-end
+    - role: validation
+      uid: ../req/kernel-printflike-octal-alternate
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a non-zero integer in decimal
+    alternate form.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_int )( "%#i", -1 );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 2 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "-1" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-decimal
+    - role: validation
+      uid: ../req/kernel-printflike-specifier-one-argument
+    - role: validation
+      uid: ../req/kernel-printflike-specifier-end
+    - role: validation
+      uid: ../req/kernel-printflike-no-alternate-form
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a non-zero integer in unsigned
+    alternate form.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_int )( "%#u", 1 );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 1 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "1" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-unsigned
+    - role: validation
+      uid: ../req/kernel-printflike-specifier-one-argument
+    - role: validation
+      uid: ../req/kernel-printflike-specifier-end
+    - role: validation
+      uid: ../req/kernel-printflike-no-alternate-form
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print an integer with a width.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_int )( "%2i", 1 );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 2 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, " 1" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-decimal
+    - role: validation
+      uid: ../req/kernel-printflike-integer-width
+    - role: validation
+      uid: ../req/kernel-printflike-width-inplace
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print an integer with a width and zero
+    padding.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_int )( "%02i", 1 );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 2 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "01" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-decimal
+    - role: validation
+      uid: ../req/kernel-printflike-integer-width
+    - role: validation
+      uid: ../req/kernel-printflike-pad-zero
+    - role: validation
+      uid: ../req/kernel-printflike-width-inplace
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print an integer with a width, a zero
+    padding, and left-justify.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_int )( "%-02i", 1 );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 2 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "1 " );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-decimal
+    - role: validation
+      uid: ../req/kernel-printflike-integer-left-justify
+    - role: validation
+      uid: ../req/kernel-printflike-integer-width
+    - role: validation
+      uid: ../req/kernel-printflike-pad-zero
+    - role: validation
+      uid: ../req/kernel-printflike-width-inplace
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a character integer in decimal
+    notation with a precision.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_int_int )( "%.*hhi", 5, 0xf1234567 );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 5 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "00103" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-decimal
+    - role: validation
+      uid: ../req/kernel-printflike-integer-char
+    - role: validation
+      uid: ../req/kernel-printflike-integer-precision
+    - role: validation
+      uid: ../req/kernel-printflike-precision
+    - role: validation
+      uid: ../req/kernel-printflike-asterisk-argument
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a character integer in decimal
+    notation.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_int )( "%hhd", 0x012345f7 );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 2 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "-9" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-decimal
+    - role: validation
+      uid: ../req/kernel-printflike-integer-char
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a short integer in decimal notation.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_int )( "%hi", 0x1234f678 );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 5 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "-2440" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-decimal
+    - role: validation
+      uid: ../req/kernel-printflike-integer-short
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print an integer in decimal notation.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_int )( "%d", -213555319 );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 10 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "-213555319" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-decimal
+    - role: validation
+      uid: ../req/kernel-printflike-integer-int
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a long integer in decimal notation.
+    Add 'h' type specifiers which should be ignored.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_long )( "%hltzhi", -195659622L );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 10 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "-195659622" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-decimal
+    - role: validation
+      uid: ../req/kernel-printflike-integer-long
+    - role: validation
+      uid: ../req/kernel-printflike-integer-size
+    - role: validation
+      uid: ../req/kernel-printflike-integer-order
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a long long integer in decimal
+    notation. Add 'h' type specifiers which should be ignored.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_intmax )( "%hllhd", -763490240828599756LL );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 19 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "-763490240828599756" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-decimal
+    - role: validation
+      uid: ../req/kernel-printflike-integer-long-long
+    - role: validation
+      uid: ../req/kernel-printflike-integer-order
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a maximum integer in decimal
+    notation. Add 'h' type specifiers which should be ignored.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_intmax )( "%hjhi", -686628807189126331LL );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 19 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "-686628807189126331" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-unsigned
+    - role: validation
+      uid: ../req/kernel-printflike-integer-intmax
+    - role: validation
+      uid: ../req/kernel-printflike-integer-order
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a character integer in unsigned
+    notation.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_int )( "%hhu", 0x012345f7 );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 3 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "247" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-unsigned
+    - role: validation
+      uid: ../req/kernel-printflike-integer-char
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a character integer in unsigned
+    notation.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_int )( "%hhu", 0x012345f7 );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 3 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "247" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-unsigned
+    - role: validation
+      uid: ../req/kernel-printflike-integer-char
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a short integer in unsigned
+    notation.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_int )( "%hu", 0x1234f678 );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 5 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "63096" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-unsigned
+    - role: validation
+      uid: ../req/kernel-printflike-integer-short
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print an integer in unsigned notation.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_int )( "%u", 0xf3456789 );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 10 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "4081411977" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-unsigned
+    - role: validation
+      uid: ../req/kernel-printflike-integer-int
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a long integer in unsigned notation.
+    Add 'h' type specifiers which should be ignored.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_long )( "%hltzhu", 0xf456789aL );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 10 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "4099307674" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-unsigned
+    - role: validation
+      uid: ../req/kernel-printflike-integer-long
+    - role: validation
+      uid: ../req/kernel-printflike-integer-size
+    - role: validation
+      uid: ../req/kernel-printflike-integer-order
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a long long integer in unsigned
+    notation. Add 'h' type specifiers which should be ignored.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_intmax )( "%hllhu", 0xf56789abcdef1234LL );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 20 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "17683253832880951860" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-unsigned
+    - role: validation
+      uid: ../req/kernel-printflike-integer-long-long
+    - role: validation
+      uid: ../req/kernel-printflike-integer-order
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a maximum integer in unsigned
+    notation. Add 'h' type specifiers which should be ignored.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_intmax )( "%hjhu", 0xf6789abcdef12345LL );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 20 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "17760115266520425285" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-unsigned
+    - role: validation
+      uid: ../req/kernel-printflike-integer-intmax
+    - role: validation
+      uid: ../req/kernel-printflike-integer-order
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a short integer in unsigned
+    notation.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_int )( "%hu", 0x1234f678 );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 5 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "63096" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-unsigned
+    - role: validation
+      uid: ../req/kernel-printflike-integer-short
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print an integer in unsigned notation.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_int )( "%u", 0xf3456789 );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 10 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "4081411977" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-unsigned
+    - role: validation
+      uid: ../req/kernel-printflike-integer-int
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a long integer in unsigned notation.
+    Add 'h' type specifiers which should be ignored.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_long )( "%hltzhu", 0xf456789aL );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 10 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "4099307674" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-unsigned
+    - role: validation
+      uid: ../req/kernel-printflike-integer-long
+    - role: validation
+      uid: ../req/kernel-printflike-integer-size
+    - role: validation
+      uid: ../req/kernel-printflike-integer-order
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a long long integer in unsigned
+    notation. Add 'h' type specifiers which should be ignored.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_intmax )( "%hllhu", 0xf56789abcdef1234LL );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 20 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "17683253832880951860" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-unsigned
+    - role: validation
+      uid: ../req/kernel-printflike-integer-long-long
+    - role: validation
+      uid: ../req/kernel-printflike-integer-order
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a maximum integer in unsigned
+    notation. Add 'h' type specifiers which should be ignored.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_intmax )( "%hjhu", 0xf6789abcdef12345LL );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 20 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "17760115266520425285" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-unsigned
+    - role: validation
+      uid: ../req/kernel-printflike-integer-intmax
+    - role: validation
+      uid: ../req/kernel-printflike-integer-order
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a character integer in octal
+    notation.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_int )( "%hho", 0x012345f7 );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 3 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "367" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-octal
+    - role: validation
+      uid: ../req/kernel-printflike-integer-char
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a short integer in octal notation.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_int )( "%ho", 0x1234f678 );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 6 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "173170" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-octal
+    - role: validation
+      uid: ../req/kernel-printflike-integer-short
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print an integer in octal notation.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_int )( "%o", 0xf3456789 );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 11 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "36321263611" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-octal
+    - role: validation
+      uid: ../req/kernel-printflike-integer-int
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a long integer in octal notation.
+    Add 'h' type specifiers which should be ignored.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_long )( "%hltzho", 0xf456789aL );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 11 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "36425474232" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-octal
+    - role: validation
+      uid: ../req/kernel-printflike-integer-long
+    - role: validation
+      uid: ../req/kernel-printflike-integer-size
+    - role: validation
+      uid: ../req/kernel-printflike-integer-order
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a long long integer in octal
+    notation. Add 'h' type specifiers which should be ignored.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_intmax )( "%hllho", 0xf56789abcdef1234LL );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 22 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "1725474232571573611064" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-octal
+    - role: validation
+      uid: ../req/kernel-printflike-integer-long-long
+    - role: validation
+      uid: ../req/kernel-printflike-integer-order
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a maximum integer in octal notation.
+    Add 'h' type specifiers which should be ignored.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_intmax )( "%hjho", 0xf6789abcdef12345LL );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 22 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "1731704653633674221505" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-octal
+    - role: validation
+      uid: ../req/kernel-printflike-integer-intmax
+    - role: validation
+      uid: ../req/kernel-printflike-integer-order
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a character integer in alternate
+    octal notation.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_int )( "%#hho", 0x012345f7 );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 4 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "0367" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-octal
+    - role: validation
+      uid: ../req/kernel-printflike-octal-alternate
+    - role: validation
+      uid: ../req/kernel-printflike-integer-char
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a short integer in alternate octal
+    notation.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_int )( "%#ho", 0x1234f678 );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 7 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "0173170" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-octal
+    - role: validation
+      uid: ../req/kernel-printflike-octal-alternate
+    - role: validation
+      uid: ../req/kernel-printflike-integer-short
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print an integer in alternate octal
+    notation.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_int )( "%#o", 0xf3456789 );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 12 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "036321263611" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-octal
+    - role: validation
+      uid: ../req/kernel-printflike-octal-alternate
+    - role: validation
+      uid: ../req/kernel-printflike-integer-int
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a long integer in alternate octal
+    notation. Add 'h' type specifiers which should be ignored.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_long )( "%hltzho", 0xf456789aL );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 11 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "36425474232" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-octal
+    - role: validation
+      uid: ../req/kernel-printflike-octal-alternate
+    - role: validation
+      uid: ../req/kernel-printflike-integer-long
+    - role: validation
+      uid: ../req/kernel-printflike-integer-size
+    - role: validation
+      uid: ../req/kernel-printflike-integer-order
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a long long integer in alternate
+    octal notation. Add 'h' type specifiers which should be ignored.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_intmax )( "%#hllho", 0xf56789abcdef1234LL );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 23 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "01725474232571573611064" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-octal
+    - role: validation
+      uid: ../req/kernel-printflike-octal-alternate
+    - role: validation
+      uid: ../req/kernel-printflike-integer-long-long
+    - role: validation
+      uid: ../req/kernel-printflike-integer-order
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a maximum integer in alternate octal
+    notation. Add 'h' type specifiers which should be ignored.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_intmax )( "%#hjho", 0xf6789abcdef12345LL );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 23 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "01731704653633674221505" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-octal
+    - role: validation
+      uid: ../req/kernel-printflike-octal-alternate
+    - role: validation
+      uid: ../req/kernel-printflike-integer-intmax
+    - role: validation
+      uid: ../req/kernel-printflike-integer-order
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a character integer in lower case
+    hexadecimal notation.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_int )( "%hhx", 0x012345f7 );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 2 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "f7" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-hexadecimal-lower
+    - role: validation
+      uid: ../req/kernel-printflike-specifier-one-argument
+    - role: validation
+      uid: ../req/kernel-printflike-specifier-end
+    - role: validation
+      uid: ../req/kernel-printflike-integer-char
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a short integer in lower case
+    hexadecimal notation.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_int )( "%hx", 0x1234f678 );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 4 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "f678" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-hexadecimal-lower
+    - role: validation
+      uid: ../req/kernel-printflike-integer-short
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print an integer in lower case hexadecimal
+    notation.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_int )( "%x", 0xf3456789 );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 8 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "f3456789" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-hexadecimal-lower
+    - role: validation
+      uid: ../req/kernel-printflike-integer-int
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a long integer in lower case
+    hexadecimal notation. Add 'h' type specifiers which should be ignored.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_long )( "%hltzhx", 0xf456789aL );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 8 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "f456789a" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-hexadecimal-lower
+    - role: validation
+      uid: ../req/kernel-printflike-integer-long
+    - role: validation
+      uid: ../req/kernel-printflike-integer-size
+    - role: validation
+      uid: ../req/kernel-printflike-integer-order
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a long long integer in lower case
+    hexadecimal notation. Add 'h' type specifiers which should be ignored.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_intmax )( "%hllhx", 0xf56789abcdef1234LL );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 16 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "f56789abcdef1234" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-hexadecimal-lower
+    - role: validation
+      uid: ../req/kernel-printflike-integer-long-long
+    - role: validation
+      uid: ../req/kernel-printflike-integer-order
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a maximum integer in lower case
+    hexadecimal notation. Add 'h' type specifiers which should be ignored.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_intmax )( "%hjhx", 0xf6789abcdef12345LL );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 16 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "f6789abcdef12345" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-hexadecimal-lower
+    - role: validation
+      uid: ../req/kernel-printflike-integer-intmax
+    - role: validation
+      uid: ../req/kernel-printflike-integer-order
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a character integer in alternate
+    lower case hexadecimal notation.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_int )( "%#hhx", 0x012345f7 );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 4 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "0xf7" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-hexadecimal-lower
+    - role: validation
+      uid: ../req/kernel-printflike-hexadecimal-alternate
+    - role: validation
+      uid: ../req/kernel-printflike-integer-char
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a short integer in alternate lower
+    case hexadecimal notation.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_int )( "%#hx", 0x1234f678 );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 6 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "0xf678" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-hexadecimal-lower
+    - role: validation
+      uid: ../req/kernel-printflike-hexadecimal-alternate
+    - role: validation
+      uid: ../req/kernel-printflike-integer-short
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print an integer in alternate lower case
+    hexadecimal notation.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_int )( "%#x", 0xf3456789 );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 10 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "0xf3456789" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-hexadecimal-lower
+    - role: validation
+      uid: ../req/kernel-printflike-hexadecimal-alternate
+    - role: validation
+      uid: ../req/kernel-printflike-integer-int
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a long integer in alternate lower
+    case hexadecimal notation. Add 'h' type specifiers which should be ignored.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_long )( "%#hltzhx", 0xf456789aL );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 10 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "0xf456789a" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-hexadecimal-lower
+    - role: validation
+      uid: ../req/kernel-printflike-hexadecimal-alternate
+    - role: validation
+      uid: ../req/kernel-printflike-integer-long
+    - role: validation
+      uid: ../req/kernel-printflike-integer-size
+    - role: validation
+      uid: ../req/kernel-printflike-integer-order
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a long long integer in alternate
+    lower case hexadecimal notation. Add 'h' type specifiers which should be
+    ignored.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_intmax )( "%#hllhx", 0xf56789abcdef1234LL );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 18 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "0xf56789abcdef1234" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-hexadecimal-lower
+    - role: validation
+      uid: ../req/kernel-printflike-hexadecimal-alternate
+    - role: validation
+      uid: ../req/kernel-printflike-integer-long-long
+    - role: validation
+      uid: ../req/kernel-printflike-integer-order
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a maximum integer in alternate lower
+    case hexadecimal notation. Add 'h' type specifiers which should be ignored.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_intmax )( "%#hjhx", 0xf6789abcdef12345LL );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 18 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "0xf6789abcdef12345" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-hexadecimal-lower
+    - role: validation
+      uid: ../req/kernel-printflike-integer-intmax
+    - role: validation
+      uid: ../req/kernel-printflike-integer-order
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a character integer in upper case
+    hexadecimal notation.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_int )( "%hhX", 0x012345f7 );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 2 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "F7" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-hexadecimal-upper
+    - role: validation
+      uid: ../req/kernel-printflike-specifier-one-argument
+    - role: validation
+      uid: ../req/kernel-printflike-specifier-end
+    - role: validation
+      uid: ../req/kernel-printflike-integer-char
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a short integer in upper case
+    hexadecimal notation.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_int )( "%hX", 0x1234f678 );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 4 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "F678" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-hexadecimal-upper
+    - role: validation
+      uid: ../req/kernel-printflike-integer-short
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print an integer in upper case hexadecimal
+    notation.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_int )( "%X", 0xf3456789 );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 8 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "F3456789" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-hexadecimal-upper
+    - role: validation
+      uid: ../req/kernel-printflike-integer-int
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a long integer in upper case
+    hexadecimal notation. Add 'h' type specifiers which should be ignored.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_long )( "%hltzhX", 0xf456789aL );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 8 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "F456789A" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-hexadecimal-upper
+    - role: validation
+      uid: ../req/kernel-printflike-integer-long
+    - role: validation
+      uid: ../req/kernel-printflike-integer-size
+    - role: validation
+      uid: ../req/kernel-printflike-integer-order
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a long long integer in upper case
+    hexadecimal notation. Add 'h' type specifiers which should be ignored.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_intmax )( "%hllhX", 0xf56789abcdef1234LL );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 16 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "F56789ABCDEF1234" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-hexadecimal-upper
+    - role: validation
+      uid: ../req/kernel-printflike-integer-long-long
+    - role: validation
+      uid: ../req/kernel-printflike-integer-order
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a maximum integer in upper case
+    hexadecimal notation. Add 'h' type specifiers which should be ignored.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_intmax )( "%hjhX", 0xf6789abcdef12345LL );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 16 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "F6789ABCDEF12345" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-hexadecimal-upper
+    - role: validation
+      uid: ../req/kernel-printflike-integer-intmax
+    - role: validation
+      uid: ../req/kernel-printflike-integer-order
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a character integer in lower case
+    signed hexadecimal notation.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_int )( "%hhy", 0x012345f7 );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 2 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "-9" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-hexadecimal-lower-signed
+    - role: validation
+      uid: ../req/kernel-printflike-specifier-one-argument
+    - role: validation
+      uid: ../req/kernel-printflike-specifier-end
+    - role: validation
+      uid: ../req/kernel-printflike-integer-char
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a short integer in lower case signed
+    hexadecimal notation.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_int )( "%hy", 0x1234f678 );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 4 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "-988" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-hexadecimal-lower-signed
+    - role: validation
+      uid: ../req/kernel-printflike-integer-short
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print an integer in lower case signed
+    hexadecimal notation.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_int )( "%y", -213555319 );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 8 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "-cba9877" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-hexadecimal-lower-signed
+    - role: validation
+      uid: ../req/kernel-printflike-integer-int
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a long integer in lower case signed
+    hexadecimal notation. Add 'h' type specifiers which should be ignored.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_long )( "%hltzhy", -195659622L );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 8 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "-ba98766" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-hexadecimal-lower-signed
+    - role: validation
+      uid: ../req/kernel-printflike-integer-long
+    - role: validation
+      uid: ../req/kernel-printflike-integer-size
+    - role: validation
+      uid: ../req/kernel-printflike-integer-order
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a long long integer in lower case
+    signed hexadecimal notation. Add 'h' type specifiers which should be ignored.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_intmax )( "%hllhy", -763490240828599756LL );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 16 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "-a9876543210edcc" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-hexadecimal-lower-signed
+    - role: validation
+      uid: ../req/kernel-printflike-integer-long-long
+    - role: validation
+      uid: ../req/kernel-printflike-integer-order
+  links: []
+- action-brief: |
+    Call a kernel-printflike function to print a maximum integer in lower case
+    signed hexadecimal notation. Add 'h' type specifiers which should be ignored.
+  action-code: |
+    int rv;
+
+    Prepare( ctx->control );
+    rv = ( *ctx->control->print_intmax )( "%hjhy", -686628807189126331LL );
+  checks:
+  - brief: |
+      Check that the count of output characters is returned.
+    code: |
+      T_eq_int( rv, 16 );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-return
+  - brief: |
+      Check that the expected output was produced.
+    code: |
+      T_eq_str( ctx->control->buf, "-9876543210edcbb" );
+    links:
+    - role: validation
+      uid: ../req/kernel-printflike-hexadecimal-lower-signed
+    - role: validation
+      uid: ../req/kernel-printflike-integer-intmax
+    - role: validation
+      uid: ../req/kernel-printflike-integer-order
+  links: []
+test-brief: |
+  Tests directives specified by ${../req/kernel-printflike:/spec}.
+test-context: []
+test-context-support: null
+test-description: null
+test-header:
+  code: |
+    typedef struct {
+      int ( *print_no_arg )( const char * );
+      int ( *print_int )( const char *, int );
+      int ( *print_int_int )( const char *, int, int );
+      int ( *print_long )( const char *, long );
+      int ( *print_intmax )( const char *, intmax_t );
+      int ( *print_string )( const char *, const char * );
+      int ( *print_binary )(
+        const char *,
+        const unsigned char *,
+        const char *
+      );
+      char buf[ 128 ];
+      size_t buf_index;
+    } KernelPrintflikeControl;
+  freestanding: false
+  includes:
+  - stddef.h
+  - stdint.h
+  local-includes: []
+  run-params:
+  - description: |
+      is the test runner control.
+    dir: null
+    name: control
+    specifier: KernelPrintflikeControl *${.:name}
+  target: testsuites/validation/tr-io-kernel-printflike.h
+test-includes:
+- string.h
+test-local-includes:
+- tr-io-kernel-printflike.h
+test-setup: null
+test-stop: null
+test-support: |
+  static void Prepare( KernelPrintflikeControl *control )
+  {
+    memset( control->buf, '\0', sizeof( control->buf ) );
+    control->buf_index = 0;
+  }
+test-target: testsuites/validation/tr-io-kernel-printflike.c
+test-teardown: null
+type: test-case
