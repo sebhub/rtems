@@ -47,6 +47,7 @@ source:
 - testsuites/validation/tc-io-getchark.c
 - testsuites/validation/tc-io-put-char.c
 - testsuites/validation/tc-io-putc.c
+- testsuites/validation/tc-io.c
 - testsuites/validation/tc-message-broadcast.c
 - testsuites/validation/tc-message-construct.c
 - testsuites/validation/tc-message-delete.c
@@ -102,6 +103,7 @@ source:
 - testsuites/validation/tc-timegm-year.c
 - testsuites/validation/tc-timegm.c
 - testsuites/validation/tr-event-constant.c
+- testsuites/validation/tr-io-kernel-printflike.c
 - testsuites/validation/tr-object-ident-local.c
 - testsuites/validation/tr-object-ident.c
 - testsuites/validation/tr-tod-convert-date.c
