@@ -1,0 +1,15 @@
+SPDX-License-Identifier: CC-BY-SA-4.0
+copyrights:
+- Copyright (C) 2024 embedded brains GmbH & Co. KG
+enabled-by:
+  not: RTEMS_SMP
+functional-type: function
+links:
+- role: interface-function
+  uid: ../if/lock-initializer
+rationale: null
+requirement-type: functional
+text: |
+  The ${../if/lock-initializer:/name} macro shall expand to character literal
+  initializer with a value of zero.
+type: requirement
