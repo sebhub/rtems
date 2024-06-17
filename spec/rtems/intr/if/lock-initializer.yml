@@ -7,7 +7,7 @@ copyrights:
 definition:
   default:
     attributes: null
-    body: '{}'
+    body: '0'
     params:
     - const char *${.:/params[0]/name}
     return: null

@@ -5,12 +5,12 @@ enabled-by:
   not: RTEMS_SMP
 links:
 - role: interface-function
-  uid: ../if/lock-initializer
+  uid: ../if/lock-initialize
 functional-type: function
 rationale: null
 references: []
 requirement-type: functional
 text: |
-  The ${../if/lock-initializer:/name} macro shall expand to an empty structure
-  initializer.
+  The macro shall expand to a code block which marks the second parameter as
+  used.
 type: requirement

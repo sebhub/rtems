@@ -71,26 +71,27 @@ test-actions:
     - role: validation
       uid: ../req/lock-white-space
   - brief: |
-      Check that ${../if/lock-initializer:/name} expands to an empty structure
+      Check that ${../if/lock-initializer:/name} expands to a character literal
       initializer.
     code: |
       s = RTEMS_XSTRING( RTEMS_INTERRUPT_LOCK_INITIALIZER( x ) );
-      T_true( IsEqualIgnoreWhiteSpace( s, "{}" ) );
+      T_true( IsEqualIgnoreWhiteSpace( s, "0" ) );
     links:
     - role: validation
       uid: ../if/lock-initializer
     - role: validation
-      uid: ../req/lock-empty-initializer
+      uid: ../req/lock-char-initializer
   - brief: |
-      Check that ${../if/lock-initialize:/name} expands to white space only.
+      Check that ${../if/lock-initialize:/name} expands to a code block which
+      marks the second parameter as used.
     code: |
       s = RTEMS_XSTRING( rtems_interrupt_lock_initialize( x, y ) );
-      T_true( IsWhiteSpaceOnly( s ) );
+      T_true( IsEqualIgnoreWhiteSpace( s, "do{(void)y;}while(0)" ) );
     links:
     - role: validation
       uid: ../if/lock-initialize
     - role: validation
-      uid: ../req/lock-white-space
+      uid: ../req/lock-use-name
   - brief: |
       Check that ${../if/lock-acquire-isr:/name} expands to a code block which
       marks the second parameter as used.
