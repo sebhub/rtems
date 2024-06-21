@@ -5,31 +5,24 @@ enabled-by: true
 links: []
 test-actions:
 - action-brief: |
-    Call the ${../if/disable-data:/name} and ${../if/enable-data:/name}
-    directives.
+    Call the ${../if/enable-data:/name} directive.
   action-code: |
-    rtems_cache_disable_data();
     rtems_cache_enable_data();
   checks: []
   links:
   - role: validation
-    uid: ../req/disable-data
-  - role: validation
     uid: ../req/enable-data
 - action-brief: |
-    Call the ${../if/disable-data:/name} and ${../if/enable-data:/name}
-    directives with maskable interrupts disabled.
+    Call the ${../if/enable-data:/name} directive with maskable interrupts
+    disabled.
   action-code: |
     rtems_interrupt_level level;
 
     rtems_interrupt_local_disable(level);
-    rtems_cache_disable_data();
     rtems_cache_enable_data();
     rtems_interrupt_local_enable(level);
   checks: []
   links:
-  - role: validation
-    uid: ../req/disable-data
   - role: validation
     uid: ../req/enable-data
 - action-brief: |
@@ -118,21 +111,6 @@ test-actions:
     uid: ../req/freeze-instruction
   - role: validation
     uid: ../req/unfreeze-instruction
-- action-brief: |
-    Call the ${../if/invalidate-entire-data:/name} directive with maskable
-    interrupts disabled.
-  action-code: |
-    rtems_interrupt_level level;
-
-    rtems_interrupt_local_disable(level);
-    rtems_cache_disable_data();
-    rtems_cache_invalidate_entire_data();
-    rtems_cache_enable_data();
-    rtems_interrupt_local_enable(level);
-  checks: []
-  links:
-  - role: validation
-    uid: ../req/invalidate-entire-data
 - action-brief: |
     Call the ${../if/invalidate-entire-instruction:/name} directive.
   action-code: |

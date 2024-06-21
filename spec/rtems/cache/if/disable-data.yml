@@ -2,7 +2,7 @@ SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 brief: |
   Disables the data cache.
 copyrights:
-- Copyright (C) 2021 embedded brains GmbH & Co. KG
+- Copyright (C) 2021, 2024 embedded brains GmbH & Co. KG
 definition:
   default:
     attributes: null
@@ -24,7 +24,14 @@ links:
 - role: constraint
   uid: /constraint/directive-no-preempt
 name: rtems_cache_disable_data
-notes: null
+notes: |
+  On some ${/glossary/target:/plural} or configurations, calling this directive
+  may cause a fatal error with a fatal source of
+  ${/score/interr/if/internal-error-core:/name} and fatal code of
+  ${/score/interr/if/cannot-disable-data-cache:/name}.   The data cache may be
+  necessary to provide ${/glossary/atomicoperations:/term}. In SMP
+  configurations, the data cache may be required to ensure data coherency.  See
+  the BSP documentation in the *RTEMS User Manual* for more information.
 params: []
 return: null
 type: interface

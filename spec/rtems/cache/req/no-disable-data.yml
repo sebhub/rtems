@@ -1,0 +1,16 @@
+SPDX-License-Identifier: CC-BY-SA-4.0
+copyrights:
+- Copyright (C) 2024 embedded brains GmbH & Co. KG
+enabled-by: bsps/arm/xilinx-zynq
+links:
+- role: interface-function
+  uid: ../if/disable-data
+functional-type: function
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  If the ${../if/disable-data:/name} directive is called, then the system shall
+  terminate with the ${/score/interr/if/internal-error-core:/name} fatal source
+  and the ${/score/interr/if/cannot-disable-data-cache:/name} fatal code.
+type: requirement

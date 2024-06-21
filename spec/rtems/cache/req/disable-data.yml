@@ -1,7 +1,8 @@
 SPDX-License-Identifier: CC-BY-SA-4.0
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
-enabled-by: true
+enabled-by:
+  not: bsps/arm/xilinx-zynq
 links:
 - role: interface-function
   uid: ../if/disable-data
