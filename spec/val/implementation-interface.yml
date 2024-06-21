@@ -74,6 +74,8 @@ links:
 - role: validation
   uid: /score/interr/if/bad-thread-dispatch-environment
 - role: validation
+  uid: /score/interr/if/cannot-disable-data-cache
+- role: validation
   uid: /score/interr/if/code
 - role: validation
   uid: /score/interr/if/idle-thread-create-failed
