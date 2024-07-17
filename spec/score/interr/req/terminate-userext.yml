@@ -1,16 +1,16 @@
 SPDX-License-Identifier: CC-BY-SA-4.0
 copyrights:
-- Copyright (C) 2021 embedded brains GmbH & Co. KG
+- Copyright (C) 2021, 2024 embedded brains GmbH & Co. KG
 enabled-by: true
 links:
-- role: requirement-refinement
-  uid: terminate
+- role: interface-function
+  uid: ../if/terminate
 functional-type: function
 rationale: null
 references: []
 requirement-type: functional
 text: |
-  When ${../if/terminate:/name} is called, the fatal
-  ${/glossary/userextensions:/term} shall be invoked with the fatal source and
-  fatal code specified by the respective parameter.
+  The ${../if/terminate:/name} directive shall invoke the
+  ${/glossary/userextensions:/term} with the fatal source and fatal code
+  specified by the respective parameter.
 type: requirement

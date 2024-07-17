@@ -1,7 +1,7 @@
 SPDX-License-Identifier: CC-BY-SA-4.0
 copyrights:
-- Copyright (C) 2021 embedded brains GmbH & Co. KG
-enabled-by: RTEMS_SMP
+- Copyright (C) 2021, 2024 embedded brains GmbH & Co. KG
+enabled-by: true
 links:
 - role: requirement-refinement
   uid: terminate
@@ -10,6 +10,6 @@ rationale: null
 references: []
 requirement-type: functional
 text: |
-  While ${../if/terminate:/name} executes, when the system state was set, a
-  shutdown request to all configured processors shall be issued.
+  When the ${../if/terminate:/name} function disabled maskable interrupts, the
+  function shall execute an idle loop.
 type: requirement

@@ -1,14 +1,14 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 copyrights:
-- Copyright (C) 2020 embedded brains GmbH & Co. KG
+- Copyright (C) 2024 embedded brains GmbH & Co. KG
 enabled-by: true
 index-entries: []
 interface-type: unspecified-function
 links:
 - role: interface-placement
-  uid: header-impl
+  uid: header
 - role: interface-ingroup
   uid: group
-name: _CPU_Fatal_halt
+name: bsp_reset
 references: []
 type: interface

@@ -1,6 +1,6 @@
 SPDX-License-Identifier: CC-BY-SA-4.0
 copyrights:
-- Copyright (C) 2021 embedded brains GmbH & Co. KG
+- Copyright (C) 2021, 2024 embedded brains GmbH & Co. KG
 enabled-by: true
 links:
 - role: requirement-refinement
@@ -10,6 +10,6 @@ rationale: null
 references: []
 requirement-type: functional
 text: |
-  While ${../if/terminate:/name} executes, when the fatal extensions were
-  invoked, the system state shall be set to terminated.
+  The ${../if/terminate:/name} function shall immediately disable maskable
+  interrupts before any other actions are performed.
 type: requirement

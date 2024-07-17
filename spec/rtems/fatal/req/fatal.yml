@@ -1,6 +1,6 @@
 SPDX-License-Identifier: CC-BY-SA-4.0
 copyrights:
-- Copyright (C) 2021 embedded brains GmbH & Co. KG
+- Copyright (C) 2021, 2024 embedded brains GmbH & Co. KG
 enabled-by: true
 links:
 - role: interface-function
@@ -12,7 +12,7 @@ rationale: null
 references: []
 requirement-type: functional
 text: |
-  When ${../if/fatal:/name} is called, the system shall terminate with a fatal
-  source specified by the ${../if/fatal:/params[0]/name} parameter and a fatal
-  code specified by the ${../if/fatal:/params[1]/name} parameter.
+  The ${../if/fatal:/name} directive shall terminate the system with the fatal
+  source specified by the ${../if/fatal:/params[0]/name} parameter and the
+  fatal code specified by the ${../if/fatal:/params[1]/name} parameter.
 type: requirement
