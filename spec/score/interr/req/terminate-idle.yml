@@ -1,8 +1,7 @@
 SPDX-License-Identifier: CC-BY-SA-4.0
 copyrights:
-- Copyright (C) 2021 embedded brains GmbH & Co. KG
-enabled-by:
-  not: RTEMS_SMP
+- Copyright (C) 2021, 2024 embedded brains GmbH & Co. KG
+enabled-by: true
 functional-type: function
 links:
 - role: requirement-refinement
@@ -10,6 +9,6 @@ links:
 rationale: null
 requirement-type: functional
 text: |
-  While ${../if/terminate:/name} executes, when the system state was set, the
-  system shall halt.
+  When the ${../if/terminate:/name} function disabled maskable interrupts, the
+  function shall execute an idle loop.
 type: requirement

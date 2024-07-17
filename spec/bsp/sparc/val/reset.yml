@@ -1,0 +1,21 @@
+SPDX-License-Identifier: CC-BY-SA-4.0
+copyrights:
+- Copyright (C) 2021, 2024 embedded brains GmbH & Co. KG
+enabled-by: true
+links:
+- role: validation
+  uid: ../req/reset
+- location: cpukit/score/cpu/sparc/include/rtems/asm.h
+  role: reference
+  uid: /ref/rtems/source
+- location: cpukit/score/cpu/sparc/syscall.S
+  role: reference
+  uid: /ref/rtems/source
+method: by-inspection
+text: |
+  Inspection of the referenced ${/glossary/sourcecode:/term} files showed that
+  the ${../../if/reset:/name} function is implemented as specified. In addition,
+  the instruction sequence of the directive was executed in assembler single step
+  mode under control of a debugger on the SPARC/RISCV instruction simulator
+  version 2.29 to validate that its function is as specified.
+type: validation

@@ -18,7 +18,8 @@ links:
 name: rtems_fatal_extension
 notes: |
   The fatal extensions are invoked in
-  ${/glossary/extension-forward-order:/term}.
+  ${/glossary/extension-forward-order:/term} and with maskable interrupts
+  disabled.
 
   The fatal extension should be extremely careful with respect to the RTEMS
   directives it calls.  Depending on the system termination source, the system

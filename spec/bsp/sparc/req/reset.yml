@@ -1,0 +1,15 @@
+SPDX-License-Identifier: CC-BY-SA-4.0
+copyrights:
+- Copyright (C) 2021, 2024 embedded brains GmbH & Co. KG
+enabled-by: sparc
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: ../../req/reset
+rationale: null
+requirement-type: functional
+text: |
+  The ${../../if/reset:/name} function shall cause a system error halt with the
+  primary exit code set to the fatal source and the secondary exit code set to
+  the fatal code.
+type: requirement
