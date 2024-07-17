@@ -1,31 +1,31 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 copyrights:
-- Copyright (C) 2021, 2022 embedded brains GmbH & Co. KG
-enabled-by: bsps/sparc/leon3
+- Copyright (C) 2021, 2024 embedded brains GmbH & Co. KG
+enabled-by: true
 links: []
 test-actions:
 - action-brief: |
-    Check the effects of the leon3 BSP family shutdown procedure.
+    Check the effects of the BSP-specific fatal extension.
   action-code: |
     uint32_t counter;
 
   checks:
   - brief: |
       Check that no dynamic fatal error extension was invoked.  This shows that
-      the leon3 BSP family shutdown procedure called the wrapped
-      _CPU_Fatal_halt() function of the test suite.
+      the BSP-specific fatal extension called the wrapped bsp_reset() function
+      of the test suite.
     code: |
       T_step_rsc_success( ${.:/step}, status );
       counter = Add( &dynamic_fatal_extension_counter, 0 );
       T_step_eq_u32( ${.:/step}, counter, 0 );
     links:
     - role: validation
-      uid: ../req/fatal-shutdown-halt
+      uid: ../req/fatal-extension-reset
     - role: validation
-      uid: ../req/fatal-shutdown-halt-smp
+      uid: ../req/fatal-extension-reset-smp
   links: []
 test-brief: |
-  Tests the leon3 BSP family shutdown procedure.
+  Tests the BSP-specific fatal extension.
 test-context: []
 test-context-support: null
 test-description: null
@@ -71,6 +71,6 @@ test-support: |
     RTEMS_SYSINIT_DEVICE_DRIVERS,
     RTEMS_SYSINIT_ORDER_MIDDLE
   );
-test-target: testsuites/validation/bsps/tc-fatal-sparc-leon3-shutdown-halt.c
+test-target: testsuites/validation/bsps/tc-fatal-extension-reset.c
 test-teardown: null
 type: test-case

@@ -1,7 +1,7 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 copyrights:
 - Copyright (C) 2021, 2022 embedded brains GmbH & Co. KG
-enabled-by: bsps/sparc/leon3
+enabled-by: true
 links:
 - role: requirement-refinement
   uid: ../validation
@@ -30,11 +30,11 @@ test-code: |
     .actions = actions
   };
 
-  void __real__CPU_Fatal_halt( uint32_t source, CPU_Uint32ptr code );
+  void __real_bsp_reset( rtems_fatal_source source, rtems_fatal_code code );
 
-  void __wrap__CPU_Fatal_halt( uint32_t source, CPU_Uint32ptr code );
+  void __wrap_bsp_reset( rtems_fatal_source source, rtems_fatal_code code );
 
-  void __wrap__CPU_Fatal_halt( uint32_t source, CPU_Uint32ptr code )
+  void __wrap_bsp_reset( rtems_fatal_source source, rtems_fatal_code code )
   {
     int exit_code;
 
@@ -48,8 +48,19 @@ test-code: |
   #if defined(RTEMS_GCOV_COVERAGE)
     rtems_test_gcov_dump_info();
   #endif
-    __real__CPU_Fatal_halt( source, code );
+    __real_bsp_reset( source, code );
   }
+
+  #if !defined(RTEMS_SMP)
+  void *__real__CPU_Thread_Idle_body( void *arg );
+
+  void *__wrap__CPU_Thread_Idle_body( void *arg );
+
+  void *__wrap__CPU_Thread_Idle_body( void *arg )
+  {
+    return __real__CPU_Thread_Idle_body( arg );
+  }
+  #endif
 
   #define CONFIGURE_APPLICATION_DOES_NOT_NEED_CLOCK_DRIVER
 
@@ -119,5 +130,5 @@ test-includes:
 test-local-includes:
 - ts-config.h
 - tx-support.h
-test-target: testsuites/validation/bsps/ts-fatal-sparc-leon3-shutdown.c
+test-target: testsuites/validation/bsps/ts-fatal-extension.c
 type: test-suite

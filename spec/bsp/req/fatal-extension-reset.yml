@@ -1,0 +1,16 @@
+SPDX-License-Identifier: CC-BY-SA-4.0
+copyrights:
+- Copyright (C) 2021, 2024 embedded brains GmbH & Co. KG
+enabled-by:
+  not: RTEMS_SMP
+links:
+- role: interface-function
+  uid: ../if/fatal-extension
+functional-type: function
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  When all other actions were performed by the ${/bsp/if/fatal-extension:/name}
+  directive, the directive shall reset the system.
+type: requirement
