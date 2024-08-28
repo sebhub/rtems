@@ -3,6 +3,9 @@ copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
 enabled-by:
   not:
+  - bsps/aarch64/xilinx-zynqmp
+  - bsps/arm/xilinx-zynq
+  - bsps/arm/xilinx-zynqmp-rpu
   - sparc/gr712rc
   - sparc/gr740
 links:
