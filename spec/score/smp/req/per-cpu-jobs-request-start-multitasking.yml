@@ -1,0 +1,15 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2024 embedded brains GmbH & Co. KG
+enabled-by: RTEMS_SMP
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: ../if/group
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  While the boot processor waits for another online processor to be ready to
+  start multiprocessing, the boot processor shall process its per-processor jobs.
+type: requirement
