@@ -36,8 +36,12 @@
 #endif
 
 #include <rtems.h>
+#include <rtems/sysinit.h>
+#include <rtems/dev/io.h>
 #include <rtems/score/atomic.h>
 #include <rtems/score/percpu.h>
+#include <rtems/score/smpimpl.h>
+#include <rtems/score/sysstate.h>
 
 #include <rtems/test.h>
 
@@ -56,6 +60,14 @@
  *   - Check that the first job was processed firstly.
  *
  *   - Check that the second job was processed secondly.
+ *
+ * - Actions were performed by
+ *   \_\_wrap\_\_SMP_Start_multitasking_on_secondary_processor().
+ *
+ *   - Check that the unicast action was performed while the worker processor
+ *     is in the initial state. Check that the counter was incremented at least
+ *     once by the boot processor while it is waiting for the other online
+ *     processors to get ready for start multiprocessing.
  *
  * @{
  */
@@ -86,9 +98,114 @@ static const Per_CPU_Job_context job_context_1 = {
   .arg = &counter_1
 };
 
-Per_CPU_Job job_1 = {
-  .context = &job_context_1,
-};
+Per_CPU_Job job_1 = { .context = &job_context_1 };
+
+static Atomic_Uint boot_counter;
+
+static Atomic_Uintptr worker_cpu;
+
+static Per_CPU_State worker_state = -1;
+
+static uint32_t GetBootProcessorIndex( void )
+{
+  uint32_t cpu_max;
+
+  cpu_max = _SMP_Processor_configured_maximum;
+
+  while ( true ) {
+    uint32_t cpu_index;
+
+    for ( cpu_index = 0; cpu_index < cpu_max; ++cpu_index ) {
+      if ( _Per_CPU_Get_by_index( cpu_index )->boot ) {
+        return cpu_index;
+      }
+    }
+
+    _IO_Relax();
+  }
+}
+
+static void IncrementCounter( void *arg )
+{
+  _Atomic_Fetch_add_uint( (Atomic_Uint *) arg, 1, ATOMIC_ORDER_RELAXED );
+}
+
+static void PrepareRequestStartMultitasking( void )
+{
+  Per_CPU_Control *cpu;
+
+  cpu = (Per_CPU_Control *)
+    _Atomic_Fetch_add_uintptr( &worker_cpu, 0, ATOMIC_ORDER_ACQUIRE );
+
+  if ( cpu != 0 ) {
+    /*
+     * This is _Per_CPU_Set_state() without the
+     * _Assert( cpu_self == _Per_CPU_Get() ) which would fail here.
+     */
+    _Atomic_Store_uint(
+      &cpu->state,
+      (unsigned int) PER_CPU_STATE_INITIAL,
+      ATOMIC_ORDER_RELEASE
+    );
+  }
+}
+
+RTEMS_SYSINIT_ITEM(
+  PrepareRequestStartMultitasking,
+  RTEMS_SYSINIT_LAST,
+  RTEMS_SYSINIT_ORDER_LAST
+);
+
+void __real__SMP_Start_multitasking_on_secondary_processor(
+  Per_CPU_Control *cpu_self
+);
+
+void __wrap__SMP_Start_multitasking_on_secondary_processor(
+  Per_CPU_Control *cpu_self
+);
+
+void __wrap__SMP_Start_multitasking_on_secondary_processor(
+  Per_CPU_Control *cpu_self
+)
+{
+  uintptr_t expected;
+  bool      success;
+
+  expected = 0;
+  success = _Atomic_Compare_exchange_uintptr(
+    &worker_cpu,
+    &expected,
+    (uintptr_t) cpu_self,
+    ATOMIC_ORDER_RELEASE,
+    ATOMIC_ORDER_RELAXED
+  );
+
+  if ( success ) {
+    uint32_t cpu_boot;
+
+    worker_state = cpu_self->state;
+    cpu_boot = GetBootProcessorIndex();
+
+    while ( true ) {
+      _SMP_Unicast_action( cpu_boot, IncrementCounter, &boot_counter );
+
+      if ( _System_state_Is_up( _System_state_Get() ) ) {
+        break;
+      }
+
+      /*
+       * If the system state is not up, then the boot processor probably waits
+       * in _Per_CPU_Wait_for_non_initial_state().  Let it go.  In
+       * PrepareRequestStartMultitasking() we will reset the state.
+       */
+      _Per_CPU_Set_state(
+        cpu_self,
+        PER_CPU_STATE_READY_TO_START_MULTITASKING
+      );
+    }
+  }
+  __real__SMP_Start_multitasking_on_secondary_processor( cpu_self );
+}
 
 /**
  * @brief Issue two jobs on the current processor with interrupts disabled.
@@ -119,13 +236,36 @@ static void ScoreSmpValPerCpuJobs_Action_0( void )
 }
 
 /**
+ * @brief Actions were performed by
+ *   \_\_wrap\_\_SMP_Start_multitasking_on_secondary_processor().
+ */
+static void ScoreSmpValPerCpuJobs_Action_1( void )
+{
+  /* Nothing to do */
+
+  /*
+   * Check that the unicast action was performed while the worker processor is
+   * in the initial state. Check that the counter was incremented at least once
+   * by the boot processor while it is waiting for the other online processors
+   * to get ready for start multiprocessing.
+   */
+  T_step_eq_int( 2, worker_state, PER_CPU_STATE_INITIAL );
+  T_step_gt_uint(
+    3,
+    _Atomic_Fetch_add_uint( &boot_counter, 0, ATOMIC_ORDER_RELAXED ),
+    0
+  );
+}
+
+/**
  * @fn void T_case_body_ScoreSmpValPerCpuJobs( void )
  */
 T_TEST_CASE( ScoreSmpValPerCpuJobs )
 {
-  T_plan( 2 );
+  T_plan( 4 );
 
   ScoreSmpValPerCpuJobs_Action_0();
+  ScoreSmpValPerCpuJobs_Action_1();
 }
 
 /** @} */

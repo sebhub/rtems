@@ -11,6 +11,7 @@ includes: []
 ldflags:
 - -Wl,--wrap=_Rate_monotonic_Timeout
 - -Wl,--wrap=_Scheduler_EDF_SMP_Yield
+- -Wl,--wrap=_SMP_Start_multitasking_on_secondary_processor
 - -Wl,--wrap=_Thread_queue_Path_acquire
 - -Wl,--wrap=_Thread_Timeout
 - -Wl,--wrap=_Timer_Routine_adaptor
