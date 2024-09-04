@@ -1,0 +1,16 @@
+SPDX-License-Identifier: CC-BY-SA-4.0
+copyrights:
+- Copyright (C) 2024 embedded brains GmbH & Co. KG
+enabled-by: true
+links:
+- role: requirement-refinement
+  uid: group
+non-functional-type: design
+rationale: null
+requirement-type: non-functional
+text: |
+  While the timeslicing mode is enabled for the executing task, while the
+  preemption mode is enabled for the executing task, while the executing task is
+  not ready, when a ${/glossary/clock-tick:/term} happens, the timeslice budget
+  of the task shall not get decremented.
+type: requirement
