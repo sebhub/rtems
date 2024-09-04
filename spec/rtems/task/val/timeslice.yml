@@ -1,0 +1,179 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2024 embedded brains GmbH & Co. KG
+enabled-by: true
+links: []
+test-actions:
+- action-brief: |
+    Create a worker task which forever increments a counter and yields.
+  action-code: |
+    rtems_mode        restore_mode;
+    rtems_mode        unused_mode;
+    rtems_status_code sc;
+    rtems_interval    timeslice;
+    rtems_interval    tick;
+
+    timeslice = rtems_configuration_get_ticks_per_timeslice();
+    ctx->runner_id = rtems_task_self();
+    ctx->worker_id = CreateTask( "WORK", GetSelfPriority() );
+    StartTask( ctx->worker_id, Worker, ctx );
+    Yield();
+    T_eq_u32( ctx->counter, 1 );
+  checks:
+  - brief: |
+      While the preemption mode is disabled and timeslicing is enabled for the
+      executing task, elapse a full timeslice. Check that the executing task did not
+      yield.
+    code: |
+      sc = rtems_task_mode(
+        RTEMS_NO_PREEMPT | RTEMS_TIMESLICE,
+        RTEMS_PREEMPT_MASK | RTEMS_TIMESLICE_MASK,
+        &restore_mode
+      );
+      T_rsc_success( sc );
+
+      for ( tick = 0; tick < timeslice; ++tick ) {
+        ClockTick();
+      }
+
+      T_eq_u32( ctx->counter, 1 );
+
+      sc = rtems_task_mode( RTEMS_PREEMPT, RTEMS_PREEMPT_MASK, &unused_mode );
+      T_rsc_success( sc );
+    links:
+    - role: validation
+      uid: ../req/timeslice-no-preempt
+  - brief: |
+      While the preemption mode is enabled and timeslicing is enabled for the
+      executing task, elapse a full timeslice. Check that the executing task did
+      yield.
+    code: |
+      T_eq_u32( ctx->counter, 1 );
+
+      for ( tick = 1; tick < timeslice; ++tick ) {
+        ClockTick();
+        T_eq_u32( ctx->counter, 1 );
+      }
+
+      ClockTick();
+      T_eq_u32( ctx->counter, 2 );
+    links:
+    - role: validation
+      uid: ../req/timeslice-decrement
+    - role: validation
+      uid: ../req/timeslice-yield
+  - brief: |
+      While servicing an ISR, nearly elapse a timeslice while the executing task is
+      ready. Go back to task context. Perform a clock tick. Check that the timeslice
+      was exhausted.
+    code: |
+      CallWithinISR( NearlyElapseWhileReady, ctx );
+
+      ClockTick();
+      T_eq_u32( ctx->counter, 3 );
+    links:
+    - role: validation
+      uid: ../req/timeslice-decrement
+    - role: validation
+      uid: ../req/timeslice-yield
+  - brief: |
+      While servicing an ISR, nearly elapse a timeslice while the executing task is
+      not ready. Go back to task context. Perform a clock tick. Check that the
+      timeslice was not exhausted.
+    code: |
+      CallWithinISR( NearlyElapseWhileNotReady, ctx );
+
+      ClockTick();
+      T_eq_u32( ctx->counter, 3 );
+    links:
+    - role: validation
+      uid: ../req/timeslice-not-ready
+  - brief: |
+      Restore runner mode. Delete worker task.
+    code: |
+      sc = rtems_task_mode(
+        restore_mode,
+        RTEMS_PREEMPT_MASK | RTEMS_TIMESLICE_MASK,
+        &unused_mode
+      );
+      T_rsc_success( sc );
+
+      DeleteTask( ctx->worker_id );
+    links: []
+  links: []
+test-brief: |
+  Tests the task timeslicing mode.
+test-context:
+- brief: |
+    This member contains the runner identifier.
+  description: null
+  member: |
+    rtems_id runner_id
+- brief: |
+    This member contains the worker identifier.
+  description: null
+  member: |
+    rtems_id worker_id
+- brief: |
+    This member provides an excution counter for another task.
+  description: null
+  member: |
+    uint32_t counter
+test-context-support: null
+test-description: null
+test-header: null
+test-includes:
+- rtems.h
+test-local-includes:
+- tx-support.h
+test-setup: null
+test-stop: null
+test-support: |
+  typedef ${.:/test-context-type} Context;
+
+  static void NearlyElapseWhileNotReady( void *arg )
+  {
+    Context        *ctx;
+    rtems_interval  timeslice;
+    rtems_interval  tick;
+
+    ctx = arg;
+    SuspendTask( ctx->runner_id );
+    timeslice = rtems_configuration_get_ticks_per_timeslice();
+
+    for ( tick = 1; tick < timeslice; ++tick ) {
+      ClockTick();
+    }
+
+    ResumeTask( ctx->runner_id );
+    SuspendTask( ctx->worker_id );
+    ResumeTask( ctx->worker_id );
+  }
+
+  static void NearlyElapseWhileReady( void *arg )
+  {
+    rtems_interval timeslice;
+    rtems_interval tick;
+
+    (void) arg;
+    timeslice = rtems_configuration_get_ticks_per_timeslice();
+
+    for ( tick = 1; tick < timeslice; ++tick ) {
+      ClockTick();
+    }
+  }
+
+  static void Worker( rtems_task_argument arg )
+  {
+    Context *ctx;
+
+    ctx = (Context *) arg;
+
+    while ( true ) {
+      ++ctx->counter;
+      Yield();
+    }
+  }
+test-target: testsuites/validation/tc-task-timeslice.c
+test-teardown: null
+type: test-case
