@@ -1,0 +1,16 @@
+SPDX-License-Identifier: CC-BY-SA-4.0
+copyrights:
+- Copyright (C) 2024 embedded brains GmbH & Co. KG
+enabled-by: RTEMS_SMP
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: group
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  While the lowest scheduled node uses an idle thread, when an attempt to
+  schedule a higher priority node fails, the lowest scheduled node shall be
+  scheduled using the idle thread.
+type: requirement

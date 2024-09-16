@@ -1,6 +1,6 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 copyrights:
-- Copyright (C) 2021, 2022 embedded brains GmbH & Co. KG
+- Copyright (C) 2021, 2024 embedded brains GmbH & Co. KG
 enabled-by: RTEMS_SMP
 links: []
 test-actions:
@@ -285,6 +285,30 @@ test-actions:
     links: []
   links: []
 - action-brief: |
+    Construct a system state in which a scheduler tries to schedule a node whose
+    owner thread is already scheduled during a set priority operation while no
+    sticky node is involved.
+  action-code: |
+    PrepareOwnerScheduled( ctx );
+  checks:
+  - brief: |
+      While the owner thread of the highest priority ready node is already scheduled
+      in a helping scheduler, raise the priority of this thread to try to schedule it
+      again in its home scheduler.
+    code: |
+      CallWithinISR( RaiseOwnerPriority, ctx );
+    links:
+    - role: validation
+      uid: ../req/ask-for-help-home
+    - role: validation
+      uid: ../req/schedule-reuse-idle
+  - brief: |
+      Clean up all used resources.
+    code: |
+      CleanupOwnerScheduled( ctx );
+    links: []
+  links: []
+- action-brief: |
     Construct a system state in which a scheduler tries to schedule a node those
     owner thread is already scheduled during a set priority operation while a
     sticky node is involved.
@@ -292,11 +316,12 @@ test-actions:
     PrepareOwnerScheduled( ctx );
   checks:
   - brief: |
-      Set the priority of the runner thread while the owner thread of the highest
-      priority ready node is already scheduled.
+      While the owner thread of the highest priority ready node is already scheduled
+      in a helping scheduler, raise the priority of this thread to try to schedule it
+      again in its home scheduler.
     code: |
       MakeSticky( ctx );
-      CallWithinISR( RaiseWorkerPriorityWithIdleRunner, ctx );
+      CallWithinISR( RaiseOwnerPriorityWithIdleRunner, ctx );
       CleanSticky( ctx );
     links:
     - role: validation
@@ -851,7 +876,17 @@ test-support: |
     }
   }
 
-  static void RaiseWorkerPriorityWithIdleRunner( void *arg )
+  static void RaiseOwnerPriority( void *arg )
+  {
+    Context *ctx;
+
+    ctx = arg;
+    T_scheduler_set_event_handler( UpdatePriorityStopBusyC, ctx );
+    SetPriority( ctx->worker_id[ WORKER_A ], PRIO_HIGH );
+    SetPriority( ctx->worker_id[ WORKER_A ], PRIO_NORMAL );
+  }
+
+  static void RaiseOwnerPriorityWithIdleRunner( void *arg )
   {
     Context *ctx;
 
