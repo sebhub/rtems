@@ -7,7 +7,7 @@
  */
 
 /*
- * Copyright (C) 2021, 2022 embedded brains GmbH & Co. KG
+ * Copyright (C) 2021, 2024 embedded brains GmbH & Co. KG
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -147,11 +147,22 @@
  *   - Clean up all used resources.
  *
  * - Construct a system state in which a scheduler tries to schedule a node
+ *   whose owner thread is already scheduled during a set priority operation
+ *   while no sticky node is involved.
+ *
+ *   - While the owner thread of the highest priority ready node is already
+ *     scheduled in a helping scheduler, raise the priority of this thread to
+ *     try to schedule it again in its home scheduler.
+ *
+ *   - Clean up all used resources.
+ *
+ * - Construct a system state in which a scheduler tries to schedule a node
  *   those owner thread is already scheduled during a set priority operation
  *   while a sticky node is involved.
  *
- *   - Set the priority of the runner thread while the owner thread of the
- *     highest priority ready node is already scheduled.
+ *   - While the owner thread of the highest priority ready node is already
+ *     scheduled in a helping scheduler, raise the priority of this thread to
+ *     try to schedule it again in its home scheduler.
  *
  *   - Clean up all used resources.
  *
@@ -545,7 +556,17 @@ static void UnblockAskForHelp(
   }
 }
 
-static void RaiseWorkerPriorityWithIdleRunner( void *arg )
+static void RaiseOwnerPriority( void *arg )
+{
+  Context *ctx;
+
+  ctx = arg;
+  T_scheduler_set_event_handler( UpdatePriorityStopBusyC, ctx );
+  SetPriority( ctx->worker_id[ WORKER_A ], PRIO_HIGH );
+  SetPriority( ctx->worker_id[ WORKER_A ], PRIO_NORMAL );
+}
+
+static void RaiseOwnerPriorityWithIdleRunner( void *arg )
 {
   Context *ctx;
 
@@ -1157,19 +1178,42 @@ static void ScoreSchedSmpValSmp_Action_10( ScoreSchedSmpValSmp_Context *ctx )
 
 /**
  * @brief Construct a system state in which a scheduler tries to schedule a
- *   node those owner thread is already scheduled during a set priority
- *   operation while a sticky node is involved.
+ *   node whose owner thread is already scheduled during a set priority
+ *   operation while no sticky node is involved.
  */
 static void ScoreSchedSmpValSmp_Action_11( ScoreSchedSmpValSmp_Context *ctx )
 {
   PrepareOwnerScheduled( ctx );
 
   /*
-   * Set the priority of the runner thread while the owner thread of the
-   * highest priority ready node is already scheduled.
+   * While the owner thread of the highest priority ready node is already
+   * scheduled in a helping scheduler, raise the priority of this thread to try
+   * to schedule it again in its home scheduler.
+   */
+  CallWithinISR( RaiseOwnerPriority, ctx );
+
+  /*
+   * Clean up all used resources.
+   */
+  CleanupOwnerScheduled( ctx );
+}
+
+/**
+ * @brief Construct a system state in which a scheduler tries to schedule a
+ *   node those owner thread is already scheduled during a set priority
+ *   operation while a sticky node is involved.
+ */
+static void ScoreSchedSmpValSmp_Action_12( ScoreSchedSmpValSmp_Context *ctx )
+{
+  PrepareOwnerScheduled( ctx );
+
+  /*
+   * While the owner thread of the highest priority ready node is already
+   * scheduled in a helping scheduler, raise the priority of this thread to try
+   * to schedule it again in its home scheduler.
    */
   MakeSticky( ctx );
-  CallWithinISR( RaiseWorkerPriorityWithIdleRunner, ctx );
+  CallWithinISR( RaiseOwnerPriorityWithIdleRunner, ctx );
   CleanSticky( ctx );
 
   /*
@@ -1182,7 +1226,7 @@ static void ScoreSchedSmpValSmp_Action_11( ScoreSchedSmpValSmp_Context *ctx )
  * @brief Construct a system state in which a scheduler tries to schedule a
  *   node those owner thread is blocked during a set priority operation.
  */
-static void ScoreSchedSmpValSmp_Action_12( ScoreSchedSmpValSmp_Context *ctx )
+static void ScoreSchedSmpValSmp_Action_13( ScoreSchedSmpValSmp_Context *ctx )
 {
   PrepareOwnerBlocked( ctx );
 
@@ -1204,7 +1248,7 @@ static void ScoreSchedSmpValSmp_Action_12( ScoreSchedSmpValSmp_Context *ctx )
  * @brief Construct a system state in which a scheduler tries to schedule a
  *   node those owner thread is already scheduled during a yield operation.
  */
-static void ScoreSchedSmpValSmp_Action_13( ScoreSchedSmpValSmp_Context *ctx )
+static void ScoreSchedSmpValSmp_Action_14( ScoreSchedSmpValSmp_Context *ctx )
 {
   PrepareOwnerScheduled( ctx );
 
@@ -1226,7 +1270,7 @@ static void ScoreSchedSmpValSmp_Action_13( ScoreSchedSmpValSmp_Context *ctx )
  *   node those owner thread is already scheduled during a yield operation
  *   while a sticky node is involved.
  */
-static void ScoreSchedSmpValSmp_Action_14( ScoreSchedSmpValSmp_Context *ctx )
+static void ScoreSchedSmpValSmp_Action_15( ScoreSchedSmpValSmp_Context *ctx )
 {
   PrepareOwnerScheduled( ctx );
 
@@ -1249,7 +1293,7 @@ static void ScoreSchedSmpValSmp_Action_14( ScoreSchedSmpValSmp_Context *ctx )
  * @brief Construct a system state in which a scheduler tries to schedule a
  *   node those owner thread is blocked during a yield operation.
  */
-static void ScoreSchedSmpValSmp_Action_15( ScoreSchedSmpValSmp_Context *ctx )
+static void ScoreSchedSmpValSmp_Action_16( ScoreSchedSmpValSmp_Context *ctx )
 {
   PrepareOwnerBlocked( ctx );
 
@@ -1271,7 +1315,7 @@ static void ScoreSchedSmpValSmp_Action_15( ScoreSchedSmpValSmp_Context *ctx )
  *   node those owner thread is blocked during a yield operation while a sticky
  *   node is involved.
  */
-static void ScoreSchedSmpValSmp_Action_16( ScoreSchedSmpValSmp_Context *ctx )
+static void ScoreSchedSmpValSmp_Action_17( ScoreSchedSmpValSmp_Context *ctx )
 {
   PrepareOwnerBlocked( ctx );
 
@@ -1295,7 +1339,7 @@ static void ScoreSchedSmpValSmp_Action_16( ScoreSchedSmpValSmp_Context *ctx )
  *   to check that a not scheduled thread does not get removed from the set of
  *   ready threads of a scheduler when a help request is reconsidered.
  */
-static void ScoreSchedSmpValSmp_Action_17( ScoreSchedSmpValSmp_Context *ctx )
+static void ScoreSchedSmpValSmp_Action_18( ScoreSchedSmpValSmp_Context *ctx )
 {
   Thread_Control *worker_b;
 
@@ -1375,6 +1419,7 @@ T_TEST_CASE_FIXTURE( ScoreSchedSmpValSmp, &ScoreSchedSmpValSmp_Fixture )
   ScoreSchedSmpValSmp_Action_15( ctx );
   ScoreSchedSmpValSmp_Action_16( ctx );
   ScoreSchedSmpValSmp_Action_17( ctx );
+  ScoreSchedSmpValSmp_Action_18( ctx );
 }
 
 /** @} */
