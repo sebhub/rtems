@@ -10,8 +10,11 @@ test-actions:
 - action-brief: |
     Call the ${../if/disable-data:/name} and ${../if/enable-data:/name} directives.
   action-code: |
+    T_step( ${.:/step} );
     rtems_cache_disable_data();
+    T_step( ${.:/step} );
     rtems_cache_enable_data();
+    T_step( ${.:/step} );
   checks: []
   links:
   - role: validation
@@ -25,8 +28,11 @@ test-actions:
     rtems_interrupt_level level;
 
     rtems_interrupt_local_disable( level );
+    T_step( ${.:/step} );
     rtems_cache_disable_data();
+    T_step( ${.:/step} );
     rtems_cache_enable_data();
+    T_step( ${.:/step} );
     rtems_interrupt_local_enable( level );
   checks: []
   links:
@@ -41,9 +47,13 @@ test-actions:
     rtems_interrupt_level level;
 
     rtems_interrupt_local_disable( level );
+    T_step( ${.:/step} );
     rtems_cache_disable_data();
+    T_step( ${.:/step} );
     rtems_cache_invalidate_entire_data();
+    T_step( ${.:/step} );
     rtems_cache_enable_data();
+    T_step( ${.:/step} );
     rtems_interrupt_local_enable( level );
   checks: []
   links:
