@@ -25,6 +25,7 @@ install:
   - bsps/powerpc/qoriq/include/bsp/qoriq.h
   - bsps/powerpc/qoriq/include/bsp/tsec-config.h
   - bsps/powerpc/qoriq/include/bsp/uart-bridge.h
+  - bsps/powerpc/qoriq/include/bsp/qoriq-gpio.h
 - destination: ${BSP_INCLUDEDIR}/uapi/asm
   source:
   - bsps/powerpc/qoriq/include/uapi/asm/epapr_hcalls.h
@@ -43,6 +44,7 @@ source:
 - bsps/powerpc/qoriq/console/console-config.c
 - bsps/powerpc/qoriq/console/uart-bridge-master.c
 - bsps/powerpc/qoriq/console/uart-bridge-slave.c
+- bsps/powerpc/qoriq/gpio/qoriq-gpio.c
 - bsps/powerpc/qoriq/irq/irq-msi.c
 - bsps/powerpc/qoriq/irq/irq.c
 - bsps/powerpc/qoriq/mpci/intercom-mpci.c
