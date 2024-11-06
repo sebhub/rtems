@@ -10,6 +10,10 @@ includes: []
 install: []
 links: []
 source:
+- testsuites/validation/bsps/tc-powerpc-qoriq-gpio-read.c
+- testsuites/validation/bsps/tc-powerpc-qoriq-gpio-set-direction.c
+- testsuites/validation/bsps/tc-powerpc-qoriq-gpio-set-drive.c
+- testsuites/validation/bsps/tc-powerpc-qoriq-gpio-write.c
 - testsuites/validation/bsps/tc-powerpc-qoriq-pic-set-destination.c
 - testsuites/validation/bsps/tc-powerpc-qoriq-pic-set-sense-and-polarity.c
 type: build
