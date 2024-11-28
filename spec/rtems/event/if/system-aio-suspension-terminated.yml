@@ -1,0 +1,24 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This event set constant represents the reserved system event that is internally used by aio_suspend
+  to notify of suspension termination.
+copyrights:
+- Copyright (C) 2020 embedded brains GmbH & Co. KG
+- Copyright (C) 1988, 2008 On-Line Applications Research Corporation (OAR)
+definition:
+  default: ${event-27:/name}
+  variants: []
+description: null
+enabled-by: true
+index-entries: []
+interface-type: define
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup-hidden
+  uid: group
+- role: constraint
+  uid: /constraint/constant-not-pre-qualified
+name: RTEMS_EVENT_SYSTEM_AIO_SUSPENSION_TERMINATED
+notes: null
+type: interface
