@@ -1790,6 +1790,28 @@ typedef void ( *FatalHandler )(
 void SetFatalHandler( FatalHandler fatal, void *arg );
 
 /**
+ * @brief Produces a fatal error and checks it.
+ *
+ * The function calls the produce handler, which shall produce a fatal error.
+ * A fatal handler calls the check handler for the fatal error and returns to
+ * this function with longjmp().  The test records a failure, if the produce
+ * handler returns.
+ *
+ * Use this function to validate a fatal error in a test case which continues
+ * afterwards.  The test suite shall use FatalInitialExtension() as its fatal
+ * extension.  See tc-fatal.c and tc-random.c.
+ *
+ * @param produce is the handler which produces the fatal error.
+ * @param check is the handler which checks the fatal source and code.
+ * @param arg is the argument of both handlers.
+ */
+void ProduceAndCheckFatalError(
+  void ( *produce )( void * ),
+  FatalHandler check,
+  void        *arg
+);
+
+/**
  * @brief Sets the thread switch extension.
  *
  * The function creates the extension set for the first extension and deletes
@@ -1940,6 +1962,17 @@ bool IsWhiteSpaceOnly( const char *s );
  * @retval false The strings are not equal.
  */
 bool IsEqualIgnoreWhiteSpace( const char *a, const char *b );
+
+/**
+ * @brief Checks whether the string ends with the suffix.
+ *
+ * @param s is the string.
+ * @param suffix is the suffix.
+ *
+ * @retval true The string ends with the suffix.
+ * @retval false The string does not end with the suffix.
+ */
+bool EndsWith( const char *s, const char *suffix );
 
 #if defined( RTEMS_SMP )
 /**

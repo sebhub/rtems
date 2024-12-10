@@ -10,7 +10,7 @@
  */
 
 /*
- * Copyright (C) 2021 embedded brains GmbH & Co. KG
+ * Copyright (C) 2021, 2024 embedded brains GmbH & Co. KG
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -41,6 +41,7 @@
 #include <rtems/test-support.h>
 
 #include <rtems/test.h>
+#include <rtems/score/isrlevel.h>
 #include <rtems/score/objectimpl.h>
 #include <rtems/score/percpu.h>
 #include <rtems/score/smpimpl.h>
@@ -50,6 +51,7 @@
 #include <rtems/rtems/semimpl.h>
 
 #include <pthread.h>
+#include <setjmp.h>
 #include <string.h>
 #include <sys/time.h>
 
@@ -953,6 +955,47 @@ void SetFatalHandler( FatalHandler fatal, void *arg )
   fatal_arg = arg;
 }
 
+typedef struct {
+  jmp_buf      before_fatal;
+  FatalHandler check;
+  void        *arg;
+} produce_and_check_fatal_context;
+
+static void CheckFatalError(
+  rtems_fatal_source source,
+  rtems_fatal_code   code,
+  void              *arg
+)
+{
+  produce_and_check_fatal_context *ctx;
+
+  ctx = arg;
+  SetFatalHandler( NULL, NULL );
+  ( *ctx->check )( source, code, ctx->arg );
+  _ISR_Set_level( 0 );
+  longjmp( ctx->before_fatal, 1 );
+}
+
+void ProduceAndCheckFatalError(
+  void ( *produce )( void * ),
+  FatalHandler check,
+  void        *arg
+)
+{
+  produce_and_check_fatal_context ctx;
+
+  ctx.check = check;
+  ctx.arg = arg;
+  SetFatalHandler( CheckFatalError, &ctx );
+
+  if ( setjmp( ctx.before_fatal ) == 0 ) {
+    ( *produce )( arg );
+    T_true( false );
+  } else {
+    T_true( true );
+  }
+}
+
 static rtems_id task_switch_id;
 
 static rtems_task_switch_extension task_switch_extension;
@@ -1116,6 +1159,18 @@ bool IsEqualIgnoreWhiteSpace( const char *a, const char *b )
   }
 
   return true;
+}
+
+bool EndsWith( const char *s, const char *suffix )
+{
+  size_t s_length;
+  size_t suffix_length;
+
+  s_length = strlen( s );
+  suffix_length = strlen( suffix );
+
+  return s_length >= suffix_length &&
+         strcmp( s + s_length - suffix_length, suffix ) == 0;
 }
 
 #if defined( RTEMS_SMP )
