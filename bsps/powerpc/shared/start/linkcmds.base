@@ -75,6 +75,7 @@ SECTIONS {
 		*(SORT(.bsp_text*))
 		*(.text.unlikely .text.*_unlikely)
 		*(.text .stub .text.* .gnu.linkonce.t.*)
+		*(SORT(.rtemstext*))
 		*(.gnu.warning)
 		*(.sfpr .glink)
 	} > REGION_TEXT AT > REGION_TEXT_LOAD
@@ -107,6 +108,7 @@ SECTIONS {
 		bsp_section_rodata_begin = .;
 		*(SORT(.bsp_rodata*))
 		*(.rodata .rodata.* .gnu.linkonce.r.*)
+		*(SORT(.rtemsrodata*))
 	} > REGION_RODATA AT > REGION_RODATA_LOAD
 	.rodata1 : ALIGN_WITH_INPUT {
 		*(.rodata1)
@@ -306,6 +308,7 @@ SECTIONS {
 		bsp_section_data_begin = .;
 		*(SORT(.bsp_data*))
 		*(.data .data.* .gnu.linkonce.d.*)
+		*(SORT(.rtemsdata*))
 		SORT(CONSTRUCTORS)
 	} > REGION_DATA AT > REGION_DATA_LOAD
 	.data1 : ALIGN_WITH_INPUT {
@@ -330,6 +333,7 @@ SECTIONS {
 		bsp_section_sbss_begin = .;
 		*(.dynsbss)
 		*(.sbss .sbss.* .gnu.linkonce.sb.*)
+		*(SORT(.rtemssbss*))
 		*(.scommon)
 		bsp_section_sbss_end = .;
 		bsp_section_sdata_libdl_begin = .;
@@ -344,6 +348,7 @@ SECTIONS {
 		bsp_section_bss_begin = .;
 		*(.dynbss)
 		*(.bss .bss.* .gnu.linkonce.b.*)
+		*(SORT(.rtemsbss*))
 		*(COMMON)
 		bsp_section_bss_end = .;
 	} > REGION_BSS AT > REGION_BSS
