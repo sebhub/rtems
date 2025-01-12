@@ -199,6 +199,60 @@ test-actions:
     - role: validation
       uid: ../req/entry-initialize-info
   links: []
+- action-brief: |
+    Check ${../if/get-priority:/name} for each valid vector.
+  action-code: |
+    rtems_vector_number vector;
+
+    for (
+      vector = 0;
+      vector < BSP_INTERRUPT_VECTOR_COUNT;
+      ++vector
+    ) {
+      rtems_interrupt_attributes attr;
+      rtems_status_code          sc;
+
+      memset( &attr, 0, sizeof( attr ) );
+      sc = rtems_interrupt_get_attributes( vector, &attr );
+
+      if ( sc == RTEMS_INVALID_ID ) {
+        continue;
+      }
+
+      T_rsc_success( sc );
+      ${../req/get-priority:/test-run}( vector, attr.can_get_priority );
+    }
+  checks: []
+  links: []
+- action-brief: |
+    Check ${../if/set-priority:/name} for each valid vector.
+  action-code: |
+    rtems_vector_number vector;
+
+    for (
+      vector = 0;
+      vector < BSP_INTERRUPT_VECTOR_COUNT;
+      ++vector
+    ) {
+      rtems_interrupt_attributes attr;
+      rtems_status_code          sc;
+
+      memset( &attr, 0, sizeof( attr ) );
+      sc = rtems_interrupt_get_attributes( vector, &attr );
+
+      if ( sc == RTEMS_INVALID_ID ) {
+        continue;
+      }
+
+      T_rsc_success( sc );
+      ${../req/set-priority:/test-run}(
+        vector,
+        attr.maximum_priority,
+        attr.can_set_priority
+      );
+    }
+  checks: []
+  links: []
 test-brief: |
   Tests some ${../if/group:/name} directives.
 test-context: []
@@ -206,9 +260,11 @@ test-context-support: null
 test-description: null
 test-header: null
 test-includes:
+- bsp/irq-generic.h
 - rtems.h
-- rtems/irq-extension.h
 test-local-includes:
+- tr-intr-get-priority.h
+- tr-intr-set-priority.h
 - tx-support.h
 test-setup: null
 test-stop: null

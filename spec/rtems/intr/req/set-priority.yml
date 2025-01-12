@@ -11,25 +11,25 @@ post-conditions:
   states:
   - name: Ok
     test-code: |
-      ctx->expected_status = RTEMS_SUCCESSFUL;
+      T_rsc_success( ctx->status );
     text: |
       The return status of ${../if/set-priority:/name} shall be
       ${../../status/if/successful:/name}.
   - name: InvId
     test-code: |
-      ctx->expected_status = RTEMS_INVALID_ID;
+      T_rsc( ctx->status, RTEMS_INVALID_ID );
     text: |
       The return status of ${../if/set-priority:/name} shall be
       ${../../status/if/invalid-id:/name}.
   - name: InvPrio
     test-code: |
-      ctx->expected_status = RTEMS_INVALID_PRIORITY;
+      T_rsc( ctx->status, RTEMS_INVALID_PRIORITY );
     text: |
       The return status of ${../if/set-priority:/name} shall be
       ${../../status/if/invalid-priority:/name}.
   - name: Unsat
     test-code: |
-      ctx->expected_status = RTEMS_UNSATISFIED;
+      T_rsc( ctx->status, RTEMS_UNSATISFIED );
     text: |
       The return status of ${../if/set-priority:/name} shall be
       ${../../status/if/unsatisfied:/name}.
@@ -40,13 +40,13 @@ pre-conditions:
   states:
   - name: Valid
     test-code: |
-      ctx->valid_vector = true;
+      ctx->vector = ctx->valid_vector;
     text: |
       While the ${../if/set-priority:/params[0]/name} parameter is
       associated with an interrupt vector.
   - name: Invalid
     test-code: |
-      ctx->valid_vector = false;
+      ctx->vector = BSP_INTERRUPT_VECTOR_COUNT;
     text: |
       While the ${../if/set-priority:/params[0]/name} parameter is not
       associated with an interrupt vector.
@@ -56,13 +56,17 @@ pre-conditions:
   states:
   - name: Valid
     test-code: |
-      ctx->valid_priority = true;
+      ctx->priority = ctx->current_priority;
     text: |
       While the ${../if/set-priority:/params[1]/name} parameter is a valid
       priority value.
   - name: Invalid
     test-code: |
-      ctx->valid_priority = false;
+      if ( ctx->maximum_priority < UINT32_MAX ) {
+        ctx->priority = UINT32_MAX;
+      } else {
+        ${.:skip}
+      }
     text: |
       While the ${../if/set-priority:/params[1]/name} parameter is an invalid
       priority value.
@@ -72,13 +76,17 @@ pre-conditions:
   states:
   - name: 'Yes'
     test-code: |
-      ctx->can_set_priority = true;
+      if ( !ctx->can_set_priority ) {
+        ${.:skip}
+      }
     text: |
       While setting the priority for the interrupt vector specified by
       ${../if/set-priority:/params[0]/name} parameter is supported.
   - name: 'No'
     test-code: |
-      ctx->can_set_priority = false;
+      if ( ctx->can_set_priority ) {
+        ${.:skip}
+      }
     text: |
       While setting the priority for the interrupt vector specified by
       ${../if/set-priority:/params[0]/name} parameter is not supported.
@@ -89,90 +97,72 @@ references: []
 requirement-type: functional
 skip-reasons: {}
 test-action: |
-  /* Action carried out by CheckSetPriority() */
+  ctx->status = rtems_interrupt_set_priority( ctx->vector, ctx->priority );
 test-brief: null
 test-cleanup: |
-  if ( ctx->valid_vector ) {
-    rtems_vector_number vector;
-
-    for (
-      vector = 0;
-      vector < BSP_INTERRUPT_VECTOR_COUNT;
-      ++vector
-    ) {
-      rtems_interrupt_attributes attr;
-      rtems_status_code          sc;
-
-      memset( &attr, 0, sizeof( attr ) );
-      sc = rtems_interrupt_get_attributes( vector, &attr );
-
-      if ( sc == RTEMS_INVALID_ID ) {
-        continue;
-      }
-
-      T_rsc_success( sc );
-
-      if ( attr.can_set_priority != ctx->can_set_priority ) {
-        continue;
-      }
-
-      CheckSetPriority( ctx, vector );
-    }
-  } else {
-    CheckSetPriority( ctx, BSP_INTERRUPT_VECTOR_COUNT );
-  }
+  (void) rtems_interrupt_set_priority( ctx->valid_vector, ctx->current_priority );
 test-context:
 - brief: |
-    If this member is true, then the ${../if/set-priority:/params[0]/name}
-    parameter shall be valid.
+    This member contains the current priority value.
   description: null
   member: |
-    bool valid_vector
+    uint32_t current_priority
 - brief: |
-    If this member is true, then the ${../if/set-priority:/params[1]/name}
-    parameter shall be valid.
+    This member specifies the ${../if/set-priority:/params[0]/name} parameter
+    value.
   description: null
   member: |
-    bool valid_priority
+    rtems_vector_number vector
 - brief: |
-    If this member is true, then setting the priority shall be supported.
+    This member specifies the ${../if/set-priority:/params[1]/name} parameter
+    value.
   description: null
   member: |
-    bool can_set_priority
+    uint32_t priority
 - brief: |
-    This member specifies the expected status.
+    This member contains the return status.
   description: null
   member: |
-    rtems_status_code expected_status
+    rtems_status_code status
 test-context-support: null
 test-description: null
-test-header: null
+test-header:
+  code: null
+  freestanding: false
+  includes: []
+  local-includes: []
+  run-params:
+  - description: |
+      is a valid interrupt vector number.
+    dir: in
+    name: valid_vector
+    specifier: ${../if/vector-number:/name} ${.:name}
+  - description: |
+      is the maximum supported priority value.
+    dir: in
+    name: maximum_priority
+    specifier: uint32_t ${.:name}
+  - description: |
+      is true, if setting the priority is supported.
+    dir: in
+    name: can_set_priority
+    specifier: bool ${.:name}
+  target: testsuites/validation/tr-intr-set-priority.h
 test-includes:
 - rtems.h
 - bsp/irq-generic.h
 test-local-includes:
-- tx-support.h
-test-prepare: null
+- tr-intr-set-priority.h
+test-prepare: |
+  ctx->current_priority = 0;
+  (void) rtems_interrupt_get_priority(
+    ctx->valid_vector,
+    &ctx->current_priority
+  );
 test-setup: null
 test-stop: null
-test-support: |
-  typedef ${.:/test-context-type} Context;
-
-  static void CheckSetPriority( Context *ctx, rtems_vector_number vector )
-  {
-    rtems_status_code sc;
-    uint32_t          priority;
-
-    if ( ctx->valid_priority ) {
-      (void) rtems_interrupt_get_priority( vector, &priority );
-    } else {
-      priority = UINT32_MAX;
-    }
-
-    sc = rtems_interrupt_set_priority( vector, priority );
-    T_rsc( sc, ctx->expected_status );
-  }
-test-target: testsuites/validation/tc-intr-set-priority.c
+test-support: null
+test-target: testsuites/validation/tr-intr-set-priority.c
 test-teardown: null
 text: ${.:text-template}
 transition-map:
