@@ -46,12 +46,15 @@
 #include <bsp/bootcard.h>
 #include <bsp/fatal.h>
 #include <bsp/fdt.h>
-#include <bsp/intercom.h>
 #include <bsp/irq-generic.h>
 #include <bsp/linker-symbols.h>
 #include <bsp/mmu.h>
 #include <bsp/qoriq.h>
 #include <bsp/vectors.h>
+
+#ifdef RTEMS_MULTIPROCESSING
+#include <bsp/intercom.h>
+#endif
 
 LINKER_SYMBOL(bsp_exc_vector_base);
 
