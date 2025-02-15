@@ -40,8 +40,6 @@
 
 #include <libcpu/powerpc-utility.h>
 
-#include <asm/epapr_hcalls.h>
-
 #include <bsp.h>
 #include <bsp/irq-generic.h>
 #include <bsp/vectors.h>
@@ -51,6 +49,10 @@
 
 #ifdef RTEMS_SMP
 #include <rtems/score/smpimpl.h>
+#endif
+
+#ifdef QORIQ_IS_HYPERVISOR_GUEST
+#include <asm/epapr_hcalls.h>
 #endif
 
 RTEMS_INTERRUPT_LOCK_DEFINE(static, lock, "QorIQ IRQ")
