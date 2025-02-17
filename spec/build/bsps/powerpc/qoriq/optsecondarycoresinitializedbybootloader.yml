@@ -1,0 +1,17 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+actions:
+- get-boolean: null
+- define-condition: null
+build-type: option
+copyrights:
+- Copyright (C) 2025 embedded brains GmbH & Co. KG
+default:
+- enabled-by: true
+  value: true
+description: |
+  Has to be defined if the bootloader prepares the secondary cores so that they
+  wait in a spin table. U-Boot does that. So usually this should be true.
+enabled-by: true
+links: []
+name: QORIQ_SECONDARY_CORES_INITIALIZED_BY_BOOTLOADER
+type: build

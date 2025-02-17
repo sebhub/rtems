@@ -1,7 +1,15 @@
 /* SPDX-License-Identifier: BSD-2-Clause */
 
+/**
+ * @file
+ *
+ * @ingroup RTEMSBSPsPowerPCQorIQ
+ *
+ * @brief This source file contains the BSP-specific SMP support.
+ */
+
 /*
- * Copyright (C) 2013, 2017 embedded brains GmbH & Co. KG
+ * Copyright (C) 2013, 2025 embedded brains GmbH & Co. KG
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -25,6 +33,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include <rtems/dev/io.h>
+#include <rtems/score/basedefs.h>
 #include <rtems/score/smpimpl.h>
 
 #include <libfdt.h>
@@ -46,6 +56,10 @@ void _start_thread(void);
 #endif
 
 void _start_secondary_processor(void);
+
+#ifndef QORIQ_SECONDARY_CORES_INITIALIZED_BY_BOOTLOADER
+extern volatile uint32_t qoriq_boot_page[4096 / sizeof(uint32_t)];
+#endif
 
 #define IPI_INDEX 0
 
@@ -99,6 +113,11 @@ void bsp_start_on_secondary_processor(Per_CPU_Control *cpu_self)
 {
   uint32_t cpu_index_self;
 
+#ifndef QORIQ_SECONDARY_CORES_INITIALIZED_BY_BOOTLOADER
+  /* Disable the boot page translation */
+  qoriq.lcc.bptr &= ~BPTR_EN;
+#endif
+
   bsp_interrupt_facility_initialize();
 
   cpu_index_self = _Per_CPU_Get_index(cpu_self);
@@ -133,6 +152,7 @@ static void setup_boot_page(void)
 
 static uint32_t discover_processors(void)
 {
+#ifdef QORIQ_SECONDARY_CORES_INITIALIZED_BY_BOOTLOADER
   const void *fdt = bsp_fdt_get();
   int cpus = fdt_path_offset(fdt, "/cpus");
   int node = fdt_first_subnode(fdt, cpus);
@@ -154,6 +174,9 @@ static uint32_t discover_processors(void)
   }
 
   return cpu * QORIQ_THREAD_COUNT;
+#else
+  return QORIQ_CPU_COUNT * QORIQ_THREAD_COUNT;
+#endif
 }
 
 uint32_t _CPU_SMP_Initialize(void)
@@ -170,6 +193,7 @@ uint32_t _CPU_SMP_Initialize(void)
   return cpu_count;
 }
 
+#ifdef QORIQ_SECONDARY_CORES_INITIALIZED_BY_BOOTLOADER
 static bool release_processor(
   qoriq_start_spin_table *spin_table,
   uint32_t cpu_index
@@ -199,10 +223,52 @@ static qoriq_start_spin_table *get_spin_table(uint32_t cpu_index)
 
   return spin_table;
 }
+#endif
 
 bool _CPU_SMP_Start_processor(uint32_t cpu_index)
 {
-#if QORIQ_THREAD_COUNT > 1
+#ifndef QORIQ_SECONDARY_CORES_INITIALIZED_BY_BOOTLOADER
+  volatile uint32_t *boot_status_and_control =
+    &qoriq_boot_page[RTEMS_ARRAY_SIZE(qoriq_boot_page) - 64];
+  uint32_t devdisr;
+
+  /*
+   * This code assumes that there are exactly two e500 cores and the current
+   * core is core 0 the core to start is core 1 (second core).
+   */
+  RTEMS_STATIC_ASSERT(QORIQ_CPU_COUNT == 2, unexpected_number_of_cores);
+
+  /*
+   * Enable boot page translation for the page containing the start code for
+   * the second core.
+   */
+  qoriq.lcc.bptr = BPTR_EN | BPTR_BOOT_PAGE((uintptr_t) qoriq_boot_page >> 12);
+
+  /* Disable timer facilities of both cores */
+  devdisr = qoriq.global_utilities.devdisr;
+  qoriq.global_utilities.devdisr = devdisr | DEVDISR_TB0 | DEVDISR_TB1;
+  ppc_msync();
+  ppc_synchronize_instructions();
+
+  /* Store current time base for second core */
+  boot_status_and_control[1] = ppc_time_base();
+  boot_status_and_control[2] = ppc_time_base_upper();
+
+  /* Let both cores run */
+  qoriq.ecm.eebpcr |= EEBPCR_CPU1_EN | EEBPCR_CPU2_EN;
+  ppc_msync();
+  ppc_synchronize_instructions();
+
+  /* Wait for the second core */
+  while (boot_status_and_control[3] == 0) {
+    _IO_Relax();
+  }
+
+  /* Enable timer facilities of both cores */
+  qoriq.global_utilities.devdisr = devdisr & ~(DEVDISR_TB0 | DEVDISR_TB1);
+
+  return true;
+#elif QORIQ_THREAD_COUNT > 1
   if (is_started_by_u_boot(cpu_index)) {
     qoriq_start_spin_table *spin_table = get_spin_table(cpu_index);
 

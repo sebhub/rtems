@@ -181,6 +181,18 @@ static void TEXT qoriq_mmu_config_tlb0(void)
 		);
 		begin += 4096;
 	}
+
+#ifndef QORIQ_SECONDARY_CORES_INITIALIZED_BY_BOOTLOADER
+	/* Boot page */
+	qoriq_tlb0_write(
+		0,
+		0,
+		FSL_EIS_MAS2_I,
+		FSL_EIS_MAS3_SR | FSL_EIS_MAS3_SW,
+		0,
+		begin
+	);
+#endif
 }
 
 void TEXT qoriq_mmu_fixed_config(void)
