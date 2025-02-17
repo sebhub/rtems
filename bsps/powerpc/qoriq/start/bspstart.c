@@ -58,8 +58,10 @@
 LINKER_SYMBOL(bsp_exc_vector_base);
 LINKER_SYMBOL(bsp_exc_vector_cacheable_base);
 
+#ifdef QORIQ_SECONDARY_CORES_INITIALIZED_BY_BOOTLOADER
 qoriq_start_spin_table *
 qoriq_start_spin_table_addr[QORIQ_CPU_COUNT / QORIQ_THREAD_COUNT];
+#endif
 
 /* Configuration parameters for console driver, ... */
 unsigned int BSP_bus_frequency;

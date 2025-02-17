@@ -81,6 +81,9 @@
 #endif
 	.globl _start_secondary_processor
 #endif
+#ifndef QORIQ_SECONDARY_CORES_INITIALIZED_BY_BOOTLOADER
+	.globl qoriq_boot_page
+#endif
 	.globl qoriq_machine_check_data
 	.globl bsp_exc_vector_base
 	.globl bsp_exc_vector_cacheable_base
@@ -464,7 +467,15 @@ _start_secondary_processor:
 	bl	.Linitearly
 
 	/* Get start stack */
+#ifdef QORIQ_SECONDARY_CORES_INITIALIZED_BY_BOOTLOADER
 	mr	START_STACK, r3
+#else
+	LA	START_STACK, _ISR_Stack_area_begin
+	LA	r3, _ISR_Stack_size
+	add	START_STACK, START_STACK, r3
+	add	START_STACK, START_STACK, r3
+	mr	r1, START_STACK
+#endif
 
 	bl	.Linitmore
 	bl	.Linitmmu
@@ -923,4 +934,61 @@ qoriq_machine_check_data:
 #endif
 #if QORIQ_CPU_COUNT > 24
 #error "unexpected QORIQ_CPU_COUNT"
+#endif
+
+#if defined(RTEMS_SMP) && \
+  !defined(QORIQ_SECONDARY_CORES_INITIALIZED_BY_BOOTLOADER)
+
+	.section ".bsp_exceptions.boot_page", "ax"
+
+qoriq_boot_page:
+
+	/* Make first 1GiB available through TLB1[1] */
+	LWI	r3, FSL_EIS_MAS0_TLBSEL | FSL_EIS_MAS0_ESEL(1)
+	mtspr	FSL_EIS_MAS0, r3
+	LWI	r3, FSL_EIS_MAS1_V | FSL_EIS_MAS1_TSIZE(FSL_EIS_MAS1_SIZE_1G)
+	mtspr	FSL_EIS_MAS1, r3
+	LWI	r3, FSL_EIS_MAS2_EPN(0) | FSL_EIS_MAS2_I
+	mtspr	FSL_EIS_MAS2, r3
+	LWI	r3, FSL_EIS_MAS3_SR | FSL_EIS_MAS3_SW | FSL_EIS_MAS3_SX
+	mtspr	FSL_EIS_MAS3, r3
+	li	r3, 0
+	mtspr	FSL_EIS_MAS7, r3
+	isync
+	msync
+	tlbwe
+	isync
+
+	/* Enable time base */
+	mfspr	r3, HID0
+	ori	r3, r3, 0x4000
+	mtspr	HID0, r3
+
+	/* Set boot status and control pointer */
+	LA	r4, .Lboot_control_and_status
+
+	/* Initialize time base */
+	lwz	r3, 4(r4)
+	mtspr	TBWL, r3
+	lwz	r3, 8(r4)
+	mtspr	TBWU, r3
+
+	/* Mark core 1 as ready */
+	LWI	r3, 0x12345678
+	stw	r4, 12(r4)
+
+	/* Continue with the secondary start */
+	lwz	r5, 0(r4)
+	mtctr	r5
+	bctr
+
+	.zero 0x0f00 - (. - qoriq_boot_page)
+
+.Lboot_control_and_status:
+
+	.long	_start_secondary_processor
+
+	.zero 0x0ffc - (. - qoriq_boot_page)
+
+	b	qoriq_boot_page
 #endif
