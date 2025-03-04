@@ -119,6 +119,15 @@ void qoriq_tlb1_apply_adjustments(
 
 void qoriq_mmu_fixed_config(void);
 
+void qoriq_tlb0_write(
+	int esel,
+	uint32_t mas1,
+	uint32_t mas2,
+	uint32_t mas3,
+	uint32_t mas7,
+	uintptr_t ea
+);
+
 void qoriq_tlb1_write(
 	int esel,
 	uint32_t mas1,
