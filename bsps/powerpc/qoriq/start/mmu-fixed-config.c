@@ -135,11 +135,60 @@ void TEXT qoriq_tlb1_apply_adjustments(
 	}
 }
 
+static void TEXT qoriq_mmu_config_tlb0(void)
+{
+	uintptr_t begin;
+	size_t i;
+
+	/* The TLB0 can cover 2MiB, it is not fully used below */
+	begin = 0x00100000;
+
+	/* First 32KiB for cache inhibited exception entries */
+	for (i = 0; i < 8; ++i) {
+		qoriq_tlb0_write(
+			0,
+			0,
+			FSL_EIS_MAS2_I,
+			FSL_EIS_MAS3_SX,
+			0,
+			begin
+		);
+		begin += 4096;
+	}
+
+	/* Second 32KiB for cacheable exception entries */
+	for (i = 0; i < 8; ++i) {
+		qoriq_tlb0_write(
+			0,
+			0,
+			0,
+			FSL_EIS_MAS3_SX,
+			0,
+			begin
+		);
+		begin += 4096;
+	}
+
+	/* Data for machine check handling (cache inhibited) */
+	for (i = 0; i < QORIQ_CPU_COUNT; ++i) {
+		qoriq_tlb0_write(
+			0,
+			0,
+			FSL_EIS_MAS2_I,
+			FSL_EIS_MAS3_SR | FSL_EIS_MAS3_SW,
+			0,
+			begin
+		);
+		begin += 4096;
+	}
+}
+
 void TEXT qoriq_mmu_fixed_config(void)
 {
 	qoriq_tlb1_entry *e;
 	size_t i;
 
+	qoriq_mmu_config_tlb0();
 	qoriq_tlb1_apply_adjustments(
 		tlb1_adjustments,
 		RTEMS_ARRAY_SIZE(tlb1_adjustments)
