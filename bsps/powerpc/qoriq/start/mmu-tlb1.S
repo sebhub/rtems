@@ -37,21 +37,39 @@
 
 #include <libcpu/powerpc-utility.h>
 
+	.global qoriq_tlb0_write
 	.global qoriq_tlb1_write
 	.global qoriq_tlb1_invalidate
 	.global qoriq_tlb1_invalidate_all_by_ts
 
 	.section ".bsp_start_text", "ax"
 
+	/*
+	 * r3: esel
+	 * r4: mas1
+	 * r5: mas2
+	 * r6: mas3
+	 * r7: mas7
+	 * r8: ea
+	 * r9: tsize
+	 */
+
+qoriq_tlb0_write:
+	rlwinm	r3, r3, 16, 10, 15
+	li	r9, FSL_EIS_MAS1_SIZE_4K
+	b	.Ltlb_write
+
 qoriq_tlb1_write:
 	rlwinm	r3, r3, 16, 10, 15
+	oris	r3, r3, 0x1000
+
+.Ltlb_write:
+	mtspr	FSL_EIS_MAS0, r3
 #ifdef __powerpc64__
 	rldicr	r8, r8, 0, 51
 #else
 	rlwinm	r8, r8, 0, 0, 19
 #endif
-	oris	r3, r3, 0x1000
-	mtspr	FSL_EIS_MAS0, r3
 	oris	r4, r4, 0xc000
 	rlwinm	r9, r9, 8, 20, 23
 	or	r9, r4, r9
