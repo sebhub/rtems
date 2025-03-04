@@ -373,71 +373,72 @@ _start_secondary_processor:
 	.section ".bsp_start_text", "ax"
 	.align 4
 bsp_exc_vector_base:
-	/* Critical input */
+
+	/* Critical input (IVOR0) */
 	PPC_REG_STORE_UPDATE	r1, -EXC_GENERIC_SIZE(r1)
 	PPC_REG_STORE	r3, GPR3_OFFSET(r1)
 	li	r3, 0
 	b	ppc_exc_fatal_critical
 	START_NOP_FOR_LINKER_TOC_POINTER_RESTORE
-	/* Machine check */
+	/* Machine check (IVOR1) */
 	PPC_REG_STORE_UPDATE	r1, -EXC_GENERIC_SIZE(r1)
 	PPC_REG_STORE	r3, GPR3_OFFSET(r1)
 	li	r3, 1
 	b	ppc_exc_fatal_machine_check
 	START_NOP_FOR_LINKER_TOC_POINTER_RESTORE
-	/* Data storage */
+	/* Data storage (IVOR2) */
 	PPC_REG_STORE_UPDATE	r1, -EXC_GENERIC_SIZE(r1)
 	PPC_REG_STORE	r3, GPR3_OFFSET(r1)
 	li	r3, 2
 	b	ppc_exc_fatal_normal
 	START_NOP_FOR_LINKER_TOC_POINTER_RESTORE
-	/* Instruction storage */
+	/* Instruction storage (IVOR3) */
 	PPC_REG_STORE_UPDATE	r1, -EXC_GENERIC_SIZE(r1)
 	PPC_REG_STORE	r3, GPR3_OFFSET(r1)
 	li	r3, 3
 	b	ppc_exc_fatal_normal
 	START_NOP_FOR_LINKER_TOC_POINTER_RESTORE
-	/* External input */
+	/* External input (IVOR4) */
 	PPC_REG_STORE_UPDATE	r1, -PPC_EXC_INTERRUPT_FRAME_SIZE(r1)
 	PPC_REG_STORE	r3, PPC_EXC_GPR3_PROLOGUE_OFFSET(r1)
 	li	r3, 4
 	b	ppc_exc_interrupt
 	START_NOP_FOR_LINKER_TOC_POINTER_RESTORE
-	/* Alignment */
+	/* Alignment (IVOR5) */
 	PPC_REG_STORE_UPDATE	r1, -EXC_GENERIC_SIZE(r1)
 	PPC_REG_STORE	r3, GPR3_OFFSET(r1)
 	li	r3, 5
 	b	ppc_exc_fatal_normal
 	START_NOP_FOR_LINKER_TOC_POINTER_RESTORE
-	/* Program */
+	/* Program (IVOR6) */
 	PPC_REG_STORE_UPDATE	r1, -EXC_GENERIC_SIZE(r1)
 	PPC_REG_STORE	r3, GPR3_OFFSET(r1)
 	li	r3, 6
 	b	ppc_exc_fatal_normal
 	START_NOP_FOR_LINKER_TOC_POINTER_RESTORE
 #ifdef __PPC_CPU_E6500__
-	/* Floating-point unavailable */
+	/* Floating-point unavailable (IVOR7) */
 	PPC_REG_STORE_UPDATE	r1, -EXC_GENERIC_SIZE(r1)
 	PPC_REG_STORE	r3, GPR3_OFFSET(r1)
 	li	r3, 7
 	b	ppc_exc_fatal_normal
 	START_NOP_FOR_LINKER_TOC_POINTER_RESTORE
 #endif
-	/* System call */
+	/* System call (IVOR8) */
 	PPC_REG_STORE_UPDATE	r1, -EXC_GENERIC_SIZE(r1)
 	PPC_REG_STORE	r3, GPR3_OFFSET(r1)
 	li	r3, 8
 	b	ppc_exc_fatal_normal
 	START_NOP_FOR_LINKER_TOC_POINTER_RESTORE
 #ifdef __PPC_CPU_E6500__
-	/* APU unavailable */
+	/* APU unavailable (IVOR9) */
 	PPC_REG_STORE_UPDATE	r1, -EXC_GENERIC_SIZE(r1)
 	PPC_REG_STORE	r3, GPR3_OFFSET(r1)
 	li	r3, 9
 	b	ppc_exc_fatal_normal
 	START_NOP_FOR_LINKER_TOC_POINTER_RESTORE
 #endif
-	/* Decrementer */
+	/* Decrementer (IVOR10) */
 #ifdef QORIQ_IS_HYPERVISOR_GUEST
 	PPC_REG_STORE_UPDATE	r1, -PPC_EXC_INTERRUPT_FRAME_SIZE(r1)
 	PPC_REG_STORE	r3, PPC_EXC_GPR3_PROLOGUE_OFFSET(r1)
@@ -450,64 +451,64 @@ bsp_exc_vector_base:
 	b	ppc_exc_fatal_normal
 #endif
 	START_NOP_FOR_LINKER_TOC_POINTER_RESTORE
-	/* Fixed-interval timer interrupt */
+	/* Fixed-interval timer interrupt (IVOR11) */
 	PPC_REG_STORE_UPDATE	r1, -EXC_GENERIC_SIZE(r1)
 	PPC_REG_STORE	r3, GPR3_OFFSET(r1)
 	li	r3, 11
 	b	ppc_exc_fatal_normal
 	START_NOP_FOR_LINKER_TOC_POINTER_RESTORE
-	/* Watchdog timer interrupt */
+	/* Watchdog timer interrupt (IVOR12) */
 	PPC_REG_STORE_UPDATE	r1, -EXC_GENERIC_SIZE(r1)
 	PPC_REG_STORE	r3, GPR3_OFFSET(r1)
 	li	r3, 12
 	b	ppc_exc_fatal_critical
 	START_NOP_FOR_LINKER_TOC_POINTER_RESTORE
-	/* Data TLB error */
+	/* Data TLB error (IVOR13) */
 	PPC_REG_STORE_UPDATE	r1, -EXC_GENERIC_SIZE(r1)
 	PPC_REG_STORE	r3, GPR3_OFFSET(r1)
 	li	r3, 13
 	b	ppc_exc_fatal_normal
 	START_NOP_FOR_LINKER_TOC_POINTER_RESTORE
-	/* Instruction TLB error */
+	/* Instruction TLB error (IVOR14) */
 	PPC_REG_STORE_UPDATE	r1, -EXC_GENERIC_SIZE(r1)
 	PPC_REG_STORE	r3, GPR3_OFFSET(r1)
 	li	r3, 14
 	b	ppc_exc_fatal_normal
 	START_NOP_FOR_LINKER_TOC_POINTER_RESTORE
-	/* Debug */
+	/* Debug (IVOR15) */
 	PPC_REG_STORE_UPDATE	r1, -EXC_GENERIC_SIZE(r1)
 	PPC_REG_STORE	r3, GPR3_OFFSET(r1)
 	li	r3, 15
 	b	ppc_exc_fatal_debug
 	START_NOP_FOR_LINKER_TOC_POINTER_RESTORE
-	/* SPE APU unavailable or AltiVec unavailable */
+	/* SPE APU unavailable or AltiVec unavailable (IVOR32) */
 	PPC_REG_STORE_UPDATE	r1, -EXC_GENERIC_SIZE(r1)
 	PPC_REG_STORE	r3, GPR3_OFFSET(r1)
 	li	r3, 32
 	b	ppc_exc_fatal_normal
 	START_NOP_FOR_LINKER_TOC_POINTER_RESTORE
-	/* SPE floating-point data exception or AltiVec assist */
+	/* SPE floating-point data exception or AltiVec assist (IVOR33) */
 	PPC_REG_STORE_UPDATE	r1, -EXC_GENERIC_SIZE(r1)
 	PPC_REG_STORE	r3, GPR3_OFFSET(r1)
 	li	r3, 33
 	b	ppc_exc_fatal_normal
 	START_NOP_FOR_LINKER_TOC_POINTER_RESTORE
 #ifndef __PPC_CPU_E6500__
-	/* SPE floating-point round exception */
+	/* SPE floating-point round exception (IVOR34) */
 	PPC_REG_STORE_UPDATE	r1, -EXC_GENERIC_SIZE(r1)
 	PPC_REG_STORE	r3, GPR3_OFFSET(r1)
 	li	r3, 34
 	b	ppc_exc_fatal_normal
 	START_NOP_FOR_LINKER_TOC_POINTER_RESTORE
 #endif
-	/* Performance monitor */
+	/* Performance monitor (IVOR35) */
 	PPC_REG_STORE_UPDATE	r1, -EXC_GENERIC_SIZE(r1)
 	PPC_REG_STORE	r3, GPR3_OFFSET(r1)
 	li	r3, 35
 	b	ppc_exc_fatal_normal
 	START_NOP_FOR_LINKER_TOC_POINTER_RESTORE
 #ifdef __PPC_CPU_E6500__
-	/* Processor doorbell interrupt */
+	/* Processor doorbell interrupt (IVOR36) */
 #if defined(QORIQ_IS_HYPERVISOR_GUEST) && defined(RTEMS_SMP)
 	PPC_REG_STORE_UPDATE	r1, -PPC_EXC_INTERRUPT_FRAME_SIZE(r1)
 	PPC_REG_STORE	r3, PPC_EXC_GPR3_PROLOGUE_OFFSET(r1)
@@ -520,37 +521,37 @@ bsp_exc_vector_base:
 	b	ppc_exc_fatal_normal
 #endif
 	START_NOP_FOR_LINKER_TOC_POINTER_RESTORE
-	/* Processor doorbell critical interrupt */
+	/* Processor doorbell critical interrupt (IVOR37) */
 	PPC_REG_STORE_UPDATE	r1, -EXC_GENERIC_SIZE(r1)
 	PPC_REG_STORE	r3, GPR3_OFFSET(r1)
 	li	r3, 37
 	b	ppc_exc_fatal_critical
 	START_NOP_FOR_LINKER_TOC_POINTER_RESTORE
-	/* Guest processor doorbell */
+	/* Guest processor doorbell (IVOR38) */
 	PPC_REG_STORE_UPDATE	r1, -EXC_GENERIC_SIZE(r1)
 	PPC_REG_STORE	r3, GPR3_OFFSET(r1)
 	li	r3, 38
 	b	ppc_exc_fatal_normal
 	START_NOP_FOR_LINKER_TOC_POINTER_RESTORE
-	/* Guest processor doorbell critical and machine check */
+	/* Guest processor doorbell critical and machine check (IVOR39) */
 	PPC_REG_STORE_UPDATE	r1, -EXC_GENERIC_SIZE(r1)
 	PPC_REG_STORE	r3, GPR3_OFFSET(r1)
 	li	r3, 39
 	b	ppc_exc_fatal_critical
 	START_NOP_FOR_LINKER_TOC_POINTER_RESTORE
-	/* Hypervisor system call */
+	/* Hypervisor system call (IVOR40) */
 	PPC_REG_STORE_UPDATE	r1, -EXC_GENERIC_SIZE(r1)
 	PPC_REG_STORE	r3, GPR3_OFFSET(r1)
 	li	r3, 40
 	b	ppc_exc_fatal_normal
 	START_NOP_FOR_LINKER_TOC_POINTER_RESTORE
-	/* Hypervisor privilege */
+	/* Hypervisor privilege (IVOR41) */
 	PPC_REG_STORE_UPDATE	r1, -EXC_GENERIC_SIZE(r1)
 	PPC_REG_STORE	r3, GPR3_OFFSET(r1)
 	li	r3, 41
 	b	ppc_exc_fatal_normal
 	START_NOP_FOR_LINKER_TOC_POINTER_RESTORE
-	/* LRAT error */
+	/* LRAT error (IVOR42) */
 	PPC_REG_STORE_UPDATE	r1, -EXC_GENERIC_SIZE(r1)
 	PPC_REG_STORE	r3, GPR3_OFFSET(r1)
 	li	r3, 42
