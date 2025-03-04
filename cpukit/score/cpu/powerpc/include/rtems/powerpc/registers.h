@@ -436,6 +436,7 @@ lidate */
 #define BOOKE_MCSRR0   570   /* Machine Check Save/Restore Register 0     */
 #define BOOKE_MCSRR1   571   /* Machine Check Save/Restore Register 1     */
 #define BOOKE_MCSR     572   /* Machine Check Status Register             */
+#define BOOKE_MCAR     573   /* Machine Check Address Register            */
 #define BOOKE_DSRR0    574   /* Debug Save/Restore Register 0             */
 #define BOOKE_DSRR1    575   /* Debug Save/Restore Register 1             */
 
@@ -554,6 +555,17 @@ lidate */
 #define FSL_EIS_MAS1_TS (1 << (63 - 51))
 #define FSL_EIS_MAS1_TSIZE(n) ((0xf & (n)) << (63 - 55))
 #define FSL_EIS_MAS1_TSIZE_GET(n) (((n)>>(63 - 55)) & 0xf)
+#define FSL_EIS_MAS1_SIZE_4K 1
+#define FSL_EIS_MAS1_SIZE_16K 2
+#define FSL_EIS_MAS1_SIZE_64K 3
+#define FSL_EIS_MAS1_SIZE_256K 4
+#define FSL_EIS_MAS1_SIZE_1M 5
+#define FSL_EIS_MAS1_SIZE_4M 6
+#define FSL_EIS_MAS1_SIZE_16M 7
+#define FSL_EIS_MAS1_SIZE_64M 8
+#define FSL_EIS_MAS1_SIZE_256M 9
+#define FSL_EIS_MAS1_SIZE_1G 10
+#define FSL_EIS_MAS1_SIZE_4G 11
 
 #define FSL_EIS_MAS2 626
 #define FSL_EIS_MAS2_EPN(n) ((((1 << 21) - 1)&(n)) << (63-51))
@@ -623,9 +635,23 @@ lidate */
 #define FSL_EIS_L1CFG0 515
 #define FSL_EIS_L1CFG1 516
 #define FSL_EIS_L1CSR0 1010
+#define FSL_EIS_L1CSR0_CE (1 << (63 - 63))
 #define FSL_EIS_L1CSR0_CFI (1 << (63 - 62))
+#define FSL_EIS_L1CSR0_CLFR (1 << (63 - 55))
+#define FSL_EIS_L1CSR0_CLO (1 << (63 - 54))
+#define FSL_EIS_L1CSR0_CUL (1 << (63 - 53))
+#define FSL_EIS_L1CSR0_CSLC (1 << (63 - 52))
+#define FSL_EIS_L1CSR0_CPI (1 << (63 - 48))
+#define FSL_EIS_L1CSR0_CPE (1 << (63 - 47))
 #define FSL_EIS_L1CSR1 1011
+#define FSL_EIS_L1CSR1_ICE (1 << (63 - 63))
 #define FSL_EIS_L1CSR1_ICFI (1 << (63 - 62))
+#define FSL_EIS_L1CSR1_ICLFR (1 << (63 - 55))
+#define FSL_EIS_L1CSR1_ICLO (1 << (63 - 54))
+#define FSL_EIS_L1CSR1_ICUL (1 << (63 - 53))
+#define FSL_EIS_L1CSR1_ICSLC (1 << (63 - 52))
+#define FSL_EIS_L1CSR1_ICPI (1 << (63 - 48))
+#define FSL_EIS_L1CSR1_ICPE (1 << (63 - 47))
 
 /* Freescale Book E Implementation Standards (EIS): L2 Cache */
 
