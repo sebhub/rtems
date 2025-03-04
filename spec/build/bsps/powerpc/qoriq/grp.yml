@@ -91,6 +91,8 @@ links:
 - role: build-dependency
   uid: optmsr
 - role: build-dependency
+  uid: optmmufixed
+- role: build-dependency
   uid: optspefscr
 - role: build-dependency
   uid: optthrdcnt

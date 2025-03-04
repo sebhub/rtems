@@ -47,6 +47,8 @@
 #include <rtems/config.h>
 #include <rtems/sysinit.h>
 
+#ifndef QORIQ_USE_FIXED_MMU_CONFIG
+
 #define TEXT __attribute__((section(".bsp_start_text")))
 #define DATA __attribute__((section(".bsp_start_data")))
 
@@ -467,3 +469,5 @@ const Memory_Information *_Memory_Get(void)
 {
 	return &_Memory_Information;
 }
+
+#endif /* QORIQ_USE_FIXED_MMU_CONFIG */
