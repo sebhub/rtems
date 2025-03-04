@@ -9,7 +9,7 @@
  */
 
 /*
- * Copyright (C) 2011, 2015 embedded brains GmbH & Co. KG
+ * Copyright (C) 2011, 2025 embedded brains GmbH & Co. KG
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -36,8 +36,9 @@
 #ifndef LIBBSP_POWERPC_QORIQ_MMU_H
 #define LIBBSP_POWERPC_QORIQ_MMU_H
 
-#include <stdint.h>
 #include <stdbool.h>
+#include <stddef.h>
+#include <stdint.h>
 
 #include <bspopts.h>
 
@@ -94,6 +95,29 @@ void qoriq_mmu_change_perm(uint32_t test, uint32_t set, uint32_t clear);
 int qoriq_mmu_find_free_tlb1_entry(void);
 
 void qoriq_mmu_config(bool boot_processor, int first_tlb, int scratch_tlb);
+
+typedef struct {
+	uintptr_t begin;
+	int tsize;
+	uint32_t mas2;
+	uint32_t mas3;
+} qoriq_tlb1_entry;
+
+extern qoriq_tlb1_entry qoriq_tlb1_config[QORIQ_TLB1_ENTRY_COUNT];
+
+typedef struct {
+	uintptr_t begin;
+	uintptr_t end;
+	uint32_t mas2;
+	uint32_t mas3;
+} qoriq_tlb1_adjustment;
+
+void qoriq_tlb1_apply_adjustments(
+	const qoriq_tlb1_adjustment *adjustments,
+	size_t count
+);
+
+void qoriq_mmu_fixed_config(void);
 
 void qoriq_tlb1_write(
 	int esel,

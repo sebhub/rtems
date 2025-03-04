@@ -260,6 +260,10 @@ _start:
 	mflr	SAVED_LINK_REGISTER
 
 	/* Configure MMU */
+#ifdef QORIQ_USE_FIXED_MMU_CONFIG
+	bl	qoriq_mmu_fixed_config
+	PPC64_NOP_FOR_LINKER_TOC_POINTER_RESTORE
+#else
 	li	r4, FIRST_TLB
 	li	r5, SCRATCH_TLB
 	bl	qoriq_mmu_config
@@ -269,6 +273,7 @@ _start:
 	li	r3, SCRATCH_TLB
 	bl	qoriq_tlb1_invalidate
 	PPC64_NOP_FOR_LINKER_TOC_POINTER_RESTORE
+#endif
 
 	mtlr	SAVED_LINK_REGISTER
 	blr

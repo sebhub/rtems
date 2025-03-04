@@ -36,6 +36,8 @@
 #include <bsp/mmu.h>
 #include <libcpu/powerpc-utility.h>
 
+#ifndef QORIQ_USE_FIXED_MMU_CONFIG
+
 #define TEXT __attribute__((section(".bsp_start_text")))
 
 static uintptr_t TEXT power_of_two(uintptr_t val)
@@ -433,3 +435,5 @@ void qoriq_mmu_adjust_and_write_to_tlb1(
 	qoriq_mmu_partition(&context, 1);
 	qoriq_mmu_write_to_tlb1(&context, tlb);
 }
+
+#endif /* QORIQ_USE_FIXED_MMU_CONFIG */
