@@ -70,6 +70,13 @@ SECTIONS {
 		. = ALIGN (bsp_section_xbarrier_align);
 	} > REGION_TEXT AT > REGION_TEXT
 
+	.exceptions : ALIGN_WITH_INPUT {
+		bsp_section_exceptions_begin = .;
+		KEEP (*(.bsp_exceptions*))
+		bsp_section_exceptions_end = .;
+	} > REGION_EXCEPTIONS AT > REGION_EXCEPTIONS
+	bsp_section_exceptions_size = bsp_section_exceptions_end - bsp_section_exceptions_begin;
+
 	.text : ALIGN_WITH_INPUT {
 		bsp_section_text_begin = .;
 		*(SORT(.bsp_text*))
