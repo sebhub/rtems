@@ -57,6 +57,7 @@
 #endif
 
 LINKER_SYMBOL(bsp_exc_vector_base);
+LINKER_SYMBOL(bsp_exc_vector_cacheable_base);
 
 qoriq_start_spin_table *
 qoriq_start_spin_table_addr[QORIQ_CPU_COUNT / QORIQ_THREAD_COUNT];
@@ -130,8 +131,10 @@ void qoriq_initialize_exceptions(void *interrupt_stack_begin)
 
   addr = (uintptr_t) bsp_exc_vector_base;
   ppc_mtivpr((void *) addr);
-  MTIVOR(BOOKE_IVOR0,  addr);
   MTIVOR(BOOKE_IVOR1,  addr);
+
+  addr = (uintptr_t) bsp_exc_vector_cacheable_base;
+  MTIVOR(BOOKE_IVOR0,  addr);
   MTIVOR(BOOKE_IVOR2,  addr);
   MTIVOR(BOOKE_IVOR3,  addr);
   MTIVOR(BOOKE_IVOR4,  addr);

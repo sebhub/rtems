@@ -60,7 +60,9 @@
 #endif
 	.globl _start_secondary_processor
 #endif
+	.globl _qoriq_machine_check_data
 	.globl bsp_exc_vector_base
+	.globl bsp_exc_vector_cacheable_base
 
 	.section ".bsp_start_text", "ax"
 
@@ -369,22 +371,28 @@ _start_secondary_processor:
 #define START_NOP_FOR_LINKER_TOC_POINTER_RESTORE
 #endif
 
-	/* Exception vector prologues area */
-	.section ".bsp_start_text", "ax"
-	.align 4
+	/* Exception handling and boot area */
+
+	.section ".bsp_exceptions.vector", "ax"
+
+	.balign 0x10000
 bsp_exc_vector_base:
+
+	/* Machine check (IVOR1) */
+	PPC_REG_STORE_UPDATE	r1, -EXC_GENERIC_SIZE(r1)
+	PPC_REG_STORE	r3, GPR3_OFFSET(r1)
+	li	r3, 1
+	b	ppc_exc_fatal_machine_check
+	START_NOP_FOR_LINKER_TOC_POINTER_RESTORE
+
+	.align 15
+bsp_exc_vector_cacheable_base:
 
 	/* Critical input (IVOR0) */
 	PPC_REG_STORE_UPDATE	r1, -EXC_GENERIC_SIZE(r1)
 	PPC_REG_STORE	r3, GPR3_OFFSET(r1)
 	li	r3, 0
 	b	ppc_exc_fatal_critical
-	START_NOP_FOR_LINKER_TOC_POINTER_RESTORE
-	/* Machine check (IVOR1) */
-	PPC_REG_STORE_UPDATE	r1, -EXC_GENERIC_SIZE(r1)
-	PPC_REG_STORE	r3, GPR3_OFFSET(r1)
-	li	r3, 1
-	b	ppc_exc_fatal_machine_check
 	START_NOP_FOR_LINKER_TOC_POINTER_RESTORE
 	/* Data storage (IVOR2) */
 	PPC_REG_STORE_UPDATE	r1, -EXC_GENERIC_SIZE(r1)
@@ -561,3 +569,12 @@ bsp_exc_vector_base:
 
 /* Symbol provided for debugging and tracing */
 bsp_exc_vector_end:
+
+	.section ".bsp_exceptions.machine_check", "aw"
+
+	.balign 0x10000
+
+_qoriq_machine_check_data:
+
+	/* Zero fill machine check data areas */
+	.zero 0x1000 * QORIQ_CPU_COUNT

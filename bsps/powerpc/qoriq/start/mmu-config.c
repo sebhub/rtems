@@ -47,6 +47,9 @@
 #include <rtems/config.h>
 #include <rtems/sysinit.h>
 
+LINKER_SYMBOL(bsp_section_exceptions_begin);
+LINKER_SYMBOL(bsp_section_exceptions_size);
+
 #ifndef QORIQ_USE_FIXED_MMU_CONFIG
 
 #define TEXT __attribute__((section(".bsp_start_text")))
@@ -136,6 +139,9 @@ static entry DATA config[] = {
 		},
 	#endif
 	ENTRY_X(bsp_section_start_begin, bsp_section_start_size),
+	ENTRY_R(bsp_section_start_begin, bsp_section_start_size),
+	ENTRY_X(bsp_section_exceptions_begin, bsp_section_exceptions_size),
+	ENTRY_RW(bsp_section_exceptions_begin, bsp_section_exceptions_size),
 	ENTRY_R(bsp_section_fast_text_load_begin, bsp_section_fast_text_size),
 	ENTRY_X(bsp_section_fast_text_begin, bsp_section_fast_text_size),
 	ENTRY_X(bsp_section_text_begin, bsp_section_text_size),
