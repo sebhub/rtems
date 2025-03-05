@@ -997,11 +997,18 @@ void _CPU_Context_restore_fp(
   void _CPU_SMP_Send_interrupt( uint32_t target_processor_index );
 #endif
 
+typedef enum {
+  PPC_EXC_TYPE_EXTERNAL_INPUT,
+  PPC_EXC_TYPE_CRITICAL_INPUT,
+  PPC_EXC_TYPE_MACHINE_CHECK,
+  PPC_EXC_TYPE_DEBUG
+} PPC_Exception_type;
+
 typedef struct {
   uintptr_t EXC_SRR0;
   uintptr_t EXC_SRR1;
   uint32_t _EXC_number;
-  uint32_t RESERVED_FOR_ALIGNMENT_0;
+  uint32_t EXC_TYPE;
   uint32_t EXC_CR;
   uint32_t EXC_XER;
   uintptr_t EXC_CTR;
