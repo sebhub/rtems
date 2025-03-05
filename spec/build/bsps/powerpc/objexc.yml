@@ -23,4 +23,5 @@ source:
 - bsps/powerpc/shared/exceptions/ppc_exc_naked.S
 - bsps/powerpc/shared/exceptions/ppc_exc_print.c
 - bsps/powerpc/shared/exceptions/ppc_exc_prologue.c
+- bsps/powerpc/shared/exceptions/ppc_exc_resume.S
 type: build

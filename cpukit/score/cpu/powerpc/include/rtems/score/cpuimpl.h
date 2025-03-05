@@ -65,7 +65,8 @@
 #define SRR1_FRAME_OFFSET (SRR0_FRAME_OFFSET + PPC_REG_SIZE)
 #define EXCEPTION_NUMBER_OFFSET (SRR1_FRAME_OFFSET + PPC_REG_SIZE)
 #define PPC_EXC_INTERRUPT_ENTRY_INSTANT_OFFSET (EXCEPTION_NUMBER_OFFSET + 4)
-#define EXC_CR_OFFSET (EXCEPTION_NUMBER_OFFSET + 8)
+#define EXC_TYPE_OFFSET (EXCEPTION_NUMBER_OFFSET + 4)
+#define EXC_CR_OFFSET (EXC_TYPE_OFFSET + 4)
 #define EXC_XER_OFFSET (EXC_CR_OFFSET + 4)
 #define EXC_CTR_OFFSET (EXC_XER_OFFSET + 4)
 #define EXC_LR_OFFSET (EXC_CTR_OFFSET + PPC_REG_SIZE)
@@ -312,6 +313,8 @@ static inline void *_CPU_Get_TLS_thread_pointer(
 {
   return (void *) ppc_get_context( context )->tp;
 }
+
+RTEMS_NO_RETURN void _CPU_Exception_resume( const CPU_Exception_frame *frame );
 
 #ifdef __cplusplus
 }
