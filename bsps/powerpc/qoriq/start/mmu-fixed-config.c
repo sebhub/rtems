@@ -162,7 +162,7 @@ static void TEXT qoriq_mmu_config_tlb0(void)
 			0,
 			0,
 			0,
-			FSL_EIS_MAS3_SX,
+			FSL_EIS_MAS3_SR | FSL_EIS_MAS3_SX,
 			0,
 			begin
 		);
