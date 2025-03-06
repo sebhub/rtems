@@ -126,7 +126,6 @@ _start:
 	stwu	r4, 4(r3)
 	bdnz	.Lnull_area_setup_loop
 
-	li	r3, 1
 	bl	.Linitmmu
 
 	/* Clear SBSS */
@@ -354,7 +353,6 @@ _start_secondary_processor:
 	mr	START_STACK, r3
 
 	bl	.Linitmore
-	li	r3, 0
 	bl	.Linitmmu
 	mr	r3, CPU_SELF
 	b	bsp_start_on_secondary_processor
