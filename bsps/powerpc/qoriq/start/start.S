@@ -39,6 +39,7 @@
 
 #include <libcpu/powerpc-utility.h>
 
+#include <bsp/cache.h>
 #include <bsp/vectors.h>
 
 #if (QORIQ_INITIAL_MSR & MSR_FP) != 0
@@ -89,6 +90,10 @@
 _start:
 	mr	FDT_REGISTER, r3
 	bl	.Linitearly
+
+#ifdef QORIQ_INITIALIZE_CACHES
+	INITIALIZE_L2_CACHE	r3, r4, r5
+#endif
 
 	/* Get start stack */
 	LA	START_STACK, _ISR_Stack_area_begin
@@ -191,6 +196,13 @@ _start:
 	isync
 #endif
 
+#ifdef QORIQ_INITIAL_BUCSR
+	/* BUCSR initialization */
+	LWI	r0, QORIQ_INITIAL_BUCSR
+	mtspr	FSL_EIS_BUCSR, r0
+	isync
+#endif
+
 	/* Disable decrementer */
 	mfspr	r0, BOOKE_TCR
 	LWI	r4, BOOKE_TCR_DIE
@@ -201,13 +213,6 @@ _start:
 	/* SPEFSCR initialization */
 	LWI	r0, QORIQ_INITIAL_SPEFSCR
 	mtspr	FSL_EIS_SPEFSCR, r0
-#endif
-
-#ifdef QORIQ_INITIAL_BUCSR
-	/* BUCSR initialization */
-	LWI	r0, QORIQ_INITIAL_BUCSR
-	mtspr	FSL_EIS_BUCSR, r0
-	isync
 #endif
 
 #if defined(QORIQ_INITIAL_HID0) && !defined(QORIQ_IS_HYPERVISOR_GUEST)
@@ -232,6 +237,10 @@ _start:
 
 .Linitmore:
 	mflr	SAVED_LINK_REGISTER
+
+#ifdef QORIQ_INITIALIZE_CACHES
+	INITIALIZE_L1_INSTRUCTION_CACHE	r3
+#endif
 
 	/* Invalidate all TS1 MMU entries */
 	li	r3, 1
@@ -363,6 +372,10 @@ _start:
 	li	r3, SCRATCH_TLB
 	bl	qoriq_tlb1_invalidate
 	PPC64_NOP_FOR_LINKER_TOC_POINTER_RESTORE
+#endif
+
+#ifdef QORIQ_INITIALIZE_CACHES
+	INITIALIZE_L1_DATA_CACHE	r3
 #endif
 
 	mtlr	SAVED_LINK_REGISTER

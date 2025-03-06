@@ -18,6 +18,7 @@ install:
 - destination: ${BSP_INCLUDEDIR}/bsp
   source:
   - bsps/powerpc/qoriq/include/bsp/VMEConfig.h
+  - bsps/powerpc/qoriq/include/bsp/cache.h
   - bsps/powerpc/qoriq/include/bsp/intercom.h
   - bsps/powerpc/qoriq/include/bsp/irq.h
   - bsps/powerpc/qoriq/include/bsp/mmu.h
