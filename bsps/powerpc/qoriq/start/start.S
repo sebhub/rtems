@@ -116,11 +116,8 @@ _start:
 	LA	r5, bsp_section_data_size
 	bl	.Lcopy
 
-	/* NULL pointer access protection (only core 0 has to do this) */
-	mfspr	r3, BOOKE_PIR
-	cmpwi	r3, 0
-	bne	.Lnull_area_setup_done
-	LA	r3, bsp_section_start_begin
+	/* Initialize NULL pointer access protection area with "sc" instructions */
+	LA32	r3, bsp_section_start_begin
 	SHIFT_RIGHT_IMMEDIATE	r3, r3, 2
 	mtctr	r3
 	li	r3, -4
@@ -128,7 +125,6 @@ _start:
 .Lnull_area_setup_loop:
 	stwu	r4, 4(r3)
 	bdnz	.Lnull_area_setup_loop
-.Lnull_area_setup_done:
 
 	li	r3, 1
 	bl	.Linitmmu
