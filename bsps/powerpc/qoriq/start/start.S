@@ -59,6 +59,20 @@
 #define VECTOR_TABLE_ENTRY_SIZE 16
 #endif
 
+/*
+ * Each core/thread has its own 4KiB machine check area.  The usage is as
+ * follows:
+ *
+ * 000..003: machine check stack pointer
+ * 004..007: L1 instruction recoveries
+ * 008..00b: L1 data recoveries
+ * 00c..fff: machine check stack area
+ */
+.macro MACHINE_CHECK_DATA
+	.long	. + 0x1000 - EXC_GENERIC_SIZE - PPC_DEFAULT_CACHE_LINE_SIZE
+	.zero 0x0ffc
+.endm
+
 	.globl _start
 #ifdef RTEMS_SMP
 #if QORIQ_THREAD_COUNT > 1
@@ -66,7 +80,7 @@
 #endif
 	.globl _start_secondary_processor
 #endif
-	.globl _qoriq_machine_check_data
+	.globl qoriq_machine_check_data
 	.globl bsp_exc_vector_base
 	.globl bsp_exc_vector_cacheable_base
 
@@ -261,14 +275,6 @@ _start:
 	mtivpr	r3
 	mtspr	BOOKE_IVOR1, r3
 
-	/* Initialize the machine check stack pointer location */
-	mfspr	r3, BOOKE_PIR
-	slwi	r3, r3, 12
-	addis	r3, r3, (bsp_exc_vector_base + 0x10000)@h
-	addi	r4, r3, 0x1000 - EXC_GENERIC_SIZE
-	PPC_REG_STORE	r4, 0(r3)
-	PPC_REG_STORE	r0, 0(r4)
-
 	/* Initialize the cacheable exception vector offsets */
 	LA32	r3, bsp_exc_vector_cacheable_base
 	mtspr	BOOKE_IVOR0, r3
@@ -457,16 +463,182 @@ _start_secondary_processor:
 	.section ".bsp_exceptions.vector", "ax"
 
 	.balign 0x10000
+
 bsp_exc_vector_base:
 
 	/* Machine check (IVOR1) */
-	PPC_REG_STORE_UPDATE	r1, -EXC_GENERIC_SIZE(r1)
+
+	/* Use SPRG2 to save the stack pointer */
+	mtsprg	2, r1
+
+	/*
+	 * Get the machine check stack pointer for this processor.  Each
+	 * processor has a 4KiB read-write, cache inhibited data area for the
+	 * machine check handling.
+	 */
+	mfspr	r1, BOOKE_PIR
+	slwi	r1, r1, 12
+	addis	r1, r1, qoriq_machine_check_data@h
+	PPC_REG_LOAD	r1, 0(r1)
 	PPC_REG_STORE	r3, GPR3_OFFSET(r1)
+	mfspr	r3, BOOKE_PIR
+	PPC_REG_STORE	r4, GPR4_OFFSET(r1)
+	mfspr	r4, BOOKE_MCSR
+	PPC_REG_STORE	r5, GPR5_OFFSET(r1)
+	mfcr	r5
+	PPC_REG_STORE	r6, GPR6_OFFSET(r1)
+	PPC_REG_STORE	r5, EXC_CR_OFFSET(r1)
+	slwi	r3, r3, 12
+	addis	r3, r3, qoriq_machine_check_data@h
+
+	/* Is ICPERR? */
+	andis.	r5, r4, 0x4000
+	beq	.Lmachine_check_no_icperr
+
+	/*
+	 * Perform an L1 instruction cache parity error recovery.  Get the
+	 * machine check data area of this processor.  Invalidate the cache
+	 * line indicated by MCSRR0.  Increment the L1 instruction recovery
+	 * counter.  Return from the machine check interrupt.
+	 */
+	mfmcsrr0	r4
+	lwz	r5, 4(r3)
+	icbi	r0, r4
+	msync
+	addi	r5, r5, 1
+	stw	r5, 4(r3)
+	b	.Lmachine_check_return
+
+.Lmachine_check_no_icperr:
+
+	/* Is DCP_PERR? */
+	andis.	r5, r4, 0x2000
+	beq	.Lmachine_check_no_dcp_perr
+
+	/*
+	 * A Data Cache Push Parity Error (DCP_PERR) is not recoverable.  If it
+	 * happens, proceed to the fatal machine check handling.
+	 */
+	b	.Lmachine_check_fatal_error
+
+.Lmachine_check_no_dcp_perr:
+
+	/* Is DCPERR? */
+	andis.	r5, r4, 0x1000
+	beq	.Lmachine_check_fatal_error
+
+	/* This is a nested DCPERR, just return */
+	addi	r4, r3, 0x1000 - EXC_GENERIC_SIZE - PPC_DEFAULT_CACHE_LINE_SIZE
+	cmpw	r1, r4
+	bne	.Lmachine_check_return
+
+	/*
+	 * A Data Cache Parity Error (DCPERR) is recoverable if the error is on
+	 * a non-modified line.  To check this, the machine check handling has
+	 * to be re-entrant to a 2-deep level.
+	 */
+
+	/* Save machine check context */
+	mfsprg	r4, 2
+	mfmcsrr0	r5
+	mfmcsrr1	r6
+	PPC_REG_STORE	r4, GPR1_OFFSET(r1)
+	mfctr	r4
+	PPC_REG_STORE	r5, SRR0_FRAME_OFFSET(r1)
+	PPC_REG_STORE	r6, SRR1_FRAME_OFFSET(r1)
+	PPC_REG_STORE	r4, EXC_CTR_OFFSET(r1)
+	subi	r1, r1, EXC_GENERIC_SIZE
+	PPC_REG_STORE	r1, 0(r3)
+
+	/* Enable data cache flush assist HID0[DCFA] */
+	mfspr	r4, HID0
+	ori	r4, r4, 0x40
+	mtspr	HID0, r4
+
+	/* Enable MSR[ME] */
+	mfmsr	r4
+	ori	r5, r4, MSR_ME
+	mtmsr	r5
+	isync
+
+	/* Load the L1 data cache */
+	li	r5, 8 * 128
+	mtctr	r5
+	LA	r5, bsp_exc_vector_cacheable_base
+
+.Lmachine_check_l1_load:
+
+	lwz	r6, 0(r5)
+	addi	r5, r5, 32
+
+	bdnz	.Lmachine_check_l1_load
+
+	/* Flash invalidate the L1 data cache */
+
+	mfspr	r5, FSL_EIS_L1CSR0
+	ori	r5, r5, FSL_EIS_L1CSR0_CFI
+	msync
+	isync
+	mtspr	FSL_EIS_L1CSR0, r5
+	isync
+
+.Lmachine_check_wait_for_cfi_cleared:
+
+	mfspr	r5, FSL_EIS_L1CSR0
+	andi.	r5, r5, FSL_EIS_L1CSR0_CFI
+	bne	.Lmachine_check_wait_for_cfi_cleared
+
+	/* Disable MSR[ME] */
+	mtmsr	r4
+	isync
+
+	/* Disable data cache flush assist HID0[DCFA] */
+	mfspr	r4, HID0
+	rlwinm  r4, r4, 0, 26, 24
+	mtspr	HID0, r4
+
+	/* Restore machine check context */
+	addi	r1, r1, EXC_GENERIC_SIZE
+	PPC_REG_STORE	r1, 0(r3)
+	PPC_REG_LOAD	r4, GPR1_OFFSET(r1)
+	PPC_REG_LOAD	r5, SRR0_FRAME_OFFSET(r1)
+	PPC_REG_LOAD	r6, SRR1_FRAME_OFFSET(r1)
+	mtsprg	2, r4
+	PPC_REG_LOAD	r4, EXC_CTR_OFFSET(r1)
+	mtmcsrr0	r5
+	lwz	r5, 8(r3)
+	mtmcsrr1	r6
+	mtctr	r4
+
+	/* Increment the L1 data recovery counter */
+	addi	r5, r5, 1
+	stw	r5, 8(r3)
+	b	.Lmachine_check_return
+
+.Lmachine_check_fatal_error:
+
 	li	r3, 1
+	PPC_REG_LOAD	r6, EXC_CR_OFFSET(r1)
+	PPC_REG_LOAD	r4, GPR4_OFFSET(r1)
+	PPC_REG_LOAD	r5, GPR5_OFFSET(r1)
+	mtcr	r6
+	PPC_REG_LOAD	r6, GPR6_OFFSET(r1)
 	b	ppc_exc_fatal_machine_check
 	START_NOP_FOR_LINKER_TOC_POINTER_RESTORE
 
-	.align 15
+.Lmachine_check_return:
+
+	PPC_REG_LOAD	r6, EXC_CR_OFFSET(r1)
+	PPC_REG_LOAD	r3, GPR3_OFFSET(r1)
+	PPC_REG_LOAD	r4, GPR4_OFFSET(r1)
+	PPC_REG_LOAD	r5, GPR5_OFFSET(r1)
+	mtcr	r6
+	PPC_REG_LOAD	r6, GPR6_OFFSET(r1)
+	mfsprg	r1, 2
+	rfmci
+
+	.balign 0x8000
+
 bsp_exc_vector_cacheable_base:
 
 	/* Critical input (IVOR0) */
@@ -656,7 +828,78 @@ bsp_exc_vector_end:
 
 	.balign 0x10000
 
-_qoriq_machine_check_data:
+qoriq_machine_check_data:
 
-	/* Zero fill machine check data areas */
-	.zero 0x1000 * QORIQ_CPU_COUNT
+	MACHINE_CHECK_DATA
+#if QORIQ_CPU_COUNT > 1
+	MACHINE_CHECK_DATA
+#endif
+#if QORIQ_CPU_COUNT > 2
+	MACHINE_CHECK_DATA
+#endif
+#if QORIQ_CPU_COUNT > 3
+	MACHINE_CHECK_DATA
+#endif
+#if QORIQ_CPU_COUNT > 4
+	MACHINE_CHECK_DATA
+#endif
+#if QORIQ_CPU_COUNT > 5
+	MACHINE_CHECK_DATA
+#endif
+#if QORIQ_CPU_COUNT > 6
+	MACHINE_CHECK_DATA
+#endif
+#if QORIQ_CPU_COUNT > 7
+	MACHINE_CHECK_DATA
+#endif
+#if QORIQ_CPU_COUNT > 8
+	MACHINE_CHECK_DATA
+#endif
+#if QORIQ_CPU_COUNT > 9
+	MACHINE_CHECK_DATA
+#endif
+#if QORIQ_CPU_COUNT > 10
+	MACHINE_CHECK_DATA
+#endif
+#if QORIQ_CPU_COUNT > 11
+	MACHINE_CHECK_DATA
+#endif
+#if QORIQ_CPU_COUNT > 12
+	MACHINE_CHECK_DATA
+#endif
+#if QORIQ_CPU_COUNT > 13
+	MACHINE_CHECK_DATA
+#endif
+#if QORIQ_CPU_COUNT > 14
+	MACHINE_CHECK_DATA
+#endif
+#if QORIQ_CPU_COUNT > 15
+	MACHINE_CHECK_DATA
+#endif
+#if QORIQ_CPU_COUNT > 16
+	MACHINE_CHECK_DATA
+#endif
+#if QORIQ_CPU_COUNT > 17
+	MACHINE_CHECK_DATA
+#endif
+#if QORIQ_CPU_COUNT > 18
+	MACHINE_CHECK_DATA
+#endif
+#if QORIQ_CPU_COUNT > 19
+	MACHINE_CHECK_DATA
+#endif
+#if QORIQ_CPU_COUNT > 20
+	MACHINE_CHECK_DATA
+#endif
+#if QORIQ_CPU_COUNT > 21
+	MACHINE_CHECK_DATA
+#endif
+#if QORIQ_CPU_COUNT > 22
+	MACHINE_CHECK_DATA
+#endif
+#if QORIQ_CPU_COUNT > 23
+	MACHINE_CHECK_DATA
+#endif
+#if QORIQ_CPU_COUNT > 24
+#error "unexpected QORIQ_CPU_COUNT"
+#endif
