@@ -1,0 +1,19 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+actions:
+- get-boolean: null
+- define-condition: null
+build-type: option
+copyrights:
+- Copyright (C) 2025 embedded brains GmbH & Co. KG
+default:
+- enabled-by: true
+  value: false
+description: |
+  This option enables the L1 and L2 cache initialization during system start.
+  In this case, the system start assumes that the bootloader did not enable the
+  L1 and L2 caches.  In particular, if a data cache is enabled by the
+  bootloader, then the system start may unpredictably fail due to data loss.
+enabled-by: true
+links: []
+name: QORIQ_INITIALIZE_CACHES
+type: build
