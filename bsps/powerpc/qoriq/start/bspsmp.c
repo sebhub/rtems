@@ -41,8 +41,6 @@
 #include <bsp/irq-generic.h>
 #include <bsp/linker-symbols.h>
 
-LINKER_SYMBOL(bsp_exc_vector_base);
-
 #if QORIQ_THREAD_COUNT > 1
 void _start_thread(void);
 #endif
@@ -101,7 +99,6 @@ void bsp_start_on_secondary_processor(Per_CPU_Control *cpu_self)
 {
   uint32_t cpu_index_self;
 
-  qoriq_initialize_exceptions(cpu_self->interrupt_stack_low);
   bsp_interrupt_facility_initialize();
 
   cpu_index_self = _Per_CPU_Get_index(cpu_self);

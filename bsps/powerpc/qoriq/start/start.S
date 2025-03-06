@@ -9,7 +9,7 @@
  */
 
 /*
- * Copyright (C) 2010, 2017 embedded brains GmbH & Co. KG
+ * Copyright (C) 2010, 2025 embedded brains GmbH & Co. KG
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -52,6 +52,12 @@
 #define SAVED_LINK_REGISTER r16
 #define FDT_REGISTER r17
 #define CPU_SELF r18
+
+#ifdef __powerpc64__
+#define VECTOR_TABLE_ENTRY_SIZE 32
+#else
+#define VECTOR_TABLE_ENTRY_SIZE 16
+#endif
 
 	.globl _start
 #ifdef RTEMS_SMP
@@ -239,12 +245,93 @@ _start:
 	isync
 
 	/*
-	 * Initialize start stack.  The stacks are statically allocated and
-	 * properly aligned.
+	 * Initialize start and interrupt stack.  The stacks are statically
+	 * allocated and properly aligned.
 	 */
 	subi	r1, START_STACK, PPC_DEFAULT_CACHE_LINE_SIZE
 	li	r0, 0
 	PPC_REG_STORE	r0, 0(r1)
+	mtsprg	1, r1
+
+	/*
+	 * Initialize the exception vector prefix and the cache inhibited
+	 * machine check vector offset.
+	 */
+	LA32	r3, bsp_exc_vector_base
+	mtivpr	r3
+	mtspr	BOOKE_IVOR1, r3
+
+	/* Initialize the machine check stack pointer location */
+	mfspr	r3, BOOKE_PIR
+	slwi	r3, r3, 12
+	addis	r3, r3, (bsp_exc_vector_base + 0x10000)@h
+	addi	r4, r3, 0x1000 - EXC_GENERIC_SIZE
+	PPC_REG_STORE	r4, 0(r3)
+	PPC_REG_STORE	r0, 0(r4)
+
+	/* Initialize the cacheable exception vector offsets */
+	LA32	r3, bsp_exc_vector_cacheable_base
+	mtspr	BOOKE_IVOR0, r3
+	addi	r3, r3, VECTOR_TABLE_ENTRY_SIZE
+	mtspr	BOOKE_IVOR2, r3
+	addi	r3, r3, VECTOR_TABLE_ENTRY_SIZE
+	mtspr	BOOKE_IVOR3, r3
+	addi	r3, r3, VECTOR_TABLE_ENTRY_SIZE
+	mtspr	BOOKE_IVOR4, r3
+	addi	r3, r3, VECTOR_TABLE_ENTRY_SIZE
+	mtspr	BOOKE_IVOR5, r3
+	addi	r3, r3, VECTOR_TABLE_ENTRY_SIZE
+	mtspr	BOOKE_IVOR6, r3
+	addi	r3, r3, VECTOR_TABLE_ENTRY_SIZE
+#ifdef __PPC_CPU_E6500__
+	mtspr	BOOKE_IVOR7, r3
+	addi	r3, r3, VECTOR_TABLE_ENTRY_SIZE
+#endif
+	mtspr	BOOKE_IVOR8, r3
+	addi	r3, r3, VECTOR_TABLE_ENTRY_SIZE
+#ifdef __PPC_CPU_E6500__
+	mtspr	BOOKE_IVOR9, r3
+	addi	r3, r3, VECTOR_TABLE_ENTRY_SIZE
+#endif
+	mtspr	BOOKE_IVOR10, r3
+	addi	r3, r3, VECTOR_TABLE_ENTRY_SIZE
+	mtspr	BOOKE_IVOR11, r3
+	addi	r3, r3, VECTOR_TABLE_ENTRY_SIZE
+	mtspr	BOOKE_IVOR12, r3
+	addi	r3, r3, VECTOR_TABLE_ENTRY_SIZE
+	mtspr	BOOKE_IVOR13, r3
+	addi	r3, r3, VECTOR_TABLE_ENTRY_SIZE
+	mtspr	BOOKE_IVOR14, r3
+	addi	r3, r3, VECTOR_TABLE_ENTRY_SIZE
+	mtspr	BOOKE_IVOR15, r3
+	addi	r3, r3, VECTOR_TABLE_ENTRY_SIZE
+	mtspr	BOOKE_IVOR32, r3
+	addi	r3, r3, VECTOR_TABLE_ENTRY_SIZE
+	mtspr	BOOKE_IVOR33, r3
+	addi	r3, r3, VECTOR_TABLE_ENTRY_SIZE
+#ifndef __PPC_CPU_E6500__
+	mtspr	BOOKE_IVOR34, r3
+	addi	r3, r3, VECTOR_TABLE_ENTRY_SIZE
+#endif
+	mtspr	BOOKE_IVOR35, r3
+	addi	r3, r3, VECTOR_TABLE_ENTRY_SIZE
+#ifdef __PPC_CPU_E6500__
+	mtspr	BOOKE_IVOR36, r3
+	addi	r3, r3, VECTOR_TABLE_ENTRY_SIZE
+	mtspr	BOOKE_IVOR37, r3
+	addi	r3, r3, VECTOR_TABLE_ENTRY_SIZE
+#ifndef QORIQ_IS_HYPERVISOR_GUEST
+	mtspr	BOOKE_IVOR38, r3
+	addi	r3, r3, VECTOR_TABLE_ENTRY_SIZE
+	mtspr	BOOKE_IVOR39, r3
+	addi	r3, r3, VECTOR_TABLE_ENTRY_SIZE
+	mtspr	BOOKE_IVOR40, r3
+	addi	r3, r3, VECTOR_TABLE_ENTRY_SIZE
+	mtspr	BOOKE_IVOR41, r3
+	addi	r3, r3, VECTOR_TABLE_ENTRY_SIZE
+	mtspr	BOOKE_IVOR42, r3
+#endif
+#endif
 
 #ifdef INITIALIZE_FPU
 	bl	.Linitfpu
@@ -478,6 +565,7 @@ bsp_exc_vector_cacheable_base:
 	b	ppc_exc_fatal_normal
 	START_NOP_FOR_LINKER_TOC_POINTER_RESTORE
 	/* Debug (IVOR15) */
+	.balign VECTOR_TABLE_ENTRY_SIZE
 	PPC_REG_STORE_UPDATE	r1, -EXC_GENERIC_SIZE(r1)
 	PPC_REG_STORE	r3, PPC_EXC_GPR3_PROLOGUE_OFFSET(r1)
 	li	r3, 15
