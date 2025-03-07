@@ -32,6 +32,8 @@
 
 #include <string.h>
 
+#include <bsp.h>
+
 #include <rtems/score/isr.h>
 #include <rtems/score/context.h>
 #include <rtems/score/thread.h>
@@ -128,6 +130,10 @@ void _CPU_Context_Initialize(
   the_ppc_context->msr = msr_value;
   the_ppc_context->lr = (uintptr_t) entry_point;
   the_ppc_context->isr_dispatch_disable = 0;
+
+#if defined(__SPE__) && defined(QORIQ_INITIAL_SPEFSCR)
+  the_ppc_context->spefscr = QORIQ_INITIAL_SPEFSCR;
+#endif
 
 #if defined(__ALTIVEC__) && !defined(PPC_MULTILIB_ALTIVEC)
   _CPU_Context_initialize_altivec( the_ppc_context );
