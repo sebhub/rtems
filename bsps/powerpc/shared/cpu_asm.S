@@ -25,7 +25,7 @@
  *  COPYRIGHT (c) 1989-1997.
  *  On-Line Applications Research Corporation (OAR).
  *
- *  Copyright (C) 2011, 2020 embedded brains GmbH & Co. KG
+ *  Copyright (C) 2011, 2025 embedded brains GmbH & Co. KG
  *
  *  The license and distribution terms for this file may in
  *  the file LICENSE in this distribution or at
@@ -299,6 +299,9 @@ PROC (_CPU_Context_switch_no_return):
 	mfvscr	v0
 #endif
 	mflr	r8
+#ifdef __SPE__
+	mfspr	r9, FSL_EIS_SPEFSCR
+#endif
 	lwz	r11, PER_CPU_ISR_DISPATCH_DISABLE(r12)
 
 	/*
@@ -321,6 +324,9 @@ PROC (_CPU_Context_switch_no_return):
 	stw	r7, PPC_CONTEXT_OFFSET_CR(r3)
 	PPC_REG_STORE	r1, PPC_CONTEXT_OFFSET_GPR1(r3)
 	PPC_REG_STORE	r8, PPC_CONTEXT_OFFSET_LR(r3)
+#ifdef __SPE__
+	stw	r9, PPC_CONTEXT_OFFSET_SPEFSCR(r3)
+#endif
 
 	PPC_GPR_STORE	r14, PPC_CONTEXT_OFFSET_GPR14(r3)
 	PPC_GPR_STORE	r15, PPC_CONTEXT_OFFSET_GPR15(r3)
@@ -485,10 +491,13 @@ restore_context:
 	lwz	r7, PPC_CONTEXT_OFFSET_CR(r5)
 	PPC_REG_LOAD	r1, PPC_CONTEXT_OFFSET_GPR1(r5)
 	PPC_REG_LOAD	r8, PPC_CONTEXT_OFFSET_LR(r5)
+#ifdef __SPE__
+	lwz	r10, PPC_CONTEXT_OFFSET_SPEFSCR(r5)
+#endif
 
 #ifdef PPC_MULTILIB_ALTIVEC
-	li	r10, PPC_CONTEXT_OFFSET_VSCR
-	lvewx	v0, r5, r10
+	li	r9, PPC_CONTEXT_OFFSET_VSCR
+	lvewx	v0, r5, r9
 #ifdef __PPC_VRSAVE__
 	lwz	r9, PPC_CONTEXT_OFFSET_VRSAVE(r5)
 #endif
@@ -586,6 +595,9 @@ restore_context:
 	lfd	f31, PPC_CONTEXT_OFFSET_F31(r5)
 #endif
 
+#ifdef __SPE__
+	mtspr	FSL_EIS_SPEFSCR, r10
+#endif
 	mtlr	r8
 	mtcr	r7
 #if !defined(PPC_DISABLE_MSR_ACCESS)
