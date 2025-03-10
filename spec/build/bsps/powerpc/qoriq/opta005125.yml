@@ -1,0 +1,18 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+actions:
+- get-boolean: null
+- define-condition: null
+build-type: option
+copyrights:
+- Copyright (C) 2025 embedded brains GmbH & Co. KG
+default:
+- enabled-by: powerpc/qoriq_e500
+  value: true
+- enabled-by: true
+  value: false
+description: |
+  This option enables a workaround for Erratum A005125.
+enabled-by: true
+links: []
+name: QORIQ_ERRATUM_A005125
+type: build
