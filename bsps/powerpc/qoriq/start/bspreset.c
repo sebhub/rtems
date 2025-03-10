@@ -9,7 +9,7 @@
  */
 
 /*
- * Copyright (C) 2010, 2017 embedded brains GmbH & Co. KG
+ * Copyright (C) 2010, 2025 embedded brains GmbH & Co. KG
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -34,8 +34,10 @@
  */
 
 #include <bsp/bootcard.h>
-#include <bsp/fdt.h>
 #include <bsp/qoriq.h>
+
+#if QORIQ_CHIP_IS_T_VARIANT(QORIQ_CHIP_VARIANT)
+#include <bsp/fdt.h>
 
 #include <libfdt.h>
 
@@ -78,3 +80,21 @@ void bsp_reset( rtems_fatal_source source, rtems_fatal_code code )
     }
   }
 }
+#else
+void bsp_reset( rtems_fatal_source source, rtems_fatal_code code )
+{
+  (void) source;
+  (void) code;
+
+  /*
+   * This is a workaround for:
+   *
+   * https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108658
+   */
+  __asm__ volatile ("");
+
+  while (true) {
+    qoriq.global_utilities.rstcr = 0x2;
+  }
+}
+#endif
