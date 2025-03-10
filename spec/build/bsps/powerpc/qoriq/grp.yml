@@ -77,6 +77,8 @@ links:
 - role: build-dependency
   uid: ../../optfdtro
 - role: build-dependency
+  uid: opta005125
+- role: build-dependency
   uid: opthid0
 - role: build-dependency
   uid: opthyp

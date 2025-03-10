@@ -196,6 +196,14 @@ _start:
 	isync
 #endif
 
+#ifdef QORIQ_ERRATUM_A005125
+	msync
+	isync
+	mfspr	r3, 976
+	oris	r3, r3, 0x0080
+	mtspr	976, r3
+#endif
+
 #ifdef QORIQ_INITIAL_BUCSR
 	/* BUCSR initialization */
 	LWI	r0, QORIQ_INITIAL_BUCSR
