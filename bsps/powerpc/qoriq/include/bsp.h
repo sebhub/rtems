@@ -9,7 +9,7 @@
  */
 
 /*
- * Copyright (C) 2010, 2017 embedded brains GmbH & Co. KG
+ * Copyright (C) 2010, 2025 embedded brains GmbH & Co. KG
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -141,6 +141,187 @@ void qoriq_decrementer_dispatch(void);
 extern uint32_t bsp_time_base_frequency;
 
 extern uint32_t qoriq_clock_frequency;
+
+/**
+ * @brief This structure contains the L1 data and instruction recovery counters
+ *   of a core.
+ */
+typedef struct {
+  /**
+   * @brief This member contains the count of L1 data cache recovery counties
+   *   carried out by the machine check handler.
+   */
+  uint32_t data_recoveries;
+
+  /**
+   * @brief This member contains the count of L1 data instruction recoveries
+   *   carried out by the machine check handler.
+   */
+  uint32_t instruction_recoveries;
+} qoriq_l1_error_stats;
+
+/**
+ * @brief This structure contains the memory error statistics.
+ *
+ * Use qoriq_get_memory_error_stats() to obtain a snapshot of the memory statistics.
+ */
+typedef struct {
+  /**
+   * @brief This member contains the L1 cache recovery counts for each core.
+   */
+  qoriq_l1_error_stats l1_stats[QORIQ_CPU_COUNT];
+
+  /**
+   * @brief This member contains the count of L2 instruction recoveries carried
+   *   out by the L2 error handler.
+   */
+  uint32_t l2_instruction_recoveries;
+
+  /**
+   * @brief This member contains the L2 single bit error threshold set in the
+   *   L2 cache controller.
+   */
+  uint32_t l2_single_bit_error_threshold;
+
+  /**
+   * @brief This member contains the count of L2 single bit errors present in
+   *   the L2 cache controller and recognized by the L2 error handler.
+   */
+  uint32_t l2_single_bit_error_count;
+
+  /**
+   * @brief This member contains the count of L2 multiple bit errors recognized
+   *   by the L2 error handler.
+   */
+  uint32_t l2_multiple_bit_error_count;
+
+  /**
+   * @brief This member contains the count of L2 tag parity errors recognized
+   *   by the L2 error handler.
+   */
+  uint32_t l2_tag_parity_error_count;
+
+  /**
+   * @brief This member contains the DDR memory single bit error threshold set
+   *   in the DDR memory controller.
+   */
+  uint32_t ddr_single_bit_error_threshold;
+
+  /**
+   * @brief This member contains the count of DDR memory single bit errors
+   *   present in the DDR memory controller and recognized by the DDR memory
+   *   error handler.
+   */
+  uint32_t ddr_single_bit_error_count;
+
+  /**
+   * @brief This member contains the count of DDR memory address parity errors
+   *   recognized by the DDR memory error handler.
+   */
+  uint32_t ddr_address_parity_error_count;
+
+  /**
+   * @brief This member contains the count of DDR memory automatic calibration
+   *   errors recognized by the DDR memory error handler.
+   */
+  uint32_t ddr_automatic_calibration_error_count;
+
+  /**
+   * @brief This member contains the count of DDR memory multiple bit errors
+   *   recognized by the DDR memory error handler.
+   */
+  uint32_t ddr_multiple_bit_error_count;
+
+  /**
+   * @brief This member contains the count of DDR memory select errors
+   *   recognized by the DDR memory error handler.
+   */
+  uint32_t ddr_memory_select_error_count;
+} qoriq_memory_error_stats;
+
+/**
+ * @brief Gets a snapshot of the memory error statistics.
+ *
+ * @param[out] stats is a reference to the memory error statistics block.
+ */
+void qoriq_get_memory_error_stats(qoriq_memory_error_stats *stats);
+
+/**
+ * @brief Sets the L2 cache single bit error threshold.
+ *
+ * @param[in] threshold is the new threshold.
+ */
+void qoriq_set_l2_single_bit_error_threshold(uint32_t threshold);
+
+/**
+ * @brief Sets the DDR single bit error threshold.
+ *
+ * @param[in] threshold is the new threshold.
+ */
+void qoriq_set_ddr_single_bit_error_threshold(uint32_t threshold);
+
+/**
+ * @brief Increments the L2 cache instruction recovery counter.
+ *
+ * Use it in the L2 cache error handler to update the statistics.
+ */
+void qoriq_increment_l2_instruction_recoveries(void);
+
+/**
+ * @brief Increments the L2 cache single bit error counter.
+ *
+ * Use it in the L2 cache error handler to update the statistics.
+ */
+void qoriq_increment_l2_single_bit_error_count(void);
+
+/**
+ * @brief Increments the L2 cache multiple bit error counter.
+ *
+ * Use it in the L2 cache error handler to update the statistics.
+ */
+void qoriq_increment_l2_multiple_bit_error_count(void);
+
+/**
+ * @brief Increments the L2 cache tag parity bit error counter.
+ *
+ * Use it in the L2 cache error handler to update the statistics.
+ */
+void qoriq_increment_l2_tag_parity_error_count(void);
+
+/**
+ * @brief Increments the DDR memory address parity error counter.
+ *
+ * Use it in the DDR memory error handler to update the statistics.
+ */
+void qoriq_increment_ddr_address_parity_error_count(void);
+
+/**
+ * @brief Increments the DDR memory automatic calibration error counter.
+ *
+ * Use it in the DDR memory error handler to update the statistics.
+ */
+void qoriq_increment_ddr_automatic_calibration_error_count(void);
+
+/**
+ * @brief Increments the DDR memory single bit error counter.
+ *
+ * Use it in the DDR memory error handler to update the statistics.
+ */
+void qoriq_increment_ddr_single_bit_error_count(void);
+
+/**
+ * @brief Increments the DDR memory multiple bit error counter.
+ *
+ * Use it in the DDR memory error handler to update the statistics.
+ */
+void qoriq_increment_ddr_multiple_bit_error_count(void);
+
+/**
+ * @brief Increments the DDR memory memory select error counter.
+ *
+ * Use it in the DDR memory error handler to update the statistics.
+ */
+void qoriq_increment_ddr_memory_select_error_count(void);
 
 #ifdef __cplusplus
 }
