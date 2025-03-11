@@ -491,6 +491,45 @@ typedef struct {
 } qoriq_tdm;
 
 typedef struct {
+  uint32_t l2ctl;
+  uint32_t l2cwap;
+  QORIQ_RESERVE(0x008, 0x010);
+  uint32_t l2cewar0;
+  uint32_t l2cewarea0;
+  uint32_t l2cewcr0;
+  QORIQ_RESERVE(0x01c, 0x020);
+  uint32_t l2cewar1;
+  uint32_t l2cewarea1;
+  uint32_t l2cewcr1;
+  QORIQ_RESERVE(0x02c, 0x030);
+  uint32_t l2cewar2;
+  uint32_t l2cewarea2;
+  uint32_t l2cewcr2;
+  QORIQ_RESERVE(0x03c, 0x040);
+  uint32_t l2cewar3;
+  uint32_t l2cewarea3;
+  uint32_t l2cewcr3;
+  QORIQ_RESERVE(0x04c, 0x100);
+  uint32_t l2srbar0;
+  uint32_t l2srbarea0;
+  uint32_t l2srbar1;
+  uint32_t l2srbarea1;
+  QORIQ_RESERVE(0x110, 0xe00);
+  uint32_t l2errinjhi;
+  uint32_t l2errinjlo;
+  uint32_t l2errinjctl;
+  QORIQ_RESERVE(0xe0c, 0xe20);
+  uint32_t l2captdatahi;
+  uint32_t l2captdatalo;
+  uint32_t l2captecc;
+  QORIQ_RESERVE(0xe2c, 0xe40);
+  uint32_t l2errdet;
+  uint32_t l2errdis;
+  uint32_t l2errinten;
+  uint32_t l2errattr;
+  uint32_t l2erraddrl;
+  uint32_t l2erraddrh;
+  uint32_t l2errctl;
 } qoriq_l2_cache;
 
 typedef struct {

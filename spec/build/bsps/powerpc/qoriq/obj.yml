@@ -54,6 +54,7 @@ source:
 - bsps/powerpc/qoriq/start/epapr_hcalls.S
 - bsps/powerpc/qoriq/start/l1cache.S
 - bsps/powerpc/qoriq/start/l2cache.S
+- bsps/powerpc/qoriq/start/memory-errors.c
 - bsps/powerpc/qoriq/start/mmu-config.c
 - bsps/powerpc/qoriq/start/mmu-fixed-config.c
 - bsps/powerpc/qoriq/start/mmu-tlb1.S
