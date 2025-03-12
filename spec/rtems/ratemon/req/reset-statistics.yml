@@ -1,0 +1,346 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2025 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: action
+links:
+- role: interface-function
+  uid: ../if/reset-statistics
+post-conditions:
+- name: Status
+  states:
+  - name: Ok
+    test-code: |
+      T_rsc_success( ctx->status );
+    text: |
+      The return status of ${../if/reset-statistics:/name} shall be
+      ${../../status/if/successful:/name}.
+  - name: InvId
+    test-code: |
+      T_rsc( ctx->status, RTEMS_INVALID_ID );
+    text: |
+      The return status of ${../if/reset-statistics:/name} shall be
+      ${../../status/if/invalid-id:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: Count
+  states:
+  - name: Zero
+    test-code: |
+      T_eq_u32( ctx->stats.count, 0 );
+    text: |
+      The count of executed periods recorded for the period associated with the
+      object identifier specified by the ${../if/reset-statistics:/params[0]/name}
+      parameter shall be set to zero.
+  test-epilogue: null
+  test-prologue: null
+- name: MissedCount
+  states:
+  - name: Zero
+    test-code: |
+      T_eq_u32( ctx->stats.missed_count, 0 );
+    text: |
+      The count of missed periods recorded for the period associated with the object
+      identifier specified by the ${../if/reset-statistics:/params[0]/name} parameter
+      shall be set to zero.
+  test-epilogue: null
+  test-prologue: null
+- name: MinCPUTime
+  states:
+  - name: Max
+    test-code: |
+      TimespecMax( &ctx->stats.min_cpu_time );
+    text: |
+      The least amount of processor time used in a period recorded for the period
+      associated with the object identifier specified by the
+      ${../if/reset-statistics:/params[0]/name} parameter shall be set to 2147483647
+      seconds and 999999999 nanoseconds.
+  test-epilogue: null
+  test-prologue: null
+- name: MaxCPUTime
+  states:
+  - name: Zero
+    test-code: |
+      TimespecZero( &ctx->stats.max_cpu_time );
+    text: |
+      The highest amount of processor time used in a period recorded for the period
+      associated with the object identifier specified by the
+      ${../if/reset-statistics:/params[0]/name} parameter shall be set to zero.
+  test-epilogue: null
+  test-prologue: null
+- name: TotalCPUTime
+  states:
+  - name: Zero
+    test-code: |
+      TimespecZero( &ctx->stats.total_cpu_time );
+    text: |
+      The total amount of processor time used in all periods recorded for the period
+      associated with the object identifier specified by the
+      ${../if/reset-statistics:/params[0]/name} parameter shall be set to zero.
+  test-epilogue: null
+  test-prologue: null
+- name: MinMonotonicTime
+  states:
+  - name: Max
+    test-code: |
+      TimespecMax( &ctx->stats.min_wall_time );
+    text: |
+      The least amount of ${/glossary/clock-monotonic:/term} time used in a period
+      recorded for the period associated with the object identifier specified by the
+      ${../if/reset-statistics:/params[0]/name} parameter shall be set to 2147483647
+      seconds and 999999999 nanoseconds.
+  test-epilogue: null
+  test-prologue: null
+- name: MaxMonotonicTime
+  states:
+  - name: Zero
+    test-code: |
+      TimespecZero( &ctx->stats.max_wall_time );
+    text: |
+      The highest amount of ${/glossary/clock-monotonic:/term} time used in a period
+      recorded for the period associated with the object identifier specified by the
+      ${../if/reset-statistics:/params[0]/name} parameter shall be set to zero.
+  test-epilogue: null
+  test-prologue: null
+- name: TotalMonotonicTime
+  states:
+  - name: Zero
+    test-code: |
+      TimespecZero( &ctx->stats.total_wall_time );
+    text: |
+      The total amount of ${/glossary/clock-monotonic:/term} time used in all periods
+      recorded for the period associated with the object identifier specified by the
+      ${../if/reset-statistics:/params[0]/name} parameter shall be set to zero.
+  test-epilogue: null
+  test-prologue: null
+pre-conditions:
+- name: Id
+  states:
+  - name: NoObj
+    test-code: |
+      ctx->id = 0xffffffff;
+    text: |
+      While the ${../if/reset-statistics:/params[0]/name} parameter is not associated
+      with a period.
+  - name: Period
+    test-code: |
+      ctx->id = CreatePeriod();
+    text: |
+      While the ${../if/reset-statistics:/params[0]/name} parameter is associated
+      with a period.
+  test-epilogue: null
+  test-prologue: null
+rationale: |
+  The directive sets the minimum times to the largest time value, so that the
+  first period after the reset sets them.
+references: []
+requirement-type: functional
+skip-reasons: {}
+test-action: |
+  ctx->status = rtems_rate_monotonic_reset_statistics( ctx->id );
+  memset( &ctx->stats, 0xff, sizeof( ctx->stats ) );
+  (void) rtems_rate_monotonic_get_statistics( ctx->id, &ctx->stats );
+test-brief: null
+test-cleanup: |
+  if ( ctx->id != 0xffffffff ) {
+    rtems_status_code sc;
+
+    sc = rtems_rate_monotonic_delete( ctx->id );
+    T_rsc_success( sc );
+  }
+test-context:
+- brief: |
+    This member contains the identifier of the worker task.
+  description: null
+  member: |
+    rtems_id worker_id
+- brief: |
+    This member contains the previous get timecount handler to restore.
+  description: null
+  member: |
+    GetTimecountHandler previous_get_timecount
+- brief: |
+    This member provides the period statistics.
+  description: null
+  member: |
+    rtems_rate_monotonic_period_statistics stats
+- brief: |
+    This member provides the object identifier parameter.
+  description: null
+  member: |
+    rtems_id id
+- brief: |
+    This member contains the return status.
+  description: null
+  member: |
+    rtems_status_code status
+test-context-support: null
+test-description: null
+test-header: null
+test-includes:
+- rtems.h
+- string.h
+test-local-includes:
+- tx-support.h
+test-prepare: null
+test-setup:
+  brief: null
+  code: |
+    ctx->previous_get_timecount = SetGetTimecountHandler( FreezeTime );
+    ctx->worker_id = CreateTask( "WORK", GetSelfPriority() + 1 );
+    StartTask( ctx->worker_id, TickWorker, NULL );
+    TimecounterTick();
+  description: null
+test-stop: null
+test-support: |
+  static uint32_t FreezeTime( void )
+  {
+    return GetTimecountCounter() - 1;
+  }
+
+  static void TickWorker( rtems_task_argument arg )
+  {
+    (void) arg;
+
+    while ( true ) {
+      TimecounterTick();
+    }
+  }
+
+  static void TimespecZero( const struct timespec *ts )
+  {
+    T_eq_ll( ts->tv_sec, 0 );
+    T_eq_long( ts->tv_nsec, 0 );
+  }
+
+  static void TimespecMax( const struct timespec *ts )
+  {
+    T_eq_ll( ts->tv_sec, 0x7fffffffLL );
+    T_eq_long( ts->tv_nsec, 999999999L );
+  }
+
+  static void TimespecEq( const struct timespec *ts, rtems_interval ticks )
+  {
+    T_eq_ll( ts->tv_sec, 0 );
+    T_eq_long(
+      ( ts->tv_nsec + 499999L ) / 1000000L,
+      ticks * rtems_configuration_get_milliseconds_per_tick()
+    );
+  }
+
+  static rtems_id CreatePeriod( void )
+  {
+    rtems_id                               id;
+    rtems_rate_monotonic_period_statistics stats;
+    rtems_status_code                      sc;
+
+    sc = rtems_rate_monotonic_create( OBJECT_NAME, &id );
+    T_rsc_success( sc );
+
+    sc = rtems_rate_monotonic_period( id, 3 );
+    T_rsc_success( sc );
+
+    TimecounterTick();
+    TimecounterTick();
+    TimecounterTick();
+    TimecounterTick();
+
+    sc = rtems_rate_monotonic_period( id, 3 );
+    T_rsc( sc, RTEMS_TIMEOUT );
+
+    TimecounterTick();
+
+    sc = rtems_rate_monotonic_period( id, 3 );
+    T_rsc_success( sc );
+
+    sc = rtems_task_wake_after( 1 );
+    T_rsc_success( sc );
+
+    TimecounterTick();
+
+    sc = rtems_rate_monotonic_period( id, 3 );
+    T_rsc_success( sc );
+
+    sc = rtems_rate_monotonic_get_statistics( id, &stats );
+    T_rsc_success( sc );
+
+    T_eq_u32( stats.count, 3 );
+    T_eq_u32( stats.missed_count, 1 );
+    TimespecEq( &stats.min_cpu_time, 1 );
+    TimespecEq( &stats.max_cpu_time, 4 );
+    TimespecEq( &stats.total_cpu_time, 6 );
+    TimespecEq( &stats.min_wall_time, 1 );
+    TimespecEq( &stats.max_wall_time, 4 );
+    TimespecEq( &stats.total_wall_time, 7 );
+
+    return id;
+  }
+test-target: testsuites/validation/tc-ratemon-reset-statistics.c
+test-teardown:
+  brief: null
+  code: |
+    DeleteTask( ctx->worker_id );
+    SetGetTimecountHandler( ctx->previous_get_timecount );
+  description: null
+text: |
+  ${.:text-template}
+transition-map:
+- enabled-by: true
+  post-conditions:
+    Status:
+    - if:
+        pre-conditions:
+          Id: NoObj
+      then: InvId
+    - else: Ok
+    Count:
+    - if:
+        pre-conditions:
+          Id: NoObj
+      then: N/A
+    - else: Zero
+    MissedCount:
+    - if:
+        pre-conditions:
+          Id: NoObj
+      then: N/A
+    - else: Zero
+    MinCPUTime:
+    - if:
+        pre-conditions:
+          Id: NoObj
+      then: N/A
+    - else: Max
+    MaxCPUTime:
+    - if:
+        pre-conditions:
+          Id: NoObj
+      then: N/A
+    - else: Zero
+    TotalCPUTime:
+    - if:
+        pre-conditions:
+          Id: NoObj
+      then: N/A
+    - else: Zero
+    MinMonotonicTime:
+    - if:
+        pre-conditions:
+          Id: NoObj
+      then: N/A
+    - else: Max
+    MaxMonotonicTime:
+    - if:
+        pre-conditions:
+          Id: NoObj
+      then: N/A
+    - else: Zero
+    TotalMonotonicTime:
+    - if:
+        pre-conditions:
+          Id: NoObj
+      then: N/A
+    - else: Zero
+  pre-conditions:
+    Id: all
+type: requirement

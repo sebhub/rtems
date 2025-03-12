@@ -1,0 +1,464 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2025 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: action
+links:
+- role: interface-function
+  uid: ../if/get-statistics
+post-conditions:
+- name: Status
+  states:
+  - name: Ok
+    test-code: |
+      T_rsc_success( ctx->status );
+    text: |
+      The return status of ${../if/get-statistics:/name} shall be
+      ${../../status/if/successful:/name}.
+  - name: InvAddr
+    test-code: |
+      T_rsc( ctx->status, RTEMS_INVALID_ADDRESS );
+    text: |
+      The return status of ${../if/get-statistics:/name} shall be
+      ${../../status/if/invalid-address:/name}.
+  - name: InvId
+    test-code: |
+      T_rsc( ctx->status, RTEMS_INVALID_ID );
+    text: |
+      The return status of ${../if/get-statistics:/name} shall be
+      ${../../status/if/invalid-id:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: Count
+  states:
+  - name: Value
+    test-code: |
+      T_eq_u32( ctx->stats_obj.count, 3 );
+    text: |
+      The value of the member ${../if/period-statistics:/definition[0]/default/name}
+      of the object referenced by the ${../if/get-statistics:/params[1]/name}
+      parameter shall be set to the count of executed periods since the last reset
+      recorded for the period associated with the object identifier specified by the
+      ${../if/get-statistics:/params[0]/name} parameter.
+  - name: Nop
+    test-code: |
+      T_eq_u32( ctx->stats_obj.count, 0xffffffff );
+    text: |
+      The value of the member ${../if/period-statistics:/definition[0]/default/name}
+      of the object referenced by the ${../if/get-statistics:/params[1]/name}
+      parameter shall not be modified.
+  test-epilogue: null
+  test-prologue: null
+- name: MissedCount
+  states:
+  - name: Value
+    test-code: |
+      T_eq_u32( ctx->stats_obj.missed_count, 1 );
+    text: |
+      The value of the member ${../if/period-statistics:/definition[1]/default/name}
+      of the object referenced by the ${../if/get-statistics:/params[1]/name}
+      parameter shall be set to the count of missed periods since the last reset
+      recorded for the period associated with the object identifier specified by the
+      ${../if/get-statistics:/params[0]/name} parameter.
+  - name: Nop
+    test-code: |
+      T_eq_u32( ctx->stats_obj.missed_count, 0xffffffff );
+    text: |
+      The value of the member ${../if/period-statistics:/definition[1]/default/name}
+      of the object referenced by the ${../if/get-statistics:/params[1]/name}
+      parameter shall not be modified.
+  test-epilogue: null
+  test-prologue: null
+- name: MinCPUTime
+  states:
+  - name: Value
+    test-code: |
+      TimespecEq( &ctx->stats_obj.min_cpu_time, 1 );
+    text: |
+      The value of the member ${../if/period-statistics:/definition[2]/default/name}
+      of the object referenced by the ${../if/get-statistics:/params[1]/name}
+      parameter shall be set to the least amount of processor time used in a period
+      since the last reset recorded for the period associated with the object
+      identifier specified by the ${../if/get-statistics:/params[0]/name} parameter.
+  - name: Nop
+    test-code: |
+      TimespecNop( &ctx->stats_obj.min_cpu_time );
+    text: |
+      The value of the member ${../if/period-statistics:/definition[2]/default/name}
+      of the object referenced by the ${../if/get-statistics:/params[1]/name}
+      parameter shall not be modified.
+  test-epilogue: null
+  test-prologue: null
+- name: MaxCPUTime
+  states:
+  - name: Value
+    test-code: |
+      TimespecEq( &ctx->stats_obj.max_cpu_time, 4 );
+    text: |
+      The value of the member ${../if/period-statistics:/definition[3]/default/name}
+      of the object referenced by the ${../if/get-statistics:/params[1]/name}
+      parameter shall be set to the highest amount of processor time used in a period
+      since the last reset recorded for the period associated with the object
+      identifier specified by the ${../if/get-statistics:/params[0]/name} parameter.
+  - name: Nop
+    test-code: |
+      TimespecNop( &ctx->stats_obj.max_cpu_time );
+    text: |
+      The value of the member ${../if/period-statistics:/definition[3]/default/name}
+      of the object referenced by the ${../if/get-statistics:/params[1]/name}
+      parameter shall not be modified.
+  test-epilogue: null
+  test-prologue: null
+- name: TotalCPUTime
+  states:
+  - name: Value
+    test-code: |
+      TimespecEq( &ctx->stats_obj.total_cpu_time, 6 );
+    text: |
+      The value of the member ${../if/period-statistics:/definition[4]/default/name}
+      of the object referenced by the ${../if/get-statistics:/params[1]/name}
+      parameter shall be set to the total amount of processor time used in all
+      periods since the last reset recorded for the period associated with the object
+      identifier specified by the ${../if/get-statistics:/params[0]/name} parameter.
+  - name: Nop
+    test-code: |
+      TimespecNop( &ctx->stats_obj.total_cpu_time );
+    text: |
+      The value of the member ${../if/period-statistics:/definition[4]/default/name}
+      of the object referenced by the ${../if/get-statistics:/params[1]/name}
+      parameter shall not be modified.
+  test-epilogue: null
+  test-prologue: null
+- name: MinMonotonicTime
+  states:
+  - name: Value
+    test-code: |
+      TimespecEq( &ctx->stats_obj.min_wall_time, 1 );
+    text: |
+      The value of the member ${../if/period-statistics:/definition[5]/default/name}
+      of the object referenced by the ${../if/get-statistics:/params[1]/name}
+      parameter shall be set to the least amount of
+      ${/glossary/clock-monotonic:/term} time used in a period since the last reset
+      recorded for the period associated with the object identifier specified by the
+      ${../if/get-statistics:/params[0]/name} parameter.
+  - name: Nop
+    test-code: |
+      TimespecNop( &ctx->stats_obj.min_wall_time );
+    text: |
+      The value of the member ${../if/period-statistics:/definition[5]/default/name}
+      of the object referenced by the ${../if/get-statistics:/params[1]/name}
+      parameter shall not be modified.
+  test-epilogue: null
+  test-prologue: null
+- name: MaxMonotonicTime
+  states:
+  - name: Value
+    test-code: |
+      TimespecEq( &ctx->stats_obj.max_wall_time, 4 );
+    text: |
+      The value of the member ${../if/period-statistics:/definition[6]/default/name}
+      of the object referenced by the ${../if/get-statistics:/params[1]/name}
+      parameter shall be set to the highest amount of
+      ${/glossary/clock-monotonic:/term} time used in a period since the last reset
+      recorded for the period associated with the object identifier specified by the
+      ${../if/get-statistics:/params[0]/name} parameter.
+  - name: Nop
+    test-code: |
+      TimespecNop( &ctx->stats_obj.max_wall_time );
+    text: |
+      The value of the member ${../if/period-statistics:/definition[6]/default/name}
+      of the object referenced by the ${../if/get-statistics:/params[1]/name}
+      parameter shall not be modified.
+  test-epilogue: null
+  test-prologue: null
+- name: TotalMonotonicTime
+  states:
+  - name: Value
+    test-code: |
+      TimespecEq( &ctx->stats_obj.total_wall_time, 7 );
+    text: |
+      The value of the member ${../if/period-statistics:/definition[7]/default/name}
+      of the object referenced by the ${../if/get-statistics:/params[1]/name}
+      parameter shall be set to the total amount of
+      ${/glossary/clock-monotonic:/term} time used in a period since the last reset
+      recorded for the period associated with the object identifier specified by the
+      ${../if/get-statistics:/params[0]/name} parameter.
+  - name: Nop
+    test-code: |
+      TimespecNop( &ctx->stats_obj.total_wall_time );
+    text: |
+      The value of the member ${../if/period-statistics:/definition[7]/default/name}
+      of the object referenced by the ${../if/get-statistics:/params[1]/name}
+      parameter shall not be modified.
+  test-epilogue: null
+  test-prologue: null
+pre-conditions:
+- name: Stats
+  states:
+  - name: Valid
+    test-code: |
+      ctx->stats = &ctx->stats_obj;
+    text: |
+      While the ${../if/get-statistics:/params[1]/name} parameter references an
+      object of type ${../if/period-statistics:/name}.
+  - name: 'Null'
+    test-code: |
+      ctx->stats = NULL;
+    text: |
+      While the ${../if/get-statistics:/params[1]/name} parameter is equal to
+      ${/c/if/null:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: Id
+  states:
+  - name: NoObj
+    test-code: |
+      ctx->id = 0xffffffff;
+    text: |
+      While the ${../if/get-statistics:/params[0]/name} parameter is not associated
+      with a period.
+  - name: Period
+    test-code: |
+      ctx->id = CreatePeriod();
+    text: |
+      While the ${../if/get-statistics:/params[0]/name} parameter is associated with
+      a period.
+  test-epilogue: null
+  test-prologue: null
+rationale: |
+  The directive checks the pointer before the identifier, so a
+  ${/c/if/null:/name} pointer gives the invalid address status for each
+  identifier.
+references: []
+requirement-type: functional
+skip-reasons: {}
+test-action: |
+  ctx->status = rtems_rate_monotonic_get_statistics( ctx->id, ctx->stats );
+test-brief: null
+test-cleanup: |
+  if ( ctx->id != 0xffffffff ) {
+    rtems_status_code sc;
+
+    sc = rtems_rate_monotonic_delete( ctx->id );
+    T_rsc_success( sc );
+  }
+test-context:
+- brief: |
+    This member contains the identifier of the worker task.
+  description: null
+  member: |
+    rtems_id worker_id
+- brief: |
+    This member contains the previous get timecount handler to restore.
+  description: null
+  member: |
+    GetTimecountHandler previous_get_timecount
+- brief: |
+    This member provides the period statistics object.
+  description: null
+  member: |
+    rtems_rate_monotonic_period_statistics stats_obj
+- brief: |
+    This member provides the object identifier parameter.
+  description: null
+  member: |
+    rtems_id id
+- brief: |
+    This member provides the period statistics parameter.
+  description: null
+  member: |
+    rtems_rate_monotonic_period_statistics *stats
+- brief: |
+    This member contains the return status.
+  description: null
+  member: |
+    rtems_status_code status
+test-context-support: null
+test-description: null
+test-header: null
+test-includes:
+- rtems.h
+- string.h
+test-local-includes:
+- tx-support.h
+test-prepare: |
+  memset( &ctx->stats_obj, 0xff, sizeof( ctx->stats_obj ) );
+test-setup:
+  brief: null
+  code: |
+    ctx->previous_get_timecount = SetGetTimecountHandler( FreezeTime );
+    ctx->worker_id = CreateTask( "WORK", GetSelfPriority() + 1 );
+    StartTask( ctx->worker_id, TickWorker, NULL );
+    TimecounterTick();
+  description: null
+test-stop: null
+test-support: |
+  static uint32_t FreezeTime( void )
+  {
+    return GetTimecountCounter() - 1;
+  }
+
+  static void TickWorker( rtems_task_argument arg )
+  {
+    (void) arg;
+
+    while ( true ) {
+      TimecounterTick();
+    }
+  }
+
+  static void TimespecEq( const struct timespec *ts, rtems_interval ticks )
+  {
+    T_eq_ll( ts->tv_sec, 0 );
+    T_eq_long(
+      ( ts->tv_nsec + 499999L ) / 1000000L,
+      ticks * rtems_configuration_get_milliseconds_per_tick()
+    );
+  }
+
+  static void TimespecNop( const struct timespec *ts )
+  {
+    T_eq_ll( ts->tv_sec, -1LL );
+    T_eq_long( ts->tv_nsec, -1L );
+  }
+
+  static rtems_id CreatePeriod( void )
+  {
+    rtems_id          id;
+    rtems_status_code sc;
+
+    sc = rtems_rate_monotonic_create( OBJECT_NAME, &id );
+    T_rsc_success( sc );
+
+    sc = rtems_rate_monotonic_period( id, 3 );
+    T_rsc_success( sc );
+
+    TimecounterTick();
+    TimecounterTick();
+    TimecounterTick();
+    TimecounterTick();
+
+    sc = rtems_rate_monotonic_period( id, 3 );
+    T_rsc( sc, RTEMS_TIMEOUT );
+
+    TimecounterTick();
+
+    sc = rtems_rate_monotonic_period( id, 3 );
+    T_rsc_success( sc );
+
+    sc = rtems_task_wake_after( 1 );
+    T_rsc_success( sc );
+
+    TimecounterTick();
+
+    sc = rtems_rate_monotonic_period( id, 3 );
+    T_rsc_success( sc );
+
+    return id;
+  }
+test-target: testsuites/validation/tc-ratemon-get-statistics.c
+test-teardown:
+  brief: null
+  code: |
+    DeleteTask( ctx->worker_id );
+    SetGetTimecountHandler( ctx->previous_get_timecount );
+  description: null
+text: |
+  ${.:text-template}
+transition-map:
+- enabled-by: true
+  post-conditions:
+    Status:
+    - if:
+        pre-conditions:
+          Stats: 'Null'
+      then: InvAddr
+    - if:
+        pre-conditions:
+          Id: NoObj
+      then: InvId
+    - else: Ok
+    Count:
+    - if:
+        post-conditions:
+          Status: InvAddr
+      then: N/A
+    - if:
+        post-conditions:
+          Status: InvId
+      then: Nop
+    - else: Value
+    MissedCount:
+    - if:
+        post-conditions:
+          Status: InvAddr
+      then: N/A
+    - if:
+        post-conditions:
+          Status: InvId
+      then: Nop
+    - else: Value
+    MinCPUTime:
+    - if:
+        post-conditions:
+          Status: InvAddr
+      then: N/A
+    - if:
+        post-conditions:
+          Status: InvId
+      then: Nop
+    - else: Value
+    MaxCPUTime:
+    - if:
+        post-conditions:
+          Status: InvAddr
+      then: N/A
+    - if:
+        post-conditions:
+          Status: InvId
+      then: Nop
+    - else: Value
+    TotalCPUTime:
+    - if:
+        post-conditions:
+          Status: InvAddr
+      then: N/A
+    - if:
+        post-conditions:
+          Status: InvId
+      then: Nop
+    - else: Value
+    MinMonotonicTime:
+    - if:
+        post-conditions:
+          Status: InvAddr
+      then: N/A
+    - if:
+        post-conditions:
+          Status: InvId
+      then: Nop
+    - else: Value
+    MaxMonotonicTime:
+    - if:
+        post-conditions:
+          Status: InvAddr
+      then: N/A
+    - if:
+        post-conditions:
+          Status: InvId
+      then: Nop
+    - else: Value
+    TotalMonotonicTime:
+    - if:
+        post-conditions:
+          Status: InvAddr
+      then: N/A
+    - if:
+        post-conditions:
+          Status: InvId
+      then: Nop
+    - else: Value
+  pre-conditions:
+    Stats: all
+    Id: all
+type: requirement

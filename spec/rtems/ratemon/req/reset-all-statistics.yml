@@ -1,0 +1,15 @@
+SPDX-License-Identifier: CC-BY-SA-4.0
+copyrights:
+- Copyright (C) 2025 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: function
+links:
+- role: interface-function
+  uid: ../if/reset-all-statistics
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  The ${../if/reset-all-statistics:/name} directive shall reset the statistics of
+  all ${/glossary/active:/term} rate-monotonic ${/glossary/object:/plural}.
+type: requirement

@@ -2,7 +2,7 @@ SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 brief: |
   This structure provides the detailed status of a period.
 copyrights:
-- Copyright (C) 2021 embedded brains GmbH & Co. KG
+- Copyright (C) 2021, 2025 embedded brains GmbH & Co. KG
 - Copyright (C) 1988, 2008 On-Line Applications Research Corporation (OAR)
 definition:
 - default:
@@ -23,23 +23,21 @@ definition:
   variants: []
 - default:
     brief: |
-      This member contains the time elapsed since the last successful invocation
-      ${period:/name} using ${/glossary/clock-monotonic:/term}.
+      For an inactive period, this member is zero. Otherwise, it contains the
+      ${/glossary/clock-monotonic:/term} time elapsed since the last invocation of
+      ${period:/name}.
     definition: ${/c/if/timespec:/name} ${.:name}
-    description: |
-      If the period is expired or has not been initiated, then this value has no
-      meaning.
+    description: null
     kind: member
     name: since_last_period
   variants: []
 - default:
     brief: |
-      This member contains the processor time consumed by the owner task since the
-      last successful invocation ${period:/name}.
+      For an inactive period, this member is zero. Otherwise, it contains the
+      processor time consumed by the owner task since the last invocation of
+      ${period:/name}.
     definition: ${/c/if/timespec:/name} ${.:name}
-    description: |
-      If the period is expired or has not been initiated, then this value has no
-      meaning.
+    description: null
     kind: member
     name: executed_since_last_period
   variants: []

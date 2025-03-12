@@ -1,0 +1,160 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2025 embedded brains GmbH & Co. KG
+enabled-by: true
+links: []
+test-actions:
+- action-brief: |
+    Create a rate-monotonic object. Reset all rate-monotonic statistics. Get the
+    statistics of the rate-monotonic object.
+  action-code: |
+    rtems_id                               id;
+    rtems_rate_monotonic_period_statistics stats;
+    rtems_status_code                      sc;
+
+    id = CreatePeriod();
+    rtems_rate_monotonic_reset_all_statistics();
+
+    sc = rtems_rate_monotonic_get_statistics( id, &stats );
+    T_rsc_success( sc );
+  checks:
+  - brief: |
+      Check that the statistics are in the reset state.
+    code: |
+      T_eq_u32( stats.count, 0 );
+      T_eq_u32( stats.missed_count, 0 );
+      TimespecMax( &stats.min_cpu_time );
+      TimespecZero( &stats.max_cpu_time );
+      TimespecZero( &stats.total_cpu_time );
+      TimespecMax( &stats.min_wall_time );
+      TimespecZero( &stats.max_wall_time );
+      TimespecZero( &stats.total_wall_time );
+    links:
+    - role: validation
+      uid: ../req/reset-all-statistics
+  - brief: |
+      Delete the rate-monotonic object.
+    code: |
+      sc = rtems_rate_monotonic_delete( id );
+      T_rsc_success( sc );
+    links: []
+  links: []
+test-brief: |
+  This test case collection provides validation test cases for requirements of
+  the ${../if/group:/name}.
+test-context:
+- brief: |
+    This member contains the identifier of the worker task.
+  description: null
+  member: |
+    rtems_id worker_id
+- brief: |
+    This member contains the previous get timecount handler to restore.
+  description: null
+  member: |
+    GetTimecountHandler previous_get_timecount
+test-context-support: null
+test-description: null
+test-header: null
+test-includes:
+- rtems.h
+- string.h
+test-local-includes:
+- tx-support.h
+test-setup:
+  brief: null
+  code: |
+    ctx->previous_get_timecount = SetGetTimecountHandler( FreezeTime );
+    ctx->worker_id = CreateTask( "WORK", GetSelfPriority() + 1 );
+    StartTask( ctx->worker_id, TickWorker, NULL );
+    TimecounterTick();
+  description: null
+test-stop: null
+test-support: |
+  static uint32_t FreezeTime( void )
+  {
+    return GetTimecountCounter() - 1;
+  }
+
+  static void TickWorker( rtems_task_argument arg )
+  {
+    (void) arg;
+
+    while ( true ) {
+      TimecounterTick();
+    }
+  }
+
+  static void TimespecZero( const struct timespec *ts )
+  {
+    T_eq_ll( ts->tv_sec, 0 );
+    T_eq_long( ts->tv_nsec, 0 );
+  }
+
+  static void TimespecMax( const struct timespec *ts )
+  {
+    T_eq_ll( ts->tv_sec, 0x7fffffffLL );
+    T_eq_long( ts->tv_nsec, 999999999L );
+  }
+
+  static void TimespecEq( const struct timespec *ts, long ms )
+  {
+    T_eq_ll( ts->tv_sec, 0 );
+    T_eq_long( ( ts->tv_nsec + 499999L ) / 1000000L, ms );
+  }
+
+  static rtems_id CreatePeriod( void )
+  {
+    rtems_id                               id;
+    rtems_rate_monotonic_period_statistics stats;
+    rtems_status_code                      sc;
+
+    sc = rtems_rate_monotonic_create( OBJECT_NAME, &id );
+    T_rsc_success( sc );
+
+    sc = rtems_rate_monotonic_period( id, 3 );
+    T_rsc_success( sc );
+
+    TimecounterTick();
+    TimecounterTick();
+    TimecounterTick();
+    TimecounterTick();
+
+    sc = rtems_rate_monotonic_period( id, 3 );
+    T_rsc( sc, RTEMS_TIMEOUT );
+
+    TimecounterTick();
+
+    sc = rtems_rate_monotonic_period( id, 3 );
+    T_rsc_success( sc );
+
+    sc = rtems_task_wake_after( 1 );
+    T_rsc_success( sc );
+
+    TimecounterTick();
+
+    sc = rtems_rate_monotonic_period( id, 3 );
+    T_rsc_success( sc );
+
+    sc = rtems_rate_monotonic_get_statistics( id, &stats );
+    T_rsc_success( sc );
+
+    T_eq_u32( stats.count, 3 );
+    T_eq_u32( stats.missed_count, 1 );
+    TimespecEq( &stats.min_cpu_time, 1 );
+    TimespecEq( &stats.max_cpu_time, 4 );
+    TimespecEq( &stats.total_cpu_time, 6 );
+    TimespecEq( &stats.min_wall_time, 1 );
+    TimespecEq( &stats.max_wall_time, 4 );
+    TimespecEq( &stats.total_wall_time, 7 );
+
+    return id;
+  }
+test-target: testsuites/validation/tc-ratemon.c
+test-teardown:
+  brief: null
+  code: |
+    DeleteTask( ctx->worker_id );
+    SetGetTimecountHandler( ctx->previous_get_timecount );
+  description: null
+type: test-case

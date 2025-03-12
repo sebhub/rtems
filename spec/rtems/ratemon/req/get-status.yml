@@ -1,6 +1,6 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 copyrights:
-- Copyright (C) 2021 embedded brains GmbH & Co. KG
+- Copyright (C) 2021, 2025 embedded brains GmbH & Co. KG
 enabled-by: true
 functional-type: action
 links:
@@ -14,7 +14,7 @@ post-conditions:
       T_rsc_success( ctx->status );
     text: |
       The return status of ${../if/get-status:/name} shall be
-      ${../../status/if/successful:/name}
+      ${../../status/if/successful:/name}.
   - name: InvAddr
     test-code: |
       T_rsc( ctx->status, RTEMS_INVALID_ADDRESS );
@@ -33,615 +33,498 @@ post-conditions:
   states:
   - name: OwnerTask
     test-code: |
-      T_eq_u32( ctx->period_status.owner, ctx->task_id );
+      T_eq_u32( ctx->status_obj.owner, rtems_task_self() );
     text: |
       The value of the member ${../if/period-status:/definition[0]/default/name} of
       the object referenced by the ${../if/get-status:/params[1]/name} parameter
       shall be set to the object identifier of the ${../glossary/ownertask:/term} of
-      the period after the return of the ${../if/get-status:/name} call.
+      the period associated with the object identifier specified by the
+      ${../if/get-status:/params[0]/name} parameter.
   - name: Nop
     test-code: |
-      T_eq_u32( ctx->period_status.owner, initial_owner );
+      T_eq_u32( ctx->status_obj.owner, 0xffffffff );
     text: |
-      Objects referenced by the ${../if/get-status:/params[1]/name} parameter in past
-      call to ${../if/get-status:/name} shall not be accessed by the
-      ${../if/get-status:/name} call (see also ${../glossary/nop:/term}).
+      The value of the member ${../if/period-status:/definition[0]/default/name} of
+      the object referenced by the ${../if/get-status:/params[1]/name} parameter
+      shall not be modified.
   test-epilogue: null
   test-prologue: null
 - name: State
   states:
   - name: Inactive
     test-code: |
-      T_eq_int( ctx->period_status.state, RATE_MONOTONIC_INACTIVE );
+      T_eq_int( ctx->status_obj.state, RATE_MONOTONIC_INACTIVE );
     text: |
       The value of the member ${../if/period-status:/definition[1]/default/name} of
       the object referenced by the ${../if/get-status:/params[1]/name} parameter
-      shall be set to ${../if/inactive:/name} after the return of the
-      ${../if/get-status:/name} call. (See also ${../glossary/inactive:/term})
+      shall be set to ${../if/inactive:/name}.
   - name: Active
     test-code: |
-      T_eq_int( ctx->period_status.state, RATE_MONOTONIC_ACTIVE );
+      T_eq_int( ctx->status_obj.state, RATE_MONOTONIC_ACTIVE );
     text: |
       The value of the member ${../if/period-status:/definition[1]/default/name} of
       the object referenced by the ${../if/get-status:/params[1]/name} parameter
-      shall be set to ${../if/active:/name} after the return of the
-      ${../if/get-status:/name} call. (See also ${../glossary/active:/term})
+      shall be set to ${../if/active:/name}.
   - name: Expired
     test-code: |
-      T_eq_int( ctx->period_status.state, RATE_MONOTONIC_EXPIRED );
+      T_eq_int( ctx->status_obj.state, RATE_MONOTONIC_EXPIRED );
     text: |
       The value of the member ${../if/period-status:/definition[1]/default/name} of
       the object referenced by the ${../if/get-status:/params[1]/name} parameter
-      shall be set to ${../if/expired:/name} after the return of the
-      ${../if/get-status:/name} call. (See also ${../glossary/expired:/term})
+      shall be set to ${../if/expired:/name}.
   - name: Nop
     test-code: |
-      T_eq_u32( ctx->period_status.state, initial_state );
+      T_eq_int( ctx->status_obj.state, -1 );
     text: |
-      Objects referenced by the ${../if/get-status:/params[1]/name} parameter in past
-      calls to ${../if/get-status:/name} shall not be accessed by the
-      ${../if/get-status:/name} call (see also ${../glossary/nop:/term}).
+      The value of the member ${../if/period-status:/definition[1]/default/name} of
+      the object referenced by the ${../if/get-status:/params[1]/name} parameter
+      shall not be modified.
   test-epilogue: null
   test-prologue: null
-- name: Elapsed
+- name: SinceLastPeriod
   states:
-  - name: Time
-    test-code: |
-      T_log(
-        T_VERBOSE,
-        "Elapsed: %lld.%ld (expected: %lld.%ld)",
-        ctx->period_status.since_last_period.tv_sec,
-        ctx->period_status.since_last_period.tv_nsec,
-        ctx->elapsed.tv_sec,
-        ctx->elapsed.tv_nsec
-      );
-      T_eq_u64( ctx->period_status.since_last_period.tv_sec, ctx->elapsed.tv_sec );
-      /* period_status integer arithmetic is plagued by a rounding error. */
-      T_le_long(
-        ctx->period_status.since_last_period.tv_nsec,
-        ctx->elapsed.tv_nsec + 1
-      );
-      T_ge_long(
-        ctx->period_status.since_last_period.tv_nsec,
-        ctx->elapsed.tv_nsec - 1
-      );
-    text: |
-      The value of the member ${../if/period-status:/definition[2]/default/name} of
-      the object referenced by the ${../if/get-status:/params[1]/name} parameter
-      shall be set to the ${../glossary/time:/term} ${../glossary/elapsed:/term}.
   - name: Zero
     test-code: |
-      T_eq_u64( ctx->period_status.since_last_period.tv_sec, 0 );
-      T_eq_long( ctx->period_status.since_last_period.tv_nsec, 0 );
+      TimespecZero( &ctx->status_obj.since_last_period );
     text: |
       The value of the member ${../if/period-status:/definition[2]/default/name} of
       the object referenced by the ${../if/get-status:/params[1]/name} parameter
-      shall be set to 0.
-  - name: Nop
+      shall be set to zero.
+  - name: Elapsed
     test-code: |
-      T_eq_u64(
-        ctx->period_status.since_last_period.tv_sec,
-        initial_period.tv_sec
-      );
-      T_eq_long(
-        ctx->period_status.since_last_period.tv_nsec,
-        initial_period.tv_nsec
+      TimespecEq(
+        &ctx->status_obj.since_last_period,
+        ctx->expected_since_last_period
       );
     text: |
-      Objects referenced by the ${../if/get-status:/params[1]/name} parameter in past
-      calls to ${../if/get-status:/name} shall not be accessed by the
-      ${../if/get-status:/name} call (see also ${../glossary/nop:/term}).
+      The value of the member ${../if/period-status:/definition[2]/default/name} of
+      the object referenced by the ${../if/get-status:/params[1]/name} parameter
+      shall be set to the ${/glossary/clock-monotonic:/term} time elapsed since the
+      last invocation of ${../if/period:/name} for the period associated with the
+      object identifier specified by the ${../if/get-status:/params[0]/name}
+      parameter.
+  - name: Nop
+    test-code: |
+      TimespecNop( &ctx->status_obj.since_last_period );
+    text: |
+      The value of the member ${../if/period-status:/definition[2]/default/name} of
+      the object referenced by the ${../if/get-status:/params[1]/name} parameter
+      shall not be modified.
   test-epilogue: null
   test-prologue: null
-- name: Consumed
+- name: ExecutedSinceLastPeriod
   states:
-  - name: CpuTime
+  - name: Zero
     test-code: |
-      T_log(
-        T_VERBOSE,
-        "CPU elapsed: %lld.%ld (expected: %lld.%ld)",
-        ctx->period_status.executed_since_last_period.tv_sec,
-        ctx->period_status.executed_since_last_period.tv_nsec,
-        ctx->consumed.tv_sec,
-        ctx->consumed.tv_nsec
-      );
-      T_eq_u64(
-        ctx->period_status.executed_since_last_period.tv_sec,
-        ctx->consumed.tv_sec
-      );
-      /* period_status integer arithmetic is plagued by a rounding error. */
-      T_le_long(
-        ctx->period_status.executed_since_last_period.tv_nsec,
-        ctx->consumed.tv_nsec + 1
-      );
-      T_ge_long(
-        ctx->period_status.executed_since_last_period.tv_nsec,
-        ctx->consumed.tv_nsec - 1
+      TimespecZero( &ctx->status_obj.executed_since_last_period );
+    text: |
+      The value of the member ${../if/period-status:/definition[3]/default/name} of
+      the object referenced by the ${../if/get-status:/params[1]/name} parameter
+      shall be set to zero.
+  - name: Executed
+    test-code: |
+      TimespecEq(
+        &ctx->status_obj.executed_since_last_period,
+        ctx->expected_executed_since_last_period
       );
     text: |
       The value of the member ${../if/period-status:/definition[3]/default/name} of
       the object referenced by the ${../if/get-status:/params[1]/name} parameter
-      shall be set to the ${../glossary/cputime:/term} ${../glossary/consumed:/term}
-      by the ${../glossary/ownertask:/term}.
-  - name: Zero
-    test-code: |
-      T_eq_u64( ctx->period_status.executed_since_last_period.tv_sec, 0 );
-      T_eq_long( ctx->period_status.executed_since_last_period.tv_nsec, 0 );
-    text: |
-      The value of the member ${../if/period-status:/definition[2]/default/name} of
-      the object referenced by the ${../if/get-status:/params[1]/name} parameter
-      shall be set to 0.
+      shall be set to the processor time consumed by the
+      ${../glossary/ownertask:/term} since the last invocation of
+      ${../if/period:/name} for the period associated with the object identifier
+      specified by the ${../if/get-status:/params[0]/name} parameter.
   - name: Nop
     test-code: |
-      T_eq_u64(
-        ctx->period_status.executed_since_last_period.tv_sec,
-        initial_period.tv_sec
-      );
-      T_eq_long(
-        ctx->period_status.executed_since_last_period.tv_nsec,
-        initial_period.tv_nsec
-      );
+      TimespecNop( &ctx->status_obj.executed_since_last_period );
     text: |
-      Objects referenced by the ${../if/get-status:/params[1]/name} parameter in past
-      calls to ${../if/get-status:/name} shall not be accessed by the
-      ${../if/get-status:/name} call (see also ${../glossary/nop:/term}).
+      The value of the member ${../if/period-status:/definition[3]/default/name} of
+      the object referenced by the ${../if/get-status:/params[1]/name} parameter
+      shall not be modified.
   test-epilogue: null
   test-prologue: null
-- name: Postponed
+- name: PostponedJobs
   states:
   - name: Zero
     test-code: |
-      T_eq_u32( ctx->period_status.postponed_jobs_count, 0 );
+      T_eq_u32( ctx->status_obj.postponed_jobs_count, 0 );
     text: |
       The value of the member ${../if/period-status:/definition[4]/default/name} of
       the object referenced by the ${../if/get-status:/params[1]/name} parameter
-      shall be set to 0 after the return of the ${../if/get-status:/name} call.
-  - name: One
-    test-code: |
-      T_eq_u32( ctx->period_status.postponed_jobs_count, 1 );
-    text: |
-      The value of the member ${../if/period-status:/definition[4]/default/name} of
-      the object referenced by the ${../if/get-status:/params[1]/name} parameter
-      shall be set to the number of ${../glossary/postponedjob:/plural} (here 1)
-      after the return of the ${../if/get-status:/name} call.
-  - name: Several
+      shall be set to zero.
+  - name: Count
     test-code: |
       T_eq_u32(
-        ctx->period_status.postponed_jobs_count,
-        ctx->postponed_jobs_count
+        ctx->status_obj.postponed_jobs_count,
+        ctx->expected_postponed_jobs_count
       );
     text: |
       The value of the member ${../if/period-status:/definition[4]/default/name} of
       the object referenced by the ${../if/get-status:/params[1]/name} parameter
-      shall be set to the number of ${../glossary/postponedjob:/plural} after the
-      return of the ${../if/get-status:/name} call.
+      shall be set to the count of ${../glossary/postponedjob:/plural} of the period
+      associated with the object identifier specified by the
+      ${../if/get-status:/params[0]/name} parameter.
   - name: Nop
     test-code: |
-      T_eq_u32(
-        ctx->period_status.postponed_jobs_count,
-        initial_postponed_jobs_count
-      );
+      T_eq_u32( ctx->status_obj.postponed_jobs_count, 0xffffffff );
     text: |
-      Objects referenced by the ${../if/get-status:/params[1]/name} parameter in past
-      calls to ${../if/get-status:/name} shall not be accessed by the
-      ${../if/get-status:/name} call (see also ${../glossary/nop:/term}).
+      The value of the member ${../if/period-status:/definition[4]/default/name} of
+      the object referenced by the ${../if/get-status:/params[1]/name} parameter
+      shall not be modified.
   test-epilogue: null
   test-prologue: null
 pre-conditions:
-- name: StatusAddr
+- name: Status
   states:
   - name: Valid
     test-code: |
-      ctx->status_param = &ctx->period_status;
+      ctx->period_status = &ctx->status_obj;
     text: |
       While the ${../if/get-status:/params[1]/name} parameter references an object of
       type ${../if/period-status:/name}.
   - name: 'Null'
     test-code: |
-      ctx->status_param = NULL;
+      ctx->period_status = NULL;
     text: |
-      While the ${../if/get-status:/params[1]/name} parameter is ${/c/if/null:/name}.
+      While the ${../if/get-status:/params[1]/name} parameter is equal to
+      ${/c/if/null:/name}.
   test-epilogue: null
   test-prologue: null
 - name: Id
   states:
-  - name: Valid
+  - name: NoObj
     test-code: |
-      ctx->id_param = ctx->period_id;
+      ctx->id = 0xffffffff;
     text: |
-      While the ${../if/get-status:/params[0]/name} parameter is valid.
-  - name: Invalid
+      While the ${../if/get-status:/params[0]/name} parameter is not associated with
+      a period.
+  - name: Period
     test-code: |
-      ctx->id_param = RTEMS_ID_NONE;
+      ctx->id = CreatePeriod();
     text: |
-      While the ${../if/get-status:/params[0]/name} parameter is invalid.
+      While the ${../if/get-status:/params[0]/name} parameter is associated with a
+      period.
   test-epilogue: null
   test-prologue: null
+- name: PostponedJobs
+  states:
+  - name: Zero
+    test-code: |
+      /* Nothing to prepare */
+    text: |
+      While the count of ${../glossary/postponedjob:/plural} of the period associated
+      with the object identifier specified by the ${../if/get-status:/params[0]/name}
+      parameter is zero.
+  - name: Positive
+    test-code: |
+      sc = rtems_rate_monotonic_period( ctx->id, 3 );
+      T_rsc_success( sc );
+
+      TimecounterTick();
+      TimecounterTick();
+      TimecounterTick();
+
+      sc = rtems_task_wake_after( 1 );
+      T_rsc_success( sc );
+
+      TimecounterTick();
+      TimecounterTick();
+
+      ctx->expected_postponed_jobs_count = 2;
+    text: |
+      While the count of ${../glossary/postponedjob:/plural} of the period associated
+      with the object identifier specified by the ${../if/get-status:/params[0]/name}
+      parameter is greater than zero.
+  test-epilogue: null
+  test-prologue: |
+    rtems_status_code sc;
 - name: State
   states:
   - name: Inactive
     test-code: |
-      /* Nothing to do here as the period is newly created. */
-      ctx->previous_state = RATE_MONOTONIC_INACTIVE;
+      /* Nothing to prepare */
     text: |
-      While the ${../if/get-status:/params[0]/name} parameter references an period
-      object in ${../glossary/inactive:/term} ${../glossary/state:/term}.
+      While the ${../glossary/state:/term} of the period associated with the object
+      identifier specified by the ${../if/get-status:/params[0]/name} parameter is
+      ${../glossary/inactive:/term}.
   - name: Active
     test-code: |
-      rtems_status_code status;
-      status = rtems_rate_monotonic_period( ctx->period_id, period_length );
-      T_rsc_success( status );
-      ctx->previous_state = RATE_MONOTONIC_ACTIVE;
+      sc = rtems_rate_monotonic_period( ctx->id, 3 );
+
+      if ( ctx->expected_postponed_jobs_count > 0 ) {
+        T_rsc( sc, RTEMS_TIMEOUT );
+      } else {
+        T_rsc_success( sc );
+      }
+
+      sc = rtems_task_wake_after( 1 );
+      T_rsc_success( sc );
+
+      TimecounterTick();
+
+      if ( ctx->expected_postponed_jobs_count > 0 ) {
+        --ctx->expected_postponed_jobs_count;
+      }
+
+      ctx->expected_since_last_period = 2;
+      ctx->expected_executed_since_last_period = 1;
     text: |
-      While the ${../if/get-status:/params[0]/name} parameter references an period
-      object in ${../glossary/active:/term} ${../glossary/state:/term}.
+      While the ${../glossary/state:/term} of the period associated with the object
+      identifier specified by the ${../if/get-status:/params[0]/name} parameter is
+      ${../glossary/active:/term}.
   - name: Expired
     test-code: |
-      rtems_status_code status;
-      status = rtems_rate_monotonic_period( ctx->period_id, period_length );
-      T_rsc_success( status );
-      ctx->previous_state = RATE_MONOTONIC_EXPIRED;
+      if ( ctx->expected_postponed_jobs_count == 0 ) {
+        sc = rtems_rate_monotonic_period( ctx->id, 3 );
+        T_rsc_success( sc );
+
+        sc = rtems_task_wake_after( 1 );
+        T_rsc_success( sc );
+
+        TimecounterTick();
+        TimecounterTick();
+
+        ctx->expected_since_last_period = 3;
+        ctx->expected_executed_since_last_period = 2;
+        ctx->expected_postponed_jobs_count = 1;
+      } else {
+        ctx->expected_since_last_period = 6;
+        ctx->expected_executed_since_last_period = 5;
+      }
     text: |
-      While the ${../if/get-status:/params[0]/name} parameter references an period
-      object in ${../glossary/expired:/term} ${../glossary/state:/term}.
+      While the ${../glossary/state:/term} of the period associated with the object
+      identifier specified by the ${../if/get-status:/params[0]/name} parameter is
+      ${../glossary/expired:/term}.
   test-epilogue: null
-  test-prologue: null
-- name: Elapsed
-  states:
-  - name: Time
-    test-code: |
-      /* Time elapsed while having a CPU is added below in "CpuTime". */
-    text: |
-      While a certain ${../glossary/time:/term} of the
-      ${/glossary/clock-monotonic:/term} has ${../glossary/elapsed:/term}.
-  test-epilogue: null
-  test-prologue: null
-- name: Consumed
-  states:
-  - name: CpuTime
-    test-code: |
-      TickTheClock( ctx, elapsed_cpu_ticks );
-      ctx->consumed.tv_nsec += rtems_configuration_get_nanoseconds_per_tick() *
-                               elapsed_cpu_ticks;
-    text: |
-      While the owner ${/glossary/task:/term} has ${../glossary/consumed:/term} a
-      certain amount of ${../glossary/cputime:/term}.
-  test-epilogue: null
-  test-prologue: null
-- name: Postponed
-  states:
-  - name: Zero
-    test-code: |
-      ctx->postponed_jobs_count = 0;
-    text: |
-      While the period is not in ${../glossary/expired:/term}
-      ${../glossary/state:/term}.
-  - name: One
-    test-code: |
-      CreatePostponedJobs( ctx, 1 );
-    text: |
-      While there is one ${../glossary/postponedjob:/term}.
-  - name: Several
-    test-code: |
-      CreatePostponedJobs( ctx, 5 );
-    text: |
-      While there are two or more ${../glossary/postponedjob:/term}.
-  test-epilogue: null
-  test-prologue: null
-rationale: null
+  test-prologue: |
+    rtems_status_code sc;
+rationale: |
+  The directive checks the pointer before the identifier, so a
+  ${/c/if/null:/name} pointer gives the invalid address status for each
+  identifier.
+references: []
 requirement-type: functional
-skip-reasons:
-  NeverInExpiredState: |
-    There must be ${../glossary/postponedjob:/plural} in
-    ${../glossary/expired:/term} ${../glossary/state:/term}.
-  NotInInactiveState: |
-    ${../glossary/postponedjob:/plural} do not exist in
-    ${../glossary/inactive:/term} ${../glossary/state:/term}.
+skip-reasons: {}
 test-action: |
-  if ( ctx->do_reset != NULL ) {
-      ctx->do_reset();
-  }
-  ctx->status = rtems_rate_monotonic_get_status(
-    ctx->id_param,
-    ctx->status_param
-  );
+  ctx->status = rtems_rate_monotonic_get_status( ctx->id, ctx->period_status );
 test-brief: null
 test-cleanup: |
-  T_rsc_success( rtems_rate_monotonic_delete( ctx->period_id ) );
+  if ( ctx->id != 0xffffffff ) {
+    rtems_status_code sc;
+
+    sc = rtems_rate_monotonic_delete( ctx->id );
+    T_rsc_success( sc );
+  }
 test-context:
 - brief: |
-    This member contains a valid identifier of a period.
+    This member contains the identifier of the worker task.
   description: null
   member: |
-    rtems_id period_id
+    rtems_id worker_id
 - brief: |
-    This member contains the previous timecounter handler to restore.
+    This member contains the previous get timecount handler to restore.
   description: null
   member: |
-    GetTimecountHandler previous_timecounter_handler
+    GetTimecountHandler previous_get_timecount
 - brief: |
-    This member is used to receive the ${../if/period-status:/name} from the
-    action.
+    This member provides the expected since last period.
   description: null
   member: |
-    rtems_rate_monotonic_period_status period_status
+    rtems_interval expected_since_last_period
 - brief: |
-    This member specifies the ${../if/get-status:/params[0]/name} parameter for the
-    action.
+    This member provides the expected executed since last period.
   description: null
   member: |
-    rtems_id id_param
+    rtems_interval expected_executed_since_last_period
 - brief: |
-    This member specifies the ${../if/get-status:/params[1]/name} parameter for the
-    action.
+    This member provides the expected postponed job count.
   description: null
   member: |
-    rtems_rate_monotonic_period_status *status_param
+    uint32_t expected_postponed_jobs_count
 - brief: |
-    This member contains the returned ${/glossary/statuscode:/term} of the action.
+    This member provides the expected period status.
+  description: null
+  member: |
+    rtems_rate_monotonic_period_status status_obj
+- brief: |
+    This member provides the object identifier parameter.
+  description: null
+  member: |
+    rtems_id id
+- brief: |
+    This member provides the period status parameter.
+  description: null
+  member: |
+    rtems_rate_monotonic_period_status *period_status
+- brief: |
+    This member contains the return status.
   description: null
   member: |
     rtems_status_code status
-- brief: |
-    This member contains the ${/glossary/task:/term} identifier of the
-    ${../glossary/ownertask:/term}.
-  description: null
-  member: |
-    rtems_id task_id
-- brief: |
-    This member contains the ${../glossary/state:/term} before the action.
-  description: null
-  member: |
-    rtems_rate_monotonic_period_states previous_state
-- brief: |
-    If the ${../../cpuuse/if/reset:/name} directive should be called before
-    ${../if/get-status:/name}, this member contains a pointer to it.
-  description: null
-  member: |
-    void (*do_reset)( void )
-- brief: |
-    This member contains the ${/glossary/clock-monotonic:/term}
-    ${../glossary/time:/term} ${../glossary/elapsed:/term}.
-  description: null
-  member: |
-    struct timespec elapsed
-- brief: |
-    This member contains the ${../glossary/cputime:/term}
-    ${../glossary/consumed:/term} by the ${../glossary/ownertask:/term}.
-  description: null
-  member: |
-    struct timespec consumed
-- brief: |
-    This member contains the number of ${../glossary/postponedjob:/plural}.
-  description: null
-  member: |
-    uint32_t postponed_jobs_count
 test-context-support: null
 test-description: null
 test-header: null
 test-includes:
 - rtems.h
-- rtems/cpuuse.h
+- string.h
 test-local-includes:
 - tx-support.h
 test-prepare: |
-  rtems_status_code status;
-  status = rtems_rate_monotonic_create(
-    rtems_build_name( 'R', 'M', 'O', 'N' ),
-    &ctx->period_id
-  );
-  T_rsc_success( status );
-
-  ctx->period_status = (rtems_rate_monotonic_period_status) {
-    .owner = initial_owner,
-    .state = initial_state,
-    .since_last_period = initial_period,
-    .executed_since_last_period = initial_period,
-    .postponed_jobs_count = initial_postponed_jobs_count
-  };
-
-  ctx->elapsed.tv_sec = 0;
-  ctx->elapsed.tv_nsec = 0;
-  ctx->consumed.tv_sec = 0;
-  ctx->consumed.tv_nsec = 0;
-  ctx->postponed_jobs_count = 0;
-  TimecounterTick();
+  ctx->expected_since_last_period = 0;
+  ctx->expected_executed_since_last_period = 0;
+  ctx->expected_postponed_jobs_count = 0;
+  memset( &ctx->status_obj, 0xff, sizeof( ctx->status_obj ) );
 test-setup:
   brief: null
   code: |
-    ctx->previous_timecounter_handler = SetGetTimecountHandler( FreezeTime );
-    ctx->task_id = rtems_task_self();
+    ctx->previous_get_timecount = SetGetTimecountHandler( FreezeTime );
+    ctx->worker_id = CreateTask( "WORK", GetSelfPriority() + 1 );
+    StartTask( ctx->worker_id, TickWorker, NULL );
+    TimecounterTick();
   description: null
 test-stop: null
 test-support: |
-  static const rtems_id initial_owner = 0xFFFFFFFF;
-  static const rtems_rate_monotonic_period_states
-    initial_state = (rtems_rate_monotonic_period_states) 0xFFFFFFFF;
-  static const struct timespec initial_period = { 0xFFFFFFFF, 0xFFFFFFFF };
-  static const uint32_t        initial_postponed_jobs_count = 0xFFFFFFFF;
-  static const rtems_interval  period_length = 5;
-  static const uint32_t        elapsed_cpu_ticks = 3;
-
   static uint32_t FreezeTime( void )
   {
     return GetTimecountCounter() - 1;
   }
 
-  static void TickTheClock(
-    RtemsRatemonReqGetStatus_Context *ctx,
-    uint32_t                          ticks
-  )
+  static void TickWorker( rtems_task_argument arg )
   {
-    uint32_t i;
-    for ( i = 0; i < ticks; ++i ) {
+    (void) arg;
+
+    while ( true ) {
       TimecounterTick();
     }
-    ctx->elapsed.tv_nsec += rtems_configuration_get_nanoseconds_per_tick() *
-                            ticks;
   }
 
-  static void CreatePostponedJobs(
-    RtemsRatemonReqGetStatus_Context *ctx,
-    uint32_t                          jobs_count
-  )
+  static void TimespecZero( const struct timespec *ts )
   {
-    rtems_status_code status;
-    ctx->postponed_jobs_count = jobs_count;
-    if ( ctx->previous_state == RATE_MONOTONIC_ACTIVE ) {
-      jobs_count++;
-      TickTheClock( ctx, jobs_count * period_length );
-      status = rtems_rate_monotonic_period( ctx->period_id, period_length );
-      T_rsc( status, RTEMS_TIMEOUT );
-    } else {
-      /* ctx->previous_state == RATE_MONOTONIC_INACTIVE || _EXPIRED */
-      TickTheClock( ctx, jobs_count * period_length );
-    }
-    ctx->consumed.tv_nsec += rtems_configuration_get_nanoseconds_per_tick() *
-                             jobs_count * period_length;
+    T_eq_ll( ts->tv_sec, 0 );
+    T_eq_long( ts->tv_nsec, 0 );
+  }
+
+  static void TimespecEq( const struct timespec *ts, rtems_interval ticks )
+  {
+    T_eq_ll( ts->tv_sec, 0 );
+    T_eq_long(
+      ( ts->tv_nsec + 499999L ) / 1000000L,
+      ticks * rtems_configuration_get_milliseconds_per_tick()
+    );
+  }
+
+  static void TimespecNop( const struct timespec *ts )
+  {
+    T_eq_ll( ts->tv_sec, -1LL );
+    T_eq_long( ts->tv_nsec, -1L );
+  }
+
+  static rtems_id CreatePeriod( void )
+  {
+    rtems_id          id;
+    rtems_status_code sc;
+
+    sc = rtems_rate_monotonic_create( OBJECT_NAME, &id );
+    T_rsc_success( sc );
+
+    return id;
   }
 test-target: testsuites/validation/tc-ratemon-get-status.c
 test-teardown:
   brief: null
   code: |
-    SetGetTimecountHandler( ctx->previous_timecounter_handler );
+    DeleteTask( ctx->worker_id );
+    SetGetTimecountHandler( ctx->previous_get_timecount );
   description: null
 text: |
   ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:
-    Status: Ok
-    Owner: OwnerTask
-    State: Inactive
-    Elapsed: Zero
-    Consumed: Zero
-    Postponed: N/A
-  pre-conditions:
-    StatusAddr:
-    - Valid
-    Id:
-    - Valid
+    Status:
+    - if:
+        pre-conditions:
+          Status: 'Null'
+      then: InvAddr
+    - if:
+        pre-conditions:
+          Id: NoObj
+      then: InvId
+    - else: Ok
+    Owner:
+    - if:
+        pre-conditions:
+          Status: 'Null'
+      then: N/A
+    - if:
+        pre-conditions:
+          Id: NoObj
+      then: Nop
+    - else: OwnerTask
     State:
-    - Inactive
-    Elapsed: N/A
-    Consumed: N/A
-    Postponed: N/A
-- enabled-by: true
-  post-conditions:
-    Status: Ok
-    Owner: OwnerTask
-    State:
+    - if:
+        pre-conditions:
+          Status: 'Null'
+      then: N/A
+    - if:
+        pre-conditions:
+          Id: NoObj
+      then: Nop
     - specified-by: State
-    Elapsed: Time
-    Consumed: CpuTime
-    Postponed:
-    - specified-by: Postponed
+    SinceLastPeriod:
+    - if:
+        pre-conditions:
+          Status: 'Null'
+      then: N/A
+    - if:
+        pre-conditions:
+          Id: NoObj
+      then: Nop
+    - if:
+        pre-conditions:
+          State: Inactive
+      then: Zero
+    - else: Elapsed
+    ExecutedSinceLastPeriod:
+    - if:
+        pre-conditions:
+          Status: 'Null'
+      then: N/A
+    - if:
+        pre-conditions:
+          Id: NoObj
+      then: Nop
+    - if:
+        pre-conditions:
+          State: Inactive
+      then: Zero
+    - else: Executed
+    PostponedJobs:
+    - if:
+        pre-conditions:
+          Status: 'Null'
+      then: N/A
+    - if:
+        pre-conditions:
+          Id: NoObj
+      then: Nop
+    - if:
+        pre-conditions:
+          State: Inactive
+      then: Zero
+    - else: Count
   pre-conditions:
-    StatusAddr:
-    - Valid
-    Id:
-    - Valid
-    State:
-    - Active
-    - Expired
-    Elapsed:
-    - Time
-    Consumed:
-    - CpuTime
-    Postponed: all
-- enabled-by: true
-  post-conditions:
-    Status: InvAddr
-    Owner: Nop
-    State: Nop
-    Elapsed: Nop
-    Consumed: Nop
-    Postponed: Nop
-  pre-conditions:
-    StatusAddr:
-    - 'Null'
+    Status: all
     Id: all
+    PostponedJobs:
+      applicable:
+        pre-conditions:
+          Id: Period
+          State:
+          - Active
+          - Expired
     State:
-    - Inactive
-    Elapsed: all
-    Consumed: all
-    Postponed: N/A
-- enabled-by: true
-  post-conditions:
-    Status: InvAddr
-    Owner: Nop
-    State: Nop
-    Elapsed: Nop
-    Consumed: Nop
-    Postponed: Nop
-  pre-conditions:
-    StatusAddr:
-    - 'Null'
-    Id: all
-    State:
-    - Active
-    - Expired
-    Elapsed: all
-    Consumed: all
-    Postponed: all
-- enabled-by: true
-  post-conditions:
-    Status: InvId
-    Owner: Nop
-    State: Nop
-    Elapsed: Nop
-    Consumed: Nop
-    Postponed: Nop
-  pre-conditions:
-    StatusAddr:
-    - Valid
-    Id:
-    - Invalid
-    State:
-    - Inactive
-    Elapsed: all
-    Consumed: all
-    Postponed: N/A
-- enabled-by: true
-  post-conditions:
-    Status: InvId
-    Owner: Nop
-    State: Nop
-    Elapsed: Nop
-    Consumed: Nop
-    Postponed: Nop
-  pre-conditions:
-    StatusAddr:
-    - Valid
-    Id:
-    - Invalid
-    State:
-    - Active
-    - Expired
-    Elapsed: all
-    Consumed: all
-    Postponed: all
-- enabled-by: true
-  post-conditions: NotInInactiveState
-  pre-conditions:
-    StatusAddr: all
-    Id: all
-    State:
-    - Inactive
-    Elapsed: all
-    Consumed: all
-    Postponed:
-    - One
-    - Several
-- enabled-by: true
-  post-conditions: NeverInExpiredState
-  pre-conditions:
-    StatusAddr: all
-    Id: all
-    State:
-    - Expired
-    Elapsed: all
-    Consumed: all
-    Postponed:
-    - Zero
+      applicable:
+        pre-conditions:
+          Id: Period
 type: requirement
