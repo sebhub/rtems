@@ -409,6 +409,46 @@ rtems_status_code qoriq_pic_set_sense_and_polarity(
 	return RTEMS_SUCCESSFUL;
 }
 
+rtems_status_code qoriq_pic_set_destination(
+	rtems_vector_number vector,
+	uint32_t destination,
+	qoriq_pic_signal_type signal_type
+)
+{
+	if (!bsp_interrupt_is_valid_vector(vector)) {
+		return RTEMS_INVALID_ID;
+	}
+
+	if (destination >= rtems_scheduler_get_processor_maximum()) {
+		return RTEMS_INVALID_NUMBER;
+	}
+
+#if QORIQ_CHIP_IS_T_VARIANT(QORIQ_CHIP_VARIANT)
+	(void) signal_type;
+	return RTEMS_UNSATISFIED;
+#else
+	volatile qoriq_pic_src_cfg *src_cfg;
+
+	if (vector >= QORIQ_IRQ_IPI_BASE) {
+		return RTEMS_UNSATISFIED;
+	}
+
+	src_cfg = get_src_cfg(vector);
+
+	if (signal_type == QORIQ_PIC_SIGNAL_INT) {
+		src_cfg->dr = 1U << destination;
+		return RTEMS_SUCCESSFUL;
+	}
+
+	if (signal_type == QORIQ_PIC_SIGNAL_CINT) {
+		src_cfg->dr = 1U << (30 - destination);
+		return RTEMS_SUCCESSFUL;
+	}
+
+	return RTEMS_UNSATISFIED;
+#endif
+}
+
 rtems_status_code bsp_interrupt_set_affinity(
 	rtems_vector_number vector,
 	const Processor_mask *affinity
@@ -445,7 +485,12 @@ rtems_status_code bsp_interrupt_get_affinity(
 	}
 
 	src_cfg = get_src_cfg(vector);
-	_Processor_mask_From_uint32_t(affinity, src_cfg->dr, 0);
+
+	/*
+	 * For P-series variants, the higher order bits specify alternative
+	 * interrupt signals.
+	 */
+	_Processor_mask_From_uint32_t(affinity, src_cfg->dr & 0xffffff, 0);
 	return RTEMS_SUCCESSFUL;
 }
 

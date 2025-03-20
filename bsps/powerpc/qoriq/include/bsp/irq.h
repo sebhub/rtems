@@ -458,12 +458,64 @@ typedef enum {
  * @par Notes
  * There are only very rare edge cases where you need this function.
  *
- * @returns RTEMS_SUCCSSSFUL on sucess or other values for invalid settings.
+ * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
+ *
+ * @retval ::RTEMS_UNSATISFIED The vector is not associated with an external
+ *   interrupt.
  */
 rtems_status_code qoriq_pic_set_sense_and_polarity(
   rtems_vector_number vector,
   qoriq_eirq_sense_and_polarity new_sense_and_polarity,
   qoriq_eirq_sense_and_polarity *old_sense_and_polarity
+);
+
+/**
+ * @brief This enumeration defines the signal type of an interrupt.
+ */
+typedef enum {
+  /**
+   * @brief Indicates that the interrupt is signalled by an interrupt signal.
+   */
+  QORIQ_PIC_SIGNAL_INT,
+
+  /**
+   * @brief Indicates that the interrupt is signalled by a critical interrupt
+   *   signal.
+   */
+  QORIQ_PIC_SIGNAL_CINT,
+
+  /**
+   * @brief Indicates that the interrupt is signalled by a machine check
+   *   signal.
+   */
+  QORIQ_PIC_SIGNAL_MCP
+} qoriq_pic_signal_type;
+
+/**
+ * @brief Sets the destination and signal type of the interrupt vector.
+ *
+ * @param vector is the number of the interrupt vector.
+ *
+ * @param destination is the processor index of the new destination for the
+ *   interrupt vector.
+ *
+ * @param signal_type is the new signal type for the interrupt vector.
+ *
+ * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
+ *
+ * @retval ::RTEMS_INVALID_ID There was no interrupt vector associated with the
+ *   number specified by ``vector``.
+ *
+ * @retval ::RTEMS_INVALID_NUMBER The destination was invalid for the interrupt
+ *   vector.
+ *
+ * @retval ::RTEMS_UNSATISFIED The signal type was invalid for the interrupt
+ *   vector.
+ */
+rtems_status_code qoriq_pic_set_destination(
+  rtems_vector_number   vector,
+  uint32_t              destination,
+  qoriq_pic_signal_type signal_type
 );
 
 /** @} */
