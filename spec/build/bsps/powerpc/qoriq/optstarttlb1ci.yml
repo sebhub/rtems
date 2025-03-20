@@ -1,0 +1,18 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+actions:
+- get-boolean: null
+- define-condition: null
+build-type: option
+copyrights:
+- Copyright (C) 2025 embedded brains GmbH & Co. KG
+default:
+- enabled-by: true
+  value: false
+description: |
+  Make the TLB1[0] entry cache inhibited during system start.  This is a
+  workaround for certain bootloaders setting the memory area to write-through
+  which results in issues if lwarx/stwc instructions are used.
+enabled-by: true
+links: []
+name: QORIQ_START_MAKE_TLB1_0_CACHE_INHIBITED
+type: build
