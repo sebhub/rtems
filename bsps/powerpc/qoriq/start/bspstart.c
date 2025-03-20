@@ -80,6 +80,18 @@ uint32_t _CPU_Counter_frequency(void)
 #endif
 }
 
+#ifdef QORIQ_INITIALIZE_CACHES
+void qoriq_initialize_l1_cache_config(void *fdt, uint32_t *config)
+{
+  const void *prop;
+
+  prop = fdt_get_property(fdt, 0, "l1-data-disable", NULL);
+  *config |= (prop == NULL) << 0;
+  prop = fdt_get_property(fdt, 0, "l1-instruction-disable", NULL);
+  *config |= (prop == NULL) << 1;
+}
+#endif
+
 static void initialize_frequency_parameters(void)
 {
   const void *fdt = bsp_fdt_get();

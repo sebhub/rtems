@@ -67,12 +67,15 @@
  * 000..003: machine check stack pointer
  * 004..007: L1 instruction recoveries
  * 008..00b: L1 data recoveries
- * 00c..fff: machine check stack area
+ * 00c..00f: L1 configuration (only present in area of core/thread 0)
+ * 010..fff: machine check stack area
  */
 .macro MACHINE_CHECK_DATA
 	.long	. + 0x1000 - EXC_GENERIC_SIZE - PPC_DEFAULT_CACHE_LINE_SIZE
 	.zero 0x0ffc
 .endm
+
+#define QORIQ_L1_CACHE_CONFIG_ADDRESS (qoriq_machine_check_data + 12)
 
 	.globl _start
 #ifdef RTEMS_SMP
@@ -110,6 +113,13 @@ _start:
 
 #ifdef QORIQ_INITIALIZE_CACHES
 	INITIALIZE_L2_CACHE	r3, r4, r5
+#endif
+
+#ifdef QORIQ_INITIALIZE_CACHES
+	mr	r3, FDT_REGISTER
+	LA32	r4, QORIQ_L1_CACHE_CONFIG_ADDRESS
+	bl	qoriq_initialize_l1_cache_config
+	PPC64_NOP_FOR_LINKER_TOC_POINTER_RESTORE
 #endif
 
 	/* Get start stack */
@@ -264,7 +274,11 @@ _start:
 	mflr	SAVED_LINK_REGISTER
 
 #ifdef QORIQ_INITIALIZE_CACHES
+	LW	r3, QORIQ_L1_CACHE_CONFIG_ADDRESS
+	andi.	r3, r3, 0x2
+	beq	1f
 	INITIALIZE_L1_INSTRUCTION_CACHE	r3
+1:
 #endif
 
 	/* Invalidate all TS1 MMU entries */
@@ -400,7 +414,11 @@ _start:
 #endif
 
 #ifdef QORIQ_INITIALIZE_CACHES
+	LW	r3, QORIQ_L1_CACHE_CONFIG_ADDRESS
+	andi.	r3, r3, 0x1
+	beq	1f
 	INITIALIZE_L1_DATA_CACHE	r3
+1:
 #endif
 
 	mtlr	SAVED_LINK_REGISTER
