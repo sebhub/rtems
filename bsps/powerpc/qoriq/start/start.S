@@ -92,6 +92,20 @@
 
 _start:
 	mr	FDT_REGISTER, r3
+
+#ifdef QORIQ_START_MAKE_TLB1_0_CACHE_INHIBITED
+	/* Make TLB1[0] cache inhibited */
+	li	r3, 0
+	li	r4, 0
+	li	r5, FSL_EIS_MAS2_I
+	li	r6, FSL_EIS_MAS3_SR | FSL_EIS_MAS3_SW | FSL_EIS_MAS3_SX
+	li	r7, 0
+	li	r8, 0
+	li	r9, FSL_EIS_MAS1_SIZE_1G
+	bl	qoriq_tlb1_write
+	PPC64_NOP_FOR_LINKER_TOC_POINTER_RESTORE
+#endif
+
 	bl	.Linitearly
 
 #ifdef QORIQ_INITIALIZE_CACHES
