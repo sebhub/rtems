@@ -323,6 +323,10 @@ void qoriq_increment_ddr_multiple_bit_error_count(void);
  */
 void qoriq_increment_ddr_memory_select_error_count(void);
 
+#ifdef QORIQ_INITIALIZE_CACHES
+void qoriq_initialize_l1_cache_config(void *fdt, uint32_t *config);
+#endif
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
