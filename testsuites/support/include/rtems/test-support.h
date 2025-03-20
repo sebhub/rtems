@@ -575,6 +575,22 @@ void SetScheduler(
 void SetSelfScheduler( rtems_id scheduler_id, rtems_task_priority priority );
 
 /**
+ * @brief Sets the home scheduler of the executing task to the scheduler which
+ *   owns the processor.
+ *
+ * The function sets the processor affinity of the executing task to all
+ * processors first.  The test records a failure, if
+ * rtems_scheduler_ident_by_processor() does not succeed.
+ *
+ * @param cpu_index is the index of the processor.
+ * @param priority is the priority with respect to the new home scheduler.
+ */
+void SetSelfSchedulerByProcessor(
+  uint32_t            cpu_index,
+  rtems_task_priority priority
+);
+
+/**
  * @brief Gets the processor affinity of the task.
  *
  * The test records a failure, if rtems_task_get_affinity() does not succeed.

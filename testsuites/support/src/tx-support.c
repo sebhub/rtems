@@ -347,6 +347,21 @@ void SetSelfScheduler( rtems_id scheduler_id, rtems_task_priority priority )
   SetScheduler( RTEMS_SELF, scheduler_id, priority );
 }
 
+void SetSelfSchedulerByProcessor(
+  uint32_t            cpu_index,
+  rtems_task_priority priority
+)
+{
+  rtems_status_code sc;
+  rtems_id          scheduler_id;
+
+  sc = rtems_scheduler_ident_by_processor( cpu_index, &scheduler_id );
+  T_quiet_rsc_success( sc );
+
+  SetSelfAffinityAll();
+  SetScheduler( RTEMS_SELF, scheduler_id, priority );
+}
+
 void GetAffinity( rtems_id id, cpu_set_t *set )
 {
   rtems_status_code sc;
