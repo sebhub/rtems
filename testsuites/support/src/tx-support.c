@@ -592,6 +592,7 @@ void RestoreRunnerPriority( void )
 
 void RestoreRunnerScheduler( void )
 {
+  SetSelfAffinityAll();
   SetSelfScheduler( SCHEDULER_A_ID, 1 );
 }
 
