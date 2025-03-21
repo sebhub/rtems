@@ -7,11 +7,11 @@ copyrights:
 - Copyright (C) 2020 embedded brains GmbH & Co. KG
 default:
 - enabled-by: powerpc/qoriq_e6500_64
-  value: 0x82003200
+  value: 0x82023200
 - enabled-by: powerpc/qoriq_e6500_32
-  value: 0x02003200
+  value: 0x02023200
 - enabled-by: true
-  value: 0x02001200
+  value: 0x02021200
 description: |
   initial MSR value
 enabled-by: true
