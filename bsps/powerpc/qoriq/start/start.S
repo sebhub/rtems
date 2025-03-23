@@ -60,13 +60,10 @@
 #define START_NOP_FOR_LINKER_TOC_POINTER_RESTORE
 #endif
 
-#ifdef __powerpc64__
-#define VECTOR_TABLE_ENTRY_SIZE 32
-#else
-#define VECTOR_TABLE_ENTRY_SIZE 16
-#endif
+#define VECTOR_TABLE_ENTRY_SIZE 64
 
 .macro EXCEPTION_PROLOGUE_INTERRUPT exception_number
+	.balign VECTOR_TABLE_ENTRY_SIZE
 	PPC_REG_STORE_UPDATE	r1, -PPC_EXC_INTERRUPT_FRAME_SIZE(r1)
 	PPC_REG_STORE	r3, PPC_EXC_GPR3_PROLOGUE_OFFSET(r1)
 	li	r3, \exception_number
@@ -75,17 +72,36 @@
 .endm
 
 .macro EXCEPTION_PROLOGUE_NORMAL exception_number
+	.balign VECTOR_TABLE_ENTRY_SIZE
 	PPC_REG_STORE_UPDATE	r1, -EXC_GENERIC_SIZE(r1)
 	PPC_REG_STORE	r3, PPC_EXC_GPR3_PROLOGUE_OFFSET(r1)
+	addi	r3, r1, EXC_GENERIC_SIZE
+	PPC_REG_STORE	r3, PPC_EXC_GPR1_PROLOGUE_OFFSET(r1)
 	li	r3, \exception_number
 	b	ppc_exc_fatal_normal
 	START_NOP_FOR_LINKER_TOC_POINTER_RESTORE
 .endm
 
 .macro EXCEPTION_PROLOGUE_CRITICAL exception_number
+	.balign VECTOR_TABLE_ENTRY_SIZE
+
+	/* Use SPRG3 to save the stack pointer */
+	mtsprg	3, r1
+
+	/* Get the critical exception stack pointer for this processor */
+	mfspr	r1, BOOKE_PIR
+	addi	r1, r1, 1
+	slwi	r1, r1, QORIQ_CRITICAL_EXCEPTION_STACK_POWER
+	addis	r1, r1, qoriq_critical_exception_stack@ha
+	addi	r1, r1, qoriq_critical_exception_stack@l
+
+	/* Start saving the context */
 	PPC_REG_STORE_UPDATE	r1, -EXC_GENERIC_SIZE(r1)
 	PPC_REG_STORE	r3, PPC_EXC_GPR3_PROLOGUE_OFFSET(r1)
+	mfsprg	r3, 3
+	PPC_REG_STORE	r3, PPC_EXC_GPR1_PROLOGUE_OFFSET(r1)
 	li	r3, \exception_number
+
 	b	ppc_exc_fatal_critical
 	START_NOP_FOR_LINKER_TOC_POINTER_RESTORE
 .endm
@@ -545,6 +561,16 @@ _start_secondary_processor:
 	b	bsp_start_on_secondary_processor
 	PPC64_NOP_FOR_LINKER_TOC_POINTER_RESTORE
 #endif /* RTEMS_SMP */
+
+	/* Memory area for the critical exception stacks */
+
+	.section ".noinit.qoriq_critical_exception_stack", "aw", @nobits
+
+	.balign CPU_STACK_ALIGNMENT
+
+qoriq_critical_exception_stack:
+
+	.space QORIQ_CPU_COUNT * (1 << QORIQ_CRITICAL_EXCEPTION_STACK_POWER)
 
 	/* Exception handling and boot area */
 
