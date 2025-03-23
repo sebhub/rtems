@@ -94,13 +94,19 @@ ppc_exc_fatal_normal:
 
 #ifdef __SPE__
 	/*
-	 * Save high order part of SCRATCH_REGISTER_0 and SCRATCH_REGISTER_1
-	 * here.  The low order part was saved in the minimal prologue.
+	 * Save high order part of r1, SCRATCH_REGISTER_0, and
+	 * SCRATCH_REGISTER_1 here.  The low order part was saved in the
+	 * minimal prologue.
+	 *
+	 * The high order part of r1 is merged through SCRATCH_REGISTER_1, so
+	 * it must be saved after the high order part of SCRATCH_REGISTER_1.
 	 */
-	evmergehi	SCRATCH_REGISTER_0, SCRATCH_REGISTER_0, SCRATCH_REGISTER_0
-	PPC_REG_STORE	SCRATCH_REGISTER_0, GPR3_OFFSET(r1)
 	evmergehi	SCRATCH_REGISTER_1, SCRATCH_REGISTER_1, SCRATCH_REGISTER_1
 	PPC_REG_STORE	SCRATCH_REGISTER_1, GPR4_OFFSET(r1)
+	evmergehi	SCRATCH_REGISTER_0, SCRATCH_REGISTER_0, SCRATCH_REGISTER_0
+	PPC_REG_STORE	SCRATCH_REGISTER_0, GPR3_OFFSET(r1)
+	evmergehi	SCRATCH_REGISTER_1, r1, r1
+	PPC_REG_STORE	SCRATCH_REGISTER_1, GPR1_OFFSET(r1)
 #endif
 
 	mfcr	SCRATCH_REGISTER_1
@@ -112,8 +118,7 @@ ppc_exc_fatal_normal:
 	mflr	SCRATCH_REGISTER_1
 	PPC_REG_STORE	SCRATCH_REGISTER_1, EXC_LR_OFFSET(r1)
 	PPC_GPR_STORE	r0, GPR0_OFFSET(r1)
-	addi	SCRATCH_REGISTER_1, r1, EXC_GENERIC_SIZE
-	PPC_GPR_STORE	SCRATCH_REGISTER_1, GPR1_OFFSET(r1)
+	/* r1 already saved */
 	PPC_GPR_STORE	r2, GPR2_OFFSET(r1)
 	/* SCRATCH_REGISTER_0 already saved */
 	/* SCRATCH_REGISTER_1 already saved */

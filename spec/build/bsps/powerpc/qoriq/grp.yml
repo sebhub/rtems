@@ -63,6 +63,8 @@ links:
 - role: build-dependency
   uid: optcpucnt
 - role: build-dependency
+  uid: optcritexcstack
+- role: build-dependency
   uid: optetsec1phy
 - role: build-dependency
   uid: optetsec2phy
