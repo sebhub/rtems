@@ -16,6 +16,8 @@ links:
 - role: validation
   uid: /compiler/if/builtin-unreachable
 - role: validation
+  uid: /compiler/if/clang-analyzer
+- role: validation
   uid: /compiler/if/coverity
 - role: validation
   uid: /compiler/if/cplusplus
