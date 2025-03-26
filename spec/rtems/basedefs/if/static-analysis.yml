@@ -9,6 +9,7 @@ definition:
   - definition: ''
     enabled-by:
     - defined(${/compiler/if/coverity:/name})
+    - defined(${/compiler/if/clang-analyzer:/name})
 description: null
 enabled-by: true
 index-entries: []
