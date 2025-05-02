@@ -7,7 +7,7 @@
  */
 
 /*
- * Copyright (C) 2021 embedded brains GmbH & Co. KG
+ * Copyright (C) 2021, 2025 embedded brains GmbH & Co. KG
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -47,6 +47,11 @@
  * @brief This validation test suite contains a test cases related to the
  *   invocation of user extensions.
  *
+ * The test suite configures three initial extension sets. The first two sets
+ * each provide four of the eight thread handlers. In each of these two sets,
+ * the other four members are NULL. The third set provides all eight thread
+ * handlers.
+ *
  * @{
  */
 
@@ -54,24 +59,32 @@ const char rtems_test_name[] = "TestsuitesUserext";
 
 #define CONFIGURE_MAXIMUM_PROCESSORS 2
 
-#define CONFIGURE_INITIAL_EXTENSIONS                 \
-  { .thread_begin = ThreadBeginExtension0,           \
-    .thread_create = ThreadCreateExtension0,         \
-    .thread_delete = ThreadDeleteExtension0,         \
-    .thread_exitted = ThreadExittedExtension0,       \
-    .thread_restart = ThreadRestartExtension0,       \
-    .thread_start = ThreadStartExtension0,           \
-    .thread_switch = ThreadSwitchExtension0,         \
-    .thread_terminate = ThreadTerminateExtension0 }, \
-  {                                                  \
-    .thread_begin = ThreadBeginExtension1,           \
-    .thread_create = ThreadCreateExtension1,         \
-    .thread_delete = ThreadDeleteExtension1,         \
-    .thread_exitted = ThreadExittedExtension1,       \
-    .thread_restart = ThreadRestartExtension1,       \
-    .thread_start = ThreadStartExtension1,           \
-    .thread_switch = ThreadSwitchExtension1,         \
-    .thread_terminate = ThreadTerminateExtension1    \
+#define CONFIGURE_INITIAL_EXTENSIONS                   \
+  { .thread_begin = ThreadBeginExtension0,             \
+    .thread_create = ThreadCreateExtension0,           \
+    .thread_delete = ThreadDeleteExtension0,           \
+    .thread_exitted = ThreadExittedExtension0,         \
+    .thread_restart = NULL,                            \
+    .thread_start = NULL,                              \
+    .thread_switch = NULL,                             \
+    .thread_terminate = NULL },                        \
+    { .thread_begin = NULL,                            \
+      .thread_create = NULL,                           \
+      .thread_delete = NULL,                           \
+      .thread_exitted = NULL,                          \
+      .thread_restart = ThreadRestartExtension0,       \
+      .thread_start = ThreadStartExtension0,           \
+      .thread_switch = ThreadSwitchExtension0,         \
+      .thread_terminate = ThreadTerminateExtension0 }, \
+  {                                                    \
+    .thread_begin = ThreadBeginExtension1,             \
+    .thread_create = ThreadCreateExtension1,           \
+    .thread_delete = ThreadDeleteExtension1,           \
+    .thread_exitted = ThreadExittedExtension1,         \
+    .thread_restart = ThreadRestartExtension1,         \
+    .thread_start = ThreadStartExtension1,             \
+    .thread_switch = ThreadSwitchExtension1,           \
+    .thread_terminate = ThreadTerminateExtension1      \
   }
 
 #define CONFIGURE_IDLE_TASK_BODY IdleBody

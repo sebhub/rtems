@@ -51,6 +51,12 @@
  *
  * @brief Tests the thread user extensions.
  *
+ * For each event, the checks expect that the system invokes each handler of
+ * the event exactly once in the extension order. The initial extension sets of
+ * the test suite contain NULL members. So the checks show that the system
+ * invokes no NULL member, and that a NULL member does not change the order of
+ * the other invocations.
+ *
  * This test case performs the following actions:
  *
  * - Create five dynamic extensions. Switch to a started thread. Delete three
