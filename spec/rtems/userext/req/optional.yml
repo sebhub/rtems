@@ -1,0 +1,15 @@
+SPDX-License-Identifier: CC-BY-SA-4.0
+copyrights:
+- Copyright (C) 2025 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: ../if/group
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  While a handler member of a registered ${/glossary/userextensiontable:/term} is
+  ${/c/if/null:/name}, the system shall not invoke the handler member.
+type: requirement
