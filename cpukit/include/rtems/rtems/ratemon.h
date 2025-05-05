@@ -519,13 +519,13 @@ rtems_status_code rtems_rate_monotonic_get_status(
  *
  * @param id is the rate monotonic period identifier.
  *
- * @param[out] status is the pointer to an
+ * @param[out] statistics is the pointer to an
  *   rtems_rate_monotonic_period_statistics object. When the directive call is
  *   successful, the period statistics will be stored in this object.
  *
  * This directive returns the statistics of the rate monotonic period specified
  * by `id`. The statistics of the period will be returned in the members of the
- * period statistics object referenced by `status`:
+ * period statistics object referenced by `statistics`:
  *
  * - The `count` member is set to the number of periods executed.
  *
@@ -554,7 +554,7 @@ rtems_status_code rtems_rate_monotonic_get_status(
  * @retval ::RTEMS_INVALID_ID There was no rate monotonic period associated
  *   with the identifier specified by `id`.
  *
- * @retval ::RTEMS_INVALID_ADDRESS The `status` parameter was NULL.
+ * @retval ::RTEMS_INVALID_ADDRESS The `statistics` parameter was NULL.
  *
  * @par Constraints
  * @parblock
@@ -569,7 +569,7 @@ rtems_status_code rtems_rate_monotonic_get_status(
  */
 rtems_status_code rtems_rate_monotonic_get_statistics(
   rtems_id                                id,
-  rtems_rate_monotonic_period_statistics *status
+  rtems_rate_monotonic_period_statistics *statistics
 );
 
 /* Find related documentation with spec:/rtems/ratemon/if/reset-statistics */
