@@ -171,18 +171,16 @@ typedef struct {
   rtems_rate_monotonic_period_states state;
 
   /**
-   * @brief If rtems_rate_monotonic_period() was invoked at least once for the
-   *   period, then this member contains the CLOCK_MONOTONIC time elapsed since
-   *   the last invocation of rtems_rate_monotonic_period(), otherwise it is set
-   *   to zero.
+   * @brief For an inactive period, this member is zero. Otherwise, it contains
+   *   the CLOCK_MONOTONIC time elapsed since the last invocation of
+   *   rtems_rate_monotonic_period().
    */
   struct timespec since_last_period;
 
   /**
-   * @brief If rtems_rate_monotonic_period() was invoked at least once for the
-   *   period, then this member contains the processor time consumed by the owner
-   *   task since the last invocation of rtems_rate_monotonic_period(), otherwise
-   *   it is set to zero.
+   * @brief For an inactive period, this member is zero. Otherwise, it contains
+   *   the processor time consumed by the owner task since the last invocation of
+   *   rtems_rate_monotonic_period().
    */
   struct timespec executed_since_last_period;
 
@@ -558,10 +556,6 @@ rtems_status_code rtems_rate_monotonic_get_status(
  * @parblock
  * The following constraints apply to this directive:
  *
- * - The directive is not included in the pre-qualified feature set of RTEMS.
- *   Applications which are restricted to only use interfaces of the
- *   pre-qualified feature set of RTEMS shall not use the directive.
- *
  * - The directive may be called from within task context.
  *
  * - The directive may be called from within interrupt context.
@@ -595,10 +589,6 @@ rtems_status_code rtems_rate_monotonic_get_statistics(
  * @parblock
  * The following constraints apply to this directive:
  *
- * - The directive is not included in the pre-qualified feature set of RTEMS.
- *   Applications which are restricted to only use interfaces of the
- *   pre-qualified feature set of RTEMS shall not use the directive.
- *
  * - The directive may be called from within task context.
  *
  * - The directive may be called from within interrupt context.
@@ -621,10 +611,6 @@ rtems_status_code rtems_rate_monotonic_reset_statistics( rtems_id id );
  * @par Constraints
  * @parblock
  * The following constraints apply to this directive:
- *
- * - The directive is not included in the pre-qualified feature set of RTEMS.
- *   Applications which are restricted to only use interfaces of the
- *   pre-qualified feature set of RTEMS shall not use the directive.
  *
  * - The directive may be called from within task context.
  *
