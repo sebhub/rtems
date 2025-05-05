@@ -79,19 +79,29 @@ void _Rate_monotonic_Get_status(
   );
 }
 
+static void _Rate_monotonic_Set_time_period_initiated(
+  Rate_monotonic_Control *the_period,
+  Thread_Control         *owner
+)
+{
+  _TOD_Get_uptime( &the_period->time_period_initiated );
+  the_period->cpu_usage_period_initiated = _Thread_Get_CPU_time_used( owner );
+}
+
 static void _Rate_monotonic_Release_postponed_job(
   Rate_monotonic_Control *the_period,
   Thread_Control         *owner,
-  rtems_interval          next_length,
   ISR_lock_Context       *lock_context
 )
 {
-  (void) next_length;
-
   Per_CPU_Control     *cpu_self;
   Thread_queue_Context queue_context;
 
   --the_period->postponed_jobs;
+  _Rate_monotonic_Set_time_period_initiated( the_period, owner );
+
+  cpu_self = _Thread_Dispatch_disable_critical( lock_context );
+
   _Scheduler_Release_job(
     owner,
     &the_period->Priority,
@@ -99,7 +109,6 @@ static void _Rate_monotonic_Release_postponed_job(
     &queue_context
   );
 
-  cpu_self = _Thread_Dispatch_disable_critical( lock_context );
   _Rate_monotonic_Release( the_period, lock_context );
   _Thread_Priority_update( &queue_context );
   _Thread_Dispatch_direct( cpu_self );
@@ -137,12 +146,7 @@ void _Rate_monotonic_Restart(
   ISR_lock_Context       *lock_context
 )
 {
-  /*
-   *  Set the starting point and the CPU time used for the statistics.
-   */
-  _TOD_Get_uptime( &the_period->time_period_initiated );
-  the_period->cpu_usage_period_initiated = _Thread_Get_CPU_time_used( owner );
-
+  _Rate_monotonic_Set_time_period_initiated( the_period, owner );
   _Rate_monotonic_Release_job(
     the_period,
     owner,
@@ -308,12 +312,7 @@ static rtems_status_code _Rate_monotonic_Block_while_expired(
   the_period->state = RATE_MONOTONIC_ACTIVE;
   the_period->next_length = length;
 
-  _Rate_monotonic_Release_postponed_job(
-    the_period,
-    executing,
-    length,
-    lock_context
-  );
+  _Rate_monotonic_Release_postponed_job( the_period, executing, lock_context );
   return RTEMS_TIMEOUT;
 }
 
