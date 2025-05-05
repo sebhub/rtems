@@ -183,7 +183,7 @@ uint32_t _CPU_SMP_Initialize(void)
 {
   uint32_t cpu_count = 1;
 
-  if (rtems_configuration_get_maximum_processors() > 0) {
+  if (rtems_configuration_get_maximum_processors() > 1) {
     setup_boot_page();
     cpu_count = discover_processors();
   }
