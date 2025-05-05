@@ -186,7 +186,7 @@ static inline void _Rate_monotonic_Reset_min_time(
   Timestamp_Control *min_time
 )
 {
-  _Timestamp_Set( min_time, 0x7fffffff, 0x7fffffff );
+  _Timestamp_Set( min_time, 0x7fffffff, 999999999L );
 }
 
 static inline void _Rate_monotonic_Reset_statistics(
