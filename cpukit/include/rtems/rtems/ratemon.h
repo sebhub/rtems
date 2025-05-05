@@ -9,7 +9,7 @@
  */
 
 /*
- * Copyright (C) 2020, 2021 embedded brains GmbH & Co. KG
+ * Copyright (C) 2020, 2025 embedded brains GmbH & Co. KG
  * Copyright (C) 2017 Kuan-Hsun Chen
  * Copyright (C) 1988, 2008 On-Line Applications Research Corporation (OAR)
  *
@@ -171,20 +171,18 @@ typedef struct {
   rtems_rate_monotonic_period_states state;
 
   /**
-   * @brief This member contains the time elapsed since the last successful
-   *   invocation rtems_rate_monotonic_period() using CLOCK_MONOTONIC.
-   *
-   * If the period is expired or has not been initiated, then this value has no
-   * meaning.
+   * @brief If rtems_rate_monotonic_period() was invoked at least once for the
+   *   period, then this member contains the CLOCK_MONOTONIC time elapsed since
+   *   the last invocation of rtems_rate_monotonic_period(), otherwise it is set
+   *   to zero.
    */
   struct timespec since_last_period;
 
   /**
-   * @brief This member contains the processor time consumed by the owner task
-   *   since the last successful invocation rtems_rate_monotonic_period().
-   *
-   * If the period is expired or has not been initiated, then this value has no
-   * meaning.
+   * @brief If rtems_rate_monotonic_period() was invoked at least once for the
+   *   period, then this member contains the processor time consumed by the owner
+   *   task since the last invocation of rtems_rate_monotonic_period(), otherwise
+   *   it is set to zero.
    */
   struct timespec executed_since_last_period;
 

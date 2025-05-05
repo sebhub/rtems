@@ -7,7 +7,7 @@
  */
 
 /*
- * Copyright (C) 2021 embedded brains GmbH & Co. KG
+ * Copyright (C) 2021, 2025 embedded brains GmbH & Co. KG
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -36,7 +36,7 @@
 #endif
 
 #include <rtems.h>
-#include <rtems/cpuuse.h>
+#include <string.h>
 
 #include "tx-support.h"
 
@@ -52,16 +52,22 @@
  */
 
 typedef enum {
-  RtemsRatemonReqGetStatus_Pre_StatusAddr_Valid,
-  RtemsRatemonReqGetStatus_Pre_StatusAddr_Null,
-  RtemsRatemonReqGetStatus_Pre_StatusAddr_NA
-} RtemsRatemonReqGetStatus_Pre_StatusAddr;
+  RtemsRatemonReqGetStatus_Pre_Status_Valid,
+  RtemsRatemonReqGetStatus_Pre_Status_Null,
+  RtemsRatemonReqGetStatus_Pre_Status_NA
+} RtemsRatemonReqGetStatus_Pre_Status;
 
 typedef enum {
-  RtemsRatemonReqGetStatus_Pre_Id_Valid,
-  RtemsRatemonReqGetStatus_Pre_Id_Invalid,
+  RtemsRatemonReqGetStatus_Pre_Id_NoObj,
+  RtemsRatemonReqGetStatus_Pre_Id_Period,
   RtemsRatemonReqGetStatus_Pre_Id_NA
 } RtemsRatemonReqGetStatus_Pre_Id;
+
+typedef enum {
+  RtemsRatemonReqGetStatus_Pre_PostponedJobs_Zero,
+  RtemsRatemonReqGetStatus_Pre_PostponedJobs_Positive,
+  RtemsRatemonReqGetStatus_Pre_PostponedJobs_NA
+} RtemsRatemonReqGetStatus_Pre_PostponedJobs;
 
 typedef enum {
   RtemsRatemonReqGetStatus_Pre_State_Inactive,
@@ -69,23 +75,6 @@ typedef enum {
   RtemsRatemonReqGetStatus_Pre_State_Expired,
   RtemsRatemonReqGetStatus_Pre_State_NA
 } RtemsRatemonReqGetStatus_Pre_State;
-
-typedef enum {
-  RtemsRatemonReqGetStatus_Pre_Elapsed_Time,
-  RtemsRatemonReqGetStatus_Pre_Elapsed_NA
-} RtemsRatemonReqGetStatus_Pre_Elapsed;
-
-typedef enum {
-  RtemsRatemonReqGetStatus_Pre_Consumed_CpuTime,
-  RtemsRatemonReqGetStatus_Pre_Consumed_NA
-} RtemsRatemonReqGetStatus_Pre_Consumed;
-
-typedef enum {
-  RtemsRatemonReqGetStatus_Pre_Postponed_Zero,
-  RtemsRatemonReqGetStatus_Pre_Postponed_One,
-  RtemsRatemonReqGetStatus_Pre_Postponed_Several,
-  RtemsRatemonReqGetStatus_Pre_Postponed_NA
-} RtemsRatemonReqGetStatus_Pre_Postponed;
 
 typedef enum {
   RtemsRatemonReqGetStatus_Post_Status_Ok,
@@ -109,41 +98,38 @@ typedef enum {
 } RtemsRatemonReqGetStatus_Post_State;
 
 typedef enum {
-  RtemsRatemonReqGetStatus_Post_Elapsed_Time,
-  RtemsRatemonReqGetStatus_Post_Elapsed_Zero,
-  RtemsRatemonReqGetStatus_Post_Elapsed_Nop,
-  RtemsRatemonReqGetStatus_Post_Elapsed_NA
-} RtemsRatemonReqGetStatus_Post_Elapsed;
+  RtemsRatemonReqGetStatus_Post_SinceLastPeriod_Zero,
+  RtemsRatemonReqGetStatus_Post_SinceLastPeriod_Elapsed,
+  RtemsRatemonReqGetStatus_Post_SinceLastPeriod_Nop,
+  RtemsRatemonReqGetStatus_Post_SinceLastPeriod_NA
+} RtemsRatemonReqGetStatus_Post_SinceLastPeriod;
 
 typedef enum {
-  RtemsRatemonReqGetStatus_Post_Consumed_CpuTime,
-  RtemsRatemonReqGetStatus_Post_Consumed_Zero,
-  RtemsRatemonReqGetStatus_Post_Consumed_Nop,
-  RtemsRatemonReqGetStatus_Post_Consumed_NA
-} RtemsRatemonReqGetStatus_Post_Consumed;
+  RtemsRatemonReqGetStatus_Post_ExecutedSinceLastPeriod_Zero,
+  RtemsRatemonReqGetStatus_Post_ExecutedSinceLastPeriod_Executed,
+  RtemsRatemonReqGetStatus_Post_ExecutedSinceLastPeriod_Nop,
+  RtemsRatemonReqGetStatus_Post_ExecutedSinceLastPeriod_NA
+} RtemsRatemonReqGetStatus_Post_ExecutedSinceLastPeriod;
 
 typedef enum {
-  RtemsRatemonReqGetStatus_Post_Postponed_Zero,
-  RtemsRatemonReqGetStatus_Post_Postponed_One,
-  RtemsRatemonReqGetStatus_Post_Postponed_Several,
-  RtemsRatemonReqGetStatus_Post_Postponed_Nop,
-  RtemsRatemonReqGetStatus_Post_Postponed_NA
-} RtemsRatemonReqGetStatus_Post_Postponed;
+  RtemsRatemonReqGetStatus_Post_PostponedJobs_Zero,
+  RtemsRatemonReqGetStatus_Post_PostponedJobs_Count,
+  RtemsRatemonReqGetStatus_Post_PostponedJobs_Nop,
+  RtemsRatemonReqGetStatus_Post_PostponedJobs_NA
+} RtemsRatemonReqGetStatus_Post_PostponedJobs;
 
 typedef struct {
   uint32_t Skip : 1;
-  uint32_t Pre_StatusAddr_NA : 1;
+  uint32_t Pre_Status_NA : 1;
   uint32_t Pre_Id_NA : 1;
+  uint32_t Pre_PostponedJobs_NA : 1;
   uint32_t Pre_State_NA : 1;
-  uint32_t Pre_Elapsed_NA : 1;
-  uint32_t Pre_Consumed_NA : 1;
-  uint32_t Pre_Postponed_NA : 1;
   uint32_t Post_Status : 2;
   uint32_t Post_Owner : 2;
   uint32_t Post_State : 3;
-  uint32_t Post_Elapsed : 2;
-  uint32_t Post_Consumed : 2;
-  uint32_t Post_Postponed : 3;
+  uint32_t Post_SinceLastPeriod : 2;
+  uint32_t Post_ExecutedSinceLastPeriod : 2;
+  uint32_t Post_PostponedJobs : 2;
 } RtemsRatemonReqGetStatus_Entry;
 
 /**
@@ -151,78 +137,61 @@ typedef struct {
  */
 typedef struct {
   /**
-   * @brief This member contains a valid identifier of a period.
+   * @brief This member contains the identifier of the worker task.
    */
-  rtems_id period_id;
+  rtems_id worker_id;
 
   /**
-   * @brief This member contains the previous timecounter handler to restore.
+   * @brief This member contains the previous get timecount handler to restore.
    */
-  GetTimecountHandler previous_timecounter_handler;
+  GetTimecountHandler previous_get_timecount;
 
   /**
-   * @brief This member is used to receive the
-   *   rtems_rate_monotonic_period_status from the action.
+   * @brief This member provides the expected since last period.
    */
-  rtems_rate_monotonic_period_status period_status;
+  rtems_interval expected_since_last_period;
 
   /**
-   * @brief This member specifies the `id` parameter for the action.
+   * @brief This member provides the expected executed since last period.
    */
-  rtems_id id_param;
+  rtems_interval expected_executed_since_last_period;
 
   /**
-   * @brief This member specifies the `status` parameter for the action.
+   * @brief This member provides the expected postponed job count.
    */
-  rtems_rate_monotonic_period_status *status_param;
+  uint32_t expected_postponed_jobs_count;
 
   /**
-   * @brief This member contains the returned status code of the action.
+   * @brief This member provides the expected period status.
+   */
+  rtems_rate_monotonic_period_status status_obj;
+
+  /**
+   * @brief This member provides the object identifier parameter.
+   */
+  rtems_id id;
+
+  /**
+   * @brief This member provides the period status parameter.
+   */
+  rtems_rate_monotonic_period_status *period_status;
+
+  /**
+   * @brief This member contains the return status.
    */
   rtems_status_code status;
-
-  /**
-   * @brief This member contains the task identifier of the owner task.
-   */
-  rtems_id task_id;
-
-  /**
-   * @brief This member contains the state before the action.
-   */
-  rtems_rate_monotonic_period_states previous_state;
-
-  /**
-   * @brief If the rtems_cpu_usage_reset() directive should be called before
-   *   rtems_rate_monotonic_get_status(), this member contains a pointer to it.
-   */
-  void ( *do_reset )( void );
-
-  /**
-   * @brief This member contains the CLOCK_MONOTONIC time elapsed.
-   */
-  struct timespec elapsed;
-
-  /**
-   * @brief This member contains the CPU time consumed by the owner task.
-   */
-  struct timespec consumed;
-
-  /**
-   * @brief This member contains the number of postponed jobs.
-   */
-  uint32_t postponed_jobs_count;
 
   struct {
     /**
      * @brief This member defines the pre-condition indices for the next
      *   action.
      */
-    size_t pci[ 6 ];
+    size_t pci[ 4 ];
 
     /**
      * @brief This member defines the pre-condition states for the next action.
      */
-    size_t pcs[ 6 ];
+    size_t pcs[ 4 ];
 
     /**
      * @brief If this member is true, then the test action loop is executed.
@@ -249,108 +218,96 @@ typedef struct {
 
 static RtemsRatemonReqGetStatus_Context RtemsRatemonReqGetStatus_Instance;
 
-static const char *const RtemsRatemonReqGetStatus_PreDesc_StatusAddr[] =
+static const char *const RtemsRatemonReqGetStatus_PreDesc_Status[] =
   { "Valid", "Null", "NA" };
 
 static const char *const RtemsRatemonReqGetStatus_PreDesc_Id[] =
-  { "Valid", "Invalid", "NA" };
+  { "NoObj", "Period", "NA" };
+
+static const char *const RtemsRatemonReqGetStatus_PreDesc_PostponedJobs[] =
+  { "Zero", "Positive", "NA" };
 
 static const char *const RtemsRatemonReqGetStatus_PreDesc_State[] =
   { "Inactive", "Active", "Expired", "NA" };
 
-static const char *const RtemsRatemonReqGetStatus_PreDesc_Elapsed[] = {
-  "Time",
-  "NA"
-};
-
-static const char *const RtemsRatemonReqGetStatus_PreDesc_Consumed[] = {
-  "CpuTime",
-  "NA"
-};
-
-static const char *const RtemsRatemonReqGetStatus_PreDesc_Postponed[] =
-  { "Zero", "One", "Several", "NA" };
-
 static const char *const *const RtemsRatemonReqGetStatus_PreDesc[] = {
-  RtemsRatemonReqGetStatus_PreDesc_StatusAddr,
+  RtemsRatemonReqGetStatus_PreDesc_Status,
   RtemsRatemonReqGetStatus_PreDesc_Id,
+  RtemsRatemonReqGetStatus_PreDesc_PostponedJobs,
   RtemsRatemonReqGetStatus_PreDesc_State,
-  RtemsRatemonReqGetStatus_PreDesc_Elapsed,
-  RtemsRatemonReqGetStatus_PreDesc_Consumed,
-  RtemsRatemonReqGetStatus_PreDesc_Postponed,
   NULL
 };
-
-static const rtems_id initial_owner = 0xFFFFFFFF;
-static const rtems_rate_monotonic_period_states
-  initial_state = (rtems_rate_monotonic_period_states) 0xFFFFFFFF;
-static const struct timespec initial_period = { 0xFFFFFFFF, 0xFFFFFFFF };
-static const uint32_t        initial_postponed_jobs_count = 0xFFFFFFFF;
-static const rtems_interval  period_length = 5;
-static const uint32_t        elapsed_cpu_ticks = 3;
 
 static uint32_t FreezeTime( void )
 {
   return GetTimecountCounter() - 1;
 }
 
-static void TickTheClock(
-  RtemsRatemonReqGetStatus_Context *ctx,
-  uint32_t                          ticks
-)
+static void TickWorker( rtems_task_argument arg )
 {
-  uint32_t i;
-  for ( i = 0; i < ticks; ++i ) {
+  (void) arg;
+
+  while ( true ) {
     TimecounterTick();
   }
-  ctx->elapsed.tv_nsec += rtems_configuration_get_nanoseconds_per_tick() *
-                          ticks;
 }
 
-static void CreatePostponedJobs(
-  RtemsRatemonReqGetStatus_Context *ctx,
-  uint32_t                          jobs_count
-)
+static void TimespecZero( const struct timespec *ts )
 {
-  rtems_status_code status;
-  ctx->postponed_jobs_count = jobs_count;
-  if ( ctx->previous_state == RATE_MONOTONIC_ACTIVE ) {
-    jobs_count++;
-    TickTheClock( ctx, jobs_count * period_length );
-    status = rtems_rate_monotonic_period( ctx->period_id, period_length );
-    T_rsc( status, RTEMS_TIMEOUT );
-  } else {
-    /* ctx->previous_state == RATE_MONOTONIC_INACTIVE || _EXPIRED */
-    TickTheClock( ctx, jobs_count * period_length );
-  }
-  ctx->consumed.tv_nsec += rtems_configuration_get_nanoseconds_per_tick() *
-                           jobs_count * period_length;
+  T_eq_ll( ts->tv_sec, 0 );
+  T_eq_long( ts->tv_nsec, 0 );
 }
 
-static void RtemsRatemonReqGetStatus_Pre_StatusAddr_Prepare(
-  RtemsRatemonReqGetStatus_Context       *ctx,
-  RtemsRatemonReqGetStatus_Pre_StatusAddr state
+static void TimespecEq( const struct timespec *ts, rtems_interval ticks )
+{
+  T_eq_ll( ts->tv_sec, 0 );
+  T_eq_long(
+    ( ts->tv_nsec + 499999L ) / 1000000L,
+    ticks * rtems_configuration_get_milliseconds_per_tick()
+  );
+}
+
+static void TimespecNop( const struct timespec *ts )
+{
+  T_eq_ll( ts->tv_sec, -1LL );
+  T_eq_long( ts->tv_nsec, -1L );
+}
+
+static rtems_id CreatePeriod( void )
+{
+  rtems_id          id;
+  rtems_status_code sc;
+
+  sc = rtems_rate_monotonic_create( OBJECT_NAME, &id );
+  T_rsc_success( sc );
+
+  return id;
+}
+
+static void RtemsRatemonReqGetStatus_Pre_Status_Prepare(
+  RtemsRatemonReqGetStatus_Context   *ctx,
+  RtemsRatemonReqGetStatus_Pre_Status state
 )
 {
   switch ( state ) {
-    case RtemsRatemonReqGetStatus_Pre_StatusAddr_Valid: {
+    case RtemsRatemonReqGetStatus_Pre_Status_Valid: {
       /*
        * While the `status` parameter references an object of type
        * rtems_rate_monotonic_period_status.
        */
-      ctx->status_param = &ctx->period_status;
+      ctx->period_status = &ctx->status_obj;
       break;
     }
 
-    case RtemsRatemonReqGetStatus_Pre_StatusAddr_Null: {
+    case RtemsRatemonReqGetStatus_Pre_Status_Null: {
       /*
-       * While the `status` parameter is NULL.
+       * While the `status` parameter is equal to NULL.
        */
-      ctx->status_param = NULL;
+      ctx->period_status = NULL;
       break;
     }
 
-    case RtemsRatemonReqGetStatus_Pre_StatusAddr_NA:
+    case RtemsRatemonReqGetStatus_Pre_Status_NA:
       break;
   }
 }
@@ -361,23 +318,68 @@ static void RtemsRatemonReqGetStatus_Pre_Id_Prepare(
 )
 {
   switch ( state ) {
-    case RtemsRatemonReqGetStatus_Pre_Id_Valid: {
+    case RtemsRatemonReqGetStatus_Pre_Id_NoObj: {
       /*
-       * While the `id` parameter is valid.
+       * While the `id` parameter is not associated with a period.
        */
-      ctx->id_param = ctx->period_id;
+      ctx->id = 0xffffffff;
       break;
     }
 
-    case RtemsRatemonReqGetStatus_Pre_Id_Invalid: {
+    case RtemsRatemonReqGetStatus_Pre_Id_Period: {
       /*
-       * While the `id` parameter is invalid.
+       * While the `id` parameter is associated with a period.
        */
-      ctx->id_param = RTEMS_ID_NONE;
+      ctx->id = CreatePeriod();
       break;
     }
 
     case RtemsRatemonReqGetStatus_Pre_Id_NA:
+      break;
+  }
+}
+
+static void RtemsRatemonReqGetStatus_Pre_PostponedJobs_Prepare(
+  RtemsRatemonReqGetStatus_Context          *ctx,
+  RtemsRatemonReqGetStatus_Pre_PostponedJobs state
+)
+{
+  rtems_status_code sc;
+
+  switch ( state ) {
+    case RtemsRatemonReqGetStatus_Pre_PostponedJobs_Zero: {
+      /*
+       * While the count of postponed jobs of the period associated with the
+       * object identifier specified by the `id` parameter is zero.
+       */
+      /* Nothing to prepare */
+      break;
+    }
+
+    case RtemsRatemonReqGetStatus_Pre_PostponedJobs_Positive: {
+      /*
+       * While the count of postponed jobs of the period associated with the
+       * object identifier specified by the `id` parameter is greater than
+       * zero.
+       */
+      sc = rtems_rate_monotonic_period( ctx->id, 3 );
+      T_rsc_success( sc );
+
+      TimecounterTick();
+      TimecounterTick();
+      TimecounterTick();
+
+      sc = rtems_task_wake_after( 1 );
+      T_rsc_success( sc );
+
+      TimecounterTick();
+      TimecounterTick();
+
+      ctx->expected_postponed_jobs_count = 2;
+      break;
+    }
+
+    case RtemsRatemonReqGetStatus_Pre_PostponedJobs_NA:
       break;
   }
 }
@@ -387,114 +389,71 @@ static void RtemsRatemonReqGetStatus_Pre_State_Prepare(
   RtemsRatemonReqGetStatus_Pre_State state
 )
 {
+  rtems_status_code sc;
+
   switch ( state ) {
     case RtemsRatemonReqGetStatus_Pre_State_Inactive: {
       /*
-       * While the `id` parameter references an period object in inactive
-       * state.
+       * While the state of the period associated with the object identifier
+       * specified by the `id` parameter is inactive.
        */
-      /* Nothing to do here as the period is newly created. */
-      ctx->previous_state = RATE_MONOTONIC_INACTIVE;
+      /* Nothing to prepare */
       break;
     }
 
     case RtemsRatemonReqGetStatus_Pre_State_Active: {
       /*
-       * While the `id` parameter references an period object in active state.
+       * While the state of the period associated with the object identifier
+       * specified by the `id` parameter is active.
        */
-      rtems_status_code status;
-      status = rtems_rate_monotonic_period( ctx->period_id, period_length );
-      T_rsc_success( status );
-      ctx->previous_state = RATE_MONOTONIC_ACTIVE;
+      sc = rtems_rate_monotonic_period( ctx->id, 3 );
+
+      if ( ctx->expected_postponed_jobs_count > 0 ) {
+        T_rsc( sc, RTEMS_TIMEOUT );
+      } else {
+        T_rsc_success( sc );
+      }
+
+      sc = rtems_task_wake_after( 1 );
+      T_rsc_success( sc );
+
+      TimecounterTick();
+
+      if ( ctx->expected_postponed_jobs_count > 0 ) {
+        --ctx->expected_postponed_jobs_count;
+      }
+
+      ctx->expected_since_last_period = 2;
+      ctx->expected_executed_since_last_period = 1;
       break;
     }
 
     case RtemsRatemonReqGetStatus_Pre_State_Expired: {
       /*
-       * While the `id` parameter references an period object in expired state.
+       * While the state of the period associated with the object identifier
+       * specified by the `id` parameter is expired.
        */
-      rtems_status_code status;
-      status = rtems_rate_monotonic_period( ctx->period_id, period_length );
-      T_rsc_success( status );
-      ctx->previous_state = RATE_MONOTONIC_EXPIRED;
+      if ( ctx->expected_postponed_jobs_count == 0 ) {
+        sc = rtems_rate_monotonic_period( ctx->id, 3 );
+        T_rsc_success( sc );
+
+        sc = rtems_task_wake_after( 1 );
+        T_rsc_success( sc );
+
+        TimecounterTick();
+        TimecounterTick();
+
+        ctx->expected_since_last_period = 3;
+        ctx->expected_executed_since_last_period = 2;
+        ctx->expected_postponed_jobs_count = 1;
+      } else {
+        ctx->expected_since_last_period = 6;
+        ctx->expected_executed_since_last_period = 5;
+      }
       break;
     }
 
     case RtemsRatemonReqGetStatus_Pre_State_NA:
-      break;
-  }
-}
-
-static void RtemsRatemonReqGetStatus_Pre_Elapsed_Prepare(
-  RtemsRatemonReqGetStatus_Pre_Elapsed state
-)
-{
-  switch ( state ) {
-    case RtemsRatemonReqGetStatus_Pre_Elapsed_Time: {
-      /*
-       * While a certain time of the CLOCK_MONOTONIC has elapsed.
-       */
-      /* Time elapsed while having a CPU is added below in "CpuTime". */
-      break;
-    }
-
-    case RtemsRatemonReqGetStatus_Pre_Elapsed_NA:
-      break;
-  }
-}
-
-static void RtemsRatemonReqGetStatus_Pre_Consumed_Prepare(
-  RtemsRatemonReqGetStatus_Context     *ctx,
-  RtemsRatemonReqGetStatus_Pre_Consumed state
-)
-{
-  switch ( state ) {
-    case RtemsRatemonReqGetStatus_Pre_Consumed_CpuTime: {
-      /*
-       * While the owner task has consumed a certain amount of CPU time.
-       */
-      TickTheClock( ctx, elapsed_cpu_ticks );
-      ctx->consumed.tv_nsec += rtems_configuration_get_nanoseconds_per_tick() *
-                               elapsed_cpu_ticks;
-      break;
-    }
-
-    case RtemsRatemonReqGetStatus_Pre_Consumed_NA:
-      break;
-  }
-}
-
-static void RtemsRatemonReqGetStatus_Pre_Postponed_Prepare(
-  RtemsRatemonReqGetStatus_Context      *ctx,
-  RtemsRatemonReqGetStatus_Pre_Postponed state
-)
-{
-  switch ( state ) {
-    case RtemsRatemonReqGetStatus_Pre_Postponed_Zero: {
-      /*
-       * While the period is not in expired state.
-       */
-      ctx->postponed_jobs_count = 0;
-      break;
-    }
-
-    case RtemsRatemonReqGetStatus_Pre_Postponed_One: {
-      /*
-       * While there is one postponed job.
-       */
-      CreatePostponedJobs( ctx, 1 );
-      break;
-    }
-
-    case RtemsRatemonReqGetStatus_Pre_Postponed_Several: {
-      /*
-       * While there are two or more postponed job.
-       */
-      CreatePostponedJobs( ctx, 5 );
-      break;
-    }
-
-    case RtemsRatemonReqGetStatus_Pre_Postponed_NA:
       break;
   }
 }
@@ -508,7 +467,7 @@ static void RtemsRatemonReqGetStatus_Post_Status_Check(
     case RtemsRatemonReqGetStatus_Post_Status_Ok: {
       /*
        * The return status of rtems_rate_monotonic_get_status() shall be
-       * RTEMS_SUCCESSFUL
+       * RTEMS_SUCCESSFUL.
        */
       T_rsc_success( ctx->status );
       break;
@@ -547,20 +506,19 @@ static void RtemsRatemonReqGetStatus_Post_Owner_Check(
       /*
        * The value of the member owner of the object referenced by the `status`
        * parameter shall be set to the object identifier of the owner task of
-       * the period after the return of the rtems_rate_monotonic_get_status()
-       * call.
+       * the period associated with the object identifier specified by the `id`
+       * parameter.
        */
-      T_eq_u32( ctx->period_status.owner, ctx->task_id );
+      T_eq_u32( ctx->status_obj.owner, rtems_task_self() );
       break;
     }
 
     case RtemsRatemonReqGetStatus_Post_Owner_Nop: {
       /*
-       * Objects referenced by the `status` parameter in past call to
-       * rtems_rate_monotonic_get_status() shall not be accessed by the
-       * rtems_rate_monotonic_get_status() call (see also Nop).
+       * The value of the member owner of the object referenced by the `status`
+       * parameter shall not be modified.
        */
-      T_eq_u32( ctx->period_status.owner, initial_owner );
+      T_eq_u32( ctx->status_obj.owner, 0xffffffff );
       break;
     }
 
@@ -578,40 +536,36 @@ static void RtemsRatemonReqGetStatus_Post_State_Check(
     case RtemsRatemonReqGetStatus_Post_State_Inactive: {
       /*
        * The value of the member state of the object referenced by the `status`
-       * parameter shall be set to RATE_MONOTONIC_INACTIVE after the return of
-       * the rtems_rate_monotonic_get_status() call. (See also inactive)
+       * parameter shall be set to RATE_MONOTONIC_INACTIVE.
        */
-      T_eq_int( ctx->period_status.state, RATE_MONOTONIC_INACTIVE );
+      T_eq_int( ctx->status_obj.state, RATE_MONOTONIC_INACTIVE );
       break;
     }
 
     case RtemsRatemonReqGetStatus_Post_State_Active: {
       /*
        * The value of the member state of the object referenced by the `status`
-       * parameter shall be set to RATE_MONOTONIC_ACTIVE after the return of
-       * the rtems_rate_monotonic_get_status() call. (See also active)
+       * parameter shall be set to RATE_MONOTONIC_ACTIVE.
        */
-      T_eq_int( ctx->period_status.state, RATE_MONOTONIC_ACTIVE );
+      T_eq_int( ctx->status_obj.state, RATE_MONOTONIC_ACTIVE );
       break;
     }
 
     case RtemsRatemonReqGetStatus_Post_State_Expired: {
       /*
        * The value of the member state of the object referenced by the `status`
-       * parameter shall be set to RATE_MONOTONIC_EXPIRED after the return of
-       * the rtems_rate_monotonic_get_status() call. (See also expired)
+       * parameter shall be set to RATE_MONOTONIC_EXPIRED.
        */
-      T_eq_int( ctx->period_status.state, RATE_MONOTONIC_EXPIRED );
+      T_eq_int( ctx->status_obj.state, RATE_MONOTONIC_EXPIRED );
       break;
     }
 
     case RtemsRatemonReqGetStatus_Post_State_Nop: {
       /*
-       * Objects referenced by the `status` parameter in past calls to
-       * rtems_rate_monotonic_get_status() shall not be accessed by the
-       * rtems_rate_monotonic_get_status() call (see also Nop).
+       * The value of the member state of the object referenced by the `status`
+       * parameter shall not be modified.
        */
-      T_eq_u32( ctx->period_status.state, initial_state );
+      T_eq_int( ctx->status_obj.state, -1 );
       break;
     }
 
@@ -620,195 +574,133 @@ static void RtemsRatemonReqGetStatus_Post_State_Check(
   }
 }
 
-static void RtemsRatemonReqGetStatus_Post_Elapsed_Check(
-  RtemsRatemonReqGetStatus_Context     *ctx,
-  RtemsRatemonReqGetStatus_Post_Elapsed state
+static void RtemsRatemonReqGetStatus_Post_SinceLastPeriod_Check(
+  RtemsRatemonReqGetStatus_Context             *ctx,
+  RtemsRatemonReqGetStatus_Post_SinceLastPeriod state
 )
 {
   switch ( state ) {
-    case RtemsRatemonReqGetStatus_Post_Elapsed_Time: {
+    case RtemsRatemonReqGetStatus_Post_SinceLastPeriod_Zero: {
       /*
        * The value of the member since_last_period of the object referenced by
-       * the `status` parameter shall be set to the time elapsed.
+       * the `status` parameter shall be set to zero.
        */
-      T_log(
-        T_VERBOSE,
-        "Elapsed: %lld.%ld (expected: %lld.%ld)",
-        ctx->period_status.since_last_period.tv_sec,
-        ctx->period_status.since_last_period.tv_nsec,
-        ctx->elapsed.tv_sec,
-        ctx->elapsed.tv_nsec
-      );
-      T_eq_u64(
-        ctx->period_status.since_last_period.tv_sec,
-        ctx->elapsed.tv_sec
-      );
-      /* period_status integer arithmetic is plagued by a rounding error. */
-      T_le_long(
-        ctx->period_status.since_last_period.tv_nsec,
-        ctx->elapsed.tv_nsec + 1
-      );
-      T_ge_long(
-        ctx->period_status.since_last_period.tv_nsec,
-        ctx->elapsed.tv_nsec - 1
-      );
+      TimespecZero( &ctx->status_obj.since_last_period );
       break;
     }
 
-    case RtemsRatemonReqGetStatus_Post_Elapsed_Zero: {
+    case RtemsRatemonReqGetStatus_Post_SinceLastPeriod_Elapsed: {
       /*
        * The value of the member since_last_period of the object referenced by
-       * the `status` parameter shall be set to 0.
+       * the `status` parameter shall be set to the CLOCK_MONOTONIC time
+       * elapsed since the last invocation of rtems_rate_monotonic_period() for
+       * the period associated with the object identifier specified by the `id`
+       * parameter.
        */
-      T_eq_u64( ctx->period_status.since_last_period.tv_sec, 0 );
-      T_eq_long( ctx->period_status.since_last_period.tv_nsec, 0 );
+      TimespecEq(
+        &ctx->status_obj.since_last_period,
+        ctx->expected_since_last_period
+      );
       break;
     }
 
-    case RtemsRatemonReqGetStatus_Post_Elapsed_Nop: {
+    case RtemsRatemonReqGetStatus_Post_SinceLastPeriod_Nop: {
       /*
-       * Objects referenced by the `status` parameter in past calls to
-       * rtems_rate_monotonic_get_status() shall not be accessed by the
-       * rtems_rate_monotonic_get_status() call (see also Nop).
+       * The value of the member since_last_period of the object referenced by
+       * the `status` parameter shall not be modified.
        */
-      T_eq_u64(
-        ctx->period_status.since_last_period.tv_sec,
-        initial_period.tv_sec
-      );
-      T_eq_long(
-        ctx->period_status.since_last_period.tv_nsec,
-        initial_period.tv_nsec
-      );
+      TimespecNop( &ctx->status_obj.since_last_period );
       break;
     }
 
-    case RtemsRatemonReqGetStatus_Post_Elapsed_NA:
+    case RtemsRatemonReqGetStatus_Post_SinceLastPeriod_NA:
       break;
   }
 }
 
-static void RtemsRatemonReqGetStatus_Post_Consumed_Check(
-  RtemsRatemonReqGetStatus_Context      *ctx,
-  RtemsRatemonReqGetStatus_Post_Consumed state
+static void RtemsRatemonReqGetStatus_Post_ExecutedSinceLastPeriod_Check(
+  RtemsRatemonReqGetStatus_Context                     *ctx,
+  RtemsRatemonReqGetStatus_Post_ExecutedSinceLastPeriod state
 )
 {
   switch ( state ) {
-    case RtemsRatemonReqGetStatus_Post_Consumed_CpuTime: {
+    case RtemsRatemonReqGetStatus_Post_ExecutedSinceLastPeriod_Zero: {
       /*
        * The value of the member executed_since_last_period of the object
-       * referenced by the `status` parameter shall be set to the CPU time
-       * consumed by the owner task.
+       * referenced by the `status` parameter shall be set to zero.
        */
-      T_log(
-        T_VERBOSE,
-        "CPU elapsed: %lld.%ld (expected: %lld.%ld)",
-        ctx->period_status.executed_since_last_period.tv_sec,
-        ctx->period_status.executed_since_last_period.tv_nsec,
-        ctx->consumed.tv_sec,
-        ctx->consumed.tv_nsec
-      );
-      T_eq_u64(
-        ctx->period_status.executed_since_last_period.tv_sec,
-        ctx->consumed.tv_sec
-      );
-      /* period_status integer arithmetic is plagued by a rounding error. */
-      T_le_long(
-        ctx->period_status.executed_since_last_period.tv_nsec,
-        ctx->consumed.tv_nsec + 1
-      );
-      T_ge_long(
-        ctx->period_status.executed_since_last_period.tv_nsec,
-        ctx->consumed.tv_nsec - 1
-      );
+      TimespecZero( &ctx->status_obj.executed_since_last_period );
       break;
     }
 
-    case RtemsRatemonReqGetStatus_Post_Consumed_Zero: {
+    case RtemsRatemonReqGetStatus_Post_ExecutedSinceLastPeriod_Executed: {
       /*
-       * The value of the member since_last_period of the object referenced by
-       * the `status` parameter shall be set to 0.
+       * The value of the member executed_since_last_period of the object
+       * referenced by the `status` parameter shall be set to the processor
+       * time consumed by the owner task since the last invocation of
+       * rtems_rate_monotonic_period() for the period associated with the
+       * object identifier specified by the `id` parameter.
        */
-      T_eq_u64( ctx->period_status.executed_since_last_period.tv_sec, 0 );
-      T_eq_long( ctx->period_status.executed_since_last_period.tv_nsec, 0 );
+      TimespecEq(
+        &ctx->status_obj.executed_since_last_period,
+        ctx->expected_executed_since_last_period
+      );
       break;
     }
 
-    case RtemsRatemonReqGetStatus_Post_Consumed_Nop: {
+    case RtemsRatemonReqGetStatus_Post_ExecutedSinceLastPeriod_Nop: {
       /*
-       * Objects referenced by the `status` parameter in past calls to
-       * rtems_rate_monotonic_get_status() shall not be accessed by the
-       * rtems_rate_monotonic_get_status() call (see also Nop).
+       * The value of the member executed_since_last_period of the object
+       * referenced by the `status` parameter shall not be modified.
        */
-      T_eq_u64(
-        ctx->period_status.executed_since_last_period.tv_sec,
-        initial_period.tv_sec
-      );
-      T_eq_long(
-        ctx->period_status.executed_since_last_period.tv_nsec,
-        initial_period.tv_nsec
-      );
+      TimespecNop( &ctx->status_obj.executed_since_last_period );
       break;
     }
 
-    case RtemsRatemonReqGetStatus_Post_Consumed_NA:
+    case RtemsRatemonReqGetStatus_Post_ExecutedSinceLastPeriod_NA:
       break;
   }
 }
 
-static void RtemsRatemonReqGetStatus_Post_Postponed_Check(
-  RtemsRatemonReqGetStatus_Context       *ctx,
-  RtemsRatemonReqGetStatus_Post_Postponed state
+static void RtemsRatemonReqGetStatus_Post_PostponedJobs_Check(
+  RtemsRatemonReqGetStatus_Context           *ctx,
+  RtemsRatemonReqGetStatus_Post_PostponedJobs state
 )
 {
   switch ( state ) {
-    case RtemsRatemonReqGetStatus_Post_Postponed_Zero: {
+    case RtemsRatemonReqGetStatus_Post_PostponedJobs_Zero: {
       /*
        * The value of the member postponed_jobs_count of the object referenced
-       * by the `status` parameter shall be set to 0 after the return of the
-       * rtems_rate_monotonic_get_status() call.
+       * by the `status` parameter shall be set to zero.
        */
-      T_eq_u32( ctx->period_status.postponed_jobs_count, 0 );
+      T_eq_u32( ctx->status_obj.postponed_jobs_count, 0 );
       break;
     }
 
-    case RtemsRatemonReqGetStatus_Post_Postponed_One: {
+    case RtemsRatemonReqGetStatus_Post_PostponedJobs_Count: {
       /*
        * The value of the member postponed_jobs_count of the object referenced
-       * by the `status` parameter shall be set to the number of postponed jobs
-       * (here 1) after the return of the rtems_rate_monotonic_get_status()
-       * call.
-       */
-      T_eq_u32( ctx->period_status.postponed_jobs_count, 1 );
-      break;
-    }
-
-    case RtemsRatemonReqGetStatus_Post_Postponed_Several: {
-      /*
-       * The value of the member postponed_jobs_count of the object referenced
-       * by the `status` parameter shall be set to the number of postponed jobs
-       * after the return of the rtems_rate_monotonic_get_status() call.
+       * by the `status` parameter shall be set to the count of postponed jobs
+       * of the period associated with the object identifier specified by the
+       * `id` parameter.
        */
       T_eq_u32(
-        ctx->period_status.postponed_jobs_count,
-        ctx->postponed_jobs_count
+        ctx->status_obj.postponed_jobs_count,
+        ctx->expected_postponed_jobs_count
       );
       break;
     }
 
-    case RtemsRatemonReqGetStatus_Post_Postponed_Nop: {
+    case RtemsRatemonReqGetStatus_Post_PostponedJobs_Nop: {
       /*
-       * Objects referenced by the `status` parameter in past calls to
-       * rtems_rate_monotonic_get_status() shall not be accessed by the
-       * rtems_rate_monotonic_get_status() call (see also Nop).
+       * The value of the member postponed_jobs_count of the object referenced
+       * by the `status` parameter shall not be modified.
        */
-      T_eq_u32(
-        ctx->period_status.postponed_jobs_count,
-        initial_postponed_jobs_count
-      );
+      T_eq_u32( ctx->status_obj.postponed_jobs_count, 0xffffffff );
       break;
     }
 
-    case RtemsRatemonReqGetStatus_Post_Postponed_NA:
+    case RtemsRatemonReqGetStatus_Post_PostponedJobs_NA:
       break;
   }
 }
@@ -817,8 +709,10 @@ static void RtemsRatemonReqGetStatus_Setup(
   RtemsRatemonReqGetStatus_Context *ctx
 )
 {
-  ctx->previous_timecounter_handler = SetGetTimecountHandler( FreezeTime );
-  ctx->task_id = rtems_task_self();
+  ctx->previous_get_timecount = SetGetTimecountHandler( FreezeTime );
+  ctx->worker_id = CreateTask( "WORK", GetSelfPriority() + 1 );
+  StartTask( ctx->worker_id, TickWorker, NULL );
+  TimecounterTick();
 }
 
 static void RtemsRatemonReqGetStatus_Setup_Wrap( void *arg )
@@ -834,7 +728,8 @@ static void RtemsRatemonReqGetStatus_Teardown(
   RtemsRatemonReqGetStatus_Context *ctx
 )
 {
-  SetGetTimecountHandler( ctx->previous_timecounter_handler );
+  DeleteTask( ctx->worker_id );
+  SetGetTimecountHandler( ctx->previous_get_timecount );
 }
 
 static void RtemsRatemonReqGetStatus_Teardown_Wrap( void *arg )
@@ -850,131 +745,88 @@ static void RtemsRatemonReqGetStatus_Prepare(
   RtemsRatemonReqGetStatus_Context *ctx
 )
 {
-  rtems_status_code status;
-  status = rtems_rate_monotonic_create(
-    rtems_build_name( 'R', 'M', 'O', 'N' ),
-    &ctx->period_id
-  );
-  T_rsc_success( status );
-
-  ctx->period_status = (rtems_rate_monotonic_period_status) {
-    .owner = initial_owner,
-    .state = initial_state,
-    .since_last_period = initial_period,
-    .executed_since_last_period = initial_period,
-    .postponed_jobs_count = initial_postponed_jobs_count
-  };
-
-  ctx->elapsed.tv_sec = 0;
-  ctx->elapsed.tv_nsec = 0;
-  ctx->consumed.tv_sec = 0;
-  ctx->consumed.tv_nsec = 0;
-  ctx->postponed_jobs_count = 0;
-  TimecounterTick();
+  ctx->expected_since_last_period = 0;
+  ctx->expected_executed_since_last_period = 0;
+  ctx->expected_postponed_jobs_count = 0;
+  memset( &ctx->status_obj, 0xff, sizeof( ctx->status_obj ) );
 }
 
 static void RtemsRatemonReqGetStatus_Action(
   RtemsRatemonReqGetStatus_Context *ctx
 )
 {
-  if ( ctx->do_reset != NULL ) {
-    ctx->do_reset();
-  }
-  ctx->status = rtems_rate_monotonic_get_status(
-    ctx->id_param,
-    ctx->status_param
-  );
+  ctx->status = rtems_rate_monotonic_get_status( ctx->id, ctx->period_status );
 }
 
 static void RtemsRatemonReqGetStatus_Cleanup(
   RtemsRatemonReqGetStatus_Context *ctx
 )
 {
-  T_rsc_success( rtems_rate_monotonic_delete( ctx->period_id ) );
+  if ( ctx->id != 0xffffffff ) {
+    rtems_status_code sc;
+
+    sc = rtems_rate_monotonic_delete( ctx->id );
+    T_rsc_success( sc );
+  }
 }
 
 /* clang-format off */
 
 static const RtemsRatemonReqGetStatus_Entry
 RtemsRatemonReqGetStatus_Entries[] = {
-  { 0, 0, 0, 0, 0, 0, 0, RtemsRatemonReqGetStatus_Post_Status_InvAddr,
-    RtemsRatemonReqGetStatus_Post_Owner_Nop,
-    RtemsRatemonReqGetStatus_Post_State_Nop,
-    RtemsRatemonReqGetStatus_Post_Elapsed_Nop,
-    RtemsRatemonReqGetStatus_Post_Consumed_Nop,
-    RtemsRatemonReqGetStatus_Post_Postponed_Nop },
-  { 1, 0, 0, 0, 0, 0, 0, RtemsRatemonReqGetStatus_Post_Status_NA,
+  { 1, 0, 0, 0, 0, RtemsRatemonReqGetStatus_Post_Status_NA,
     RtemsRatemonReqGetStatus_Post_Owner_NA,
     RtemsRatemonReqGetStatus_Post_State_NA,
-    RtemsRatemonReqGetStatus_Post_Elapsed_NA,
-    RtemsRatemonReqGetStatus_Post_Consumed_NA,
-    RtemsRatemonReqGetStatus_Post_Postponed_NA },
-  { 0, 0, 0, 0, 0, 0, 0, RtemsRatemonReqGetStatus_Post_Status_InvId,
-    RtemsRatemonReqGetStatus_Post_Owner_Nop,
-    RtemsRatemonReqGetStatus_Post_State_Nop,
-    RtemsRatemonReqGetStatus_Post_Elapsed_Nop,
-    RtemsRatemonReqGetStatus_Post_Consumed_Nop,
-    RtemsRatemonReqGetStatus_Post_Postponed_Nop },
-  { 1, 0, 0, 0, 0, 0, 0, RtemsRatemonReqGetStatus_Post_Status_NA,
+    RtemsRatemonReqGetStatus_Post_SinceLastPeriod_NA,
+    RtemsRatemonReqGetStatus_Post_ExecutedSinceLastPeriod_NA,
+    RtemsRatemonReqGetStatus_Post_PostponedJobs_NA },
+  { 0, 0, 0, 0, 0, RtemsRatemonReqGetStatus_Post_Status_InvAddr,
     RtemsRatemonReqGetStatus_Post_Owner_NA,
     RtemsRatemonReqGetStatus_Post_State_NA,
-    RtemsRatemonReqGetStatus_Post_Elapsed_NA,
-    RtemsRatemonReqGetStatus_Post_Consumed_NA,
-    RtemsRatemonReqGetStatus_Post_Postponed_NA },
-  { 0, 0, 0, 0, 0, 0, 1, RtemsRatemonReqGetStatus_Post_Status_InvAddr,
+    RtemsRatemonReqGetStatus_Post_SinceLastPeriod_NA,
+    RtemsRatemonReqGetStatus_Post_ExecutedSinceLastPeriod_NA,
+    RtemsRatemonReqGetStatus_Post_PostponedJobs_NA },
+  { 0, 0, 0, 0, 0, RtemsRatemonReqGetStatus_Post_Status_Ok,
+    RtemsRatemonReqGetStatus_Post_Owner_OwnerTask,
+    RtemsRatemonReqGetStatus_Post_State_Active,
+    RtemsRatemonReqGetStatus_Post_SinceLastPeriod_Elapsed,
+    RtemsRatemonReqGetStatus_Post_ExecutedSinceLastPeriod_Executed,
+    RtemsRatemonReqGetStatus_Post_PostponedJobs_Count },
+  { 0, 0, 0, 0, 0, RtemsRatemonReqGetStatus_Post_Status_Ok,
+    RtemsRatemonReqGetStatus_Post_Owner_OwnerTask,
+    RtemsRatemonReqGetStatus_Post_State_Expired,
+    RtemsRatemonReqGetStatus_Post_SinceLastPeriod_Elapsed,
+    RtemsRatemonReqGetStatus_Post_ExecutedSinceLastPeriod_Executed,
+    RtemsRatemonReqGetStatus_Post_PostponedJobs_Count },
+  { 0, 0, 0, 1, 1, RtemsRatemonReqGetStatus_Post_Status_InvId,
     RtemsRatemonReqGetStatus_Post_Owner_Nop,
     RtemsRatemonReqGetStatus_Post_State_Nop,
-    RtemsRatemonReqGetStatus_Post_Elapsed_Nop,
-    RtemsRatemonReqGetStatus_Post_Consumed_Nop,
-    RtemsRatemonReqGetStatus_Post_Postponed_Nop },
-  { 0, 0, 0, 0, 1, 1, 1, RtemsRatemonReqGetStatus_Post_Status_Ok,
+    RtemsRatemonReqGetStatus_Post_SinceLastPeriod_Nop,
+    RtemsRatemonReqGetStatus_Post_ExecutedSinceLastPeriod_Nop,
+    RtemsRatemonReqGetStatus_Post_PostponedJobs_Nop },
+  { 0, 0, 0, 1, 0, RtemsRatemonReqGetStatus_Post_Status_Ok,
     RtemsRatemonReqGetStatus_Post_Owner_OwnerTask,
     RtemsRatemonReqGetStatus_Post_State_Inactive,
-    RtemsRatemonReqGetStatus_Post_Elapsed_Zero,
-    RtemsRatemonReqGetStatus_Post_Consumed_Zero,
-    RtemsRatemonReqGetStatus_Post_Postponed_NA },
-  { 0, 0, 0, 0, 0, 0, 0, RtemsRatemonReqGetStatus_Post_Status_Ok,
-    RtemsRatemonReqGetStatus_Post_Owner_OwnerTask,
-    RtemsRatemonReqGetStatus_Post_State_Active,
-    RtemsRatemonReqGetStatus_Post_Elapsed_Time,
-    RtemsRatemonReqGetStatus_Post_Consumed_CpuTime,
-    RtemsRatemonReqGetStatus_Post_Postponed_Zero },
-  { 0, 0, 0, 0, 0, 0, 0, RtemsRatemonReqGetStatus_Post_Status_Ok,
-    RtemsRatemonReqGetStatus_Post_Owner_OwnerTask,
-    RtemsRatemonReqGetStatus_Post_State_Active,
-    RtemsRatemonReqGetStatus_Post_Elapsed_Time,
-    RtemsRatemonReqGetStatus_Post_Consumed_CpuTime,
-    RtemsRatemonReqGetStatus_Post_Postponed_One },
-  { 0, 0, 0, 0, 0, 0, 0, RtemsRatemonReqGetStatus_Post_Status_Ok,
-    RtemsRatemonReqGetStatus_Post_Owner_OwnerTask,
-    RtemsRatemonReqGetStatus_Post_State_Active,
-    RtemsRatemonReqGetStatus_Post_Elapsed_Time,
-    RtemsRatemonReqGetStatus_Post_Consumed_CpuTime,
-    RtemsRatemonReqGetStatus_Post_Postponed_Several },
-  { 0, 0, 0, 0, 0, 0, 0, RtemsRatemonReqGetStatus_Post_Status_Ok,
-    RtemsRatemonReqGetStatus_Post_Owner_OwnerTask,
-    RtemsRatemonReqGetStatus_Post_State_Expired,
-    RtemsRatemonReqGetStatus_Post_Elapsed_Time,
-    RtemsRatemonReqGetStatus_Post_Consumed_CpuTime,
-    RtemsRatemonReqGetStatus_Post_Postponed_One },
-  { 0, 0, 0, 0, 0, 0, 0, RtemsRatemonReqGetStatus_Post_Status_Ok,
-    RtemsRatemonReqGetStatus_Post_Owner_OwnerTask,
-    RtemsRatemonReqGetStatus_Post_State_Expired,
-    RtemsRatemonReqGetStatus_Post_Elapsed_Time,
-    RtemsRatemonReqGetStatus_Post_Consumed_CpuTime,
-    RtemsRatemonReqGetStatus_Post_Postponed_Several },
-  { 0, 0, 0, 0, 0, 0, 1, RtemsRatemonReqGetStatus_Post_Status_InvId,
-    RtemsRatemonReqGetStatus_Post_Owner_Nop,
-    RtemsRatemonReqGetStatus_Post_State_Nop,
-    RtemsRatemonReqGetStatus_Post_Elapsed_Nop,
-    RtemsRatemonReqGetStatus_Post_Consumed_Nop,
-    RtemsRatemonReqGetStatus_Post_Postponed_Nop }
+    RtemsRatemonReqGetStatus_Post_SinceLastPeriod_Zero,
+    RtemsRatemonReqGetStatus_Post_ExecutedSinceLastPeriod_Zero,
+    RtemsRatemonReqGetStatus_Post_PostponedJobs_Zero },
+  { 0, 0, 0, 1, 1, RtemsRatemonReqGetStatus_Post_Status_InvAddr,
+    RtemsRatemonReqGetStatus_Post_Owner_NA,
+    RtemsRatemonReqGetStatus_Post_State_NA,
+    RtemsRatemonReqGetStatus_Post_SinceLastPeriod_NA,
+    RtemsRatemonReqGetStatus_Post_ExecutedSinceLastPeriod_NA,
+    RtemsRatemonReqGetStatus_Post_PostponedJobs_NA },
+  { 0, 0, 0, 1, 0, RtemsRatemonReqGetStatus_Post_Status_InvAddr,
+    RtemsRatemonReqGetStatus_Post_Owner_NA,
+    RtemsRatemonReqGetStatus_Post_State_NA,
+    RtemsRatemonReqGetStatus_Post_SinceLastPeriod_NA,
+    RtemsRatemonReqGetStatus_Post_ExecutedSinceLastPeriod_NA,
+    RtemsRatemonReqGetStatus_Post_PostponedJobs_NA }
 };
 
 static const uint8_t
 RtemsRatemonReqGetStatus_Map[] = {
-  5, 1, 1, 6, 7, 8, 3, 9, 10, 11, 1, 1, 2, 2, 2, 3, 2, 2, 4, 1, 1, 0, 0, 0, 3,
-  0, 0, 4, 1, 1, 0, 0, 0, 3, 0, 0
+  4, 0, 0, 0, 0, 0, 5, 2, 3, 0, 2, 3, 6, 0, 0, 0, 0, 0, 7, 1, 1, 0, 1, 1
 };
 
 /* clang-format on */
@@ -1023,24 +875,17 @@ static void RtemsRatemonReqGetStatus_SetPreConditionStates(
 {
   ctx->Map.pcs[ 0 ] = ctx->Map.pci[ 0 ];
   ctx->Map.pcs[ 1 ] = ctx->Map.pci[ 1 ];
-  ctx->Map.pcs[ 2 ] = ctx->Map.pci[ 2 ];
 
-  if ( ctx->Map.entry.Pre_Elapsed_NA ) {
-    ctx->Map.pcs[ 3 ] = RtemsRatemonReqGetStatus_Pre_Elapsed_NA;
+  if ( ctx->Map.entry.Pre_PostponedJobs_NA ) {
+    ctx->Map.pcs[ 2 ] = RtemsRatemonReqGetStatus_Pre_PostponedJobs_NA;
+  } else {
+    ctx->Map.pcs[ 2 ] = ctx->Map.pci[ 2 ];
+  }
+
+  if ( ctx->Map.entry.Pre_State_NA ) {
+    ctx->Map.pcs[ 3 ] = RtemsRatemonReqGetStatus_Pre_State_NA;
   } else {
     ctx->Map.pcs[ 3 ] = ctx->Map.pci[ 3 ];
-  }
-
-  if ( ctx->Map.entry.Pre_Consumed_NA ) {
-    ctx->Map.pcs[ 4 ] = RtemsRatemonReqGetStatus_Pre_Consumed_NA;
-  } else {
-    ctx->Map.pcs[ 4 ] = ctx->Map.pci[ 4 ];
-  }
-
-  if ( ctx->Map.entry.Pre_Postponed_NA ) {
-    ctx->Map.pcs[ 5 ] = RtemsRatemonReqGetStatus_Pre_Postponed_NA;
-  } else {
-    ctx->Map.pcs[ 5 ] = ctx->Map.pci[ 5 ];
   }
 }
 
@@ -1048,12 +893,10 @@ static void RtemsRatemonReqGetStatus_TestVariant(
   RtemsRatemonReqGetStatus_Context *ctx
 )
 {
-  RtemsRatemonReqGetStatus_Pre_StatusAddr_Prepare( ctx, ctx->Map.pcs[ 0 ] );
+  RtemsRatemonReqGetStatus_Pre_Status_Prepare( ctx, ctx->Map.pcs[ 0 ] );
   RtemsRatemonReqGetStatus_Pre_Id_Prepare( ctx, ctx->Map.pcs[ 1 ] );
-  RtemsRatemonReqGetStatus_Pre_State_Prepare( ctx, ctx->Map.pcs[ 2 ] );
-  RtemsRatemonReqGetStatus_Pre_Elapsed_Prepare( ctx->Map.pcs[ 3 ] );
-  RtemsRatemonReqGetStatus_Pre_Consumed_Prepare( ctx, ctx->Map.pcs[ 4 ] );
-  RtemsRatemonReqGetStatus_Pre_Postponed_Prepare( ctx, ctx->Map.pcs[ 5 ] );
+  RtemsRatemonReqGetStatus_Pre_PostponedJobs_Prepare( ctx, ctx->Map.pcs[ 2 ] );
+  RtemsRatemonReqGetStatus_Pre_State_Prepare( ctx, ctx->Map.pcs[ 3 ] );
   RtemsRatemonReqGetStatus_Action( ctx );
   RtemsRatemonReqGetStatus_Post_Status_Check(
     ctx,
@@ -1061,17 +904,17 @@ static void RtemsRatemonReqGetStatus_TestVariant(
   );
   RtemsRatemonReqGetStatus_Post_Owner_Check( ctx, ctx->Map.entry.Post_Owner );
   RtemsRatemonReqGetStatus_Post_State_Check( ctx, ctx->Map.entry.Post_State );
-  RtemsRatemonReqGetStatus_Post_Elapsed_Check(
+  RtemsRatemonReqGetStatus_Post_SinceLastPeriod_Check(
     ctx,
-    ctx->Map.entry.Post_Elapsed
+    ctx->Map.entry.Post_SinceLastPeriod
   );
-  RtemsRatemonReqGetStatus_Post_Consumed_Check(
+  RtemsRatemonReqGetStatus_Post_ExecutedSinceLastPeriod_Check(
     ctx,
-    ctx->Map.entry.Post_Consumed
+    ctx->Map.entry.Post_ExecutedSinceLastPeriod
   );
-  RtemsRatemonReqGetStatus_Post_Postponed_Check(
+  RtemsRatemonReqGetStatus_Post_PostponedJobs_Check(
     ctx,
-    ctx->Map.entry.Post_Postponed
+    ctx->Map.entry.Post_PostponedJobs
   );
 }
 
@@ -1090,47 +933,35 @@ T_TEST_CASE_FIXTURE(
   ctx->Map.index = 0;
 
   for (
-    ctx->Map.pci[ 0 ] = RtemsRatemonReqGetStatus_Pre_StatusAddr_Valid;
-    ctx->Map.pci[ 0 ] < RtemsRatemonReqGetStatus_Pre_StatusAddr_NA;
+    ctx->Map.pci[ 0 ] = RtemsRatemonReqGetStatus_Pre_Status_Valid;
+    ctx->Map.pci[ 0 ] < RtemsRatemonReqGetStatus_Pre_Status_NA;
     ++ctx->Map.pci[ 0 ]
   ) {
     for (
-      ctx->Map.pci[ 1 ] = RtemsRatemonReqGetStatus_Pre_Id_Valid;
+      ctx->Map.pci[ 1 ] = RtemsRatemonReqGetStatus_Pre_Id_NoObj;
       ctx->Map.pci[ 1 ] < RtemsRatemonReqGetStatus_Pre_Id_NA;
       ++ctx->Map.pci[ 1 ]
     ) {
       for (
-        ctx->Map.pci[ 2 ] = RtemsRatemonReqGetStatus_Pre_State_Inactive;
-        ctx->Map.pci[ 2 ] < RtemsRatemonReqGetStatus_Pre_State_NA;
+        ctx->Map.pci[ 2 ] = RtemsRatemonReqGetStatus_Pre_PostponedJobs_Zero;
+        ctx->Map.pci[ 2 ] < RtemsRatemonReqGetStatus_Pre_PostponedJobs_NA;
         ++ctx->Map.pci[ 2 ]
       ) {
         for (
-          ctx->Map.pci[ 3 ] = RtemsRatemonReqGetStatus_Pre_Elapsed_Time;
-          ctx->Map.pci[ 3 ] < RtemsRatemonReqGetStatus_Pre_Elapsed_NA;
+          ctx->Map.pci[ 3 ] = RtemsRatemonReqGetStatus_Pre_State_Inactive;
+          ctx->Map.pci[ 3 ] < RtemsRatemonReqGetStatus_Pre_State_NA;
           ++ctx->Map.pci[ 3 ]
         ) {
-          for (
-            ctx->Map.pci[ 4 ] = RtemsRatemonReqGetStatus_Pre_Consumed_CpuTime;
-            ctx->Map.pci[ 4 ] < RtemsRatemonReqGetStatus_Pre_Consumed_NA;
-            ++ctx->Map.pci[ 4 ]
-          ) {
-            for (
-              ctx->Map.pci[ 5 ] = RtemsRatemonReqGetStatus_Pre_Postponed_Zero;
-              ctx->Map.pci[ 5 ] < RtemsRatemonReqGetStatus_Pre_Postponed_NA;
-              ++ctx->Map.pci[ 5 ]
-            ) {
-              ctx->Map.entry = RtemsRatemonReqGetStatus_PopEntry( ctx );
+          ctx->Map.entry = RtemsRatemonReqGetStatus_PopEntry( ctx );
 
-              if ( ctx->Map.entry.Skip ) {
-                continue;
-              }
-
-              RtemsRatemonReqGetStatus_SetPreConditionStates( ctx );
-              RtemsRatemonReqGetStatus_Prepare( ctx );
-              RtemsRatemonReqGetStatus_TestVariant( ctx );
-              RtemsRatemonReqGetStatus_Cleanup( ctx );
-            }
+          if ( ctx->Map.entry.Skip ) {
+            continue;
           }
+
+          RtemsRatemonReqGetStatus_SetPreConditionStates( ctx );
+          RtemsRatemonReqGetStatus_Prepare( ctx );
+          RtemsRatemonReqGetStatus_TestVariant( ctx );
+          RtemsRatemonReqGetStatus_Cleanup( ctx );
         }
       }
     }
