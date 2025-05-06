@@ -102,20 +102,20 @@ static void initialize_frequency_parameters(void)
   node = fdt_node_offset_by_prop_value(fdt, -1, "device_type", "cpu", 4);
 
   val_fdt = (fdt32_t *) fdt_getprop(fdt, node, "bus-frequency", &len);
-  if (val_fdt == NULL || len != 4) {
+  if (len != 4) {
     bsp_fatal(QORIQ_FATAL_FDT_NO_BUS_FREQUENCY);
   }
   BSP_bus_frequency = fdt32_to_cpu(*val_fdt) / QORIQ_BUS_CLOCK_DIVIDER;
 
   val_fdt = (fdt32_t *) fdt_getprop(fdt, node, "timebase-frequency", &len);
-  if (val_fdt == NULL || len != 4) {
-    bsp_fatal(QORIQ_FATAL_FDT_NO_BUS_FREQUENCY);
+  if (len != 4) {
+    bsp_fatal(QORIQ_FATAL_FDT_NO_TIMEBASE_FREQUENCY);
   }
   bsp_time_base_frequency = fdt32_to_cpu(*val_fdt);
 
   #ifdef __PPC_CPU_E6500__
     val_fdt = (fdt32_t *) fdt_getprop(fdt, node, "clock-frequency", &len);
-    if (val_fdt == NULL || len != 4) {
+    if (len != 4) {
       bsp_fatal(QORIQ_FATAL_FDT_NO_CLOCK_FREQUENCY);
     }
     qoriq_clock_frequency = fdt32_to_cpu(*val_fdt);
