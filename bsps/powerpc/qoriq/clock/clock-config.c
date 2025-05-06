@@ -115,13 +115,10 @@ static void qoriq_clock_handler_install(rtems_interrupt_handler handler)
   }
 #endif
 
-  sc = rtems_interrupt_set_priority(
+  (void) rtems_interrupt_set_priority(
     CLOCK_INTERRUPT,
     QORIQ_PIC_PRIORITY_LOWEST
   );
-  if (sc != RTEMS_SUCCESSFUL) {
-    bsp_fatal(QORIQ_FATAL_CLOCK_INTERRUPT_SET_PRIORITY);
-  }
 
   rtems_interrupt_entry_initialize(
     &qoriq_clock_entry,
