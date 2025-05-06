@@ -282,18 +282,34 @@ static const uint16_t src_cfg_offsets [] = {
 
 static volatile qoriq_pic_src_cfg *get_src_cfg(rtems_vector_number vector)
 {
-	uint32_t n = MIN(RTEMS_ARRAY_SIZE(qoriq.pic.ii_0), QORIQ_IRQ_EXT_BASE);
+	uintptr_t offs;
 
-	if (vector < n) {
-		return &qoriq.pic.ii_0 [vector];
-	} else if (vector < QORIQ_IRQ_EXT_BASE) {
-		return &qoriq.pic.ii_1 [vector - n];
-	} else {
-		uintptr_t offs = ((uintptr_t)
-			src_cfg_offsets [vector - QORIQ_IRQ_EXT_BASE]) << 4;
+#if QORIQ_CHIP_IS_T_VARIANT(QORIQ_CHIP_VARIANT)
+	RTEMS_STATIC_ASSERT(
+		RTEMS_ARRAY_SIZE(qoriq.pic.ii_0) < QORIQ_IRQ_EXT_BASE,
+		QORIQ_IRQ_EXT_BASE
+	);
 
-		return (volatile qoriq_pic_src_cfg *) ((uintptr_t) &qoriq.pic + offs);
+	if (vector < RTEMS_ARRAY_SIZE(qoriq.pic.ii_0)) {
+		return &qoriq.pic.ii_0[vector];
 	}
+
+	if (vector < QORIQ_IRQ_EXT_BASE) {
+		return &qoriq.pic.ii_1[vector - RTEMS_ARRAY_SIZE(qoriq.pic.ii_0)];
+	}
+#else
+	RTEMS_STATIC_ASSERT(
+		RTEMS_ARRAY_SIZE(qoriq.pic.ii_0) >= QORIQ_IRQ_EXT_BASE,
+		QORIQ_IRQ_EXT_BASE
+	);
+
+	if (vector < QORIQ_IRQ_EXT_BASE) {
+		return &qoriq.pic.ii_0[vector];
+	}
+#endif
+
+	offs = ((uintptr_t) src_cfg_offsets[vector - QORIQ_IRQ_EXT_BASE]) << 4;
+	return (volatile qoriq_pic_src_cfg *) ((uintptr_t) &qoriq.pic + offs);
 }
 
 static bool pic_is_ipi(rtems_vector_number vector)
