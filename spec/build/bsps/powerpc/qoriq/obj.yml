@@ -43,6 +43,7 @@ source:
 - bsps/powerpc/qoriq/console/console-config.c
 - bsps/powerpc/qoriq/console/uart-bridge-master.c
 - bsps/powerpc/qoriq/console/uart-bridge-slave.c
+- bsps/powerpc/qoriq/irq/irq-msi.c
 - bsps/powerpc/qoriq/irq/irq.c
 - bsps/powerpc/qoriq/mpci/intercom-mpci.c
 - bsps/powerpc/qoriq/mpci/intercom.c
