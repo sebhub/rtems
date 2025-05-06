@@ -195,17 +195,6 @@ void bsp_start(void)
 #endif
 }
 
-uint32_t bsp_fdt_map_intr(const uint32_t *intr, size_t icells)
-{
-  (void) icells;
-
-#ifndef QORIQ_IS_HYPERVISOR_GUEST
-  return intr[0] - 16;
-#else
-  return intr[0];
-#endif
-}
-
 #ifdef RTEMS_MULTIPROCESSING
 RTEMS_SYSINIT_ITEM(
   qoriq_intercom_init,
