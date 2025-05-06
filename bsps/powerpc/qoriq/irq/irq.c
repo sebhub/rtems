@@ -9,7 +9,7 @@
  */
 
 /*
- * Copyright (C) 2010, 2024 embedded brains GmbH & Co. KG
+ * Copyright (C) 2010, 2025 embedded brains GmbH & Co. KG
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -185,12 +185,12 @@ void bsp_interrupt_dispatch(uintptr_t exception_number)
 		 */
 		PPC_SPECIAL_PURPOSE_REGISTER(FSL_EIS_EPR, vector);
 
-		if (vector == SPURIOUS) {
+		if (!bsp_interrupt_is_valid_vector(vector)) {
 			return;
 		}
 
 		msr = ppc_external_exceptions_enable();
-		bsp_interrupt_handler_dispatch(vector);
+		bsp_interrupt_handler_dispatch_unchecked(vector);
 		ppc_external_exceptions_disable(msr);
 
 		ev_int_eoi(vector);
@@ -644,12 +644,12 @@ void bsp_interrupt_dispatch(uintptr_t exception_number)
 		rtems_vector_number vector = qoriq.pic.iack;
 		uint32_t msr;
 
-		if (vector == SPURIOUS) {
+		if (!bsp_interrupt_is_valid_vector(vector)) {
 			return;
 		}
 
 		msr = ppc_external_exceptions_enable();
-		bsp_interrupt_handler_dispatch(vector);
+		bsp_interrupt_handler_dispatch_unchecked(vector);
 		ppc_external_exceptions_disable(msr);
 
 		qoriq.pic.eoi = 0;
