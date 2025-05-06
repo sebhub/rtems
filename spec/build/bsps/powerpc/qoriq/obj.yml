@@ -47,6 +47,7 @@ source:
 - bsps/powerpc/qoriq/mpci/intercom.c
 - bsps/powerpc/qoriq/mpci/lock.S
 - bsps/powerpc/qoriq/rtc/rtc-config.c
+- bsps/powerpc/qoriq/start/bspfdtmapintr.c
 - bsps/powerpc/qoriq/start/bspreset.c
 - bsps/powerpc/qoriq/start/bsprestart.c
 - bsps/powerpc/qoriq/start/bspstart.c
