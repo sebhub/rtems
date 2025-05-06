@@ -356,17 +356,20 @@ rtems_status_code qoriq_pic_set_sense_and_polarity(
   qoriq_eirq_sense_and_polarity *old_sense_and_polarity
 )
 {
-	rtems_status_code sc = RTEMS_SUCCESSFUL;
 	uint32_t old_vpr = 0;
 	volatile qoriq_pic_src_cfg *src_cfg;
 	rtems_interrupt_lock_context lock_context;
 	uint32_t new_p_s = 0;
 
+	if (!bsp_interrupt_is_valid_vector(vector)) {
+		return RTEMS_INVALID_ID;
+	}
+
 	if (!QORIQ_IRQ_IS_EXT(vector)) {
 		return RTEMS_UNSATISFIED;
 	}
 
-	if (new_sense_and_polarity == QORIQ_EIRQ_TRIGGER_EDGE_RISING ||
+	if (new_sense_and_polarity == QORIQ_EIRQ_TRIGGER_EDGE_RAISING ||
 	    new_sense_and_polarity == QORIQ_EIRQ_TRIGGER_LEVEL_HIGH) {
 		new_p_s |= VPR_P;
 	}
@@ -395,7 +398,7 @@ rtems_status_code qoriq_pic_set_sense_and_polarity(
 		} else {
 			if ((old_vpr & VPR_S) == 0) {
 				*old_sense_and_polarity =
-					QORIQ_EIRQ_TRIGGER_EDGE_RISING;
+					QORIQ_EIRQ_TRIGGER_EDGE_RAISING;
 			} else {
 				*old_sense_and_polarity =
 					QORIQ_EIRQ_TRIGGER_LEVEL_HIGH;
@@ -403,7 +406,7 @@ rtems_status_code qoriq_pic_set_sense_and_polarity(
 		}
 	}
 
-	return sc;
+	return RTEMS_SUCCESSFUL;
 }
 
 rtems_status_code bsp_interrupt_set_affinity(

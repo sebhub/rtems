@@ -8,6 +8,7 @@ cxxflags: []
 enabled-by:
 - aarch64
 - arm
+- bsps/powerpc/qoriq
 features: c cprogram
 includes: []
 ldflags:
@@ -23,6 +24,8 @@ links:
   uid: objarmv4
 - role: build-dependency
   uid: objarmv7m
+- role: build-dependency
+  uid: objpowerpcqoriq
 source:
 - testsuites/validation/bsps/ts-validation-bsp-no-clock-0.c
 stlib: []
