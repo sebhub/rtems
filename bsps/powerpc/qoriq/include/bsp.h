@@ -130,7 +130,7 @@ qoriq_start_spin_table_addr[QORIQ_CPU_COUNT / QORIQ_THREAD_COUNT];
 
 struct Per_CPU_Control;
 
-void qoriq_start_thread(struct Per_CPU_Control *);
+void qoriq_start_thread(struct Per_CPU_Control *cpu_self);
 
 RTEMS_NO_RETURN void qoriq_restart_secondary_processor(
   const qoriq_start_spin_table *spin_table
