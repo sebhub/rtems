@@ -7,7 +7,7 @@
  */
 
 /*
- * Copyright (C) 2021, 2022 embedded brains GmbH & Co. KG
+ * Copyright (C) 2021, 2025 embedded brains GmbH & Co. KG
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -70,6 +70,18 @@
  *
  *   - Check that rtems_clock_get_ticks_per_second() actually returns 1us /
  *     CONFIGURE_MICROSECONDS_PER_TICK.
+ *
+ * - Use the rtems_clock_get_uptime_nanoseconds() directive before and after
+ *   exactly one timecounter tick. Between the two calls, advance
+ *   CLOCK_REALTIME by twelve years.
+ *
+ *   - Check that the rtems_clock_set() call for 1988-01-01 was successful.
+ *
+ *   - Check that the rtems_clock_set() call for 2000-01-01 was successful.
+ *
+ *   - Check that the elapsed time in milliseconds is the length of one clock
+ *     tick. This shows that the change of CLOCK_REALTIME has no effect on the
+ *     result.
  *
  * @{
  */
@@ -149,16 +161,59 @@ static void RtemsClockValClock_Action_3( void )
 }
 
 /**
+ * @brief Use the rtems_clock_get_uptime_nanoseconds() directive before and
+ *   after exactly one timecounter tick. Between the two calls, advance
+ *   CLOCK_REALTIME by twelve years.
+ */
+static void RtemsClockValClock_Action_4( void )
+{
+  rtems_time_of_day tod_0 = { 1988, 1, 1, 0, 0, 0, 0 };
+  rtems_time_of_day tod_1 = { 2000, 1, 1, 0, 0, 0, 0 };
+  rtems_status_code sc_0;
+  rtems_status_code sc_1;
+  uint64_t          result_0;
+  uint64_t          result_1;
+
+  sc_0 = rtems_clock_set( &tod_0 );
+  result_0 = rtems_clock_get_uptime_nanoseconds();
+  sc_1 = rtems_clock_set( &tod_1 );
+  TimecounterTick();
+  result_1 = rtems_clock_get_uptime_nanoseconds();
+
+  /*
+   * Check that the rtems_clock_set() call for 1988-01-01 was successful.
+   */
+  T_step_rsc_success( 4, sc_0 );
+
+  /*
+   * Check that the rtems_clock_set() call for 2000-01-01 was successful.
+   */
+  T_step_rsc_success( 5, sc_1 );
+
+  /*
+   * Check that the elapsed time in milliseconds is the length of one clock
+   * tick. This shows that the change of CLOCK_REALTIME has no effect on the
+   * result.
+   */
+  T_step_eq_u32(
+    6,
+    ( result_1 - result_0 + 499999 ) / 1000000,
+    rtems_configuration_get_milliseconds_per_tick()
+  );
+}
+
+/**
  * @fn void T_case_body_RtemsClockValClock( void )
  */
 T_TEST_CASE( RtemsClockValClock )
 {
-  T_plan( 4 );
+  T_plan( 7 );
 
   RtemsClockValClock_Action_0();
   RtemsClockValClock_Action_1();
   RtemsClockValClock_Action_2();
   RtemsClockValClock_Action_3();
+  RtemsClockValClock_Action_4();
 }
 
 /** @} */
