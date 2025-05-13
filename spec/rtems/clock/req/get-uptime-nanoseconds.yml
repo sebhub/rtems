@@ -1,0 +1,16 @@
+SPDX-License-Identifier: CC-BY-SA-4.0
+copyrights:
+- Copyright (C) 2025 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: function
+links:
+- role: interface-function
+  uid: ../if/get-uptime-nanoseconds
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  The ${../if/get-uptime-nanoseconds:/name} directive shall return the
+  nanoseconds elapsed since a point in time during the system initialization and
+  a point in time during the call using ${/glossary/clock-monotonic:/term}.
+type: requirement
