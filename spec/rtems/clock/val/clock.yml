@@ -1,6 +1,6 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 copyrights:
-- Copyright (C) 2021, 2022 embedded brains GmbH & Co. KG
+- Copyright (C) 2021, 2025 embedded brains GmbH & Co. KG
 enabled-by: true
 links: []
 test-actions:
@@ -77,6 +77,48 @@ test-actions:
     links:
     - role: validation
       uid: ../req/get-ticks-per-second
+  links: []
+- action-brief: |
+    Use the ${../if/get-uptime-nanoseconds:/name} directive before and after
+    exactly one timecounter tick. Between the two calls, advance
+    ${/glossary/clock-realtime:/term} by twelve years.
+  action-code: |
+    rtems_time_of_day tod_0 = { 1988, 1, 1, 0, 0, 0, 0 };
+    rtems_time_of_day tod_1 = { 2000, 1, 1, 0, 0, 0, 0 };
+    rtems_status_code sc_0;
+    rtems_status_code sc_1;
+    uint64_t          result_0;
+    uint64_t          result_1;
+
+    sc_0 = rtems_clock_set( &tod_0 );
+    result_0 = rtems_clock_get_uptime_nanoseconds();
+    sc_1 = rtems_clock_set( &tod_1 );
+    TimecounterTick();
+    result_1 = rtems_clock_get_uptime_nanoseconds();
+  checks:
+  - brief: |
+      Check that the ${../if/set:/name} call for 1988-01-01 was successful.
+    code: |
+      T_step_rsc_success( ${.:/step}, sc_0 );
+    links: []
+  - brief: |
+      Check that the ${../if/set:/name} call for 2000-01-01 was successful.
+    code: |
+      T_step_rsc_success( ${.:/step}, sc_1 );
+    links: []
+  - brief: |
+      Check that the elapsed time in milliseconds is the length of one
+      ${/glossary/clock-tick:/term}. This shows that the change of
+      ${/glossary/clock-realtime:/term} has no effect on the result.
+    code: |
+      T_step_eq_u32(
+        ${.:/step},
+        ( result_1 - result_0 + 499999 ) / 1000000,
+        rtems_configuration_get_milliseconds_per_tick()
+      );
+    links:
+    - role: validation
+      uid: ../req/get-uptime-nanoseconds
   links: []
 test-brief: |
   Tests some ${../if/group:/name} directives.
