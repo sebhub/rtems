@@ -1,0 +1,587 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2025 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: action
+links:
+- role: interface-function
+  uid: ../if/get-name
+post-conditions:
+- name: Result
+  states:
+  - name: 'Null'
+    test-code: |
+      T_null( ctx->result );
+    text: |
+      The ${/glossary/returnvalue:/term} of ${../if/get-name:/name} shall be
+      ${/c/if/null:/name}.
+  - name: Buffer
+    test-code: |
+      T_eq_ptr( ctx->result, ctx->name_buf );
+    text: |
+      The ${/glossary/returnvalue:/term} of ${../if/get-name:/name} shall be the
+      value of the ${../if/get-name:/params[2]/name} parameter.
+  test-epilogue: null
+  test-prologue: null
+- name: Length
+  states:
+  - name: Full
+    test-code: |
+      T_eq_sz( strlen( ctx->name_buf ), strlen( ctx->object_name ) );
+    text: |
+      The count of characters of the string referenced by the
+      ${../if/get-name:/params[2]/name} parameter shall be the count of characters of
+      the object name.
+  - name: Truncated
+    test-code: |
+      T_eq_sz( strlen( ctx->name_buf ), ctx->length - 1 );
+    text: |
+      The count of characters of the string referenced by the
+      ${../if/get-name:/params[2]/name} parameter shall be the value of the
+      ${../if/get-name:/params[1]/name} parameter minus one.
+  - name: Empty
+    test-code: |
+      T_eq_sz( strlen( ctx->name_buf ), 0 );
+    text: |
+      The string referenced by the ${../if/get-name:/params[2]/name} parameter shall
+      be the empty string.
+  test-epilogue: null
+  test-prologue: null
+- name: Characters
+  states:
+  - name: Copied
+    test-code: |
+      T_eq_nstr( ctx->name_buf, ctx->object_name, strlen( ctx->name_buf ) );
+    text: |
+      Each character of the string referenced by the
+      ${../if/get-name:/params[2]/name} parameter shall be the character of the
+      object name at the same position.
+  - name: Replaced
+    test-code: |
+      T_eq_nstr( ctx->name_buf, converted_name, strlen( ctx->name_buf ) );
+    text: |
+      Each character of the string referenced by the
+      ${../if/get-name:/params[2]/name} parameter at the position of a non-printable
+      character of the object name shall be an asterisk.
+  test-epilogue: null
+  test-prologue: null
+pre-conditions:
+- name: API
+  states:
+  - name: Zero
+    test-code: |
+      /* Already prepared */
+    text: |
+      While the API of the ${../if/get-name:/params[0]/name} parameter is zero.
+  - name: Valid
+    test-code: |
+      ctx->id |= OBJECTS_CLASSIC_API << OBJECTS_API_START_BIT;
+    text: |
+      While the API of the ${../if/get-name:/params[0]/name} parameter is associated
+      with an object API.
+  - name: Invalid
+    test-code: |
+      ctx->id |= OBJECTS_APIS_LAST << OBJECTS_API_START_BIT;
+    text: |
+      While the API of the ${../if/get-name:/params[0]/name} parameter is not equal
+      to zero and is associated with no object API.
+  test-epilogue: null
+  test-prologue: null
+- name: Class
+  states:
+  - name: Zero
+    test-code: |
+      /* Already prepared */
+    text: |
+      While the class of the ${../if/get-name:/params[0]/name} parameter is zero.
+  - name: ValidNoObjects
+    test-code: |
+      ctx->id |= OBJECTS_RTEMS_TASKS << OBJECTS_CLASS_START_BIT;
+      ctx->information->maximum_id = 0;
+    text: |
+      While the class of the ${../if/get-name:/params[0]/name} parameter is
+      associated with an object class which has no object configured.
+  - name: ValidMaybeObjects
+    test-code: |
+      ctx->id |= OBJECTS_RTEMS_TASKS << OBJECTS_CLASS_START_BIT;
+      ctx->information->maximum_id = ctx->maximum_id;
+    text: |
+      While the class of the ${../if/get-name:/params[0]/name} parameter is
+      associated with an object class which has at least one object configured.
+  - name: Invalid
+    test-code: |
+      ctx->id |= OBJECTS_RTEMS_CLASSES_LAST << OBJECTS_CLASS_START_BIT;
+
+      /* Use this to increase the coverage of _Objects_API_maximum_class */
+      if ( rtems_object_id_get_api( ctx->id ) == OBJECTS_CLASSIC_API ) {
+        ctx->id &= ~OBJECTS_API_MASK;
+        ctx->id |= OBJECTS_INTERNAL_API << OBJECTS_API_START_BIT;
+      }
+    text: |
+      While the class of the ${../if/get-name:/params[0]/name} parameter is not equal
+      to zero and is associated with no object class.
+  test-epilogue: null
+  test-prologue: null
+- name: NameType
+  states:
+  - name: Integer
+    test-code: |
+      ctx->information->name_length = 0;
+    text: |
+      While the object class uses integer names.
+  - name: String
+    test-code: |
+      ctx->information->name_length = RTEMS_ARRAY_SIZE( ctx->name_buf );
+    text: |
+      While the object class uses string names.
+  test-epilogue: null
+  test-prologue: null
+- name: Node
+  states:
+  - name: Zero
+    test-code: |
+      /* Already prepared */
+    text: |
+      While the node of the ${../if/get-name:/params[0]/name} parameter is zero.
+  - name: Valid
+    test-code: |
+      ctx->id |= 1 << OBJECTS_NODE_START_BIT;
+    text: |
+      While the node of the ${../if/get-name:/params[0]/name} parameter is associated
+      with a node.
+  - name: Invalid
+    test-code: |
+      ctx->id |= 2 << OBJECTS_NODE_START_BIT;
+    text: |
+      While the node of the ${../if/get-name:/params[0]/name} parameter is not equal
+      to zero and is associated with no node.
+  test-epilogue: null
+  test-prologue: null
+- name: Index
+  states:
+  - name: Zero
+    test-code: |
+      /* Already prepared */
+    text: |
+      While the index of the ${../if/get-name:/params[0]/name} parameter is zero.
+  - name: Valid
+    test-code: |
+      ctx->id |= 1 << OBJECTS_INDEX_START_BIT;
+    text: |
+      While the index of the ${../if/get-name:/params[0]/name} parameter is
+      associated with an object.
+  - name: Invalid
+    test-code: |
+      ctx->id |= 2 << OBJECTS_INDEX_START_BIT;
+    text: |
+      While the index of the ${../if/get-name:/params[0]/name} parameter is not equal
+      to zero and is associated with no object.
+  test-epilogue: null
+  test-prologue: null
+- name: NameProperties
+  states:
+  - name: Printable
+    test-code: |
+      memcpy( ctx->object_name, printable_name, sizeof( ctx->object_name ) );
+    text: |
+      While all characters of the object name are printable.
+  - name: NonPrintable
+    test-code: |
+      memcpy( ctx->object_name, non_printable_name, sizeof( ctx->object_name ) );
+    text: |
+      While at least one character of the object name is not printable.
+  - name: 'Null'
+    test-code: |
+      name = NULL;
+      memset( ctx->object_name, 0, sizeof( ctx->object_name ) );
+    text: |
+      While the string name pointer of the object is ${/c/if/null:/name}.
+  test-epilogue: |
+    if ( _Objects_Has_string_name( ctx->information ) ) {
+      ctx->object->name.name_p = name;
+    } else if ( name == NULL ) {
+      ctx->object->name.name_u32 = 0;
+    } else {
+      ctx->object->name.name_u32 = rtems_build_name(
+        name[ 0 ],
+        name[ 1 ],
+        name[ 2 ],
+        name[ 3 ]
+      );
+    }
+  test-prologue: |
+    const char *name;
+
+    name = ctx->object_name;
+- name: LengthName
+  states:
+  - name: ZeroNull
+    test-code: |
+      ctx->length = 0;
+      ctx->name = NULL;
+    text: |
+      While the ${../if/get-name:/params[1]/name} parameter is zero and the
+      ${../if/get-name:/params[2]/name} parameter is ${/c/if/null:/name}.
+  - name: ZeroValid
+    test-code: |
+      ctx->length = 0;
+      ctx->name = ctx->name_buf;
+    text: |
+      While the ${../if/get-name:/params[1]/name} parameter is zero and the
+      ${../if/get-name:/params[2]/name} parameter references a buffer.
+  - name: PositiveNull
+    test-code: |
+      ctx->length = 1;
+      ctx->name = NULL;
+    text: |
+      While the ${../if/get-name:/params[1]/name} parameter is greater than zero and
+      the ${../if/get-name:/params[2]/name} parameter is ${/c/if/null:/name}.
+  - name: Valid
+    test-code: |
+      ctx->length = RTEMS_ARRAY_SIZE( ctx->name_buf );
+      ctx->name = ctx->name_buf;
+    text: |
+      While the ${../if/get-name:/params[1]/name} parameter is greater than zero and
+      the ${../if/get-name:/params[2]/name} parameter references a buffer of at least
+      this size.
+  test-epilogue: null
+  test-prologue: null
+- name: ObjectNameLength
+  states:
+  - name: Fits
+    test-code: |
+      /* Already prepared */
+    text: |
+      While the count of characters of the object name is less than the value of the
+      ${../if/get-name:/params[1]/name} parameter.
+  - name: TooLong
+    test-code: |
+      ctx->length = 2;
+    text: |
+      While the count of characters of the object name is greater than or equal to
+      the value of the ${../if/get-name:/params[1]/name} parameter.
+  test-epilogue: null
+  test-prologue: null
+rationale: |
+  The ${../if/get-name:/params[0]/name} parameter consists of the API, the class,
+  the node and the index. The dimensions of the same names cover these parts. An
+  identifier with all four parts equal to zero selects the executing thread. The
+  test changes the class information of the task class. This covers string names
+  and a class without objects.
+
+  Dimension NameType covers whether the object class uses integer or string
+  names, 2 states.
+
+  Dimension NameProperties covers the characters of the object name and a string
+  name pointer which is ${/c/if/null:/name}, 3 states.
+
+  Dimension LengthName covers the combinations of the
+  ${../if/get-name:/params[1]/name} parameter and the
+  ${../if/get-name:/params[2]/name} parameter, 4 states.
+references: []
+requirement-type: functional
+skip-reasons:
+  NeedsAPI: |
+    For a valid object class, a valid object API is required.
+  NeedsAPIClassNode: |
+    For a valid object index, a valid object API, class, and node is required.
+  NeedsStringName: |
+    For a NULL object name pointer, a string name class is required.
+  NullNameAlwaysFits: |
+    For a NULL object name pointer, the name always fits into a valid buffer.
+  TasksHaveIntegerNames: |
+    All task objects classes have an integer object name.
+test-action: |
+  ctx->result = rtems_object_get_name( ctx->id, ctx->length, ctx->name );
+test-brief: null
+test-cleanup: null
+test-context:
+- brief: |
+    This member provides an object information to manipulate.
+  description: null
+  member: |
+    Objects_Information *information
+- brief: |
+    This member contains the original object maximum identifier.
+  description: null
+  member: |
+    Objects_Id maximum_id
+- brief: |
+    This member provides an object to manipulate.
+  description: null
+  member: |
+    Objects_Control *object
+- brief: |
+    This member provides a buffer for the object name.
+  description: null
+  member: |
+    char name_buf[ 5 ];
+- brief: |
+    This member provides the object name.
+  description: null
+  member: |
+    char object_name[ 5 ];
+- brief: |
+    This member provides the ${../if/get-name:/params[0]/name} parameter value.
+  description: null
+  member: |
+    rtems_id id
+- brief: |
+    This member provides the ${../if/get-name:/params[1]/name} parameter value.
+  description: null
+  member: |
+    size_t length
+- brief: |
+    This member provides the ${../if/get-name:/params[2]/name} parameter value.
+  description: null
+  member: |
+    char *name
+- brief: |
+    This member contains the returned result.
+  description: null
+  member: |
+    const char *result
+test-context-support: null
+test-description: null
+test-header: null
+test-includes:
+- rtems.h
+- rtems/score/objectimpl.h
+- string.h
+test-local-includes:
+- ts-config.h
+- tx-support.h
+test-prepare: |
+  ctx->id = 0;
+  memset( ctx->name_buf, 0xff, sizeof( ctx->name_buf ) );
+test-setup:
+  brief: null
+  code: |
+    ctx->information = _Objects_Information_table[ OBJECTS_CLASSIC_API ]
+                                                 [ OBJECTS_RTEMS_TASKS ];
+    ctx->maximum_id = ctx->information->maximum_id;
+    ctx->object = &GetExecuting()->Object;
+  description: null
+test-stop: null
+test-support: |
+  static const char printable_name[] = "1234";
+
+  static const char non_printable_name[] = "\x01\x1f\x7f\xff";
+
+  static const char converted_name[] = "****";
+test-target: testsuites/validation/tc-object-get-name.c
+test-teardown:
+  brief: null
+  code: |
+    ctx->information->maximum_id = ctx->maximum_id;
+    ctx->information->name_length = 0;
+    ctx->object->name.name_u32 = TEST_RUNNER_NAME;
+  description: null
+text: |
+  ${.:text-template}
+transition-map:
+- enabled-by: true
+  post-conditions:
+    Result:
+    - if:
+      - pre-conditions:
+          API: Zero
+          Class: Zero
+          Index: Zero
+          LengthName: Valid
+          Node: Zero
+      - pre-conditions:
+          API: Valid
+          Class: ValidMaybeObjects
+          Index: Valid
+          LengthName: Valid
+          Node: Valid
+      then: Buffer
+    - else: 'Null'
+    Length:
+    - if:
+      - pre-conditions:
+          API: Zero
+          Class: Zero
+          Index: Zero
+          LengthName: Valid
+          NameProperties: 'Null'
+          Node: Zero
+      - pre-conditions:
+          API: Valid
+          Class: ValidMaybeObjects
+          Index: Valid
+          LengthName: Valid
+          NameProperties: 'Null'
+          Node: Valid
+      then: Empty
+    - if:
+      - pre-conditions:
+          API: Zero
+          Class: Zero
+          Index: Zero
+          LengthName: Valid
+          Node: Zero
+          ObjectNameLength: TooLong
+      - pre-conditions:
+          API: Valid
+          Class: ValidMaybeObjects
+          Index: Valid
+          LengthName: Valid
+          Node: Valid
+          ObjectNameLength: TooLong
+      then: Truncated
+    - if:
+      - pre-conditions:
+          API: Zero
+          Class: Zero
+          Index: Zero
+          LengthName: Valid
+          Node: Zero
+      - pre-conditions:
+          API: Valid
+          Class: ValidMaybeObjects
+          Index: Valid
+          LengthName: Valid
+          Node: Valid
+      then: Full
+    - else: N/A
+    Characters:
+    - if:
+      - pre-conditions:
+          API: Zero
+          Class: Zero
+          Index: Zero
+          LengthName: Valid
+          NameProperties: Printable
+          Node: Zero
+      - pre-conditions:
+          API: Valid
+          Class: ValidMaybeObjects
+          Index: Valid
+          LengthName: Valid
+          NameProperties: Printable
+          Node: Valid
+      then: Copied
+    - if:
+      - pre-conditions:
+          API: Zero
+          Class: Zero
+          Index: Zero
+          LengthName: Valid
+          NameProperties: NonPrintable
+          Node: Zero
+      - pre-conditions:
+          API: Valid
+          Class: ValidMaybeObjects
+          Index: Valid
+          LengthName: Valid
+          NameProperties: NonPrintable
+          Node: Valid
+      then: Replaced
+    - else: N/A
+  pre-conditions:
+    API: all
+    Class:
+      applicable:
+      - pre-conditions:
+          API: Valid
+      - pre-conditions:
+          Class:
+          - Zero
+          - Invalid
+      skip:
+        condition:
+        - pre-conditions:
+            API:
+            - Zero
+            - Invalid
+            Class:
+            - ValidNoObjects
+            - ValidMaybeObjects
+        reason: NeedsAPI
+    NameType:
+      applicable:
+      - pre-conditions:
+          API: Valid
+          Class:
+          - ValidNoObjects
+          - ValidMaybeObjects
+      skip:
+        condition:
+          pre-conditions:
+            API: Zero
+            Class: Zero
+            Index: Zero
+            NameType: String
+            Node: Zero
+        reason: TasksHaveIntegerNames
+    Node: all
+    Index:
+      applicable:
+      - pre-conditions:
+          API: Valid
+          Class: ValidMaybeObjects
+          Node: Valid
+      - pre-conditions:
+          Index:
+          - Zero
+          - Invalid
+      skip:
+        condition:
+        - pre-conditions:
+            API:
+            - Zero
+            - Invalid
+            Index: Valid
+        - pre-conditions:
+            Class:
+            - Zero
+            - Invalid
+            Index: Valid
+        - pre-conditions:
+            Index: Valid
+            Node:
+            - Zero
+            - Invalid
+        reason: NeedsAPIClassNode
+    NameProperties:
+      applicable:
+      - pre-conditions:
+          API: Zero
+          Class: Zero
+          Index: Zero
+          Node: Zero
+      - pre-conditions:
+          API: Valid
+          Class: ValidMaybeObjects
+          Index: Valid
+          Node: Valid
+      skip:
+        condition:
+          pre-conditions:
+            NameProperties: 'Null'
+            NameType: Integer
+        reason: NeedsStringName
+    LengthName: all
+    ObjectNameLength:
+      applicable:
+      - pre-conditions:
+          API: Zero
+          Class: Zero
+          Index: Zero
+          LengthName: Valid
+          Node: Zero
+      - pre-conditions:
+          API: Valid
+          Class: ValidMaybeObjects
+          Index: Valid
+          LengthName: Valid
+          Node: Valid
+      skip:
+        condition:
+          pre-conditions:
+            NameProperties: 'Null'
+            ObjectNameLength: TooLong
+        reason: NullNameAlwaysFits
+type: requirement

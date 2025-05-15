@@ -1,0 +1,331 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2025, 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: action
+links:
+- role: interface-function
+  uid: ../if/setname-np
+- role: requirement-refinement
+  uid: ../../req/group-posix-api
+- path: man3/pthread_setname_np.3.html
+  role: reference
+  uid: /ref/man/linux
+post-conditions:
+- name: Status
+  states:
+  - name: Zero
+    test-code: |
+      T_eq_int( ctx->status, 0 );
+    text: |
+      The ${/glossary/returnvalue:/term} of ${../if/setname-np:/name} shall be equal
+      to zero.
+  - name: ESRCH
+    test-code: |
+      T_eq_int( ctx->status, ESRCH );
+    text: |
+      The ${/glossary/returnvalue:/term} of ${../if/setname-np:/name} shall be equal
+      to ${/c/errno/if/esrch:/name}.
+  - name: ERANGE
+    test-code: |
+      T_eq_int( ctx->status, ERANGE );
+    text: |
+      The ${/glossary/returnvalue:/term} of ${../if/setname-np:/name} shall be equal
+      to ${/c/errno/if/erange:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: Name
+  states:
+  - name: Full
+    test-code: |
+      T_eq_str( ctx->name_buf, ctx->name );
+    text: |
+      The string name of the thread shall be the string referenced by the
+      ${../if/setname-np:/params[1]/name} parameter.
+  - name: Partial
+    test-code: |
+      T_eq_sz( strlen( ctx->name_buf ), _Thread_Maximum_name_size - 1 );
+      T_eq_int(
+        memcmp( ctx->name_buf, ctx->name, _Thread_Maximum_name_size - 1 ),
+        0
+      );
+    text: |
+      The string name of the thread shall be the first characters of the string
+      referenced by the ${../if/setname-np:/params[1]/name} parameter up to the
+      maximum thread name size minus one.
+  - name: Empty
+    test-code: |
+      T_eq_str( ctx->name_buf, ctx->object_name );
+    text: |
+      The string name of the thread shall be the empty string.
+  test-epilogue: |
+    (void) pthread_setname_np( pthread_self(), "" );
+  test-prologue: |
+    int eno;
+
+    eno = pthread_getname_np(
+      pthread_self(),
+      ctx->name_buf,
+      sizeof( ctx->name_buf )
+    );
+    T_eno_success( eno );
+- name: ObjectName
+  states:
+  - name: Unchanged
+    test-code: |
+      char  buf[ sizeof( ctx->object_name ) ];
+      char *name;
+
+      name = rtems_object_get_name( rtems_task_self(), sizeof( buf ), buf );
+      T_eq_ptr( name, buf );
+      T_eq_str( buf, ctx->object_name );
+    text: |
+      The object name of the thread shall be unchanged.
+  test-epilogue: null
+  test-prologue: null
+- name: AllocatorLock
+  states:
+  - name: Once
+    test-code: |
+      T_eq_uint( ctx->lock_count, 1 );
+    text: |
+      The ${../if/setname-np:/name} directive shall obtain the object allocator mutex
+      exactly once.
+  test-epilogue: null
+  test-prologue: null
+pre-conditions:
+- name: NameStorage
+  states:
+  - name: None
+    test-code: |
+      if ( _Thread_Maximum_name_size != 0 ) {
+        ${.:skip}
+      }
+    text: |
+      Where the value of the ${/acfg/if/max-thread-name-size:/name} application
+      configuration option is zero.
+  - name: TerminatorOnly
+    test-code: |
+      if ( _Thread_Maximum_name_size != 1 ) {
+        ${.:skip}
+      }
+    text: |
+      Where the value of the ${/acfg/if/max-thread-name-size:/name} application
+      configuration option is one.
+  - name: String
+    test-code: |
+      if ( _Thread_Maximum_name_size < 2 ) {
+        ${.:skip}
+      }
+    text: |
+      Where the value of the ${/acfg/if/max-thread-name-size:/name} application
+      configuration option is greater than or equal to two.
+  test-epilogue: null
+  test-prologue: null
+- name: Thread
+  states:
+  - name: NoObj
+    test-code: |
+      ctx->thread = 0xffffffff;
+    text: |
+      While the ${../if/setname-np:/params[0]/name} parameter is not associated with
+      an object.
+  - name: OtherClass
+    test-code: |
+      ctx->thread = ctx->mutex_id;
+    text: |
+      While the ${../if/setname-np:/params[0]/name} parameter is associated with an
+      object which is not a thread.
+  - name: Valid
+    test-code: |
+      ctx->thread = pthread_self();
+    text: |
+      While the ${../if/setname-np:/params[0]/name} parameter is associated with a
+      thread.
+  test-epilogue: null
+  test-prologue: null
+- name: Length
+  states:
+  - name: Fits
+    test-code: |
+      T_assert_gt_sz( _Thread_Maximum_name_size, 0 );
+      memset( ctx->name_param, 'n', _Thread_Maximum_name_size - 1 );
+      ctx->name_param[ _Thread_Maximum_name_size - 1 ] = '\0';
+    text: |
+      While the length of the string referenced by the
+      ${../if/setname-np:/params[1]/name} parameter is less than the maximum thread
+      name size.
+  - name: TooLong
+    test-code: |
+      memset( ctx->name_param, 'n', _Thread_Maximum_name_size );
+      ctx->name_param[ _Thread_Maximum_name_size ] = '\0';
+    text: |
+      While the length of the string referenced by the
+      ${../if/setname-np:/params[1]/name} parameter is greater than or equal to the
+      maximum thread name size.
+  test-epilogue: null
+  test-prologue: null
+rationale: |
+  Dimension NameStorage covers the values of the
+  ${/acfg/if/max-thread-name-size:/name} application configuration option, 3
+  states. The option defines the maximum thread name size including the
+  terminating null character. A value of zero leaves no space for a string name.
+  A value of one leaves space for the empty string only.
+
+  Dimension Thread covers the object which the
+  ${../if/setname-np:/params[0]/name} parameter references, 3 states. An
+  identifier references no object, a thread, or an object of another class.
+
+  Dimension Length covers the length of the string referenced by the
+  ${../if/setname-np:/params[1]/name} parameter relative to the maximum thread
+  name size, 2 states. The test uses the lengths at the bound, the maximum thread
+  name size minus one and the maximum thread name size.
+references: []
+requirement-type: functional
+skip-reasons:
+  NoFittingName: |
+    Where the value of the ${/acfg/if/max-thread-name-size:/name} application
+    configuration option is zero, no string fits into the thread name storage.
+test-action: |
+  CallCounterObserve( &AllocatorLockCounter, rtems_task_self() );
+  ctx->status = pthread_setname_np( ctx->thread, ctx->name );
+  ctx->lock_count = CallCounterGet( &AllocatorLockCounter );
+  CallCounterObserve( &AllocatorLockCounter, 0 );
+test-brief: null
+test-cleanup: null
+test-context:
+- brief: |
+    This member provides a mutex.
+  description: null
+  member: |
+    rtems_id mutex_id
+- brief: |
+    This member contains the object name of the calling thread.
+  description: null
+  member: |
+    char object_name[ 5 ];
+- brief: |
+    This member provides the string for the ${../if/setname-np:/params[1]/name}
+    parameter.
+  description: null
+  member: |
+    char name_param[ 64 ];
+- brief: |
+    This member provides a buffer for the thread name.
+  description: null
+  member: |
+    char name_buf[ 64 ];
+- brief: |
+    This member provides the ${../if/setname-np:/params[0]/name} parameter value.
+  description: null
+  member: |
+    pthread_t thread
+- brief: |
+    This member provides the ${../if/setname-np:/params[1]/name} parameter value.
+  description: null
+  member: |
+    const char *name
+- brief: |
+    This member contains the returned status.
+  description: null
+  member: |
+    int status
+- brief: |
+    This member contains the count of the obtains of the object allocator mutex by
+    the call.
+  description: null
+  member: |
+    unsigned int lock_count
+test-context-support: null
+test-description: null
+test-header: null
+test-includes:
+- errno.h
+- pthread.h
+- string.h
+- rtems/score/thread.h
+test-local-includes:
+- tx-support.h
+test-prepare: |
+  (void) pthread_setname_np( pthread_self(), "" );
+  ctx->name_param[ 0 ] = '\0';
+  ctx->name = ctx->name_param;
+test-setup:
+  brief: null
+  code: |
+    char *name;
+
+    T_assert_lt_sz( _Thread_Maximum_name_size, sizeof( ctx->name_param ) );
+    (void) pthread_setname_np( pthread_self(), "" );
+    name = rtems_object_get_name(
+      rtems_task_self(),
+      sizeof( ctx->object_name ),
+      ctx->object_name
+    );
+    T_assert_eq_ptr( name, ctx->object_name );
+    ctx->mutex_id = CreateMutex();
+  description: null
+test-stop: null
+test-support: null
+test-target: testsuites/validation/tc-pthread-setname-np.c
+test-teardown:
+  brief: null
+  code: |
+    CallCounterObserve( &AllocatorLockCounter, 0 );
+    DeleteMutex( ctx->mutex_id );
+    (void) pthread_setname_np( pthread_self(), "" );
+  description: null
+text: |
+  ${.:text-template}
+transition-map:
+- enabled-by: true
+  post-conditions:
+    Status:
+    - if:
+        pre-conditions:
+          Thread:
+          - NoObj
+          - OtherClass
+      then: ESRCH
+    - if:
+        pre-conditions:
+          Length: Fits
+      then: Zero
+    - else: ERANGE
+    Name:
+    - if:
+        pre-conditions:
+          Thread:
+          - NoObj
+          - OtherClass
+      then: N/A
+    - if:
+        pre-conditions:
+          Length: Fits
+          NameStorage: String
+      then: Full
+    - if:
+        pre-conditions:
+          Length: TooLong
+          NameStorage: String
+      then: Partial
+    - else: Empty
+    ObjectName: Unchanged
+    AllocatorLock: Once
+  pre-conditions:
+    NameStorage: all
+    Thread: all
+    Length:
+      applicable:
+        pre-conditions:
+          Thread: Valid
+- enabled-by: true
+  post-conditions: NoFittingName
+  pre-conditions:
+    NameStorage:
+    - None
+    Thread:
+    - Valid
+    Length:
+    - Fits
+type: requirement

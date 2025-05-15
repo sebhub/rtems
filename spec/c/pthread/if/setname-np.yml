@@ -1,18 +1,65 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Set the name of the ${../glossary/thread:/term} specified by
+  ${.:/params[0]/name} to the name specified by ${.:/params[1]/name}.
 copyrights:
-- Copyright (C) 2021 embedded brains GmbH & Co. KG
+- Copyright (C) 2021, 2026 embedded brains GmbH & Co. KG
+definition:
+  default:
+    attributes: null
+    body: null
+    params:
+    - ${/c/if/pthread_t:/name} ${.:/params[0]/name}
+    - const char *${.:/params[1]/name}
+    return: int
+  variants: []
+description: null
 enabled-by: true
 index-entries: []
-interface-type: unspecified-function
+interface-type: function
 links:
 - role: interface-placement
   uid: header
 - role: interface-ingroup
   uid: group
-- role: constraint
-  uid: /constraint/directive-not-pre-qualified
+- description: |
+    The length of the string specified by ${.:/params[1]/name} exceeds the allowed
+    limit.
+  role: errno
+  uid: /c/errno/if/erange
+- description: |
+    No thread with the ID ${.:/params[0]/name} could be found.
+  role: errno
+  uid: /c/errno/if/esrch
 - path: man3/pthread_setname_np.3.html
   role: reference
   uid: /ref/man/linux
 name: pthread_setname_np
+notes: |
+  See
+  [FreeBSD Manual Pages, pthread_setname_np()](https://man.freebsd.org/cgi/man.cgi?query=pthread_setname_np&sektion=3).
+params:
+- description: |
+    is the thread
+  dir: null
+  name: thread
+- description: |
+    is the thread name
+  dir: in
+  name: name
+return:
+  return: null
+  return-values:
+  - description: |
+      The requested operation was successful.
+    value: 0
+  - description: |
+      The length of the string pointed to by ${.:/params[1]/name} exceeds the maximum
+      allowed length. The name of the thread is set to the first characters of the
+      string up to the maximum allowed length.
+    value: ${/c/errno/if/erange:/name}
+  - description: |
+      No thread could be found corresponding to that specified by the given
+      ${.:/params[0]/name} ID.
+    value: ${/c/errno/if/esrch:/name}
 type: interface

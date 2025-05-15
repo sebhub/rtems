@@ -1,6 +1,6 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 copyrights:
-- Copyright (C) 2021 embedded brains GmbH & Co. KG
+- Copyright (C) 2021, 2026 embedded brains GmbH & Co. KG
 enabled-by: true
 links:
 - role: requirement-refinement
@@ -8,6 +8,7 @@ links:
 test-brief: |
   This validation test suite is used to validate the default value of application
   configuration options where all optional BSP provided settings are disabled.
+  The maximum thread name size is one.
 test-code: |
   const char rtems_test_name[] = "${.:/test-suite-name}";
 
@@ -35,6 +36,10 @@ test-code: |
   #define CONFIGURE_IDLE_TASK_STORAGE_SIZE RTEMS_MINIMUM_STACK_SIZE
 
   #define CONFIGURE_MAXIMUM_TASKS 1
+
+  #define CONFIGURE_MAXIMUM_SEMAPHORES 1
+
+  #define CONFIGURE_MAXIMUM_THREAD_NAME_SIZE 1
 
   #define CONFIGURE_RTEMS_INIT_TASKS_TABLE
 
