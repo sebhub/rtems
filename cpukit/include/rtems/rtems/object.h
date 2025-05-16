@@ -412,10 +412,6 @@ rtems_status_code rtems_object_get_classic_name(
  * @parblock
  * The following constraints apply to this directive:
  *
- * - The directive is not included in the pre-qualified feature set of RTEMS.
- *   Applications which are restricted to only use interfaces of the
- *   pre-qualified feature set of RTEMS shall not use the directive.
- *
  * - The directive may be called from within any runtime context.
  *
  * - The directive will not cause the calling task to be preempted.
