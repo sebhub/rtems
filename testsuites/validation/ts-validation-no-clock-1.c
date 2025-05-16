@@ -45,7 +45,7 @@
  *
  * @brief This general purpose validation test suite provides enough resources
  *   to run basic tests without a Clock Driver for all specified managers and
- *   functions.
+ *   functions. The maximum thread name size is zero.
  *
  * In SMP configurations, up to three scheduler instances using the SMP EDF
  * scheduler are provided using up to four processors.
@@ -58,6 +58,8 @@ const char rtems_test_name[] = "TestsuitesValidationNoClock1";
 #define CONFIGURE_MAXIMUM_PROCESSORS 5
 
 #define CONFIGURE_APPLICATION_DOES_NOT_NEED_CLOCK_DRIVER
+
+#define CONFIGURE_MAXIMUM_THREAD_NAME_SIZE 0
 
 #include "ts-default.h"
 

@@ -3,7 +3,8 @@ build-type: test-program
 cflags: []
 copyrights:
 - Copyright (C) 2026 embedded brains GmbH & Co. KG
-cppflags: []
+cppflags:
+- -D_GNU_SOURCE
 cxxflags: []
 enabled-by: true
 features: c cprogram
@@ -17,6 +18,8 @@ source:
 - testsuites/validation/tc-futex-wait.c
 - testsuites/validation/tc-futex-wake.c
 - testsuites/validation/tc-message-receive.c
+- testsuites/validation/tc-pthread-getname-np.c
+- testsuites/validation/tc-pthread-setname-np.c
 - testsuites/validation/tc-sched-yield.c
 - testsuites/validation/tc-scheduler-add-processor.c
 - testsuites/validation/tc-scheduler-get-maximum-priority.c

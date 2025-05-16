@@ -9,7 +9,7 @@
  */
 
 /*
- * Copyright (C) 2019, 2023 embedded brains GmbH & Co. KG
+ * Copyright (C) 2019, 2026 embedded brains GmbH & Co. KG
  * Copyright (C) 2010 Gedare Bloom
  * Copyright (C) 1988, 2023 On-Line Applications Research Corporation (OAR)
  *
@@ -3025,8 +3025,8 @@
  *
  * @par Notes
  * @parblock
- * The default value was chosen for Linux compatibility, see <a
- * href="http://man7.org/linux/man-pages/man3/pthread_setname_np.3.html">pthread_setname_np()</a>.
+ * The default value was chosen for Linux compatibility, see
+ * pthread_setname_np().
  *
  * The size of the thread control block is increased by the maximum thread name
  * size.

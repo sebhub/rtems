@@ -2,16 +2,20 @@ SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 build-type: test-program
 cflags: []
 copyrights:
-- Copyright (C) 2021 embedded brains GmbH & Co. KG
-cppflags: []
+- Copyright (C) 2021, 2026 embedded brains GmbH & Co. KG
+cppflags:
+- -D_GNU_SOURCE
 cxxflags: []
 enabled-by: true
 features: c cprogram
 includes: []
-ldflags: []
+ldflags:
+- -Wl,--wrap=_RTEMS_Lock_allocator
 links: []
 source:
 - testsuites/validation/tc-acfg-disabled-bsp-settings.c
+- testsuites/validation/tc-pthread-getname-np.c
+- testsuites/validation/tc-pthread-setname-np.c
 - testsuites/validation/ts-validation-acfg-1.c
 stlib: []
 target: testsuites/validation/ts-validation-acfg-1.exe

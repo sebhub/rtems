@@ -7,7 +7,7 @@
  */
 
 /*
- * Copyright (C) 2021 embedded brains GmbH & Co. KG
+ * Copyright (C) 2021, 2026 embedded brains GmbH & Co. KG
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -48,7 +48,7 @@
  *
  * @brief This validation test suite is used to validate the default value of
  *   application configuration options where all optional BSP provided settings
- *   are disabled.
+ *   are disabled. The maximum thread name size is one.
  *
  * @{
  */
@@ -79,6 +79,10 @@ static void Init( rtems_task_argument arg )
 #define CONFIGURE_IDLE_TASK_STORAGE_SIZE RTEMS_MINIMUM_STACK_SIZE
 
 #define CONFIGURE_MAXIMUM_TASKS 1
+
+#define CONFIGURE_MAXIMUM_SEMAPHORES 1
+
+#define CONFIGURE_MAXIMUM_THREAD_NAME_SIZE 1
 
 #define CONFIGURE_RTEMS_INIT_TASKS_TABLE
 
