@@ -33,6 +33,8 @@ links:
 - role: build-dependency
   uid: fatal-init-task-construct-failed
 - role: build-dependency
+  uid: fatal-init-task-create-failed
+- role: build-dependency
   uid: fatal-mandatory-processor-not-present
 - role: build-dependency
   uid: fatal-scheduler-requires-exactly-one-processor

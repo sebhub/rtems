@@ -15,6 +15,7 @@ links:
 - role: build-dependency
   uid: objmrsp
 source:
+- testsuites/validation/tc-acfg-init-task-stack-size.c
 - testsuites/validation/tc-acfg-max-thread-name-size.c
 - testsuites/validation/tc-futex-wait.c
 - testsuites/validation/tc-futex-wake.c

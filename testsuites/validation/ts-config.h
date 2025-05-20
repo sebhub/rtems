@@ -61,6 +61,12 @@ extern "C" {
 
 #define TEST_RUNNER_INITIAL_MODES RTEMS_NO_ASR
 
+/*
+ * The value is greater than the configured minimum task stack size, which is
+ * the default task stack size of the Classic API initialization task.
+ */
+#define TEST_INIT_TASK_STACK_SIZE ( TEST_MINIMUM_STACK_SIZE + 1024 )
+
 #define TEST_SCHEDULER_A_NAME rtems_build_name( 'A', ' ', ' ', ' ' )
 
 #define TEST_SCHEDULER_B_NAME rtems_build_name( 'B', ' ', ' ', ' ' )

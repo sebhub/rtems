@@ -50,13 +50,23 @@
 #define MAX_TLS_SIZE TEST_MAXIMUM_TLS_SIZE
 #endif
 
+/*
+ * The Classic API initialization task takes a stack of the allocator where the
+ * application configuration defines its task stack size.
+ */
+#if defined( CONFIGURE_INIT_TASK_STACK_SIZE )
+#define MAX_TASKS TEST_MAXIMUM_TASKS
+#define TASK_STACK_SIZE CONFIGURE_INIT_TASK_STACK_SIZE
+#else
 #define MAX_TASKS ( TEST_MAXIMUM_TASKS - 1 )
+#define TASK_STACK_SIZE TEST_MINIMUM_STACK_SIZE
+#endif
 
 #define TASK_ATTRIBUTES RTEMS_FLOATING_POINT
 
 #define TASK_STORAGE_SIZE \
   RTEMS_TASK_STORAGE_SIZE( \
-    MAX_TLS_SIZE + TEST_MINIMUM_STACK_SIZE + \
+    MAX_TLS_SIZE + TASK_STACK_SIZE + \
       CPU_STACK_ALIGNMENT - CPU_HEAP_ALIGNMENT, \
     TASK_ATTRIBUTES \
   )
@@ -103,6 +113,26 @@ static union {
   rtems_chain_node node;
 } task_storage[ MAX_TASKS ];
 
+static bool task_storage_is_initialized;
+
+/*
+ * The allocator provides the stack of the Classic API initialization task
+ * before the task runs, where the application configuration defines its task
+ * stack size.
+ */
+static void InitializeTaskStorage( void )
+{
+  if ( !task_storage_is_initialized ) {
+    task_storage_is_initialized = true;
+    rtems_chain_initialize(
+      &free_task_storage,
+      task_storage,
+      RTEMS_ARRAY_SIZE( task_storage ),
+      sizeof( task_storage[ 0 ] )
+    );
+  }
+}
+
 rtems_task_argument test_runner_argument;
 
 rtems_task_priority test_runner_initial_priority;
@@ -127,12 +157,7 @@ static void Runner( rtems_task_argument arg )
     &test_runner_initial_priority
   );
 
-  rtems_chain_initialize(
-    &free_task_storage,
-    task_storage,
-    RTEMS_ARRAY_SIZE( task_storage ),
-    sizeof( task_storage[ 0 ] )
-  );
+  InitializeTaskStorage();
 
   rtems_test_begin( rtems_test_name, TEST_STATE );
   T_register();
@@ -152,6 +177,7 @@ void *test_task_stack_allocate( size_t size )
   }
 
   T_quiet_ge_sz( size, TEST_MINIMUM_STACK_SIZE );
+  InitializeTaskStorage();
 
   return rtems_chain_get_unprotected( &free_task_storage );
 }
@@ -215,7 +241,9 @@ void test_task_stack_deallocate( void *stack )
 
 #define CONFIGURE_INIT_TASK_ATTRIBUTES ( RTEMS_SYSTEM_TASK | TASK_ATTRIBUTES )
 
+#if !defined( CONFIGURE_INIT_TASK_STACK_SIZE )
 #define CONFIGURE_INIT_TASK_CONSTRUCT_STORAGE_SIZE TASK_STORAGE_SIZE
+#endif
 
 #define CONFIGURE_INIT_TASK_ENTRY_POINT Runner
 

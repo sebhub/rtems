@@ -440,6 +440,7 @@ source:
 - cpukit/rtems/src/taskgetscheduler.c
 - cpukit/rtems/src/taskident.c
 - cpukit/rtems/src/taskinitdefault.c
+- cpukit/rtems/src/taskinitusers.c
 - cpukit/rtems/src/taskissuspended.c
 - cpukit/rtems/src/taskiterate.c
 - cpukit/rtems/src/taskmode.c
