@@ -1,0 +1,65 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+links: []
+test-actions:
+- action-brief: |
+    Get the stack size of the Classic API initialization task.
+  action-code: |
+    rtems_status_code     sc;
+    rtems_id              id;
+    const Thread_Control *executing;
+    size_t                stack_size;
+
+    sc = rtems_task_ident( TEST_RUNNER_NAME, RTEMS_SEARCH_LOCAL_NODE, &id );
+    T_assert_rsc_success( sc );
+    T_assert_eq_u32( id, rtems_task_self() );
+    executing = _Thread_Get_executing();
+    stack_size = executing->Start.Initial_stack.size;
+  checks:
+  - brief: |
+      Check that the task stack size of the Classic API initialization task in the
+      initialization task table is the configured value.
+    code: |
+      T_eq_sz(
+        _RTEMS_tasks_User_task_table.stack_size,
+        TEST_INIT_TASK_STACK_SIZE
+      );
+    links:
+    - role: validation
+      uid: ../req/init-task-stack-size
+  - brief: |
+      Check that the stack of the Classic API initialization task is at least as
+      large as the configured value.
+    code: |
+      T_ge_sz( stack_size, TEST_INIT_TASK_STACK_SIZE );
+    links:
+    - role: validation
+      uid: ../req/init-task-stack-size
+  links: []
+test-brief: |
+  Tests the task stack size of the Classic API initialization task which the
+  ${/acfg/if/init-task-stack-size:/name} application configuration option
+  defines.
+test-context: []
+test-context-support: null
+test-description: |
+  The test suite defines ${/acfg/if/init-task-stack-size:/name} to
+  `TEST_INIT_TASK_STACK_SIZE`. This value is greater than the value of
+  ${/acfg/if/min-task-stack-size:/name}, which is the default value of the
+  option. The checks fail if the system ignores the option.
+test-header: null
+test-includes:
+- rtems.h
+- rtems/test-support.h
+- rtems/rtems/tasksdata.h
+- rtems/score/threadimpl.h
+test-local-includes:
+- ts-config.h
+test-setup: null
+test-stop: null
+test-support: null
+test-target: testsuites/validation/tc-acfg-init-task-stack-size.c
+test-teardown: null
+type: test-case

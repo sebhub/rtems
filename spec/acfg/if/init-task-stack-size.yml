@@ -15,8 +15,6 @@ links:
 - role: interface-ingroup
   uid: group-classicinit
 - role: constraint
-  uid: ../constraint/option-not-pre-qualified
-- role: constraint
   uid: ../constraint/min-task-stack-size
 - role: constraint
   uid: ../constraint/stack-space

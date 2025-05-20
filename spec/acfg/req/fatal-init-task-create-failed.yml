@@ -1,0 +1,78 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2021, 2025 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: fatal-error
+links:
+- role: requirement-refinement
+  uid: /testsuites/validation
+- role: requirement-refinement
+  uid: /req/fatal-error
+- role: interface-function
+  uid: /score/interr/if/internal-error-core
+- role: interface-function
+  uid: /score/interr/if/init-task-create-failed
+- role: validation
+  uid: init-task-priority
+rationale: null
+references: []
+requirement-type: functional
+test-brief: |
+  This validation test suite contains a test case which triggers a fatal error
+  during system initialization.
+test-case-code: |
+  T_eq_int( source, INTERNAL_ERROR_CORE );
+  T_eq_ulong( code, INTERNAL_ERROR_RTEMS_INIT_TASK_CREATE_FAILED );
+
+  /*
+   * Check that the ${../if/init-task-priority:/name} application configuration
+   * option resulted in the expected system setting.
+   */
+  T_eq_u32( _RTEMS_tasks_User_task_table.initial_priority, 0 );
+test-description: |
+  The application configuration defines the priority of the Classic API
+  initialization task as zero. Zero is no valid task priority, so the task
+  creation fails. The test ends with a failure if the initialization task starts
+  or if the system deallocates a task stack.
+test-includes:
+- rtems.h
+- rtems/malloc.h
+- rtems/rtems/tasksdata.h
+test-local-includes: []
+test-support: |
+  static void Init( rtems_task_argument arg )
+  {
+    (void) arg;
+    ExitWithFailure( "the initialization task started" );
+  }
+
+  static void StackDeallocate( void *unused )
+  {
+    (void) unused;
+    ExitWithFailure( "the system deallocated a task stack" );
+  }
+
+  #define CONFIGURE_TASK_STACK_ALLOCATOR_AVOIDS_WORK_SPACE
+
+  #define CONFIGURE_TASK_STACK_ALLOCATOR rtems_malloc
+
+  #define CONFIGURE_TASK_STACK_DEALLOCATOR StackDeallocate
+
+  #define CONFIGURE_TASK_STACK_FROM_ALLOCATOR( _stack_size ) 0
+
+  #define CONFIGURE_APPLICATION_DOES_NOT_NEED_CLOCK_DRIVER
+
+  #define CONFIGURE_MAXIMUM_TASKS 1
+
+  #define CONFIGURE_INIT_TASK_PRIORITY 0
+
+  #define CONFIGURE_RTEMS_INIT_TASKS_TABLE
+
+  #define CONFIGURE_IDLE_TASK_STORAGE_SIZE RTEMS_MINIMUM_STACK_SIZE
+test-target: testsuites/validation/ts-fatal-init-task-create-failed.c
+text: |
+  Where the application was configured to create the RTEMS initialization task,
+  while the system is initialized, if the task creation fails, then the system
+  shall terminate with the ${/score/interr/if/internal-error-core:/name} fatal
+  source and the ${/score/interr/if/init-task-create-failed:/name} fatal code.
+type: requirement
