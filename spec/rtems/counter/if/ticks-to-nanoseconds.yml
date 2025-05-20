@@ -1,0 +1,36 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Converts the counter ticks into nanoseconds.
+copyrights:
+- Copyright (C) 2025 embedded brains GmbH & Co. KG
+definition:
+  default:
+    attributes: null
+    body: null
+    params:
+    - ${ticks:/name} ${.:/params[0]/name}
+    return: uint64_t
+  variants: []
+description: |
+  The function converts at the ${/glossary/converterfrequency:/term}.
+enabled-by: true
+index-entries: []
+interface-type: function
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+name: rtems_counter_ticks_to_nanoseconds
+notes: null
+params:
+- description: |
+    is the counter ticks value to convert.
+  dir: null
+  name: ticks
+return:
+  return: |
+    Returns the nanoseconds value corresponding to the counter ticks. The value is
+    the exact value rounded down or rounded up.
+  return-values: []
+type: interface

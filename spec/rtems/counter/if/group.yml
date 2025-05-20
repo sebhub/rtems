@@ -1,0 +1,48 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This group contains free-running counter and busy wait delay functions.
+copyrights:
+- Copyright (C) 2025 embedded brains GmbH & Co. KG
+description: |
+  The RTEMS counter is some free-running counter. It ticks usually with a
+  frequency close to the processor or system bus clock. The counter can be used
+  in case the overhead of the ${../../clock/if/get-uptime-nanoseconds:/name} is
+  too high. The step from counter ticks to/from nanoseconds is explicit in this
+  API unlike to ${../../clock/if/get-uptime-nanoseconds:/name} which performs the
+  conversion on each invocation. This counter works without a clock driver and
+  during system initialization. The counter can be used to profile low-level
+  operations like SMP locks or interrupt disabled critical sections. The counter
+  can act also as an entropy source for a random number generator. The period of
+  the counter depends on the actual hardware.
+enabled-by: true
+identifier: RTEMSAPICounter
+index-entries: []
+interface-type: group
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: ../../if/group
+- role: placement-order
+  uid: frequency
+- role: placement-order
+  uid: read
+- role: placement-order
+  uid: difference
+- role: placement-order
+  uid: ticks-to-nanoseconds
+- role: placement-order
+  uid: nanoseconds-to-ticks
+- role: placement-order
+  uid: ticks-to-sbintime
+- role: placement-order
+  uid: sbintime-to-ticks
+- role: placement-order
+  uid: delay-ticks
+- role: placement-order
+  uid: delay-nanoseconds
+name: Free-Running Counter and Busy Wait Delay
+text: |
+  The Classic API shall provide an interface to a free-running counter and busy
+  wait delay functions.
+type: interface

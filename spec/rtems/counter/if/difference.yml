@@ -1,0 +1,43 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Returns the difference between the second and first counter value.
+copyrights:
+- Copyright (C) 2025 embedded brains GmbH & Co. KG
+definition:
+  default:
+    attributes: null
+    body: |
+      return ${.:/params[0]/name} - ${.:/params[1]/name};
+    params:
+    - ${ticks:/name} ${.:/params[0]/name}
+    - ${ticks:/name} ${.:/params[1]/name}
+    return: ${ticks:/name}
+  variants: []
+description: null
+enabled-by: true
+index-entries: []
+interface-type: function
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+name: rtems_counter_difference
+notes: |
+  The function exists for backward compatibility. Code can use `second - first`
+  directly.
+params:
+- description: |
+    is the second counter value.
+  dir: null
+  name: second
+- description: |
+    is the first counter value.
+  dir: null
+  name: first
+return:
+  return: |
+    Returns ${.:/params[0]/name} minus ${.:/params[1]/name} modulo the range of
+    ${ticks:/name}.
+  return-values: []
+type: interface

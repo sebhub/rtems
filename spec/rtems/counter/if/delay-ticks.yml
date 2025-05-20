@@ -1,0 +1,34 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Busy wait for some counter ticks.
+copyrights:
+- Copyright (C) 2025 embedded brains GmbH & Co. KG
+definition:
+  default:
+    attributes: null
+    body: null
+    params:
+    - ${ticks:/name} ${.:/params[0]/name}
+    return: void
+  variants: []
+description: null
+enabled-by: true
+index-entries: []
+interface-type: function
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+name: rtems_counter_delay_ticks
+notes: |
+  This function does not disable interrupts. Task switches and interrupts can
+  prolong the delay. This function busy waits at least the specified time. The
+  overhead of the function can make the delay longer.
+params:
+- description: |
+    is the minimum busy wait time in counter ticks.
+  dir: null
+  name: ticks
+return: null
+type: interface

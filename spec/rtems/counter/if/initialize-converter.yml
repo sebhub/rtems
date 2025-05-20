@@ -1,0 +1,40 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Initializes the counter ticks to and from nanoseconds and signed binary time
+  converter functions.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+  default:
+    attributes: null
+    body: null
+    params:
+    - ${/c/if/uint32_t:/name} ${.:/params[0]/name}
+    return: void
+  variants: []
+description: |
+  The function sets the ${/glossary/converterfrequency:/term} to the frequency.
+  The ${ticks-to-nanoseconds:/name}, ${nanoseconds-to-ticks:/name},
+  ${ticks-to-sbintime:/name} and ${sbintime-to-ticks:/name} functions convert at
+  the ${/glossary/converterfrequency:/term}.
+enabled-by: true
+index-entries: []
+interface-type: function
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+name: rtems_counter_initialize_converter
+notes: |
+  The system initialization calls the function with the value which
+  ${frequency:/name} returns. Before the first call, the
+  ${/glossary/converterfrequency:/term} is 100000000 Hz.
+params:
+- description: |
+    is the current counter frequency in Hz. The frequency shall be greater than
+    zero.
+  dir: in
+  name: frequency
+return: null
+type: interface

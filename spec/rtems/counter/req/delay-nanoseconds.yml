@@ -1,0 +1,90 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2025 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: action
+links:
+- role: interface-function
+  uid: ../if/delay-nanoseconds
+post-conditions:
+- name: Elapsed
+  states:
+  - name: AtLeast
+    test-code: |
+      T_ge_u32(
+        rtems_counter_difference( ctx->counter_after, ctx->counter_before ),
+        rtems_counter_nanoseconds_to_ticks( ctx->nanoseconds )
+      );
+    text: |
+      The count of ${/glossary/rtemscounter:/term} ticks which elapse during the
+      ${../if/delay-nanoseconds:/name} call shall be greater than or equal to the
+      value which the ${../if/nanoseconds-to-ticks:/name} directive returns for the
+      ${../if/delay-nanoseconds:/params[0]/name} parameter value.
+  test-epilogue: null
+  test-prologue: null
+pre-conditions:
+- name: Nanoseconds
+  states:
+  - name: Zero
+    test-code: |
+      ctx->nanoseconds = 0;
+    text: |
+      While the ${../if/delay-nanoseconds:/params[0]/name} parameter is equal to
+      zero.
+  - name: Positive
+    test-code: |
+      ctx->nanoseconds = UINT32_C( 1000000 );
+    text: |
+      While the ${../if/delay-nanoseconds:/params[0]/name} parameter is greater than
+      zero.
+  test-epilogue: null
+  test-prologue: null
+rationale: |
+  The state Positive arranges one millisecond, which keeps the run time of the
+  test short.
+requirement-type: functional
+skip-reasons: {}
+test-action: |
+  ctx->counter_before = rtems_counter_read();
+  rtems_counter_delay_nanoseconds( ctx->nanoseconds );
+  ctx->counter_after = rtems_counter_read();
+test-brief: null
+test-cleanup: null
+test-context:
+- brief: |
+    This member contains the nanoseconds parameter value.
+  description: null
+  member: uint32_t nanoseconds
+- brief: |
+    This member contains the counter value before the call.
+  description: null
+  member: rtems_counter_ticks counter_before
+- brief: |
+    This member contains the counter value after the call.
+  description: null
+  member: rtems_counter_ticks counter_after
+test-context-support: null
+test-description: |
+  The test reads the RTEMS counter before and after the call. The difference of
+  the two values is the count of counter ticks which elapsed during the call,
+  plus the time of one counter read.
+test-header: null
+test-includes:
+- rtems.h
+- rtems/counter.h
+test-local-includes: []
+test-prepare: null
+test-setup: null
+test-stop: null
+test-support: null
+test-target: testsuites/validation/tc-counter-delay-nanoseconds.c
+test-teardown: null
+text: |
+  ${.:text-template}
+transition-map:
+- enabled-by: true
+  post-conditions:
+    Elapsed: AtLeast
+  pre-conditions:
+    Nanoseconds: all
+type: requirement

@@ -1,0 +1,30 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Returns the current counter frequency in Hz.
+copyrights:
+- Copyright (C) 2025 embedded brains GmbH & Co. KG
+definition:
+  default:
+    attributes: null
+    body: |
+      return ${/score/cpu/if/counter-frequency:/name}();
+    params: []
+    return: ${/c/if/uint32_t:/name}
+  variants: []
+description: null
+enabled-by: true
+index-entries: []
+interface-type: function
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+name: rtems_counter_frequency
+notes: null
+params: []
+return:
+  return: |
+    Returns the counter frequency in Hz.
+  return-values: []
+type: interface

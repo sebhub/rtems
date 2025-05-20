@@ -1,0 +1,32 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: function
+links:
+- role: interface-function
+  uid: ../if/initialize-converter
+- role: interface-function
+  uid: ../if/frequency
+- role: interface-function
+  uid: ../if/ticks-to-nanoseconds
+- role: interface-function
+  uid: ../if/nanoseconds-to-ticks
+- role: interface-function
+  uid: ../if/ticks-to-sbintime
+- role: interface-function
+  uid: ../if/sbintime-to-ticks
+- role: interface-function
+  uid: ../if/delay-nanoseconds
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  Where the ${/glossary/application:/term} uses the
+  ${../if/initialize-converter:/name}, the ${../if/ticks-to-nanoseconds:/name},
+  the ${../if/nanoseconds-to-ticks:/name}, the ${../if/ticks-to-sbintime:/name},
+  the ${../if/sbintime-to-ticks:/name}, or the ${../if/delay-nanoseconds:/name}
+  directive, while the system is initialized, the
+  ${/glossary/converterfrequency:/term} shall be set to the
+  ${/glossary/returnvalue:/term} of the ${../if/frequency:/name} directive.
+type: requirement
