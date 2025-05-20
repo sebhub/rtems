@@ -100,8 +100,6 @@ links:
 - role: validation
   uid: /score/interr/if/illegal-use-of-floating-point-unit
 - role: validation
-  uid: /score/interr/if/init-task-construct-failed
-- role: validation
   uid: /score/interr/if/internal-error-core
 - role: validation
   uid: /score/interr/if/internal-error-rtems-api
