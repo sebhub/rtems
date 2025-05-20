@@ -7,7 +7,7 @@
  */
 
 /*
- * Copyright (C) 2021 embedded brains GmbH & Co. KG
+ * Copyright (C) 2021, 2025 embedded brains GmbH & Co. KG
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -122,7 +122,7 @@ typedef struct {
 static ScoreSemReqSurrender_Context ScoreSemReqSurrender_Instance;
 
 static const char *const ScoreSemReqSurrender_PreDesc_Variant[] =
-  { "Binary", "Counting", "NA" };
+  { "Binary", "Counting", "CountingModulo", "NA" };
 
 static const char *const ScoreSemReqSurrender_PreDesc_Discipline[] =
   { "FIFO", "Priority", "NA" };
@@ -165,6 +165,16 @@ static void ScoreSemReqSurrender_Pre_Variant_Prepare(
        * Where the semaphore is a counting semaphore.
        */
       if ( ctx->tq_ctx->variant != TQ_SEM_COUNTING ) {
+        ctx->Map.skip = true;
+      }
+      break;
+    }
+
+    case ScoreSemReqSurrender_Pre_Variant_CountingModulo: {
+      /*
+       * Where the semaphore is a counting modulo semaphore.
+       */
+      if ( ctx->tq_ctx->variant != TQ_SEM_COUNTING_MODULO ) {
         ctx->Map.skip = true;
       }
       break;
@@ -389,21 +399,24 @@ ScoreSemReqSurrender_Entries[] = {
   { 0, 0, 0, 0, ScoreSemReqSurrender_Post_Status_Ok,
     ScoreSemReqSurrender_Post_Surrender_NA, ScoreSemReqSurrender_Post_Count_One },
   { 0, 0, 0, 0, ScoreSemReqSurrender_Post_Status_Ok,
+    ScoreSemReqSurrender_Post_Surrender_NA,
+    ScoreSemReqSurrender_Post_Count_PlusOne },
+  { 0, 0, 0, 0, ScoreSemReqSurrender_Post_Status_Ok,
     ScoreSemReqSurrender_Post_Surrender_FIFO,
     ScoreSemReqSurrender_Post_Count_Zero },
   { 0, 0, 0, 0, ScoreSemReqSurrender_Post_Status_Ok,
     ScoreSemReqSurrender_Post_Surrender_Priority,
     ScoreSemReqSurrender_Post_Count_Zero },
+  { 0, 0, 0, 0, ScoreSemReqSurrender_Post_Status_MaxCountExceeded,
+    ScoreSemReqSurrender_Post_Surrender_NA, ScoreSemReqSurrender_Post_Count_Nop },
   { 0, 0, 0, 0, ScoreSemReqSurrender_Post_Status_Ok,
     ScoreSemReqSurrender_Post_Surrender_NA,
-    ScoreSemReqSurrender_Post_Count_PlusOne },
-  { 0, 0, 0, 0, ScoreSemReqSurrender_Post_Status_MaxCountExceeded,
-    ScoreSemReqSurrender_Post_Surrender_NA, ScoreSemReqSurrender_Post_Count_Nop }
+    ScoreSemReqSurrender_Post_Count_Zero }
 };
 
 static const uint8_t
 ScoreSemReqSurrender_Map[] = {
-  0, 0, 1, 0, 0, 2, 3, 4, 1, 3, 4, 2
+  0, 0, 2, 0, 0, 3, 1, 4, 2, 1, 4, 3, 1, 5, 2, 1, 5, 3
 };
 
 /* clang-format on */

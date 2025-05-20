@@ -7,7 +7,7 @@
  */
 
 /*
- * Copyright (C) 2021 embedded brains GmbH & Co. KG
+ * Copyright (C) 2021, 2025 embedded brains GmbH & Co. KG
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -49,6 +49,7 @@ extern "C" {
 typedef enum {
   ScoreSemReqSurrender_Pre_Variant_Binary,
   ScoreSemReqSurrender_Pre_Variant_Counting,
+  ScoreSemReqSurrender_Pre_Variant_CountingModulo,
   ScoreSemReqSurrender_Pre_Variant_NA
 } ScoreSemReqSurrender_Pre_Variant;
 

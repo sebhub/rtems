@@ -1247,7 +1247,13 @@ typedef enum {
   /**
    * @brief The semaphore is a counting semaphore.
    */
-  TQ_SEM_COUNTING
+  TQ_SEM_COUNTING,
+
+  /**
+   * @brief The semaphore is a counting semaphore whose count wraps around at
+   *   the maximum count.
+   */
+  TQ_SEM_COUNTING_MODULO
 } TQSemVariant;
 
 /**
