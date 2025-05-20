@@ -1,0 +1,13 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+term: counting modulo semaphore
+text: |
+  A semaphore with a count which a surrender increments. A surrender at the
+  maximum value of the count sets the count to zero.
+type: glossary

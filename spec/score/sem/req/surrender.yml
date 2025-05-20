@@ -1,6 +1,6 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 copyrights:
-- Copyright (C) 2021 embedded brains GmbH & Co. KG
+- Copyright (C) 2021, 2025 embedded brains GmbH & Co. KG
 enabled-by: true
 functional-type: action
 links:
@@ -72,14 +72,21 @@ pre-conditions:
         ${.:skip}
       }
     text: |
-      Where the semaphore is a binary semaphore.
+      Where the semaphore is a ${/glossary/binarysemaphore:/term}.
   - name: Counting
     test-code: |
       if ( ctx->tq_ctx->variant != TQ_SEM_COUNTING ) {
         ${.:skip}
       }
     text: |
-      Where the semaphore is a counting semaphore.
+      Where the semaphore is a ${/glossary/countingsemaphore:/term}.
+  - name: CountingModulo
+    test-code: |
+      if ( ctx->tq_ctx->variant != TQ_SEM_COUNTING_MODULO ) {
+        ${.:skip}
+      }
+    text: |
+      Where the semaphore is a ${/glossary/countingmodulosemaphore:/term}.
   test-epilogue: null
   test-prologue: null
 - name: Discipline
@@ -132,7 +139,19 @@ pre-conditions:
       While the semaphore has threads blocked on the semaphore.
   test-epilogue: null
   test-prologue: null
-rationale: null
+rationale: |
+  Dimension Variant covers the kind of the semaphore, 3 states. The score
+  provides a binary semaphore, a counting semaphore and a counting modulo
+  semaphore, and those three kinds are the domain.
+
+  Dimension Discipline covers the discipline of the thread queue of the
+  semaphore, 2 states. The score provides the FIFO and the priority discipline,
+  and those two disciplines are the domain.
+
+  Dimension Count covers the count of the semaphore and the threads which wait
+  for it, 3 states. A surrender to a blocked thread leaves the count unchanged.
+  Without a blocked thread, the domain splits at the maximum count, which the
+  variant defines.
 requirement-type: functional
 skip-reasons: {}
 test-action: |
@@ -205,7 +224,7 @@ test-support: |
 test-target: testsuites/validation/tr-sem-surrender.c
 test-teardown: null
 text: |
-  When the calling surrenders the semaphore.
+  When the calling task surrenders the semaphore.
 transition-map:
 - enabled-by: true
   post-conditions:
@@ -226,8 +245,7 @@ transition-map:
     - specified-by: Discipline
     Count: Zero
   pre-conditions:
-    Variant:
-    - Binary
+    Variant: all
     Discipline: all
     Count:
     - Blocked
@@ -256,13 +274,23 @@ transition-map:
 - enabled-by: true
   post-conditions:
     Status: Ok
-    Surrender:
-    - specified-by: Discipline
+    Surrender: N/A
+    Count: PlusOne
+  pre-conditions:
+    Variant:
+    - CountingModulo
+    Discipline: all
+    Count:
+    - LessMax
+- enabled-by: true
+  post-conditions:
+    Status: Ok
+    Surrender: N/A
     Count: Zero
   pre-conditions:
     Variant:
-    - Counting
+    - CountingModulo
     Discipline: all
     Count:
-    - Blocked
+    - Max
 type: requirement
