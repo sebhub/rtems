@@ -627,16 +627,13 @@ void rtems_rate_monotonic_reset_all_statistics( void );
  *
  * @brief Reports the period statistics using the printk() printer.
  *
- * This directive prints a report on all active periods which have executed at
- * least one period using the printk() printer.
+ * The directive prints the report of
+ * rtems_rate_monotonic_report_statistics_with_plugin() through a printer which
+ * rtems_print_printer_printk() initializes.
  *
  * @par Constraints
  * @parblock
  * The following constraints apply to this directive:
- *
- * - The directive is not included in the pre-qualified feature set of RTEMS.
- *   Applications which are restricted to only use interfaces of the
- *   pre-qualified feature set of RTEMS shall not use the directive.
  *
  * - The directive may be called from within task context.
  *
@@ -655,16 +652,40 @@ void rtems_rate_monotonic_report_statistics( void );
  *
  * @param printer is the printer plugin to output the report.
  *
- * This directive prints a report on all active periods which have executed at
- * least one period using the printer plugin specified by `printer`.
+ * The directive prints a report of the statistics of all rate-monotonic
+ * periods through the printer. Each line of the report ends with a newline
+ * character. The first line holds the title of the report. The next two lines
+ * state the unit of the processor and of the wall times. The next two lines
+ * hold the column titles.
+ *
+ * Each further line describes one period, in the order of increasing period
+ * identifiers. One space character separates two fields of the line. The
+ * fields are the following:
+ *
+ * - the identifier of the period as `0x` followed by hexadecimal digits padded
+ *   on the left with zeros to eight digits,
+ *
+ * - the name of the owner task padded on the left with space characters to
+ *   four characters,
+ *
+ * - the count of periods as a decimal number padded to five characters,
+ *
+ * - the count of missed periods as a decimal number padded to six characters,
+ *
+ * - the minimum, the maximum and the average processor time, separated by `/`,
+ *   and
+ *
+ * - the minimum, the maximum and the average wall time, separated by `/`.
+ *
+ * The line of a period with a count of zero has no time fields. A time is the
+ * seconds as a decimal number, followed by `.` and the microseconds as a
+ * decimal number padded on the left with zeros to six digits. A hexadecimal
+ * digit is a digit or a lower case letter. A decimal number is padded on the
+ * left with space characters.
  *
  * @par Constraints
  * @parblock
  * The following constraints apply to this directive:
- *
- * - The directive is not included in the pre-qualified feature set of RTEMS.
- *   Applications which are restricted to only use interfaces of the
- *   pre-qualified feature set of RTEMS shall not use the directive.
  *
  * - The directive may be called from within task context.
  *
