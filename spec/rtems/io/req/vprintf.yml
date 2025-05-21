@@ -1,0 +1,17 @@
+SPDX-License-Identifier: CC-BY-SA-4.0
+copyrights:
+- Copyright (C) 2025 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: function
+links:
+- role: interface-function
+  uid: ../if/vprintf
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  While the printer specified by the `printer` parameter is valid, the
+  ${../if/vprintf:/name} directive shall call the printer with the `format`
+  ${../glossary/format-string:/term} parameter and the variable argument list
+  specified by the `ap` parameter.
+type: requirement

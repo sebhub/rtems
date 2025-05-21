@@ -1,0 +1,102 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2025 embedded brains GmbH & Co. KG
+enabled-by: true
+links: []
+test-actions:
+- action-brief: |
+    Validate the printer directives while using an invalid printer.
+  action-code: |
+    rtems_printer printer;
+
+    rtems_print_printer_empty( &printer );
+  checks:
+  - brief: |
+      Check that ${../if/printf:/name} returns zero for the empty printer.
+    code: |
+      T_eq_int( rtems_printf( &printer, "x" ), 0 );
+    links:
+    - role: validation
+      uid: ../req/printf-invalid-printer
+  - brief: |
+      Check that ${../if/vprintf:/name} returns zero for the ${/c/if/null:/name}
+      printer.
+    code: |
+      T_eq_int( CallVprintf( NULL, "x" ), 0 );
+    links:
+    - role: validation
+      uid: ../req/vprintf-invalid-printer
+  links: []
+- action-brief: |
+    Validate the printer directives while using a valid printer.
+  action-code: |
+    rtems_printer printer;
+    uint32_t      counter;
+
+    counter = 0;
+    rtems_print_printer_empty( &printer );
+    printer.context = &counter;
+    printer.printer = Printer;
+  checks:
+  - brief: |
+      Check that ${../if/printf:/name} returns the expected value.
+    code: |
+      T_eq_int( rtems_printf( &printer, "%i", 123 ), 123 );
+    links:
+    - role: validation
+      uid: ../req/printf
+  - brief: |
+      Check that the printer was called exactly once.
+    code: |
+      T_eq_u32( counter, 1 );
+    links: []
+  - brief: |
+      Check that ${../if/vprintf:/name} returns the expected value.
+    code: |
+      T_eq_int( CallVprintf( &printer, "%i", 456 ), 456 );
+    links:
+    - role: validation
+      uid: ../req/vprintf
+  - brief: |
+      Check that the printer was called exactly once.
+    code: |
+      T_eq_u32( counter, 2 );
+    links: []
+  links: []
+test-brief: |
+  Tests the printer directives.
+test-context: []
+test-context-support: null
+test-description: null
+test-header: null
+test-includes:
+- stdarg.h
+- rtems/printer.h
+test-local-includes: []
+test-setup: null
+test-stop: null
+test-support: |
+  static int CallVprintf( const rtems_printer *printer, const char *fmt, ... )
+  {
+    va_list ap;
+    int     n;
+
+    va_start( ap, fmt );
+    n = rtems_vprintf( printer, fmt, ap );
+    va_end( ap );
+    return n;
+  }
+
+  static int Printer( void *context, const char *format, va_list ap )
+  {
+    uint32_t *counter;
+
+    counter = context;
+    ++( *counter );
+    T_eq_str( format, "%i" );
+
+    return va_arg( ap, int );
+  }
+test-target: testsuites/validation/tc-io-printer.c
+test-teardown: null
+type: test-case

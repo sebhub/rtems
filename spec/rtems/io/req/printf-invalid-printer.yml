@@ -1,0 +1,15 @@
+SPDX-License-Identifier: CC-BY-SA-4.0
+copyrights:
+- Copyright (C) 2025 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: function
+links:
+- role: interface-function
+  uid: ../if/printf
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  While the printer specified by the `printer` parameter is not valid, the
+  ${../if/printf:/name} directive shall return zero.
+type: requirement
