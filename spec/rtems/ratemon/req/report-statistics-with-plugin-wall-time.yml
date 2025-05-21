@@ -1,0 +1,21 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: function
+links:
+- role: interface-function
+  uid: ../if/report-statistics-with-plugin
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  The format of the WALL TIME field of a period line of the
+  ${../if/report-statistics-with-plugin:/name} directive shall be the
+  ${../if/period-statistics:/definition[5]/default/name} member, the
+  ${../if/period-statistics:/definition[6]/default/name} member and the
+  ${../if/period-statistics:/definition[7]/default/name} member divided by the
+  ${../if/period-statistics:/definition[0]/default/name} member of the statistics
+  which ${../if/get-statistics:/name} returns for the period, each in the time
+  format of the report and separated by `/`.
+type: requirement

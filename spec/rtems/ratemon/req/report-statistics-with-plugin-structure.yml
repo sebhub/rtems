@@ -1,0 +1,16 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: function
+links:
+- role: interface-function
+  uid: ../if/report-statistics-with-plugin
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  The ${../if/report-statistics-with-plugin:/name} directive shall print a title
+  line, followed by a processor time unit line, followed by a wall time unit
+  line, followed by two column lines, followed by the period lines.
+type: requirement

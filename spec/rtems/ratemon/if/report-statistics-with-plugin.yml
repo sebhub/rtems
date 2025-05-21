@@ -13,8 +13,35 @@ definition:
     return: void
   variants: []
 description: |
-  This directive prints a report on all active periods which have executed at
-  least one period using the printer plugin specified by ${.:/params[0]/name}.
+  The directive prints a report of the statistics of all rate-monotonic periods
+  through the printer. Each line of the report ends with a newline character. The
+  first line holds the title of the report. The next two lines state the unit of
+  the processor and of the wall times. The next two lines hold the column titles.
+
+  Each further line describes one period, in the order of increasing period
+  identifiers. One space character separates two fields of the line. The fields
+  are the following:
+
+  - the identifier of the period as `0x` followed by hexadecimal digits padded on
+    the left with zeros to eight digits,
+
+  - the name of the owner task padded on the left with space characters to four
+    characters,
+
+  - the count of periods as a decimal number padded to five characters,
+
+  - the count of missed periods as a decimal number padded to six characters,
+
+  - the minimum, the maximum and the average processor time, separated by `/`,
+    and
+
+  - the minimum, the maximum and the average wall time, separated by `/`.
+
+  The line of a period with a count of zero has no time fields. A time is the
+  seconds as a decimal number, followed by `.` and the microseconds as a decimal
+  number padded on the left with zeros to six digits. A hexadecimal digit is a
+  digit or a lower case letter. A decimal number is padded on the left with space
+  characters.
 enabled-by: true
 index-entries:
 - print period statistics report
@@ -25,8 +52,6 @@ links:
   uid: header
 - role: interface-ingroup
   uid: group
-- role: constraint
-  uid: /constraint/directive-not-pre-qualified
 - role: constraint
   uid: /constraint/directive-ctx-task
 - role: constraint

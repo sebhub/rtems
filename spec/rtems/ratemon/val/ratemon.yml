@@ -12,7 +12,8 @@ test-actions:
     rtems_rate_monotonic_period_statistics stats;
     rtems_status_code                      sc;
 
-    id = CreatePeriod();
+    id = CreatePeriod( OBJECT_NAME, 2 );
+    InitializePeriod( id );
     rtems_rate_monotonic_reset_all_statistics();
 
     sc = rtems_rate_monotonic_get_statistics( id, &stats );
@@ -39,6 +40,104 @@ test-actions:
       T_rsc_success( sc );
     links: []
   links: []
+- action-brief: |
+    Reset the rate-monotonic statistics. Create an active period object. Create an
+    inactive period object. Build the expected report from the statistics of both
+    periods.
+  action-code: |
+    rtems_id          active;
+    rtems_id          inactive;
+    rtems_status_code sc;
+    rtems_printer     printer;
+
+    rtems_rate_monotonic_reset_all_statistics();
+    active = CreatePeriod( rtems_build_name( 'A', 'C', 'T', 'V' ), 2 );
+    InitializePeriod( active );
+    inactive = CreatePeriod( rtems_build_name( 'I', 'A', 'C', 'T' ), 3 );
+    ResetOutput( &expected );
+    Append( &expected, "%s", HEADER );
+    AppendPeriodLine( &expected, active );
+    AppendPeriodLine( &expected, inactive );
+  checks:
+  - brief: |
+      Call ${../if/report-statistics-with-plugin:/name} with a printer which captures
+      the output. Check that the output starts with the header lines.
+    code: |
+      ResetOutput( &output );
+      printer.context = &output;
+      printer.printer = Capture;
+      rtems_rate_monotonic_report_statistics_with_plugin( &printer );
+      T_eq_nstr( output.buffer, HEADER, sizeof( HEADER ) - 1 );
+    links:
+    - role: validation
+      uid: ../req/report-statistics-with-plugin-printer
+    - role: validation
+      uid: ../req/report-statistics-with-plugin-structure
+    - role: validation
+      uid: ../req/report-statistics-with-plugin-title
+    - role: validation
+      uid: ../req/report-statistics-with-plugin-cpu-unit
+    - role: validation
+      uid: ../req/report-statistics-with-plugin-wall-unit
+    - role: validation
+      uid: ../req/report-statistics-with-plugin-column-1
+    - role: validation
+      uid: ../req/report-statistics-with-plugin-column-2
+    - role: validation
+      uid: ../req/report-statistics-with-plugin-line-end
+  - brief: |
+      Check that the period lines follow the header lines.
+    code: |
+      T_eq_str( output.buffer, expected.buffer );
+    links:
+    - role: validation
+      uid: ../req/report-statistics-with-plugin-structure
+    - role: validation
+      uid: ../req/report-statistics-with-plugin-periods
+    - role: validation
+      uid: ../req/report-statistics-with-plugin-fields
+    - role: validation
+      uid: ../req/report-statistics-with-plugin-fields-no-time
+    - role: validation
+      uid: ../req/report-statistics-with-plugin-id
+    - role: validation
+      uid: ../req/report-statistics-with-plugin-owner
+    - role: validation
+      uid: ../req/report-statistics-with-plugin-count
+    - role: validation
+      uid: ../req/report-statistics-with-plugin-missed
+    - role: validation
+      uid: ../req/report-statistics-with-plugin-cpu-time
+    - role: validation
+      uid: ../req/report-statistics-with-plugin-wall-time
+    - role: validation
+      uid: ../req/report-statistics-with-plugin-time
+    - role: validation
+      uid: ../req/report-statistics-with-plugin-line-end
+  - brief: |
+      Call ${../if/report-statistics:/name}. Check that it prints the output of
+      ${../if/report-statistics-with-plugin:/name} through the printk printer.
+    code: |
+      ResetOutput( &printk_output );
+      output_char = BSP_output_char;
+      BSP_output_char = OutputChar;
+      rtems_rate_monotonic_report_statistics();
+      BSP_output_char = output_char;
+      T_eq_str( printk_output.buffer, expected.buffer );
+    links:
+    - role: validation
+      uid: ../req/report-statistics-printer
+    - role: validation
+      uid: ../req/report-statistics-output
+  - brief: |
+      Delete the rate-monotonic objects.
+    code: |
+      sc = rtems_rate_monotonic_delete( active );
+      T_rsc_success( sc );
+      sc = rtems_rate_monotonic_delete( inactive );
+      T_rsc_success( sc );
+    links: []
+  links: []
 test-brief: |
   This test case collection provides validation test cases for requirements of
   the ${../if/group:/name}.
@@ -57,7 +156,12 @@ test-context-support: null
 test-description: null
 test-header: null
 test-includes:
+- inttypes.h
 - rtems.h
+- rtems/bspIo.h
+- rtems/dev/io.h
+- rtems/printer.h
+- stdarg.h
 - string.h
 test-local-includes:
 - tx-support.h
@@ -97,20 +201,37 @@ test-support: |
     T_eq_long( ts->tv_nsec, 999999999L );
   }
 
-  static void TimespecEq( const struct timespec *ts, long ms )
+  static void TimespecEq( const struct timespec *ts, rtems_interval ticks )
   {
     T_eq_ll( ts->tv_sec, 0 );
-    T_eq_long( ( ts->tv_nsec + 499999L ) / 1000000L, ms );
+    T_eq_long(
+      ( ts->tv_nsec + 499999L ) / 1000000L,
+      ticks * rtems_configuration_get_milliseconds_per_tick()
+    );
   }
 
-  static rtems_id CreatePeriod( void )
+  static rtems_id CreatePeriod( rtems_name name, uint32_t index )
   {
-    rtems_id                               id;
+    while ( true ) {
+      rtems_id          id;
+      rtems_status_code sc;
+
+      sc = rtems_rate_monotonic_create( name, &id );
+      T_rsc_success( sc );
+
+      if ( rtems_object_id_get_index( id ) == index ) {
+        return id;
+      }
+
+      sc = rtems_rate_monotonic_delete( id );
+      T_rsc_success( sc );
+    }
+  }
+
+  static void InitializePeriod( rtems_id id )
+  {
     rtems_rate_monotonic_period_statistics stats;
     rtems_status_code                      sc;
-
-    sc = rtems_rate_monotonic_create( OBJECT_NAME, &id );
-    T_rsc_success( sc );
 
     sc = rtems_rate_monotonic_period( id, 3 );
     T_rsc_success( sc );
@@ -147,8 +268,142 @@ test-support: |
     TimespecEq( &stats.min_wall_time, 1 );
     TimespecEq( &stats.max_wall_time, 4 );
     TimespecEq( &stats.total_wall_time, 7 );
+  }
 
-    return id;
+  #define HEADER \
+    "Period information by period\n" \
+    "--- CPU times are in seconds ---\n" \
+    "--- Wall times are in seconds ---\n" \
+    "   ID     OWNER COUNT MISSED          CPU TIME                  WALL TIME\n" \
+    "                                    MIN/MAX/AVG                MIN/MAX/AVG\n"
+
+  typedef struct {
+    char   buffer[ 1024 ];
+    size_t size;
+  } Output;
+
+  static Output output;
+
+  static Output expected;
+
+  static Output printk_output;
+
+  static BSP_output_char_function_type output_char;
+
+  static void ResetOutput( Output *out )
+  {
+    memset( out->buffer, 0, sizeof( out->buffer ) );
+    out->size = 0;
+  }
+
+  static void PutChar( Output *out, char c )
+  {
+    if ( out->size < sizeof( out->buffer ) - 1 ) {
+      out->buffer[ out->size ] = c;
+      ++out->size;
+    }
+  }
+
+  static void PutCharOfPrinter( int c, void *arg )
+  {
+    PutChar( arg, (char) c );
+  }
+
+  static int Capture( void *arg, const char *format, va_list ap )
+  {
+    return _IO_Vprintf( PutCharOfPrinter, arg, format, ap );
+  }
+
+  static void OutputChar( char c )
+  {
+    /* The printk printer outputs a carriage return before each newline */
+    if ( c != '\r' ) {
+      PutChar( &printk_output, c );
+    }
+  }
+
+  static void Append( Output *out, const char *format, ... )
+  {
+    va_list ap;
+
+    va_start( ap, format );
+    (void) _IO_Vprintf( PutCharOfPrinter, out, format, ap );
+    va_end( ap );
+    T_quiet_lt_sz( out->size, sizeof( out->buffer ) - 1 );
+  }
+
+  static void AppendTime( Output *out, const struct timespec *ts )
+  {
+    Append(
+      out,
+      "%lld.%06ld",
+      (long long) ts->tv_sec,
+      ts->tv_nsec / 1000
+    );
+  }
+
+  static void AppendTimes(
+    Output                *out,
+    const struct timespec *min,
+    const struct timespec *max,
+    const struct timespec *total,
+    uint32_t               count
+  )
+  {
+    struct timespec avg;
+    int64_t         ns;
+
+    ns = (int64_t) total->tv_sec * 1000000000 + total->tv_nsec;
+    ns /= count;
+    avg.tv_sec = (time_t) ( ns / 1000000000 );
+    avg.tv_nsec = (long) ( ns % 1000000000 );
+    AppendTime( out, min );
+    Append( out, "/" );
+    AppendTime( out, max );
+    Append( out, "/" );
+    AppendTime( out, &avg );
+  }
+
+  static void AppendPeriodLine( Output *out, rtems_id id )
+  {
+    rtems_rate_monotonic_period_statistics stats;
+    rtems_rate_monotonic_period_status     status;
+    rtems_status_code                      sc;
+    char                                   name[ 5 ];
+
+    sc = rtems_rate_monotonic_get_statistics( id, &stats );
+    T_quiet_rsc_success( sc );
+    sc = rtems_rate_monotonic_get_status( id, &status );
+    T_quiet_rsc_success( sc );
+    (void) rtems_object_get_name( status.owner, sizeof( name ), name );
+    Append(
+      out,
+      "0x%08" PRIx32 " %4s %5" PRIu32 " %6" PRIu32 " ",
+      id,
+      name,
+      stats.count,
+      stats.missed_count
+    );
+
+    if ( stats.count != 0 ) {
+      AppendTimes(
+        out,
+        &stats.min_cpu_time,
+        &stats.max_cpu_time,
+        &stats.total_cpu_time,
+        stats.count
+      );
+      Append( out, " " );
+      AppendTimes(
+        out,
+        &stats.min_wall_time,
+        &stats.max_wall_time,
+        &stats.total_wall_time,
+        stats.count
+      );
+    }
+
+    Append( out, "\n" );
   }
 test-target: testsuites/validation/tc-ratemon.c
 test-teardown:

@@ -1,0 +1,18 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: function
+links:
+- role: interface-function
+  uid: ../if/report-statistics-with-plugin
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  The format of the OWNER field of a period line of the
+  ${../if/report-statistics-with-plugin:/name} directive shall be the name of the
+  owner task of the period which ${/rtems/object/if/get-name:/name} returns for a
+  buffer of five characters, padded on the left with space characters to four
+  characters.
+type: requirement

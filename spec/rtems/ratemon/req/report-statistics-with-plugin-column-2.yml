@@ -1,0 +1,16 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: function
+links:
+- role: interface-function
+  uid: ../if/report-statistics-with-plugin
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  The format of the second column line of the
+  ${../if/report-statistics-with-plugin:/name} directive shall be 36 space
+  characters followed by `MIN/MAX/AVG                MIN/MAX/AVG`.
+type: requirement

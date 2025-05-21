@@ -1,0 +1,17 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: function
+links:
+- role: interface-function
+  uid: ../if/report-statistics-with-plugin
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  The format of the first column line of the
+  ${../if/report-statistics-with-plugin:/name} directive shall be three space
+  characters followed by
+  `ID     OWNER COUNT MISSED          CPU TIME                  WALL TIME`.
+type: requirement
