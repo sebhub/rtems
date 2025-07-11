@@ -49,7 +49,11 @@ extern "C" {
  * @{
  */
 
+#ifdef RTEMS_GCOV_COVERAGE
+#define TEST_MICROSECONDS_PER_TICK 10000
+#else
 #define TEST_MICROSECONDS_PER_TICK 1000
+#endif
 
 #define TEST_RUNNER_NAME rtems_build_name( 'R', 'U', 'N', ' ' )
 
