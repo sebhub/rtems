@@ -25,6 +25,8 @@ links:
   uid: wait
 - role: placement-order
   uid: release
+- role: placement-order
+  uid: get-number-waiting
 name: Barrier Manager
 text: |
   The Classic API shall provide an interface to the Barrier Manager.
