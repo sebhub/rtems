@@ -1,0 +1,173 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2021 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: action
+links:
+- role: interface-function
+  uid: ../if/get-number-waiting
+post-conditions:
+- name: Status
+  states:
+  - name: Ok
+    test-code: |
+      T_rsc_success( ctx->status );
+    text: |
+      The return status of ${../if/get-number-waiting:/name} shall be
+      ${../../status/if/successful:/name}.
+  - name: InvId
+    test-code: |
+      T_rsc( ctx->status, RTEMS_INVALID_ID );
+    text: |
+      The return status of ${../if/get-number-waiting:/name} shall be
+      ${../../status/if/invalid-id:/name}.
+  - name: InvAddr
+    test-code: |
+      T_rsc( ctx->status, RTEMS_INVALID_ADDRESS );
+    text: |
+      The return status of ${../if/get-number-waiting:/name} shall be
+      ${../../status/if/invalid-address:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: Waiting
+  states:
+  - name: Waiting
+    test-code: |
+      T_eq_u32( ctx->waiting_obj, 0 );
+    text: |
+      The object referenced by the ${../if/get-number-waiting:/params[0]/name}
+      parameter shall be set to the number of tasks waiting at the barrier at
+      some time point during the directive call.
+  - name: Nop
+    test-code: |
+      T_eq_u32( ctx->waiting_obj, 0xffffffff );
+    text: |
+      The object referenced by the ${../if/get-number-waiting:/params[0]/name}
+      parameter shall be not be modified by the directive call.
+  test-epilogue: null
+  test-prologue: null
+pre-conditions:
+- name: Id
+  states:
+  - name: NoObj
+    test-code: |
+      ctx->id = 0xffffffff;
+    text: |
+      While the ${../if/get-number-waiting:/params[0]/name} parameter is not
+      associated with a barrier.
+  - name: Barrier
+    test-code: |
+      ctx->id = ctx->barrier_id;
+    text: |
+      While the ${../if/get-number-waiting:/params[0]/name} parameter is
+      associated with a barrier.
+  test-epilogue: null
+  test-prologue: null
+- name: Waiting
+  states:
+  - name: Valid
+    test-code: |
+      ctx->waiting = &ctx->waiting_obj;
+    text: |
+      While the ${../if/get-number-waiting:/params[1]/name} parameter
+      references an object of type ${/c/if/uint32_t:/name}.
+  - name: 'Null'
+    test-code: |
+      ctx->waiting = NULL;
+    text: |
+      While the ${../if/get-number-waiting:/params[1]/name} parameter is equal
+      to ${/c/if/null:/name}.
+  test-epilogue: null
+  test-prologue: null
+rationale: null
+references: []
+requirement-type: functional
+skip-reasons: {}
+test-action: |
+  ctx->waiting_obj = 0xffffffff;
+  ctx->status = rtems_barrier_get_number_waiting( ctx->id, ctx->waiting );
+test-brief: null
+test-cleanup: null
+test-context:
+- brief: null
+  description: null
+  member: |
+    rtems_id barrier_id
+- brief: null
+  description: null
+  member: |
+    uint32_t waiting_obj
+- brief: null
+  description: null
+  member: |
+    rtems_id id
+- brief: null
+  description: null
+  member: |
+    uint32_t *waiting
+- brief: null
+  description: null
+  member: |
+    rtems_status_code status
+test-context-support: null
+test-description: null
+test-header: null
+test-includes:
+- rtems.h
+test-local-includes:
+- tx-support.h
+test-prepare: null
+test-setup:
+  brief: null
+  code: |
+    rtems_status_code sc;
+
+    sc = rtems_barrier_create(
+      rtems_build_name( 'T', 'E', 'S', 'T' ),
+      RTEMS_BARRIER_AUTOMATIC_RELEASE,
+      1,
+      &ctx->barrier_id
+    );
+    T_assert_rsc_success( sc );
+  description: null
+test-stop: null
+test-support: null
+test-target: testsuites/validation/tc-barrier-get-number-waiting.c
+test-teardown:
+  brief: null
+  code: |
+    rtems_status_code sc;
+
+    if ( ctx->barrier_id != 0 ) {
+      sc = rtems_barrier_delete( ctx->barrier_id );
+      T_rsc_success( sc );
+    }
+  description: null
+text: ${.:text-template}
+transition-map:
+- enabled-by: true
+  post-conditions:
+    Status:
+    - if:
+        pre-conditions:
+          Waiting: 'Null'
+      then: InvAddr
+    - if:
+        pre-conditions:
+          Id: NoObj
+      then: InvId
+    - else: Ok
+    Waiting:
+    - if:
+        pre-conditions:
+          Waiting: 'Null'
+      then: N/A
+    - if:
+        post-conditions:
+          Status: Ok
+      then: Waiting
+    - else: Nop
+  pre-conditions:
+    Id: all
+    Waiting: all
+type: requirement
