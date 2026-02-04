@@ -5,6 +5,7 @@ enabled-by:
   not:
   - bsps/aarch64/xilinx-zynqmp
   - bsps/arm/xilinx-zynq
+  - bsps/arm/xilinx-zynqmp-rpu
 links: []
 test-actions:
 - action-brief: |
