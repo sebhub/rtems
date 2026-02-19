@@ -130,7 +130,7 @@ pre-conditions:
   - name: Oldest
     test-code: |
       ctx->target_tod_value = (rtems_time_of_day) {
-        2099,
+        4095,
         12,
         31,
         23,
@@ -140,7 +140,7 @@ pre-conditions:
       };
     text: |
       While the ${../if/set:/params[0]/name} parameter references the oldest date and
-      time accepted (2099-12-31T23:59:59.999999999Z).
+      time accepted (4095-12-31T23:59:59.999999999Z).
   - name: TooJung
     test-code: |
       ctx->target_tod_value = (rtems_time_of_day) {
@@ -157,10 +157,10 @@ pre-conditions:
       time younger than 1988-01-01T00:00:00.000000000Z.
   - name: TooOld
     test-code: |
-      ctx->target_tod_value = (rtems_time_of_day) { 2106, 1, 1, 0, 0, 0, 0 };
+      ctx->target_tod_value = (rtems_time_of_day) { 4096, 1, 1, 0, 0, 0, 0 };
     text: |
       While the ${../if/set:/params[0]/name} parameter references a valid date and
-      time older than 2105-12-31T23:59:59.999999999Z.
+      time older than 4095-12-31T23:59:59.999999999Z.
   - name: InvMonth0
     test-code: |
       ctx->target_tod_value = (rtems_time_of_day) { 2021, 0, 11, 11, 10, 59, 1 };
