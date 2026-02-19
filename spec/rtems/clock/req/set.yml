@@ -129,11 +129,11 @@ pre-conditions:
   - name: Oldest
     test-code: |
       ctx->target_tod_value =
-        (rtems_time_of_day) { 2099, 12, 31, 23, 59, 59,
+        (rtems_time_of_day) { 4095, 12, 31, 23, 59, 59,
         rtems_clock_get_ticks_per_second() - 1 };
     text: |
       While the ${../if/set:/params[0]/name} parameter references the
-      oldest date and time accepted (2099-12-31T23:59:59.999999999Z).
+      oldest date and time accepted (4095-12-31T23:59:59.999999999Z).
   - name: TooJung
     test-code: |
       ctx->target_tod_value =
@@ -145,10 +145,10 @@ pre-conditions:
   - name: TooOld
     test-code: |
       ctx->target_tod_value =
-        (rtems_time_of_day) { 2106, 1, 1, 0, 0, 0, 0 };
+        (rtems_time_of_day) { 4096, 1, 1, 0, 0, 0, 0 };
     text: |
       While the ${../if/set:/params[0]/name} parameter references a valid
-      date and time older than 2105-12-31T23:59:59.999999999Z.
+      date and time older than 4095-12-31T23:59:59.999999999Z.
   - name: InvMonth0
     test-code: |
       ctx->target_tod_value =
