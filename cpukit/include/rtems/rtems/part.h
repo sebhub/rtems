@@ -105,20 +105,19 @@ extern "C" {
  *   in this object.
  *
  * This directive creates a partition of fixed size buffers from a physically
- * contiguous memory space which starts at ``starting_address`` and is
- * ``length`` bytes in size.  Each allocated buffer is to be of ``buffer_size``
- * in bytes.  The partition has the user-defined object name specified in
- * ``name``.  The assigned object identifier is returned in ``id``.  This
- * identifier is used to access the partition with other partition related
- * directives.
+ * contiguous memory space which starts at `starting_address` and is `length`
+ * bytes in size. Each allocated buffer is to be of `buffer_size` in bytes. The
+ * partition has the user-defined object name specified in `name`. The assigned
+ * object identifier is returned in `id`. This identifier is used to access the
+ * partition with other partition related directives.
  *
- * The **attribute set** specified in ``attribute_set`` is built through a
- * *bitwise or* of the attribute constants described below.  Not all
- * combinations of attributes are allowed.  Some attributes are mutually
- * exclusive.  If mutually exclusive attributes are combined, the behaviour is
- * undefined.  Attributes not mentioned below are not evaluated by this
- * directive and have no effect.  Default attributes can be selected by using
- * the #RTEMS_DEFAULT_ATTRIBUTES constant.
+ * The **attribute set** specified in `attribute_set` is built through a
+ * *bitwise or* of the attribute constants described below. Not all
+ * combinations of attributes are allowed. Some attributes are mutually
+ * exclusive. Combining mutually exclusive attributes may throw an error or run
+ * silently with unintended default values. Attributes not mentioned below are
+ * not evaluated by this directive and have no effect.  Default attributes can
+ * be selected by using the #RTEMS_DEFAULT_ATTRIBUTES constant.
  *
  * The partition has a local or global **scope** in a multiprocessing network
  * (this attribute does not refer to SMP systems). The scope is selected by the

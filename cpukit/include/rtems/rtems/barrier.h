@@ -79,23 +79,23 @@ extern "C" {
  * @param maximum_waiters is the maximum count of waiters on an automatic
  *   release barrier.
  *
- * @param id is the pointer to an ::rtems_id object.  When the directive call
- *   is successful, the identifier of the created barrier will be stored in
- *   this object.
+ * @param id is the pointer to an ::rtems_id object. When the directive call is
+ *   successful, the identifier of the created barrier will be stored in this
+ *   object.
  *
- * This directive creates a barrier which resides on the local node.  The
- * barrier has the user-defined object name specified in ``name`` and the
- * initial count specified in ``attribute_set``.  The assigned object
- * identifier is returned in ``id``.  This identifier is used to access the
- * barrier with other barrier related directives.
+ * This directive creates a barrier which resides on the local node. The
+ * barrier has the user-defined object name specified in `name` and the initial
+ * count specified in `attribute_set`. The assigned object identifier is
+ * returned in `id`. This identifier is used to access the barrier with other
+ * barrier related directives.
  *
- * The **attribute set** specified in ``attribute_set`` is built through a
- * *bitwise or* of the attribute constants described below.  Not all
- * combinations of attributes are allowed.  Some attributes are mutually
- * exclusive.  If mutually exclusive attributes are combined, the behaviour is
- * undefined.  Attributes not mentioned below are not evaluated by this
- * directive and have no effect.  Default attributes can be selected by using
- * the #RTEMS_DEFAULT_ATTRIBUTES constant.
+ * The **attribute set** specified in `attribute_set` is built through a
+ * *bitwise or* of the attribute constants described below. Not all
+ * combinations of attributes are allowed. Some attributes are mutually
+ * exclusive. Combining mutually exclusive attributes may throw an error or run
+ * silently with unintended default values. Attributes not mentioned below are
+ * not evaluated by this directive and have no effect.  Default attributes can
+ * be selected by using the #RTEMS_DEFAULT_ATTRIBUTES constant.
  *
  * The **barrier class** is selected by the mutually exclusive
  * #RTEMS_BARRIER_MANUAL_RELEASE and #RTEMS_BARRIER_AUTOMATIC_RELEASE

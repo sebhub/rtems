@@ -229,8 +229,10 @@ rtems_status_code rtems_clock_get_tod_timeval( struct timeval *time_of_day );
  *
  * @param[out] time_snapshot is the pointer to a struct timespec object. The
  *   time elapsed since the Unix epoch measured using the CLOCK_REALTIME at
- *   some time point during the directive call will be stored in this object.
- *   Calling the directive with a pointer equal to NULL is undefined behaviour.
+ *   some time point during the directive call will be stored in this object. A
+ *   null pointer causes an acess atempt to an invalid memory address, a trap
+ *   is raised in some hardware configurations whereas in others garbage is
+ *   stored  at 0x00000000.
  *
  * @par Notes
  * @parblock
@@ -266,8 +268,10 @@ void rtems_clock_get_realtime( struct timespec *time_snapshot );
  *
  * @param[out] time_snapshot is the pointer to a bintime object. The time
  *   elapsed since the Unix epoch measured using the CLOCK_REALTIME at some
- *   time point during the directive call will be stored in this object.
- *   Calling the directive with a pointer equal to NULL is undefined behaviour.
+ *   time point during the directive call will be stored in this object. A null
+ *   pointer causes an acess atempt to an invalid memory address, a trap is
+ *   raised in some hardware configurations whereas in others garbage is stored
+ *   at 0x00000000.
  *
  * @par Notes
  * @parblock
@@ -303,8 +307,10 @@ void rtems_clock_get_realtime_bintime( struct bintime *time_snapshot );
  *
  * @param[out] time_snapshot is the pointer to a struct timeval object. The
  *   time elapsed since the Unix epoch measured using the CLOCK_REALTIME at
- *   some time point during the directive call will be stored in this object.
- *   Calling the directive with a pointer equal to NULL is undefined behaviour.
+ *   some time point during the directive call will be stored in this object. A
+ *   null pointer causes an acess atempt to an invalid memory address, a trap
+ *   is raised in some hardware configurations whereas in others garbage is
+ *   stored  at 0x00000000.
  *
  * @par Notes
  * @parblock
@@ -341,7 +347,9 @@ void rtems_clock_get_realtime_timeval( struct timeval *time_snapshot );
  * @param[out] time_snapshot is the pointer to a struct timespec object. The
  *   time elapsed since the Unix epoch measured using the CLOCK_REALTIME at
  *   some time point close to the directive call will be stored in this object.
- *   Calling the directive with a pointer equal to NULL is undefined behaviour.
+ *   A null pointer causes an acess atempt to an invalid memory address, a trap
+ *   is raised in some hardware configurations whereas in others garbage is
+ *   stored  at 0x00000000.
  *
  * @par Notes
  * @parblock
@@ -378,8 +386,10 @@ void rtems_clock_get_realtime_coarse( struct timespec *time_snapshot );
  *
  * @param[out] time_snapshot is the pointer to a bintime object. The time
  *   elapsed since the Unix epoch measured using the CLOCK_REALTIME at some
- *   time point close to the directive call will be stored in this object.
- *   Calling the directive with a pointer equal to NULL is undefined behaviour.
+ *   time point close to the directive call will be stored in this object. A
+ *   null pointer causes an acess atempt to an invalid memory address, a trap
+ *   is raised in some hardware configurations whereas in others garbage is
+ *   stored  at 0x00000000.
  *
  * @par Notes
  * @parblock
@@ -417,7 +427,9 @@ void rtems_clock_get_realtime_coarse_bintime( struct bintime *time_snapshot );
  * @param[out] time_snapshot is the pointer to a struct timeval object. The
  *   time elapsed since the Unix epoch measured using the CLOCK_REALTIME at
  *   some time point close to the directive call will be stored in this object.
- *   Calling the directive with a pointer equal to NULL is undefined behaviour.
+ *   A null pointer causes an acess atempt to an invalid memory address, a trap
+ *   is raised in some hardware configurations whereas in others garbage is
+ *   stored  at 0x00000000.
  *
  * @par Notes
  * @parblock
@@ -455,8 +467,9 @@ void rtems_clock_get_realtime_coarse_timeval( struct timeval *time_snapshot );
  * @param[out] time_snapshot is the pointer to a struct timespec object. The
  *   time elapsed since some fixed time point in the past measured using the
  *   CLOCK_MONOTONIC at some time point during the directive call will be
- *   stored in this object.  Calling the directive with a pointer equal to NULL
- *   is undefined behaviour.
+ *   stored in this object. A null pointer causes an acess atempt to an invalid
+ *   memory address, a trap is raised in some hardware configurations whereas
+ *   in others garbage is stored  at 0x00000000.
  *
  * @par Notes
  * @parblock
@@ -494,8 +507,9 @@ void rtems_clock_get_monotonic( struct timespec *time_snapshot );
  * @param[out] time_snapshot is the pointer to a bintime object. The time
  *   elapsed since some fixed time point in the past measured using the
  *   CLOCK_MONOTONIC at some time point during the directive call will be
- *   stored in this object.  Calling the directive with a pointer equal to NULL
- *   is undefined behaviour.
+ *   stored in this object. A null pointer causes an acess atempt to an invalid
+ *   memory address, a trap is raised in some hardware configurations whereas
+ *   in others garbage is stored  at 0x00000000.
  *
  * @par Notes
  * @parblock
@@ -566,8 +580,9 @@ int64_t rtems_clock_get_monotonic_sbintime( void );
  * @param[out] time_snapshot is the pointer to a struct timeval object. The
  *   time elapsed since some fixed time point in the past measured using the
  *   CLOCK_MONOTONIC at some time point during the directive call will be
- *   stored in this object.  Calling the directive with a pointer equal to NULL
- *   is undefined behaviour.
+ *   stored in this object. A null pointer causes an acess atempt to an invalid
+ *   memory address, a trap is raised in some hardware configurations whereas
+ *   in others garbage is stored  at 0x00000000.
  *
  * @par Notes
  * @parblock
@@ -605,8 +620,9 @@ void rtems_clock_get_monotonic_timeval( struct timeval *time_snapshot );
  * @param[out] time_snapshot is the pointer to a struct timespec object. The
  *   time elapsed since some fixed time point in the past measured using the
  *   CLOCK_MONOTONIC at some time point close to the directive call will be
- *   stored in this object.  Calling the directive with a pointer equal to NULL
- *   is undefined behaviour.
+ *   stored in this object. A null pointer causes an acess atempt to an invalid
+ *   memory address, a trap is raised in some hardware configurations whereas
+ *   in others garbage is stored  at 0x00000000.
  *
  * @par Notes
  * @parblock
@@ -645,8 +661,9 @@ void rtems_clock_get_monotonic_coarse( struct timespec *time_snapshot );
  * @param[out] time_snapshot is the pointer to a bintime object. The time
  *   elapsed since some fixed time point in the past measured using the
  *   CLOCK_MONOTONIC at some time point close to the directive call will be
- *   stored in this object.  Calling the directive with a pointer equal to NULL
- *   is undefined behaviour.
+ *   stored in this object. A null pointer causes an acess atempt to an invalid
+ *   memory address, a trap is raised in some hardware configurations whereas
+ *   in others garbage is stored  at 0x00000000.
  *
  * @par Notes
  * @parblock
@@ -685,8 +702,9 @@ void rtems_clock_get_monotonic_coarse_bintime( struct bintime *time_snapshot );
  * @param[out] time_snapshot is the pointer to a struct timeval object. The
  *   time elapsed since some fixed time point in the past measured using the
  *   CLOCK_MONOTONIC at some time point close to the directive call will be
- *   stored in this object.  Calling the directive with a pointer equal to NULL
- *   is undefined behaviour.
+ *   stored in this object. A null pointer causes an acess atempt to an invalid
+ *   memory address, a trap is raised in some hardware configurations whereas
+ *   in others garbage is stored  at 0x00000000.
  *
  * @par Notes
  * @parblock
@@ -723,8 +741,10 @@ void rtems_clock_get_monotonic_coarse_timeval( struct timeval *time_snapshot );
  *
  * @param[out] boot_time is the pointer to a struct timespec object. The time
  *   elapsed since the Unix epoch at some time point during system
- *   initialization call will be stored in this object.  Calling the directive
- *   with a pointer equal to NULL is undefined behaviour.
+ *   initialization call will be stored in this object. A null pointer causes
+ *   an acess atempt to an invalid memory address, a trap is raised in some
+ *   hardware configurations whereas in others garbage is stored  at
+ *   0x00000000.
  *
  * @par Notes
  * See rtems_clock_get_boot_time_bintime() and
@@ -754,8 +774,9 @@ void rtems_clock_get_boot_time( struct timespec *boot_time );
  *
  * @param[out] boot_time is the pointer to a bintime object. The time elapsed
  *   since the Unix epoch at some time point during system initialization call
- *   will be stored in this object.  Calling the directive with a pointer equal
- *   to NULL is undefined behaviour.
+ *   will be stored in this object. A null pointer causes an acess atempt to an
+ *   invalid memory address, a trap is raised in some hardware configurations
+ *   whereas in others garbage is stored  at 0x00000000.
  *
  * @par Notes
  * See rtems_clock_get_boot_time() and rtems_clock_get_boot_time_timeval() to
@@ -785,8 +806,10 @@ void rtems_clock_get_boot_time_bintime( struct bintime *boot_time );
  *
  * @param[out] boot_time is the pointer to a struct timeval object. The time
  *   elapsed since the Unix epoch at some time point during system
- *   initialization call will be stored in this object.  Calling the directive
- *   with a pointer equal to NULL is undefined behaviour.
+ *   initialization call will be stored in this object. A null pointer causes
+ *   an acess atempt to an invalid memory address, a trap is raised in some
+ *   hardware configurations whereas in others garbage is stored  at
+ *   0x00000000.
  *
  * @par Notes
  * See rtems_clock_get_boot_time() and rtems_clock_get_boot_time_bintime() to
