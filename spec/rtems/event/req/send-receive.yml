@@ -458,7 +458,7 @@ test-header:
       is the thread waiting for event state.
     dir: null
     name: waiting_for_event
-    specifier: int ${.:name}
+    specifier: States_Control ${.:name}
   target: testsuites/validation/tr-event-send-receive.h
 test-includes:
 - rtems/score/threadimpl.h
