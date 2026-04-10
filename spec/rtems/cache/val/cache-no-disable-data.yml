@@ -87,10 +87,7 @@ test-support: |
     fatal_source = source;
     fatal_code = code;
     _Atomic_Fetch_add_uint( &fatal_counter, 1, ATOMIC_ORDER_RELAXED );
-<<<<<<< HEAD
-=======
     _ISR_Set_level( 0 );
->>>>>>> 3b57fb6f8d (spec: Use cannot disable data cache fatal error)
     longjmp( fatal_before, 1 );
   }
 test-target: testsuites/validation/tc-cache-no-disable-data.c
