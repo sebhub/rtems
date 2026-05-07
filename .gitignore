@@ -1,5 +1,11 @@
+/Makefile.work
 /build
 /cache
+/config-cache
+/config-tools
+/src
+/tools
+/work*
 doc
 /*.ini
 .lock*
