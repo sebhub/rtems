@@ -1,0 +1,83 @@
+# SPDX-License-Identifier: BSD-2-Clause
+
+# Copyright (C) 2026 embedded brains GmbH & Co. KG
+
+name: Check primary
+on:
+  push:
+    branches:
+    - esa/v6.2
+  pull_request:
+    branches:
+    - esa/v6.2
+  workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    env:
+      PKG_BSP: gr740
+      TOOLS_ARCH: sparc
+    steps:
+    - uses: actions/checkout@v6
+    - name: Set up Python
+      uses: actions/setup-python@v6
+    - name: Set up uv
+      uses: astral-sh/setup-uv@v7
+      with:
+        enable-cache: true
+        version: 0.11.9
+    - name: Restore tools cache
+      id: restore-tools
+      uses: actions/cache/restore@v5
+      with:
+        path: tools
+        key: tools-${{ env.TOOLS_ARCH }}-${{ hashFiles('spec-pkg-tools/**/*.yml') }}
+    - name: Build tools
+      if: ${{ steps.restore-tools.outputs.cache-hit != 'true' }}
+      run: |
+        sudo apt-get update
+        sudo apt-get -y install binutils-multiarch build-essential git gnutls-dev libglib2.0-dev libpixman-1-dev libssl-dev ninja-build
+        make tools >log-tools.txt 2>&1
+    - name: Tools log tail
+      if: ${{ !cancelled() && steps.restore-tools.outputs.cache-hit != 'true' }}
+      run: |
+        tail -n 1000 log-tools.txt
+    - name: Tools log artifact
+      uses: actions/upload-artifact@v7
+      if: ${{ !cancelled() && steps.restore-tools.outputs.cache-hit != 'true' }}
+      with:
+        name: log-tools-primary
+        path: log-tools.txt
+        overwrite: true
+    - name: Save tools cache
+      id: save-tools
+      uses: actions/cache/save@v5
+      if: ${{ steps.restore-tools.outputs.cache-hit != 'true' }}
+      with:
+        path: tools
+        key: tools-${{ env.TOOLS_ARCH }}-${{ hashFiles('spec-pkg-tools/**/*.yml') }}
+    - name: Cache workspace
+      id: cache-workspace
+      uses: actions/cache@v5
+      with:
+        path: workspace
+        key: workspace-${{ env.TOOLS_ARCH }}-${{ hashFiles('spec-pkg-tools/**/*.yml') }}
+    - name: Make
+      run: |
+        make pkg >log-pkg.txt 2>&1
+    - name: Package log tail
+      if: ${{ !cancelled() }}
+      run: |
+        tail -n 1000 log-pkg.txt
+    - name: Package log artifact
+      uses: actions/upload-artifact@v7
+      if: ${{ !cancelled() }}
+      with:
+        name: log-pkg-primary
+        path: |
+          log-pkg.txt
+          workspace/package-summary.md
+        overwrite: true
