@@ -5,7 +5,7 @@
  *
  * @ingroup RTEMSAPIClassic
  *
- * @brief This header file defines the RTEMS Classic API.
+ * @brief This header file defines the RTEMS Classic API.  Oops.
  */
 
 /*
