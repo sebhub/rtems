@@ -4,6 +4,9 @@
 
 name: Build and test
 on:
+  push:
+    branches:
+    - esa/v6.2
   pull_request:
     branches:
     - esa/v6.2
