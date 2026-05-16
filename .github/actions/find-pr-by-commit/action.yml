@@ -22,7 +22,8 @@ inputs:
 outputs:
   pr:
     description: |
-      This is the pull request number associated with the commit.
+      This is the pull request number associated with the commit or '0' if no
+      associated PR was found.
     value: ${{ steps.pr.outputs.pr }}
 runs:
   using: composite
@@ -48,5 +49,6 @@ runs:
             core.info(`PR #${match.number} matches with this workflow run`);
             core.setOutput('pr', match.number);
           } else {
-            core.setFailed('No PR is associated with this workflow run');
+            core.info('No PR is associated with this workflow run');
+            core.setOutput('pr', '0');
           }
