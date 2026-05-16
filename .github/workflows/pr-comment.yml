@@ -17,6 +17,7 @@ jobs:
       actions: read
       pull-requests: write
     steps:
+    - uses: actions/checkout@v6
     - name: Find PR by commit
       id: pr
       uses: ./.github/actions/find-pr-by-commit
