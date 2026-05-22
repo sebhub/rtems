@@ -13,7 +13,8 @@ dependencies = [
     "jsonschema>=4.26.0",
     "metrixpp>=1.8.1",
     "pykwalify>=1.8.0",
-    "specmake>=1.4.5",
+    "specware>=1.2.2",
+    "specmake>=1.4.7",
     "sphinx-book-theme>=1.1.4",
     "sphinx-copybutton>=0.5.2",
 ]
