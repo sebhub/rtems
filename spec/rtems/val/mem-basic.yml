@@ -3,7 +3,7 @@ copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
 enabled-by: true
 links:
-- role: requirement-refinement
+- rle: requirement-refinement
   uid: /testsuites/membench
 - role: validation
   uid: ../req/mem-basic
@@ -54,5 +54,5 @@ test-description: |
 test-includes:
 - rtems.h
 test-local-includes: []
-test-target: testsuites/membench/mem-rtems-basic.c
+test-target: testsuites/membench/mem-rtems-basic-x.c
 type: memory-benchmark
