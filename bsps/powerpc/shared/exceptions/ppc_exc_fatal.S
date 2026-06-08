@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: BSD-2-Clause */
 
 /*
- * Copyright (C) 2011, 2017 embedded brains GmbH & Co. KG
+ * Copyright (C) 2011, 2026 embedded brains GmbH & Co. KG
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -153,6 +153,15 @@ ppc_exc_fatal_normal:
 	PPC_GPR_STORE	r29, (GPR29_OFFSET - GPR24_OFFSET)(SCRATCH_REGISTER_1)
 	PPC_GPR_STORE	r30, (GPR30_OFFSET - GPR24_OFFSET)(SCRATCH_REGISTER_1)
 	PPC_GPR_STORE	r31, (GPR31_OFFSET - GPR24_OFFSET)(SCRATCH_REGISTER_1)
+
+#ifdef __SPE__
+	/* Save SPEFSCR and ACC */
+	mfspr	SCRATCH_REGISTER_0, FSL_EIS_SPEFSCR
+	evxor	SCRATCH_REGISTER_1, SCRATCH_REGISTER_1, SCRATCH_REGISTER_1
+	evmwumiaa	SCRATCH_REGISTER_1, SCRATCH_REGISTER_1, SCRATCH_REGISTER_1
+	stw	SCRATCH_REGISTER_0, PPC_EXC_SPEFSCR_OFFSET(r1)
+	evstdd	SCRATCH_REGISTER_1, PPC_EXC_ACC_OFFSET(r1)
+#endif
 
 #ifdef PPC_MULTILIB_ALTIVEC
 	li	SCRATCH_REGISTER_1, PPC_EXC_VR_OFFSET(0)
