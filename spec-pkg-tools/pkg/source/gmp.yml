@@ -56,7 +56,7 @@ archive-patches:
     index 7910aa09..606bccc3 100755
     --- a/configure
     +++ b/configure
-    @@ -6568,7 +6568,7 @@ if test "$$gmp_prog_cc_works" = yes; then
+    @@ -6568,7 +6568,7 @@ if test "$gmp_prog_cc_works" = yes; then
 
      #if defined (__GNUC__) && ! defined (__cplusplus)
      typedef unsigned long long t1;typedef t1*t2;
