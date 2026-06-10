@@ -4,11 +4,11 @@ actions:
 - define-condition: null
 build-type: option
 copyrights:
-- Copyright (C) 2020 embedded brains GmbH & Co. KG
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
 default:
 - enabled-by:
   - aarch64/a53_ilp32_qemu
-  - aarch64/a53_lp64_qemu
+  - aarch64/zynqmp_apu
   - aarch64/a72_ilp32_qemu
   - aarch64/a72_lp64_qemu
   - aarch64/xilinx_versal_qemu
