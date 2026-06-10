@@ -108,4 +108,10 @@ static inline inline void Lower_tm27_intr(void)
   qoriq_tm27_cause(IPI_INDEX_HIGH);
 }
 
+#define TM27_IO_LOAD_32_ADDRESS ((uintptr_t) &qoriq.pic.tfrra)
+
+#define TM27_IO_STORE_32_ADDRESS TM27_IO_LOAD_32_ADDRESS
+
+#define TM27_IO_STORE_32_VALUE 0
+
 #endif /* TMTESTS_TM27_H */
