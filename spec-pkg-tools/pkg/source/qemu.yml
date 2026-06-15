@@ -1,9 +1,9 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
-archive-file: ${.:/component/workspace-directory}/src/qemu-7.1.0.tar.xz
-archive-hash: xgxf-OyZt1UuSFdokIkgZY_dgDX_em-jcPtogZV9yLfl8Y_xqPSb1qoikJ7eKnwISYbYJE8SB0zNM-vkCgxBHw==
+archive-file: ${.:/component/workspace-directory}/src/qemu-7.2.22.tar.xz
+archive-hash: xMohqxPXPVjyINYFm0BKrX7jJHvSajlbtY95B-vXlpRukj0Bgx8SpXgXcsbUkwgubfQEZaqYohXOUw2-2KrAmw==
 archive-patches: []
 symbolic-links: []
-archive-url: https://download.qemu.org/qemu-7.1.0.tar.xz
+archive-url: https://download.qemu.org/qemu-7.2.22.tar.xz
 copyrights:
 - Copyright (C) 2020, 2025 embedded brains GmbH & Co. KG
 copyrights-by-license:

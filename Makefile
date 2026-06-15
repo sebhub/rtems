@@ -2,18 +2,26 @@
 
 # Copyright (C) 2026 embedded brains GmbH & Co. KG
 
-override RTEMS_VERSION := 6
-TOOLS_ARCH ?= sparc
+RTEMS_VERSION ?= 6
+
+TOOLS_ARCH ?= aarch64
 TOOLS_PREFIX ?= $(CURDIR)/tools/$(RTEMS_VERSION)
 
 PKG_BSP ?= gr740
 
-ZYNQMP_ARCH := aarch64
-ZYNQMP_BSP := zynqmp_apu
-ZYNQMP_INI := config.ini
-ZYNQMP_PREFIX := rtems-zynqmp
-ZYNQMP_BUILD := build-zynqmp
-ZYNQMP_TOOL_MARKER :=$(TOOLS_PREFIX)/bin/$(ZYNQMP_ARCH)-rtems$(RTEMS_VERSION)-gcc
+WORK_TOOLS ?= $(CURDIR)/work-tools/$(RTEMS_VERSION)
+WORK_ARCH ?= aarch64
+WORK_BSP ?= zynqmp_apu
+WORK_INI ?= work-config.ini
+WORK_RTEMS ?= work-rtems
+WORK_BUILD ?= work-build
+WORK_TOOLS_MARKER ?= $(WORK_TOOLS)/bin/$(WORK_ARCH)-rtems$(RTEMS_VERSION)-gcc
+WORK_MAKEFILE ?= Makefile.work
+
+define WORK_CONFIG_INI =
+[$(WORK_ARCH)/$(WORK_BSP)]
+OPTIMIZATION_FLAGS = -O0 -g -fdata-sections -ffunction-sections
+endef
 
 GIT_OPTIONS ?= --do-not-use-git
 
@@ -23,32 +31,7 @@ VENV_MARKER = $(VENV)/venv-marker
 
 .ONESHELL:
 
-define CONFIG-INI =
-[DEFAULT]
-RTEMS_SMP = True
-RTEMS_PPS_SYNC = False
-BUILD_MEMBENCH = True
-BUILD_UNITTESTS = True
-BUILD_SAMPLES = False
-BUILD_VALIDATIONTESTS = True
-BSP_PRINT_EXCEPTION_CONTEXT = 0
-OPTIMIZATION_FLAGS = -O0 -g -fdata-sections -ffunction-sections -frandom-seed=0
-[$(ZYNQMP_ARCH)/$(ZYNQMP_BSP)-extra]
-INHERIT = $(ZYNQMP_BSP)
-RTEMS_BUILD_LABEL = $(ZYNQMP_ARCH)/$(ZYNQMP_BSP)/extra
-RTEMS_QUAL = False
-# Note: 'qual-only' can currently not build for ZynqMP
-# [$(ZYNQMP_ARCH)/$(ZYNQMP_BSP)-qual-only]
-# INHERIT = $(ZYNQMP_BSP)
-# RTEMS_BUILD_LABEL = $(ZYNQMP_ARCH)/$(ZYNQMP_BSP)/qual-only
-# RTEMS_QUAL = True
-[$(ZYNQMP_ARCH)/$(ZYNQMP_BSP)-extra-coverage]
-INHERIT = $(ZYNQMP_BSP)
-RTEMS_BUILD_LABEL = $(ZYNQMP_ARCH)/$(ZYNQMP_BSP)/extra-coverage
-RTEMS_GCOV_COVERAGE = True
-endef
-
-all: tools pkg
+all: work-tools work-rtems $(WORK_MAKEFILE) work
 
 pkg: | prepare
 	. $(VENV)/bin/activate
@@ -57,45 +40,69 @@ pkg: | prepare
 pkg-clean:
 	if test -d workspace/.git ; then cd workspace && git clean -xdf . && git checkout -- . ; fi
 
-.PHONY: bsps
-
 bsps: | prepare
 	. $(VENV)/bin/activate
 	echo '[DEFAULT]' >config.ini
 	echo 'OPTIMIZATION_FLAGS = -O2' >>config.ini
 	./waf bsplist "--rtems-bsps=$(TOOLS_ARCH)/.*" | sed 's,\(.*\),[\1],' >>config.ini
-	./waf configure "--rtems-tools=$(PWD)/tools/6"
+	./waf configure "--rtems-tools=$(TOOLS_PREFIX)"
 	./waf
 	./waf install
+.PHONY: bsps
 
 tools: | prepare
 	mkdir -p src
 	. $(VENV)/bin/activate
-	./build_tools.py $(TOOLS_ARCH)
+	./build_tools.py --rtems-version=$(RTEMS_VERSION) $(TOOLS_ARCH)
 
-$(ZYNQMP_TOOL_MARKER): | prepare
+$(WORK_TOOLS_MARKER): | prepare
 	mkdir -p src
-	uv run ./build_tools.py $(ZYNQMP_ARCH)
+	uv run ./build_tools.py --rtems-version=$(RTEMS_VERSION) --tools-directory=work-tools $(WORK_ARCH)
 	$@ --version
 
-tools-zynqmp: $(ZYNQMP_TOOL_MARKER)
-.PHONY: tools-zynqmp
+work-tools: $(WORK_TOOLS_MARKER)
 
-bsp-zynqmp: $(ZYNQMP_INI) $(ZYNQMP_TOOL_MARKER) | prepare
-	uv run ./waf configure "--rtems-tools=$(TOOLS_PREFIX)" "--prefix=$(ZYNQMP_PREFIX)" "--out=$(ZYNQMP_BUILD)"
+work-rtems: $(WORK_INI) $(WORK_TOOLS_MARKER) | prepare
+	uv run ./waf configure "--rtems-tools=$(WORK_TOOLS)" "--prefix=$(WORK_RTEMS)" "--out=$(WORK_BUILD)" "--rtems-config=$(WORK_INI)"
 	uv run ./waf
 	uv run ./waf install
-.PHONY: bsp-zynqmp
 
-$(ZYNQMP_INI):
-	@echo "$(CONFIG-INI)" >$@
+$(WORK_MAKEFILE): src/work-template/$(WORK_MAKEFILE)
+	mkdir -p work
+	cp -r src/work-template/* work
+	mv work/$(WORK_MAKEFILE) $(WORK_MAKEFILE)
 
-clean-zynqmp:
-	rm -rf $(ZYNQMP_INI) $(ZYNQMP_PREFIX) $(ZYNQMP_BUILD)
-.PHONY: clean-zynqmp
+work: $(WORK_MAKEFILE)
+	$(MAKE) -f $<
+.PHONY: work
 
-distclean: clean-zynqmp
-	rm -rf config-cache config-tools src tools
+view: $(WORK_MAKEFILE)
+	$(MAKE) -f $< view
+
+run: $(WORK_MAKEFILE)
+	$(MAKE) -f $< run
+
+qemu: $(WORK_MAKEFILE)
+	$(MAKE) -f $< qemu
+
+gdb: $(WORK_MAKEFILE)
+	$(MAKE) -f $< gdb
+
+coverage: $(WORK_MAKEFILE)
+	$(MAKE) -f $< coverage
+
+clean:
+	if test -f $(WORK_MAKEFILE); then $(MAKE) -f $(WORK_MAKEFILE) clean; fi
+
+$(WORK_INI):
+	echo "$(WORK_CONFIG_INI)" >$@
+
+work-clean:
+	rm -rf $(WORK_INI) $(WORK_RTEMS) $(WORK_BUILD)
+.PHONY: work-clean
+
+distclean: work-clean
+	rm -rf config-cache config-tools tools $(WORK_TOOLS)
 .PHONY: distclean
 
 prepare: $(VENV_MARKER)

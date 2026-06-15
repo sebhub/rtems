@@ -64,6 +64,10 @@ def main(argv: list[str]) -> None:
             help=
             "the path to the tools configuration directory (default: config-tools)",
             default="config-tools")
+        parser.add_argument(
+            "--rtems-version",
+            help="the RTEMS version (default: 6)",
+            default="6")
         parser.add_argument("--do-not-decimate",
                             action="store_true",
                             help="do not decimate the deployment directory "
@@ -88,7 +92,7 @@ def main(argv: list[str]) -> None:
     component.write_text(
         f"""SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 name: rtems
-rtems-version: '6'
+rtems-version: '{args.rtems_version}'
 prefix-directory: {tools_directory}
 package-directory: ${{.:/rtems-version}}
 package-version: ''
