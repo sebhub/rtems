@@ -58,6 +58,11 @@ actions:
   env: []
   expected-return-code: null
   working-directory: ${.:/params/build-directory}
+- action: directory-state-copy-file
+  enabled-by: true
+  output-name: .
+  source: ${../source/qemu:/directory}/pc-bios/efi-virtio.rom
+  target: share/qemu/efi-virtio.rom
 - action: remove-tree
   enabled-by: true
   missing-ok: true
