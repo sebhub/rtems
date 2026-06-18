@@ -20,11 +20,11 @@ notes: |
 
   The application shall define exactly one of the following configuration options
 
-  * `CONFIGURE_APPLICATION_NEEDS_CLOCK_DRIVER`,
+  - `CONFIGURE_APPLICATION_NEEDS_CLOCK_DRIVER`,
 
-  * ${appl-does-not-need-clock-driver:/name}, or
+  - ${appl-does-not-need-clock-driver:/name}, or
 
-  * ${appl-needs-timer-driver:/name},
+  - ${appl-needs-timer-driver:/name},
 
   otherwise a compile time error in the configuration file will occur.
 type: interface

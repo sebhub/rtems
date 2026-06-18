@@ -20,19 +20,19 @@ notes: |
   In case this configuration option is defined, then the following
   configuration options will be defined as well
 
-  * ${imfs-disable-chmod:/name},
+  - ${imfs-disable-chmod:/name},
 
-  * ${imfs-disable-chown:/name},
+  - ${imfs-disable-chown:/name},
 
-  * ${imfs-disable-link:/name},
+  - ${imfs-disable-link:/name},
 
-  * ${imfs-disable-readlink:/name},
+  - ${imfs-disable-readlink:/name},
 
-  * ${imfs-disable-rename:/name},
+  - ${imfs-disable-rename:/name},
 
-  * ${imfs-disable-symlink:/name},
+  - ${imfs-disable-symlink:/name},
 
-  * ${imfs-disable-utime:/name}, and
+  - ${imfs-disable-utime:/name}, and
 
-  * ${imfs-disable-unmount:/name}.
+  - ${imfs-disable-unmount:/name}.
 type: interface

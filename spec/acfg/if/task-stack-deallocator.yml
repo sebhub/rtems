@@ -23,9 +23,9 @@ name: CONFIGURE_TASK_STACK_DEALLOCATOR
 notes: |
   A correctly configured system shall configure the following to be consistent:
 
-  * ${task-stack-allocator-init:/name}
+  - ${task-stack-allocator-init:/name}
 
-  * ${task-stack-allocator:/name}
+  - ${task-stack-allocator:/name}
 
-  * `CONFIGURE_TASK_STACK_DEALLOCATOR`
+  - `CONFIGURE_TASK_STACK_DEALLOCATOR`
 type: interface
