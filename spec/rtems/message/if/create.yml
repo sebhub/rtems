@@ -35,10 +35,10 @@ description: |
   directive and have no effect.  Default attributes can be selected by using
   the ${../../attr/if/default:/name} constant.  The attribute set defines
 
-  * the scope of the message queue: ${../../attr/if/local:/name} (default) or
+  - the scope of the message queue: ${../../attr/if/local:/name} (default) or
     ${../../attr/if/global:/name} and
 
-  * the task wait queue discipline used by the message queue:
+  - the task wait queue discipline used by the message queue:
     ${../../attr/if/fifo:/name} (default) or ${../../attr/if/priority:/name}.
 
   The message queue has a local or global **scope** in a multiprocessing network
@@ -46,11 +46,11 @@ description: |
   mutually exclusive ${../../attr/if/local:/name} and
   ${../../attr/if/global:/name} attributes.
 
-  * A **local scope** is the default and can be emphasized through the use of
+  - A **local scope** is the default and can be emphasized through the use of
     the ${../../attr/if/local:/name} attribute.  A local message queue can be
     only used by the node which created it.
 
-  * A **global scope** is established if the ${../../attr/if/global:/name}
+  - A **global scope** is established if the ${../../attr/if/global:/name}
     attribute is set.  Setting the global attribute in a single node system has
     no effect.
 
@@ -59,10 +59,10 @@ description: |
   The discipline defines the order in which tasks wait for a message to receive
   on a currently empty message queue.
 
-  * The **FIFO discipline** is the default and can be emphasized
+  - The **FIFO discipline** is the default and can be emphasized
     through use of the ${../../attr/if/fifo:/name} attribute.
 
-  * The **priority discipline** is selected by the
+  - The **priority discipline** is selected by the
     ${../../attr/if/priority:/name} attribute.
 enabled-by: true
 index-entries:

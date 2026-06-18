@@ -34,13 +34,13 @@ description: |
   according to the mutually exclusive ${../../option/if/wait:/name} and
   ${../../option/if/no-wait:/name} options.
 
-  * **Waiting to receive** a message from the queue is the default and can be
+  - **Waiting to receive** a message from the queue is the default and can be
     emphasized through the use of the ${../../option/if/wait:/name} option.
     The ${.:/params[4]/name} parameter defines how long the calling task is
     willing to wait.  Use ${../../type/if/no-timeout:/name} to wait potentially
     forever, otherwise set a timeout interval in clock ticks.
 
-  * **Trying to receive** a message from the queue is selected by the
+  - **Trying to receive** a message from the queue is selected by the
     ${../../option/if/no-wait:/name} option.  If this option is defined, then
     the ${.:/params[4]/name} parameter is ignored.  When a message from the
     queue cannot be immediately received, then the

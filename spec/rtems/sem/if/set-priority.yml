@@ -26,13 +26,13 @@ description: |
   The availability and use of a priority depends on the class and locking
   protocol of the semaphore:
 
-  * For local, binary semaphores using the MrsP locking protocol, the ceiling
+  - For local, binary semaphores using the MrsP locking protocol, the ceiling
     priority for each scheduler can be set by this directive.
 
-  * For local, binary semaphores using the priority ceiling protocol, the
+  - For local, binary semaphores using the priority ceiling protocol, the
     ceiling priority can be set by this directive.
 
-  * For other semaphore classes and locking protocols, setting a priority is
+  - For other semaphore classes and locking protocols, setting a priority is
     undefined behaviour.
 enabled-by: true
 index-entries:

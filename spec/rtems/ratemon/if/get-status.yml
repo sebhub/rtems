@@ -20,15 +20,15 @@ description: |
   returned in the members of the period status object referenced by
   ${.:/params[1]/name}:
 
-  * The `owner` member is set to the identifier of the owner task of the
+  - The `owner` member is set to the identifier of the owner task of the
     period.
 
-  * The `state` member is set to the current state of the period.
+  - The `state` member is set to the current state of the period.
 
-  * The `postponed_jobs_count` member is set to the count of jobs which are
+  - The `postponed_jobs_count` member is set to the count of jobs which are
     not released yet.
 
-  * If the current state of the period is ${inactive:/name}, the
+  - If the current state of the period is ${inactive:/name}, the
     `since_last_period` and `executed_since_last_period` members will be
     set to zero.  Otherwise, both members will contain time information since
     the last successful invocation of the ${period:/name} directive by the

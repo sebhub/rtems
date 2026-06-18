@@ -12,22 +12,22 @@ text: |
   3.2.28 as a "part of a software system".  For this project a *software
   component* shall be any of the following items and nothing else:
 
-  * ${softwareunit:/term}
+  - ${softwareunit:/term}
 
-  * explicitly defined ${elf:/term} symbol in a
+  - explicitly defined ${elf:/term} symbol in a
     ${sourcecode:/term} file
 
-  * ${assemblerlanguage:/term} data in a source code file
+  - ${assemblerlanguage:/term} data in a source code file
 
-  * ${clanguage:/term} object with static storage duration
+  - ${clanguage:/term} object with static storage duration
 
-  * C language object with thread-local storage duration
+  - C language object with thread-local storage duration
 
-  * ${thread:/term}
+  - ${thread:/term}
 
-  * ${interruptservice:/term}
+  - ${interruptservice:/term}
 
-  * collection of *software components* (this is a software architecture
+  - collection of *software components* (this is a software architecture
     element)
 
   Please note that explicitly defined ELF symbols and assembler language

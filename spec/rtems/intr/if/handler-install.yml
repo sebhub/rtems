@@ -18,11 +18,11 @@ definition:
 description: |
   One of the following mutually exclusive options
 
-  * ${unique:/name},
+  - ${unique:/name},
 
-  * ${shared:/name}, and
+  - ${shared:/name}, and
 
-  * ${replace:/name}
+  - ${replace:/name}
 
   shall be set in the ${.:/params[2]/name} parameter.
 

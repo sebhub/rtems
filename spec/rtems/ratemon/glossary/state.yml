@@ -14,7 +14,7 @@ text: |
   planed time ${../glossary/interval:/term} or not.  A rate monotonic period can
   be in one of these three states:
 
-  * ${../glossary/inactive:/term}
-  * ${../glossary/active:/term}
-  * ${../glossary/expired:/term}
+  - ${../glossary/inactive:/term}
+  - ${../glossary/active:/term}
+  - ${../glossary/expired:/term}
 type: glossary

@@ -44,9 +44,9 @@ notes: |
   This directive will cause the calling task to be preempted if one or more
   local tasks are waiting for a segment and the following conditions exist:
 
-  * A waiting task has a higher priority than the calling task.
+  - A waiting task has a higher priority than the calling task.
 
-  * The size of the segment required by the waiting task is less than or equal
+  - The size of the segment required by the waiting task is less than or equal
     to the size of the segment returned.
 params:
 - description: |

@@ -23,14 +23,14 @@ description: |
 
   The node to search is specified in ${.:/params[1]/name}.  It shall be
 
-  * a valid node number,
+  - a valid node number,
 
-  * the constant ${../../object/if/search-all-nodes:/name} to search in all nodes,
+  - the constant ${../../object/if/search-all-nodes:/name} to search in all nodes,
 
-  * the constant ${../../object/if/search-local-node:/name} to search in the local
+  - the constant ${../../object/if/search-local-node:/name} to search in the local
     node only, or
 
-  * the constant ${../../object/if/search-other-nodes:/name} to search in all nodes
+  - the constant ${../../object/if/search-other-nodes:/name} to search in all nodes
     except the local node.
 enabled-by: true
 index-entries: []

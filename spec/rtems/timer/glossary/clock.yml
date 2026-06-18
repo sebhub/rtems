@@ -14,7 +14,7 @@ text: |
   ${/glossary/clock-realtime:/term}. A timer can be associated with one of
   these clocks:
 
-  * ${../glossary/none:/term}
-  * ${../glossary/ticksbasedclock:/term}
-  * ${../glossary/realtimeclock:/term}
+  - ${../glossary/none:/term}
+  - ${../glossary/ticksbasedclock:/term}
+  - ${../glossary/realtimeclock:/term}
 type: glossary

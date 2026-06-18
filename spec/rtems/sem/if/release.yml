@@ -16,10 +16,10 @@ description: |
   This directive releases the semaphore specified by ${.:/params[0]/name}.  If
   the semaphore's wait queue is not empty, then
 
-  * the first task on the wait queue is removed and unblocked, the semaphore's
+  - the first task on the wait queue is removed and unblocked, the semaphore's
     count is not changed, otherwise
 
-  * the semaphore's count is incremented by one for counting semaphores and set
+  - the semaphore's count is incremented by one for counting semaphores and set
     to one for binary and simple binary semaphores.
 enabled-by: true
 index-entries:

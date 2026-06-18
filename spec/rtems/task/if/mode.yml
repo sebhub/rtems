@@ -34,16 +34,16 @@ description: |
   Default task modes can be selected by using the ${../../mode/if/default:/name}
   constant.  The task mode set defines
 
-  * the preemption mode of the task: ${../../mode/if/preempt:/name} (default)
+  - the preemption mode of the task: ${../../mode/if/preempt:/name} (default)
     or ${../../mode/if/no-preempt:/name},
 
-  * the timeslicing mode of the task: ${../../mode/if/timeslice:/name} or
+  - the timeslicing mode of the task: ${../../mode/if/timeslice:/name} or
     ${../../mode/if/no-timeslice:/name} (default),
 
-  * the ${/glossary/asr:/term} processing mode of the task:
+  - the ${/glossary/asr:/term} processing mode of the task:
     ${../../mode/if/asr:/name} (default) or ${../../mode/if/no-asr:/name},
 
-  * the interrupt level of the task: ${../../mode/if/interrupt-level:/name}
+  - the interrupt level of the task: ${../../mode/if/interrupt-level:/name}
     with a default of `RTEMS_INTERRUPT_LEVEL( 0 )` which is associated with
     enabled interrupts.
 
@@ -53,19 +53,19 @@ description: |
   When the ${../../mode/if/preempt-mask:/name} is set in ${.:/params[1]/name},
   the **preemption mode** of the calling task is
 
-  * enabled by using the ${../../mode/if/preempt:/name} mode constant in
+  - enabled by using the ${../../mode/if/preempt:/name} mode constant in
     ${.:/params[0]/name} and
 
-  * disabled by using the ${../../mode/if/no-preempt:/name} mode constant
+  - disabled by using the ${../../mode/if/no-preempt:/name} mode constant
     in ${.:/params[0]/name}.
 
   When the ${../../mode/if/timeslice-mask:/name} is set in
   ${.:/params[1]/name}, the **timeslicing mode** of the calling task is
 
-  * enabled by using the ${../../mode/if/timeslice:/name} mode constant in
+  - enabled by using the ${../../mode/if/timeslice:/name} mode constant in
     ${.:/params[0]/name} and
 
-  * disabled by using the ${../../mode/if/no-timeslice:/name} mode constant
+  - disabled by using the ${../../mode/if/no-timeslice:/name} mode constant
     in ${.:/params[0]/name}.
 
   Enabling timeslicing has no effect if preemption is disabled.  For a task to
@@ -74,19 +74,19 @@ description: |
   When the ${../../mode/if/asr-mask:/name} is set in ${.:/params[1]/name},
   the **ASR processing mode** of the calling task is
 
-  * enabled by using the ${../../mode/if/asr:/name} mode constant in
+  - enabled by using the ${../../mode/if/asr:/name} mode constant in
     ${.:/params[0]/name} and
 
-  * disabled by using the ${../../mode/if/no-asr:/name} mode constant
+  - disabled by using the ${../../mode/if/no-asr:/name} mode constant
     in ${.:/params[0]/name}.
 
   When the ${../../mode/if/interrupt-mask:/name} is set in
   ${.:/params[1]/name}, **interrupts** of the calling task are
 
-  * enabled by using the ${../../mode/if/interrupt-level:/name} mode macro
+  - enabled by using the ${../../mode/if/interrupt-level:/name} mode macro
     with a value of zero (0) in ${.:/params[0]/name} and
 
-  * disabled up to the specified level by using the
+  - disabled up to the specified level by using the
     ${../../mode/if/interrupt-level:/name} mode macro with a positive value in
     ${.:/params[0]/name}.
 

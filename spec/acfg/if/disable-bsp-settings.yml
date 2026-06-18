@@ -10,11 +10,11 @@ description: |
   The optional BSP provided default values for the following application
   configuration options are disabled:
 
-  * ${idle-task-body:/name}
+  - ${idle-task-body:/name}
 
-  * ${idle-task-stack-size:/name}
+  - ${idle-task-stack-size:/name}
 
-  * ${interrupt-stack-size:/name}
+  - ${interrupt-stack-size:/name}
 
   The optional BSP provided initial extension set is disabled (see
   ${/glossary/initial-extension-sets:/term}).  The optional BSP provided

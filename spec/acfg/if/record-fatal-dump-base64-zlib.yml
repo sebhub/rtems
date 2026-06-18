@@ -5,9 +5,9 @@ copyrights:
 description: |
   In case
 
-  * this configuration option is defined
+  - this configuration option is defined
 
-  * and ${record-per-processor-items:/name} is properly defined,
+  - and ${record-per-processor-items:/name} is properly defined,
 
   then the event records are compressed by zlib and dumped in Base64 encoding
   in a fatal error extension (see ${/doc/if/terminate:/name}).

@@ -17,8 +17,8 @@ text: |
 
   The pending ${../glossary/state:/term} can be left when
 
-  * the ${../glossary/timerserviceroutine:/term} is eventually invoked
-  * the timer is canceled by a call to ${../if/cancel:/name}
-  * the timer is reset by a call to ${../if/reset:/name}
-  * the timer is deleted by a call to ${../if/delete:/name}
+  - the ${../glossary/timerserviceroutine:/term} is eventually invoked
+  - the timer is canceled by a call to ${../if/cancel:/name}
+  - the timer is reset by a call to ${../if/reset:/name}
+  - the timer is deleted by a call to ${../if/delete:/name}
 type: glossary

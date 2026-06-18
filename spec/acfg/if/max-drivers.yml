@@ -7,37 +7,37 @@ default-value: |
   configured device drivers configured using the following configuration
   options:
 
-  * ${appl-extra-drivers:/name}
+  - ${appl-extra-drivers:/name}
 
-  * ${appl-needs-ata-driver:/name}
+  - ${appl-needs-ata-driver:/name}
 
-  * ${appl-needs-clock-driver:/name}
+  - ${appl-needs-clock-driver:/name}
 
-  * ${appl-needs-console-driver:/name}
+  - ${appl-needs-console-driver:/name}
 
-  * ${appl-needs-framebuffer-driver:/name}
+  - ${appl-needs-framebuffer-driver:/name}
 
-  * ${appl-needs-ide-driver:/name}
+  - ${appl-needs-ide-driver:/name}
 
-  * ${appl-needs-libblock:/name}
+  - ${appl-needs-libblock:/name}
 
-  * ${appl-needs-null-driver:/name}
+  - ${appl-needs-null-driver:/name}
 
-  * ${appl-needs-rtc-driver:/name}
+  - ${appl-needs-rtc-driver:/name}
 
-  * ${appl-needs-simple-console-driver:/name}
+  - ${appl-needs-simple-console-driver:/name}
 
-  * ${appl-needs-simple-task-console-driver:/name}
+  - ${appl-needs-simple-task-console-driver:/name}
 
-  * ${appl-needs-stub-driver:/name}
+  - ${appl-needs-stub-driver:/name}
 
-  * ${appl-needs-timer-driver:/name}
+  - ${appl-needs-timer-driver:/name}
 
-  * ${appl-needs-watchdog-driver:/name}
+  - ${appl-needs-watchdog-driver:/name}
 
-  * ${appl-needs-zero-driver:/name}
+  - ${appl-needs-zero-driver:/name}
 
-  * ${appl-prerequisite-drivers:/name}
+  - ${appl-prerequisite-drivers:/name}
 
   If the ${disable-bsp-settings:/name} configuration option is not defined and
   the ${/glossary/bsp:/term} provides

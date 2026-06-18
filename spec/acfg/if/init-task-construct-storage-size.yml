@@ -25,28 +25,28 @@ name: CONFIGURE_INIT_TASK_CONSTRUCT_STORAGE_SIZE
 notes: |
   If this configuration option is specified, then
 
-  * a task storage area of the specified size is statically allocated by
+  - a task storage area of the specified size is statically allocated by
     ${header-confdefs:/path} for the Classic API initialization task,
 
-  * the Classic API initialization task is constructed by
+  - the Classic API initialization task is constructed by
     ${/rtems/task/if/construct:/name} instead of using
     ${/rtems/task/if/create:/name},
 
-  * the maximum thread-local storage size defined by
+  - the maximum thread-local storage size defined by
     ${max-thread-local-storage-size:/name} is used for the Classic API
     initialization task,
 
-  * the Classic API initialization task should be accounted for in
+  - the Classic API initialization task should be accounted for in
     ${min-tasks-with-user-provided-storage:/name}, and
 
-  * the task storage area used for the Classic API initialization task is not
+  - the task storage area used for the Classic API initialization task is not
     reclaimed by the system if the task is deleted.
 
   The
 
-  * ${init-task-stack-size:/name} and
+  - ${init-task-stack-size:/name} and
 
-  * `CONFIGURE_INIT_TASK_CONSTRUCT_STORAGE_SIZE`
+  - `CONFIGURE_INIT_TASK_CONSTRUCT_STORAGE_SIZE`
 
   configuration options are mutually exclusive.
 type: interface

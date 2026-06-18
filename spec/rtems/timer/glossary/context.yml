@@ -12,7 +12,7 @@ text: |
   is executed as part of an interrupt handler or from the task of the Timer
   Server. A timer can be in one of these three contexts:
 
-  * ${../glossary/none:/term}
-  * ${../glossary/interruptcontext:/term}
-  * ${../glossary/servercontext:/term}
+  - ${../glossary/none:/term}
+  - ${../glossary/interruptcontext:/term}
+  - ${../glossary/servercontext:/term}
 type: glossary

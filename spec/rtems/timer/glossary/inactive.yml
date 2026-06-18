@@ -14,7 +14,7 @@ text: |
   ${../glossary/state:/term} the timer must be ${../glossary/scheduled:/term}. A
   timer enters inactive ${../glossary/state:/term} after
 
-  * being created by a call to ${../if/create:/name}
-  * being canceled by a call to ${../if/cancel:/name}
-  * the ${../glossary/timerserviceroutine:/term} was invoked (the execution may still be ongoing).
+  - being created by a call to ${../if/create:/name}
+  - being canceled by a call to ${../if/cancel:/name}
+  - the ${../glossary/timerserviceroutine:/term} was invoked (the execution may still be ongoing).
 type: glossary

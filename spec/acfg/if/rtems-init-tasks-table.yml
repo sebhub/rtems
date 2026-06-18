@@ -18,11 +18,11 @@ notes: |
   The application shall define at least one of the following configuration
   options
 
-  * `CONFIGURE_RTEMS_INIT_TASKS_TABLE`,
+  - `CONFIGURE_RTEMS_INIT_TASKS_TABLE`,
 
-  * ${posix-init-thread-table:/name}, or
+  - ${posix-init-thread-table:/name}, or
 
-  * ${idle-task-init-appl:/name}
+  - ${idle-task-init-appl:/name}
 
   otherwise a compile time error in the configuration file will occur.
 

@@ -18,9 +18,9 @@ definition:
 description: |
   This directive can be used to
 
-  * get the pending events of the calling task, or
+  - get the pending events of the calling task, or
 
-  * receive events.
+  - receive events.
 
   To **get the pending events** use the constant ${pending-events:/name} for
   the ${.:/params[0]/name} parameter.  The pending events are returned to the
@@ -41,29 +41,29 @@ description: |
   Default options can be selected by using the ${../../option/if/default:/name}
   constant.  The option set defines
 
-  * if the calling task will wait or poll for the events, and
+  - if the calling task will wait or poll for the events, and
 
-  * if the calling task wants to receive all or any of the input events.
+  - if the calling task wants to receive all or any of the input events.
 
   The calling task can **wait** or **poll** for the events.
 
-  * **Waiting** for events is the default and can be emphasized through the use
+  - **Waiting** for events is the default and can be emphasized through the use
     of the ${../../option/if/wait:/name} option.  The ${.:/params[2]/name}
     parameter defines how long the calling task is willing to wait.  Use
     ${../../type/if/no-timeout:/name} to wait potentially forever, otherwise
     set a timeout interval in clock ticks.
 
-  * Not waiting for events (**polling**) is selected by the
+  - Not waiting for events (**polling**) is selected by the
     ${../../option/if/no-wait:/name} option.  If this option is defined, then
     the ${.:/params[2]/name} parameter is ignored.
 
   The calling task can receive **all** or **any** of the input events specified
   in ${.:/params[0]/name}.
 
-  * Receiving **all** input events is the default and can be emphasized through
+  - Receiving **all** input events is the default and can be emphasized through
     the use of the ${../../option/if/event-all:/name} option.
 
-  * Receiving **any** of the input events is selected by the
+  - Receiving **any** of the input events is selected by the
     ${../../option/if/event-any:/name} option.
 enabled-by: true
 index-entries: []

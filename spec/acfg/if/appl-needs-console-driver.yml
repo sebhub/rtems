@@ -26,11 +26,11 @@ notes: |
 
   The
 
-  * `CONFIGURE_APPLICATION_NEEDS_CONSOLE_DRIVER`,
+  - `CONFIGURE_APPLICATION_NEEDS_CONSOLE_DRIVER`,
 
-  * ${appl-needs-simple-console-driver:/name}, and
+  - ${appl-needs-simple-console-driver:/name}, and
 
-  * ${appl-needs-simple-task-console-driver:/name}
+  - ${appl-needs-simple-task-console-driver:/name}
 
   configuration options are mutually exclusive.
 type: interface

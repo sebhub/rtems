@@ -16,9 +16,9 @@ definition:
 description: |
   One of the following mutually exclusive options
 
-  * ${unique:/name}, and
+  - ${unique:/name}, and
 
-  * ${shared:/name}
+  - ${shared:/name}
 
   shall be set in the ${.:/params[1]/name} parameter.
 

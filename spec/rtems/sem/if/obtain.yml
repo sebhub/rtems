@@ -31,13 +31,13 @@ description: |
   to the mutually exclusive ${../../option/if/wait:/name} and
   ${../../option/if/no-wait:/name} options.
 
-  * **Waiting to obtain** the semaphore is the default and can be emphasized
+  - **Waiting to obtain** the semaphore is the default and can be emphasized
     through the use of the ${../../option/if/wait:/name} option.  The
     ${.:/params[2]/name} parameter defines how long the calling task is willing
     to wait.  Use ${../../type/if/no-timeout:/name} to wait potentially
     forever, otherwise set a timeout interval in clock ticks.
 
-  * **Trying to obtain** the semaphore is selected by the
+  - **Trying to obtain** the semaphore is selected by the
     ${../../option/if/no-wait:/name} option.  If this option is defined, then
     the ${.:/params[2]/name} parameter is ignored.  When the semaphore cannot
     be immediately obtained, then the ${../../status/if/unsatisfied:/name}

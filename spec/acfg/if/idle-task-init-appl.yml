@@ -34,11 +34,11 @@ notes: |
   The application shall define at least one of the following configuration
   options
 
-  * ${rtems-init-tasks-table:/name},
+  - ${rtems-init-tasks-table:/name},
 
-  * ${posix-init-thread-table:/name}, or
+  - ${posix-init-thread-table:/name}, or
 
-  * `CONFIGURE_IDLE_TASK_INITIALIZES_APPLICATION`
+  - `CONFIGURE_IDLE_TASK_INITIALIZES_APPLICATION`
 
   otherwise a compile time error in the configuration file will occur.
 

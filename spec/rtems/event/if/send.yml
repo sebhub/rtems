@@ -18,7 +18,7 @@ description: |
   task identified by ${.:/params[0]/name}.  Based upon the state of the
   target task, one of the following situations applies:
 
-  * The target task is blocked waiting for events, then
+  - The target task is blocked waiting for events, then
 
     * if the waiting task's input event condition is satisfied, then the task
       is made ready for execution, or
@@ -26,7 +26,7 @@ description: |
     * otherwise, the event set is posted but left pending and the task remains
       blocked.
 
-  * The target task is not waiting for events, then the event set is posted and
+  - The target task is not waiting for events, then the event set is posted and
     left pending.
 enabled-by: true
 index-entries: []

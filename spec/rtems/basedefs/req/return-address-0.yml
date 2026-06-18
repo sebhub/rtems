@@ -9,13 +9,13 @@ links:
 rationale: |
   From the GNU C compiler documentation:
 
-  * When inlining the expected behavior is that the function returns
+  - When inlining the expected behavior is that the function returns
     the address of the function that is returned to.
-  * When the top of the stack has been reached, this function returns
+  - When the top of the stack has been reached, this function returns
     an unspecified value.
-  * Additional post-processing of the returned value may be needed, see
+  - Additional post-processing of the returned value may be needed, see
     `__builtin_extract_return_addr`.
-  * The stored representation of the return address in memory may be
+  - The stored representation of the return address in memory may be
     different from the address returned by `__builtin_return_address`.
 
   Under these circumstances it is at least difficult to specify
