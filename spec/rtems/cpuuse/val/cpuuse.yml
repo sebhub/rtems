@@ -1,6 +1,6 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 copyrights:
-- Copyright (C) 2021 embedded brains GmbH & Co. KG
+- Copyright (C) 2021, 2026 embedded brains GmbH & Co. KG
 enabled-by: true
 links: []
 test-actions:
@@ -55,10 +55,15 @@ test-actions:
        * Our CPU usage after the last reset is now exactly one tick of the
        * software timecounter.
        */
-      T_eq_i64( _Thread_Get_CPU_time_used_after_last_reset( self ), 4295 );
+      T_eq_i64(
+        _Thread_Get_CPU_time_used_after_last_reset( self ),
+        SOFTWARE_TIMECOUNTER_INTERVAL
+      );
       T_eq_i64(
         _Thread_Get_CPU_time_used( self ),
-        cpu_usage_self + 12885 + 4295 * idle_tasks
+        cpu_usage_self +
+        3 * SOFTWARE_TIMECOUNTER_INTERVAL +
+        idle_tasks * SOFTWARE_TIMECOUNTER_INTERVAL
       );
 
       T_eq_i64( _Thread_Get_CPU_time_used_after_last_reset( other ), 0 );
