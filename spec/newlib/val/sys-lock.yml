@@ -249,7 +249,7 @@ test-actions:
     links: []
   links: []
 test-brief: |
-  Tests the <sys/lock.h> mutex directives.
+  Tests the `<sys/lock.h>` mutex directives.
 test-context:
 - brief: |
     This member contains the thread queue test context.
