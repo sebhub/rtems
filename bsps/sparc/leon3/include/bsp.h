@@ -36,8 +36,6 @@
 #include <rtems.h>
 #include <rtems/irq-extension.h>
 
-#include <leon.h>
-
 #ifdef __cplusplus
 extern "C" {
 #endif
