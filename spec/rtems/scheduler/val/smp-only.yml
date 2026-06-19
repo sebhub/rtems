@@ -126,7 +126,7 @@ test-actions:
     code: |
       sc = rtems_scheduler_get_maximum_priority( id_by_cpu, &priority );
       T_step_rsc_success( ${.:/step}, sc );
-      T_step_eq_u32( ${.:/step}, priority, (uint32_t) INT_MAX );
+      T_step_eq_u32( ${.:/step}, priority, (uint32_t) PRIORITY_DEFAULT_MAXIMUM );
     links:
     - role: validation
       uid: /acfg/req/scheduler-control-edf-smp
