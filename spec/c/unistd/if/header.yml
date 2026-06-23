@@ -1,16 +1,16 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This is a ${/glossary/posix:/term} header file.
 copyrights:
 - Copyright (C) 2020 embedded brains GmbH & Co. KG
 enabled-by: true
 index-entries: []
-interface-type: unspecified-function
+interface-type: header-file
 links:
 - role: interface-placement
-  uid: unistd
+  uid: /c/if/domain
 - role: interface-ingroup
   uid: group
-- role: constraint
-  uid: /constraint/directive-not-pre-qualified
-name: sbrk
-references: []
+path: unistd.h
+prefix: ''
 type: interface

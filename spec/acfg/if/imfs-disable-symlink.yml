@@ -7,7 +7,8 @@ default: |
   creating symbolic links.
 description: |
   In case this configuration option is defined, then the root IMFS does not
-  support creating symbolic links (no support for ${/c/if/symlink:/name}).
+  support creating symbolic links (no support for
+  ${/c/unistd/if/symlink:/name}).
 enabled-by: true
 index-entries: []
 interface-type: appl-config-option

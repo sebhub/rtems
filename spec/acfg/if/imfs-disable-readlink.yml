@@ -7,7 +7,8 @@ default: |
   reading symbolic links.
 description: |
   In case this configuration option is defined, then the root IMFS does not
-  support reading symbolic links (no support for ${/c/if/readlink:/name}).
+  support reading symbolic links (no support for
+  ${/c/unistd/if/readlink:/name}).
 enabled-by: true
 index-entries: []
 interface-type: appl-config-option

@@ -20,7 +20,7 @@ description: |
   ${/glossary/initial-extension-sets:/term}).  The optional BSP provided
   prerequisite IO device drivers are disabled (see
   ${/acfg/if/group-devdrv:/name}).  The optional BSP provided support for
-  ${/c/if/sbrk:/name} is disabled.
+  ${/c/unistd/if/sbrk:/name} is disabled.
 
   This configuration option provides an all or nothing choice with respect to
   the optional BSP provided settings.
