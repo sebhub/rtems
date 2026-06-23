@@ -9,7 +9,7 @@ interface-type: header-file
 links:
 - enabled-by: true
   role: interface-include
-  uid: /c/if/sys-cpuset
+  uid: /c/sys/cpuset/if/header
 - enabled-by: true
   role: interface-include
   uid: /c/if/sys-impl-timespec

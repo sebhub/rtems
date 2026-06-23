@@ -1,0 +1,21 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This group contains interfaces of the FreeBSD header file
+  `<sys/cpuset.h>`.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+description: null
+enabled-by: true
+identifier: RTEMSAPISysCPUSet
+index-entries: []
+interface-type: group
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: /if/group
+name: Processor Sets
+text: |
+  The ${/glossary/api:/term} shall provide interfaces of the
+  FreeBSD header file `<sys/cpuset.h>`.
+type: interface
