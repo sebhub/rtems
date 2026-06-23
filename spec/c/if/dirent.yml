@@ -1,0 +1,67 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Brief TODO.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+- default:
+    brief: |
+      Brief TODO.
+    definition: ${/c/if/ino_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: d_fileno
+  variants: []
+- default:
+    brief: |
+      Brief TODO.
+    definition: ${/c/if/off_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: d_off
+  variants: []
+- default:
+    brief: |
+      Brief TODO.
+    definition: ${/c/if/uint16_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: d_reclen
+  variants: []
+- default:
+    brief: |
+      Brief TODO.
+    definition: ${/c/if/uint8_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: d_type
+  variants: []
+- default:
+    brief: |
+      Brief TODO.
+    definition: ${/c/if/uint16_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: d_namlen
+  variants: []
+- default:
+    brief: |
+      Brief TODO.
+    definition: char ${.:name}[]
+    description: null
+    kind: member
+    name: d_name
+  variants: []
+definition-kind: struct-only
+description: null
+enabled-by: true
+index-entries: []
+interface-type: struct
+links:
+- role: interface-placement
+  uid: /c/dirent/if/header
+- role: interface-ingroup
+  uid: /c/dirent/if/group
+name: dirent
+notes: null
+type: interface

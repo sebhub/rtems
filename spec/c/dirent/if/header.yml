@@ -1,5 +1,6 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
-brief: This is a ${/glossary/posix:/term} header file.
+brief: |
+  This is a ${/glossary/posix:/term} header file.
 copyrights:
 - Copyright (C) 2026 embedded brains GmbH & Co. KG
 enabled-by: true
@@ -9,7 +10,7 @@ links:
 - role: interface-placement
   uid: /c/if/domain
 - role: interface-ingroup
-  uid: /c/if/group
+  uid: group
 path: dirent.h
 prefix: ''
 type: interface
