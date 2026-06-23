@@ -1,16 +1,35 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Brief TODO.
 copyrights:
-- Copyright (C) 2020 embedded brains GmbH & Co. KG
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+- default:
+    brief: |
+      Brief TODO.
+    definition: ${/c/if/time_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: tv_sec
+  variants: []
+- default:
+    brief: |
+      Brief TODO.
+    definition: ${/c/if/suseconds_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: tv_usec
+  variants: []
+definition-kind: struct-only
+description: null
 enabled-by: true
 index-entries: []
-interface-type: unspecified-struct
+interface-type: struct
 links:
 - role: interface-placement
-  uid: sys-impl-timeval
+  uid: /c/sys/impl-timeval/if/header
 - role: interface-ingroup
   uid: group
 name: timeval
-references:
-- identifier: https://pubs.opengroup.org/onlinepubs/009695399/basedefs/sys/time.h.html
-  type: url
+notes: null
 type: interface

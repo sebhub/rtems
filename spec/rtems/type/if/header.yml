@@ -15,7 +15,7 @@ links:
   uid: /c/sys/impl-timespec/if/header
 - enabled-by: true
   role: interface-include
-  uid: /c/if/sys-impl-timeval
+  uid: /c/sys/impl-timeval/if/header
 - enabled-by: true
   role: interface-include
   uid: ../../mode/if/header
