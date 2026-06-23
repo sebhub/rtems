@@ -58,7 +58,7 @@ definition:
     description: |
       It is called when the message queue is deleted.  It is called from task
       context under protection of the object allocator lock.  It is allowed to
-      call ${/c/if/free:/name} in this handler.  If handler is
+      call ${/c/stdlib/if/free:/name} in this handler.  If handler is
       ${/c/if/null:/name}, then no action will be performed.
     kind: member
     name: storage_free

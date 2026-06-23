@@ -44,7 +44,7 @@ post-conditions:
       T_null( ctx->memptr_obj );
     text: |
       The value of the object referenced by the memptr parameter shall be set
-      to ${../if/null:/name} after the return of the
+      to ${/c/if/null:/name} after the return of the
       ${../if/posix-memalign:/name} call.
   - name: Nop
     test-code: |

@@ -1,7 +1,7 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 brief: |
   The Fatal Error Manager processes all fatal or irrecoverable errors and other
-  sources of system termination (for example after ${/c/if/exit:/name}).  Fatal
+  sources of system termination (for example after ${/c/stdlib/if/exit:/name}).  Fatal
   errors are identified by the fatal source and code pair.
 copyrights:
 - Copyright (C) 2020 embedded brains GmbH & Co. KG

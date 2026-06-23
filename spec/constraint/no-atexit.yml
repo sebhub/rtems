@@ -7,6 +7,6 @@ links:
   uid: /req/usage-constraints
 rationale: null
 text: |
-  The directive does not invoke handlers registered by ${/c/if/atexit:/name}
-  or ${/c/if/on-exit:/name}.
+  The directive does not invoke handlers registered by
+  ${/c/stdlib/if/atexit:/name} or ${/c/stdlib/if/on-exit:/name}.
 type: constraint

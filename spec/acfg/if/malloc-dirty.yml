@@ -4,8 +4,9 @@ copyrights:
 - Copyright (C) 2020 embedded brains GmbH & Co. KG
 description: |
   In case this configuration option is defined, then each memory area returned
-  by C Program Heap allocator functions such as ${/c/if/malloc:/name} is dirtied
-  with a `0xCF` byte pattern before it is handed over to the application.
+  by C Program Heap allocator functions such as ${/c/stdlib/if/malloc:/name} is
+  dirtied with a `0xCF` byte pattern before it is handed over to the
+  application.
 enabled-by: true
 index-entries: []
 interface-type: appl-config-option
