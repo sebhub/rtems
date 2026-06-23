@@ -7,6 +7,6 @@ links:
   uid: /req/usage-constraints
 rationale: null
 text: |
-  While a task is created by ${/c/if/pthread-create:/name}, the executing
+  While a task is created by ${/c/pthread/if/create:/name}, the executing
   thread is the owner of the object allocator mutex.
 type: constraint

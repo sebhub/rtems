@@ -26,7 +26,7 @@ links:
 name: CONFIGURE_MAXIMUM_THREAD_NAME_SIZE
 notes: |
   The default value was chosen for Linux compatibility, see
-  ${/c/if/pthread-setname-np:/name}.
+  ${/c/pthread/if/setname-np:/name}.
 
   The size of the thread control block is increased by the maximum thread name
   size.
