@@ -1,0 +1,35 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Brief TODO.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+- default:
+    brief: |
+      Brief TODO.
+    definition: ${/c/if/time_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: actime
+  variants: []
+- default:
+    brief: |
+      Brief TODO.
+    definition: ${/c/if/time_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: modtime
+  variants: []
+definition-kind: struct-only
+description: null
+enabled-by: true
+index-entries: []
+interface-type: struct
+links:
+- role: interface-placement
+  uid: /c/utime/if/header
+- role: interface-ingroup
+  uid: /c/utime/if/group
+name: utimbuf
+notes: null
+type: interface
