@@ -44,7 +44,8 @@ notes: |
   clock tick will never be a whole clock tick interval since this directive will
   never execute exactly on a clock tick.  Applications requiring use of a clock
   (${/glossary/clock-realtime:/term} or ${/glossary/clock-monotonic:/term})
-  instead of clock ticks should make use of ${/c/if/clock-nanosleep:/name}.
+  instead of clock ticks should make use of
+  ${/c/time/if/clock-nanosleep:/name}.
 params:
 - description: |
     is the count of ${/glossary/clock-tick:/plural} to delay the task or

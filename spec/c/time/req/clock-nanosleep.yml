@@ -19,13 +19,13 @@ post-conditions:
       T_eq_int( ctx->status, ENOTSUP );
     text: |
       The return value of ${../if/clock-nanosleep:/name} shall be equal to
-      ${../if/enotsup:/name}.
+      ${/c/if/enotsup:/name}.
   - name: EINVAL
     test-code: |
       T_eq_int( ctx->status, EINVAL );
     text: |
       The return value of ${../if/clock-nanosleep:/name} shall be equal to
-      ${../if/einval:/name}.
+      ${/c/if/einval:/name}.
   test-epilogue: null
   test-prologue: null
 - name: Timer
@@ -87,7 +87,7 @@ post-conditions:
       parameter.
   test-epilogue: null
   test-prologue: |
-    struct timespec expire;
+    ${/c/if/timespec:/name} expire;
 - name: Scheduler
   states:
   - name: Block
@@ -183,12 +183,12 @@ pre-conditions:
       ctx->rqtp = &ctx->rqtp_obj;
     text: |
       While the `rqtp` parameter references an object of type
-      ${../if/timespec:/name}.
+      ${/c/if/timespec:/name}.
   - name: 'Null'
     test-code: |
       ctx->rqtp = NULL;
     text: |
-      While the `rqtp` parameter is equal to ${../if/null:/name}.
+      While the `rqtp` parameter is equal to ${/c/if/null:/name}.
   test-epilogue: null
   test-prologue: null
 - name: RQTpNSec
@@ -249,12 +249,12 @@ pre-conditions:
       ctx->rmtp = &ctx->rmtp_obj;
     text: |
       While the `rmtp` parameter references an object of type
-      ${../if/timespec:/name}.
+      ${/c/if/timespec:/name}.
   - name: 'Null'
     test-code: |
       ctx->rmtp = NULL;
     text: |
-      While the `rmtp` parameter is equal to ${../if/null:/name}.
+      While the `rmtp` parameter is equal to ${/c/if/null:/name}.
   test-epilogue: null
   test-prologue: null
 rationale: null
@@ -282,13 +282,13 @@ test-context:
     ${../if/clock-nanosleep:/name} call.
   description: null
   member: |
-    struct timespec now_realtime
+    ${/c/if/timespec:/name} now_realtime
 - brief: |
     This member contains the CLOCK_MONOTONIC value before the
     ${../if/clock-nanosleep:/name} call.
   description: null
   member: |
-    struct timespec now_monotonic
+    ${/c/if/timespec:/name} now_monotonic
 - brief: |
     This member contains the worker task identifier.
   description: null
@@ -303,12 +303,12 @@ test-context:
     This member provides the object referenced by the `rqtp` parameter.
   description: null
   member: |
-    struct timespec rqtp_obj
+    ${/c/if/timespec:/name} rqtp_obj
 - brief: |
     This member provides the object referenced by the `rmtp` parameter.
   description: null
   member: |
-    struct timespec rmtp_obj
+    ${/c/if/timespec:/name} rmtp_obj
 - brief: |
     This member contains the return value of the ${../if/clock-nanosleep:/name}
     call.
@@ -329,12 +329,12 @@ test-context:
     This member specifies the `rqtp` parameter value.
   description: null
   member: |
-    const struct timespec *rqtp
+    const ${/c/if/timespec:/name} *rqtp
 - brief: |
     This member specifies the `rmtp` parameter value.
   description: null
   member: |
-    struct timespec *rmtp
+    ${/c/if/timespec:/name} *rmtp
 test-context-support: null
 test-description: null
 test-header: null

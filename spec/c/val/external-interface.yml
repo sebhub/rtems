@@ -10,11 +10,11 @@ links:
 - role: validation
   uid: /c/if/caddr_t
 - role: validation
-  uid: /c/if/clock-monotonic
+  uid: /c/time/if/clock-monotonic
 - role: validation
-  uid: /c/if/clock-realtime
+  uid: /c/time/if/clock-realtime
 - role: validation
-  uid: /c/if/clock-settime
+  uid: /c/time/if/clock-settime
 - role: validation
   uid: /c/if/cpu_set_t
 - role: validation
@@ -56,7 +56,7 @@ links:
 - role: validation
   uid: /c/if/time_t
 - role: validation
-  uid: /c/if/timer-abstime
+  uid: /c/time/if/timer-abstime
 - role: validation
   uid: /c/if/timespec
 - role: validation

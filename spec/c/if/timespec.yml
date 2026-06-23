@@ -1,16 +1,35 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Brief TODO.
 copyrights:
-- Copyright (C) 2020 embedded brains GmbH & Co. KG
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+- default:
+    brief: |
+      Brief TODO.
+    definition: ${/c/if/time_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: tv_sec
+  variants: []
+- default:
+    brief: |
+      Brief TODO.
+    definition: long ${.:name}
+    description: null
+    kind: member
+    name: tv_nsec
+  variants: []
+definition-kind: struct-only
+description: null
 enabled-by: true
 index-entries: []
-interface-type: unspecified-struct
+interface-type: struct
 links:
 - role: interface-placement
-  uid: sys-impl-timespec
+  uid: /c/sys/impl-timespec/if/header
 - role: interface-ingroup
-  uid: group
+  uid: /c/time/if/group
 name: timespec
-references:
-- identifier: https://en.cppreference.com/w/c/chrono/timespec
-  type: url
+notes: null
 type: interface

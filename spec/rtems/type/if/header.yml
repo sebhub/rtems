@@ -12,7 +12,7 @@ links:
   uid: /c/sys/cpuset/if/header
 - enabled-by: true
   role: interface-include
-  uid: /c/if/sys-impl-timespec
+  uid: /c/sys/impl-timespec/if/header
 - enabled-by: true
   role: interface-include
   uid: /c/if/sys-impl-timeval
