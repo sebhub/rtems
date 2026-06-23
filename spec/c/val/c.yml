@@ -5,7 +5,7 @@ enabled-by: true
 links: []
 test-actions:
 - action-brief: |
-    Call ${../if/memcpy:/name} for a sample set of buffers.
+    Call ${/c/string/if/memcpy:/name} for a sample set of buffers.
   action-code: |
     uint8_t  src[sizeof( long ) * 10];
     uint8_t  dst[sizeof( long ) * 10];
@@ -47,9 +47,9 @@ test-actions:
   checks: []
   links:
   - role: validation
-    uid: ../req/memcpy
+    uid: /c/string/req/memcpy
 - action-brief: |
-    Call ${../if/memset:/name} for a sample set of buffers.
+    Call ${/c/string/if/memset:/name} for a sample set of buffers.
   action-code: |
     uint8_t  dst[sizeof( long ) * 10];
     uint8_t *begin;
@@ -81,7 +81,7 @@ test-actions:
   checks: []
   links:
   - role: validation
-    uid: ../req/memset
+    uid: /c/string/req/memset
 test-brief: |
   Tests C library functions.
 test-context: []
