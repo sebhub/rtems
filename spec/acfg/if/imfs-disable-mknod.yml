@@ -7,7 +7,7 @@ default: |
   files.
 description: |
   In case this configuration option is defined, then the root IMFS does not
-  support making files (no support for ${/c/if/mknod:/name}).
+  support making files (no support for ${/c/sys/stat/if/mknod:/name}).
 enabled-by: true
 index-entries: []
 interface-type: appl-config-option

@@ -6,7 +6,7 @@ index-entries: []
 interface-type: unspecified-function
 links:
 - role: interface-placement
-  uid: sys-stat
+  uid: /c/sys/stat/if/header
 - role: interface-ingroup
   uid: group
 - role: constraint

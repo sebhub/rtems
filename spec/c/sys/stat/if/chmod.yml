@@ -8,8 +8,9 @@ definition:
     attributes: null
     body: null
     params:
-    - ${/c/if/dir:/name} *${.:/params[0]/name}
-    return: ${/c/if/dirent:/name} *
+    - const char *${.:/params[0]/name}
+    - ${/c/if/mode_t:/name} ${.:/params[1]/name}
+    return: int
   variants: []
 description: null
 enabled-by: true
@@ -17,16 +18,19 @@ index-entries: []
 interface-type: function
 links:
 - role: interface-placement
-  uid: dirent
+  uid: header
 - role: interface-ingroup
   uid: group
 - role: constraint
   uid: /constraint/directive-not-pre-qualified
-name: readdir
+name: chmod
 notes: null
 params:
 - description: null
   dir: null
-  name: param_0
+  name: __path
+- description: null
+  dir: null
+  name: __mode
 return: null
 type: interface
