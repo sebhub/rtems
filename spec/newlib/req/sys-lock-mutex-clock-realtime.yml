@@ -15,5 +15,5 @@ text: |
   While the timeout parameter specifies a valid absolute
   ${/glossary/clock-realtime:/term} time point, while the mutex is not avaiable
   at the specified time point, the directive shall return with a status code of
-  ${/c/if/etimedout:/name}.
+  ${/c/errno/if/etimedout:/name}.
 type: requirement

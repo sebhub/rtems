@@ -19,13 +19,13 @@ post-conditions:
       T_eq_int( ctx->status, EINVAL );
     text: |
       The return value of ${../if/posix-memalign:/name} shall be equal to
-      ${../if/einval:/name}.
+      ${/c/errno/if/einval:/name}.
   - name: ENOMEM
     test-code: |
       T_eq_int( ctx->status, ENOMEM );
     text: |
       The return value of ${../if/posix-memalign:/name} shall be equal to
-      ${../if/enomem:/name}.
+      ${/c/errno/if/enomem:/name}.
   test-epilogue: null
   test-prologue: null
 - name: MemptrVar

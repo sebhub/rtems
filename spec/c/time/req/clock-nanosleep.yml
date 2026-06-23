@@ -19,13 +19,13 @@ post-conditions:
       T_eq_int( ctx->status, ENOTSUP );
     text: |
       The return value of ${../if/clock-nanosleep:/name} shall be equal to
-      ${/c/if/enotsup:/name}.
+      ${/c/errno/if/enotsup:/name}.
   - name: EINVAL
     test-code: |
       T_eq_int( ctx->status, EINVAL );
     text: |
       The return value of ${../if/clock-nanosleep:/name} shall be equal to
-      ${/c/if/einval:/name}.
+      ${/c/errno/if/einval:/name}.
   test-epilogue: null
   test-prologue: null
 - name: Timer

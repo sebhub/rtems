@@ -24,7 +24,7 @@ post-conditions:
       T_eq_int( eno, EAGAIN );
     text: |
       The return status of ${../if/futex-wait:/name} shall be
-      ${/c/if/eagain:/name}.
+      ${/c/errno/if/eagain:/name}.
   test-epilogue: null
   test-prologue: |
     int eno;

@@ -15,5 +15,5 @@ text: |
   While the mutex is not available, while the timeout parameter does not
   specify a valid absolute ${/glossary/clock-realtime:/term} time point, if an
   attempt to acquire the mutex is made, then the directive shall immediately
-  return with a status code of ${/c/if/einval:/name}.
+  return with a status code of ${/c/errno/if/einval:/name}.
 type: requirement
