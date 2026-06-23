@@ -1,9 +1,20 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Brief TODO.
 copyrights:
-- Copyright (C) 2020 embedded brains GmbH & Co. KG
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+  default:
+    attributes: null
+    body: null
+    params:
+    - ${/c/if/dir:/name} *${.:/params[0]/name}
+    return: ${/c/if/dirent:/name} *
+  variants: []
+description: null
 enabled-by: true
 index-entries: []
-interface-type: unspecified-function
+interface-type: function
 links:
 - role: interface-placement
   uid: sys-stat
@@ -12,5 +23,10 @@ links:
 - role: constraint
   uid: /constraint/directive-not-pre-qualified
 name: readdir
-references: []
+notes: null
+params:
+- description: null
+  dir: null
+  name: param_0
+return: null
 type: interface

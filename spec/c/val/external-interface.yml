@@ -8,7 +8,7 @@ links:
 - role: validation
   uid: /c/if/bool
 - role: validation
-  uid: /c/if/caddr-t
+  uid: /c/if/caddr_t
 - role: validation
   uid: /c/if/clock-monotonic
 - role: validation
