@@ -7,9 +7,9 @@ index-entries: []
 interface-type: header-file
 links:
 - role: interface-placement
-  uid: ../../if/domain
+  uid: /c/if/domain
 - role: interface-ingroup
-  uid: ../../if/group
+  uid: /c/if/group
 path: dirent.h
 prefix: ''
 type: interface
