@@ -1,0 +1,21 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This group contains interfaces of the ${/glossary/posix:/term} header file
+  `<strings.h>`.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+description: null
+enabled-by: true
+identifier: RTEMSAPIStrings
+index-entries: []
+interface-type: group
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: /if/group
+name: String Operations
+text: |
+  The ${/glossary/api:/term} shall provide interfaces of the
+  ${/glossary/posix:/term} header file `<strings.h>`.
+type: interface
