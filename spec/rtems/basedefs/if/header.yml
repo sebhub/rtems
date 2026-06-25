@@ -22,7 +22,7 @@ links:
 - enabled-by:
     not: ASM
   role: interface-include
-  uid: /c/if/stdint
+  uid: /c/stdint/if/header
 - role: interface-placement
   uid: /if/domain
 - role: interface-ingroup

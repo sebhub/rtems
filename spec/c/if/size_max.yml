@@ -1,16 +1,20 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This define expands to the maximal value of the ${size_t:/name} type.
 copyrights:
-- Copyright (C) 2020 embedded brains GmbH & Co. KG
+- Copyright (C) 2020, 2026 embedded brains GmbH & Co. KG
+definition:
+  default: _ImplementationDefined
+  variants: []
+description: null
 enabled-by: true
 index-entries: []
-interface-type: unspecified-define
+interface-type: define
 links:
 - role: interface-placement
-  uid: stdint
+  uid: /c/stdint/if/header
 - role: interface-ingroup
-  uid: group
+  uid: /c/stdint/if/group
 name: SIZE_MAX
-references:
-- identifier: https://en.cppreference.com/w/c/types/limits
-  type: url
+notes: null
 type: interface
