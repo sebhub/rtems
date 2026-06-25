@@ -18,7 +18,7 @@ links:
 - enabled-by:
     not: ASM
   role: interface-include
-  uid: /c/if/stdbool
+  uid: /c/stdbool/if/header
 - enabled-by:
     not: ASM
   role: interface-include
