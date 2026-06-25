@@ -5,7 +5,7 @@ brief: |
 copyrights:
 - Copyright (C) 2021, 2026 embedded brains GmbH & Co. KG
 definition:
-  default: ${.:/name} _ImplementationDefined
+  default: _ImplementationDefined ${.:/name}
   variants: []
 description: null
 enabled-by: true
