@@ -1,0 +1,52 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This is the message queue attributes structure.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+- Copyright (C) 1989, 2011 On-Line Applications Research Corporation (OAR)
+definition:
+- default:
+    brief: |
+      This is the message queue flags.
+    definition: long ${.:name}
+    description: null
+    kind: member
+    name: mq_flags
+  variants: []
+- default:
+    brief: |
+      This is the maximum number of messages.
+    definition: long ${.:name}
+    description: null
+    kind: member
+    name: mq_maxmsg
+  variants: []
+- default:
+    brief: |
+      This is the maximum message size.
+    definition: long ${.:name}
+    description: null
+    kind: member
+    name: mq_msgsize
+  variants: []
+- default:
+    brief: |
+      This is the mumber of messages currently queued.
+    definition: long ${.:name}
+    description: null
+    kind: member
+    name: mq_curmsgs
+  variants: []
+definition-kind: struct-only
+description: null
+enabled-by: true
+index-entries: []
+interface-type: struct
+links:
+- role: interface-placement
+  uid: /c/mqueue/if/header
+- role: interface-ingroup
+  uid: /c/mqueue/if/group
+name: mq_attr
+notes: null
+type: interface

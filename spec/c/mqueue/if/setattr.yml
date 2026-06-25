@@ -1,0 +1,38 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Set message queue attributes.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+  default:
+    attributes: null
+    body: null
+    params:
+    - ${/c/if/mqd_t:/name} ${.:/params[0]/name}
+    - const  ${/c/if/mq_attr:/name} *restrict ${.:/params[1]/name}
+    - ${/c/if/mq_attr:/name} *restrict ${.:/params[2]/name}
+    return: int
+  variants: []
+description: null
+enabled-by: true
+index-entries: []
+interface-type: function
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+name: mq_setattr
+notes: null
+params:
+- description: null
+  dir: null
+  name: mqdes
+- description: null
+  dir: null
+  name: mqstat
+- description: null
+  dir: null
+  name: omqstat
+return: null
+type: interface
