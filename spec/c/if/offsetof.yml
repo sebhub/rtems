@@ -1,14 +1,45 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Returns the offset in bytes, to the subobject (designated by
+  ${.:/params[1]/name}), from the beginning of any object of type
+  ${.:/params[0]/name}.
 copyrights:
-- Copyright (C) 2020 embedded brains GmbH & Co. KG
+- Copyright (C) 2020, 2026 embedded brains GmbH & Co. KG
+definition:
+  default:
+    attributes: null
+    body: null
+    params:
+    - ${.:/params[0]/name}
+    - ${.:/params[1]/name}
+    return: ${/c/if/size_t:/name}
+  variants: []
+description: null
 enabled-by: true
 index-entries: []
-interface-type: unspecified-macro
+interface-type: macro
 links:
 - role: interface-placement
-  uid: stddef
+  uid: /c/stddef/if/header
 - role: interface-ingroup
-  uid: group
+  uid: /c/stddef/if/group
+- role: constraint
+  uid: /constraint/directive-ctx-const
 name: offsetof
-references: []
+notes: null
+params:
+- description: |
+    is the type.
+  dir: null
+  name: type
+- description: |
+    is the member designator.
+  dir: null
+  name: member_designator
+return:
+  return: |
+    Returns the offset in bytes, to the subobject (designated by
+    ${.:/params[1]/name}), from the beginning of any object of type
+    ${.:/params[0]/name}.
+  return-values: []
 type: interface

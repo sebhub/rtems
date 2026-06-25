@@ -1,8 +1,8 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 brief: |
-  This is the unsigned integer type of the result of the `sizeof` operator.
+  This is the signed integer type of the result of subtracting two pointers.
 copyrights:
-- Copyright (C) 2020, 2026 embedded brains GmbH & Co. KG
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
 definition:
   default: _ImplementationDefined ${.:/name}
   variants: []
@@ -15,7 +15,7 @@ links:
   uid: /c/stddef/if/header
 - role: interface-ingroup
   uid: /c/stddef/if/group
-name: size_t
+name: ptrdiff_t
 notes: null
 params: []
 return: null
