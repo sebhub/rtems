@@ -1,16 +1,23 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This is a complete object type suitable for holding information needed by the
+  macros `va_start`, `va_arg`, `va_end`, and `va_copy`.
 copyrights:
-- Copyright (C) 2021 embedded brains GmbH & Co. KG
+- Copyright (C) 2021, 2026 embedded brains GmbH & Co. KG
+definition:
+  default: ${.:/name} _ImplementationDefined
+  variants: []
+description: null
 enabled-by: true
 index-entries: []
-interface-type: unspecified-typedef
+interface-type: typedef
 links:
 - role: interface-placement
-  uid: stdarg
+  uid: /c/stdarg/if/header
 - role: interface-ingroup
-  uid: group
+  uid: /c/stdarg/if/group
 name: va_list
-references:
-- identifier: https://en.cppreference.com/w/c/variadic/va_list
-  type: url
+notes: null
+params: []
+return: null
 type: interface

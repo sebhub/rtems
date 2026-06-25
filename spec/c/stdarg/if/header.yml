@@ -1,5 +1,6 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
-brief: This is a standard C library header file.
+brief: |
+  This is a ${/glossary/c:/term} standard library header file.
 copyrights:
 - Copyright (C) 2020 embedded brains GmbH & Co. KG
 enabled-by: true
@@ -7,7 +8,7 @@ index-entries: []
 interface-type: header-file
 links:
 - role: interface-placement
-  uid: domain
+  uid: /c/if/domain
 - role: interface-ingroup
   uid: group
 path: stdarg.h

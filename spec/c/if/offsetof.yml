@@ -8,7 +8,7 @@ copyrights:
 definition:
   default:
     attributes: null
-    body: null
+    body: _ImplementationDefined
     params:
     - ${.:/params[0]/name}
     - ${.:/params[1]/name}
@@ -23,8 +23,6 @@ links:
   uid: /c/stddef/if/header
 - role: interface-ingroup
   uid: /c/stddef/if/group
-- role: constraint
-  uid: /constraint/directive-ctx-const
 name: offsetof
 notes: null
 params:
