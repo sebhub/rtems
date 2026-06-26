@@ -8,10 +8,9 @@ definition:
     attributes: null
     body: null
     params:
-    - ${/c/if/pthread_t:/name} *${.:/params[0]/name}
-    - const ${/c/if/pthread_attr_t:/name} *${.:/params[1]/name}
-    - void *( *${.:/params[2]/name} )( void * )
-    - void *${.:/params[3]/name}
+    - ${/c/if/pthread_t:/name} ${.:/params[0]/name}
+    - char *${.:/params[1]/name}
+    - ${/c/if/size_t:/name} *${.:/params[2]/name}
     return: int
   variants: []
 description: null
@@ -25,20 +24,17 @@ links:
   uid: group
 - role: constraint
   uid: /constraint/directive-not-pre-qualified
-name: pthread_create
+name: pthread_getname_np
 notes: null
 params:
 - description: null
   dir: null
-  name: __pthread
+  name: thread
 - description: null
   dir: null
-  name: __attr
+  name: name
 - description: null
   dir: null
-  name: __start_routine
-- description: null
-  dir: null
-  name: __arg
+  name: len
 return: null
 type: interface
