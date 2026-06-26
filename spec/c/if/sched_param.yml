@@ -1,0 +1,59 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Brief TODO.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+- default:
+    brief: |
+      Brief TODO.
+    definition: int ${.:name}
+    description: null
+    kind: member
+    name: sched_priority
+  variants: []
+- default:
+    brief: |
+      Brief TODO.
+    definition: int ${.:name}
+    description: null
+    kind: member
+    name: sched_ss_low_priority
+  variants: []
+- default:
+    brief: |
+      Brief TODO.
+    definition: ${/c/if/timespec:/name} ${.:name}
+    description: null
+    kind: member
+    name: sched_ss_repl_period
+  variants: []
+- default:
+    brief: |
+      Brief TODO.
+    definition: ${/c/if/timespec:/name} ${.:name}
+    description: null
+    kind: member
+    name: sched_ss_init_budget
+  variants: []
+- default:
+    brief: |
+      Brief TODO.
+    definition: int ${.:name}
+    description: null
+    kind: member
+    name: sched_ss_max_repl
+  variants: []
+definition-kind: struct-only
+description: null
+enabled-by: true
+index-entries: []
+interface-type: struct
+links:
+- role: interface-placement
+  uid: /c/sched/if/header
+- role: interface-ingroup
+  uid: /c/sched/if/group
+name: sched_param
+notes: null
+type: interface
