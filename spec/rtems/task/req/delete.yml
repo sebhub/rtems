@@ -431,10 +431,10 @@ rationale: null
 references: []
 requirement-type: functional
 skip-reasons:
-  ExecutingIsNotDormant: |
-    An executing thread was started and thus is never dormant.
   ExecutingIsNotBlocked: |
     An executing thread is not blocked.
+  ExecutingIsNotDormant: |
+    An executing thread was started and thus is never dormant.
   NotBlockedHasInactiveTimer: |
     The timer of a not blocked thread is inactive.
   ThreadDispatchDisabled: |
@@ -1101,7 +1101,7 @@ test-support: |
 
     if (
       ctx->id == INVALID_ID ||
-      ( ctx->calls.thread_terminate == 0 && 
+      ( ctx->calls.thread_terminate == 0 &&
       !( ctx->dormant && ctx->status != RTEMS_CALLED_FROM_ISR ) )
     ) {
       DeleteTask( ctx->worker_id );
@@ -1150,9 +1150,6 @@ transition-map:
           ThreadDispatch: Disabled
       then: 'Yes'
     - else: Nop
-    Dormant: 'No'
-    Suspended:
-    - specified-by: Suspended
     Zombie:
     - if:
         pre-conditions:
@@ -1168,14 +1165,18 @@ transition-map:
       then: 'No'
     - else: 'Yes'
     TaskPriority: Nop
-    State:
-    - specified-by: State
-    Timer:
+    RestartExtensions: Nop
+    TerminateExtensions:
     - if:
         pre-conditions:
-          Context: Interrupt
-      then-specified-by: Timer
-    - else: Inactive
+          Context: Task
+          Suspended: 'No'
+          ThreadDispatch: Enabled
+      then: 'Yes'
+    - else: Nop
+    Dormant: 'No'
+    Suspended:
+    - specified-by: Suspended
     Restarting:
     - specified-by: Restarting
     Terminating:
@@ -1187,34 +1188,33 @@ transition-map:
     Protected:
     - if:
         pre-conditions:
-          Suspended: 'No'
           Context: Task
+          Suspended: 'No'
           ThreadDispatch: Enabled
       then: 'Yes'
     - specified-by: Protected
-    RestartExtensions: Nop
-    TerminateExtensions:
+    State:
+    - specified-by: State
+    Timer:
     - if:
         pre-conditions:
-          Suspended: 'No'
-          Context: Task
-          ThreadDispatch: Enabled
-      then: 'Yes'
-    - else: Nop
+          Context: Interrupt
+      then-specified-by: Timer
+    - else: Inactive
   pre-conditions:
     Id:
     - Executing
+    Context: all
+    ThreadDispatch: all
+    CallerPriority: N/A
     Dormant:
     - 'No'
     Suspended: all
     Restarting: all
     Terminating: all
     Protected: all
-    Context: all
     State: all
     Timer: all
-    CallerPriority: N/A
-    ThreadDispatch: all
 - enabled-by: true
   post-conditions:
     Status:
@@ -1234,6 +1234,17 @@ transition-map:
           ThreadDispatch: Disabled
       then: 'Yes'
     - else: Nop
+    Zombie: 'No'
+    TaskPriority:
+    - if:
+        pre-conditions:
+          CallerPriority: Vital
+          Context: Task
+      then: Raise
+    - else: Nop
+    RestartExtensions: Nop
+    TerminateExtensions:
+    - else: Nop
     Dormant: 'No'
     Suspended:
     - if:
@@ -1241,14 +1252,16 @@ transition-map:
           Context: Interrupt
       then-specified-by: Suspended
     - else: 'No'
-    Zombie: 'No'
-    TaskPriority:
+    Restarting:
+    - specified-by: Restarting
+    Terminating:
     - if:
         pre-conditions:
           Context: Task
-          CallerPriority: Vital
-      then: Raise
-    - else: Nop
+      then: 'Yes'
+    - specified-by: Terminating
+    Protected:
+    - specified-by: Protected
     State:
     - if:
         pre-conditions:
@@ -1269,61 +1282,48 @@ transition-map:
           Protected: 'Yes'
       then-specified-by: Timer
     - else: Inactive
-    Restarting:
-    - specified-by: Restarting
-    Terminating:
-    - if:
-        pre-conditions:
-          Context: Task
-      then: 'Yes'
-    - specified-by: Terminating
-    Protected:
-    - specified-by: Protected
-    RestartExtensions: Nop
-    TerminateExtensions:
-    - else: Nop
   pre-conditions:
     Id:
     - Other
+    Context: all
+    ThreadDispatch: all
+    CallerPriority: all
     Dormant:
     - 'No'
     Suspended: all
     Restarting: all
     Terminating: all
     Protected: all
-    Context: all
     State: all
     Timer: all
-    CallerPriority: all
-    ThreadDispatch: all
 - enabled-by: true
   post-conditions:
     Status: InvId
     FatalError: Nop
-    Dormant: N/A
-    Suspended: N/A
     Zombie: N/A
     TaskPriority: N/A
-    State: N/A
-    Timer: N/A
+    RestartExtensions: Nop
+    TerminateExtensions: Nop
+    Dormant: N/A
+    Suspended: N/A
     Restarting: N/A
     Terminating: N/A
     Protected: N/A
-    RestartExtensions: Nop
-    TerminateExtensions: Nop
+    State: N/A
+    Timer: N/A
   pre-conditions:
     Id:
     - Invalid
+    Context: all
+    ThreadDispatch: all
+    CallerPriority: N/A
     Dormant: N/A
     Suspended: N/A
     Restarting: N/A
     Terminating: N/A
     Protected: N/A
-    Context: all
     State: N/A
     Timer: N/A
-    CallerPriority: N/A
-    ThreadDispatch: all
 - enabled-by: true
   post-conditions:
     Status:
@@ -1333,9 +1333,6 @@ transition-map:
       then: CalledFromISR
     - else: Ok
     FatalError: Nop
-    Dormant: 'Yes'
-    Suspended:
-    - specified-by: Suspended
     Zombie:
     - if:
         pre-conditions:
@@ -1343,8 +1340,11 @@ transition-map:
       then: 'No'
     - else: 'Yes'
     TaskPriority: Nop
-    State: Ready
-    Timer: Inactive
+    RestartExtensions: Nop
+    TerminateExtensions: Nop
+    Dormant: 'Yes'
+    Suspended:
+    - specified-by: Suspended
     Restarting: 'No'
     Terminating:
     - if:
@@ -1353,91 +1353,90 @@ transition-map:
       then: 'No'
     - else: 'Yes'
     Protected: 'No'
-    RestartExtensions: Nop
-    TerminateExtensions: Nop
+    State: Ready
+    Timer: Inactive
   pre-conditions:
     Id:
     - Other
+    Context: all
+    ThreadDispatch: all
+    CallerPriority: all
     Dormant:
     - 'Yes'
     Suspended: all
     Restarting: N/A
     Terminating: N/A
     Protected: N/A
-    Context: all
     State: N/A
     Timer: N/A
-    CallerPriority: all
-    ThreadDispatch: all
 - enabled-by: true
   post-conditions: ExecutingIsNotDormant
   pre-conditions:
     Id:
     - Executing
+    Context: all
+    ThreadDispatch: all
+    CallerPriority: all
     Dormant:
     - 'Yes'
     Suspended: all
     Restarting: all
     Terminating: all
     Protected: all
-    Context: all
     State: all
     Timer: all
-    CallerPriority: all
-    ThreadDispatch: all
 - enabled-by: true
   post-conditions: ExecutingIsNotBlocked
   pre-conditions:
     Id:
     - Executing
+    Context:
+    - Task
+    ThreadDispatch: all
+    CallerPriority: all
     Dormant:
     - 'No'
     Suspended: all
     Restarting: all
     Terminating: all
     Protected: all
-    Context:
-    - Task
     State:
     - Blocked
     - Enqueued
     Timer: all
-    CallerPriority: all
-    ThreadDispatch: all
 - enabled-by: true
   post-conditions: NotBlockedHasInactiveTimer
   pre-conditions:
     Id:
     - Executing
     - Other
+    Context: all
+    ThreadDispatch: all
+    CallerPriority: all
     Dormant:
     - 'No'
     Suspended: all
     Restarting: all
     Terminating: all
     Protected: all
-    Context: all
     State:
     - Ready
     Timer:
     - Active
-    CallerPriority: all
-    ThreadDispatch: all
 - enabled-by: true
   post-conditions: ThreadDispatchDisabled
   pre-conditions:
     Id: all
+    Context:
+    - Interrupt
+    ThreadDispatch:
+    - Enabled
+    CallerPriority: all
     Dormant: all
     Suspended: all
     Restarting: all
     Terminating: all
     Protected: all
-    Context:
-    - Interrupt
     State: all
-    Enqueued: all
     Timer: all
-    CallerPriority: all
-    ThreadDispatch:
-    - Enabled
 type: requirement

@@ -565,26 +565,26 @@ rationale: null
 references: []
 requirement-type: functional
 skip-reasons:
-  ExecutingIsNotDormant: |
-    An executing thread was started and thus is never dormant.
   ExecutingIsNotBlocked: |
     An executing thread is not blocked.
-  NotBlockedHasInactiveTimer: |
-    The timer of a not blocked thread is inactive.
-  ThreadDispatchDisabled: |
-    While ISRs or nested requests are processed, the thread dispatching is
-    disabled.
+  ExecutingIsNotDormant: |
+    An executing thread was started and thus is never dormant.
+  NestedRequestNeedsLifeChanging: |
+    A nested request can only happen if the thread life is changing.
+  NestedRequestNeedsTask: |
+    A nested request needs a task to restart.
+  NestedRequestNoNestedExit: |
+    A nested request cannot happen during a thread exit.
   NestedRequestNotDormant: |
     A nested request can only happen if the thread is not dormant.
   NestedRequestNotProtected: |
     A nested request can only happen if the thread life protection of the task
     is disabled.
-  NestedRequestNeedsLifeChanging: |
-    A nested request can only happen if the thread life is changing.
-  NestedRequestNoNestedExit: |
-    A nested request cannot happen during a thread exit.
-  NestedRequestNeedsTask: |
-    A nested request needs a task to restart.
+  NotBlockedHasInactiveTimer: |
+    The timer of a not blocked thread is inactive.
+  ThreadDispatchDisabled: |
+    While ISRs or nested requests are processed, the thread dispatching is
+    disabled.
 test-action: |
   rtems_status_code sc;
 
@@ -1295,15 +1295,15 @@ transition-map:
     Status:
     - if:
         pre-conditions:
-          Id: Executing
           Context: Task
+          Id: Executing
       then: NoReturn
     - else: Ok
     FatalError:
     - if:
         pre-conditions:
-          Id: Executing
           Context: Task
+          Id: Executing
           ThreadDispatch: Disabled
       then: 'Yes'
     - else: Nop
@@ -1315,15 +1315,15 @@ transition-map:
       then: Nop
     - if:
         pre-conditions:
-          Id: Executing
           Context: Task
+          Id: Executing
           Terminating: 'Yes'
           ThreadDispatch: Enabled
       then: Zombie
     - if:
         pre-conditions:
-          Id: Executing
           Context: Task
+          Id: Executing
       then: Ready
     - if:
         pre-conditions:
@@ -1339,32 +1339,32 @@ transition-map:
     Enqueued:
     - if:
         pre-conditions:
-          Id: Executing
           Context: Task
+          Id: Executing
       then: 'No'
     - if:
         pre-conditions:
-          State: Enqueued
           Protected: 'Yes'
+          State: Enqueued
       then: 'Yes'
     - else: 'No'
     Timer:
     - if:
         pre-conditions:
-          Id: Executing
           Context: Task
+          Id: Executing
       then: Inactive
     - if:
         pre-conditions:
-          Timer: Active
           Protected: 'Yes'
+          Timer: Active
       then: Active
     - else: Inactive
     Restarting:
     - if:
         pre-conditions:
-          Id: Executing
           Context: Task
+          Id: Executing
           Terminating: 'No'
           ThreadDispatch: Enabled
       then: 'No'
@@ -1374,33 +1374,33 @@ transition-map:
     Protected:
     - if:
         pre-conditions:
-          Id: Executing
           Context: Task
+          Id: Executing
           Terminating: 'Yes'
           ThreadDispatch: Enabled
       then: 'Yes'
     - if:
         pre-conditions:
-          Id: Executing
           Context: Task
+          Id: Executing
           ThreadDispatch: Enabled
       then: 'No'
     - specified-by: Protected
     RestartExtensions:
     - if:
         pre-conditions:
+          Context: Task
           Id: Executing
           Terminating: 'No'
-          Context: Task
           ThreadDispatch: Enabled
       then: 'Yes'
     - else: Nop
     TerminateExtensions:
     - if:
         pre-conditions:
+          Context: Task
           Id: Executing
           Terminating: 'Yes'
-          Context: Task
           ThreadDispatch: Enabled
       then: 'Yes'
     - else: Nop
@@ -1544,7 +1544,6 @@ transition-map:
     - Interrupt
     - NestedRequest
     State: all
-    Enqueued: all
     Timer: all
     RealPriority: all
     ThreadDispatch:
@@ -1562,7 +1561,6 @@ transition-map:
     Context:
     - NestedRequest
     State: all
-    Enqueued: all
     Timer: all
     RealPriority: all
     ThreadDispatch: all
@@ -1579,7 +1577,6 @@ transition-map:
     Context:
     - NestedRequest
     State: all
-    Enqueued: all
     Timer: all
     RealPriority: all
     ThreadDispatch: all
@@ -1597,7 +1594,6 @@ transition-map:
     Context:
     - NestedRequest
     State: all
-    Enqueued: all
     Timer: all
     RealPriority: all
     ThreadDispatch: all
@@ -1615,7 +1611,6 @@ transition-map:
     Context:
     - NestedRequest
     State: all
-    Enqueued: all
     Timer: all
     RealPriority: all
     ThreadDispatch: all
@@ -1632,7 +1627,6 @@ transition-map:
     Context:
     - NestedRequest
     State: all
-    Enqueued: all
     Timer: all
     RealPriority: all
     ThreadDispatch: all
