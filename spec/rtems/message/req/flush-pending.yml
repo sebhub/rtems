@@ -216,7 +216,7 @@ test-action: |
   FinalClockTick();
 test-brief: null
 test-cleanup: |
-    T_rsc_success( rtems_message_queue_delete( ctx->message_queue_id ) );
+  T_rsc_success( rtems_message_queue_delete( ctx->message_queue_id ) );
 test-context:
 - brief: |
     This member contains a valid ${/glossary/id:/term} of a
@@ -241,8 +241,7 @@ test-context:
     This member specifies the directive to be called as action.
   description: |
     This is either ${../if/flush:/name} or ${../if/get-number-pending:/name}.
-  member:
-    rtems_status_code (*action)( rtems_id id, uint32_t *count )
+  member: rtems_status_code (*action)( rtems_id id, uint32_t *count )
 - brief: |
     This member specifies the ${../if/flush:/params[0]/name} parameter
     of the action.
@@ -433,7 +432,6 @@ test-support: |
     );
     T_rsc_success( status );
   }
-
 test-target: testsuites/validation/tc-message-flush-pending.c
 test-teardown:
   brief: null
@@ -447,109 +445,84 @@ test-teardown:
   description: null
 text: ${.:text-template}
 transition-map:
-
-# ---- Ok Case ----
-
 - enabled-by: true
   post-conditions:
     Status: Ok
     Count:
-      - if:
-          pre-conditions:
-            MsgQueue: Several
-        then: Set
-      - else: Zero
+    - if:
+        pre-conditions:
+          MsgQueue: Several
+      then: Set
+    - else: Zero
     MsgQueue:
-      - if:
-          pre-conditions:
-            Directive: Flush
-        then: Empty
-      - else: Nop
+    - if:
+        pre-conditions:
+          Directive: Flush
+      then: Empty
+    - else: Nop
     Receivers:
-      - if:
-          pre-conditions:
-            Receivers: Waiting
-        then: Nop
-      - else: N/A
+    - if:
+        pre-conditions:
+          Receivers: Waiting
+      then: Nop
+    - else: N/A
   pre-conditions:
     Count:
-      - Valid
+    - Valid
     Id:
-      - Valid
+    - Valid
     MsgQueue: all
     Receivers: all
     Directive: all
     Storage: all
-
-# ---- InvAddr: Count ----
-
 - enabled-by: true
   post-conditions:
     Status: InvAddr
     Count: Nop
     MsgQueue: Nop
     Receivers:
-      - if:
-          pre-conditions:
-            Receivers: Waiting
-        then: Nop
-      - else: N/A
+    - if:
+        pre-conditions:
+          Receivers: Waiting
+      then: Nop
+    - else: N/A
   pre-conditions:
     Count:
-      - 'Null'
+    - 'Null'
     Id: all
     MsgQueue: all
     Receivers: all
     Directive: all
     Storage: all
-
-# ---- InvId ----
-
 - enabled-by: true
   post-conditions:
     Status: InvId
     Count: Nop
     MsgQueue: Nop
     Receivers:
-      - if:
-          pre-conditions:
-            Receivers: Waiting
-        then: Nop
-      - else: N/A
-    RecSize:
-      - if:
-          pre-conditions:
-            Receivers: Waiting
-        then: Nop
-      - else: N/A
-    RecBuffer:
-      - if:
-          pre-conditions:
-            Receivers: Waiting
-        then: Nop
-      - else: N/A
+    - if:
+        pre-conditions:
+          Receivers: Waiting
+      then: Nop
+    - else: N/A
   pre-conditions:
     Count:
-      - Valid
+    - Valid
     Id:
-      - Invalid
+    - Invalid
     MsgQueue: all
     Receivers: all
     Directive: all
     Storage: all
-
-# ---- Impossible Cases ----
-
 - enabled-by: true
   post-conditions: NoWait
   pre-conditions:
     Count: all
     Id: all
     MsgQueue:
-      - Several
+    - Several
     Receivers:
-      - Waiting
+    - Waiting
     Directive: all
     Storage: all
-
 type: requirement
