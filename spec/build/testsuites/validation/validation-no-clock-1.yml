@@ -45,6 +45,7 @@ source:
 - testsuites/validation/tc-status.c
 - testsuites/validation/tc-string-strchr.c
 - testsuites/validation/tc-string-strcmp.c
+- testsuites/validation/tc-string-strncmp.c
 - testsuites/validation/tc-support-is-name-valid.c
 - testsuites/validation/tc-support.c
 - testsuites/validation/tc-sys-lock-condition.c
