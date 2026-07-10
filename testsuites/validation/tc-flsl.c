@@ -3,7 +3,7 @@
 /**
  * @file
  *
- * @ingroup CReqFlsl
+ * @ingroup CStringsReqFlsl
  */
 
 /*
@@ -41,7 +41,7 @@
 #include <rtems/test.h>
 
 /**
- * @defgroup CReqFlsl spec:/c/req/flsl
+ * @defgroup CStringsReqFlsl spec:/c/strings/req/flsl
  *
  * @ingroup TestsuitesValidationNoClock0
  *
@@ -49,25 +49,25 @@
  */
 
 typedef enum {
-  CReqFlsl_Pre_Value_Zero,
-  CReqFlsl_Pre_Value_NonZero,
-  CReqFlsl_Pre_Value_NA
-} CReqFlsl_Pre_Value;
+  CStringsReqFlsl_Pre_Value_Zero,
+  CStringsReqFlsl_Pre_Value_NonZero,
+  CStringsReqFlsl_Pre_Value_NA
+} CStringsReqFlsl_Pre_Value;
 
 typedef enum {
-  CReqFlsl_Post_Result_Zero,
-  CReqFlsl_Post_Result_LastBitSet,
-  CReqFlsl_Post_Result_NA
-} CReqFlsl_Post_Result;
+  CStringsReqFlsl_Post_Result_Zero,
+  CStringsReqFlsl_Post_Result_LastBitSet,
+  CStringsReqFlsl_Post_Result_NA
+} CStringsReqFlsl_Post_Result;
 
 typedef struct {
   uint8_t Skip : 1;
   uint8_t Pre_Value_NA : 1;
   uint8_t Post_Result : 2;
-} CReqFlsl_Entry;
+} CStringsReqFlsl_Entry;
 
 /**
- * @brief Test context for spec:/c/req/flsl test case.
+ * @brief Test context for spec:/c/strings/req/flsl test case.
  */
 typedef struct {
   struct {
@@ -89,7 +89,7 @@ typedef struct {
     /**
      * @brief This member contains the current transition map entry.
      */
-    CReqFlsl_Entry entry;
+    CStringsReqFlsl_Entry entry;
 
     /**
      * @brief If this member is true, then the current transition variant
@@ -97,22 +97,24 @@ typedef struct {
      */
     bool skip;
   } Map;
-} CReqFlsl_Context;
+} CStringsReqFlsl_Context;
 
-static CReqFlsl_Context CReqFlsl_Instance;
+static CStringsReqFlsl_Context CStringsReqFlsl_Instance;
 
-static const char *const CReqFlsl_PreDesc_Value[] =
+static const char *const CStringsReqFlsl_PreDesc_Value[] =
   { "Zero", "NonZero", "NA" };
 
-static const char *const *const CReqFlsl_PreDesc[] = {
-  CReqFlsl_PreDesc_Value,
+static const char *const *const CStringsReqFlsl_PreDesc[] = {
+  CStringsReqFlsl_PreDesc_Value,
   NULL
 };
 
-static void CReqFlsl_Pre_Value_Prepare( CReqFlsl_Pre_Value state )
+static void CStringsReqFlsl_Pre_Value_Prepare(
+  CStringsReqFlsl_Pre_Value state
+)
 {
   switch ( state ) {
-    case CReqFlsl_Pre_Value_Zero: {
+    case CStringsReqFlsl_Pre_Value_Zero: {
       /*
        * While the parameter value is equal to zero.
        */
@@ -120,7 +122,7 @@ static void CReqFlsl_Pre_Value_Prepare( CReqFlsl_Pre_Value state )
       break;
     }
 
-    case CReqFlsl_Pre_Value_NonZero: {
+    case CStringsReqFlsl_Pre_Value_NonZero: {
       /*
        * While the parameter value is not equal to zero.
        */
@@ -128,19 +130,21 @@ static void CReqFlsl_Pre_Value_Prepare( CReqFlsl_Pre_Value state )
       break;
     }
 
-    case CReqFlsl_Pre_Value_NA:
+    case CStringsReqFlsl_Pre_Value_NA:
       break;
   }
 }
 
-static void CReqFlsl_Post_Result_Check( CReqFlsl_Post_Result state )
+static void CStringsReqFlsl_Post_Result_Check(
+  CStringsReqFlsl_Post_Result state
+)
 {
   int    expected_result;
   long   value;
   size_t i;
 
   switch ( state ) {
-    case CReqFlsl_Post_Result_Zero: {
+    case CStringsReqFlsl_Post_Result_Zero: {
       /*
        * The return value of flsl() shall be equal to zero.
        */
@@ -148,7 +152,7 @@ static void CReqFlsl_Post_Result_Check( CReqFlsl_Post_Result state )
       break;
     }
 
-    case CReqFlsl_Post_Result_LastBitSet: {
+    case CStringsReqFlsl_Post_Result_LastBitSet: {
       /*
        * The return value of flsl() shall be equal to the index of the
        * most-significant bit set in the parameter value.
@@ -164,86 +168,88 @@ static void CReqFlsl_Post_Result_Check( CReqFlsl_Post_Result state )
       break;
     }
 
-    case CReqFlsl_Post_Result_NA:
+    case CStringsReqFlsl_Post_Result_NA:
       break;
   }
 }
 
-static void CReqFlsl_Action( void )
+static void CStringsReqFlsl_Action( void )
 {
   /* The action is performed in the post-condition states */
 }
 
 /* clang-format off */
 
-static const CReqFlsl_Entry
-CReqFlsl_Entries[] = {
-  { 0, 0, CReqFlsl_Post_Result_Zero },
-  { 0, 0, CReqFlsl_Post_Result_LastBitSet }
+static const CStringsReqFlsl_Entry
+CStringsReqFlsl_Entries[] = {
+  { 0, 0, CStringsReqFlsl_Post_Result_Zero },
+  { 0, 0, CStringsReqFlsl_Post_Result_LastBitSet }
 };
 
 static const uint8_t
-CReqFlsl_Map[] = {
+CStringsReqFlsl_Map[] = {
   0, 1
 };
 
 /* clang-format on */
 
-static size_t CReqFlsl_Scope( void *arg, char *buf, size_t n )
+static size_t CStringsReqFlsl_Scope( void *arg, char *buf, size_t n )
 {
-  CReqFlsl_Context *ctx;
+  CStringsReqFlsl_Context *ctx;
 
   ctx = arg;
 
   if ( ctx->Map.in_action_loop ) {
-    return T_get_scope( CReqFlsl_PreDesc, buf, n, ctx->Map.pcs );
+    return T_get_scope( CStringsReqFlsl_PreDesc, buf, n, ctx->Map.pcs );
   }
 
   return 0;
 }
 
-static T_fixture CReqFlsl_Fixture = {
+static T_fixture CStringsReqFlsl_Fixture = {
   .setup = NULL,
   .stop = NULL,
   .teardown = NULL,
-  .scope = CReqFlsl_Scope,
-  .initial_context = &CReqFlsl_Instance
+  .scope = CStringsReqFlsl_Scope,
+  .initial_context = &CStringsReqFlsl_Instance
 };
 
-static inline CReqFlsl_Entry CReqFlsl_PopEntry( CReqFlsl_Context *ctx )
+static inline CStringsReqFlsl_Entry CStringsReqFlsl_PopEntry(
+  CStringsReqFlsl_Context *ctx
+)
 {
   size_t index;
 
   index = ctx->Map.index;
   ctx->Map.index = index + 1;
-  return CReqFlsl_Entries[ CReqFlsl_Map[ index ] ];
+  return CStringsReqFlsl_Entries[ CStringsReqFlsl_Map[ index ] ];
 }
 
-static void CReqFlsl_TestVariant( CReqFlsl_Context *ctx )
+static void CStringsReqFlsl_TestVariant( CStringsReqFlsl_Context *ctx )
 {
-  CReqFlsl_Pre_Value_Prepare( ctx->Map.pcs[ 0 ] );
-  CReqFlsl_Action();
-  CReqFlsl_Post_Result_Check( ctx->Map.entry.Post_Result );
+  CStringsReqFlsl_Pre_Value_Prepare( ctx->Map.pcs[ 0 ] );
+  CStringsReqFlsl_Action();
+  CStringsReqFlsl_Post_Result_Check( ctx->Map.entry.Post_Result );
 }
 
 /**
- * @fn void T_case_body_CReqFlsl( void )
+ * @fn void T_case_body_CStringsReqFlsl( void )
  */
-T_TEST_CASE_FIXTURE( CReqFlsl, &CReqFlsl_Fixture )
+T_TEST_CASE_FIXTURE( CStringsReqFlsl, &CStringsReqFlsl_Fixture )
 {
-  CReqFlsl_Context *ctx;
+  CStringsReqFlsl_Context *ctx;
 
   ctx = T_fixture_context();
   ctx->Map.in_action_loop = true;
   ctx->Map.index = 0;
 
   for (
-    ctx->Map.pcs[ 0 ] = CReqFlsl_Pre_Value_Zero;
-    ctx->Map.pcs[ 0 ] < CReqFlsl_Pre_Value_NA;
+    ctx->Map.pcs[ 0 ] = CStringsReqFlsl_Pre_Value_Zero;
+    ctx->Map.pcs[ 0 ] < CStringsReqFlsl_Pre_Value_NA;
     ++ctx->Map.pcs[ 0 ]
   ) {
-    ctx->Map.entry = CReqFlsl_PopEntry( ctx );
-    CReqFlsl_TestVariant( ctx );
+    ctx->Map.entry = CStringsReqFlsl_PopEntry( ctx );
+    CStringsReqFlsl_TestVariant( ctx );
   }
 }
 
