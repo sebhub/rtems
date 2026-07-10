@@ -231,7 +231,7 @@ rtems_status_code rtems_clock_get_tod_timeval( struct timeval *time_of_day );
  *   some time point during the directive call will be stored in this object. A
  *   null pointer causes an acess atempt to an invalid memory address, a trap
  *   is raised in some hardware configurations whereas in others garbage is
- *   stored  at 0x00000000.
+ *   stored at 0x00000000.
  *
  * @par Notes
  * @parblock
@@ -309,7 +309,7 @@ void rtems_clock_get_realtime_bintime( struct bintime *time_snapshot );
  *   some time point during the directive call will be stored in this object. A
  *   null pointer causes an acess atempt to an invalid memory address, a trap
  *   is raised in some hardware configurations whereas in others garbage is
- *   stored  at 0x00000000.
+ *   stored at 0x00000000.
  *
  * @par Notes
  * @parblock
@@ -348,7 +348,7 @@ void rtems_clock_get_realtime_timeval( struct timeval *time_snapshot );
  *   some time point close to the directive call will be stored in this object.
  *   A null pointer causes an acess atempt to an invalid memory address, a trap
  *   is raised in some hardware configurations whereas in others garbage is
- *   stored  at 0x00000000.
+ *   stored at 0x00000000.
  *
  * @par Notes
  * @parblock
@@ -388,7 +388,7 @@ void rtems_clock_get_realtime_coarse( struct timespec *time_snapshot );
  *   time point close to the directive call will be stored in this object. A
  *   null pointer causes an acess atempt to an invalid memory address, a trap
  *   is raised in some hardware configurations whereas in others garbage is
- *   stored  at 0x00000000.
+ *   stored at 0x00000000.
  *
  * @par Notes
  * @parblock
@@ -428,7 +428,7 @@ void rtems_clock_get_realtime_coarse_bintime( struct bintime *time_snapshot );
  *   some time point close to the directive call will be stored in this object.
  *   A null pointer causes an acess atempt to an invalid memory address, a trap
  *   is raised in some hardware configurations whereas in others garbage is
- *   stored  at 0x00000000.
+ *   stored at 0x00000000.
  *
  * @par Notes
  * @parblock
@@ -468,7 +468,7 @@ void rtems_clock_get_realtime_coarse_timeval( struct timeval *time_snapshot );
  *   CLOCK_MONOTONIC at some time point during the directive call will be
  *   stored in this object. A null pointer causes an acess atempt to an invalid
  *   memory address, a trap is raised in some hardware configurations whereas
- *   in others garbage is stored  at 0x00000000.
+ *   in others garbage is stored at 0x00000000.
  *
  * @par Notes
  * @parblock
@@ -508,7 +508,7 @@ void rtems_clock_get_monotonic( struct timespec *time_snapshot );
  *   CLOCK_MONOTONIC at some time point during the directive call will be
  *   stored in this object. A null pointer causes an acess atempt to an invalid
  *   memory address, a trap is raised in some hardware configurations whereas
- *   in others garbage is stored  at 0x00000000.
+ *   in others garbage is stored at 0x00000000.
  *
  * @par Notes
  * @parblock
@@ -581,7 +581,7 @@ int64_t rtems_clock_get_monotonic_sbintime( void );
  *   CLOCK_MONOTONIC at some time point during the directive call will be
  *   stored in this object. A null pointer causes an acess atempt to an invalid
  *   memory address, a trap is raised in some hardware configurations whereas
- *   in others garbage is stored  at 0x00000000.
+ *   in others garbage is stored at 0x00000000.
  *
  * @par Notes
  * @parblock
@@ -621,7 +621,7 @@ void rtems_clock_get_monotonic_timeval( struct timeval *time_snapshot );
  *   CLOCK_MONOTONIC at some time point close to the directive call will be
  *   stored in this object. A null pointer causes an acess atempt to an invalid
  *   memory address, a trap is raised in some hardware configurations whereas
- *   in others garbage is stored  at 0x00000000.
+ *   in others garbage is stored at 0x00000000.
  *
  * @par Notes
  * @parblock
@@ -662,7 +662,7 @@ void rtems_clock_get_monotonic_coarse( struct timespec *time_snapshot );
  *   CLOCK_MONOTONIC at some time point close to the directive call will be
  *   stored in this object. A null pointer causes an acess atempt to an invalid
  *   memory address, a trap is raised in some hardware configurations whereas
- *   in others garbage is stored  at 0x00000000.
+ *   in others garbage is stored at 0x00000000.
  *
  * @par Notes
  * @parblock
@@ -703,7 +703,7 @@ void rtems_clock_get_monotonic_coarse_bintime( struct bintime *time_snapshot );
  *   CLOCK_MONOTONIC at some time point close to the directive call will be
  *   stored in this object. A null pointer causes an acess atempt to an invalid
  *   memory address, a trap is raised in some hardware configurations whereas
- *   in others garbage is stored  at 0x00000000.
+ *   in others garbage is stored at 0x00000000.
  *
  * @par Notes
  * @parblock
@@ -742,8 +742,7 @@ void rtems_clock_get_monotonic_coarse_timeval( struct timeval *time_snapshot );
  *   elapsed since the Unix epoch at some time point during system
  *   initialization call will be stored in this object. A null pointer causes
  *   an acess atempt to an invalid memory address, a trap is raised in some
- *   hardware configurations whereas in others garbage is stored  at
- *   0x00000000.
+ *   hardware configurations whereas in others garbage is stored at 0x00000000.
  *
  * @par Notes
  * See rtems_clock_get_boot_time_bintime() and
@@ -775,7 +774,7 @@ void rtems_clock_get_boot_time( struct timespec *boot_time );
  *   since the Unix epoch at some time point during system initialization call
  *   will be stored in this object. A null pointer causes an acess atempt to an
  *   invalid memory address, a trap is raised in some hardware configurations
- *   whereas in others garbage is stored  at 0x00000000.
+ *   whereas in others garbage is stored at 0x00000000.
  *
  * @par Notes
  * See rtems_clock_get_boot_time() and rtems_clock_get_boot_time_timeval() to
@@ -807,8 +806,7 @@ void rtems_clock_get_boot_time_bintime( struct bintime *boot_time );
  *   elapsed since the Unix epoch at some time point during system
  *   initialization call will be stored in this object. A null pointer causes
  *   an acess atempt to an invalid memory address, a trap is raised in some
- *   hardware configurations whereas in others garbage is stored  at
- *   0x00000000.
+ *   hardware configurations whereas in others garbage is stored at 0x00000000.
  *
  * @par Notes
  * See rtems_clock_get_boot_time() and rtems_clock_get_boot_time_bintime() to
