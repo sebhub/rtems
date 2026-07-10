@@ -48,6 +48,7 @@ source:
 - testsuites/validation/tc-string-strlcpy.c
 - testsuites/validation/tc-string-strncmp.c
 - testsuites/validation/tc-string-strrchr.c
+- testsuites/validation/tc-strings-explicit-bzero.c
 - testsuites/validation/tc-support-is-name-valid.c
 - testsuites/validation/tc-support.c
 - testsuites/validation/tc-sys-lock-condition.c
