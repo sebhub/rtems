@@ -1,0 +1,187 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: action
+links:
+- role: interface-function
+  uid: ../if/strrchr
+- role: reference
+  uid: /ref/std/posix-2024/strrchr
+post-conditions:
+- name: Result
+  states:
+  - name: Last
+    test-code: |
+      T_eq_ptr( ctx->retval, ctx->expected );
+      T_not_null( ctx->retval );
+    text: |
+      The return value of ${../if/strrchr:/name} shall be the address of the last
+      character in the string referenced by the ${../if/strrchr:/params[0]/name}
+      parameter which is equal to the ${../if/strrchr:/params[1]/name} parameter
+      converted to char.
+  - name: 'Null'
+    test-code: |
+      T_null( ctx->retval );
+    text: |
+      The return value of ${../if/strrchr:/name} shall be ${/c/if/null:/name}.
+  test-epilogue: null
+  test-prologue: null
+pre-conditions:
+- name: C
+  states:
+  - name: Zero
+    test-code: |
+      ctx->c = 0x100;
+    text: |
+      While the ${../if/strrchr:/params[1]/name} parameter converted to char is equal
+      to the null character.
+  - name: NonZero
+    test-code: |
+      ctx->c = 0x185;
+    text: |
+      While the ${../if/strrchr:/params[1]/name} parameter converted to char is not
+      equal to the null character.
+  test-epilogue: null
+  test-prologue: null
+- name: Occurrences
+  states:
+  - name: None
+    test-code: |
+      ctx->count = 0;
+    text: |
+      While the string referenced by the ${../if/strrchr:/params[0]/name} parameter
+      contains no character which is equal to the ${../if/strrchr:/params[1]/name}
+      parameter converted to char.
+  - name: One
+    test-code: |
+      ctx->count = 1;
+    text: |
+      While the string referenced by the ${../if/strrchr:/params[0]/name} parameter
+      contains exactly one character which is equal to the
+      ${../if/strrchr:/params[1]/name} parameter converted to char.
+  - name: Several
+    test-code: |
+      ctx->count = 3;
+    text: |
+      While the string referenced by the ${../if/strrchr:/params[0]/name} parameter
+      contains more than one character which is equal to the
+      ${../if/strrchr:/params[1]/name} parameter converted to char.
+  test-epilogue: null
+  test-prologue: null
+rationale: |
+  The implementation of the pre-qualified library calls strlen() and then
+  \_\_memrchr(). This function searches the string backwards from its terminating
+  null character. The search ends at the first matching character or at the start
+  of the string. Dimension Occurrences selects the two ends of the search and
+  whether the last occurrence is found before an earlier one. The terminating
+  null character is part of the string, so dimension Occurrences does not apply
+  to the null character.
+references: []
+requirement-type: functional
+skip-reasons: {}
+test-action: |
+  Arrange( ctx );
+  ctx->retval = strrchr( ctx->s, ctx->c );
+test-brief: null
+test-cleanup: null
+test-context:
+- brief: |
+    This member specifies the ${../if/strrchr:/params[0]/name} parameter value.
+  description: null
+  member: |
+    const char *s
+- brief: |
+    This member specifies the ${../if/strrchr:/params[1]/name} parameter value.
+  description: null
+  member: |
+    int c
+- brief: |
+    This member contains the return value.
+  description: null
+  member: |
+    char *retval
+- brief: |
+    This member contains the expected return value.
+  description: null
+  member: |
+    const char *expected
+- brief: |
+    This member specifies the count of occurrences of the character.
+  description: null
+  member: |
+    size_t count
+- brief: |
+    This member provides the buffer of the string.
+  description: null
+  member: |
+    char buf[ 21 ]
+test-context-support: null
+test-description: null
+test-header: null
+test-includes:
+- string.h
+test-local-includes: []
+test-prepare: |
+  ctx->retval = NULL;
+  ctx->expected = NULL;
+  ctx->count = 0;
+test-setup: null
+test-stop: null
+test-support: |
+  typedef ${.:/test-context-type} Context;
+
+  static void Arrange( Context *ctx )
+  {
+    static const size_t positions[] = { 15, 9, 3 };
+    char               *b;
+    size_t              i;
+
+    b = ctx->buf;
+
+    for ( i = 0; i < sizeof( ctx->buf ) - 1; ++i ) {
+      b[ i ] = (char) ( 'A' + i % 26 );
+    }
+
+    b[ sizeof( ctx->buf ) - 1 ] = '\0';
+
+    if ( (char) ctx->c == '\0' ) {
+      ctx->expected = &b[ sizeof( ctx->buf ) - 1 ];
+    } else if ( ctx->count == 1 ) {
+      b[ 5 ] = (char) ctx->c;
+      ctx->expected = &b[ 5 ];
+    } else if ( ctx->count > 1 ) {
+      for ( i = 0; i < RTEMS_ARRAY_SIZE( positions ); ++i ) {
+        b[ positions[ i ] ] = (char) ctx->c;
+      }
+
+      ctx->expected = &b[ positions[ 0 ] ];
+    }
+
+    ctx->s = b;
+  }
+test-target: testsuites/validation/tc-string-strrchr.c
+test-teardown: null
+text: |
+  ${.:text-template}
+transition-map:
+- enabled-by: true
+  post-conditions:
+    Result: Last
+  pre-conditions:
+    C:
+    - Zero
+    Occurrences: N/A
+- enabled-by: true
+  post-conditions:
+    Result:
+    - if:
+        pre-conditions:
+          Occurrences: None
+      then: 'Null'
+    - else: Last
+  pre-conditions:
+    C:
+    - NonZero
+    Occurrences: all
+type: requirement

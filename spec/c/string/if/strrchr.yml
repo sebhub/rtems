@@ -1,0 +1,44 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Locate the last occurrence of the character specified by ${.:/params[1]/name}
+  in the string referenced by ${.:/params[0]/name}.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+  default:
+    attributes: null
+    body: null
+    params:
+    - const char *${.:/params[0]/name}
+    - int ${.:/params[1]/name}
+    return: char *
+  variants: []
+description: null
+enabled-by: true
+index-entries: []
+interface-type: function
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+- role: reference
+  uid: /ref/std/posix-2024/strrchr
+name: strrchr
+notes: |
+  See ${/ref/std/posix-2024/strrchr:/name}.
+params:
+- description: |
+    is the pointer to the string to be searched.
+  dir: in
+  name: s
+- description: |
+    is the character to search for.
+  dir: null
+  name: c
+return:
+  return: |
+    Returns a pointer to the matched character or ${/c/if/null:/name} if the
+    character is not found.
+  return-values: []
+type: interface
