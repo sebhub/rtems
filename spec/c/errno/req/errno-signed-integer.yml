@@ -1,0 +1,13 @@
+SPDX-License-Identifier: CC-BY-SA-4.0
+copyrights:
+- Copyright (C) 2024 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: errno
+rationale: null
+requirement-type: functional
+text: |
+  The ${../if/errno:/name} object shall have a signed integer type.
+type: requirement

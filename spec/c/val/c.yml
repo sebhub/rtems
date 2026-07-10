@@ -82,6 +82,24 @@ test-actions:
   links:
   - role: validation
     uid: ../req/memset
+- action-brief: |
+    Check that ${/c/errno/if/errno:/name} has a signed integer type.
+  action-code: |
+    errno = -1;
+    T_eq_int( errno, -1 );
+    T_lt_int( errno, 0 );
+  checks: []
+  links:
+  - role: validation
+    uid: /c/errno/req/errno-signed-integer
+- action-brief: |
+    Check that ${/c/errno/if/errno:/name} has thread storage duration.
+  action-code: |
+    T_true( IsTLSObjectOfThread( RTEMS_SELF, &errno ) );
+  checks: []
+  links:
+  - role: validation
+    uid: /c/errno/req/errno-thread-local
 test-brief: |
   Tests C library functions.
 test-context: []
@@ -89,9 +107,11 @@ test-context-support: null
 test-description: null
 test-header: null
 test-includes:
+- errno.h
 - string.h
 - rtems.h
-test-local-includes: []
+test-local-includes:
+- tx-support.h
 test-setup: null
 test-stop: null
 test-support: |

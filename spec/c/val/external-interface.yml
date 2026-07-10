@@ -28,8 +28,6 @@ links:
 - role: validation
   uid: /c/errno/if/enotsup
 - role: validation
-  uid: /c/errno/if/errno
-- role: validation
   uid: /c/errno/if/etimedout
 - role: validation
   uid: /c/if/false
