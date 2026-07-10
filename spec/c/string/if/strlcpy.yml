@@ -44,6 +44,9 @@ params:
   name: size
 return:
   return: |
-    Returns the total length of the string they tried to create.
+    Returns the length of the string referenced by ${.:/params[1]/name}. A return
+    value greater than or equal to the size specified by ${.:/params[2]/name}
+    indicates that the string referenced by ${.:/params[1]/name} has been truncated
+    while copying it to the memory area referenced by ${.:/params[0]/name}.
   return-values: []
 type: interface
