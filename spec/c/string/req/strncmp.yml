@@ -1,0 +1,294 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: action
+links:
+- role: interface-function
+  uid: ../if/strncmp
+- role: reference
+  uid: /ref/std/posix-2024/strncmp
+post-conditions:
+- name: Result
+  states:
+  - name: Zero
+    test-code: |
+      T_eq_int( ctx->retval, 0 );
+    text: |
+      The return value of ${../if/strncmp:/name} shall be equal to zero.
+  - name: Negative
+    test-code: |
+      T_lt_int( ctx->retval, 0 );
+    text: |
+      The return value of ${../if/strncmp:/name} shall be less than zero.
+  - name: Positive
+    test-code: |
+      T_gt_int( ctx->retval, 0 );
+    text: |
+      The return value of ${../if/strncmp:/name} shall be greater than zero.
+  test-epilogue: null
+  test-prologue: null
+pre-conditions:
+- name: N
+  states:
+  - name: Zero
+    test-code: |
+      ctx->n = 0;
+      ctx->compare = 1;
+      ctx->position = 0;
+    text: |
+      While the ${../if/strncmp:/params[2]/name} parameter is equal to zero.
+  - name: Positive
+    test-code: |
+      ctx->n = 8;
+    text: |
+      While the ${../if/strncmp:/params[2]/name} parameter is greater than zero.
+  test-epilogue: null
+  test-prologue: null
+- name: Compare
+  states:
+  - name: Equal
+    test-code: |
+      ctx->compare = 0;
+    text: |
+      While the first ${../if/strncmp:/params[2]/name} characters of the strings
+      referenced by the ${../if/strncmp:/params[0]/name} and
+      ${../if/strncmp:/params[1]/name} parameters are equal, where no character which
+      follows a null character is compared.
+  - name: Less
+    test-code: |
+      ctx->compare = -1;
+    text: |
+      While the first character which differs in the first
+      ${../if/strncmp:/params[2]/name} characters of the strings referenced by the
+      ${../if/strncmp:/params[0]/name} and ${../if/strncmp:/params[1]/name}
+      parameters, interpreted as unsigned char, is less in the string referenced by
+      the ${../if/strncmp:/params[0]/name} parameter.
+  - name: Greater
+    test-code: |
+      ctx->compare = 1;
+    text: |
+      While the first character which differs in the first
+      ${../if/strncmp:/params[2]/name} characters of the strings referenced by the
+      ${../if/strncmp:/params[0]/name} and ${../if/strncmp:/params[1]/name}
+      parameters, interpreted as unsigned char, is greater in the string referenced
+      by the ${../if/strncmp:/params[0]/name} parameter.
+  test-epilogue: null
+  test-prologue: null
+- name: EqualCause
+  states:
+  - name: Exhausted
+    test-code: |
+      ctx->exhausted = true;
+    text: |
+      While the first character which differs in the strings referenced by the
+      ${../if/strncmp:/params[0]/name} and ${../if/strncmp:/params[1]/name}
+      parameters follows the first ${../if/strncmp:/params[2]/name} characters.
+  - name: Terminated
+    test-code: |
+      ctx->exhausted = false;
+    text: |
+      While the strings referenced by the ${../if/strncmp:/params[0]/name} and
+      ${../if/strncmp:/params[1]/name} parameters end with a null character in the
+      first ${../if/strncmp:/params[2]/name} characters.
+  test-epilogue: null
+  test-prologue: null
+- name: Difference
+  states:
+  - name: Character
+    test-code: |
+      ctx->terminator = false;
+    text: |
+      While the first character which differs in the strings is no terminating null
+      character.
+  - name: Terminator
+    test-code: |
+      ctx->terminator = true;
+    text: |
+      While the first character which differs in the strings is the terminating null
+      character of one of the strings.
+  test-epilogue: null
+  test-prologue: null
+- name: Position
+  states:
+  - name: First
+    test-code: |
+      ctx->position = 0;
+    text: |
+      While the comparison ends at the first character of the strings.
+  - name: Later
+    test-code: |
+      ctx->position = 3;
+    text: |
+      While the comparison ends after the first character of the strings.
+  test-epilogue: null
+  test-prologue: null
+rationale: |
+  The implementation of the pre-qualified library returns zero for a count of
+  zero. Otherwise, it compares the strings one character at a time. The loop ends
+  at the end of either string, at the end of the count or at a differing
+  character. Dimension EqualCause selects the end of the count and the end of
+  both strings. Dimension Difference selects a differing character and the end of
+  one string. Dimension Position decides whether the first character ends the
+  comparison, since the compiler handles the first iteration of the loop apart.
+  For a count of zero, the strings differ in the first character, so a comparison
+  of this character would give a nonzero result. The differing characters are
+  0x01 and 0x81, so a comparison of signed characters would give the opposite
+  sign.
+references: []
+requirement-type: functional
+skip-reasons: {}
+test-action: |
+  Arrange( ctx );
+  ctx->retval = strncmp( ctx->s1, ctx->s2, ctx->n );
+test-brief: null
+test-cleanup: null
+test-context:
+- brief: |
+    This member specifies the ${../if/strncmp:/params[0]/name} parameter value.
+  description: null
+  member: |
+    const char *s1
+- brief: |
+    This member specifies the ${../if/strncmp:/params[1]/name} parameter value.
+  description: null
+  member: |
+    const char *s2
+- brief: |
+    This member specifies the ${../if/strncmp:/params[2]/name} parameter value.
+  description: null
+  member: |
+    size_t n
+- brief: |
+    This member contains the return value.
+  description: null
+  member: |
+    int retval
+- brief: |
+    This member specifies the sign of the comparison.
+  description: null
+  member: |
+    int compare
+- brief: |
+    This member is true, if the end of one string is the first difference.
+  description: null
+  member: |
+    bool terminator
+- brief: |
+    This member is true, if the strings differ only after the count.
+  description: null
+  member: |
+    bool exhausted
+- brief: |
+    This member specifies the position of the first difference.
+  description: null
+  member: |
+    size_t position
+- brief: |
+    This member provides the buffer of the first string.
+  description: null
+  member: |
+    char buf_1[ 16 ]
+- brief: |
+    This member provides the buffer of the second string.
+  description: null
+  member: |
+    char buf_2[ 16 ]
+test-context-support: null
+test-description: null
+test-header: null
+test-includes:
+- string.h
+test-local-includes: []
+test-prepare: |
+  ctx->retval = 0;
+  ctx->compare = 0;
+  ctx->terminator = false;
+  ctx->exhausted = false;
+  ctx->position = 3;
+test-setup: null
+test-stop: null
+test-support: |
+  typedef ${.:/test-context-type} Context;
+
+  static void Arrange( Context *ctx )
+  {
+    size_t i;
+    size_t p;
+
+    for ( i = 0; i < sizeof( ctx->buf_1 ) - 1; ++i ) {
+      ctx->buf_1[ i ] = (char) ( 'A' + i );
+      ctx->buf_2[ i ] = (char) ( 'A' + i );
+    }
+
+    ctx->buf_1[ sizeof( ctx->buf_1 ) - 1 ] = '\0';
+    ctx->buf_2[ sizeof( ctx->buf_2 ) - 1 ] = '\0';
+    p = ctx->position;
+
+    if ( ctx->compare == 0 ) {
+      if ( ctx->exhausted ) {
+        ctx->n = p + 1;
+        ctx->buf_1[ ctx->n ] = (char) 0x01;
+        ctx->buf_2[ ctx->n ] = (char) 0x81;
+      } else {
+        ctx->buf_1[ p ] = '\0';
+        ctx->buf_2[ p ] = '\0';
+      }
+    } else if ( ctx->terminator ) {
+      if ( ctx->compare < 0 ) {
+        ctx->buf_1[ p ] = '\0';
+      } else {
+        ctx->buf_2[ p ] = '\0';
+      }
+    } else {
+      ctx->buf_1[ p ] = (char) ( ctx->compare < 0 ? 0x01 : 0x81 );
+      ctx->buf_2[ p ] = (char) ( ctx->compare < 0 ? 0x81 : 0x01 );
+    }
+
+    ctx->s1 = ctx->buf_1;
+    ctx->s2 = ctx->buf_2;
+  }
+test-target: testsuites/validation/tc-string-strncmp.c
+test-teardown: null
+text: |
+  ${.:text-template}
+transition-map:
+- enabled-by: true
+  post-conditions:
+    Result: Zero
+  pre-conditions:
+    N:
+    - Zero
+    Compare: N/A
+    EqualCause: N/A
+    Difference: N/A
+    Position: N/A
+- enabled-by: true
+  post-conditions:
+    Result: Zero
+  pre-conditions:
+    N:
+    - Positive
+    Compare:
+    - Equal
+    EqualCause: all
+    Difference: N/A
+    Position: all
+- enabled-by: true
+  post-conditions:
+    Result:
+    - if:
+        pre-conditions:
+          Compare: Less
+      then: Negative
+    - else: Positive
+  pre-conditions:
+    N:
+    - Positive
+    Compare:
+    - Less
+    - Greater
+    EqualCause: N/A
+    Difference: all
+    Position: all
+type: requirement

@@ -1,0 +1,50 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Compare the strings referenced by ${.:/params[0]/name} and ${.:/params[1]/name}
+  bounded by the size in bytes specified by ${.:/params[2]/name}.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+  default:
+    attributes: null
+    body: null
+    params:
+    - const char *${.:/params[0]/name}
+    - const char *${.:/params[1]/name}
+    - ${/c/if/size_t:/name} ${.:/params[2]/name}
+    return: int
+  variants: []
+description: null
+enabled-by: true
+index-entries: []
+interface-type: function
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+- role: reference
+  uid: /ref/std/posix-2024/strncmp
+name: strncmp
+notes: |
+  See ${/ref/std/posix-2024/strncmp:/name}.
+params:
+- description: |
+    is the pointer to the first string to be compared.
+  dir: in
+  name: s1
+- description: |
+    is the pointer to the second string to be compared.
+  dir: in
+  name: s2
+- description: |
+    is the maximum number of characters to compare.
+  dir: null
+  name: n
+return:
+  return: |
+    Returns an integer less than, equal to, or greater than zero if
+    ${.:/params[0]/name} is found, respectively, to be less than, to match, or be
+    greater than ${.:/params[1]/name}.
+  return-values: []
+type: interface
