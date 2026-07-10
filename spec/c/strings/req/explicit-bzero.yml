@@ -1,0 +1,111 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: action
+links:
+- role: interface-function
+  uid: ../if/explicit-bzero
+- path: man.cgi?query=explicit_bzero&sektion=3
+  role: reference
+  uid: /ref/man/freebsd
+post-conditions:
+- name: Memory
+  states:
+  - name: Nop
+    test-code: |
+      size_t i;
+
+      for ( i = 0; i < sizeof( ctx->buf ); ++i ) {
+        T_eq_int( (unsigned char) ctx->buf[ i ], 0xff );
+      }
+    text: |
+      The memory area referenced by ${../if/explicit-bzero:/params[0]/name} shall not
+      be modified.
+  - name: Zeroed
+    test-code: |
+      size_t i;
+
+      for ( i = 0; i < ctx->n; ++i ) {
+        T_eq_int( ctx->buf[ i ], 0 );
+      }
+
+      for ( i = ctx->n; i < sizeof( ctx->buf ); ++i ) {
+        T_eq_int( (unsigned char) ctx->buf[ i ], 0xff );
+      }
+    text: |
+      The memory area referenced by ${../if/explicit-bzero:/params[0]/name} shall be
+      filled with zeros up to the number of bytes specified by
+      ${../if/explicit-bzero:/params[1]/name}.
+  test-epilogue: null
+  test-prologue: null
+pre-conditions:
+- name: Length
+  states:
+  - name: Zero
+    test-code: |
+      ctx->n = 0;
+    text: |
+      While the value specified by ${../if/explicit-bzero:/params[1]/name} is zero.
+  - name: Positive
+    test-code: |
+      ctx->n = 3;
+    text: |
+      While the value specified by ${../if/explicit-bzero:/params[1]/name} is greater
+      than zero.
+  test-epilogue: null
+  test-prologue: null
+rationale: |
+  The implementation of the pre-qualified library calls ${/c/if/memset:/name}
+  with the value zero. An empty assembler statement with a memory clobber follows
+  the call, so the compiler cannot remove the write. Dimension Length selects
+  whether the call writes a byte.
+references: []
+requirement-type: functional
+skip-reasons: {}
+test-action: explicit_bzero( ctx->s, ctx->n );
+test-brief: null
+test-cleanup: null
+test-context:
+- brief: |
+    This member provides the buffer.
+  description: null
+  member: char buf[ 16 ]
+- brief: |
+    This member specifies the ${../if/explicit-bzero:/params[0]/name} parameter
+    value.
+  description: null
+  member: void *s
+- brief: |
+    This member specifies the ${../if/explicit-bzero:/params[1]/name} parameter
+    value.
+  description: null
+  member: size_t n
+test-context-support: null
+test-description: null
+test-header: null
+test-includes:
+- string.h
+test-local-includes: []
+test-prepare: |
+  memset( ctx->buf, 0xff, sizeof( ctx->buf ) );
+  ctx->s = ctx->buf;
+test-setup: null
+test-stop: null
+test-support: null
+test-target: testsuites/validation/tc-strings-explicit-bzero.c
+test-teardown: null
+text: |
+  ${.:text-template}
+transition-map:
+- enabled-by: true
+  post-conditions:
+    Memory:
+    - if:
+        pre-conditions:
+          Length: Zero
+      then: Nop
+    - else: Zeroed
+  pre-conditions:
+    Length: all
+type: requirement
