@@ -1,0 +1,21 @@
+SPDX-License-Identifier: CC-BY-SA-4.0
+copyrights:
+- Copyright (C) 2025 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: function
+links:
+- role: interface-function
+  uid: ../if/sys-lock-semaphore-post
+- role: function-implementation
+  uid: /score/sem/req/surrender
+- role: requirement-refinement
+  uid: sys-lock
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  The ${../if/sys-lock-semaphore-post:/name} directive shall surrender the
+  semaphore as specified by ${/score/sem/req/surrender:/spec} where the semaphore
+  is a ${/glossary/countingmodulosemaphore:/term} and the thread queue of the
+  semaphore uses the priority discipline.
+type: requirement

@@ -1,6 +1,6 @@
 SPDX-License-Identifier: CC-BY-SA-4.0
 copyrights:
-- Copyright (C) 2021 embedded brains GmbH & Co. KG
+- Copyright (C) 2021, 2025 embedded brains GmbH & Co. KG
 enabled-by: true
 functional-type: function
 links:
@@ -12,7 +12,8 @@ rationale: null
 requirement-type: functional
 text: |
   While the timeout parameter specifies a valid absolute
-  ${/glossary/clock-realtime:/term} time point, while the mutex is not avaiable
-  at the specified time point, the directive shall return with a status code of
-  ${/c/errno/if/etimedout:/name}.
+  ${/glossary/clock-realtime:/term} time point, while the mutex is not available,
+  if the ${/glossary/clock-realtime:/term} was at or past the specified time
+  point during a ${/glossary/clock-tick:/term}, then the directive shall return
+  with a ${/glossary/statuscode:/term} of ${/c/errno/if/etimedout:/name}.
 type: requirement

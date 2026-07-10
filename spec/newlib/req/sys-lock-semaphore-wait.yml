@@ -1,0 +1,19 @@
+SPDX-License-Identifier: CC-BY-SA-4.0
+copyrights:
+- Copyright (C) 2025 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: function
+links:
+- role: interface-function
+  uid: ../if/sys-lock-semaphore-wait
+- role: function-implementation
+  uid: /score/sem/req/seize-wait
+- role: requirement-refinement
+  uid: sys-lock
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  The ${../if/sys-lock-semaphore-wait:/name} directive shall seize the semaphore
+  as specified by ${/score/sem/req/seize-wait:/spec}.
+type: requirement

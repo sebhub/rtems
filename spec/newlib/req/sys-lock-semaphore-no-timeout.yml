@@ -1,0 +1,15 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: sys-lock-semaphore-wait-timed-ticks
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  While the timeout parameter is zero, while the semaphore is not available, the
+  directive shall wait for the semaphore without a timeout.
+type: requirement

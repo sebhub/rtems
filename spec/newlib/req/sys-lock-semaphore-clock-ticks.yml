@@ -1,0 +1,17 @@
+SPDX-License-Identifier: CC-BY-SA-4.0
+copyrights:
+- Copyright (C) 2025 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: sys-lock-semaphore-wait-timed-ticks
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  While the timeout parameter is a non-zero value, while the semaphore is not
+  available, if exactly the count of ${/glossary/clock-tick:/plural} which the
+  timeout parameter specifies occurred, then the directive shall return with a
+  ${/glossary/statuscode:/term} of ${/c/errno/if/etimedout:/name}.
+type: requirement
