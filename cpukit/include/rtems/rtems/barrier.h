@@ -94,7 +94,7 @@ extern "C" {
  * combinations of attributes are allowed. Some attributes are mutually
  * exclusive. Combining mutually exclusive attributes may throw an error or run
  * silently with unintended default values. Attributes not mentioned below are
- * not evaluated by this directive and have no effect.  Default attributes can
+ * not evaluated by this directive and have no effect. Default attributes can
  * be selected by using the #RTEMS_DEFAULT_ATTRIBUTES constant.
  *
  * The **barrier class** is selected by the mutually exclusive

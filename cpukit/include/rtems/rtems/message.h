@@ -157,8 +157,8 @@ typedef struct {
  * combinations of attributes are allowed. Some attributes are mutually
  * exclusive. Combining mutually exclusive attributes may throw an error or run
  * silently with unintended default values. Attributes not mentioned below are
- * not evaluated by this directive and have no effect.  Default attributes can
- * be selected by using the #RTEMS_DEFAULT_ATTRIBUTES constant.  The attribute
+ * not evaluated by this directive and have no effect. Default attributes can
+ * be selected by using the #RTEMS_DEFAULT_ATTRIBUTES constant. The attribute
  * set defines
  *
  * - the scope of the message queue: #RTEMS_LOCAL (default) or #RTEMS_GLOBAL
@@ -742,13 +742,13 @@ rtems_status_code rtems_message_queue_broadcast(
  *
  * This directive receives a message from the queue specified by `id`.
  *
- * The **option set** specified in ``option_set`` is built through a *bitwise
- * or* of the option constants described below.  Not all combinations of
- * options are allowed.  Some options are mutually exclusive. Combining
- * mutually exclusive options may throw an error or run silently with
- * unintended default values. Options not mentioned below are not evaluated by
- * this directive and have no effect. Default options can be selected by using
- * the #RTEMS_DEFAULT_OPTIONS constant.
+ * The **option set** specified in `option_set` is built through a *bitwise or*
+ * of the option constants described below. Not all combinations of options are
+ * allowed. Some options are mutually exclusive. Combining mutually exclusive
+ * options may throw an error or run silently with unintended default values.
+ * Options not mentioned below are not evaluated by this directive and have no
+ * effect. Default options can be selected by using the #RTEMS_DEFAULT_OPTIONS
+ * constant.
  *
  * The calling task can **wait** or **try to receive** a message from the queue
  * according to the mutually exclusive #RTEMS_WAIT and #RTEMS_NO_WAIT options.
