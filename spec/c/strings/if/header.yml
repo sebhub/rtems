@@ -8,9 +8,12 @@ index-entries: []
 interface-type: header-file
 links:
 - role: interface-placement
-  uid: domain
+  uid: /c/if/domain
 - role: interface-ingroup
   uid: group
+- path: man.cgi?query=fls&sektion=3
+  role: reference
+  uid: /ref/man/freebsd
 path: strings.h
 prefix: ''
 type: interface

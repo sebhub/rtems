@@ -1,0 +1,40 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Find the last (most significant) bit set in the value specified by
+  ${.:/params[0]/name} and return the index of that bit.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+  default:
+    attributes: null
+    body: null
+    params:
+    - long ${.:/params[0]/name}
+    return: int
+  variants: []
+description: null
+enabled-by: true
+index-entries: []
+interface-type: function
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+- path: man.cgi?query=fls&sektion=3
+  role: reference
+  uid: /ref/man/freebsd
+name: flsl
+notes: |
+  See
+  [FreeBSD Manual Pages, flsl()](https://man.freebsd.org/cgi/man.cgi?query=flsl&sektion=3).
+params:
+- description: |
+    is the value to find the last set bit in.
+  dir: null
+  name: value
+return:
+  return: |
+    Returns the index of the last bit set, or zero if no bits are set.
+  return-values: []
+type: interface
