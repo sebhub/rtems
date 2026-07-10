@@ -1,0 +1,36 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Abort the program if the scalar expression specified by ${.:/params[0]/name} is
+  false.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+  default:
+    attributes: null
+    body: _ImplementationDefined
+    params:
+    - ${.:/params[0]/name}
+    return: ''
+  variants: []
+description: null
+enabled-by: true
+index-entries: []
+interface-type: macro
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+- role: reference
+  uid: /ref/std/c23/assert
+name: assert
+notes: null
+params:
+- description: |
+    is the scalar expression to evaluate.
+  dir: null
+  name: expression
+return:
+  return: null
+  return-values: []
+type: interface

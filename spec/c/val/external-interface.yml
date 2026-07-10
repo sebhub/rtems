@@ -4,6 +4,8 @@ copyrights:
 enabled-by: true
 links:
 - role: validation
+  uid: /c/assert/if/assert-func
+- role: validation
   uid: /c/if/bintime
 - role: validation
   uid: /c/if/bool
@@ -73,6 +75,8 @@ links:
   uid: /c/if/size_max
 - role: validation
   uid: /c/if/size_t
+- role: validation
+  uid: /score/interr/if/source-assert
 - role: validation
   uid: /c/if/time_t
 - role: validation
