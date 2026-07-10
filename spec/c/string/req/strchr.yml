@@ -1,0 +1,267 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: action
+links:
+- role: interface-function
+  uid: ../if/strchr
+- role: reference
+  uid: /ref/std/posix-2024/strchr
+post-conditions:
+- name: Result
+  states:
+  - name: Found
+    test-code: |
+      T_eq_ptr( ctx->retval, ctx->expected );
+      T_not_null( ctx->retval );
+    text: |
+      The return value of ${../if/strchr:/name} shall be the address of the first
+      character of the string referenced by ${../if/strchr:/params[0]/name} which is
+      equal to the value of ${../if/strchr:/params[1]/name} converted to char.
+  - name: 'Null'
+    test-code: |
+      T_null( ctx->retval );
+    text: |
+      The return value of ${../if/strchr:/name} shall be ${/c/if/null:/name}.
+  test-epilogue: null
+  test-prologue: null
+pre-conditions:
+- name: C
+  states:
+  - name: Zero
+    test-code: |
+      ctx->c = 0x100;
+    text: |
+      While the value of the ${../if/strchr:/params[1]/name} parameter converted to
+      char is the null character.
+  - name: NonZero
+    test-code: |
+      ctx->c = 0x185;
+    text: |
+      While the value of the ${../if/strchr:/params[1]/name} parameter converted to
+      char is not the null character.
+  test-epilogue: null
+  test-prologue: null
+- name: Alignment
+  states:
+  - name: Aligned
+    test-code: |
+      ctx->offset = 0;
+    text: |
+      While the string referenced by the ${../if/strchr:/params[0]/name} parameter
+      starts at an address which is aligned to the size of type size_t.
+  - name: Unaligned
+    test-code: |
+      ctx->offset = 1;
+    text: |
+      While the string referenced by the ${../if/strchr:/params[0]/name} parameter
+      starts at an address which is not aligned to the size of type size_t.
+  test-epilogue: null
+  test-prologue: null
+- name: Match
+  states:
+  - name: Found
+    test-code: |
+      ctx->found = true;
+    text: |
+      While the string referenced by the ${../if/strchr:/params[0]/name} parameter
+      contains a character which is equal to the value of the
+      ${../if/strchr:/params[1]/name} parameter converted to char.
+  - name: NotFound
+    test-code: |
+      ctx->found = false;
+    text: |
+      While the string referenced by the ${../if/strchr:/params[0]/name} parameter
+      contains no character which is equal to the value of the
+      ${../if/strchr:/params[1]/name} parameter converted to char.
+  test-epilogue: null
+  test-prologue: null
+- name: Position
+  states:
+  - name: Prefix
+    test-code: |
+      ctx->position = ctx->offset;
+    text: |
+      While the first character of the string which is equal to the value of the
+      ${../if/strchr:/params[1]/name} parameter converted to char, or else its
+      terminating null character, is located before the first address aligned to the
+      size of type size_t.
+  - name: FirstBlock
+    test-code: |
+      ctx->position = AlignUp( ctx->offset );
+    text: |
+      While the first character of the string which is equal to the value of the
+      ${../if/strchr:/params[1]/name} parameter converted to char, or else its
+      terminating null character, is located in the first block of the size of type
+      size_t which starts at an aligned address.
+  - name: SecondBlock
+    test-code: |
+      ctx->position = AlignUp( ctx->offset ) + sizeof( size_t ) + 1;
+    text: |
+      While the first character of the string which is equal to the value of the
+      ${../if/strchr:/params[1]/name} parameter converted to char, or else its
+      terminating null character, is located in the second block of the size of type
+      size_t which starts at an aligned address.
+  test-epilogue: null
+  test-prologue: null
+rationale: |
+  The implementation of the pre-qualified library calls \_\_strchrnul(). This
+  function returns the address of the first character which is equal to the
+  searched character or else of the terminating null character. For the null
+  character, it calls strlen(). For any other character, it searches the bytes
+  before the first aligned address, then one block of the size of type size_t at
+  a time, then the bytes of the last block. Dimension Alignment decides whether
+  the string has an unaligned prefix. Dimension Position places the character
+  which ends the search in the prefix, at the start of the first block or in the
+  second block. Dimension Match decides whether this character is the searched
+  character or the terminating null character.
+references: []
+requirement-type: functional
+skip-reasons:
+  AlignedHasNoPrefix: |
+    A string which starts at an aligned address has no unaligned prefix.
+test-action: |
+  Arrange( ctx );
+  ctx->retval = strchr( ctx->s, ctx->c );
+test-brief: null
+test-cleanup: null
+test-context:
+- brief: |
+    This member specifies the ${../if/strchr:/params[0]/name} parameter value.
+  description: null
+  member: |
+    const char *s
+- brief: |
+    This member specifies the ${../if/strchr:/params[1]/name} parameter value.
+  description: null
+  member: |
+    int c
+- brief: |
+    This member contains the return value.
+  description: null
+  member: |
+    char *retval
+- brief: |
+    This member contains the expected return value for a found character.
+  description: null
+  member: |
+    char *expected
+- brief: |
+    This member specifies the offset of the string in the buffer.
+  description: null
+  member: |
+    size_t offset
+- brief: |
+    This member specifies the position of the character which ends the search in
+    the buffer.
+  description: null
+  member: |
+    size_t position
+- brief: |
+    If this member is true, then the string contains the searched character.
+  description: null
+  member: |
+    bool found
+- brief: |
+    This member provides the buffer of the string, aligned to the size of type
+    size_t.
+  description: null
+  member: |
+    size_t buf[ 16 ]
+test-context-support: null
+test-description: null
+test-header: null
+test-includes:
+- string.h
+test-local-includes: []
+test-prepare: |
+  ctx->found = false;
+  ctx->offset = 0;
+  ctx->position = 5;
+  ctx->retval = NULL;
+  ctx->expected = NULL;
+test-setup: null
+test-stop: null
+test-support: |
+  typedef ${.:/test-context-type} Context;
+
+  static size_t AlignUp( size_t offset )
+  {
+    return ( offset + sizeof( size_t ) - 1 ) & ~( sizeof( size_t ) - 1 );
+  }
+
+  static void Arrange( Context *ctx )
+  {
+    char  *b;
+    size_t i;
+
+    b = (char *) ctx->buf;
+
+    for ( i = 0; i < sizeof( ctx->buf ); ++i ) {
+      b[ i ] = (char) ( 'A' + i % 26 );
+    }
+
+    ctx->s = b + ctx->offset;
+
+    if ( (char) ctx->c == '\0' || !ctx->found ) {
+      b[ ctx->position ] = '\0';
+    } else {
+      b[ ctx->position ] = (char) ctx->c;
+      b[ ctx->position + 2 * sizeof( size_t ) ] = '\0';
+    }
+
+    ctx->expected = b + ctx->position;
+  }
+test-target: testsuites/validation/tc-string-strchr.c
+test-teardown: null
+text: |
+  ${.:text-template}
+transition-map:
+- enabled-by: true
+  post-conditions:
+    Result: Found
+  pre-conditions:
+    C:
+    - Zero
+    Alignment: N/A
+    Match: N/A
+    Position: N/A
+- enabled-by: true
+  post-conditions:
+    Result: &id001
+    - if:
+        pre-conditions:
+          Match: Found
+      then: Found
+    - else: 'Null'
+  pre-conditions:
+    C:
+    - NonZero
+    Alignment:
+    - Unaligned
+    Match: all
+    Position: all
+- enabled-by: true
+  post-conditions:
+    Result: *id001
+  pre-conditions:
+    C:
+    - NonZero
+    Alignment:
+    - Aligned
+    Match: all
+    Position:
+    - FirstBlock
+    - SecondBlock
+- enabled-by: true
+  post-conditions: AlignedHasNoPrefix
+  pre-conditions:
+    C:
+    - NonZero
+    Alignment:
+    - Aligned
+    Match: all
+    Position:
+    - Prefix
+type: requirement
