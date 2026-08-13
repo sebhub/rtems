@@ -101,13 +101,6 @@ ppc_exc_interrupt:
 	oris	FRAME_REGISTER, FRAME_REGISTER, MSR_SPE >> 16
 	mtmsr	FRAME_REGISTER
 	isync
-
-	/*
-	 * Save high order part of SCRATCH_1_REGISTER here.  The low order part
-	 * was saved in the minimal prologue.
-	 */
-	evmergehi	FRAME_REGISTER, SCRATCH_1_REGISTER, SCRATCH_1_REGISTER
-	PPC_REG_STORE	FRAME_REGISTER, GPR3_OFFSET(r1)
 #endif
 
 #if defined(PPC_MULTILIB_FPU) || defined(PPC_MULTILIB_ALTIVEC)
@@ -131,6 +124,20 @@ ppc_exc_interrupt:
 	 * minimum prologue.
 	 */
 	PPC_GPR_STORE	SCRATCH_0_REGISTER, SCRATCH_0_OFFSET(r1)
+
+#ifdef __SPE__
+	/*
+	 * Save high order part of SCRATCH_1_REGISTER here.  The low order part
+	 * was saved in the minimal prologue.
+	 *
+	 * The evmergehi writes both halves of its target, so it must not use a
+	 * register which is still live.  SCRATCH_0_REGISTER is in the frame at
+	 * this point and free to be used.
+	 */
+	evmergehi	SCRATCH_0_REGISTER, SCRATCH_1_REGISTER, SCRATCH_1_REGISTER
+	PPC_REG_STORE	SCRATCH_0_REGISTER, GPR3_OFFSET(r1)
+#endif
+
 #ifdef __powerpc64__
 	PPC_GPR_STORE	r2, GPR2_OFFSET(r1)
 	LA32	r2, .TOC.
