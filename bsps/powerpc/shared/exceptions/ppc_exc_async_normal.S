@@ -425,9 +425,14 @@ ppc_exc_interrupt:
 #endif
 
 #ifdef __SPE__
-	/* Load SPEFSCR and ACC */
-	lwz	SCRATCH_3_REGISTER, PPC_EXC_SPEFSCR_OFFSET(r1)
+	/*
+	 * Restore ACC and SPEFSCR.  The accumulator is restored first, so that
+	 * the status bits of the move are overwritten by the restored SPEFSCR.
+	 */
 	evldd	SCRATCH_4_REGISTER, PPC_EXC_ACC_OFFSET(r1)
+	evmra	SCRATCH_4_REGISTER, SCRATCH_4_REGISTER
+	lwz	SCRATCH_3_REGISTER, PPC_EXC_SPEFSCR_OFFSET(r1)
+	mtspr	FSL_EIS_SPEFSCR, SCRATCH_3_REGISTER
 #endif
 
 	/*
