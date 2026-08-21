@@ -221,6 +221,7 @@ __STATIC_FORCEINLINE void __TZ_set_STACKSEAL_S (uint32_t* stackTop) {
 
 /* ##########################  Core Instruction Access  ######################### */
 /** \defgroup CMSIS_Core_InstructionInterface CMSIS Core Instruction Interface
+  \ingroup CMSIS
   Access to dedicated instructions
   @{
 */
@@ -1651,6 +1652,7 @@ __STATIC_FORCEINLINE void __set_FPSCR(uint32_t fpscr)
 
 /* ###################  Compiler specific Intrinsics  ########################### */
 /** \defgroup CMSIS_SIMD_intrinsics CMSIS SIMD Intrinsics
+  \ingroup CMSIS
   Access to dedicated SIMD instructions
   @{
 */
