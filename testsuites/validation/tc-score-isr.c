@@ -138,6 +138,26 @@ void __wrap_bsp_interrupt_dispatch(
 }
 #endif
 
+#if defined( ARM_MULTILIB_ARCH_V7M )
+void __real__ARMV7M_NVIC_Interrupt_dispatch( void );
+
+void __wrap__ARMV7M_NVIC_Interrupt_dispatch( void );
+
+void __wrap__ARMV7M_NVIC_Interrupt_dispatch( void )
+{
+  if ( interrupted_stack_at_multitasking_start == 0 ) {
+    uintptr_t sp;
+
+    /* A thread uses the process stack pointer. */
+    __asm__ volatile( "mrs %0, psp"
+                      : "=r"( sp ) );
+    interrupted_stack_at_multitasking_start = sp;
+  }
+
+  __real__ARMV7M_NVIC_Interrupt_dispatch();
+}
+#endif
+
 #if defined( __microblaze__ )
 void __real_bsp_interrupt_dispatch( uint32_t source );
 

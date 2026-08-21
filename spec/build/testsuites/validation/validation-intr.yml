@@ -15,6 +15,7 @@ ldflags:
 - -Wl,--wrap=amd64_dispatch_isr
 - -Wl,--wrap=BSP_dispatch_isr
 - -Wl,--wrap=mips_vector_isr_handlers
+- -Wl,--wrap=_ARMV7M_NVIC_Interrupt_dispatch
 - -Wl,--wrap=_RISCV_Interrupt_dispatch
 - -Wl,--wrap=_SPARC_Interrupt_dispatch
 links:
