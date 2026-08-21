@@ -90,8 +90,9 @@ void __attribute__((naked, no_profile_instrument_function)) _ARMV7M_Exception_de
 #ifdef ARM_MULTILIB_VFP
     /* Ensure that the FPU is enabled */
     "ldr r4, =%[cpacr]\n"
+    "ldr r4, [r4]\n"
     "tst r4, #(0xf << 20)\n"
-    "bne 1f\n"
+    "beq 1f\n"
 
     /* Save VFP context */
     "sub sp, %[vfpsz]\n"
