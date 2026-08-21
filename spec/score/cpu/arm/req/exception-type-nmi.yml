@@ -1,0 +1,16 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: bsps/arm/samrh
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: exception-armv7m
+rationale: |
+  The value is the exception number of the NMI exception.
+references: []
+requirement-type: functional
+text: |
+  The default NMI exception handler shall set the vector member of the exception
+  frame to the value two.
+type: requirement

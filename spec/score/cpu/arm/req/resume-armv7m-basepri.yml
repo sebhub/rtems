@@ -1,0 +1,17 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: bsps/arm/samrh
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: ../../req/resume-restore
+rationale: |
+  The system termination disables interrupts before it calls the fatal
+  extensions. On ARMv7-M this sets BASEPRI.
+references: []
+requirement-type: functional
+text: |
+  On ARMv7-M, the exception resume shall restore BASEPRI from the exception
+  frame.
+type: requirement

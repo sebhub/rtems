@@ -3,6 +3,7 @@ copyrights:
 - Copyright (C) 2020 embedded brains GmbH & Co. KG
 enabled-by:
   not:
+  - arm
   - riscv
   - sparc
 index-entries: []

@@ -1,0 +1,17 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: arm
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+- location: 6.1.2.1
+  role: reference
+  uid: /ref/arch/arm/aapcs32
+term: ARM user-visible floating-point register
+text: |
+  A floating-point register which the instruction set makes visible to a program.
+  These are d0 to d15 and FPSCR. Where the multilib provides 32 double-precision
+  registers, d16 to d31 join them.
+type: glossary

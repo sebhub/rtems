@@ -1,0 +1,17 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: bsps/arm/samrh
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: ../../req/exc-status
+rationale: |
+  The hardware stacks no BASEPRI. The stacked xPSR does not tell a Thread mode
+  context on MSP from one on PSP.
+references: []
+requirement-type: functional
+text: |
+  On ARMv7-M, the default exception handler shall save BASEPRI and the EXC_RETURN
+  value of the exception to the exception frame.
+type: requirement

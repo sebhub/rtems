@@ -1,0 +1,16 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: arm
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+- location: 6.1.1, 6.3.1
+  role: reference
+  uid: /ref/arch/arm/aapcs32
+term: ARM call-used register
+text: |
+  A register which a called function may change. These are r0, r1, r2, r3 and
+  r12.
+type: glossary

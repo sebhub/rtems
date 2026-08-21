@@ -1,0 +1,14 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+date: '2026-01-26'
+enabled-by: true
+links: []
+month: January
+organization: Arm
+reference-type: manual
+title: ELF for the Arm Architecture, release 2025Q4, dated 2026-01-26
+type: reference
+work-hash: C0s42ks2eQc0aRrqjsH9eyEaQTKWGjofqnAuk8D6sQ8=
+work-url: https://github.com/ARM-software/abi-aa/releases/download/2025Q4/aaelf32.pdf
+year: '2026'

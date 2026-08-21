@@ -1,0 +1,21 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: arm
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: ../../req/ctx-initial-floating-point-environment
+- location: 6.1.2.1
+  role: reference
+  uid: /ref/arch/arm/aapcs32
+rationale: |
+  An FPSCR of zero rounds to nearest, enables no trap and keeps subnormal values
+  as IEEE 754 defines them. The aapcs32 requires a vector length and a vector
+  stride of zero at a public interface, and an FPSCR of zero gives both.
+references: []
+requirement-type: functional
+text: |
+  Where the multilib provides a floating-point unit, the context initialization
+  shall give the context an FPSCR of zero.
+type: requirement

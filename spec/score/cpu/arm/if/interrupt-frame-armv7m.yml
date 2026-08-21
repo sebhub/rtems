@@ -1,0 +1,172 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This structure represents the interrupt frame of the ARM CPU port for ARMv7-M.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+- default:
+    brief: |
+      This member contains the ARM core register R0.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: r0
+  variants: []
+- default:
+    brief: |
+      This member contains the ARM core register R1.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: r1
+  variants: []
+- default:
+    brief: |
+      This member contains the ARM core register R2.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: r2
+  variants: []
+- default:
+    brief: |
+      This member contains the ARM core register R3.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: r3
+  variants: []
+- default:
+    brief: |
+      This member contains the ARM core register R12.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: r12
+  variants: []
+- default:
+    brief: |
+      This member contains the link register, which is R14.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: lr
+  variants: []
+- default:
+    brief: |
+      This member contains the return address of the exception.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: return_pc
+  variants: []
+- default:
+    brief: |
+      This member contains the xPSR of the interrupted context.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: return_xpsr
+  variants: []
+- default:
+    brief: |
+      This member contains the VFP register D0, which holds S0 and S1.
+    definition: double ${.:name}
+    description: null
+    kind: member
+    name: d0
+  variants: []
+- default:
+    brief: |
+      This member contains the VFP register D1, which holds S2 and S3.
+    definition: double ${.:name}
+    description: null
+    kind: member
+    name: d1
+  variants: []
+- default:
+    brief: |
+      This member contains the VFP register D2, which holds S4 and S5.
+    definition: double ${.:name}
+    description: null
+    kind: member
+    name: d2
+  variants: []
+- default:
+    brief: |
+      This member contains the VFP register D3, which holds S6 and S7.
+    definition: double ${.:name}
+    description: null
+    kind: member
+    name: d3
+  variants: []
+- default:
+    brief: |
+      This member contains the VFP register D4, which holds S8 and S9.
+    definition: double ${.:name}
+    description: null
+    kind: member
+    name: d4
+  variants: []
+- default:
+    brief: |
+      This member contains the VFP register D5, which holds S10 and S11.
+    definition: double ${.:name}
+    description: null
+    kind: member
+    name: d5
+  variants: []
+- default:
+    brief: |
+      This member contains the VFP register D6, which holds S12 and S13.
+    definition: double ${.:name}
+    description: null
+    kind: member
+    name: d6
+  variants: []
+- default:
+    brief: |
+      This member contains the VFP register D7, which holds S14 and S15.
+    definition: double ${.:name}
+    description: null
+    kind: member
+    name: d7
+  variants: []
+- default:
+    brief: |
+      This member contains the FPSCR of the interrupted context.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: fpscr
+  variants: []
+- default:
+    brief: |
+      This member aligns the frame to eight bytes.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: reserved
+  variants: []
+definition-kind: typedef-only
+description: |
+  The processor stacks the frame on the entry of an exception, as section B1.5.6
+  of the ARMv7-M Architecture Reference Manual defines it. The members from d0 on
+  hold the floating-point context. The processor stacks it only if CONTROL.FPCA
+  is set at the exception entry. With the lazy state preservation of FPCCR.LSPEN,
+  the processor reserves the space and writes it at the first floating-point
+  instruction of the handler.
+enabled-by:
+- arm/samrh71_flexram
+index-entries: []
+interface-type: struct
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+- role: proxy-member
+  uid: /score/cpu/if/interrupt-frame
+name: CPU_Interrupt_frame
+notes: null
+type: interface

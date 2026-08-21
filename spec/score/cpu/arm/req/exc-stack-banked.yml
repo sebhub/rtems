@@ -1,0 +1,18 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by:
+  and:
+  - arm
+  - not: bsps/arm/samrh
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: ../../req/exc-stack
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  The default exception handler shall use the banked stack pointer of the mode it
+  enters on the A and R profiles.
+type: requirement
