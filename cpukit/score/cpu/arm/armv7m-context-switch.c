@@ -43,7 +43,7 @@
 
 #ifdef ARM_MULTILIB_ARCH_V7M
 
-void __attribute__((naked)) _CPU_Context_switch(
+void __attribute__((naked, no_profile_instrument_function)) _CPU_Context_switch(
   Context_Control *executing,
   Context_Control *heir
 )
