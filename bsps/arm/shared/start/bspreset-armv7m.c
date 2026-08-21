@@ -1,5 +1,13 @@
 /* SPDX-License-Identifier: BSD-2-Clause */
 
+/**
+ * @file
+ *
+ * @ingroup RTEMSBSPsARMShared
+ *
+ * @brief This source file contains the implementation of bsp_reset().
+ */
+
 /*
  * Copyright (c) 2015 embedded brains GmbH & Co. KG
  *

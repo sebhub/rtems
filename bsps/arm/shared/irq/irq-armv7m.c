@@ -1,5 +1,14 @@
 /* SPDX-License-Identifier: BSD-2-Clause */
 
+/**
+ * @file
+ *
+ * @ingroup RTEMSBSPsARMShared
+ *
+ * @brief This source file contains the implementation of the Armv7-M
+ * interrupt controller support.
+ */
+
 /*
  * Copyright (C) 2020 embedded brains GmbH & Co. KG
  * Copyright (C) 2011, 2012 Sebastian Huber
