@@ -1,0 +1,15 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+date: '2026-01-26'
+enabled-by: true
+links: []
+month: January
+organization: Arm
+reference-type: manual
+title: Application Binary Interface for the Arm Architecture, The Base Standard, release
+  2025Q4, dated 2026-01-26
+type: reference
+work-hash: IF2jFDiwIBk30snkD7W5_uZT2qjRdzqX2bOl2MQhThc=
+work-url: https://github.com/ARM-software/abi-aa/releases/download/2025Q4/bsabi32.pdf
+year: '2026'

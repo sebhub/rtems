@@ -1,0 +1,428 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: bsps/arm/samrh
+links: []
+test-actions:
+- action-brief: |
+    Load a distinct pattern into each register which the processor stacks on the
+    exception entry. Raise the interrupt. Save the interrupt frame in the handler.
+    Run this once for each register with the pattern of that register inverted,
+    then once unchanged.
+  action-code: |
+    memcpy(
+      interrupt_frame_initial,
+      interrupt_frame_patterns,
+      sizeof( interrupt_frame_initial )
+    );
+    interrupt_frame_request.handler = InterruptFrameHandler;
+    interrupt_frame_request.arg = NULL;
+
+    #ifdef TM27_INTERRUPT_VECTOR_DEFAULT
+    RegisterCheckRun( &interrupt_frame_check );
+    #endif
+  checks:
+  - brief: |
+      Check that the interrupt handler ran once.
+    code: |
+      CheckSlot( SLOT_COUNT );
+    links: []
+  - brief: |
+      Check that the interrupt frame contains the ARM core registers R0 to R3, R12
+      and the link register of the interrupted context.
+    code: |
+      CheckSlot( SLOT_R0 );
+      CheckSlot( SLOT_R1 );
+      CheckSlot( SLOT_R2 );
+      CheckSlot( SLOT_R3 );
+      CheckSlot( SLOT_R12 );
+      CheckSlot( SLOT_LR );
+    links:
+    - role: validation
+      uid: ../if/interrupt-frame-armv7m
+  - brief: |
+      Check that the interrupt frame contains the address of an instruction after the
+      unmask. The processor takes the interrupt before or after the instruction
+      synchronisation barrier.
+    code: |
+      CheckSlot( SLOT_RETURN_PC );
+    links:
+    - role: validation
+      uid: ../if/interrupt-frame-armv7m
+  - brief: |
+      Check that the interrupt frame contains the xPSR of the thread mode. The Thumb
+      state bit is set, and the exception number is zero.
+    code: |
+      CheckSlot( SLOT_XPSR_THUMB );
+      CheckSlot( SLOT_XPSR_EXCEPTION );
+    links:
+    - role: validation
+      uid: ../if/interrupt-frame-armv7m
+  - brief: |
+      Check that the interrupt frame contains the VFP registers D0 to D7 and the
+      FPSCR of the interrupted context.
+    code: |
+      CheckSlot( SLOT_D0 );
+      CheckSlot( SLOT_D1 );
+      CheckSlot( SLOT_D2 );
+      CheckSlot( SLOT_D3 );
+      CheckSlot( SLOT_D4 );
+      CheckSlot( SLOT_D5 );
+      CheckSlot( SLOT_D6 );
+      CheckSlot( SLOT_D7 );
+      CheckSlot( SLOT_FPSCR );
+    links:
+    - role: validation
+      uid: ../if/interrupt-frame-armv7m
+  - brief: |
+      Check that each run with a changed value flagged exactly the checks of that
+      value, and that each run recorded every check.
+    code: |
+      RegisterCheckReport( &interrupt_frame_check );
+    links:
+    - role: validation
+      uid: ../if/interrupt-frame-armv7m
+  links: []
+test-brief: |
+  Tests the interrupt frame of ARMv7-M.
+test-context: []
+test-context-support: null
+test-description: |
+  The action needs a BSP which supplies the TM27 support. A BSP without it raises
+  no interrupt.
+test-header: null
+test-includes:
+- rtems/score/armv7m.h
+- rtems/score/cpuimpl.h
+- rtems.h
+- stdint.h
+- string.h
+test-local-includes:
+- tx-register-check.h
+- tx-support.h
+test-setup: null
+test-stop: null
+test-support: |
+  #define _RTEMS_TMTEST27
+  #include <tm27.h>
+
+  extern const char interrupt_frame_isb_label[];
+
+  extern const char interrupt_frame_return_label[];
+
+  typedef enum {
+    SOURCE_R0,
+    SOURCE_R1,
+    SOURCE_R2,
+    SOURCE_R3,
+    SOURCE_R12,
+    SOURCE_LR,
+    SOURCE_D0,
+    SOURCE_D1,
+    SOURCE_D2,
+    SOURCE_D3,
+    SOURCE_D4,
+    SOURCE_D5,
+    SOURCE_D6,
+    SOURCE_D7,
+    SOURCE_FPSCR,
+    SOURCE_RETURN_PC,
+    SOURCE_XPSR,
+    SOURCE_COUNT,
+    SOURCE_MAX
+  } Source;
+
+  typedef enum {
+    SLOT_R0,
+    SLOT_R1,
+    SLOT_R2,
+    SLOT_R3,
+    SLOT_R12,
+    SLOT_LR,
+    SLOT_D0,
+    SLOT_D1,
+    SLOT_D2,
+    SLOT_D3,
+    SLOT_D4,
+    SLOT_D5,
+    SLOT_D6,
+    SLOT_D7,
+    SLOT_FPSCR,
+    SLOT_RETURN_PC,
+    SLOT_XPSR_THUMB,
+    SLOT_XPSR_EXCEPTION,
+    SLOT_COUNT,
+    SLOT_MAX
+  } Slot;
+
+  /* The bits of the FPSCR which the Cortex-M7 implements. */
+  #define FPSCR_MASK UINT64_C( 0xf7c0009f )
+
+  #define XPSR_THUMB UINT64_C( 0x01000000 )
+
+  #define XPSR_EXCEPTION UINT64_C( 0x000001ff )
+
+  #define WORD UINT64_C( 0xffffffff )
+
+  static const RegisterCheckSource interrupt_frame_sources[ SOURCE_MAX ] = {
+    { "r0", REGISTER_CHECK_INITIAL, WORD },
+    { "r1", REGISTER_CHECK_INITIAL, WORD },
+    { "r2", REGISTER_CHECK_INITIAL, WORD },
+    { "r3", REGISTER_CHECK_INITIAL, WORD },
+    { "r12", REGISTER_CHECK_INITIAL, WORD },
+    { "lr", REGISTER_CHECK_INITIAL, WORD },
+    { "d0", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "d1", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "d2", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "d3", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "d4", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "d5", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "d6", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "d7", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "fpscr", REGISTER_CHECK_INITIAL, FPSCR_MASK },
+    { "return_pc", REGISTER_CHECK_EXPECTED, WORD },
+    { "xpsr", REGISTER_CHECK_EXPECTED, XPSR_THUMB | XPSR_EXCEPTION },
+    { "count", REGISTER_CHECK_EXPECTED, WORD }
+  };
+
+  static const RegisterCheckSlot interrupt_frame_slots[ SLOT_MAX ] = {
+    { "r0", SOURCE_R0, WORD },
+    { "r1", SOURCE_R1, WORD },
+    { "r2", SOURCE_R2, WORD },
+    { "r3", SOURCE_R3, WORD },
+    { "r12", SOURCE_R12, WORD },
+    { "lr", SOURCE_LR, WORD },
+    { "d0", SOURCE_D0, UINT64_MAX },
+    { "d1", SOURCE_D1, UINT64_MAX },
+    { "d2", SOURCE_D2, UINT64_MAX },
+    { "d3", SOURCE_D3, UINT64_MAX },
+    { "d4", SOURCE_D4, UINT64_MAX },
+    { "d5", SOURCE_D5, UINT64_MAX },
+    { "d6", SOURCE_D6, UINT64_MAX },
+    { "d7", SOURCE_D7, UINT64_MAX },
+    { "fpscr", SOURCE_FPSCR, FPSCR_MASK },
+    { "return_pc", SOURCE_RETURN_PC, WORD },
+    { "xpsr thumb", SOURCE_XPSR, XPSR_THUMB },
+    { "xpsr exception", SOURCE_XPSR, XPSR_EXCEPTION },
+    { "count", SOURCE_COUNT, WORD }
+  };
+
+  /*
+   * The FPSCR pattern sets N, V, DN, FZ, the rounding mode towards zero, IDC,
+   * IXC and IOC.
+   */
+  static const uint64_t interrupt_frame_patterns[ SOURCE_MAX ] = {
+    0x71727374,
+    0x72737475,
+    0x73747576,
+    0x74757677,
+    0x75767778,
+    0x76777879,
+    0x9192939495969798,
+    0x9293949596979899,
+    0x939495969798999a,
+    0x9495969798999a9b,
+    0x95969798999a9b9c,
+    0x969798999a9b9c9d,
+    0x9798999a9b9c9d9e,
+    0x98999a9b9c9d9e9f,
+    0x93c00091
+  };
+
+  static uint64_t interrupt_frame_initial[ SOURCE_MAX ];
+
+  static CPU_Interrupt_frame interrupt_frame;
+
+  static volatile int interrupt_frame_count;
+
+  static CallWithinISRRequest interrupt_frame_request;
+
+  static void InterruptFrameHandler( void *arg )
+  {
+    uint32_t fpscr;
+
+    (void) arg;
+
+    /*
+     * The floating-point instruction triggers the lazy state preservation, so
+     * that the processor writes the floating-point context into the frame.
+     */
+    __asm__ volatile ( "vmrs %0, fpscr" : "=r" ( fpscr ) );
+    (void) fpscr;
+
+    /* The interrupted thread uses the process stack. */
+    interrupt_frame = *(const CPU_Interrupt_frame *) _ARMV7M_Get_PSP();
+    ++interrupt_frame_count;
+  }
+
+  static uint64_t D( const double *d )
+  {
+    uint64_t value;
+
+    memcpy( &value, d, sizeof( value ) );
+    return value;
+  }
+
+  static void InterruptFrameRun( RegisterCheck *self, void *arg )
+  {
+    rtems_interrupt_level level;
+    uint32_t              fpscr;
+    uint64_t             *initial;
+    uint64_t              return_pc;
+    size_t                i;
+
+    (void) arg;
+    memset( &interrupt_frame, 0, sizeof( interrupt_frame ) );
+    interrupt_frame_count = 0;
+    initial = interrupt_frame_initial;
+    __asm__ volatile ( "vmrs %0, fpscr" : "=r" ( fpscr ) );
+
+    /*
+     * The interrupt is raised while it is masked.  The block loads the
+     * registers and unmasks it, so the interrupt preempts the block.  The block
+     * loads r0 last, because r0 holds the address of the table.
+     */
+    rtems_interrupt_local_disable( level );
+    CallWithinISRSubmit( &interrupt_frame_request );
+    __asm__ volatile (
+      "mov r0, %[initial]\n"
+      "ldr r1, [r0, #112]\n"
+      "vmsr fpscr, r1\n"
+      "vldr.64 d0, [r0, #48]\n"
+      "vldr.64 d1, [r0, #56]\n"
+      "vldr.64 d2, [r0, #64]\n"
+      "vldr.64 d3, [r0, #72]\n"
+      "vldr.64 d4, [r0, #80]\n"
+      "vldr.64 d5, [r0, #88]\n"
+      "vldr.64 d6, [r0, #96]\n"
+      "vldr.64 d7, [r0, #104]\n"
+      "ldr r1, [r0, #8]\n"
+      "ldr r2, [r0, #16]\n"
+      "ldr r3, [r0, #24]\n"
+      "ldr r12, [r0, #32]\n"
+      "ldr lr, [r0, #40]\n"
+      "ldr r0, [r0, #0]\n"
+      "mov r10, #0\n"
+      "msr basepri, r10\n"
+      ".globl interrupt_frame_isb_label\n"
+      "interrupt_frame_isb_label:\n"
+      "isb\n"
+      ".globl interrupt_frame_return_label\n"
+      "interrupt_frame_return_label:\n"
+      "nop\n"
+      :
+      : [initial] "r" ( initial )
+      : "memory", "r0", "r1", "r2", "r3", "r10", "r12", "lr",
+        "d0", "d1", "d2", "d3", "d4", "d5", "d6", "d7"
+    );
+    __asm__ volatile ( "vmsr fpscr, %0" : : "r" ( fpscr ) );
+    rtems_interrupt_local_enable( level );
+
+    RegisterCheckRecord(
+      self,
+      SLOT_R0,
+      interrupt_frame.r0,
+      interrupt_frame_patterns[ SOURCE_R0 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R1,
+      interrupt_frame.r1,
+      interrupt_frame_patterns[ SOURCE_R1 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R2,
+      interrupt_frame.r2,
+      interrupt_frame_patterns[ SOURCE_R2 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R3,
+      interrupt_frame.r3,
+      interrupt_frame_patterns[ SOURCE_R3 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R12,
+      interrupt_frame.r12,
+      interrupt_frame_patterns[ SOURCE_R12 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_LR,
+      interrupt_frame.lr,
+      interrupt_frame_patterns[ SOURCE_LR ]
+    );
+
+    for ( i = 0; i < 8; ++i ) {
+      RegisterCheckRecord(
+        self,
+        SLOT_D0 + i,
+        D( &interrupt_frame.d0 + i ),
+        interrupt_frame_patterns[ SOURCE_D0 + i ]
+      );
+    }
+
+    RegisterCheckRecord(
+      self,
+      SLOT_FPSCR,
+      interrupt_frame.fpscr,
+      interrupt_frame_patterns[ SOURCE_FPSCR ]
+    );
+
+    /*
+     * The processor takes the interrupt before or after the instruction
+     * synchronisation barrier, so either address is the expected value.
+     */
+    return_pc = interrupt_frame.return_pc;
+
+    if (
+      return_pc != (uint32_t) (uintptr_t) interrupt_frame_isb_label &&
+      return_pc != (uint32_t) (uintptr_t) interrupt_frame_return_label
+    ) {
+      return_pc = (uint32_t) (uintptr_t) interrupt_frame_return_label;
+    }
+
+    RegisterCheckRecord(
+      self,
+      SLOT_RETURN_PC,
+      interrupt_frame.return_pc,
+      return_pc
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_XPSR_THUMB,
+      interrupt_frame.return_xpsr,
+      XPSR_THUMB
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_XPSR_EXCEPTION,
+      interrupt_frame.return_xpsr,
+      0
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_COUNT,
+      (uint64_t) interrupt_frame_count,
+      1
+    );
+  }
+
+  static RegisterCheck interrupt_frame_check = {
+    .sources = interrupt_frame_sources,
+    .source_count = SOURCE_MAX,
+    .slots = interrupt_frame_slots,
+    .slot_count = SLOT_MAX,
+    .initial = interrupt_frame_initial,
+    .run = InterruptFrameRun
+  };
+
+  static void CheckSlot( Slot slot )
+  {
+    RegisterCheckVerify( &interrupt_frame_check, slot );
+  }
+test-target: testsuites/validation/bsps/tc-arm-interrupt-frame-armv7m.c
+test-teardown: null
+type: test-case

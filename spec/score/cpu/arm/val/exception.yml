@@ -1,0 +1,237 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2024 embedded brains GmbH & Co. KG
+enabled-by:
+  and:
+  - arm
+  - not: bsps/arm/samrh
+links: []
+test-actions:
+- action-brief: |
+    Initialize the exception frame and VFP context. Prepare register values.
+    Trigger an undefined instruction exception. Save the exception frame. Return to
+    the action. Run this through the register check, once for each value inverted,
+    then once unchanged.
+  action-code: |
+    #if defined( ARM_MULTILIB_ARCH_V4 )
+      ${exception-frame:/test-run}(
+        UndefinedInstructionScenario,
+        0,
+        ARM_EXCEPTION_UNDEF
+      );
+    #endif
+  checks:
+  - brief: |
+      Check that the exception frame has the expected vector number.
+    code: |
+      #if defined( ARM_MULTILIB_ARCH_V4 )
+        ExceptionFrameCheckVector();
+      #endif
+    links:
+    - role: validation
+      uid: ../req/exception-type-undefined-instruction
+  links: []
+- action-brief: |
+    Initialize the exception frame and VFP context. Prepare register values. Do a
+    system call. Save the exception frame. Return to the action. Run this through
+    the register check, once for each value inverted, then once unchanged.
+  action-code: |
+    #if defined( ARM_MULTILIB_ARCH_V4 )
+      ${exception-frame:/test-run}(
+        SystemCallScenario,
+        ( UINT32_C( 1 ) << 13 ) | ( UINT32_C( 1 ) << 14 ),
+        ARM_EXCEPTION_SWI
+      );
+    #endif
+  checks:
+  - brief: |
+      Check that the exception frame has the expected vector number.
+    code: |
+      #if defined( ARM_MULTILIB_ARCH_V4 )
+        ExceptionFrameCheckVector();
+      #endif
+    links:
+    - role: validation
+      uid: ../req/exception-type-swi
+  links: []
+- action-brief: |
+    Initialize the exception frame and VFP context. Prepare register values.
+    Provoke a data abort. Save the exception frame. Return to the action. Run this
+    through the register check, once for each value inverted, then once unchanged.
+  action-code: |
+    #if defined( ARM_MULTILIB_ARCH_V4 )
+      ${exception-frame:/test-run}(
+        DataAbortScenario,
+        UINT32_C( 1 ) << 13,
+        ARM_EXCEPTION_DATA_ABORT
+      );
+    #endif
+  checks:
+  - brief: |
+      Check that the exception frame has the expected vector number.
+    code: |
+      #if defined( ARM_MULTILIB_ARCH_V4 )
+        ExceptionFrameCheckVector();
+      #endif
+    links:
+    - role: validation
+      uid: ../req/exception-type-data-abort
+  links: []
+- action-brief: |
+    Initialize the exception frame and VFP context. Prepare register values.
+    Provoke a prefetch abort. Save the exception frame. Return to the action. Run
+    this through the register check, once for each value inverted, then once
+    unchanged.
+  action-code: |
+    #if defined( ARM_MULTILIB_ARCH_V4 )
+      ${exception-frame:/test-run}(
+        PrefetchAbortScenario,
+        UINT32_C( 1 ) << 13,
+        ARM_EXCEPTION_PREF_ABORT
+      );
+    #endif
+  checks:
+  - brief: |
+      Check that the exception frame has the expected vector number.
+    code: |
+      #if defined( ARM_MULTILIB_ARCH_V4 )
+        ExceptionFrameCheckVector();
+      #endif
+    links:
+    - role: validation
+      uid: ../req/exception-type-prefetch-abort
+  links: []
+test-brief: |
+  Tests the default exception handling.
+test-context: []
+test-context-support: null
+test-description: null
+test-header: null
+test-includes: []
+test-local-includes:
+- tr-arm-exception-frame.h
+test-setup: null
+test-stop: null
+test-support: |
+  #if defined(ARM_MULTILIB_ARCH_V4)
+    #define _RTEMS_TMTEST27
+    #include <tm27.h>
+
+    extern const char undefined_instruction_label[];
+
+    static const void * const undefined_instruction_address =
+    #ifdef __thumb__
+      2
+    #else
+      4
+    #endif
+      + undefined_instruction_label;
+
+    extern const char system_call_label[];
+
+    static const void * const system_call_address =
+    #ifdef __thumb__
+      2
+    #else
+      4
+    #endif
+      + system_call_label;
+
+    static const volatile uint32_t data_abort_address =
+    #ifdef TEST_DATA_ABORT_ADDRESS
+      TEST_DATA_ABORT_ADDRESS
+    #else
+      0
+    #endif
+      ;
+
+    extern const char data_abort_instruction_label[];
+
+    static const void * const data_abort_instruction_address =
+      data_abort_instruction_label + 8;
+
+    static const volatile uint32_t prefetch_abort_address =
+    #ifdef TEST_PREFETCH_ABORT_ADDRESS
+      TEST_PREFETCH_ABORT_ADDRESS
+    #else
+      0
+    #endif
+    #ifdef __thumb__
+      | 1
+    #endif
+      ;
+
+    static void UndefinedInstructionScenario( void )
+    {
+      (void) ExceptionFrameInitialize();
+      __asm__ volatile (
+        ASM_PREPARE
+        "undefined_instruction_label:\n"
+        "udf\n"
+        :
+        :
+        : ASM_CLOBBER
+      );
+      exception_expected_pc = undefined_instruction_address;
+    }
+
+    static void SystemCallScenario( void )
+    {
+      (void) ExceptionFrameInitialize();
+      __asm__ volatile (
+        ASM_PREPARE
+        "ldr sp, =exception_restore_sp\n"
+        "ldr sp, [sp]\n"
+        "system_call_label:\n"
+        "svc #0\n"
+        :
+        :
+        : ASM_CLOBBER
+      );
+      exception_expected_registers[ 13 ] = exception_restore_sp;
+      exception_expected_registers[ 14 ] =
+        (uint32_t) (uintptr_t) system_call_address;
+      exception_expected_pc = system_call_address;
+    }
+
+    static void DataAbortScenario( void )
+    {
+      (void) ExceptionFrameInitialize();
+      __asm__ volatile (
+        ASM_PREPARE
+        "ldr sp, =data_abort_address\n"
+        "ldr sp, [sp]\n"
+        "data_abort_instruction_label:\n"
+        "ldr sp, [sp]\n"
+        "nop\n"
+        "nop\n"
+        :
+        :
+        : ASM_CLOBBER
+      );
+      exception_expected_registers[ 13 ] = data_abort_address;
+      exception_expected_pc = data_abort_instruction_address;
+    }
+
+    static void PrefetchAbortScenario( void )
+    {
+      (void) ExceptionFrameInitialize();
+      __asm__ volatile (
+        ASM_PREPARE
+        "ldr sp, =prefetch_abort_address\n"
+        "ldr sp, [sp]\n"
+        "bx sp\n"
+        ".globl exception_resume_prefetch_abort_label\n"
+        "exception_resume_prefetch_abort_label:\n"
+        :
+        :
+        : ASM_CLOBBER
+      );
+      exception_expected_registers[ 13 ] = prefetch_abort_address;
+      exception_expected_pc =
+        (void *) ( ( prefetch_abort_address & ~UINT32_C( 1 ) ) + 4 );
+    }
+  #endif
+test-target: testsuites/validation/bsps/tc-arm-exception.c
+test-teardown: null
+type: test-case

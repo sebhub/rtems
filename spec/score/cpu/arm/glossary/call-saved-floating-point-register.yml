@@ -1,0 +1,16 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: arm
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+- location: 6.1.2.1, 7.1, 7.4.1
+  role: reference
+  uid: /ref/arch/arm/aapcs32
+term: ARM call-saved floating-point register
+text: |
+  A floating-point register which aapcs32 requires a called function to preserve.
+  These are d8, d9, d10, d11, d12, d13, d14 and d15.
+type: glossary

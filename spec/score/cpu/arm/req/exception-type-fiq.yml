@@ -1,0 +1,23 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2024 embedded brains GmbH & Co. KG
+enabled-by:
+- bsps/arm/altera-cyclone-v
+- bsps/arm/fvp
+- bsps/arm/imx
+- bsps/arm/realview-pbx-a9
+- bsps/arm/xen
+- bsps/arm/xilinx-zynq
+- bsps/arm/xilinx-zynqmp
+- bsps/arm/xilinx-zynqmp-rpu
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: exception-armv4
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  The default FIQ exception handler shall set the vector member of the exception
+  frame to the value seven.
+type: requirement

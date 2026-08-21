@@ -1,0 +1,303 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This structure represents the interrupt frame of the ARM CPU port for ARMv4
+  with 32 VFP double registers.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+- default:
+    brief: |
+      This member contains fpscr.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: fpscr
+  variants: []
+- default:
+    brief: |
+      This member contains d16.
+    definition: double ${.:name}
+    description: null
+    kind: member
+    name: d16
+  variants: []
+- default:
+    brief: |
+      This member contains d17.
+    definition: double ${.:name}
+    description: null
+    kind: member
+    name: d17
+  variants: []
+- default:
+    brief: |
+      This member contains d18.
+    definition: double ${.:name}
+    description: null
+    kind: member
+    name: d18
+  variants: []
+- default:
+    brief: |
+      This member contains d19.
+    definition: double ${.:name}
+    description: null
+    kind: member
+    name: d19
+  variants: []
+- default:
+    brief: |
+      This member contains d20.
+    definition: double ${.:name}
+    description: null
+    kind: member
+    name: d20
+  variants: []
+- default:
+    brief: |
+      This member contains d21.
+    definition: double ${.:name}
+    description: null
+    kind: member
+    name: d21
+  variants: []
+- default:
+    brief: |
+      This member contains d22.
+    definition: double ${.:name}
+    description: null
+    kind: member
+    name: d22
+  variants: []
+- default:
+    brief: |
+      This member contains d23.
+    definition: double ${.:name}
+    description: null
+    kind: member
+    name: d23
+  variants: []
+- default:
+    brief: |
+      This member contains d24.
+    definition: double ${.:name}
+    description: null
+    kind: member
+    name: d24
+  variants: []
+- default:
+    brief: |
+      This member contains d25.
+    definition: double ${.:name}
+    description: null
+    kind: member
+    name: d25
+  variants: []
+- default:
+    brief: |
+      This member contains d26.
+    definition: double ${.:name}
+    description: null
+    kind: member
+    name: d26
+  variants: []
+- default:
+    brief: |
+      This member contains d27.
+    definition: double ${.:name}
+    description: null
+    kind: member
+    name: d27
+  variants: []
+- default:
+    brief: |
+      This member contains d28.
+    definition: double ${.:name}
+    description: null
+    kind: member
+    name: d28
+  variants: []
+- default:
+    brief: |
+      This member contains d29.
+    definition: double ${.:name}
+    description: null
+    kind: member
+    name: d29
+  variants: []
+- default:
+    brief: |
+      This member contains d30.
+    definition: double ${.:name}
+    description: null
+    kind: member
+    name: d30
+  variants: []
+- default:
+    brief: |
+      This member contains d31.
+    definition: double ${.:name}
+    description: null
+    kind: member
+    name: d31
+  variants: []
+- default:
+    brief: |
+      This member contains d0.
+    definition: double ${.:name}
+    description: null
+    kind: member
+    name: d0
+  variants: []
+- default:
+    brief: |
+      This member contains d1.
+    definition: double ${.:name}
+    description: null
+    kind: member
+    name: d1
+  variants: []
+- default:
+    brief: |
+      This member contains d2.
+    definition: double ${.:name}
+    description: null
+    kind: member
+    name: d2
+  variants: []
+- default:
+    brief: |
+      This member contains d3.
+    definition: double ${.:name}
+    description: null
+    kind: member
+    name: d3
+  variants: []
+- default:
+    brief: |
+      This member contains d4.
+    definition: double ${.:name}
+    description: null
+    kind: member
+    name: d4
+  variants: []
+- default:
+    brief: |
+      This member contains d5.
+    definition: double ${.:name}
+    description: null
+    kind: member
+    name: d5
+  variants: []
+- default:
+    brief: |
+      This member contains d6.
+    definition: double ${.:name}
+    description: null
+    kind: member
+    name: d6
+  variants: []
+- default:
+    brief: |
+      This member contains d7.
+    definition: double ${.:name}
+    description: null
+    kind: member
+    name: d7
+  variants: []
+- default:
+    brief: |
+      This member contains r0.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: r0
+  variants: []
+- default:
+    brief: |
+      This member contains r1.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: r1
+  variants: []
+- default:
+    brief: |
+      This member contains r2.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: r2
+  variants: []
+- default:
+    brief: |
+      This member contains r3.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: r3
+  variants: []
+- default:
+    brief: |
+      This member contains r7.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: r7
+  variants: []
+- default:
+    brief: |
+      This member contains r9.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: r9
+  variants: []
+- default:
+    brief: |
+      This member contains r12.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: r12
+  variants: []
+- default:
+    brief: |
+      This member contains lr.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: lr
+  variants: []
+- default:
+    brief: |
+      This member contains the return address of the interrupt.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: return_pc
+  variants: []
+- default:
+    brief: |
+      This member contains the CPSR of the interrupted context.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: return_cpsr
+  variants: []
+definition-kind: typedef-only
+description: null
+enabled-by:
+- arm/xilinx_zynq_zc702
+index-entries: []
+interface-type: struct
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+- role: proxy-member
+  uid: /score/cpu/if/interrupt-frame
+name: CPU_Interrupt_frame
+notes: null
+type: interface

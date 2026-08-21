@@ -1,0 +1,18 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: arm
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+- location: 6.1.1
+  role: reference
+  uid: /ref/arch/arm/aapcs32
+term: ARM reserved register
+text: |
+  A register which the ABI reserves and marks neither preserved nor destroyed.
+  This is r9. aapcs32 leaves its role to a platform standard. A variant
+  designates it v6 as a call-saved register, SB as a static base or TR as a
+  thread register.
+type: glossary

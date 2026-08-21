@@ -1,0 +1,207 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This structure represents the exception frame of the ARM CPU port for ARMv4.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+- default:
+    brief: |
+      This member provides the ARM core registers by name and as an array.
+    definition:
+    - default:
+        brief: |
+          This member provides the ARM core registers by name.
+        definition:
+        - default:
+            brief: |
+              This member contains the ARM core register R0.
+            definition: ${/c/if/uint32_t:/name} ${.:name}
+            description: null
+            kind: member
+            name: register_r0
+          variants: []
+        - default:
+            brief: |
+              This member contains the ARM core register R1.
+            definition: ${/c/if/uint32_t:/name} ${.:name}
+            description: null
+            kind: member
+            name: register_r1
+          variants: []
+        - default:
+            brief: |
+              This member contains the ARM core register R2.
+            definition: ${/c/if/uint32_t:/name} ${.:name}
+            description: null
+            kind: member
+            name: register_r2
+          variants: []
+        - default:
+            brief: |
+              This member contains the ARM core register R3.
+            definition: ${/c/if/uint32_t:/name} ${.:name}
+            description: null
+            kind: member
+            name: register_r3
+          variants: []
+        - default:
+            brief: |
+              This member contains the ARM core register R4.
+            definition: ${/c/if/uint32_t:/name} ${.:name}
+            description: null
+            kind: member
+            name: register_r4
+          variants: []
+        - default:
+            brief: |
+              This member contains the ARM core register R5.
+            definition: ${/c/if/uint32_t:/name} ${.:name}
+            description: null
+            kind: member
+            name: register_r5
+          variants: []
+        - default:
+            brief: |
+              This member contains the ARM core register R6.
+            definition: ${/c/if/uint32_t:/name} ${.:name}
+            description: null
+            kind: member
+            name: register_r6
+          variants: []
+        - default:
+            brief: |
+              This member contains the ARM core register R7.
+            definition: ${/c/if/uint32_t:/name} ${.:name}
+            description: null
+            kind: member
+            name: register_r7
+          variants: []
+        - default:
+            brief: |
+              This member contains the ARM core register R8.
+            definition: ${/c/if/uint32_t:/name} ${.:name}
+            description: null
+            kind: member
+            name: register_r8
+          variants: []
+        - default:
+            brief: |
+              This member contains the ARM core register R9.
+            definition: ${/c/if/uint32_t:/name} ${.:name}
+            description: null
+            kind: member
+            name: register_r9
+          variants: []
+        - default:
+            brief: |
+              This member contains the ARM core register R10.
+            definition: ${/c/if/uint32_t:/name} ${.:name}
+            description: null
+            kind: member
+            name: register_r10
+          variants: []
+        - default:
+            brief: |
+              This member contains the ARM core register R11.
+            definition: ${/c/if/uint32_t:/name} ${.:name}
+            description: null
+            kind: member
+            name: register_r11
+          variants: []
+        - default:
+            brief: |
+              This member contains the ARM core register R12.
+            definition: ${/c/if/uint32_t:/name} ${.:name}
+            description: null
+            kind: member
+            name: register_r12
+          variants: []
+        - default:
+            brief: |
+              This member contains the stack pointer, which is R13.
+            definition: ${/c/if/uint32_t:/name} ${.:name}
+            description: null
+            kind: member
+            name: register_sp
+          variants: []
+        - default:
+            brief: |
+              This member contains the link register, which is R14.
+            definition: void *${.:name}
+            description: null
+            kind: member
+            name: register_lr
+          variants: []
+        - default:
+            brief: |
+              This member contains the program counter, which is R15.
+            definition: void *${.:name}
+            description: null
+            kind: member
+            name: register_pc
+          variants: []
+        description: null
+        kind: struct
+        name: ''
+      variants: []
+    - default:
+        brief: |
+          This member provides the ARM core registers as an array.
+        definition: ${/c/if/uint32_t:/name} ${.:name}[ 16 ]
+        description: null
+        kind: member
+        name: registers
+      variants: []
+    description: null
+    kind: union
+    name: ''
+  variants: []
+- default:
+    brief: |
+      This member contains the CPSR.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_cpsr
+  variants: []
+- default:
+    brief: |
+      This member contains the exception vector number.
+    definition: Arm_symbolic_exception_name ${.:name}
+    description: null
+    kind: member
+    name: vector
+  variants: []
+- default:
+    brief: |
+      This member points to the VFP context of the exception.
+    definition: const ARM_VFP_context *${.:name}
+    description: null
+    kind: member
+    name: vfp_context
+  variants: []
+- default:
+    brief: |
+      This member aligns the frame to eight bytes.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: reserved_for_stack_alignment
+  variants: []
+definition-kind: typedef-only
+description: null
+enabled-by:
+- arm/xilinx_zynq_zc702
+- arm/zynqmp_rpu_lock_step
+index-entries: []
+interface-type: struct
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+- role: proxy-member
+  uid: /score/cpu/if/exception-frame
+name: CPU_Exception_frame
+notes: null
+type: interface

@@ -1,0 +1,191 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This structure represents the processor context of the ARM CPU port for
+  ARMv7-M.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+- default:
+    brief: |
+      This member contains the ARM core register R4.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_r4
+  variants: []
+- default:
+    brief: |
+      This member contains the ARM core register R5.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_r5
+  variants: []
+- default:
+    brief: |
+      This member contains the ARM core register R6.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_r6
+  variants: []
+- default:
+    brief: |
+      This member contains the ARM core register R7.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_r7
+  variants: []
+- default:
+    brief: |
+      This member contains the ARM core register R8.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_r8
+  variants: []
+- default:
+    brief: |
+      This member contains the ARM core register R9.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_r9
+  variants: []
+- default:
+    brief: |
+      This member contains the ARM core register R10.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_r10
+  variants: []
+- default:
+    brief: |
+      This member contains the ARM core register R11.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_r11
+  variants: []
+- default:
+    brief: |
+      This member contains the link register, which is R14.
+    definition: void *${.:name}
+    description: null
+    kind: member
+    name: register_lr
+  variants: []
+- default:
+    brief: |
+      This member contains the stack pointer, which is R13.
+    definition: void *${.:name}
+    description: null
+    kind: member
+    name: register_sp
+  variants: []
+- default:
+    brief: |
+      This member contains the interrupt nest level of the thread.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: isr_nest_level
+  variants: []
+- default:
+    brief: |
+      This member contains the thread identifier.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: thread_id
+  variants: []
+- default:
+    brief: |
+      This member contains the VFP register D8.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_d8
+  variants: []
+- default:
+    brief: |
+      This member contains the VFP register D9.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_d9
+  variants: []
+- default:
+    brief: |
+      This member contains the VFP register D10.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_d10
+  variants: []
+- default:
+    brief: |
+      This member contains the VFP register D11.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_d11
+  variants: []
+- default:
+    brief: |
+      This member contains the VFP register D12.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_d12
+  variants: []
+- default:
+    brief: |
+      This member contains the VFP register D13.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_d13
+  variants: []
+- default:
+    brief: |
+      This member contains the VFP register D14.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_d14
+  variants: []
+- default:
+    brief: |
+      This member contains the VFP register D15.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_d15
+  variants: []
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member is true while the thread executes on a processor.
+      definition: volatile ${/c/if/bool:/name} ${.:name}
+      description: null
+      kind: member
+      name: is_executing
+    enabled-by: defined(RTEMS_SMP)
+definition-kind: typedef-only
+description: null
+enabled-by:
+- arm/samrh71_flexram
+index-entries: []
+interface-type: struct
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+name: Context_Control
+notes: null
+type: interface

@@ -1,0 +1,17 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: bsps/arm/samrh
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: ../../req/resume-restore
+rationale: |
+  The EXC_RETURN value selects the mode, the stack and the frame type of the
+  interrupted context.
+references: []
+requirement-type: functional
+text: |
+  On ARMv7-M, the exception resume shall return through the EXC_RETURN value of
+  the exception frame.
+type: requirement

@@ -1,0 +1,16 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: arm
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+- location: 5.5.5
+  role: reference
+  uid: /ref/arch/arm/aaelf32
+term: ARM thread pointer register
+text: |
+  The register which addresses the thread-local storage. The architecture defines
+  none. A multilib reads TPIDRURO or calls \_\_aeabi_read_tp.
+type: glossary

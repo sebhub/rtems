@@ -1,0 +1,291 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This structure represents the VFP context of the ARM CPU port.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+- default:
+    brief: |
+      This member contains the FPEXC.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_fpexc
+  variants: []
+- default:
+    brief: |
+      This member contains the FPSCR.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_fpscr
+  variants: []
+- default:
+    brief: |
+      This member contains the VFP register D0.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_d0
+  variants: []
+- default:
+    brief: |
+      This member contains the VFP register D1.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_d1
+  variants: []
+- default:
+    brief: |
+      This member contains the VFP register D2.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_d2
+  variants: []
+- default:
+    brief: |
+      This member contains the VFP register D3.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_d3
+  variants: []
+- default:
+    brief: |
+      This member contains the VFP register D4.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_d4
+  variants: []
+- default:
+    brief: |
+      This member contains the VFP register D5.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_d5
+  variants: []
+- default:
+    brief: |
+      This member contains the VFP register D6.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_d6
+  variants: []
+- default:
+    brief: |
+      This member contains the VFP register D7.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_d7
+  variants: []
+- default:
+    brief: |
+      This member contains the VFP register D8.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_d8
+  variants: []
+- default:
+    brief: |
+      This member contains the VFP register D9.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_d9
+  variants: []
+- default:
+    brief: |
+      This member contains the VFP register D10.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_d10
+  variants: []
+- default:
+    brief: |
+      This member contains the VFP register D11.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_d11
+  variants: []
+- default:
+    brief: |
+      This member contains the VFP register D12.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_d12
+  variants: []
+- default:
+    brief: |
+      This member contains the VFP register D13.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_d13
+  variants: []
+- default:
+    brief: |
+      This member contains the VFP register D14.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_d14
+  variants: []
+- default:
+    brief: |
+      This member contains the VFP register D15.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_d15
+  variants: []
+- default:
+    brief: |
+      This member contains the VFP register D16.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_d16
+  variants: []
+- default:
+    brief: |
+      This member contains the VFP register D17.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_d17
+  variants: []
+- default:
+    brief: |
+      This member contains the VFP register D18.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_d18
+  variants: []
+- default:
+    brief: |
+      This member contains the VFP register D19.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_d19
+  variants: []
+- default:
+    brief: |
+      This member contains the VFP register D20.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_d20
+  variants: []
+- default:
+    brief: |
+      This member contains the VFP register D21.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_d21
+  variants: []
+- default:
+    brief: |
+      This member contains the VFP register D22.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_d22
+  variants: []
+- default:
+    brief: |
+      This member contains the VFP register D23.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_d23
+  variants: []
+- default:
+    brief: |
+      This member contains the VFP register D24.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_d24
+  variants: []
+- default:
+    brief: |
+      This member contains the VFP register D25.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_d25
+  variants: []
+- default:
+    brief: |
+      This member contains the VFP register D26.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_d26
+  variants: []
+- default:
+    brief: |
+      This member contains the VFP register D27.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_d27
+  variants: []
+- default:
+    brief: |
+      This member contains the VFP register D28.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_d28
+  variants: []
+- default:
+    brief: |
+      This member contains the VFP register D29.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_d29
+  variants: []
+- default:
+    brief: |
+      This member contains the VFP register D30.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_d30
+  variants: []
+- default:
+    brief: |
+      This member contains the VFP register D31.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_d31
+  variants: []
+definition-kind: typedef-only
+description: null
+enabled-by: arm
+index-entries: []
+interface-type: struct
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+name: ARM_VFP_context
+notes: null
+type: interface

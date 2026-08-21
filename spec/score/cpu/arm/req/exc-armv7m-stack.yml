@@ -1,0 +1,18 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: bsps/arm/samrh
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: ../../req/exc-stack
+rationale: |
+  The processor uses the main stack in Handler mode. The start code sets the main
+  stack pointer to the end of the interrupt stack area. The threads run on the
+  process stack.
+references: []
+requirement-type: functional
+text: |
+  On ARMv7-M, the default exception handler shall use the interrupt stack of the
+  processor.
+type: requirement

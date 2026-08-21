@@ -1,0 +1,100 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2024 embedded brains GmbH & Co. KG
+enabled-by:
+- bsps/arm/altera-cyclone-v
+- bsps/arm/fvp
+- bsps/arm/imx
+- bsps/arm/realview-pbx-a9
+- bsps/arm/xen
+- bsps/arm/xilinx-zynq
+- bsps/arm/xilinx-zynqmp
+- bsps/arm/xilinx-zynqmp-rpu
+links: []
+test-actions:
+- action-brief: |
+    Initialize the exception frame and VFP context. Prepare register values.
+    Trigger an FIQ exception. Save the exception frame. Return to the action. Run
+    this through the register check, once for each value inverted, then once
+    unchanged.
+  action-code: |
+    #ifdef TM27_INTERRUPT_VECTOR_FAST
+      _TM27_Prepare_fast( &fiq_trigger_address, &fiq_trigger_value );
+      T_not_null( fiq_trigger_address );
+
+      if ( fiq_trigger_address != NULL ) {
+        ${exception-frame:/test-run}(
+          FiqScenario,
+          ( UINT32_C( 1 ) << 13 ) | ( UINT32_C( 1 ) << 14 ),
+          ARM_EXCEPTION_FIQ
+        );
+      }
+    #else
+      T_true( false );
+    #endif
+  checks:
+  - brief: |
+      Check that the exception frame has the expected vector number.
+    code: |
+      ExceptionFrameCheckVector();
+    links:
+    - role: validation
+      uid: ../req/exception-type-fiq
+  links: []
+test-brief: |
+  Tests the default FIQ exception handling.
+test-context: []
+test-context-support: null
+test-description: null
+test-header: null
+test-includes:
+- rtems/score/cpuimpl.h
+test-local-includes:
+- tr-arm-exception-frame.h
+test-setup: null
+test-stop: null
+test-support: |
+  #define _RTEMS_TMTEST27
+  #include <tm27.h>
+
+  #ifdef TM27_INTERRUPT_VECTOR_FAST
+  static TM27_Trigger_fast_register volatile * volatile fiq_trigger_address;
+
+  static TM27_Trigger_fast_register volatile fiq_trigger_value;
+
+  extern const char after_fiq_enable_instruction_label[];
+
+  static const void * const after_fiq_enable_instruction_address =
+    after_fiq_enable_instruction_label + 4;
+  #endif
+
+  static void FiqScenario( void )
+  {
+    (void) ExceptionFrameInitialize();
+  #ifdef TM27_INTERRUPT_VECTOR_FAST
+    _TM27_Prepare_fast( &fiq_trigger_address, &fiq_trigger_value );
+    __asm__ volatile (
+      ASM_PREPARE
+      "cpsie f\n"
+      "ldr sp, =fiq_trigger_address\n"
+      "ldr sp, [sp]\n"
+      "ldr lr, =fiq_trigger_value\n"
+      "ldr lr, [lr]\n"
+      "str lr, [sp]\n"
+      "after_fiq_enable_instruction_label:\n"
+      "1: b 1b\n"
+      "nop\n"
+      "nop\n"
+      :
+      :
+      : ASM_CLOBBER
+    );
+    exception_expected_registers[ 13 ] =
+      (uint32_t) (uintptr_t) fiq_trigger_address;
+    exception_expected_registers[ 14 ] = fiq_trigger_value;
+    exception_expected_pc = after_fiq_enable_instruction_address;
+  #endif
+  }
+test-target: testsuites/validation/bsps/tc-arm-exception-fiq.c
+test-teardown: null
+type: test-case

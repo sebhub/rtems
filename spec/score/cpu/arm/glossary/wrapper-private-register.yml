@@ -1,0 +1,14 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: arm
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+term: ARM wrapper-private register
+text: |
+  A call-saved register which the interrupt wrapper uses for its own bookkeeping.
+  These are r7 and r9. arm_exc_interrupt.S names them STACK_POINTER_ADJUST and
+  NON_VOLATILE_SCRATCH.
+type: glossary

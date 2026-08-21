@@ -1,0 +1,16 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: arm
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+- location: 6.1.1, 7.3
+  role: reference
+  uid: /ref/arch/arm/aapcs32
+term: ARM fixed register
+text: |
+  A register with a fixed role in every variant. These are r13 as the stack
+  pointer, r14 as the link register and r15 as the program counter.
+type: glossary

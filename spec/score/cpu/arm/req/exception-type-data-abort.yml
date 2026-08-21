@@ -1,0 +1,18 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2024 embedded brains GmbH & Co. KG
+enabled-by:
+  and:
+  - arm
+  - not: bsps/arm/samrh
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: exception-armv4
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  The default data abort exception handler shall set the vector member of the
+  exception frame to the value four.
+type: requirement
