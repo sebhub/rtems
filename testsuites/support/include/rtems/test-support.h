@@ -97,6 +97,7 @@
 #define _RTEMS_TEST_SUPPORT_H
 
 #include <rtems.h>
+#include <setjmp.h>
 #include <rtems/irq-extension.h>
 #include <rtems/score/atomic.h>
 #include <rtems/score/threadq.h>
@@ -1815,6 +1816,17 @@ typedef void ( *FatalHandler )(
  * @param arg is the argument of the fatal handler.
  */
 void SetFatalHandler( FatalHandler fatal, void *arg );
+
+/**
+ * @brief Sets the interrupt level zero and performs a long jump out of the
+ *   fatal handler of an exception.
+ *
+ * @param code is the fatal code of the exception.  It is the address of the
+ *   exception frame.
+ *
+ * @param env is the environment of the long jump.
+ */
+RTEMS_NO_RETURN void ExceptionLongJump( rtems_fatal_code code, jmp_buf env );
 
 /**
  * @brief Produces a fatal error and checks it.

@@ -42,6 +42,7 @@
 
 #include <rtems/bspIo.h>
 #include <rtems/test.h>
+#include <rtems/score/cpuimpl.h>
 #include <rtems/score/isrlevel.h>
 #include <rtems/score/objectimpl.h>
 #include <rtems/score/percpu.h>
@@ -978,6 +979,38 @@ void SetFatalHandler( FatalHandler fatal, void *arg )
   fatal_arg = arg;
 }
 
+#if defined(ARM_MULTILIB_ARCH_V7M)
+static void ExceptionLongJumpInThreadMode( jmp_buf env )
+{
+  longjmp( env, 1 );
+}
+#endif
+
+void ExceptionLongJump( rtems_fatal_code code, jmp_buf env )
+{
+#if defined(ARM_MULTILIB_ARCH_V7M)
+  CPU_Exception_frame *frame;
+
+  /*
+   * The fatal handler of an exception runs in Handler mode.  A long jump
+   * from there keeps the exception active.  The resume ends the exception
+   * and performs the long jump in Thread mode.
+   */
+  frame = (CPU_Exception_frame *) code;
+  frame->register_r0 = (uintptr_t) env;
+  frame->register_pc = (void *) ExceptionLongJumpInThreadMode;
+  frame->register_basepri = 0;
+
+  /* The IT state of the xPSR belongs to the interrupted instruction */
+  frame->register_xpsr &= ~UINT32_C( 0x0600fc00 );
+  _CPU_Exception_resume( frame );
+#else
+  (void) code;
+  _ISR_Set_level( 0 );
+  longjmp( env, 1 );
+#endif
+}
+
 typedef struct {
   jmp_buf      before_fatal;
   FatalHandler check;
@@ -995,6 +1028,11 @@ static void CheckFatalError(
   ctx = arg;
   SetFatalHandler( NULL, NULL );
   ( *ctx->check )( source, code, ctx->arg );
+
+  if ( source == RTEMS_FATAL_SOURCE_EXCEPTION ) {
+    ExceptionLongJump( code, ctx->before_fatal );
+  }
+
   _ISR_Set_level( 0 );
   longjmp( ctx->before_fatal, 1 );
 }
