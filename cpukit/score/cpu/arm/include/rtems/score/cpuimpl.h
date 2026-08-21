@@ -149,6 +149,37 @@ static inline struct Per_CPU_Control *_ARM_Get_current_per_CPU_control( void )
 
 #endif /* ARM_MULTILIB_ARCH_V4 */
 
+#if defined(ARM_MULTILIB_ARCH_V7M)
+
+typedef struct {
+  uint32_t r0;
+  uint32_t r1;
+  uint32_t r2;
+  uint32_t r3;
+  uint32_t r12;
+  uint32_t lr;
+  uint32_t return_pc;
+  uint32_t return_xpsr;
+#ifdef ARM_MULTILIB_VFP
+  /*
+   * The processor stacks the members from d0 on only if CONTROL.FPCA is set
+   * at the exception entry.
+   */
+  double d0;
+  double d1;
+  double d2;
+  double d3;
+  double d4;
+  double d5;
+  double d6;
+  double d7;
+  uint32_t fpscr;
+  uint32_t reserved;
+#endif /* ARM_MULTILIB_VFP */
+} CPU_Interrupt_frame;
+
+#endif /* ARM_MULTILIB_ARCH_V7M */
+
 void _CPU_Context_volatile_clobber( uintptr_t pattern );
 
 void _CPU_Context_validate( uintptr_t pattern );
