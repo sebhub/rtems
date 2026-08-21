@@ -120,6 +120,8 @@ links:
   uid: bsps/riscv-memory-ram-end
 - role: build-dependency
   uid: bsps/validation-bsp-0
+- role: build-dependency
+  uid: bsps/validation-bsp-no-clock-0
 type: build
 use-after:
 - rtemstest
