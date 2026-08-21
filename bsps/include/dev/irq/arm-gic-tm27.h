@@ -76,7 +76,7 @@ static inline void Install_tm27_vector( rtems_interrupt_handler handler )
   );
   sc = rtems_interrupt_entry_install(
     ARM_GIC_TM27_IRQ_LOW,
-    RTEMS_INTERRUPT_UNIQUE,
+    RTEMS_INTERRUPT_SHARED,
     &entry_low
   );
   _Assert_Unused_variable_equals( sc, RTEMS_SUCCESSFUL );
@@ -95,7 +95,7 @@ static inline void Install_tm27_vector( rtems_interrupt_handler handler )
   );
   sc = rtems_interrupt_entry_install(
     ARM_GIC_TM27_IRQ_HIGH,
-    RTEMS_INTERRUPT_UNIQUE,
+    RTEMS_INTERRUPT_SHARED,
     &entry_high
   );
   _Assert_Unused_variable_equals( sc, RTEMS_SUCCESSFUL );
