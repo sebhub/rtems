@@ -1,5 +1,14 @@
 /* SPDX-License-Identifier: BSD-2-Clause */
 
+/**
+ * @file
+ *
+ * @ingroup RTEMSBSPsARMShared
+ *
+ * @brief This source file contains the implementation of
+ * _ARMV7M_NVIC_Interrupt_dispatch().
+ */
+
 /*
  * Copyright (C) 2011, 2012 Sebastian Huber
  *
