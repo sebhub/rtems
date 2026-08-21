@@ -53,6 +53,7 @@ source:
 - cpukit/score/cpu/arm/armv7m-exception-priority-get.c
 - cpukit/score/cpu/arm/armv7m-exception-priority-handler.c
 - cpukit/score/cpu/arm/armv7m-exception-priority-set.c
+- cpukit/score/cpu/arm/armv7m-exception-resume.c
 - cpukit/score/cpu/arm/armv7m-initialize.c
 - cpukit/score/cpu/arm/armv7m-isr-dispatch.c
 - cpukit/score/cpu/arm/armv7m-isr-enter-leave.c
