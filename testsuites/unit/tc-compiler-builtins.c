@@ -141,12 +141,9 @@ static void Fatal(
   void              *arg
 )
 {
-  (void) code;
-
   if ( source == RTEMS_FATAL_SOURCE_EXCEPTION && do_longjmp ) {
     do_longjmp = false;
-    _ISR_Set_level( 0 );
-    longjmp( arg, 1 );
+    ExceptionLongJump( code, arg );
   }
 }
 
