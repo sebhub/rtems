@@ -40,6 +40,10 @@
 #ifndef __tm27_h
 #define __tm27_h
 
+#define TEST_DATA_ABORT_ADDRESS 0x10000000
+
+#define TEST_PREFETCH_ABORT_ADDRESS 0x10000000
+
 #define TM27_INTERRUPT_VECTOR_FAST ARM_GIC_IRQ_SGI_14
 
 #include <dev/irq/arm-gic-tm27.h>
@@ -75,5 +79,11 @@ static inline void _TM27_Clear_fast( void )
   cpuif->icceoir = cpuif->icciar;
   cpuif->iccicr &= ~GIC_CPUIF_ICCICR_FIQ_EN;
 }
+
+#define TM27_IO_LOAD_32_ADDRESS 0xFF110018
+
+#define TM27_IO_STORE_32_ADDRESS TM27_IO_LOAD_32_ADDRESS
+
+#define TM27_IO_STORE_32_VALUE 0
 
 #endif /* __tm27_h */
