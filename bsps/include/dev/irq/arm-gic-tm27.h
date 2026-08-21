@@ -145,4 +145,43 @@ static inline void Lower_tm27_intr(void)
   arm_gic_tm27_raise( ARM_GIC_TM27_IRQ_HIGH );
 }
 
+#if !defined(TM27_INTERRUPT_VECTOR_FAST) && \
+  defined(BSP_ARM_GIC_ENABLE_FIQ_FOR_GROUP_0)
+
+#define TM27_INTERRUPT_VECTOR_FAST ARM_GIC_IRQ_SGI_14
+
+typedef uint32_t TM27_Trigger_fast_register;
+
+static inline void _TM27_Prepare_fast(
+  TM27_Trigger_fast_register volatile * volatile *trigger_address,
+  TM27_Trigger_fast_register volatile *trigger_value
+)
+{
+  rtems_vector_number vector;
+  volatile gic_dist *dist;
+
+  vector = TM27_INTERRUPT_VECTOR_FAST;
+  (void) arm_gic_irq_set_group( vector, GIC_GROUP_0 );
+  _ARM_Data_synchronization_barrier();
+
+  dist = (volatile gic_dist *) BSP_ARM_GIC_DIST_BASE;
+  *trigger_address = &dist->icdsgir;
+  *trigger_value = GIC_DIST_ICDSGIR_TARGET_LIST_FILTER( 0 )
+    | GIC_DIST_ICDSGIR_CPU_TARGET_LIST( 1U << _SMP_Get_current_processor() )
+    | GIC_DIST_ICDSGIR_SGIINTID( vector );
+}
+
+static inline void _TM27_Clear_fast( void )
+{
+  rtems_vector_number vector;
+  volatile gic_cpuif *cpuif;
+
+  vector = TM27_INTERRUPT_VECTOR_FAST;
+  cpuif = (volatile gic_cpuif *) BSP_ARM_GIC_CPUIF_BASE;
+  cpuif->icceoir = cpuif->icciar;
+  (void) arm_gic_irq_set_group( vector, GIC_GROUP_1 );
+}
+
+#endif
+
 #endif /* LIBBSP_ARM_SHARED_ARM_GIC_TM27_H */
