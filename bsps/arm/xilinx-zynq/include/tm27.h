@@ -46,4 +46,11 @@
 
 #include <dev/irq/arm-gic-tm27.h>
 
+/* Counter_Value_1 of TTC 0, a read-only register */
+#define TM27_IO_LOAD_32_ADDRESS 0xF8001018
+
+#define TM27_IO_STORE_32_ADDRESS TM27_IO_LOAD_32_ADDRESS
+
+#define TM27_IO_STORE_32_VALUE 0
+
 #endif /* __tm27_h */
