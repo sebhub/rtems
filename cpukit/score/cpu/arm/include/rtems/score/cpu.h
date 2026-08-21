@@ -295,6 +295,18 @@ uint32_t arm_interrupt_disable( void );
 void arm_interrupt_enable( uint32_t level );
 void arm_interrupt_flash( uint32_t level );
 #else
+#if defined(ARM_MULTILIB_ARCH_V7M)
+/**
+ * @brief The BASEPRI value used to disable interrupts on ARMv7-M.
+ *
+ * Only interrupts with a priority value greater than or equal to this value
+ * are disabled.  An interrupt of a higher priority, in other words with a
+ * lower priority value, runs also inside a critical section and must not use
+ * operating system services.
+ */
+#define ARM_INTERRUPT_DISABLE_BASEPRI 0x80
+#endif
+
 static inline uint32_t arm_interrupt_disable( void )
 {
   uint32_t level;
@@ -334,7 +346,7 @@ static inline uint32_t arm_interrupt_disable( void )
   );
 #endif
 #elif defined(ARM_MULTILIB_ARCH_V7M)
-  uint32_t basepri = 0x80;
+  uint32_t basepri = ARM_INTERRUPT_DISABLE_BASEPRI;
 
   __asm__ volatile (
     "mrs %[level], basepri\n"
