@@ -225,7 +225,11 @@ void _CPU_Exception_frame_print( const CPU_Exception_frame *frame )
 #elif defined(ARM_MULTILIB_ARCH_V7M)
     "XPSR = 0x%08" PRIx32 " "
 #endif
-    "VEC = 0x%08" PRIxPTR "\n",
+    "VEC = 0x%08" PRIxPTR "\n"
+#if defined(ARM_MULTILIB_ARCH_V7M)
+    "BASEPRI = 0x%08" PRIx32 " EXC_RETURN = 0x%08" PRIx32 "\n"
+#endif
+    ,
     frame->register_r0,
     frame->register_r8,
     frame->register_r1,
@@ -248,6 +252,11 @@ void _CPU_Exception_frame_print( const CPU_Exception_frame *frame )
     frame->register_xpsr,
 #endif
     (intptr_t) frame->vector
+#if defined(ARM_MULTILIB_ARCH_V7M)
+    ,
+    frame->register_basepri,
+    frame->exc_return
+#endif
   );
 
   _ARM_VFP_context_print( frame->vfp_context );

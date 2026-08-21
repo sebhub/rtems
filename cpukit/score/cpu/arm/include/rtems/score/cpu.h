@@ -194,7 +194,11 @@
   #endif
 #endif
 
-#define ARM_EXCEPTION_FRAME_SIZE 80
+#if defined(ARM_MULTILIB_ARCH_V7M)
+  #define ARM_EXCEPTION_FRAME_SIZE 88
+#else
+  #define ARM_EXCEPTION_FRAME_SIZE 80
+#endif
 
 #define ARM_EXCEPTION_FRAME_REGISTER_R8_OFFSET 32
 
@@ -209,6 +213,12 @@
 #endif
 
 #define ARM_EXCEPTION_FRAME_VFP_CONTEXT_OFFSET 72
+
+#if defined(ARM_MULTILIB_ARCH_V7M)
+  #define ARM_EXCEPTION_FRAME_REGISTER_BASEPRI_OFFSET 76
+
+  #define ARM_EXCEPTION_FRAME_EXC_RETURN_OFFSET 80
+#endif
 
 #define ARM_VFP_CONTEXT_SIZE 264
 
@@ -678,6 +688,10 @@ typedef struct {
   uint32_t vector;
 #endif
   const ARM_VFP_context *vfp_context;
+#if defined(ARM_MULTILIB_ARCH_V7M)
+  uint32_t register_basepri;
+  uint32_t exc_return;
+#endif
   uint32_t reserved_for_stack_alignment;
 } CPU_Exception_frame;
 

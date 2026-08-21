@@ -78,6 +78,9 @@ void __attribute__((naked, no_profile_instrument_function)) _ARMV7M_Exception_de
     "stm r1, {r3-r6}\n"     /* Store to CPU_Exception_frame */
     "mrs r1, ipsr\n"
     "str r1, [sp, %[cpuvecoff]]\n"
+    "mrs r1, basepri\n"
+    "str r1, [sp, %[cpubasepriof]]\n"
+    "str lr, [sp, %[cpuexcretoff]]\n"
 
     /* Argument for high level handler */
     "mov r0, sp\n"
@@ -139,6 +142,8 @@ void __attribute__((naked, no_profile_instrument_function)) _ARMV7M_Exception_de
       [cpuspoff] "i" (offsetof(CPU_Exception_frame, register_sp)),
       [v7mlroff] "i" (offsetof(ARMV7M_Exception_frame, register_lr)),
       [cpuvecoff] "J" (offsetof(CPU_Exception_frame, vector)),
+      [cpubasepriof] "i" (offsetof(CPU_Exception_frame, register_basepri)),
+      [cpuexcretoff] "i" (offsetof(CPU_Exception_frame, exc_return)),
       [cpuvfpoff] "i" (ARM_EXCEPTION_FRAME_VFP_CONTEXT_OFFSET),
       [cpacr] "i" (ARMV7M_CPACR),
       [vfpsz] "i" (ARM_VFP_CONTEXT_SIZE)
