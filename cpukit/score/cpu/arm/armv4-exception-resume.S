@@ -57,9 +57,9 @@ FUNCTION_ENTRY(_CPU_Exception_resume)
 	ldmia	r1!, {r2-r3}
 	vmsr	FPEXC, r2
 	vmsr	FPSCR, r3
-	vstmia	r1!, {d0-d15}
+	vldmia	r1!, {d0-d15}
 #ifdef ARM_MULTILIB_VFP_D32
-	vstmia	r1!, {d16-d31}
+	vldmia	r1!, {d16-d31}
 #endif
 
 .Lvfp_restore_done:
@@ -68,9 +68,9 @@ FUNCTION_ENTRY(_CPU_Exception_resume)
 	/*
 	 * Restore the original stack pointer of the exception mode.  Assume
 	 * that the exception frame was produced by a default exception
-	 * handler.
+	 * handler, which reserved the frame below that stack pointer.
 	 */
-	mov	sp, r0
+	add	sp, r0, #ARM_EXCEPTION_FRAME_SIZE
 
 	ldr	r1, [r0, #ARM_EXCEPTION_FRAME_REGISTER_PC_OFFSET]
 	ldr	r2, [r0, #ARM_EXCEPTION_FRAME_REGISTER_CPSR_OFFSET]
@@ -84,9 +84,13 @@ FUNCTION_ENTRY(_CPU_Exception_resume)
 	/* We assume that we do not resume to user mode */
 	msr	cpsr, r4
 
-	/* Restore potentially banked registers in the mode to resume */
+	/*
+	 * Restore potentially banked registers in the mode to resume.  The
+	 * link register of this mode is banked with respect to the exception
+	 * mode, which holds the address to resume in its own link register.
+	 */
 	add	r1, r0, #ARM_EXCEPTION_FRAME_REGISTER_R8_OFFSET
-	ldm	r1, {r8-r13}
+	ldm	r1, {r8-r14}
 
 	msr	cpsr, r3
 	ldm	r0, {r0-r7}
