@@ -43,7 +43,7 @@
 
 #ifdef ARM_MULTILIB_ARCH_V7M
 
-static void __attribute__((naked)) _ARMV7M_Thread_dispatch( void )
+static void __attribute__((naked, no_profile_instrument_function)) _ARMV7M_Thread_dispatch( void )
 {
   __asm__ volatile (
     "bl _Thread_Dispatch\n"
