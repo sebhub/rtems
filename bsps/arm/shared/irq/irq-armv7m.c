@@ -52,8 +52,20 @@ rtems_status_code bsp_interrupt_get_attributes(
   rtems_interrupt_attributes *attributes
 )
 {
-  (void) vector;
-
+  /*
+   * rtems_interrupt_local_disable() raises BASEPRI, which disables only the
+   * interrupts of a priority value greater than or equal to the one it uses.
+   * A more urgent interrupt stays enabled inside a critical section.
+   */
+  attributes->is_maskable = _ARMV7M_NVIC_Get_priority( (int) vector )
+    >= ARM_INTERRUPT_DISABLE_BASEPRI;
+  attributes->can_enable = true;
+  attributes->maybe_enable = true;
+  attributes->can_disable = true;
+  attributes->maybe_disable = true;
+  attributes->can_raise = true;
+  attributes->can_clear = true;
+  attributes->cleared_by_acknowledge = true;
   attributes->maximum_priority = 255;
   attributes->can_get_priority = true;
   attributes->can_set_priority = true;
@@ -69,8 +81,8 @@ rtems_status_code bsp_interrupt_is_pending(
 
   bsp_interrupt_assert(bsp_interrupt_is_valid_vector(vector));
   bsp_interrupt_assert(pending != NULL);
-  *pending = false;
-  return RTEMS_UNSATISFIED;
+  *pending = _ARMV7M_NVIC_Is_pending((int) vector);
+  return RTEMS_SUCCESSFUL;
 }
 
 rtems_status_code bsp_interrupt_raise(rtems_vector_number vector)
@@ -78,7 +90,8 @@ rtems_status_code bsp_interrupt_raise(rtems_vector_number vector)
   (void) vector;
 
   bsp_interrupt_assert(bsp_interrupt_is_valid_vector(vector));
-  return RTEMS_UNSATISFIED;
+  _ARMV7M_NVIC_Set_pending((int) vector);
+  return RTEMS_SUCCESSFUL;
 }
 
 rtems_status_code bsp_interrupt_clear(rtems_vector_number vector)
@@ -86,7 +99,8 @@ rtems_status_code bsp_interrupt_clear(rtems_vector_number vector)
   (void) vector;
 
   bsp_interrupt_assert(bsp_interrupt_is_valid_vector(vector));
-  return RTEMS_UNSATISFIED;
+  _ARMV7M_NVIC_Clear_pending((int) vector);
+  return RTEMS_SUCCESSFUL;
 }
 
 rtems_status_code bsp_interrupt_vector_is_enabled(
@@ -98,8 +112,8 @@ rtems_status_code bsp_interrupt_vector_is_enabled(
 
   bsp_interrupt_assert(bsp_interrupt_is_valid_vector(vector));
   bsp_interrupt_assert(enabled != NULL);
-  *enabled = false;
-  return RTEMS_UNSATISFIED;
+  *enabled = _ARMV7M_NVIC_Is_enabled((int) vector);
+  return RTEMS_SUCCESSFUL;
 }
 
 rtems_status_code bsp_interrupt_vector_enable(rtems_vector_number vector)
