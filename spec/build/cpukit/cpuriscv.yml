@@ -35,4 +35,5 @@ source:
 - cpukit/score/cpu/riscv/riscv-counter.S
 - cpukit/score/cpu/riscv/riscv-exception-frame-print.c
 - cpukit/score/cpu/riscv/riscv-exception-handler.S
+- cpukit/score/cpu/riscv/riscv-exception-resume.S
 type: build
