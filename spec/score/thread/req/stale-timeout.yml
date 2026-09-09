@@ -1,0 +1,19 @@
+SPDX-License-Identifier: CC-BY-SA-4.0
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: RTEMS_SMP
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: ../if/group
+rationale: |
+  A tickle takes the timer of a thread out of the watchdog collection and calls
+  the service routine outside the lock of the collection. A party which ends the
+  wait in that window meets a routine which is still in flight. On a uniprocessor
+  system no party reaches that window, because a tickle runs in an interrupt or
+  with thread dispatch disabled.
+requirement-type: functional
+text: |
+  While the wait of a thread for which the system armed a timeout is over, when
+  the timeout expires, the timeout shall not end a wait of the thread.
+type: requirement
