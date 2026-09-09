@@ -1,0 +1,347 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: RTEMS_SMP
+links: []
+test-actions:
+- action-brief: |
+    Let the timeout of a period expire on the first processor while the
+    ${../glossary/ownertask:/term} cancels the period on the second processor.
+  action-code: |
+    ArmOnFirstProcessor( ctx );
+    SetFlag( &ctx->mode, MODE_CANCEL );
+    SetFlag( &ctx->cancelled, 0 );
+    SetFlag( &ctx->window_reached, 0 );
+    SetFlag( &ctx->window_timed_out, 0 );
+    SetFlag( &ctx->arm, 1 );
+
+    WaitForWindow( ctx );
+  checks:
+  - brief: |
+      Check that the timeout reached the window of the test.
+    code: |
+      T_true( GetFlag( &ctx->window_reached ) != 0 );
+    links: []
+  - brief: |
+      Check that no wait of the test reached its bound.
+    code: |
+      T_false( GetFlag( &ctx->window_timed_out ) != 0 );
+    links: []
+  - brief: |
+      Check that the timeout of the ${../glossary/interval:/term} which ended leaves
+      the ${../glossary/state:/term} of the period alone.
+    code: |
+      rtems_status_code                  sc;
+      rtems_rate_monotonic_period_status status;
+
+      sc = rtems_rate_monotonic_get_status( ctx->period_id, &status );
+      T_rsc_success( sc );
+      T_eq_int( status.state, RATE_MONOTONIC_INACTIVE );
+      T_eq_u32( status.postponed_jobs_count, 0 );
+    links:
+    - role: validation
+      uid: ../req/stale-timeout-state
+  links: []
+- action-brief: |
+    Let the timeout of a period expire on the first processor while the
+    ${../glossary/ownertask:/term} begins a new ${../glossary/interval:/term} on
+    the second processor.
+  action-code: |
+    ArmOnFirstProcessor( ctx );
+    SetFlag( &ctx->mode, MODE_WAIT );
+    SetFlag( &ctx->window_reached, 0 );
+    SetFlag( &ctx->window_timed_out, 0 );
+    SetFlag( &ctx->arm, 1 );
+
+    WaitForWindow( ctx );
+  checks:
+  - brief: |
+      Check that the timeout reached the window of the test.
+    code: |
+      T_true( GetFlag( &ctx->window_reached ) != 0 );
+    links: []
+  - brief: |
+      Check that no wait of the test reached its bound.
+    code: |
+      T_false( GetFlag( &ctx->window_timed_out ) != 0 );
+    links: []
+  - brief: |
+      Check that the timeout of the ${../glossary/interval:/term} which ended does
+      not end the wait of the ${../glossary/ownertask:/term} which began after it.
+    code: |
+      T_true( WaitsForPeriod( ctx ) );
+    links:
+    - role: validation
+      uid: ../req/stale-timeout
+  links: []
+test-brief: |
+  Tests that a timeout of a period which the ${../glossary/ownertask:/term} ended
+  changes neither the ${../glossary/state:/term} of the period nor a wait which
+  began after it.
+test-context:
+- brief: |
+    This member contains the identifier of the ${../glossary/ownertask:/term}.
+  description: null
+  member: |
+    rtems_id owner_id
+- brief: |
+    This member references the thread control block of the
+    ${../glossary/ownertask:/term}.
+  description: null
+  member: |
+    Thread_Control *owner_tcb
+- brief: |
+    This member contains the identifier of the period.
+  description: null
+  member: |
+    rtems_id period_id
+- brief: |
+    This member contains the work of the ${../glossary/ownertask:/term} in the
+    window of the test.
+  description: null
+  member: |
+    Atomic_Uint mode
+- brief: |
+    If this member is true, then the ${../glossary/ownertask:/term} armed the
+    period on the first processor.
+  description: null
+  member: |
+    Atomic_Uint armed
+- brief: |
+    If this member is true, then the ${../glossary/ownertask:/term} cancelled the
+    period in the window of the test.
+  description: null
+  member: |
+    Atomic_Uint cancelled
+- brief: |
+    If this member is true, then the timeout of the period gets the treatment of
+    the test.
+  description: null
+  member: |
+    Atomic_Uint arm
+- brief: |
+    If this member is true, then the timeout reached the window of the test.
+  description: null
+  member: |
+    Atomic_Uint window_reached
+- brief: |
+    If this member is true, then a wait of the test reached its bound.
+  description: null
+  member: |
+    Atomic_Uint window_timed_out
+test-context-support: null
+test-description: null
+test-header: null
+test-includes:
+- rtems.h
+- rtems/score/threadimpl.h
+- rtems/score/watchdogimpl.h
+- sys/time.h
+test-local-includes:
+- ts-config.h
+- tx-support.h
+test-setup:
+  brief: null
+  code: |
+    timeout_ctx = ctx;
+    SetFlag( &ctx->arm, 0 );
+    SetFlag( &ctx->armed, 0 );
+
+    /*
+     * The second scheduler gives its processor up, so the owner arms the
+     * period on the processor of the runner.  The timer of the period stays
+     * there while the owner runs on the second processor later on.
+     */
+    RemoveProcessor( SCHEDULER_B_ID, 1 );
+
+    ctx->owner_id = CreateTask( "OWNR", GetSelfPriority() );
+    ctx->owner_tcb = GetThread( ctx->owner_id );
+    StartTask( ctx->owner_id, Owner, ctx );
+    Yield();
+
+    AddProcessor( SCHEDULER_A_ID, 1 );
+
+    /*
+     * The affinity of a task holds the processors of its scheduler at the
+     * time of its create, so both tasks get a set of their own here.
+     */
+    SetSelfAffinityOne( 0 );
+  description: null
+test-stop: null
+test-support: |
+  typedef ${.:/test-context-type} Context;
+
+  static Context *timeout_ctx;
+
+  /*
+   * The length in clock ticks of the interval which the timeout ends.  The
+   * clock driver expires it, so the arm of the period and the move of the
+   * owner to the second processor have to fit in it.
+   */
+  #define SHORT_LENGTH 5
+
+  /* The length in clock ticks of the interval which shall stay. */
+  #define LONG_LENGTH 1000
+
+  /* The owner cancels the period in the window and waits for nothing. */
+  #define MODE_CANCEL 0
+
+  /* The owner begins a new interval in the window and waits for it. */
+  #define MODE_WAIT 1
+
+  static bool WaitsForPeriod( const Context *ctx )
+  {
+    Thread_Wait_flags flags;
+
+    flags = _Thread_Wait_flags_get( ctx->owner_tcb );
+
+    return ( flags & THREAD_WAIT_CLASS_PERIOD ) != 0 &&
+      ( flags & THREAD_WAIT_STATE_BLOCKED ) != 0;
+  }
+
+  void __real__Rate_monotonic_Timeout(
+    Watchdog_Control *the_watchdog,
+    unsigned int      token
+  );
+
+  void __wrap__Rate_monotonic_Timeout(
+    Watchdog_Control *the_watchdog,
+    unsigned int      token
+  );
+
+  /*
+   * The window of the defect.  The tickle took the timer of the period out of
+   * the collection and calls this routine outside the lock of the collection.
+   * The owner runs on the second processor, so it ends the interval of the
+   * timer while the routine waits here.
+   */
+  void __wrap__Rate_monotonic_Timeout(
+    Watchdog_Control *the_watchdog,
+    unsigned int      token
+  )
+  {
+    Context *ctx;
+
+    ctx = timeout_ctx;
+
+    if ( ctx != NULL && GetFlag( &ctx->arm ) != 0 ) {
+      int64_t begin;
+
+      SetFlag( &ctx->arm, 0 );
+      SetFlag( &ctx->window_reached, 1 );
+
+      SendEvents( ctx->owner_id, RTEMS_EVENT_0 );
+      begin = rtems_clock_get_monotonic_sbintime();
+
+      if ( GetFlag( &ctx->mode ) == MODE_WAIT ) {
+        while ( !WaitsForPeriod( ctx ) && !WaitTimedOut( begin ) ) {
+          /* Wait until the owner waits for a new interval of the period. */
+        }
+      } else {
+        while ( GetFlag( &ctx->cancelled ) == 0 && !WaitTimedOut( begin ) ) {
+          /* Wait until the owner cancelled the period. */
+        }
+      }
+
+      if ( WaitTimedOut( begin ) ) {
+        SetFlag( &ctx->window_timed_out, 1 );
+      }
+    }
+
+    __real__Rate_monotonic_Timeout( the_watchdog, token );
+  }
+
+  static void Owner( rtems_task_argument arg )
+  {
+    Context          *ctx;
+    rtems_status_code sc;
+
+    ctx = (Context *) arg;
+
+    sc = rtems_rate_monotonic_create( OBJECT_NAME, &ctx->period_id );
+    T_rsc_success( sc );
+
+    while ( true ) {
+      /* The runner asks for a timer on its own processor. */
+      (void) ReceiveAnyEvents();
+
+      /* The call arms the timer of the period and returns at once. */
+      (void) rtems_rate_monotonic_period( ctx->period_id, SHORT_LENGTH );
+      SetFlag( &ctx->armed, 1 );
+
+      /* The routine of the timeout opens the window of the test. */
+      (void) ReceiveAnyEvents();
+
+      /* The cancel ends the interval whose timeout is in flight. */
+      (void) rtems_rate_monotonic_cancel( ctx->period_id );
+
+      if ( GetFlag( &ctx->mode ) == MODE_WAIT ) {
+        (void) rtems_rate_monotonic_period( ctx->period_id, LONG_LENGTH );
+        (void) rtems_rate_monotonic_period( ctx->period_id, LONG_LENGTH );
+      } else {
+        SetFlag( &ctx->cancelled, 1 );
+      }
+    }
+  }
+
+  /*
+   * The owner arms the timer where it runs, so it gets the processor of the
+   * runner for the arm and the other processor for the window.
+   */
+  static void ArmOnFirstProcessor( Context *ctx )
+  {
+    int64_t begin;
+
+    SetFlag( &ctx->armed, 0 );
+    SetAffinityOne( ctx->owner_id, 0 );
+    SendEvents( ctx->owner_id, RTEMS_EVENT_0 );
+    begin = rtems_clock_get_monotonic_sbintime();
+
+    while ( GetFlag( &ctx->armed ) == 0 && !WaitTimedOut( begin ) ) {
+      Yield();
+    }
+
+    if ( WaitTimedOut( begin ) ) {
+      SetFlag( &ctx->window_timed_out, 1 );
+    }
+
+    SetAffinityOne( ctx->owner_id, 1 );
+  }
+
+  /*
+   * The clock driver expires the period on the processor of the runner, so
+   * the interrupt which runs the window takes the processor away from this
+   * loop.  A read of the member therefore happens after the window ended.
+   */
+  static void WaitForWindow( Context *ctx )
+  {
+    int64_t begin;
+
+    begin = rtems_clock_get_monotonic_sbintime();
+
+    while ( GetFlag( &ctx->window_reached ) == 0 && !WaitTimedOut( begin ) ) {
+      /* Wait until the timeout of the period reached the window. */
+    }
+
+    if ( WaitTimedOut( begin ) ) {
+      SetFlag( &ctx->window_timed_out, 1 );
+    }
+  }
+test-target: testsuites/validation/tc-ratemon-timeout-smp.c
+test-teardown:
+  brief: null
+  code: |
+    rtems_status_code sc;
+
+    sc = rtems_rate_monotonic_delete( ctx->period_id );
+    T_rsc_success( sc );
+
+    DeleteTask( ctx->owner_id );
+
+    SetSelfAffinityAll();
+    RemoveProcessor( SCHEDULER_A_ID, 1 );
+    AddProcessor( SCHEDULER_B_ID, 1 );
+
+    timeout_ctx = NULL;
+  description: null
+type: test-case

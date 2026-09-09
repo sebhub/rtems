@@ -1,0 +1,21 @@
+SPDX-License-Identifier: CC-BY-SA-4.0
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: RTEMS_SMP
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: ../if/group
+rationale: |
+  The service routine of a period which meets no wait of the
+  ${../glossary/ownertask:/term} renews the ${../glossary/deadline:/term}. It
+  adds a ${../glossary/postponedjob:/term} and arms the timer again. A period
+  which the ${../glossary/ownertask:/term} cancelled in the window of the tickle
+  carries the ${../glossary/expired:/term} ${../glossary/state:/term}, a
+  ${../glossary/postponedjob:/term} and an armed timer.
+requirement-type: functional
+text: |
+  While the ${../glossary/interval:/term} of a period for which the system armed
+  a timeout is over, when the timeout expires, the timeout shall not change the
+  ${../glossary/state:/term} of the period.
+type: requirement
