@@ -1,0 +1,18 @@
+SPDX-License-Identifier: CC-BY-SA-4.0
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: function
+links:
+- role: interface-function
+  uid: ../if/set
+rationale: |
+  A service routine of a realtime watchdog runs outside the lock of the
+  collection. A thread dispatch in that window gives the processor to another
+  thread while the tickle is in progress. The other thread may then end a wait or
+  a schedule which a service routine of the same tickle still reads.
+requirement-type: functional
+text: |
+  While ${../if/set:/name} expires the watchdogs of the
+  ${/glossary/clock-realtime:/term} clock, the system shall dispatch no thread.
+type: requirement
