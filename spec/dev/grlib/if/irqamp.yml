@@ -219,7 +219,7 @@ registers:
       - r
       - w
       start: 0
-      width: 4
+      width: 16
     variants: []
   brief: |
     Multiprocessor status register
