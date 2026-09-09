@@ -1,0 +1,100 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+links: []
+test-actions:
+- action-brief: |
+    Arm a realtime timer and move the time of day past the time point of the timer.
+    Let the service routine of the timer report the thread dispatch state of the
+    tickle.
+  action-code: |
+    rtems_status_code sc;
+
+    ctx->routine_ran = false;
+    ctx->dispatch_enabled = true;
+
+    sc = rtems_clock_set( &tod_begin );
+    T_rsc_success( sc );
+
+    sc = rtems_timer_create( OBJECT_NAME, &ctx->timer_id );
+    T_rsc_success( sc );
+
+    sc = rtems_timer_fire_when( ctx->timer_id, &tod_fire, Routine, ctx );
+    T_rsc_success( sc );
+
+    sc = rtems_clock_set( &tod_end );
+    T_rsc_success( sc );
+  checks:
+  - brief: |
+      Check that the service routine of the timer ran.
+    code: |
+      T_true( ctx->routine_ran );
+    links: []
+  - brief: |
+      Check that no thread dispatch may take place while ${../if/set:/name} expires
+      the realtime watchdogs.
+    code: |
+      T_false( ctx->dispatch_enabled );
+    links:
+    - role: validation
+      uid: ../req/set-no-dispatch
+  links: []
+test-brief: |
+  Tests the thread dispatch state of the realtime tickle of ${../if/set:/name}.
+test-context:
+- brief: |
+    This member contains the identifier of the timer.
+  description: null
+  member: |
+    rtems_id timer_id
+- brief: |
+    If this member is true, then the service routine of the timer ran.
+  description: null
+  member: |
+    bool routine_ran
+- brief: |
+    If this member is true, then thread dispatching was enabled while the service
+    routine of the timer ran.
+  description: null
+  member: |
+    bool dispatch_enabled
+test-context-support: null
+test-description: null
+test-header: null
+test-includes:
+- rtems.h
+- rtems/score/threaddispatch.h
+test-local-includes:
+- tx-support.h
+test-setup: null
+test-stop: null
+test-support: |
+  typedef ${.:/test-context-type} Context;
+
+  static const rtems_time_of_day tod_begin = { 2026, 1, 1, 0, 0, 0, 0 };
+
+  static const rtems_time_of_day tod_fire = { 2026, 1, 1, 5, 0, 0, 0 };
+
+  static const rtems_time_of_day tod_end = { 2026, 1, 1, 6, 0, 0, 0 };
+
+  static void Routine( rtems_id id, void *arg )
+  {
+    Context *ctx;
+
+    (void) id;
+
+    ctx = arg;
+    ctx->dispatch_enabled = _Thread_Dispatch_is_enabled();
+    ctx->routine_ran = true;
+  }
+test-target: testsuites/validation/tc-clock-set-no-dispatch.c
+test-teardown:
+  brief: null
+  code: |
+    rtems_status_code sc;
+
+    sc = rtems_timer_delete( ctx->timer_id );
+    T_rsc_success( sc );
+  description: null
+type: test-case
