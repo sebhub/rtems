@@ -22,7 +22,11 @@ links:
 - role: interface-ingroup
   uid: group
 - role: constraint
-  uid: /constraint/directive-ctx-any
+  uid: /constraint/directive-ctx-devinit
+- role: constraint
+  uid: /constraint/directive-ctx-task
+- role: constraint
+  uid: /constraint/object-allocator
 - role: constraint
   uid: /constraint/priority-may-preempt
 - role: constraint
@@ -55,9 +59,10 @@ notes: |
   directive.  This may unblock tasks, which may preempt the calling task.
   User-provided timer routines will execute in the context of the caller.
 
-  It is allowed to call this directive from within interrupt context,
-  however, this is not recommended since an arbitrary number of timers may
-  fire.
+  The directive obtains the object allocator mutex.  A directive of another
+  task which creates or deletes an object waits while the timers fire.  A
+  ${../../timer/glossary/timerserviceroutine:/term} which the directive
+  fires shall create and delete no object.
 
   The directive shall be called at least once to enable the service of
   ${/glossary/clock-realtime:/term} related directives.  If the clock is not
