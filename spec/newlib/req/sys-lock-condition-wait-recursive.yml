@@ -1,0 +1,19 @@
+SPDX-License-Identifier: CC-BY-SA-4.0
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: function
+links:
+- role: interface-function
+  uid: ../if/sys-lock-condition-wait-recursive
+- role: function-implementation
+  uid: /score/cond/req/wait
+- role: requirement-refinement
+  uid: sys-lock-condition
+rationale: null
+requirement-type: functional
+text: |
+  The ${../if/sys-lock-condition-wait-recursive:/name} directive shall wait on
+  the condition variable as specified by ${/score/cond/req/wait:/spec} where the
+  associated mutex is recursive and the directive waits without a timeout.
+type: requirement

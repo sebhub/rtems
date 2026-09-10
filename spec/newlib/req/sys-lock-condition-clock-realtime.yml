@@ -1,0 +1,18 @@
+SPDX-License-Identifier: CC-BY-SA-4.0
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: sys-lock-condition-wait-timed
+- role: requirement-refinement
+  uid: sys-lock-condition-wait-recursive-timed
+rationale: null
+requirement-type: functional
+text: |
+  While the timeout parameter specifies a valid absolute
+  ${/glossary/clock-realtime:/term} time point, while no thread signals the
+  condition variable before the specified time point, the directive shall return
+  with a status code of ${/c/if/etimedout:/name}.
+type: requirement

@@ -1,0 +1,374 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+links: []
+test-actions:
+- action-brief: |
+    Create a condition variable with a mutex and validate the condition variable
+    directives.
+  action-code: |
+    const struct timespec     invalid_abstime = { .tv_sec = -1, .tv_nsec = -1 };
+    const struct timespec     expired_abstime = { .tv_sec = 0, .tv_nsec = 0 };
+    int                       eno;
+    struct _Condition_Control condition;
+    struct _Mutex_Control     mutex;
+
+    memset( &ctx->tq_cond_ctx, 0, sizeof( ctx->tq_cond_ctx ) );
+    _Condition_Initialize( &condition );
+    _Mutex_Initialize( &mutex );
+
+    ctx->tq_cond_ctx.base.enqueue_variant = TQ_ENQUEUE_BLOCKS;
+    ctx->tq_cond_ctx.base.discipline = TQ_FIFO;
+    ctx->tq_cond_ctx.base.deadlock = TQ_DEADLOCK_FATAL;
+    ctx->tq_cond_ctx.base.convert_status = TQConvertStatusPOSIX;
+    ctx->tq_cond_ctx.base.thread_queue_object = &condition;
+    ctx->tq_cond_ctx.base.enqueue_prepare = TQDoNothing;
+    ctx->tq_cond_ctx.base.enqueue_done = CondEnqueueDone;
+    ctx->tq_cond_ctx.base.surrender = CondSurrender;
+    ctx->tq_cond_ctx.base.flush = CondFlush;
+    ctx->tq_cond_ctx.mtx.protocol = TQ_MTX_PRIORITY_INHERIT;
+    ctx->tq_cond_ctx.mtx.owner_check = TQ_MTX_NO_OWNER_CHECK;
+    ctx->tq_cond_ctx.mtx.priority_ceiling = PRIO_INVALID;
+    ctx->tq_cond_ctx.base.enqueue = CondEnqueue;
+    ctx->tq_cond_ctx.base.get_owner = CondGetOwner;
+    ctx->tq_cond_ctx.mtx.recursive = TQ_MTX_RECURSIVE_DEADLOCK;
+    ctx->tq_cond_ctx.mtx.base.thread_queue_object = &mutex;
+    TQInitialize( &ctx->tq_cond_ctx.base );
+  checks:
+  - brief: |
+      Validate the ${../if/sys-lock-condition-wait:/name} directive.
+    code: |
+      ctx->tq_cond_ctx.base.wait = TQ_WAIT_FOREVER;
+      ${/score/cond/req/wait:/test-run}( &ctx->tq_cond_ctx );
+    links:
+    - role: validation
+      uid: ../req/sys-lock-condition-wait
+  - brief: |
+      Validate the ${../if/sys-lock-condition-wait-timed:/name} directive for valid
+      timeout parameters.
+    code: |
+      ctx->tq_cond_ctx.base.wait = TQ_WAIT_TIMED;
+      ${/score/cond/req/wait:/test-run}( &ctx->tq_cond_ctx );
+    links:
+    - role: validation
+      uid: ../req/sys-lock-condition-wait-timed
+  - brief: |
+      Validate the ${../if/sys-lock-condition-signal:/name} and the
+      ${../if/sys-lock-condition-broadcast:/name} directives.
+    code: |
+      ctx->tq_cond_ctx.base.wait = TQ_WAIT_FOREVER;
+      ${/score/tq/req/flush-fifo:/test-run}( &ctx->tq_cond_ctx.base, true );
+    links:
+    - role: validation
+      uid: ../req/sys-lock-condition-signal
+    - role: validation
+      uid: ../req/sys-lock-condition-broadcast
+    - role: validation
+      uid: ../req/sys-lock-condition-fifo
+  - brief: |
+      Validate the ${../if/sys-lock-condition-wait-timed:/name} directive for an
+      expired timeout parameter.
+    code: |
+      _Mutex_Acquire( &mutex );
+      eno = _Condition_Wait_timed( &condition, &mutex, &expired_abstime );
+      T_eq_int( eno, ETIMEDOUT );
+      _Mutex_Release( &mutex );
+    links:
+    - role: validation
+      uid: ../req/sys-lock-condition-clock-realtime
+  - brief: |
+      Validate the ${../if/sys-lock-condition-wait-timed:/name} directive for an
+      invalid timeout parameter.
+    code: |
+      _Mutex_Acquire( &mutex );
+      eno = _Condition_Wait_timed( &condition, &mutex, &invalid_abstime );
+      T_eq_int( eno, EINVAL );
+      _Mutex_Release( &mutex );
+    links:
+    - role: validation
+      uid: ../req/sys-lock-condition-invalid-timeout
+  - brief: |
+      Destroy the condition variable test context.
+    code: |
+      TQDestroy( &ctx->tq_cond_ctx.base );
+    links: []
+  links: []
+- action-brief: |
+    Create a condition variable with a recursive mutex and validate the wait
+    directives.
+  action-code: |
+    const struct timespec     invalid_abstime = { .tv_sec = -1, .tv_nsec = -1 };
+    const struct timespec     expired_abstime = { .tv_sec = 0, .tv_nsec = 0 };
+    int                       eno;
+    struct _Condition_Control condition;
+    struct _Mutex_recursive_Control mutex;
+
+    memset( &ctx->tq_cond_ctx, 0, sizeof( ctx->tq_cond_ctx ) );
+    _Condition_Initialize( &condition );
+    _Mutex_recursive_Initialize( &mutex );
+
+    ctx->tq_cond_ctx.base.enqueue_variant = TQ_ENQUEUE_BLOCKS;
+    ctx->tq_cond_ctx.base.discipline = TQ_FIFO;
+    ctx->tq_cond_ctx.base.deadlock = TQ_DEADLOCK_FATAL;
+    ctx->tq_cond_ctx.base.convert_status = TQConvertStatusPOSIX;
+    ctx->tq_cond_ctx.base.thread_queue_object = &condition;
+    ctx->tq_cond_ctx.base.enqueue_prepare = TQDoNothing;
+    ctx->tq_cond_ctx.base.enqueue_done = CondEnqueueDone;
+    ctx->tq_cond_ctx.base.surrender = CondSurrender;
+    ctx->tq_cond_ctx.base.flush = CondFlush;
+    ctx->tq_cond_ctx.mtx.protocol = TQ_MTX_PRIORITY_INHERIT;
+    ctx->tq_cond_ctx.mtx.owner_check = TQ_MTX_NO_OWNER_CHECK;
+    ctx->tq_cond_ctx.mtx.priority_ceiling = PRIO_INVALID;
+    ctx->tq_cond_ctx.base.enqueue = CondRecursiveEnqueue;
+    ctx->tq_cond_ctx.base.get_owner = CondRecursiveGetOwner;
+    ctx->tq_cond_ctx.mtx.recursive = TQ_MTX_RECURSIVE_ALLOWED;
+    ctx->tq_cond_ctx.mtx.base.thread_queue_object = &mutex;
+    TQInitialize( &ctx->tq_cond_ctx.base );
+  checks:
+  - brief: |
+      Validate the ${../if/sys-lock-condition-wait-recursive:/name} directive.
+    code: |
+      ctx->tq_cond_ctx.base.wait = TQ_WAIT_FOREVER;
+      ${/score/cond/req/wait:/test-run}( &ctx->tq_cond_ctx );
+    links:
+    - role: validation
+      uid: ../req/sys-lock-condition-wait-recursive
+  - brief: |
+      Validate the ${../if/sys-lock-condition-wait-recursive-timed:/name} directive
+      for valid timeout parameters.
+    code: |
+      ctx->tq_cond_ctx.base.wait = TQ_WAIT_TIMED;
+      ${/score/cond/req/wait:/test-run}( &ctx->tq_cond_ctx );
+    links:
+    - role: validation
+      uid: ../req/sys-lock-condition-wait-recursive-timed
+  - brief: |
+      Validate the ${../if/sys-lock-condition-wait-recursive-timed:/name} directive
+      for an expired timeout parameter.
+    code: |
+      _Mutex_recursive_Acquire( &mutex );
+      eno = _Condition_Wait_recursive_timed(
+        &condition,
+        &mutex,
+        &expired_abstime
+      );
+      T_eq_int( eno, ETIMEDOUT );
+      _Mutex_recursive_Release( &mutex );
+    links:
+    - role: validation
+      uid: ../req/sys-lock-condition-clock-realtime
+  - brief: |
+      Validate the ${../if/sys-lock-condition-wait-recursive-timed:/name} directive
+      for an invalid timeout parameter.
+    code: |
+      _Mutex_recursive_Acquire( &mutex );
+      eno = _Condition_Wait_recursive_timed(
+        &condition,
+        &mutex,
+        &invalid_abstime
+      );
+      T_eq_int( eno, EINVAL );
+      _Mutex_recursive_Release( &mutex );
+    links:
+    - role: validation
+      uid: ../req/sys-lock-condition-invalid-timeout
+  - brief: |
+      Destroy the condition variable test context.
+    code: |
+      TQDestroy( &ctx->tq_cond_ctx.base );
+    links: []
+  links: []
+test-brief: |
+  Tests the `<sys/lock.h>` condition variable directives.
+test-context:
+- brief: |
+    This member contains the condition variable test context.
+  description: null
+  member: |
+    TQCondContext tq_cond_ctx
+test-context-support: null
+test-description: null
+test-header: null
+test-includes:
+- errno.h
+- string.h
+- sys/lock.h
+test-local-includes:
+- tr-cond-wait.h
+- tr-tq-flush-fifo.h
+- tx-thread-queue.h
+test-setup:
+  brief: null
+  code: |
+    memset( ctx, 0, sizeof( *ctx ) );
+  description: null
+test-stop: null
+test-support: |
+  static TQCondContext *ToCondContext( TQContext *base )
+  {
+    return RTEMS_CONTAINER_OF( base, TQCondContext, base );
+  }
+
+  static rtems_tcb *CondGetOwner( TQContext *base )
+  {
+    const struct _Mutex_Control *mutex;
+
+    mutex = ToCondContext( base )->mtx.base.thread_queue_object;
+
+    return mutex->_Queue._owner;
+  }
+
+  static rtems_tcb *CondRecursiveGetOwner( TQContext *base )
+  {
+    const struct _Mutex_recursive_Control *mutex;
+
+    mutex = ToCondContext( base )->mtx.base.thread_queue_object;
+
+    return mutex->_Mutex._Queue._owner;
+  }
+
+  static const struct timespec never = {
+    .tv_sec = INT64_MAX,
+    .tv_nsec = 0
+  };
+
+  static int CondWait( TQContext *base, TQWait wait )
+  {
+    TQCondContext *ctx;
+    int            eno;
+
+    ctx = ToCondContext( base );
+    eno = 0;
+
+    switch ( wait ) {
+      case TQ_WAIT_FOREVER:
+        _Condition_Wait(
+          base->thread_queue_object,
+          ctx->mtx.base.thread_queue_object
+        );
+        break;
+      case TQ_WAIT_TIMED:
+        eno = _Condition_Wait_timed(
+          base->thread_queue_object,
+          ctx->mtx.base.thread_queue_object,
+          &never
+        );
+        break;
+      default:
+        T_unreachable();
+        break;
+    }
+
+    return eno;
+  }
+
+  static int CondRecursiveWait( TQContext *base, TQWait wait )
+  {
+    TQCondContext *ctx;
+    int            eno;
+
+    ctx = ToCondContext( base );
+    eno = 0;
+
+    switch ( wait ) {
+      case TQ_WAIT_FOREVER:
+        _Condition_Wait_recursive(
+          base->thread_queue_object,
+          ctx->mtx.base.thread_queue_object
+        );
+        break;
+      case TQ_WAIT_TIMED:
+        eno = _Condition_Wait_recursive_timed(
+          base->thread_queue_object,
+          ctx->mtx.base.thread_queue_object,
+          &never
+        );
+        break;
+      default:
+        T_unreachable();
+        break;
+    }
+
+    return eno;
+  }
+
+  static Status_Control CondEnqueue( TQContext *base, TQWait wait )
+  {
+    TQCondContext *ctx;
+    int            eno;
+
+    ctx = ToCondContext( base );
+    _Mutex_Acquire( ctx->mtx.base.thread_queue_object );
+    eno = CondWait( base, wait );
+    ctx->owner_after = CondGetOwner( base );
+    ctx->nest_after = 1;
+    _Mutex_Release( ctx->mtx.base.thread_queue_object );
+
+    return STATUS_BUILD( 0, eno );
+  }
+
+  static Status_Control CondRecursiveEnqueue( TQContext *base, TQWait wait )
+  {
+    struct _Mutex_recursive_Control *mutex;
+    TQCondContext                   *ctx;
+    unsigned int                     i;
+    int                              eno;
+
+    ctx = ToCondContext( base );
+    mutex = ctx->mtx.base.thread_queue_object;
+
+    for ( i = 0; i < ctx->nest; ++i ) {
+      _Mutex_recursive_Acquire( mutex );
+    }
+
+    eno = CondRecursiveWait( base, wait );
+    ctx->owner_after = CondRecursiveGetOwner( base );
+    ctx->nest_after = mutex->_nest_level + 1;
+
+    for ( i = 0; i < ctx->nest; ++i ) {
+      _Mutex_recursive_Release( mutex );
+    }
+
+    return STATUS_BUILD( 0, eno );
+  }
+
+  static Status_Control CondSurrender( TQContext *base )
+  {
+    _Condition_Signal( base->thread_queue_object );
+
+    return STATUS_SUCCESSFUL;
+  }
+
+  static void CondEnqueueDone( TQContext *base )
+  {
+    _Condition_Broadcast( base->thread_queue_object );
+  }
+
+  static uint32_t CondFlush(
+    TQContext *base,
+    uint32_t   thread_count,
+    bool       all
+  )
+  {
+    if ( all ) {
+      _Condition_Broadcast( base->thread_queue_object );
+
+      return thread_count;
+    }
+
+    if ( thread_count == 0 ) {
+      return 0;
+    }
+
+    _Condition_Signal( base->thread_queue_object );
+
+    return 1;
+  }
+test-target: testsuites/validation/tc-sys-lock-condition.c
+test-teardown:
+  brief: null
+  code: |
+    RestoreRunnerPriority();
+  description: null
+type: test-case
