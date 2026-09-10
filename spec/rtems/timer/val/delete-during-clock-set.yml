@@ -1,0 +1,202 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: RTEMS_SMP
+links: []
+test-actions:
+- action-brief: |
+    Let a ${/glossary/task:/term} of the second processor delete a timer of the
+    ${../glossary/realtimeclock:/term} while a set of that clock runs the
+    ${../glossary/timerserviceroutine:/term} of the timer.
+  action-code: |
+    rtems_status_code sc;
+
+    SetFlag( &ctx->window_reached, 0 );
+    SetFlag( &ctx->window_timed_out, 0 );
+    SetFlag( &ctx->delete_returned, 0 );
+    SetFlag( &ctx->delete_returned_in_window, 1 );
+    SetFlag( &ctx->deleted, 0 );
+
+    sc = rtems_timer_create( NAME, &ctx->timer_id );
+    T_rsc_success( sc );
+
+    sc = rtems_clock_set( &tod_now );
+    T_rsc_success( sc );
+
+    sc = rtems_timer_fire_when( ctx->timer_id, &tod_fire, Routine, ctx );
+    T_rsc_success( sc );
+
+    SetFlag( &ctx->arm, 1 );
+
+    /* The set runs the routine of the timer in this task. */
+    sc = rtems_clock_set( &tod_late );
+    T_rsc_success( sc );
+
+    (void) WaitForFlag( &ctx->deleted );
+  checks:
+  - brief: |
+      Check that the set reached the window of the test.
+    code: |
+      T_true( GetFlag( &ctx->window_reached ) != 0 );
+    links: []
+  - brief: |
+      Check that the wait of the window reached no bound.
+    code: |
+      T_false( GetFlag( &ctx->window_timed_out ) != 0 );
+    links: []
+  - brief: |
+      Check that the delete of the worker ended.
+    code: |
+      T_true( GetFlag( &ctx->deleted ) != 0 );
+    links: []
+  - brief: |
+      Check that the directive of the worker ended after the routine returned.
+    code: |
+      T_false( GetFlag( &ctx->delete_returned_in_window ) != 0 );
+    links:
+    - role: validation
+      uid: ../req/delete-during-clock-set
+  links: []
+test-brief: |
+  Tests that a delete of a timer of the ${../glossary/realtimeclock:/term} ends
+  after a set of that clock returns from the
+  ${../glossary/timerserviceroutine:/term} of the timer.
+test-context:
+- brief: |
+    This member contains the identifier of the worker ${/glossary/task:/term}.
+  description: null
+  member: |
+    rtems_id worker_id
+- brief: |
+    This member contains the identifier of the timer.
+  description: null
+  member: |
+    rtems_id timer_id
+- brief: |
+    If this member is true, then the ${../glossary/timerserviceroutine:/term} of
+    the timer gets the treatment of the test.
+  description: null
+  member: |
+    Atomic_Uint arm
+- brief: |
+    If this member is true, then the set reached the window of the test.
+  description: null
+  member: |
+    Atomic_Uint window_reached
+- brief: |
+    If this member is true, then a wait of the window reached its bound.
+  description: null
+  member: |
+    Atomic_Uint window_timed_out
+- brief: |
+    If this member is true, then the delete of the worker returned.
+  description: null
+  member: |
+    Atomic_Uint delete_returned
+- brief: |
+    If this member is true, then the delete of the worker returned while the
+    routine was in the window of the test.
+  description: null
+  member: |
+    Atomic_Uint delete_returned_in_window
+- brief: |
+    If this member is true, then the worker ended its delete.
+  description: null
+  member: |
+    Atomic_Uint deleted
+test-context-support: null
+test-description: null
+test-header: null
+test-includes:
+- rtems.h
+- rtems/score/statesimpl.h
+test-local-includes:
+- tx-support.h
+test-setup:
+  brief: null
+  code: |
+    set_ctx = ctx;
+    SetFlag( &ctx->arm, 0 );
+
+    ctx->worker_id = CreateTask( "WORK", PRIO_NORMAL );
+    SetScheduler( ctx->worker_id, SCHEDULER_B_ID, PRIO_NORMAL );
+    StartTask( ctx->worker_id, Worker, ctx );
+  description: null
+test-stop: null
+test-support: |
+  typedef ${.:/test-context-type} Context;
+
+  static Context *set_ctx;
+
+  /* The name of the timer of the test. */
+  #define NAME rtems_build_name( 'T', 'I', 'M', 'E' )
+
+  /* The time of day before the set of the test. */
+  static const rtems_time_of_day tod_now = { 2000, 1, 1, 0, 0, 0, 0 };
+
+  /* The time of day at which the timer of the test fires. */
+  static const rtems_time_of_day tod_fire = { 2000, 1, 1, 1, 0, 0, 0 };
+
+  /* The time of day which the set of the test hands to the clock. */
+  static const rtems_time_of_day tod_late = { 2000, 1, 1, 2, 0, 0, 0 };
+
+  /*
+   * The window of the defect.  The set of the clock took the timer out of the
+   * collection and calls this routine outside the lock of the collection.
+   * The worker of the second processor deletes the timer while the routine
+   * waits here.
+   */
+  static void Routine( rtems_id id, void *arg )
+  {
+    Context *ctx;
+    bool     blocked;
+
+    (void) id;
+    ctx = (Context *) arg;
+
+    if ( GetFlag( &ctx->arm ) != 0 ) {
+      SetFlag( &ctx->arm, 0 );
+      SetFlag( &ctx->window_reached, 1 );
+
+      SendEvents( ctx->worker_id, RTEMS_EVENT_0 );
+
+      /* The mutex of the set blocks the delete of the worker. */
+      blocked = WaitForBlockedState(
+        ctx->worker_id,
+        STATES_WAITING_FOR_MUTEX,
+        &ctx->delete_returned
+      );
+      SetFlag( &ctx->window_timed_out, !blocked );
+      SetFlag(
+        &ctx->delete_returned_in_window,
+        GetFlag( &ctx->delete_returned )
+      );
+    }
+  }
+
+  static void Worker( rtems_task_argument arg )
+  {
+    Context *ctx;
+
+    ctx = (Context *) arg;
+
+    while ( true ) {
+      rtems_status_code sc;
+
+      /* The routine of the timer opens the window of the test. */
+      (void) ReceiveAnyEvents();
+
+      sc = rtems_timer_delete( ctx->timer_id );
+      SetFlag( &ctx->delete_returned, 1 );
+      T_rsc_success( sc );
+      SetFlag( &ctx->deleted, 1 );
+    }
+  }
+test-target: testsuites/validation/tc-timer-delete-during-clock-set.c
+test-teardown:
+  brief: null
+  code: |
+    DeleteTask( ctx->worker_id );
+    set_ctx = NULL;
+  description: null
+type: test-case

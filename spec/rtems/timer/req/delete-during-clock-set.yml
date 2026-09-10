@@ -1,0 +1,24 @@
+SPDX-License-Identifier: CC-BY-SA-4.0
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: RTEMS_SMP
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: ../if/group
+rationale: |
+  A set of the ${../glossary/realtimeclock:/term} expires every timer of that
+  clock which the new time of day reaches. It calls the
+  ${../glossary/timerserviceroutine:/term} of such a timer in the
+  ${/glossary/task:/term} which sets the clock, and outside the lock of the
+  watchdog collection. A delete of another processor frees the timer in that
+  window, so the routine reads memory which the allocator gave away. A set
+  reaches the collection of every processor, so the count of the tickle phases of
+  one processor does not cover it.
+requirement-type: functional
+text: |
+  While a set of the ${../glossary/realtimeclock:/term} runs the
+  ${../glossary/timerserviceroutine:/term} of a timer, when a
+  ${/glossary/task:/term} deletes the timer, the system shall end the directive
+  after the routine returns.
+type: requirement
