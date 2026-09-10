@@ -1,0 +1,238 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: action
+links:
+- role: requirement-refinement
+  uid: /newlib/req/sys-lock-condition
+post-conditions:
+- name: OwnerDuringCall
+  states:
+  - name: None
+    test-code: |
+      T_null( ctx->owner_during_call );
+    text: |
+      The mutex shall have no owner during the directive call.
+  test-epilogue: null
+  test-prologue: null
+- name: WaitStateDuringCall
+  states:
+  - name: Condition
+    test-code: |
+      T_eq_u32(
+        ctx->wait_state_during_call,
+        STATES_WAITING_FOR_CONDITION_VARIABLE
+      );
+    text: |
+      The calling thread shall be in a condition variable wait during the directive
+      call.
+  test-epilogue: null
+  test-prologue: null
+- name: OwnerAfterCall
+  states:
+  - name: Caller
+    test-code: |
+      T_eq_ptr(
+        ctx->tq_ctx->owner_after,
+        ctx->tq_ctx->base.worker_tcb[ TQ_BLOCKER_A ]
+      );
+    text: |
+      The owner of the mutex after the directive call shall be the calling thread.
+  test-epilogue: null
+  test-prologue: null
+- name: NestAfterCall
+  states:
+  - name: Same
+    test-code: |
+      T_eq_uint( ctx->tq_ctx->nest_after, ctx->tq_ctx->nest );
+    text: |
+      The nest level of the mutex after the directive call shall be the nest level
+      before the call.
+  test-epilogue: null
+  test-prologue: null
+- name: Status
+  states:
+  - name: Ok
+    test-code: |
+      T_eq_int(
+        ctx->tq_ctx->base.status[ TQ_BLOCKER_A ],
+        TQConvertStatus( &ctx->tq_ctx->base, STATUS_SUCCESSFUL )
+      );
+    text: |
+      The return status of the directive call shall be derived from
+      ${../../status/if/successful:/name}.
+  test-epilogue: null
+  test-prologue: null
+pre-conditions:
+- name: Recursive
+  states:
+  - name: 'No'
+    test-code: |
+      if ( ctx->tq_ctx->mtx.recursive == TQ_MTX_RECURSIVE_ALLOWED ) {
+        ${.:skip}
+      }
+    text: |
+      Where the associated mutex is not recursive.
+  - name: 'Yes'
+    test-code: |
+      if ( ctx->tq_ctx->mtx.recursive != TQ_MTX_RECURSIVE_ALLOWED ) {
+        ${.:skip}
+      }
+    text: |
+      Where the associated mutex is recursive.
+  test-epilogue: null
+  test-prologue: null
+- name: Wait
+  states:
+  - name: Forever
+    test-code: |
+      if ( ctx->tq_ctx->base.wait != TQ_WAIT_FOREVER ) {
+        ${.:skip}
+      }
+    text: |
+      Where the directive waits without a timeout.
+  - name: Timed
+    test-code: |
+      if ( ctx->tq_ctx->base.wait != TQ_WAIT_TIMED ) {
+        ${.:skip}
+      }
+    text: |
+      Where the directive waits with a timeout.
+  test-epilogue: null
+  test-prologue: null
+- name: Nest
+  states:
+  - name: One
+    test-code: |
+      ctx->tq_ctx->nest = 1;
+    text: |
+      While the calling thread seized the mutex exactly once.
+  - name: Many
+    test-code: |
+      ctx->tq_ctx->nest = 3;
+    text: |
+      While the calling thread seized the mutex more than once.
+  test-epilogue: null
+  test-prologue: null
+rationale: |
+  Dimension Recursive covers the recursion support of the associated mutex, 2
+  states. Newlib declares a wait for a plain mutex and a wait for a recursive
+  mutex in \<sys/lock.h>, and those two mutex forms are the domain.
+
+  Dimension Wait covers the timeout of the directive, 2 states. Newlib declares a
+  timed and an untimed form of each wait in \<sys/lock.h>, and those two forms
+  are the domain.
+
+  Dimension Nest covers the count of seizes of the mutex which the calling thread
+  holds, 2 states. The recursive wait saves that count and restores it, so the
+  domain splits at the base count of one. A mutex which is not recursive reaches
+  the second state by no means, and the map skips it.
+
+  The untimed forms of the wait return no value. The map therefore gives the
+  post-condition Status the not applicable state for them.
+
+  The vehicle runs the calling thread above the priority of the runner. The
+  runner therefore reads the mutex and the calling thread during the directive
+  call.
+requirement-type: functional
+skip-reasons:
+  NotRecursive: |
+    A mutex which is not recursive has a nest level of one at most.
+test-action: |
+  TQSend( &ctx->tq_ctx->base, TQ_BLOCKER_A, TQ_EVENT_ENQUEUE );
+  ctx->owner_during_call = TQGetOwner( &ctx->tq_ctx->base );
+  ctx->wait_state_during_call =
+    ctx->tq_ctx->base.worker_tcb[ TQ_BLOCKER_A ]->current_state &
+    STATES_WAITING_FOR_CONDITION_VARIABLE;
+  TQSurrender( &ctx->tq_ctx->base );
+  TQWaitForDone( &ctx->tq_ctx->base, TQ_BLOCKER_A );
+test-brief: null
+test-cleanup: null
+test-context:
+- brief: |
+    This member contains the owner of the mutex during the directive call.
+  description: null
+  member: |
+    rtems_tcb *owner_during_call
+- brief: |
+    This member contains the condition variable wait state of the calling thread
+    during the directive call.
+  description: null
+  member: |
+    uint32_t wait_state_during_call
+test-context-support: null
+test-description: null
+test-header:
+  code: null
+  freestanding: false
+  includes: []
+  local-includes:
+  - tx-thread-queue.h
+  run-params:
+  - description: |
+      is the thread queue test context.
+    dir: inout
+    name: tq_ctx
+    specifier: TQCondContext *${.:name}
+  target: testsuites/validation/tr-cond-wait.h
+test-includes:
+- rtems/score/statesimpl.h
+- rtems/score/threadimpl.h
+test-local-includes:
+- tr-cond-wait.h
+test-prepare: |
+  ctx->owner_during_call = NULL;
+  ctx->wait_state_during_call = 0;
+  ctx->tq_ctx->owner_after = NULL;
+  ctx->tq_ctx->nest_after = 0;
+test-setup:
+  brief: null
+  code: |
+    TQReset( &ctx->tq_ctx->base );
+    TQSetPriority( &ctx->tq_ctx->base, TQ_BLOCKER_A, PRIO_VERY_HIGH );
+  description: null
+test-stop: null
+test-support: null
+test-target: testsuites/validation/tr-cond-wait.c
+test-teardown:
+  brief: null
+  code: |
+    TQReset( &ctx->tq_ctx->base );
+  description: null
+text: |
+  When the calling thread waits on the condition variable.
+transition-map:
+- enabled-by: true
+  post-conditions:
+    OwnerDuringCall: None
+    WaitStateDuringCall: Condition
+    OwnerAfterCall: Caller
+    NestAfterCall: Same
+    Status: N/A
+  pre-conditions:
+    Recursive: all
+    Wait:
+    - Forever
+    Nest: all
+- enabled-by: true
+  post-conditions:
+    OwnerDuringCall: None
+    WaitStateDuringCall: Condition
+    OwnerAfterCall: Caller
+    NestAfterCall: Same
+    Status: Ok
+  pre-conditions:
+    Recursive: all
+    Wait:
+    - Timed
+    Nest: all
+- enabled-by: true
+  post-conditions: NotRecursive
+  pre-conditions:
+    Recursive:
+    - 'No'
+    Wait: all
+    Nest:
+    - Many
+type: requirement
