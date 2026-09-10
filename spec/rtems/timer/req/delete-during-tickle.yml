@@ -1,0 +1,24 @@
+SPDX-License-Identifier: CC-BY-SA-4.0
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: RTEMS_SMP
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: ../if/group
+rationale: |
+  A tickle takes the ticker of a timer in ${../glossary/interruptcontext:/term}
+  out of the watchdog collection. It calls the adaptor of the timer outside the
+  lock of the collection. The adaptor reads the routine, the identifier and the
+  user data out of the timer. A delete of another processor frees the timer in
+  that window, so the adaptor reads memory which the allocator gave away. On a
+  uniprocessor system no ${/glossary/task:/term} reaches the window, because a
+  tickle runs in an ${/glossary/interrupt:/term} or with thread dispatch
+  disabled.
+requirement-type: functional
+text: |
+  While the ${../glossary/timerserviceroutine:/term} of a timer in
+  ${../glossary/interruptcontext:/term} runs, when a ${/glossary/task:/term}
+  deletes the timer, the system shall end the directive after the routine
+  returns.
+type: requirement
