@@ -1,0 +1,20 @@
+SPDX-License-Identifier: CC-BY-SA-4.0
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: function
+links:
+- role: interface-function
+  uid: ../if/sys-lock-condition-signal
+- role: function-implementation
+  uid: /score/tq/req/flush-fifo
+- role: requirement-refinement
+  uid: sys-lock-condition
+rationale: null
+requirement-type: functional
+text: |
+  The ${../if/sys-lock-condition-signal:/name} directive shall flush the least
+  recently enqueued thread of the thread queue of the condition variable as
+  specified by ${/score/tq/req/flush-fifo:/spec} where the flush filter may
+  return ${/c/if/null:/name}.
+type: requirement

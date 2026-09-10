@@ -1,0 +1,24 @@
+SPDX-License-Identifier: CC-BY-SA-4.0
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: sys-lock-condition-wait
+- role: requirement-refinement
+  uid: sys-lock-condition-wait-timed
+- role: requirement-refinement
+  uid: sys-lock-condition-wait-recursive
+- role: requirement-refinement
+  uid: sys-lock-condition-wait-recursive-timed
+- role: requirement-refinement
+  uid: sys-lock-condition-signal
+- role: requirement-refinement
+  uid: sys-lock-condition-broadcast
+rationale: null
+requirement-type: functional
+text: |
+  The thread queue of the condition variable shall use the
+  ${/glossary/fifo:/term} discipline.
+type: requirement
