@@ -1,0 +1,13 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+links:
+- role: requirement-refinement
+  uid: /req/usage-constraints
+rationale: null
+text: |
+  The directive may wait for the end of a
+  ${/rtems/timer/glossary/timerserviceroutine:/term} which the Timer Server task
+  calls. The directive releases the object allocator mutex while it waits.
+type: constraint

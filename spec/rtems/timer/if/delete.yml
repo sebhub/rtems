@@ -31,12 +31,18 @@ links:
 - role: constraint
   uid: /constraint/object-allocator
 - role: constraint
+  uid: /constraint/directive-timer-server-wait
+- role: constraint
   uid: ../../constraint/delete-by-any-task
 - role: constraint
   uid: /constraint/obj-unlimited-free
 name: rtems_timer_delete
 notes: |
   The ${/glossary/tmcb:/term} for the deleted timer is reclaimed by RTEMS.
+
+  A ${../glossary/timerserviceroutine:/term} which the Timer Server task calls
+  shall not wait for the ${/glossary/task:/term} which deletes the timer.
+  Such a routine stops the directive for ever.
 params:
 - description: |
     is the timer identifier.
