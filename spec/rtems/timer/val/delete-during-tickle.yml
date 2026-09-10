@@ -1,0 +1,246 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: RTEMS_SMP
+links: []
+test-actions:
+- action-brief: |
+    Let a ${/glossary/task:/term} of the second processor delete a timer in
+    ${../glossary/interruptcontext:/term} while the tickle of the first processor
+    runs the adaptor of the timer.
+  action-code: |
+    rtems_status_code sc;
+
+    ctx->watchdog = NULL;
+    SetFlag( &ctx->window_reached, 0 );
+    SetFlag( &ctx->delete_waits, 0 );
+    SetFlag( &ctx->delete_returned, 0 );
+    SetFlag( &ctx->delete_returned_in_window, 1 );
+    SetFlag( &ctx->deleted, 0 );
+
+    sc = rtems_timer_create( NAME, &ctx->timer_id );
+    T_rsc_success( sc );
+
+    sc = rtems_timer_fire_after( ctx->timer_id, FIRE_LENGTH, Routine, ctx );
+    T_rsc_success( sc );
+
+    SetFlag( &ctx->arm, 1 );
+    (void) WaitForFlag( &ctx->deleted );
+  checks:
+  - brief: |
+      Check that the tickle reached the window of the test.
+    code: |
+      T_true( GetFlag( &ctx->window_reached ) != 0 );
+    links: []
+  - brief: |
+      Check that the delete waited for the end of the adaptor.
+    code: |
+      T_true( GetFlag( &ctx->delete_waits ) != 0 );
+    links: []
+  - brief: |
+      Check that the directive of the worker ended after the adaptor returned.
+    code: |
+      T_false( GetFlag( &ctx->delete_returned_in_window ) != 0 );
+    links:
+    - role: validation
+      uid: ../req/delete-during-tickle
+  links: []
+test-brief: |
+  Tests that a delete of a timer in ${../glossary/interruptcontext:/term} ends
+  after the ${../glossary/timerserviceroutine:/term} of the timer returns.
+test-context:
+- brief: |
+    This member contains the identifier of the worker ${/glossary/task:/term}.
+  description: null
+  member: |
+    rtems_id worker_id
+- brief: |
+    This member contains the identifier of the timer.
+  description: null
+  member: |
+    rtems_id timer_id
+- brief: |
+    If this member is true, then the adaptor of the timer gets the treatment of the
+    test.
+  description: null
+  member: |
+    Atomic_Uint arm
+- brief: |
+    This member references the watchdog of the timer of the test while the tickle
+    runs the adaptor of that timer.
+  description: null
+  member: |
+    const Watchdog_Control *watchdog
+- brief: |
+    If this member is true, then the tickle reached the window of the test.
+  description: null
+  member: |
+    Atomic_Uint window_reached
+- brief: |
+    If this member is true, then the delete of the worker waits for the end of the
+    adaptor.
+  description: null
+  member: |
+    Atomic_Uint delete_waits
+- brief: |
+    If this member is true, then the delete of the worker returned.
+  description: null
+  member: |
+    Atomic_Uint delete_returned
+- brief: |
+    If this member is true, then the delete of the worker returned while the
+    adaptor was in the window of the test.
+  description: null
+  member: |
+    Atomic_Uint delete_returned_in_window
+- brief: |
+    If this member is true, then the worker ended its delete.
+  description: null
+  member: |
+    Atomic_Uint deleted
+test-context-support: null
+test-description: null
+test-header: null
+test-includes:
+- rtems.h
+- rtems/rtems/timerimpl.h
+- rtems/score/watchdogimpl.h
+test-local-includes:
+- tx-support.h
+test-setup:
+  brief: null
+  code: |
+    delete_ctx = ctx;
+    SetFlag( &ctx->arm, 0 );
+
+    ctx->worker_id = CreateTask( "WORK", PRIO_NORMAL );
+    SetScheduler( ctx->worker_id, SCHEDULER_B_ID, PRIO_NORMAL );
+    StartTask( ctx->worker_id, Worker, ctx );
+  description: null
+test-stop: null
+test-support: |
+  typedef ${.:/test-context-type} Context;
+
+  static Context *delete_ctx;
+
+  /* The name of the timer of the test. */
+  #define NAME rtems_build_name( 'T', 'I', 'M', 'E' )
+
+  /*
+   * The length in clock ticks of the interval of the timer.  The clock driver
+   * expires it, so the arm and the store of the member below have to fit in
+   * it.
+   */
+  #define FIRE_LENGTH 5
+
+  static void Routine( rtems_id id, void *arg )
+  {
+    (void) id;
+    (void) arg;
+  }
+
+  void __real__Timer_Routine_adaptor(
+    Watchdog_Control *the_watchdog,
+    unsigned int      token
+  );
+
+  void __wrap__Timer_Routine_adaptor(
+    Watchdog_Control *the_watchdog,
+    unsigned int      token
+  );
+
+  /*
+   * The window of the defect.  The tickle took the ticker of the timer out of
+   * the collection and calls this routine outside the lock of the collection.
+   * The worker of the second processor deletes the timer while the routine
+   * waits here, so the read of the timer below meets the delete.
+   */
+  void __wrap__Timer_Routine_adaptor(
+    Watchdog_Control *the_watchdog,
+    unsigned int      token
+  )
+  {
+    Context             *ctx;
+    const Timer_Control *the_timer;
+
+    ctx = delete_ctx;
+
+    /* The link wrap covers every timer of the test suite. */
+    the_timer = RTEMS_CONTAINER_OF( the_watchdog, Timer_Control, Ticker );
+
+    if (
+      ctx != NULL && GetFlag( &ctx->arm ) != 0 &&
+      the_timer->Object.id == ctx->timer_id
+    ) {
+      SetFlag( &ctx->arm, 0 );
+      ctx->watchdog = the_watchdog;
+      SetFlag( &ctx->window_reached, 1 );
+
+      SendEvents( ctx->worker_id, RTEMS_EVENT_0 );
+      (void) WaitForFlag( &ctx->delete_waits );
+      SetFlag(
+        &ctx->delete_returned_in_window,
+        GetFlag( &ctx->delete_returned )
+      );
+    }
+
+    __real__Timer_Routine_adaptor( the_watchdog, token );
+  }
+
+  void __real__Watchdog_Wait_for_service_stop(
+    const Watchdog_Control *the_watchdog
+  );
+
+  void __wrap__Watchdog_Wait_for_service_stop(
+    const Watchdog_Control *the_watchdog
+  );
+
+  /*
+   * The delete of the worker tells the window that it reached the wait.  The
+   * link wrap covers every watchdog of the test suite, so the member which the
+   * adaptor kept names the one of the test.
+   */
+  void __wrap__Watchdog_Wait_for_service_stop(
+    const Watchdog_Control *the_watchdog
+  )
+  {
+    Context *ctx;
+
+    ctx = delete_ctx;
+
+    if (
+      ctx != NULL && GetFlag( &ctx->window_reached ) != 0 &&
+      the_watchdog == ctx->watchdog
+    ) {
+      SetFlag( &ctx->delete_waits, 1 );
+    }
+
+    __real__Watchdog_Wait_for_service_stop( the_watchdog );
+  }
+
+  static void Worker( rtems_task_argument arg )
+  {
+    Context *ctx;
+
+    ctx = (Context *) arg;
+
+    while ( true ) {
+      rtems_status_code sc;
+
+      /* The adaptor of the timer opens the window of the test. */
+      (void) ReceiveAnyEvents();
+
+      sc = rtems_timer_delete( ctx->timer_id );
+      SetFlag( &ctx->delete_returned, 1 );
+      T_rsc_success( sc );
+      SetFlag( &ctx->deleted, 1 );
+    }
+  }
+test-target: testsuites/validation/tc-timer-delete-during-tickle.c
+test-teardown:
+  brief: null
+  code: |
+    DeleteTask( ctx->worker_id );
+    delete_ctx = NULL;
+  description: null
+type: test-case
