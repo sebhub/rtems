@@ -1,0 +1,18 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This header file defines interfaces of the MIPS CPU port.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: mips
+index-entries: []
+interface-type: header-file
+links:
+- role: interface-placement
+  uid: /score/if/domain
+- role: interface-ingroup
+  uid: group
+- role: proxy-member
+  uid: /score/cpu/if/header
+path: rtems/score/cpu.h
+prefix: cpukit/score/cpu/mips/include
+type: interface

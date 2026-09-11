@@ -1,0 +1,14 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+term: user-visible floating-point register
+text: |
+  A floating-point register which the instruction set makes visible to a program.
+  The set covers the registers which hold a value and the registers which hold
+  the floating-point environment.
+type: glossary

@@ -1,0 +1,14 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+term: user-visible register
+text: |
+  An integer register which the instruction set makes visible to a program. The
+  set covers every register of the ABI and every register which the architecture
+  reserves for the operating system.
+type: glossary

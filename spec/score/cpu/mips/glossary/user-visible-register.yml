@@ -1,0 +1,17 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: mips
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+- location: 3-11, 3-12
+  role: reference
+  uid: /ref/arch/mips/psabi
+term: MIPS user-visible register
+text: |
+  An integer register which the instruction set makes visible to a program. These
+  are the 32 general registers and the two multiply and divide registers hi and
+  lo. The set holds 34 registers.
+type: glossary

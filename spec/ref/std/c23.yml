@@ -1,0 +1,12 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+links: []
+organization: International Organization for Standardization
+reference-type: manual
+title: ISO/IEC 9899:2024 (C23), Information technology - Programming languages - C
+type: reference
+work-hash: null
+work-url: https://www.iso.org/standard/82075.html
+year: '2024'

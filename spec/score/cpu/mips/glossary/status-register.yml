@@ -1,0 +1,17 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: mips
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+- location: 3-29
+  role: reference
+  uid: /ref/arch/mips/psabi
+term: MIPS status register
+text: |
+  The register which holds the condition flags and the execution state. MIPS
+  defines no condition flags. The Status register of coprocessor 0 holds the
+  interrupt mask, and FCSR the floating-point state.
+type: glossary

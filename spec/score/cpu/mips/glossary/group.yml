@@ -1,0 +1,12 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: mips
+glossary-type: group
+links:
+- role: requirement-refinement
+  uid: /req/glossary
+name: MIPS CPU Port Registers
+text: |
+  The system shall have a glossary for the register roles of the MIPS CPU port.
+type: glossary

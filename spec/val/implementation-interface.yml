@@ -94,6 +94,8 @@ links:
 - role: validation
   uid: /score/interr/if/source-bsp
 - role: validation
+  uid: /score/interr/if/source-exception
+- role: validation
   uid: /score/interr/if/source-exit
 - role: validation
   uid: /score/interr/if/source-panic

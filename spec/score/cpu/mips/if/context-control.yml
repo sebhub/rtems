@@ -1,0 +1,123 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This structure represents the thread context of the MIPS CPU port.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+- default:
+    brief: |
+      This member contains the MIPS call-saved register S0.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: s0
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS call-saved register S1.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: s1
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS call-saved register S2.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: s2
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS call-saved register S3.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: s3
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS call-saved register S4.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: s4
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS call-saved register S5.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: s5
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS call-saved register S6.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: s6
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS call-saved register S7.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: s7
+  variants: []
+- default:
+    brief: |
+      This member contains the stack pointer.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: sp
+  variants: []
+- default:
+    brief: |
+      This member contains the frame pointer.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: fp
+  variants: []
+- default:
+    brief: |
+      This member contains the return address.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: ra
+  variants: []
+- default:
+    brief: |
+      This member contains the status register of coprocessor 0.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: c0_sr
+  variants: []
+- default:
+    brief: |
+      This member contains the exception program counter of coprocessor 0.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: c0_epc
+  variants: []
+definition-kind: typedef-only
+description: null
+enabled-by: mips
+index-entries: []
+interface-type: struct
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+name: Context_Control
+notes: null
+type: interface

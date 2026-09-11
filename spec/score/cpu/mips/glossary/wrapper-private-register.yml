@@ -1,0 +1,18 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: mips
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+- location: 3-12, 3-13
+  role: reference
+  uid: /ref/arch/mips/psabi
+term: MIPS wrapper-private register
+text: |
+  A call-saved register which an interrupt or exception wrapper uses for its own
+  bookkeeping. The set is empty on this architecture. \_ISR_Handler() carries its
+  state in 26 and 27, which the psABI gives to the operating system and which no
+  call of the ABI preserves.
+type: glossary
