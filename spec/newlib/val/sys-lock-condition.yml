@@ -179,6 +179,48 @@ test-actions:
       TQDestroy( &ctx->tq_cond_ctx.base );
     links: []
   links: []
+- action-brief: |
+    Create a condition variable and validate the enqueue and the flush directives.
+  action-code: |
+    struct _Condition_Control condition;
+
+    memset( &ctx->tq_cond_ctx, 0, sizeof( ctx->tq_cond_ctx ) );
+    _Condition_Initialize( &condition );
+
+    ctx->tq_cond_ctx.base.enqueue_variant = TQ_ENQUEUE_BLOCKS;
+    ctx->tq_cond_ctx.base.discipline = TQ_FIFO;
+    ctx->tq_cond_ctx.base.deadlock = TQ_DEADLOCK_FATAL;
+    ctx->tq_cond_ctx.base.convert_status = TQConvertStatusPOSIX;
+    ctx->tq_cond_ctx.base.thread_queue_object = &condition;
+    ctx->tq_cond_ctx.base.enqueue_prepare = TQDoNothing;
+    ctx->tq_cond_ctx.base.enqueue_done = CondEnqueueDone;
+    ctx->tq_cond_ctx.base.surrender = CondSurrender;
+    ctx->tq_cond_ctx.base.flush = CondFlushDirect;
+    ctx->tq_cond_ctx.base.enqueue = CondEnqueueDirect;
+    ctx->tq_cond_ctx.base.get_owner = NULL;
+    ctx->tq_cond_ctx.base.wait = TQ_WAIT_FOREVER;
+    TQInitialize( &ctx->tq_cond_ctx.base );
+  checks:
+  - brief: |
+      Validate the enqueue directive of the condition variable.
+    code: |
+      ${/score/tq/req/enqueue-fifo:/test-run}( &ctx->tq_cond_ctx.base );
+    links:
+    - role: validation
+      uid: /score/cond/req/enqueue
+  - brief: |
+      Validate the flush directive of the condition variable.
+    code: |
+      ${/score/tq/req/flush-fifo:/test-run}( &ctx->tq_cond_ctx.base, false );
+    links:
+    - role: validation
+      uid: /score/cond/req/flush
+  - brief: |
+      Destroy the condition variable test context.
+    code: |
+      TQDestroy( &ctx->tq_cond_ctx.base );
+    links: []
+  links: []
 test-brief: |
   Tests the `<sys/lock.h>` condition variable directives.
 test-context:
@@ -194,8 +236,10 @@ test-includes:
 - errno.h
 - string.h
 - sys/lock.h
+- rtems/score/condimpl.h
 test-local-includes:
 - tr-cond-wait.h
+- tr-tq-enqueue-fifo.h
 - tr-tq-flush-fifo.h
 - tx-thread-queue.h
 test-setup:
@@ -364,6 +408,36 @@ test-support: |
     _Condition_Signal( base->thread_queue_object );
 
     return 1;
+  }
+
+  static Status_Control CondEnqueueDirect( TQContext *base, TQWait wait )
+  {
+    Thread_queue_Context queue_context;
+
+    T_eq_int( wait, TQ_WAIT_FOREVER );
+    _Thread_queue_Context_initialize( &queue_context );
+    _Condition_Acquire( base->thread_queue_object, &queue_context );
+    _Condition_Enqueue( base->thread_queue_object, &queue_context );
+
+    return STATUS_SUCCESSFUL;
+  }
+
+  static uint32_t CondFlushDirect(
+    TQContext *base,
+    uint32_t   thread_count,
+    bool       all
+  )
+  {
+    Thread_queue_Context queue_context;
+    size_t               flushed;
+
+    (void) thread_count;
+    T_true( all );
+    _Thread_queue_Context_initialize( &queue_context );
+    _Condition_Acquire( base->thread_queue_object, &queue_context );
+    flushed = _Condition_Flush( base->thread_queue_object, &queue_context );
+
+    return (uint32_t) flushed;
   }
 test-target: testsuites/validation/tc-sys-lock-condition.c
 test-teardown:
