@@ -1,0 +1,17 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: mips
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+- location: 3-12, 3-13
+  role: reference
+  uid: /ref/arch/mips/psabi
+term: MIPS reserved register
+text: |
+  A register which the ABI reserves. 26 and 27 belong to the operating system. 25
+  holds the address of the called function at a call to position-independent
+  code.
+type: glossary

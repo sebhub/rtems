@@ -1,0 +1,14 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+term: wrapper-private register
+text: |
+  A call-saved register which an interrupt or exception wrapper uses for its own
+  bookkeeping. The wrapper preserves it, because the interrupted context owns the
+  value.
+type: glossary

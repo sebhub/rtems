@@ -1,0 +1,22 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: registers
+- location: '7.6'
+  role: reference
+  uid: /ref/std/c23
+rationale: |
+  The C standard gives the floating-point environment thread storage duration. An
+  interrupt handler runs on the thread it interrupts and can set a rounding
+  direction or a trap enable of its own. No ABI of this bundle makes the register
+  which holds the environment call-saved. Interrupt processing is therefore the
+  only place which can preserve it.
+requirement-type: functional
+text: |
+  Interrupt processing shall preserve the floating-point environment of the
+  interrupted context.
+type: requirement

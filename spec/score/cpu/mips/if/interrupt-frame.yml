@@ -1,0 +1,831 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This structure represents the interrupt frame of the MIPS CPU port.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+- default:
+    brief: |
+      This member contains the MIPS general-purpose register R0.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: r0
+  variants: []
+- default:
+    brief: |
+      This member contains the temporary of the assembler.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: at
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS value register V0.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: v0
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS value register V1.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: v1
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS address register A0.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: a0
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS address register A1.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: a1
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS address register A2.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: a2
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS address register A3.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: a3
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS temporary register T0.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: t0
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS temporary register T1.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: t1
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS temporary register T2.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: t2
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS temporary register T3.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: t3
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS temporary register T4.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: t4
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS temporary register T5.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: t5
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS temporary register T6.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: t6
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS temporary register T7.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: t7
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS call-saved register S0.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: s0
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS call-saved register S1.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: s1
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS call-saved register S2.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: s2
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS call-saved register S3.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: s3
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS call-saved register S4.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: s4
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS call-saved register S5.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: s5
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS call-saved register S6.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: s6
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS call-saved register S7.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: s7
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS temporary register T8.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: t8
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS temporary register T9.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: t9
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS kernel register K0.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: k0
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS kernel register K1.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: k1
+  variants: []
+- default:
+    brief: |
+      This member contains the global pointer.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: gp
+  variants: []
+- default:
+    brief: |
+      This member contains the stack pointer.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: sp
+  variants: []
+- default:
+    brief: |
+      This member contains the frame pointer.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: fp
+  variants: []
+- default:
+    brief: |
+      This member contains the return address.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: ra
+  variants: []
+- default:
+    brief: |
+      This member contains the status register of coprocessor 0.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: c0_sr
+  variants: []
+- default:
+    brief: |
+      This member contains the low half of the multiply result.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: mdlo
+  variants: []
+- default:
+    brief: |
+      This member contains the high half of the multiply result.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: mdhi
+  variants: []
+- default:
+    brief: |
+      This member contains the faulting virtual address.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: badvaddr
+  variants: []
+- default:
+    brief: |
+      This member contains the cause of the exception.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: cause
+  variants: []
+- default:
+    brief: |
+      This member contains the exception program counter.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: epc
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS floating-point register F0.
+    definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: f0
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS floating-point register F1.
+    definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: f1
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS floating-point register F2.
+    definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: f2
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS floating-point register F3.
+    definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: f3
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS floating-point register F4.
+    definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: f4
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS floating-point register F5.
+    definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: f5
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS floating-point register F6.
+    definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: f6
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS floating-point register F7.
+    definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: f7
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS floating-point register F8.
+    definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: f8
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS floating-point register F9.
+    definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: f9
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS floating-point register F10.
+    definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: f10
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS floating-point register F11.
+    definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: f11
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS floating-point register F12.
+    definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: f12
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS floating-point register F13.
+    definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: f13
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS floating-point register F14.
+    definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: f14
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS floating-point register F15.
+    definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: f15
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS floating-point register F16.
+    definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: f16
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS floating-point register F17.
+    definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: f17
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS floating-point register F18.
+    definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: f18
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS floating-point register F19.
+    definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: f19
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS floating-point register F20.
+    definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: f20
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS floating-point register F21.
+    definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: f21
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS floating-point register F22.
+    definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: f22
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS floating-point register F23.
+    definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: f23
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS floating-point register F24.
+    definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: f24
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS floating-point register F25.
+    definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: f25
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS floating-point register F26.
+    definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: f26
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS floating-point register F27.
+    definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: f27
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS floating-point register F28.
+    definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: f28
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS floating-point register F29.
+    definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: f29
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS floating-point register F30.
+    definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: f30
+  variants: []
+- default:
+    brief: |
+      This member contains the MIPS floating-point register F31.
+    definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: f31
+  variants: []
+- default:
+    brief: |
+      This member contains the floating-point control and status register.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: fcsr
+  variants: []
+- default:
+    brief: |
+      This member contains the faulting instruction of the floating-point unit.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: feir
+  variants: []
+- default:
+    brief: |
+      This member contains the high half of the translation buffer entry.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: tlbhi
+  variants: []
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the low half of the translation buffer entry.
+      definition: __MIPS_REGISTER_TYPE ${.:name}
+      description: null
+      kind: member
+      name: tlblo
+    enabled-by: (__mips == 1)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the first low half of the translation buffer entry.
+      definition: __MIPS_REGISTER_TYPE ${.:name}
+      description: null
+      kind: member
+      name: tlblo0
+    enabled-by: ((__mips == 3) || (__mips == 32))
+- default:
+    brief: |
+      This member contains the index register of the translation buffer.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: inx
+  variants: []
+- default:
+    brief: |
+      This member contains the random register of the translation buffer.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: rand
+  variants: []
+- default:
+    brief: |
+      This member contains the context register.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: ctxt
+  variants: []
+- default:
+    brief: |
+      This member contains the type of the exception.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: exctype
+  variants: []
+- default:
+    brief: |
+      This member contains the mode of the processor.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: mode
+  variants: []
+- default:
+    brief: |
+      This member contains the identifier of the processor.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: prid
+  variants: []
+- default:
+    brief: |
+      This member contains the target address register.
+    definition: __MIPS_REGISTER_TYPE ${.:name}
+    description: null
+    kind: member
+    name: tar
+  variants: []
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the second low half of the translation buffer entry.
+      definition: __MIPS_REGISTER_TYPE ${.:name}
+      description: null
+      kind: member
+      name: tlblo1
+    enabled-by: ((__mips == 3) || (__mips == 32))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the page mask register.
+      definition: __MIPS_REGISTER_TYPE ${.:name}
+      description: null
+      kind: member
+      name: pagemask
+    enabled-by: ((__mips == 3) || (__mips == 32))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the wired register of the translation buffer.
+      definition: __MIPS_REGISTER_TYPE ${.:name}
+      description: null
+      kind: member
+      name: wired
+    enabled-by: ((__mips == 3) || (__mips == 32))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the counter register.
+      definition: __MIPS_REGISTER_TYPE ${.:name}
+      description: null
+      kind: member
+      name: count
+    enabled-by: ((__mips == 3) || (__mips == 32))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the compare register.
+      definition: __MIPS_REGISTER_TYPE ${.:name}
+      description: null
+      kind: member
+      name: compare
+    enabled-by: ((__mips == 3) || (__mips == 32))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the configuration register.
+      definition: __MIPS_REGISTER_TYPE ${.:name}
+      description: null
+      kind: member
+      name: config
+    enabled-by: ((__mips == 3) || (__mips == 32))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the address of the load-linked operation.
+      definition: __MIPS_REGISTER_TYPE ${.:name}
+      description: null
+      kind: member
+      name: lladdr
+    enabled-by: ((__mips == 3) || (__mips == 32))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the low half of the watchpoint register.
+      definition: __MIPS_REGISTER_TYPE ${.:name}
+      description: null
+      kind: member
+      name: watchlo
+    enabled-by: ((__mips == 3) || (__mips == 32))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the high half of the watchpoint register.
+      definition: __MIPS_REGISTER_TYPE ${.:name}
+      description: null
+      kind: member
+      name: watchhi
+    enabled-by: ((__mips == 3) || (__mips == 32))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the error correction register.
+      definition: __MIPS_REGISTER_TYPE ${.:name}
+      description: null
+      kind: member
+      name: ecc
+    enabled-by: ((__mips == 3) || (__mips == 32))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the cache error register.
+      definition: __MIPS_REGISTER_TYPE ${.:name}
+      description: null
+      kind: member
+      name: cacheerr
+    enabled-by: ((__mips == 3) || (__mips == 32))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the low half of the cache tag.
+      definition: __MIPS_REGISTER_TYPE ${.:name}
+      description: null
+      kind: member
+      name: taglo
+    enabled-by: ((__mips == 3) || (__mips == 32))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the high half of the cache tag.
+      definition: __MIPS_REGISTER_TYPE ${.:name}
+      description: null
+      kind: member
+      name: taghi
+    enabled-by: ((__mips == 3) || (__mips == 32))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the error program counter.
+      definition: __MIPS_REGISTER_TYPE ${.:name}
+      description: null
+      kind: member
+      name: errpc
+    enabled-by: ((__mips == 3) || (__mips == 32))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the extended context register.
+      definition: __MIPS_REGISTER_TYPE ${.:name}
+      description: null
+      kind: member
+      name: xctxt
+    enabled-by: ((__mips == 3) || (__mips == 32))
+definition-kind: typedef-only
+description: null
+enabled-by: mips
+index-entries: []
+interface-type: struct
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+- role: proxy-member
+  uid: /score/cpu/if/interrupt-frame
+name: CPU_Interrupt_frame
+notes: null
+type: interface

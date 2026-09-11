@@ -1,0 +1,21 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: registers
+- location: '7.6'
+  role: reference
+  uid: /ref/std/c23
+rationale: |
+  The psABI of an architecture can fix an initial floating-point environment.
+  This requirement states the environment of a new thread of the operating
+  system, which can differ from it. A port which deviates names the reason in the
+  item of its architecture.
+requirement-type: functional
+text: |
+  The context initialization shall give the thread a floating-point environment
+  which raises no trap and which flushes a denormalised result to zero.
+type: requirement

@@ -1,0 +1,15 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2024 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: ../if/group
+rationale: null
+requirement-type: functional
+text: |
+  The default exception handler shall terminate the system with the
+  ${/score/interr/if/source-exception:/name} fatal source and the fatal code set
+  to the address of the exception frame.
+type: requirement

@@ -1,0 +1,17 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: mips
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+- location: 3-12, 3-15
+  role: reference
+  uid: /ref/arch/mips/psabi
+term: MIPS stack pointer register
+text: |
+  The register which holds the address of the stack of the executing thread. This
+  is 29. The psABI requires a doubleword alignment of the address at the entry of
+  a function and at a call.
+type: glossary

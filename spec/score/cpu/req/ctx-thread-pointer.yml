@@ -1,0 +1,16 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: registers
+rationale: |
+  The requirement names the restore alone. A port which treats the register as a
+  thread invariant needs no save.
+requirement-type: functional
+text: |
+  The ${/glossary/contextswitch:/term} shall restore the
+  ${/score/cpu/glossary/thread-pointer-register:/term} of the heir context.
+type: requirement

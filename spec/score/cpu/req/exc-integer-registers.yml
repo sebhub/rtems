@@ -1,0 +1,14 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: registers
+rationale: null
+requirement-type: functional
+text: |
+  The default exception handler shall save every
+  ${/score/cpu/glossary/user-visible-register:/term} to the exception frame.
+type: requirement

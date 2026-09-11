@@ -1,0 +1,22 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: registers
+- location: '7.6'
+  role: reference
+  uid: /ref/std/c23
+rationale: |
+  The C standard gives the floating-point environment thread storage duration. A
+  thread which sets a rounding direction or a trap enable therefore keeps it
+  across a context switch. No ABI of this bundle makes the register which holds
+  the environment call-saved. The context switch is therefore the only place
+  which can preserve it.
+requirement-type: functional
+text: |
+  The ${/glossary/contextswitch:/term} shall preserve the floating-point
+  environment of the thread.
+type: requirement

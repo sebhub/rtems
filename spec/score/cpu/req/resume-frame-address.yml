@@ -1,0 +1,16 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: resume-frame-release
+rationale: |
+  The address of the frame observes the release. A frame which the resume leaves
+  on the stack moves the next frame away from the address of the first one.
+requirement-type: functional
+text: |
+  A second exception shall place its exception frame at the address of the frame
+  of the first exception.
+type: requirement

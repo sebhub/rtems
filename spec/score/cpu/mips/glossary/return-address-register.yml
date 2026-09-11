@@ -1,0 +1,17 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: mips
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+- location: 3-16
+  role: reference
+  uid: /ref/arch/mips/psabi
+term: MIPS return address register
+text: |
+  The register which holds the address a called function returns to. This is 31.
+  It holds the address of the call plus eight, because the call sits before its
+  delay slot.
+type: glossary

@@ -1,0 +1,17 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: mips
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+- location: 3-12, 3-13
+  role: reference
+  uid: /ref/arch/mips/psabi
+term: MIPS call-used register
+text: |
+  A register which a called function can destroy. These are 1 to 15, 24 and 25.
+  The psABI states no rule for hi and lo, and the compiler marks both
+  call-clobbered.
+type: glossary

@@ -1,0 +1,17 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: mips
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+- location: 4-12
+  role: reference
+  uid: /ref/arch/mips/psabi
+term: MIPS global pointer register
+text: |
+  A register which addresses a small data area or a global offset table. This is
+  28\. An object of the size criterion or smaller sits in a section which the
+  linker addresses against it.
+type: glossary

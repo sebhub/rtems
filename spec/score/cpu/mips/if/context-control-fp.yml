@@ -1,0 +1,349 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This structure represents the floating-point context of the MIPS CPU port.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the MIPS floating-point register FP0.
+      definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+      description: null
+      kind: member
+      name: fp0
+    enabled-by: (( CPU_HARDWARE_FP == TRUE ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the MIPS floating-point register FP1.
+      definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+      description: null
+      kind: member
+      name: fp1
+    enabled-by: (( CPU_HARDWARE_FP == TRUE ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the MIPS floating-point register FP2.
+      definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+      description: null
+      kind: member
+      name: fp2
+    enabled-by: (( CPU_HARDWARE_FP == TRUE ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the MIPS floating-point register FP3.
+      definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+      description: null
+      kind: member
+      name: fp3
+    enabled-by: (( CPU_HARDWARE_FP == TRUE ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the MIPS floating-point register FP4.
+      definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+      description: null
+      kind: member
+      name: fp4
+    enabled-by: (( CPU_HARDWARE_FP == TRUE ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the MIPS floating-point register FP5.
+      definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+      description: null
+      kind: member
+      name: fp5
+    enabled-by: (( CPU_HARDWARE_FP == TRUE ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the MIPS floating-point register FP6.
+      definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+      description: null
+      kind: member
+      name: fp6
+    enabled-by: (( CPU_HARDWARE_FP == TRUE ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the MIPS floating-point register FP7.
+      definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+      description: null
+      kind: member
+      name: fp7
+    enabled-by: (( CPU_HARDWARE_FP == TRUE ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the MIPS floating-point register FP8.
+      definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+      description: null
+      kind: member
+      name: fp8
+    enabled-by: (( CPU_HARDWARE_FP == TRUE ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the MIPS floating-point register FP9.
+      definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+      description: null
+      kind: member
+      name: fp9
+    enabled-by: (( CPU_HARDWARE_FP == TRUE ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the MIPS floating-point register FP10.
+      definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+      description: null
+      kind: member
+      name: fp10
+    enabled-by: (( CPU_HARDWARE_FP == TRUE ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the MIPS floating-point register FP11.
+      definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+      description: null
+      kind: member
+      name: fp11
+    enabled-by: (( CPU_HARDWARE_FP == TRUE ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the MIPS floating-point register FP12.
+      definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+      description: null
+      kind: member
+      name: fp12
+    enabled-by: (( CPU_HARDWARE_FP == TRUE ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the MIPS floating-point register FP13.
+      definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+      description: null
+      kind: member
+      name: fp13
+    enabled-by: (( CPU_HARDWARE_FP == TRUE ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the MIPS floating-point register FP14.
+      definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+      description: null
+      kind: member
+      name: fp14
+    enabled-by: (( CPU_HARDWARE_FP == TRUE ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the MIPS floating-point register FP15.
+      definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+      description: null
+      kind: member
+      name: fp15
+    enabled-by: (( CPU_HARDWARE_FP == TRUE ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the MIPS floating-point register FP16.
+      definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+      description: null
+      kind: member
+      name: fp16
+    enabled-by: (( CPU_HARDWARE_FP == TRUE ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the MIPS floating-point register FP17.
+      definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+      description: null
+      kind: member
+      name: fp17
+    enabled-by: (( CPU_HARDWARE_FP == TRUE ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the MIPS floating-point register FP18.
+      definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+      description: null
+      kind: member
+      name: fp18
+    enabled-by: (( CPU_HARDWARE_FP == TRUE ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the MIPS floating-point register FP19.
+      definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+      description: null
+      kind: member
+      name: fp19
+    enabled-by: (( CPU_HARDWARE_FP == TRUE ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the MIPS floating-point register FP20.
+      definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+      description: null
+      kind: member
+      name: fp20
+    enabled-by: (( CPU_HARDWARE_FP == TRUE ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the MIPS floating-point register FP21.
+      definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+      description: null
+      kind: member
+      name: fp21
+    enabled-by: (( CPU_HARDWARE_FP == TRUE ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the MIPS floating-point register FP22.
+      definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+      description: null
+      kind: member
+      name: fp22
+    enabled-by: (( CPU_HARDWARE_FP == TRUE ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the MIPS floating-point register FP23.
+      definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+      description: null
+      kind: member
+      name: fp23
+    enabled-by: (( CPU_HARDWARE_FP == TRUE ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the MIPS floating-point register FP24.
+      definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+      description: null
+      kind: member
+      name: fp24
+    enabled-by: (( CPU_HARDWARE_FP == TRUE ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the MIPS floating-point register FP25.
+      definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+      description: null
+      kind: member
+      name: fp25
+    enabled-by: (( CPU_HARDWARE_FP == TRUE ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the MIPS floating-point register FP26.
+      definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+      description: null
+      kind: member
+      name: fp26
+    enabled-by: (( CPU_HARDWARE_FP == TRUE ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the MIPS floating-point register FP27.
+      definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+      description: null
+      kind: member
+      name: fp27
+    enabled-by: (( CPU_HARDWARE_FP == TRUE ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the MIPS floating-point register FP28.
+      definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+      description: null
+      kind: member
+      name: fp28
+    enabled-by: (( CPU_HARDWARE_FP == TRUE ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the MIPS floating-point register FP29.
+      definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+      description: null
+      kind: member
+      name: fp29
+    enabled-by: (( CPU_HARDWARE_FP == TRUE ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the MIPS floating-point register FP30.
+      definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+      description: null
+      kind: member
+      name: fp30
+    enabled-by: (( CPU_HARDWARE_FP == TRUE ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the MIPS floating-point register FP31.
+      definition: __MIPS_FPU_REGISTER_TYPE ${.:name}
+      description: null
+      kind: member
+      name: fp31
+    enabled-by: (( CPU_HARDWARE_FP == TRUE ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the floating-point control and status register.
+      definition: ${/c/if/uint32_t:/name} ${.:name}
+      description: null
+      kind: member
+      name: fpcs
+    enabled-by: (( CPU_HARDWARE_FP == TRUE ))
+definition-kind: typedef-only
+description: null
+enabled-by: mips
+index-entries: []
+interface-type: struct
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+name: Context_Control_fp
+notes: null
+type: interface

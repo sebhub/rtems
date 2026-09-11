@@ -1,0 +1,12 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+links: []
+organization: The Santa Cruz Operation
+reference-type: manual
+title: System V Application Binary Interface, MIPS RISC Processor Supplement, Third
+  Edition, Document Version 3, February 1996
+type: reference
+work-hash: TsuYg_-cjzoirSBiYgGnEG9ra3kssaBusqMFYVqy5Rk=
+work-url: https://refspecs.linuxfoundation.org/elf/mipsabi.pdf

@@ -1,0 +1,17 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: mips
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+- location: 3-13
+  role: reference
+  uid: /ref/arch/mips/psabi
+term: MIPS vector register
+text: |
+  A register of a vector unit. The ABI defines coprocessor 1 and no other. MSA
+  and the accumulators of the digital signal processor arrive with a later level,
+  and no RTEMS multilib selects one.
+type: glossary
