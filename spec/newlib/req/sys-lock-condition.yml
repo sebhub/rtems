@@ -14,5 +14,7 @@ rationale: |
 requirement-type: non-functional
 text: |
   The super core shall have a component containing the system lock condition
-  variable implementation those interfaces are defined by Newlib.
+  variable implementation those interfaces are defined by Newlib. The component
+  shall let another super core component use a condition variable as the thread
+  queue of that component.
 type: requirement

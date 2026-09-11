@@ -1,0 +1,17 @@
+SPDX-License-Identifier: CC-BY-SA-4.0
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: function
+links:
+- role: function-implementation
+  uid: /score/tq/req/enqueue-fifo
+- role: requirement-refinement
+  uid: /newlib/req/sys-lock-condition
+rationale: null
+requirement-type: functional
+text: |
+  The condition enqueue operation shall enqueue the calling thread on the thread
+  queue of the condition variable as specified by
+  ${/score/tq/req/enqueue-fifo:/spec}.
+type: requirement

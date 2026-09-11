@@ -1,0 +1,18 @@
+SPDX-License-Identifier: CC-BY-SA-4.0
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: function
+links:
+- role: function-implementation
+  uid: /score/tq/req/flush-fifo
+- role: requirement-refinement
+  uid: /newlib/req/sys-lock-condition
+rationale: null
+requirement-type: functional
+text: |
+  The condition flush operation shall flush every enqueued thread of the thread
+  queue of the condition variable as specified by
+  ${/score/tq/req/flush-fifo:/spec} where the flush filter does not return
+  ${/c/if/null:/name}.
+type: requirement
