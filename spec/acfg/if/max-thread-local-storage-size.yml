@@ -4,10 +4,10 @@ copyrights:
 - Copyright (C) 2020 embedded brains GmbH & Co. KG
 default-value: 0
 description: |
-  If the value of this configuration option is greater than zero, then it
-  defines the maximum thread-local storage size, otherwise the thread-local
-  storage size is defined by the linker depending on the thread-local storage
-  objects used by the application in the statically-linked executable.
+  If the value of this configuration option is greater than zero, then it defines
+  the maximum thread-local storage size, otherwise the thread-local storage size
+  is defined by the linker depending on the thread-local storage objects used by
+  the application in the statically-linked executable.
 enabled-by: true
 index-entries: []
 interface-type: appl-config-option

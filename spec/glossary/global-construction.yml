@@ -11,5 +11,5 @@ links:
 term: global construction
 text: |
   In the global construction, the C++ global constructors and constructor
-  functions are invoked.  See ${/ref/rtems/c-user/global-construction:/name}.
+  functions are invoked. See ${/ref/rtems/c-user/global-construction:/name}.
 type: glossary

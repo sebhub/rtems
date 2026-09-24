@@ -15,6 +15,6 @@ links:
 method: by-inspection
 text: |
   The ${/glossary/sourcecode:/term} of the software product was reviewed for a
-  correct implementation of the errata workaround support macros.  The macros
-  are correctly implemented.
+  correct implementation of the errata workaround support macros. The macros are
+  correctly implemented.
 type: validation

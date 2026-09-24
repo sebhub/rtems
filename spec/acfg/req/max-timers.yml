@@ -11,6 +11,6 @@ links:
 rationale: null
 requirement-type: functional
 text: |
-  The application configuration option shall define the maximum number of
-  Classic API Timers that can be concurrently active.
+  The application configuration option shall define the maximum number of Classic
+  API Timers that can be concurrently active.
 type: requirement

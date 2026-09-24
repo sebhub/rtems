@@ -4,19 +4,6 @@ brief: |
   map.
 copyrights:
 - Copyright (C) 2021, 2023 embedded brains GmbH & Co. KG
-description: null
-enabled-by: true
-identifier: RTEMSDeviceGRSPWROUTER
-index-entries: []
-interface-type: register-block
-links:
-- role: interface-ingroup
-  uid: group
-- role: interface-placement
-  uid: grspwrouter-header
-- name: PORTSTATS
-  role: register-block-include
-  uid: grspwrouter-portstats
 definition:
 - default:
     count: 255
@@ -203,22 +190,41 @@ definition:
     name: APBAREA
   offset: 0x2000
   variants: []
-register-prefix: null
+description: null
+enabled-by: true
+identifier: RTEMSDeviceGRSPWROUTER
+index-entries: []
+interface-type: register-block
+links:
+- role: interface-ingroup
+  uid: group
+- role: interface-placement
+  uid: grspwrouter-header
+- name: PORTSTATS
+  role: register-block-include
+  uid: grspwrouter-portstats
+name: grspwrouter
+notes: null
 register-block-group: SpaceWire Router
 register-block-size: 12288
+register-prefix: null
 registers:
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'PE'
+      name: PE
+      properties:
+      - r
+      - w
       start: 1
       width: 31
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'PD'
+      name: PD
+      properties:
+      - r
+      - w
       start: 0
       width: 1
     variants: []
@@ -229,28 +235,36 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'SR'
+      name: SR
+      properties:
+      - r
+      - w
       start: 3
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'EN'
+      name: EN
+      properties:
+      - r
+      - w
       start: 2
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'PR'
+      name: PR
+      properties:
+      - r
+      - w
       start: 1
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'HD'
+      name: HD
+      properties:
+      - r
+      - w
       start: 0
       width: 1
     variants: []
@@ -261,22 +275,28 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'PL'
+      name: PL
+      properties:
+      - r
+      - w
       start: 17
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'TS'
+      name: TS
+      properties:
+      - r
+      - w
       start: 16
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'TR'
+      name: TR
+      properties:
+      - r
+      - w
       start: 9
       width: 1
     variants: []
@@ -287,148 +307,194 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'RD'
+      name: RD
+      properties:
+      - r
+      - w
       start: 24
       width: 8
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'RES'
+      name: RES
+      properties:
+      - r
       start: 22
       width: 2
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'ST'
+      name: ST
+      properties:
+      - r
+      - w
       start: 21
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'SR'
+      name: SR
+      properties:
+      - r
+      - w
       start: 20
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'AD'
+      name: AD
+      properties:
+      - r
+      - w
       start: 19
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'LR'
+      name: LR
+      properties:
+      - r
+      - w
       start: 18
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'PL'
+      name: PL
+      properties:
+      - r
+      - w
       start: 17
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'TS'
+      name: TS
+      properties:
+      - r
+      - w
       start: 16
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'IC'
+      name: IC
+      properties:
+      - r
+      - w
       start: 15
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'ET'
+      name: ET
+      properties:
+      - r
+      - w
       start: 14
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'NF'
+      name: NF
+      properties:
+      - r
+      - w
       start: 13
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'PS'
+      name: PS
+      properties:
+      - r
+      - w
       start: 12
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'BE'
+      name: BE
+      properties:
+      - r
+      - w
       start: 11
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'DI'
+      name: DI
+      properties:
+      - r
+      - w
       start: 10
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'TR'
+      name: TR
+      properties:
+      - r
+      - w
       start: 9
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'PR'
+      name: PR
+      properties:
+      - r
+      - w
       start: 8
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'TF'
+      name: TF
+      properties:
+      - r
+      - w
       start: 7
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'RS'
+      name: RS
+      properties:
+      - r
+      - w
       start: 6
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'TE'
+      name: TE
+      properties:
+      - r
+      - w
       start: 5
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'R'
+      name: R
+      properties:
+      - r
       start: 4
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'CE'
+      name: CE
+      properties:
+      - r
+      - w
       start: 3
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'AS'
+      name: AS
+      properties:
+      - r
+      - w
       start: 2
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'LS'
+      name: LS
+      properties:
+      - r
+      - w
       start: 1
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'LD'
+      name: LD
+      properties:
+      - r
+      - w
       start: 0
       width: 1
     variants: []
@@ -439,100 +505,127 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'EO'
+      name: EO
+      properties:
+      - r
+      - w1c
       start: 31
       width: 1
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'EE'
+      name: EE
+      properties:
+      - r
+      - w1c
       start: 30
       width: 1
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'PL'
+      name: PL
+      properties:
+      - r
+      - w1c
       start: 29
       width: 1
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'TT'
+      name: TT
+      properties:
+      - r
+      - w1c
       start: 28
       width: 1
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'PT'
+      name: PT
+      properties:
+      - r
+      - w1c
       start: 27
       width: 1
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'HC'
+      name: HC
+      properties:
+      - r
+      - w1c
       start: 26
       width: 1
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'PI'
+      name: PI
+      properties:
+      - r
+      - w1c
       start: 25
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'CE'
+      name: CE
+      properties:
+      - r
+      - w
       start: 24
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'EC'
+      name: EC
+      properties:
+      - r
       start: 20
       width: 4
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'R'
+      name: R
+      properties:
+      - r
       start: 19
       width: 1
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'TS'
+      name: TS
+      properties:
+      - r
+      - w1c
       start: 18
       width: 1
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'ME'
+      name: ME
+      properties:
+      - r
+      - w1c
       start: 17
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'IP'
+      name: IP
+      properties:
+      - r
       start: 7
       width: 5
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'RES'
+      name: RES
+      properties:
+      - r
       start: 5
       width: 2
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'CP'
+      name: CP
+      properties:
+      - r
+      - w
       start: 4
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'PC'
+      name: PC
+      properties:
+      - r
       start: 0
       width: 4
     variants: []
@@ -543,136 +636,169 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'PT'
+      name: PT
+      properties:
+      - r
       start: 30
       width: 2
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'PL'
+      name: PL
+      properties:
+      - r
+      - w1c
       start: 29
       width: 1
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'TT'
+      name: TT
+      properties:
+      - r
+      - w1c
       start: 28
       width: 1
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'RS'
+      name: RS
+      properties:
+      - r
+      - w1c
       start: 27
       width: 1
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'SR'
+      name: SR
+      properties:
+      - r
+      - w1c
       start: 26
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'LR'
+      name: LR
+      properties:
+      - r
       start: 22
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'SP'
+      name: SP
+      properties:
+      - r
       start: 21
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'AC'
+      name: AC
+      properties:
+      - r
       start: 20
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'AP'
+      name: AP
+      properties:
+      - r
       start: 19
       width: 1
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'TS'
+      name: TS
+      properties:
+      - r
+      - w1c
       start: 18
       width: 1
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'ME'
+      name: ME
+      properties:
+      - r
+      - w1c
       start: 17
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'TF'
+      name: TF
+      properties:
+      - r
       start: 16
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'RE'
+      name: RE
+      properties:
+      - r
       start: 15
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'LS'
+      name: LS
+      properties:
+      - r
       start: 12
       width: 3
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'IP'
+      name: IP
+      properties:
+      - r
       start: 7
       width: 5
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'PR'
+      name: PR
+      properties:
+      - r
       start: 6
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'PB'
+      name: PB
+      properties:
+      - r
       start: 5
       width: 1
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'IA'
+      name: IA
+      properties:
+      - r
+      - w1c
       start: 4
       width: 1
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'CE'
+      name: CE
+      properties:
+      - r
+      - w1c
       start: 3
       width: 1
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'ER'
+      name: ER
+      properties:
+      - r
+      - w1c
       start: 2
       width: 1
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'DE'
+      name: DE
+      properties:
+      - r
+      - w1c
       start: 1
       width: 1
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'PE'
+      name: PE
+      properties:
+      - r
+      - w1c
       start: 0
       width: 1
     variants: []
@@ -683,10 +809,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'RL'
+      name: RL
+      properties:
+      - r
+      - w
       start: 0
       width: 10
     variants: []
@@ -697,22 +825,28 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'SM'
+      name: SM
+      properties:
+      - r
+      - w
       start: 24
       width: 8
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'SV'
+      name: SV
+      properties:
+      - r
+      - w
       start: 16
       width: 8
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'OR'
+      name: OR
+      properties:
+      - r
+      - w
       start: 15
       width: 1
     variants: []
@@ -723,70 +857,91 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'SM'
+      name: SM
+      properties:
+      - r
+      - w
       start: 24
       width: 8
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'SV'
+      name: SV
+      properties:
+      - r
+      - w
       start: 16
       width: 8
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'OR'
+      name: OR
+      properties:
+      - r
+      - w
       start: 15
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'UR'
+      name: UR
+      properties:
+      - r
+      - w
       start: 14
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'R'
+      name: R
+      properties:
+      - r
       start: 13
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'AT'
+      name: AT
+      properties:
+      - r
+      - w
       start: 12
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'AR'
+      name: AR
+      properties:
+      - r
+      - w
       start: 11
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'IT'
+      name: IT
+      properties:
+      - r
+      - w
       start: 10
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'IR'
+      name: IR
+      properties:
+      - r
+      - w
       start: 9
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'SD'
+      name: SD
+      properties:
+      - r
+      - w
       start: 1
       width: 5
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'SC'
+      name: SC
+      properties:
+      - r
+      - w
       start: 0
       width: 1
     variants: []
@@ -797,124 +952,155 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'SP'
+      name: SP
+      properties:
+      - r
       start: 27
       width: 5
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'AP'
+      name: AP
+      properties:
+      - r
       start: 22
       width: 5
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'FP'
+      name: FP
+      properties:
+      - r
       start: 17
       width: 5
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'R'
+      name: R
+      properties:
+      - r
       start: 16
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'SR'
+      name: SR
+      properties:
+      - r
       start: 15
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'PE'
+      name: PE
+      properties:
+      - r
       start: 14
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'IC'
+      name: IC
+      properties:
+      - r
+      - w
       start: 13
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'IS'
+      name: IS
+      properties:
+      - r
+      - w
       start: 12
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'IP'
+      name: IP
+      properties:
+      - r
+      - w
       start: 11
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'AI'
+      name: AI
+      properties:
+      - r
+      - w
       start: 10
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'AT'
+      name: AT
+      properties:
+      - r
+      - w
       start: 9
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'IE'
+      name: IE
+      properties:
+      - r
+      - w
       start: 8
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'RE'
+      name: RE
+      properties:
+      - r
+      - w
       start: 7
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'EE'
+      name: EE
+      properties:
+      - r
+      - w
       start: 6
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'R'
+      name: R
+      properties:
+      - r
       start: 5
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'SA'
+      name: SA
+      properties:
+      - r
+      - w
       start: 4
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'TF'
+      name: TF
+      properties:
+      - r
+      - w
       start: 3
       width: 1
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'RM'
+      name: RM
+      properties:
+      - r
+      - w1c
       start: 2
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'TA'
+      name: TA
+      properties:
+      - r
       start: 1
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'PP'
+      name: PP
+      properties:
+      - r
       start: 0
       width: 1
     variants: []
@@ -925,28 +1111,34 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'RE'
+      name: RE
+      properties:
+      - r
+      - w
       start: 9
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'EN'
+      name: EN
+      properties:
+      - r
+      - w
       start: 8
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'CF'
+      name: CF
+      properties:
+      - r
       start: 6
       width: 2
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'TC'
+      name: TC
+      properties:
+      - r
       start: 0
       width: 6
     variants: []
@@ -957,28 +1149,33 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'MA'
+      name: MA
+      properties:
+      - r
       start: 24
       width: 8
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'MI'
+      name: MI
+      properties:
+      - r
       start: 16
       width: 8
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'PA'
+      name: PA
+      properties:
+      - r
       start: 8
       width: 8
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'ID'
+      name: ID
+      properties:
+      - r
+      - w
       start: 0
       width: 8
     variants: []
@@ -989,10 +1186,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'ID'
+      name: ID
+      properties:
+      - r
+      - w
       start: 0
       width: 8
     variants: []
@@ -1003,10 +1202,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'WE'
+      name: WE
+      properties:
+      - r
+      - w
       start: 0
       width: 1
     variants: []
@@ -1017,10 +1218,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'RL'
+      name: RL
+      properties:
+      - r
+      - w
       start: 0
       width: 32
     variants: []
@@ -1031,70 +1234,92 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'PE'
+      name: PE
+      properties:
+      - r
+      - w
       start: 10
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'SR'
+      name: SR
+      properties:
+      - r
+      - w
       start: 9
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'RS'
+      name: RS
+      properties:
+      - r
+      - w
       start: 8
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'TT'
+      name: TT
+      properties:
+      - r
+      - w
       start: 7
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'PL'
+      name: PL
+      properties:
+      - r
+      - w
       start: 6
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'TS'
+      name: TS
+      properties:
+      - r
+      - w
       start: 5
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'AC'
+      name: AC
+      properties:
+      - r
+      - w
       start: 4
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'RE'
+      name: RE
+      properties:
+      - r
+      - w
       start: 3
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'IA'
+      name: IA
+      properties:
+      - r
+      - w
       start: 2
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'LE'
+      name: LE
+      properties:
+      - r
+      - w
       start: 1
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'ME'
+      name: ME
+      properties:
+      - r
+      - w
       start: 0
       width: 1
     variants: []
@@ -1105,10 +1330,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'IE'
+      name: IE
+      properties:
+      - r
+      - w
       start: 0
       width: 32
     variants: []
@@ -1119,10 +1346,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'IP'
+      name: IP
+      properties:
+      - r
+      - w1c
       start: 0
       width: 32
     variants: []
@@ -1133,46 +1362,60 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'HI'
+      name: HI
+      properties:
+      - r
+      - w
       start: 21
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'UA'
+      name: UA
+      properties:
+      - r
+      - w
       start: 20
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'AH'
+      name: AH
+      properties:
+      - r
+      - w
       start: 19
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'IT'
+      name: IT
+      properties:
+      - r
+      - w
       start: 18
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'TE'
+      name: TE
+      properties:
+      - r
+      - w
       start: 0
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'EN'
+      name: EN
+      properties:
+      - r
+      - w
       start: 17
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'IN'
+      name: IN
+      properties:
+      - r
+      - w
       start: 6
       width: 10
     variants: []
@@ -1183,10 +1426,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'IB'
+      name: IB
+      properties:
+      - r
+      - w1c
       start: 0
       width: 32
     variants: []
@@ -1197,10 +1442,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'IB'
+      name: IB
+      properties:
+      - r
+      - w1c
       start: 0
       width: 32
     variants: []
@@ -1211,10 +1458,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'RL'
+      name: RL
+      properties:
+      - r
+      - w
       start: 0
       width: 32
     variants: []
@@ -1225,10 +1474,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'RL'
+      name: RL
+      properties:
+      - r
+      - w
       start: 0
       width: 32
     variants: []
@@ -1239,10 +1490,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'RL'
+      name: RL
+      properties:
+      - r
+      - w
       start: 0
       width: 5
     variants: []
@@ -1253,16 +1506,18 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'LR'
+      name: LR
+      properties:
+      - r
       start: 1
       width: 31
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'R'
+      name: R
+      properties:
+      - r
       start: 0
       width: 1
     variants: []
@@ -1273,82 +1528,95 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'AF'
+      name: AF
+      properties:
+      - r
       start: 24
       width: 2
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'R'
+      name: R
+      properties:
+      - r
       start: 23
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'PF'
+      name: PF
+      properties:
+      - r
       start: 20
       width: 3
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'R'
+      name: R
+      properties:
+      - r
       start: 19
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'RM'
+      name: RM
+      properties:
+      - r
       start: 16
       width: 3
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'R'
+      name: R
+      properties:
+      - r
       start: 15
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'AA'
+      name: AA
+      properties:
+      - r
       start: 14
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'AX'
+      name: AX
+      properties:
+      - r
       start: 13
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'DP'
+      name: DP
+      properties:
+      - r
       start: 12
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'ID'
+      name: ID
+      properties:
+      - r
       start: 11
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'SD'
+      name: SD
+      properties:
+      - r
       start: 10
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'PC'
+      name: PC
+      properties:
+      - r
       start: 5
       width: 5
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'CC'
+      name: CC
+      properties:
+      - r
       start: 0
       width: 5
     variants: []
@@ -1359,16 +1627,18 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'VI'
+      name: VI
+      properties:
+      - r
       start: 16
       width: 16
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'PI'
+      name: PI
+      properties:
+      - r
       start: 0
       width: 26
     variants: []
@@ -1379,16 +1649,20 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'VI'
+      name: VI
+      properties:
+      - r
+      - w
       start: 16
       width: 16
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'PI'
+      name: PI
+      properties:
+      - r
+      - w
       start: 0
       width: 26
     variants: []
@@ -1399,10 +1673,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'SN'
+      name: SN
+      properties:
+      - r
+      - w
       start: 0
       width: 32
     variants: []
@@ -1413,10 +1689,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'ND'
+      name: ND
+      properties:
+      - r
+      - w
       start: 0
       width: 32
     variants: []
@@ -1427,10 +1705,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'ML'
+      name: ML
+      properties:
+      - r
+      - w
       start: 0
       width: 25
     variants: []
@@ -1441,16 +1721,18 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'OC'
+      name: OC
+      properties:
+      - r
       start: 6
       width: 6
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'IC'
+      name: IC
+      properties:
+      - r
       start: 0
       width: 6
     variants: []
@@ -1461,10 +1743,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'GPO'
+      name: GPO
+      properties:
+      - r
+      - w
       start: 0
       width: 32
     variants: []
@@ -1475,10 +1759,11 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'GPI'
+      name: GPI
+      properties:
+      - r
       start: 0
       width: 32
     variants: []
@@ -1489,40 +1774,52 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'SR'
+      name: SR
+      properties:
+      - r
+      - w
       start: 31
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'EN'
+      name: EN
+      properties:
+      - r
+      - w
       start: 30
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'PR'
+      name: PR
+      properties:
+      - r
+      - w
       start: 29
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'HD'
+      name: HD
+      properties:
+      - r
+      - w
       start: 28
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'PE'
+      name: PE
+      properties:
+      - r
+      - w
       start: 1
       width: 27
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'PD'
+      name: PD
+      properties:
+      - r
+      - w
       start: 0
       width: 1
     variants: []
@@ -1533,10 +1830,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'APB'
+      name: APB
+      properties:
+      - r
+      - w
       start: 0
       width: 32
     variants: []
@@ -1545,6 +1844,4 @@ registers:
   description: null
   name: APBAREA
   width: 32
-name: grspwrouter
-notes: null
 type: interface

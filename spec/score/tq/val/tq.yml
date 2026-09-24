@@ -5,8 +5,8 @@ enabled-by: true
 links: []
 test-actions:
 - action-brief: |
-    Use two worker threads to provoke a deadlock detection involving a thread
-    queue with no owner.
+    Use two worker threads to provoke a deadlock detection involving a thread queue
+    with no owner.
   action-code: |
     TQReset( &ctx->tq_ctx );
   checks:
@@ -21,8 +21,8 @@ test-actions:
       TQSend( &ctx->tq_ctx, TQ_BLOCKER_A, TQ_EVENT_MUTEX_D_OBTAIN );
     links: []
   - brief: |
-      Let blocker B block on mutex A.  The deadlock detection will stop since
-      blocker A blocks on the counting semaphore which has no owner.
+      Let blocker B block on mutex A. The deadlock detection will stop since blocker
+      A blocks on the counting semaphore which has no owner.
     code: |
       TQSend( &ctx->tq_ctx, TQ_BLOCKER_B, TQ_EVENT_MUTEX_A_OBTAIN );
     links:

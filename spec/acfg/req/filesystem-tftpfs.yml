@@ -11,6 +11,6 @@ links:
 rationale: null
 requirement-type: functional
 text: |
-  The application configuration option shall register the TFTP file system
-  (TFTP client) during system initialization.
+  The application configuration option shall register the TFTP file system (TFTP
+  client) during system initialization.
 type: requirement

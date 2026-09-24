@@ -11,6 +11,6 @@ links:
 rationale: null
 requirement-type: functional
 text: |
-  The application configuration option shall disable the support to read
-  symbolic links in the root IMFS (no support for ${/c/if/readlink:/name}).
+  The application configuration option shall disable the support to read symbolic
+  links in the root IMFS (no support for ${/c/if/readlink:/name}).
 type: requirement

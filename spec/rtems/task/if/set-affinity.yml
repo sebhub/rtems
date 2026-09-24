@@ -37,20 +37,19 @@ name: rtems_task_set_affinity
 notes: null
 params:
 - description: |
-    is the task identifier.  The constant ${self-define:/name} may be used to
+    is the task identifier. The constant ${self-define:/name} may be used to
     specify the calling task.
   dir: null
   name: id
 - description: |
-    is the size of the processor set referenced by ${.:/params[2]/name} in
-    bytes.
+    is the size of the processor set referenced by ${.:/params[2]/name} in bytes.
   dir: null
   name: cpusetsize
 - description: |
-    is the pointer to a ${/c/if/cpu_set_t:/name} object.  The processor set
-    defines the new processor affinity set of the task.  A set bit in the
-    processor set means that the corresponding processor shall be in the
-    processor affinity set of the task, otherwise the bit shall be cleared.
+    is the pointer to a ${/c/if/cpu_set_t:/name} object. The processor set defines
+    the new processor affinity set of the task. A set bit in the processor set
+    means that the corresponding processor shall be in the processor affinity set
+    of the task, otherwise the bit shall be cleared.
   dir: null
   name: cpuset
 return:
@@ -67,8 +66,8 @@ return:
       ${.:/params[0]/name}.
     value: ${../../status/if/invalid-id:/name}
   - description: |
-      The referenced processor set was not a valid new processor affinity set
-      for the task.
+      The referenced processor set was not a valid new processor affinity set for the
+      task.
     value: ${../../status/if/invalid-number:/name}
   - description: |
       The task resided on a remote node.

@@ -13,8 +13,8 @@ definition:
   variants: []
 description: |
   This directive informs RTEMS that a multiprocessing communications packet has
-  arrived from another node.  This directive is called by the user-provided
-  MPCI, and is only used in multiprocessing configurations.
+  arrived from another node. This directive is called by the user-provided MPCI,
+  and is only used in multiprocessing configurations.
 enabled-by: true
 index-entries: []
 interface-type: function

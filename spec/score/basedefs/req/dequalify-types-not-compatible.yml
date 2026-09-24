@@ -3,16 +3,15 @@ copyrights:
 - Copyright (C) 2022 embedded brains GmbH & Co. KG
 enabled-by:
   not: ASM
+functional-type: function
 links:
 - role: requirement-refinement
   uid: ../../if/group
 - role: interface-function
   uid: ../if/dequalify-types-not-compatible
-functional-type: function
 rationale: null
 requirement-type: functional
 text: |
   Where ${/compiler/if/gnuc:/name} is defined, calling
-  ${../if/dequalify-types-not-compatible:/name} shall result in a compiler
-  error.
+  ${../if/dequalify-types-not-compatible:/name} shall result in a compiler error.
 type: requirement

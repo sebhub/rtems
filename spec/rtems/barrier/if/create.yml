@@ -16,36 +16,34 @@ definition:
     return: ${../../status/if/code:/name}
   variants: []
 description: |
-  This directive creates a barrier which resides on the local node.  The
-  barrier has the user-defined object name specified in ${.:/params[0]/name}
-  and the initial count specified in ${.:/params[1]/name}.  The assigned object
-  identifier is returned in ${.:/params[3]/name}.  This identifier is used to
-  access the barrier with other barrier related directives.
+  This directive creates a barrier which resides on the local node. The barrier
+  has the user-defined object name specified in ${.:/params[0]/name} and the
+  initial count specified in ${.:/params[1]/name}. The assigned object identifier
+  is returned in ${.:/params[3]/name}. This identifier is used to access the
+  barrier with other barrier related directives.
 
   The **attribute set** specified in ${.:/params[1]/name} is built through a
-  *bitwise or* of the attribute constants described below.  Not all
-  combinations of attributes are allowed.  Some attributes are mutually
-  exclusive.
-  Combining mutually exclusive attributes may throw an error or run silently
-  with unintended default values.
-  Attributes not mentioned below are not evaluated by this directive and have
-  no effect.  Default attributes can be selected by using the
-  ${../../attr/if/default:/name} constant.
+  *bitwise or* of the attribute constants described below. Not all combinations
+  of attributes are allowed. Some attributes are mutually exclusive. Combining
+  mutually exclusive attributes may throw an error or run silently with
+  unintended default values. Attributes not mentioned below are not evaluated by
+  this directive and have no effect. Default attributes can be selected by using
+  the ${../../attr/if/default:/name} constant.
 
   The **barrier class** is selected by the mutually exclusive
   ${../../attr/if/barrier-manual-release:/name} and
   ${../../attr/if/barrier-automatic-release:/name} attributes.
 
-  * The **manual release class** is the default and can be emphasized through
-    use of the ${../../attr/if/barrier-manual-release:/name} attribute.  For
-    this class, there is no limit on the number of tasks that will block at the
+  - The **manual release class** is the default and can be emphasized through use
+    of the ${../../attr/if/barrier-manual-release:/name} attribute. For this
+    class, there is no limit on the number of tasks that will block at the
     barrier. Only when the ${release:/name} directive is invoked, are the tasks
     waiting at the barrier unblocked.
 
-  * The **automatic release class** is selected by the
-    ${../../attr/if/barrier-automatic-release:/name} attribute.  For this
-    class, tasks calling the ${wait:/name} directive will block until there are
-    ${.:/params[2]/name} minus one tasks waiting at the barrier.  When the
+  - The **automatic release class** is selected by the
+    ${../../attr/if/barrier-automatic-release:/name} attribute. For this class,
+    tasks calling the ${wait:/name} directive will block until there are
+    ${.:/params[2]/name} minus one tasks waiting at the barrier. When the
     ${.:/params[2]/name} task invokes the ${wait:/name} directive, the previous
     ${.:/params[2]/name} - 1 tasks are automatically released and the caller
     returns.
@@ -86,7 +84,7 @@ params:
   dir: null
   name: maximum_waiters
 - description: |
-    is the pointer to an ${../../type/if/id:/name} object.  When the directive call
+    is the pointer to an ${../../type/if/id:/name} object. When the directive call
     is successful, the identifier of the created barrier will be stored in this
     object.
   dir: null
@@ -104,12 +102,11 @@ return:
       The ${.:/params[3]/name} parameter was ${/c/if/null:/name}.
     value: ${../../status/if/invalid-address:/name}
   - description: |
-      The ${.:/params[2]/name} parameter was 0 for an automatic release
-      barrier.
+      The ${.:/params[2]/name} parameter was 0 for an automatic release barrier.
     value: ${../../status/if/invalid-number:/name}
   - description: |
-      There was no inactive object available to create a barrier.  The number
-      of barriers available to the application is configured through the
+      There was no inactive object available to create a barrier. The number of
+      barriers available to the application is configured through the
       ${/acfg/if/max-barriers:/name} application configuration option.
     value: ${../../status/if/too-many:/name}
 type: interface

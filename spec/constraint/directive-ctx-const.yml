@@ -8,6 +8,6 @@ links:
 rationale: null
 text: |
   The directive is implemented by a macro and may be called from within C/C++
-  constant expressions.  In addition, a function implementation of the
-  directive exists for bindings to other programming languages.
+  constant expressions. In addition, a function implementation of the directive
+  exists for bindings to other programming languages.
 type: constraint

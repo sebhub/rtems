@@ -5,10 +5,10 @@ enabled-by:
   and:
   - not: RTEMS_SMP
   - bsps/sparc/leon3
+functional-type: function
 links:
 - role: interface-function
   uid: /bsp/if/fatal-extension
-functional-type: function
 rationale: null
 requirement-type: functional
 text: |

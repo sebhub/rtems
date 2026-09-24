@@ -23,6 +23,6 @@ links:
   uid: /build-options/if/smp
 method: by-review-of-design
 text: |
-  This interface is an external interface.  It is implicitly validated by
-  the ${/glossary/api:/term} elements which use this interface.
+  This interface is an external interface. It is implicitly validated by the
+  ${/glossary/api:/term} elements which use this interface.
 type: validation

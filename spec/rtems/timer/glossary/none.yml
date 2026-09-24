@@ -10,6 +10,6 @@ term: none
 text: |
   A timer in ${../glossary/state:/term} or ${../glossary/context:/term} none or
   associated with ${../glossary/clock:/term} none has not been
-  ${../glossary/scheduled:/term} since it was created with
-  ${../if/create:/name}. The timer is "new" and yet unused.
+  ${../glossary/scheduled:/term} since it was created with ${../if/create:/name}.
+  The timer is "new" and yet unused.
 type: glossary

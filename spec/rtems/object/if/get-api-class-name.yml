@@ -42,8 +42,8 @@ params:
   name: the_class
 return:
   return: |
-    Returns a descriptive name of the class of the API, if the class of the API
-    and the API were valid.
+    Returns a descriptive name of the class of the API, if the class of the API and
+    the API were valid.
   return-values:
   - description: |
       The API was invalid.

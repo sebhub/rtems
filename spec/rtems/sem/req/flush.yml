@@ -102,7 +102,7 @@ pre-conditions:
   - name: MrsP
     test-code: |
       ctx->attribute_set |= RTEMS_BINARY_SEMAPHORE |
-        RTEMS_MULTIPROCESSOR_RESOURCE_SHARING;
+                            RTEMS_MULTIPROCESSOR_RESOURCE_SHARING;
       ctx->initial_count = 1;
       ctx->tq_ctx.enqueue_prepare = EnqueuePrepare;
       ctx->tq_ctx.enqueue_done = TQEnqueueDoneDefault;
@@ -132,25 +132,25 @@ pre-conditions:
     test-code: |
       /* Nothing to prepare */
     text: |
-      While the ${../if/flush:/params[0]/name} parameter is associated with
-      the semaphore.
+      While the ${../if/flush:/params[0]/name} parameter is associated with the
+      semaphore.
   - name: Invalid
     test-code: |
       /* Nothing to prepare */
     text: |
-      While the ${../if/flush:/params[0]/name} parameter is not associated
-      with a semaphore.
+      While the ${../if/flush:/params[0]/name} parameter is not associated with a
+      semaphore.
   test-epilogue: null
   test-prologue: null
 rationale: null
 requirement-type: functional
 skip-reasons:
   NeedsPriorityDiscipline: |
-    Binary semaphores with a locking protocol are required to use the priority
-    task wait queue discipline.
+    Binary semaphores with a locking protocol are required to use the priority task
+    wait queue discipline.
   NoMrsP: |
-    Where the system is build with SMP support disabled, the MrsP locking
-    protocol is not available.
+    Where the system is build with SMP support disabled, the MrsP locking protocol
+    is not available.
 test-action: |
   rtems_status_code sc;
 
@@ -258,7 +258,8 @@ test-teardown:
   code: |
     TQDestroy( &ctx->tq_ctx );
   description: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

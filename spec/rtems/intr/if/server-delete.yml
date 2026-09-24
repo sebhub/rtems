@@ -47,7 +47,7 @@ return:
       The requested operation was successful.
     value: ${../../status/if/successful:/name}
   - description: |
-      There was no interrupt server associated with the server index specified
-      by ${.:/params[0]/name}.
+      There was no interrupt server associated with the server index specified by
+      ${.:/params[0]/name}.
     value: ${../../status/if/invalid-id:/name}
 type: interface

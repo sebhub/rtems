@@ -8,7 +8,7 @@ links:
   uid: group
 term: deadline
 text: |
-  A fixed time limit by which a task must have completed a set of actions.
-  Beyond this point, the results are of reduced value and may even be
-  considered useless or harmful.
+  A fixed time limit by which a task must have completed a set of actions. Beyond
+  this point, the results are of reduced value and may even be considered useless
+  or harmful.
 type: glossary

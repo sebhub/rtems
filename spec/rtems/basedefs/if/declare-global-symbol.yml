@@ -25,7 +25,7 @@ name: RTEMS_DECLARE_GLOBAL_SYMBOL
 notes: null
 params:
 - description: |
-    is the name of the global symbol.  It shall be a valid designator.
+    is the name of the global symbol. It shall be a valid designator.
   dir: null
   name: _name
 return: null

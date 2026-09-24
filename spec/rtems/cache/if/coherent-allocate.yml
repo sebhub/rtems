@@ -48,18 +48,18 @@ params:
   dir: null
   name: size
 - description: |
-    is the requested alignment in bytes of the memory area to allocate.  If the
-    alignment parameter is not equal to zero, the allocated memory area will
-    begin at an address aligned by this value.
+    is the requested alignment in bytes of the memory area to allocate. If the
+    alignment parameter is not equal to zero, the allocated memory area will begin
+    at an address aligned by this value.
   dir: null
   name: alignment
 - description: |
-    is the requested boundary in bytes of the memory area to allocate.  If the
-    boundary parameter is not equal to zero, the allocated memory area will
-    comply with a boundary constraint.  The boundary value specifies the set of
-    addresses which are aligned by the boundary value.  The interior of the
-    allocated memory area will not contain an element of this set.  The begin
-    or end address of the area may be a member of the set.
+    is the requested boundary in bytes of the memory area to allocate. If the
+    boundary parameter is not equal to zero, the allocated memory area will comply
+    with a boundary constraint. The boundary value specifies the set of addresses
+    which are aligned by the boundary value. The interior of the allocated memory
+    area will not contain an element of this set. The begin or end address of the
+    area may be a member of the set.
   dir: null
   name: boundary
 return:

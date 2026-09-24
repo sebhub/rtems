@@ -7,7 +7,10 @@ definition:
   default:
     attributes: null
     body: |
-      return ${system-send:/name}( ${.:/params[0]/name}, ${system-transient:/name} );
+      return ${system-send:/name}(
+        ${.:/params[0]/name},
+        ${system-transient:/name}
+      );
     params:
     - ${../../type/if/id:/name} ${.:/params[0]/name}
     return: ${../../status/if/code:/name}
@@ -34,7 +37,8 @@ links:
 name: rtems_event_transient_send
 notes: null
 params:
-- description: is the identifier of the task to receive the transient event.
+- description: |
+    is the identifier of the task to receive the transient event.
   dir: null
   name: id
 return: null

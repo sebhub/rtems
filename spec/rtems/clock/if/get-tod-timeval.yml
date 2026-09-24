@@ -35,10 +35,10 @@ name: rtems_clock_get_tod_timeval
 notes: null
 params:
 - description: |
-    is the pointer to a ${/c/if/timeval:/name} object.  When the directive call
-    is successful, the seconds and microseconds elapsed since the
-    ${/glossary/unix-epoch:/term} and the ${/glossary/clock-realtime:/term} at
-    some point during the directive call will be stored in this object.
+    is the pointer to a ${/c/if/timeval:/name} object. When the directive call is
+    successful, the seconds and microseconds elapsed since the
+    ${/glossary/unix-epoch:/term} and the ${/glossary/clock-realtime:/term} at some
+    point during the directive call will be stored in this object.
   dir: out
   name: time_of_day
 return:
@@ -51,7 +51,7 @@ return:
       The ${.:/params[0]/name} parameter was ${/c/if/null:/name}.
     value: ${../../status/if/invalid-address:/name}
   - description: |
-      The ${/glossary/clock-realtime:/term} was not set.  It can be set with
+      The ${/glossary/clock-realtime:/term} was not set. It can be set with
       ${set:/name}.
     value: ${../../status/if/not-defined:/name}
 type: interface

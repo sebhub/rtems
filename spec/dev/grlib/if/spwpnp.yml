@@ -3,16 +3,6 @@ brief: |
   This set of defines the ${.:/register-block-group} address map.
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
-description: null
-enabled-by: true
-identifier: RTEMSDeviceGRLIBSPWPNP
-index-entries: []
-interface-type: register-block
-links:
-- role: interface-ingroup
-  uid: group
-- role: interface-placement
-  uid: spwpnp-header
 definition:
 - default:
     count: 1
@@ -84,22 +74,36 @@ definition:
     name: PNPACNT
   offset: 0xc000
   variants: []
-register-prefix: null
+description: null
+enabled-by: true
+identifier: RTEMSDeviceGRLIBSPWPNP
+index-entries: []
+interface-type: register-block
+links:
+- role: interface-ingroup
+  uid: group
+- role: interface-placement
+  uid: spwpnp-header
+name: spwpnp
+notes: null
 register-block-group: SpaceWire Plug-and-Play
 register-block-size: 49156
+register-prefix: null
 registers:
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'VEND'
+      name: VEND
+      properties:
+      - r
       start: 16
       width: 16
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'PROD'
+      name: PROD
+      properties:
+      - r
       start: 0
       width: 16
     variants: []
@@ -110,22 +114,25 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'MAJOR'
+      name: MAJOR
+      properties:
+      - r
       start: 24
       width: 8
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'MINOR'
+      name: MINOR
+      properties:
+      - r
       start: 16
       width: 8
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'PATCH'
+      name: PATCH
+      properties:
+      - r
       start: 8
       width: 8
     variants: []
@@ -136,10 +143,11 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'STATUS'
+      name: STATUS
+      properties:
+      - r
       start: 0
       width: 8
     variants: []
@@ -150,10 +158,11 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'ACTIVE'
+      name: ACTIVE
+      properties:
+      - r
       start: 1
       width: 31
     variants: []
@@ -164,10 +173,11 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'RA'
+      name: RA
+      properties:
+      - r
       start: 0
       width: 32
     variants: []
@@ -178,10 +188,11 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'RA'
+      name: RA
+      properties:
+      - r
       start: 0
       width: 32
     variants: []
@@ -192,10 +203,11 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'RA'
+      name: RA
+      properties:
+      - r
       start: 0
       width: 32
     variants: []
@@ -206,10 +218,13 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w, cas]
-      brief: null
+    - brief: null
       description: null
-      name: 'DID'
+      name: DID
+      properties:
+      - r
+      - w
+      - cas
       start: 0
       width: 32
     variants: []
@@ -220,16 +235,18 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'VEND'
+      name: VEND
+      properties:
+      - r
       start: 16
       width: 16
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'PROD'
+      name: PROD
+      properties:
+      - r
       start: 0
       width: 16
     variants: []
@@ -240,10 +257,11 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'USN'
+      name: USN
+      properties:
+      - r
       start: 0
       width: 32
     variants: []
@@ -254,10 +272,11 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'LEN'
+      name: LEN
+      properties:
+      - r
       start: 0
       width: 15
     variants: []
@@ -268,10 +287,11 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'LEN'
+      name: LEN
+      properties:
+      - r
       start: 0
       width: 15
     variants: []
@@ -282,10 +302,11 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'PC'
+      name: PC
+      properties:
+      - r
       start: 0
       width: 5
     variants: []
@@ -296,10 +317,11 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'AC'
+      name: AC
+      properties:
+      - r
       start: 0
       width: 8
     variants: []
@@ -308,6 +330,4 @@ registers:
   description: null
   name: PNPACNT
   width: 32
-name: spwpnp
-notes: null
 type: interface

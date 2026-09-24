@@ -4,16 +4,6 @@ brief: |
   map.
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
-description: null
-enabled-by: true
-identifier: RTEMSDeviceGRSPW2DMA
-index-entries: []
-interface-type: register-block
-links:
-- role: interface-ingroup
-  uid: grspw2
-- role: interface-placement
-  uid: grspw2-header
 definition:
 - default:
     count: 1
@@ -40,166 +30,228 @@ definition:
     name: DMAADDR
   offset: 0x10
   variants: []
-register-prefix: grspw2
+description: null
+enabled-by: true
+identifier: RTEMSDeviceGRSPW2DMA
+index-entries: []
+interface-type: register-block
+links:
+- role: interface-ingroup
+  uid: grspw2
+- role: interface-placement
+  uid: grspw2-header
+name: grspw2_dma
+notes: null
 register-block-group: GRSPW2 DMA
 register-block-size: 32
+register-prefix: grspw2
 registers:
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'INTNUM'
+      name: INTNUM
+      properties:
+      - r
+      - w
       start: 26
       width: 6
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'RES'
+      name: RES
+      properties:
+      - r
       start: 24
       width: 2
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'EP'
+      name: EP
+      properties:
+      - r
+      - w1c
       start: 23
       width: 1
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'TR'
+      name: TR
+      properties:
+      - r
+      - w1c
       start: 22
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'IE'
+      name: IE
+      properties:
+      - r
+      - w
       start: 21
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'IT'
+      name: IT
+      properties:
+      - r
+      - w
       start: 20
       width: 1
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'RP'
+      name: RP
+      properties:
+      - r
+      - w1c
       start: 19
       width: 1
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'TP'
+      name: TP
+      properties:
+      - r
+      - w1c
       start: 18
       width: 1
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'TL'
+      name: TL
+      properties:
+      - r
+      - w1c
       start: 17
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'LE'
+      name: LE
+      properties:
+      - r
+      - w
       start: 16
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'SP'
+      name: SP
+      properties:
+      - r
+      - w
       start: 15
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'SA'
+      name: SA
+      properties:
+      - r
+      - w
       start: 14
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'EN'
+      name: EN
+      properties:
+      - r
+      - w
       start: 13
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'NS'
+      name: NS
+      properties:
+      - r
+      - w
       start: 12
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'RD'
+      name: RD
+      properties:
+      - r
+      - w
       start: 11
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'RX'
+      name: RX
+      properties:
+      - r
       start: 10
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'AT'
+      name: AT
+      properties:
+      - r
+      - w
       start: 9
       width: 1
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'RA'
+      name: RA
+      properties:
+      - r
+      - w1c
       start: 8
       width: 1
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'TA'
+      name: TA
+      properties:
+      - r
+      - w1c
       start: 7
       width: 1
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'PR'
+      name: PR
+      properties:
+      - r
+      - w1c
       start: 6
       width: 1
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'PS'
+      name: PS
+      properties:
+      - r
+      - w1c
       start: 5
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'AI'
+      name: AI
+      properties:
+      - r
+      - w
       start: 4
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'RI'
+      name: RI
+      properties:
+      - r
+      - w
       start: 3
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'TI'
+      name: TI
+      properties:
+      - r
+      - w
       start: 2
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'RE'
+      name: RE
+      properties:
+      - r
+      - w
       start: 1
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'TE'
+      name: TE
+      properties:
+      - r
+      - w
       start: 0
       width: 1
     variants: []
@@ -210,16 +262,19 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'RXMAXLEN'
+      name: RXMAXLEN
+      properties:
+      - r
+      - w
       start: 2
       width: 23
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'RES'
+      name: RES
+      properties:
+      - r
       start: 0
       width: 2
     variants: []
@@ -230,16 +285,20 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'DESCBASEADDR'
+      name: DESCBASEADDR
+      properties:
+      - r
+      - w
       start: 0
       width: 32
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'DESCSEL'
+      name: DESCSEL
+      properties:
+      - r
+      - w
       start: 4
       width: 28
     variants: []
@@ -250,16 +309,20 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'DESCBASEADDR'
+      name: DESCBASEADDR
+      properties:
+      - r
+      - w
       start: 10
       width: 22
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'DESCSEL'
+      name: DESCSEL
+      properties:
+      - r
+      - w
       start: 3
       width: 7
     variants: []
@@ -270,16 +333,20 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'MASK'
+      name: MASK
+      properties:
+      - r
+      - w
       start: 8
       width: 8
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'ADDR'
+      name: ADDR
+      properties:
+      - r
+      - w
       start: 0
       width: 8
     variants: []
@@ -288,6 +355,4 @@ registers:
   description: null
   name: DMAADDR
   width: 32
-name: grspw2_dma
-notes: null
 type: interface

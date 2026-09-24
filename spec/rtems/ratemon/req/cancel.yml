@@ -36,16 +36,15 @@ post-conditions:
       T_eq_int( ctx->period_status.state, RATE_MONOTONIC_INACTIVE );
     text: |
       The ${../glossary/state:/term} of the period shall be
-      ${../glossary/inactive:/term} after the return of the
-      ${../if/cancel:/name} call.
+      ${../glossary/inactive:/term} after the return of the ${../if/cancel:/name}
+      call.
   - name: Nop
     test-code: |
       T_eq_u32( ctx->period_status.state, ctx->previous_state );
     text: |
-      Objects referenced by the ${../if/cancel:/params[0]/name}
-      parameter in past calls to ${../if/cancel:/name} shall not be
-      accessed by the ${../if/cancel:/name} call (see also
-      ${../glossary/nop:/term}).
+      Objects referenced by the ${../if/cancel:/params[0]/name} parameter in past
+      calls to ${../if/cancel:/name} shall not be accessed by the
+      ${../if/cancel:/name} call (see also ${../glossary/nop:/term}).
   test-epilogue: null
   test-prologue: null
 - name: Postponed
@@ -54,17 +53,18 @@ post-conditions:
     test-code: |
       T_eq_u32( ctx->period_status.postponed_jobs_count, 0 );
     text: |
-      There shall be no ${../glossary/postponedjob:/plural}
-      after the return of the ${../if/cancel:/name} call.
+      There shall be no ${../glossary/postponedjob:/plural} after the return of the
+      ${../if/cancel:/name} call.
   - name: Nop
     test-code: |
-      T_eq_u32( ctx->period_status.postponed_jobs_count,
-        ctx->postponed_jobs_count );
+      T_eq_u32(
+        ctx->period_status.postponed_jobs_count,
+        ctx->postponed_jobs_count
+      );
     text: |
-      Objects referenced by the ${../if/cancel:/params[0]/name}
-      parameter in past calls to ${../if/cancel:/name} shall not be
-      accessed by the ${../if/cancel:/name} call (see also
-      ${../glossary/nop:/term}).
+      Objects referenced by the ${../if/cancel:/params[0]/name} parameter in past
+      calls to ${../if/cancel:/name} shall not be accessed by the
+      ${../if/cancel:/name} call (see also ${../glossary/nop:/term}).
   test-epilogue: null
   test-prologue: null
 - name: Scheduler
@@ -73,15 +73,15 @@ post-conditions:
     test-code: |
       /* Cannot be tested as the effect is unknown. */
     text: |
-      The last call of the ${../if/cancel:/name} function shall execute
-      the `cancel_job` ${../glossary/scheduleroperation:/term} of the
+      The last call of the ${../if/cancel:/name} function shall execute the
+      `cancel_job` ${../glossary/scheduleroperation:/term} of the
       ${/glossary/scheduler-home:/term}.
   - name: Nop
     test-code: |
       /* Cannot be tested as the effect is unknown. */
     text: |
-      The last call of the ${../if/cancel:/name} function shall not execute
-      any ${../glossary/scheduleroperation:/term}.
+      The last call of the ${../if/cancel:/name} function shall not execute any
+      ${../glossary/scheduleroperation:/term}.
   test-epilogue: null
   test-prologue: null
 pre-conditions:
@@ -105,15 +105,15 @@ pre-conditions:
     test-code: |
       ctx->do_action = Action;
     text: |
-      While the ${/glossary/task:/term} invoking ${../if/cancel:/name} is
-      the ${/glossary/task:/term} which created the period -
-      the ${../glossary/ownertask:/term}.
+      While the ${/glossary/task:/term} invoking ${../if/cancel:/name} is the
+      ${/glossary/task:/term} which created the period - the
+      ${../glossary/ownertask:/term}.
   - name: OtherTask
     test-code: |
       ctx->do_action = WorkerTaskAction;
     text: |
-      While the ${/glossary/task:/term} invoking ${../if/cancel:/name} is not
-      the ${../glossary/ownertask:/term}.
+      While the ${/glossary/task:/term} invoking ${../if/cancel:/name} is not the
+      ${../glossary/ownertask:/term}.
   test-epilogue: null
   test-prologue: null
 - name: State
@@ -123,9 +123,8 @@ pre-conditions:
       /* Nothing to do here as the period is newly created. */
       ctx->previous_state = RATE_MONOTONIC_INACTIVE;
     text: |
-      While the ${../if/cancel:/params[0]/name} parameter references an
-      period object in ${../glossary/inactive:/term}
-      ${../glossary/state:/term}.
+      While the ${../if/cancel:/params[0]/name} parameter references an period object
+      in ${../glossary/inactive:/term} ${../glossary/state:/term}.
   - name: Active
     test-code: |
       rtems_status_code status;
@@ -133,8 +132,8 @@ pre-conditions:
       T_rsc_success( status );
       ctx->previous_state = RATE_MONOTONIC_ACTIVE;
     text: |
-      While the ${../if/cancel:/params[0]/name} parameter references an
-      period object in ${../glossary/active:/term} ${../glossary/state:/term}.
+      While the ${../if/cancel:/params[0]/name} parameter references an period object
+      in ${../glossary/active:/term} ${../glossary/state:/term}.
   - name: Expired
     test-code: |
       rtems_status_code status;
@@ -142,15 +141,14 @@ pre-conditions:
       T_rsc_success( status );
       ctx->previous_state = RATE_MONOTONIC_EXPIRED;
     text: |
-      While the ${../if/cancel:/params[0]/name} parameter references an
-      period object in ${../glossary/expired:/term}
-      ${../glossary/state:/term}.
+      While the ${../if/cancel:/params[0]/name} parameter references an period object
+      in ${../glossary/expired:/term} ${../glossary/state:/term}.
   test-epilogue: null
   test-prologue: null
 - name: Postponed
   states:
   - name: Zero
-    test-code:  |
+    test-code: |
       ctx->postponed_jobs_count = 0;
     text: |
       While the period is not in ${../glossary/expired:/term}
@@ -170,12 +168,12 @@ pre-conditions:
 rationale: null
 requirement-type: functional
 skip-reasons:
-  NotInInactiveState: |
-    ${../glossary/postponedjob:/plural} do not exist in
-    ${../glossary/inactive:/term} ${../glossary/state:/term}.
   NeverInExpiredState: |
     There must be ${../glossary/postponedjob:/plural} in
     ${../glossary/expired:/term} ${../glossary/state:/term}.
+  NotInInactiveState: |
+    ${../glossary/postponedjob:/plural} do not exist in
+    ${../glossary/inactive:/term} ${../glossary/state:/term}.
 test-action: |
   rtems_status_code status;
 
@@ -196,29 +194,28 @@ test-context:
   member: |
     rtems_id period_id
 - brief: |
-    This member is used to receive the ${../if/period-status:/name}
-    after the action.
+    This member is used to receive the ${../if/period-status:/name} after the
+    action.
   description: null
   member: |
     rtems_rate_monotonic_period_status period_status
 - brief: |
-    This member specifies the ${../if/cancel:/params[0]/name} parameter
-    for the action.
+    This member specifies the ${../if/cancel:/params[0]/name} parameter for the
+    action.
   description: null
   member: |
     rtems_id id_param
 - brief: |
-    This member contains the returned ${/glossary/statuscode:/term}
-    of the action.
+    This member contains the returned ${/glossary/statuscode:/term} of the action.
   description: null
   member: |
     rtems_status_code status
 - brief: |
     This member contains the pointer to the function which executes the action.
   description: |
-    The action is either executed by the ${../glossary/ownertask:/term}
-    or by the worker ${/glossary/task:/term} depending on the function pointer
-    used here.  `argument` is a pointer to this context structure.
+    The action is either executed by the ${../glossary/ownertask:/term} or by the
+    worker ${/glossary/task:/term} depending on the function pointer used here.
+    `argument` is a pointer to this context structure.
   member: |
     void ( *do_action )( void *ctx )
 - brief: |
@@ -228,27 +225,25 @@ test-context:
   member: |
     rtems_id task_id
 - brief: |
-    This member contains the ${/glossary/task:/term} identifier of the
-    worker ${/glossary/task:/term} (which is not the
-    ${../glossary/ownertask:/term}).
+    This member contains the ${/glossary/task:/term} identifier of the worker
+    ${/glossary/task:/term} (which is not the ${../glossary/ownertask:/term}).
   description: null
   member: |
     rtems_id worker_id
 - brief: |
-    This member contains a backup of the ${/glossary/priority-task:/term}
-    before the execution of this test.
+    This member contains a backup of the ${/glossary/priority-task:/term} before
+    the execution of this test.
   description: null
   member: |
     rtems_id original_priority
 - brief: |
-    This member contains the number of ${../glossary/postponedjob:/plural}
-    before the action.
+    This member contains the number of ${../glossary/postponedjob:/plural} before
+    the action.
   description: null
   member: |
     uint32_t postponed_jobs_count
 - brief: |
-    This member contains the ${../glossary/state:/term}
-    before the action.
+    This member contains the ${../glossary/state:/term} before the action.
   description: null
   member: |
     rtems_rate_monotonic_period_states previous_state
@@ -261,7 +256,7 @@ test-local-includes:
 - tx-support.h
 test-prepare: |
   rtems_status_code status;
-  status =  rtems_rate_monotonic_create(
+  status = rtems_rate_monotonic_create(
     rtems_build_name( 'R', 'M', 'O', 'N' ),
     &ctx->period_id
   );
@@ -271,9 +266,9 @@ test-prepare: |
 test-setup:
   brief: null
   code: |
-    rtems_status_code status;
+    rtems_status_code   status;
     rtems_task_priority priority;
-    rtems_event_set event_set;
+    rtems_event_set     event_set;
     ctx->worker_id = RTEMS_INVALID_ID;
 
     status = rtems_task_ident(
@@ -325,10 +320,10 @@ test-setup:
   description: null
 test-stop: null
 test-support: |
-  static const rtems_interval period_length = 5;
+  static const rtems_interval      period_length = 5;
   static const rtems_task_priority background_task_priority = 100;
   static const rtems_task_priority foreground_task_priority = 10;
-  static const rtems_event_set wake_main_task_event = RTEMS_EVENT_17;
+  static const rtems_event_set     wake_main_task_event = RTEMS_EVENT_17;
 
   static void TickTheClock( uint32_t ticks )
   {
@@ -347,8 +342,8 @@ test-support: |
 
   static void WorkerTask( rtems_task_argument argument )
   {
-    RtemsRatemonReqCancel_Context *ctx =
-      (RtemsRatemonReqCancel_Context *) argument;
+    RtemsRatemonReqCancel_Context *ctx = (RtemsRatemonReqCancel_Context *)
+      argument;
 
     if ( ctx != NULL ) {
       Action( ctx );
@@ -360,8 +355,8 @@ test-support: |
 
   static void WorkerTaskAction( void *ctx_in )
   {
-    rtems_status_code status;
-    rtems_event_set event_set;
+    rtems_status_code              status;
+    rtems_event_set                event_set;
     RtemsRatemonReqCancel_Context *ctx = ctx_in;
 
     status = rtems_task_restart( ctx->worker_id, (rtems_task_argument) ctx );
@@ -379,7 +374,7 @@ test-support: |
 
   static void CreatePostponedJobs(
     RtemsRatemonReqCancel_Context *ctx,
-    uint32_t jobs_count
+    uint32_t                       jobs_count
   )
   {
     rtems_status_code status;
@@ -399,7 +394,7 @@ test-target: testsuites/validation/tc-ratemon-cancel.c
 test-teardown:
   brief: null
   code: |
-    rtems_status_code status;
+    rtems_status_code   status;
     rtems_task_priority priority;
 
     T_rsc_success( rtems_task_delete( ctx->worker_id ) );
@@ -411,7 +406,8 @@ test-teardown:
     );
     T_rsc_success( status );
   description: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:
@@ -421,11 +417,11 @@ transition-map:
     Scheduler: Called
   pre-conditions:
     Id:
-      - Valid
+    - Valid
     Caller:
-      - OwnerTask
+    - OwnerTask
     State:
-      - Inactive
+    - Inactive
     Postponed: N/A
 - enabled-by: true
   post-conditions:
@@ -435,12 +431,12 @@ transition-map:
     Scheduler: Called
   pre-conditions:
     Id:
-      - Valid
+    - Valid
     Caller:
-      - OwnerTask
+    - OwnerTask
     State:
-      - Active
-      - Expired
+    - Active
+    - Expired
     Postponed: all
 - enabled-by: true
   post-conditions:
@@ -450,10 +446,10 @@ transition-map:
     Scheduler: Nop
   pre-conditions:
     Id:
-      - Invalid
+    - Invalid
     Caller: all
     State:
-      - Inactive
+    - Inactive
     Postponed: N/A
 - enabled-by: true
   post-conditions:
@@ -463,11 +459,11 @@ transition-map:
     Scheduler: Nop
   pre-conditions:
     Id:
-      - Invalid
+    - Invalid
     Caller: all
     State:
-      - Active
-      - Expired
+    - Active
+    - Expired
     Postponed: all
 - enabled-by: true
   post-conditions:
@@ -477,11 +473,11 @@ transition-map:
     Scheduler: Nop
   pre-conditions:
     Id:
-      - Valid
+    - Valid
     Caller:
-      - OtherTask
+    - OtherTask
     State:
-      - Inactive
+    - Inactive
     Postponed: N/A
 - enabled-by: true
   post-conditions:
@@ -491,12 +487,12 @@ transition-map:
     Scheduler: Nop
   pre-conditions:
     Id:
-      - Valid
+    - Valid
     Caller:
-      - OtherTask
+    - OtherTask
     State:
-      - Active
-      - Expired
+    - Active
+    - Expired
     Postponed: all
 - enabled-by: true
   post-conditions: NotInInactiveState
@@ -504,17 +500,17 @@ transition-map:
     Id: all
     Caller: all
     State:
-      - Inactive
+    - Inactive
     Postponed:
-      - One
-      - Several
+    - One
+    - Several
 - enabled-by: true
   post-conditions: NeverInExpiredState
   pre-conditions:
     Id: all
     Caller: all
     State:
-      - Expired
+    - Expired
     Postponed:
-      - Zero
+    - Zero
 type: requirement

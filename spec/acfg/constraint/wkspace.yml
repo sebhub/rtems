@@ -7,8 +7,8 @@ links:
   uid: /req/usage-constraints
 rationale: null
 text: |
-  The value of the application configuration option shall be small enough so
-  that the RTEMS Workspace size calculation carried out by
+  The value of the application configuration option shall be small enough so that
+  the RTEMS Workspace size calculation carried out by
   ${../if/header-confdefs:/path} does not overflow an integer of type
   ${/c/if/uintptr_t:/name}.
 type: constraint

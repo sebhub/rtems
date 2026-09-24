@@ -5,16 +5,15 @@ enabled-by: true
 links: []
 test-actions:
 - action-brief: |
-    The test action is carried out by the thread-local objects definition and
-    the application configuration.
+    The test action is carried out by the thread-local objects definition and the
+    application configuration.
   action-code: |
     /* Nothing to do */
   checks:
   - brief: |
-      Check that the ${/acfg/if/max-thread-local-storage-size:/name}
-      application configuration option resulted in the expected system setting.
-      Since at least one thread-local objects is available, the referenced
-      requirement is validated.
+      Check that the ${/acfg/if/max-thread-local-storage-size:/name} application
+      configuration option resulted in the expected system setting. Since at least
+      one thread-local objects is available, the referenced requirement is validated.
     code: |
       T_step_eq_int( ${.:/step}, tls_object, 0 );
       T_step_eq_sz( ${.:/step}, _Thread_Maximum_TLS_size, 0 );

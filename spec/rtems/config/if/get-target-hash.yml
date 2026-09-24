@@ -12,7 +12,7 @@ definition:
   variants: []
 description: |
   The target hash is calculated from BSP-specific values which characterize a
-  target system.  The target hash is encoded as a base64url string.  The target
+  target system. The target hash is encoded as a base64url string. The target
   hash algorithm is unspecified.
 enabled-by: true
 index-entries: []

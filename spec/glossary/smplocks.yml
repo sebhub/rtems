@@ -8,8 +8,8 @@ links:
   uid: group
 term: SMP locks
 text: |
-  The SMP locks ensure mutual exclusion on the lowest level and are a
-  replacement for the sections of disabled interrupts.  Interrupts are
-  usually disabled while holding an SMP lock.  They are implemented using
-  atomic operations.  Currently a ticket lock is used in RTEMS.
+  The SMP locks ensure mutual exclusion on the lowest level and are a replacement
+  for the sections of disabled interrupts. Interrupts are usually disabled while
+  holding an SMP lock. They are implemented using atomic operations. Currently a
+  ticket lock is used in RTEMS.
 type: glossary

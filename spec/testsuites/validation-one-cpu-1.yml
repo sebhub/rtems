@@ -21,8 +21,7 @@ test-code: |
 
   #include "ts-default.h"
 test-description: |
-  Two test suites of this configuration are provided to limit test run
-  duration.
+  Two test suites of this configuration are provided to limit test run duration.
 test-includes: []
 test-local-includes:
 - ts-config.h

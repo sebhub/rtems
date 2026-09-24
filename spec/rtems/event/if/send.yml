@@ -14,19 +14,19 @@ definition:
     return: ${../../status/if/code:/name}
   variants: []
 description: |
-  This directive sends the event set, ${.:/params[1]/name}, to the target
-  task identified by ${.:/params[0]/name}.  Based upon the state of the
-  target task, one of the following situations applies:
+  This directive sends the event set, ${.:/params[1]/name}, to the target task
+  identified by ${.:/params[0]/name}. Based upon the state of the target task,
+  one of the following situations applies:
 
-  * The target task is blocked waiting for events, then
+  - The target task is blocked waiting for events, then
 
-    * if the waiting task's input event condition is satisfied, then the task
-      is made ready for execution, or
+    - if the waiting task's input event condition is satisfied, then the task is
+      made ready for execution, or
 
-    * otherwise, the event set is posted but left pending and the task remains
+    - otherwise, the event set is posted but left pending and the task remains
       blocked.
 
-  * The target task is not waiting for events, then the event set is posted and
+  - The target task is not waiting for events, then the event set is posted and
     left pending.
 enabled-by: true
 index-entries: []
@@ -66,10 +66,12 @@ notes: |
   will generate a request telling the remote node to send the event set to the
   appropriate task.
 params:
-- description: is the identifier of the target task to receive the event set.
+- description: |
+    is the identifier of the target task to receive the event set.
   dir: null
   name: id
-- description: is the event set to send.
+- description: |
+    is the event set to send.
   dir: null
   name: event_in
 return:

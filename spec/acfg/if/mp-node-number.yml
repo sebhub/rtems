@@ -4,8 +4,8 @@ copyrights:
 - Copyright (C) 1988, 2008 On-Line Applications Research Corporation (OAR)
 default-value: '`NODE_NUMBER`'
 description: |
-  The value of this configuration option defines the node number of this node
-  in a multiprocessor system.
+  The value of this configuration option defines the node number of this node in
+  a multiprocessor system.
 enabled-by: true
 index-entries: []
 interface-type: appl-config-option

@@ -41,7 +41,7 @@ post-conditions:
       ${../../status/if/too-many:/name}.
   - name: Unsat
     test-code: |
-      T_rsc( ctx->status, RTEMS_UNSATISFIED  );
+      T_rsc( ctx->status, RTEMS_UNSATISFIED );
     text: |
       The return status of ${../if/create:/name} shall be
       ${../../status/if/unsatisfied:/name}.
@@ -56,8 +56,8 @@ post-conditions:
       T_rsc_success( sc );
       T_eq_u32( id, ctx->id_value );
     text: |
-      The unique object name shall identify the task created by
-      the ${../if/create:/name} call.
+      The unique object name shall identify the task created by the
+      ${../if/create:/name} call.
   - name: Invalid
     test-code: |
       sc = rtems_task_ident( NAME, RTEMS_SEARCH_LOCAL_NODE, &id );
@@ -76,14 +76,14 @@ post-conditions:
       T_ne_u32( ctx->id_value, INVALID_ID );
     text: |
       The value of the object referenced by the ${../if/create:/params[5]/name}
-      parameter shall be set to the object identifier of the created task after
-      the return of the ${../if/create:/name} call.
+      parameter shall be set to the object identifier of the created task after the
+      return of the ${../if/create:/name} call.
   - name: Nop
     test-code: |
       T_eq_u32( ctx->id_value, INVALID_ID );
     text: |
-      Objects referenced by the ${../if/create:/params[5]/name} parameter in
-      past calls to ${../if/create:/name} shall not be accessed by the
+      Objects referenced by the ${../if/create:/params[5]/name} parameter in past
+      calls to ${../if/create:/name} shall not be accessed by the
       ${../if/create:/name} call.
   test-epilogue: null
   test-prologue: null
@@ -93,8 +93,8 @@ post-conditions:
     test-code: |
       T_eq_u32( ctx->create_extension_calls, 1 );
     text: |
-      The create user extensions shall be invoked during the
-      ${../if/create:/name} call.
+      The create user extensions shall be invoked during the ${../if/create:/name}
+      call.
   - name: 'No'
     test-code: |
       T_eq_u32( ctx->create_extension_calls, 0 );
@@ -109,8 +109,8 @@ post-conditions:
     test-code: |
       T_eq_u32( ctx->delete_extension_calls, 1 );
     text: |
-      The delete user extensions shall be invoked during the
-      ${../if/create:/name} call.
+      The delete user extensions shall be invoked during the ${../if/create:/name}
+      call.
   - name: 'No'
     test-code: |
       T_eq_u32( ctx->delete_extension_calls, 0 );
@@ -140,14 +140,13 @@ pre-conditions:
     test-code: |
       ctx->id = &ctx->id_value;
     text: |
-      While the ${../if/create:/params[5]/name} parameter references an object
-      of type ${../../type/if/id:/name}.
+      While the ${../if/create:/params[5]/name} parameter references an object of
+      type ${../../type/if/id:/name}.
   - name: 'Null'
     test-code: |
       ctx->id = NULL;
     text: |
-      While the ${../if/create:/params[5]/name} parameter is
-      ${/c/if/null:/name}.
+      While the ${../if/create:/params[5]/name} parameter is ${/c/if/null:/name}.
   test-epilogue: null
   test-prologue: null
 - name: SysTsk
@@ -156,14 +155,13 @@ pre-conditions:
     test-code: |
       ctx->attributes = RTEMS_SYSTEM_TASK;
     text: |
-      While the ${../if/create:/params[4]/name} parameter specifies a system
-      task.
+      While the ${../if/create:/params[4]/name} parameter specifies a system task.
   - name: 'No'
     test-code: |
       ctx->attributes = RTEMS_DEFAULT_ATTRIBUTES;
     text: |
-      While the ${../if/create:/params[4]/name} parameter specifies an
-      application task.
+      While the ${../if/create:/params[4]/name} parameter specifies an application
+      task.
   test-epilogue: null
   test-prologue: null
 - name: Prio
@@ -172,8 +170,7 @@ pre-conditions:
     test-code: |
       ctx->initial_priority = RTEMS_MAXIMUM_PRIORITY - 1;
     text: |
-      While the ${../if/create:/params[1]/name} parameter is valid and
-      non-zero.
+      While the ${../if/create:/params[1]/name} parameter is valid and non-zero.
   - name: Zero
     test-code: |
       ctx->initial_priority = 0;
@@ -206,21 +203,21 @@ pre-conditions:
     test-code: |
       ctx->stack_size = RTEMS_MINIMUM_STACK_SIZE;
     text: |
-      While the ${../if/create:/params[1]/name} parameter is greater than or
-      equal to the configured minimum size and less than or equal to the
-      maximum stack size which can be allocated by the system.
+      While the ${../if/create:/params[1]/name} parameter is greater than or equal to
+      the configured minimum size and less than or equal to the maximum stack size
+      which can be allocated by the system.
   - name: Small
     test-code: |
       ctx->stack_size = 0;
     text: |
-      While the ${../if/create:/params[1]/name} parameter is less than the
-      configured minimum size.
+      While the ${../if/create:/params[1]/name} parameter is less than the configured
+      minimum size.
   - name: Huge
     test-code: |
       ctx->stack_size = SIZE_MAX;
     text: |
-      While the ${../if/create:/params[1]/name} parameter is greater than the
-      maximum stack size which can be allocated by the system.
+      While the ${../if/create:/params[1]/name} parameter is greater than the maximum
+      stack size which can be allocated by the system.
   test-epilogue: null
   test-prologue: null
 - name: Ext
@@ -398,7 +395,8 @@ test-teardown:
     sc = rtems_extension_delete( ctx->extension_id );
     T_rsc_success( sc );
   description: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:
@@ -408,20 +406,20 @@ transition-map:
     CreateExt: 'Yes'
     DelExt: 'No'
   pre-conditions:
-    Ext:
-    - Ok
-    Id:
-    - Valid
     Name:
+    - Valid
+    Id:
     - Valid
     SysTsk: all
     Prio:
     - Valid
+    Free:
+    - 'Yes'
     Stack:
     - Normal
     - Small
-    Free:
-    - 'Yes'
+    Ext:
+    - Ok
 - enabled-by: true
   post-conditions:
     Status: Ok
@@ -430,21 +428,21 @@ transition-map:
     CreateExt: 'Yes'
     DelExt: 'No'
   pre-conditions:
-    Ext:
-    - Ok
-    Id:
-    - Valid
     Name:
+    - Valid
+    Id:
     - Valid
     SysTsk:
     - 'Yes'
     Prio:
     - Zero
+    Free:
+    - 'Yes'
     Stack:
     - Normal
     - Small
-    Free:
-    - 'Yes'
+    Ext:
+    - Ok
 - enabled-by: true
   post-conditions:
     Status: InvName
@@ -453,14 +451,14 @@ transition-map:
     CreateExt: 'No'
     DelExt: 'No'
   pre-conditions:
-    Ext: all
-    Id: all
     Name:
     - Inv
+    Id: all
     SysTsk: all
     Prio: all
-    Stack: all
     Free: all
+    Stack: all
+    Ext: all
 - enabled-by: true
   post-conditions:
     Status: InvAddr
@@ -469,15 +467,15 @@ transition-map:
     CreateExt: 'No'
     DelExt: 'No'
   pre-conditions:
-    Ext: all
-    Id:
-    - 'Null'
     Name:
     - Valid
+    Id:
+    - 'Null'
     SysTsk: all
     Prio: all
-    Stack: all
     Free: all
+    Stack: all
+    Ext: all
 - enabled-by: true
   post-conditions:
     Status: InvPrio
@@ -486,16 +484,16 @@ transition-map:
     CreateExt: 'No'
     DelExt: 'No'
   pre-conditions:
-    Ext: all
-    Id:
-    - Valid
     Name:
+    - Valid
+    Id:
     - Valid
     SysTsk: all
     Prio:
     - Inv
-    Stack: all
     Free: all
+    Stack: all
+    Ext: all
 - enabled-by: true
   post-conditions:
     Status: InvPrio
@@ -504,17 +502,17 @@ transition-map:
     CreateExt: 'No'
     DelExt: 'No'
   pre-conditions:
-    Ext: all
-    Id:
-    - Valid
     Name:
+    - Valid
+    Id:
     - Valid
     SysTsk:
     - 'No'
     Prio:
     - Zero
-    Stack: all
     Free: all
+    Stack: all
+    Ext: all
 - enabled-by: true
   post-conditions:
     Status: TooMany
@@ -523,17 +521,17 @@ transition-map:
     CreateExt: 'No'
     DelExt: 'No'
   pre-conditions:
-    Ext: all
-    Id:
-    - Valid
     Name:
+    - Valid
+    Id:
     - Valid
     SysTsk: all
     Prio:
     - Valid
-    Stack: all
     Free:
     - 'No'
+    Stack: all
+    Ext: all
 - enabled-by: true
   post-conditions:
     Status: TooMany
@@ -542,18 +540,18 @@ transition-map:
     CreateExt: 'No'
     DelExt: 'No'
   pre-conditions:
-    Ext: all
-    Id:
-    - Valid
     Name:
+    - Valid
+    Id:
     - Valid
     SysTsk:
     - 'Yes'
     Prio:
     - Zero
-    Stack: all
     Free:
     - 'No'
+    Stack: all
+    Ext: all
 - enabled-by: true
   post-conditions:
     Status: Unsat
@@ -562,18 +560,18 @@ transition-map:
     CreateExt: 'No'
     DelExt: 'No'
   pre-conditions:
-    Ext: all
-    Id:
-    - Valid
     Name:
+    - Valid
+    Id:
     - Valid
     SysTsk: all
     Prio:
     - Valid
-    Stack:
-    - Huge
     Free:
     - 'Yes'
+    Stack:
+    - Huge
+    Ext: all
 - enabled-by: true
   post-conditions:
     Status: Unsat
@@ -582,19 +580,19 @@ transition-map:
     CreateExt: 'No'
     DelExt: 'No'
   pre-conditions:
-    Ext: all
-    Id:
-    - Valid
     Name:
+    - Valid
+    Id:
     - Valid
     SysTsk:
     - 'Yes'
     Prio:
     - Zero
-    Stack:
-    - Huge
     Free:
     - 'Yes'
+    Stack:
+    - Huge
+    Ext: all
 - enabled-by: true
   post-conditions:
     Status: Unsat
@@ -603,20 +601,20 @@ transition-map:
     CreateExt: 'Yes'
     DelExt: 'Yes'
   pre-conditions:
-    Ext:
-    - Err
-    Id:
-    - Valid
     Name:
+    - Valid
+    Id:
     - Valid
     SysTsk: all
     Prio:
     - Valid
+    Free:
+    - 'Yes'
     Stack:
     - Normal
     - Small
-    Free:
-    - 'Yes'
+    Ext:
+    - Err
 - enabled-by: true
   post-conditions:
     Status: Unsat
@@ -625,19 +623,19 @@ transition-map:
     CreateExt: 'Yes'
     DelExt: 'Yes'
   pre-conditions:
-    Ext:
-    - Err
-    Id:
-    - Valid
     Name:
+    - Valid
+    Id:
     - Valid
     SysTsk:
     - 'Yes'
     Prio:
     - Zero
+    Free:
+    - 'Yes'
     Stack:
     - Normal
     - Small
-    Free:
-    - 'Yes'
+    Ext:
+    - Err
 type: requirement

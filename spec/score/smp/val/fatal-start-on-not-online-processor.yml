@@ -5,7 +5,7 @@ enabled-by: RTEMS_SMP
 links: []
 test-actions:
 - action-brief: |
-    The test action is carried out by the wrapped _CPU_SMP_Start_processor().
+    The test action is carried out by the wrapped \_CPU_SMP_Start_processor().
   action-code: |
     /* Nothing to do */
   checks:

@@ -51,8 +51,7 @@ params:
   name: argument
 return:
   return: |
-    Other status codes may be returned by the device driver I/O control
-    entry.
+    Other status codes may be returned by the device driver I/O control entry.
   return-values:
   - description: |
       The requested operation was successful.

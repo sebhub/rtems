@@ -25,7 +25,8 @@ links:
 name: rtems_is_status_successful
 notes: null
 params:
-- description: is the status code.
+- description: |
+    is the status code.
   dir: null
   name: status_code
 return:

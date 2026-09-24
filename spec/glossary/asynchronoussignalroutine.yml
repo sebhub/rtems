@@ -8,7 +8,7 @@ links:
   uid: group
 term: Asynchronous Signal Routine
 text: |
-  Similar to a hardware interrupt except that it is associated with a task
-  and is run in the context of a task.  The directives provided by the
-  signal manager are used to service signals.
+  Similar to a hardware interrupt except that it is associated with a task and is
+  run in the context of a task. The directives provided by the signal manager are
+  used to service signals.
 type: glossary

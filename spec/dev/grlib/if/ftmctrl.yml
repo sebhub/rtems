@@ -4,16 +4,6 @@ brief: |
   map.
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
-description: null
-enabled-by: true
-identifier: RTEMSDeviceGRLIBFTMCTRL
-index-entries: []
-interface-type: register-block
-links:
-- role: interface-ingroup
-  uid: group
-- role: interface-placement
-  uid: ftmctrl-header
 definition:
 - default:
     count: 1
@@ -35,88 +25,125 @@ definition:
     name: MCFG7
   offset: 0x18
   variants: []
-register-prefix: null
+description: null
+enabled-by: true
+identifier: RTEMSDeviceGRLIBFTMCTRL
+index-entries: []
+interface-type: register-block
+links:
+- role: interface-ingroup
+  uid: group
+- role: interface-placement
+  uid: ftmctrl-header
+name: ftmctrl
+notes: null
 register-block-group: FTMCTRL
 register-block-size: 28
+register-prefix: null
 registers:
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'PBRDY'
+      name: PBRDY
+      properties:
+      - r
+      - w
       start: 30
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'ABRDY'
+      name: ABRDY
+      properties:
+      - r
+      - w
       start: 29
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'IOBUSW'
+      name: IOBUSW
+      properties:
+      - r
+      - w
       start: 27
       width: 2
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'IBRDY'
+      name: IBRDY
+      properties:
+      - r
+      - w
       start: 26
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'BEXCN'
+      name: BEXCN
+      properties:
+      - r
+      - w
       start: 25
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'IO_WAITSTATES'
+      name: IO_WAITSTATES
+      properties:
+      - r
+      - w
       start: 20
       width: 4
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'IOEN'
+      name: IOEN
+      properties:
+      - r
+      - w
       start: 19
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'R'
+      name: R
+      properties:
+      - r
       start: 18
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'ROMBANKSZ'
+      name: ROMBANKSZ
+      properties:
+      - r
+      - w
       start: 14
       width: 4
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'PWEN'
+      name: PWEN
+      properties:
+      - r
+      - w
       start: 11
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'PROM_WIDTH'
+      name: PROM_WIDTH
+      properties:
+      - r
+      - w
       start: 8
       width: 2
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'PROM_WRITE_WS'
+      name: PROM_WRITE_WS
+      properties:
+      - r
+      - w
       start: 4
       width: 4
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'PROM_READ_WS'
+      name: PROM_READ_WS
+      properties:
+      - r
+      - w
       start: 0
       width: 4
     variants: []
@@ -127,34 +154,42 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: []
-      brief: null
+    - brief: null
       description: null
-      name: 'ME'
+      name: ME
+      properties: []
       start: 27
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'WB'
+      name: WB
+      properties:
+      - r
+      - w
       start: 11
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'RB'
+      name: RB
+      properties:
+      - r
+      - w
       start: 10
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'PE'
+      name: PE
+      properties:
+      - r
+      - w
       start: 8
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'TCB'
+      name: TCB
+      properties:
+      - r
+      - w
       start: 0
       width: 8
     variants: []
@@ -165,16 +200,20 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'IOHWS'
+      name: IOHWS
+      properties:
+      - r
+      - w
       start: 23
       width: 7
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'ROMHWS'
+      name: ROMHWS
+      properties:
+      - r
+      - w
       start: 7
       width: 7
     variants: []
@@ -185,16 +224,20 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'BRDYNCNT'
+      name: BRDYNCNT
+      properties:
+      - r
+      - w
       start: 16
       width: 16
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'BRDYNRLD'
+      name: BRDYNRLD
+      properties:
+      - r
+      - w
       start: 0
       width: 16
     variants: []
@@ -203,6 +246,4 @@ registers:
   description: null
   name: MCFG7
   width: 32
-name: ftmctrl
-notes: null
 type: interface

@@ -7,7 +7,6 @@ links:
   uid: ../req/errata-gr712rc-07
 method: by-review-of-design
 text: |
-  The errata of the ${/glossary/gr712rc:/term} is not applicable to the
-  software product since it is not responsible to configure the SRAM or PROM
-  memory.
+  The errata of the ${/glossary/gr712rc:/term} is not applicable to the software
+  product since it is not responsible to configure the SRAM or PROM memory.
 type: validation

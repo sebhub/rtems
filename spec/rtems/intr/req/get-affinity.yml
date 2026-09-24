@@ -47,21 +47,19 @@ post-conditions:
     test-code: |
       /* Validation done by CheckGetAffinity() for each interrupt vector */
     text: |
-      The value of the object referenced by the
-      ${../if/get-affinity:/params[2]/name} parameter shall be set to the
-      processor affinity set of the interrupt specified by the
-      ${../if/get-affinity:/params[0]/name} parameter at some point during the
+      The value of the object referenced by the ${../if/get-affinity:/params[2]/name}
+      parameter shall be set to the processor affinity set of the interrupt specified
+      by the ${../if/get-affinity:/params[0]/name} parameter at some point during the
       call after the return of the ${../if/get-affinity:/name} call.
   - name: Partial
     test-code: |
       /* Validation done by CheckGetAffinity() for each interrupt vector */
     text: |
-      The value of the object referenced by the
-      ${../if/get-affinity:/params[2]/name} parameter shall be set to the
-      subset of the processor affinity set which fits into the object of the
-      interrupt specified by the ${../if/get-affinity:/params[0]/name}
-      parameter at some point during the call after the return of the
-      ${../if/get-affinity:/name} call.
+      The value of the object referenced by the ${../if/get-affinity:/params[2]/name}
+      parameter shall be set to the subset of the processor affinity set which fits
+      into the object of the interrupt specified by the
+      ${../if/get-affinity:/params[0]/name} parameter at some point during the call
+      after the return of the ${../if/get-affinity:/name} call.
   - name: Zero
     test-code: |
       /*
@@ -69,8 +67,8 @@ post-conditions:
        * the action code.
        */
     text: |
-      The value of the object referenced by the
-      ${../if/get-affinity:/params[2]/name} parameter shall be set to zero.
+      The value of the object referenced by the ${../if/get-affinity:/params[2]/name}
+      parameter shall be set to zero.
   - name: Nop
     test-code: |
       /*
@@ -78,9 +76,9 @@ post-conditions:
        * the action code.
        */
     text: |
-      Objects referenced by the ${../if/get-affinity:/params[2]/name}
-      parameter in past calls to ${../if/get-affinity:/name} shall
-      not be accessed by the ${../if/get-affinity:/name} call.
+      Objects referenced by the ${../if/get-affinity:/params[2]/name} parameter in
+      past calls to ${../if/get-affinity:/name} shall not be accessed by the
+      ${../if/get-affinity:/name} call.
   test-epilogue: null
   test-prologue: null
 pre-conditions:
@@ -90,14 +88,14 @@ pre-conditions:
     test-code: |
       ctx->valid_vector = true;
     text: |
-      While the ${../if/get-affinity:/params[0]/name} parameter is
-      associated with an interrupt vector.
+      While the ${../if/get-affinity:/params[0]/name} parameter is associated with an
+      interrupt vector.
   - name: Invalid
     test-code: |
       ctx->valid_vector = false;
     text: |
-      While the ${../if/get-affinity:/params[0]/name} parameter is not
-      associated with an interrupt vector.
+      While the ${../if/get-affinity:/params[0]/name} parameter is not associated
+      with an interrupt vector.
   test-epilogue: null
   test-prologue: null
 - name: CPUSetSize
@@ -107,25 +105,25 @@ pre-conditions:
       ctx->cpusetsize = sizeof( ctx->cpuset_obj );
     text: |
       While the ${../if/get-affinity:/params[1]/name} parameter is an integral
-      multiple of the size of `long`,
-      while the ${../if/get-affinity:/params[1]/name} parameter specifies a
-      processor set which is large enough to contain the processor affinity set
-      of the interrupt specified by ${../if/get-affinity:/params[0]/name}.
+      multiple of the size of `long`, while the ${../if/get-affinity:/params[1]/name}
+      parameter specifies a processor set which is large enough to contain the
+      processor affinity set of the interrupt specified by
+      ${../if/get-affinity:/params[0]/name}.
   - name: TooSmall
     test-code: |
       ctx->cpusetsize = 0;
     text: |
       While the ${../if/get-affinity:/params[1]/name} parameter is an integral
-      multiple of the size of `long`,
-      while the ${../if/get-affinity:/params[1]/name} parameter specifies a
-      processor set which is not large enough to contain the processor affinity
-      set of the interrupt specified by ${../if/get-affinity:/params[0]/name}.
+      multiple of the size of `long`, while the ${../if/get-affinity:/params[1]/name}
+      parameter specifies a processor set which is not large enough to contain the
+      processor affinity set of the interrupt specified by
+      ${../if/get-affinity:/params[0]/name}.
   - name: Askew
     test-code: |
       ctx->cpusetsize = SIZE_MAX;
     text: |
-      While the ${../if/get-affinity:/params[1]/name} parameter is not an
-      integral multiple of the size of `long`.
+      While the ${../if/get-affinity:/params[1]/name} parameter is not an integral
+      multiple of the size of `long`.
   test-epilogue: null
   test-prologue: null
 - name: CPUSet
@@ -134,8 +132,8 @@ pre-conditions:
     test-code: |
       ctx->cpuset = ctx->cpuset_obj;
     text: |
-      While the ${../if/get-affinity:/params[2]/name} parameter references an
-      object of type ${/c/if/cpu_set_t:/name}.
+      While the ${../if/get-affinity:/params[2]/name} parameter references an object
+      of type ${/c/if/cpu_set_t:/name}.
   - name: 'Null'
     test-code: |
       ctx->cpuset = NULL;
@@ -240,8 +238,7 @@ test-context:
   member: |
     cpu_set_t cpuset_obj[ 2 ]
 - brief: |
-    This member contains the return value of the ${../if/get-affinity:/name}
-    call.
+    This member contains the return value of the ${../if/get-affinity:/name} call.
   description: null
   member: |
     rtems_status_code status
@@ -252,14 +249,14 @@ test-context:
   member: |
     bool valid_vector
 - brief: |
-    This member specifies if the ${../if/get-affinity:/params[1]/name}
-    parameter value.
+    This member specifies if the ${../if/get-affinity:/params[1]/name} parameter
+    value.
   description: null
   member: |
     size_t cpusetsize
 - brief: |
-    This member specifies if the ${../if/get-affinity:/params[2]/name}
-    parameter value.
+    This member specifies if the ${../if/get-affinity:/params[2]/name} parameter
+    value.
   description: null
   member: |
     cpu_set_t *cpuset
@@ -323,7 +320,8 @@ test-support: |
   }
 test-target: testsuites/validation/tc-intr-get-affinity.c
 test-teardown: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

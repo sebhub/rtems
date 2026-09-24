@@ -28,12 +28,13 @@ notes: |
   256 levels may be supported.  At least level 0 (all interrupts enabled) and
   level 1 (interrupts disabled, on most architectures) are supported.
 params:
-- description: is the interrupt level to map.
+- description: |
+    is the interrupt level to map.
   dir: null
   name: _interrupt_level
 return:
   return: |
-    Returns the processor-dependent task mode interrupt level associated with
-    the interrupt level.
+    Returns the processor-dependent task mode interrupt level associated with the
+    interrupt level.
   return-values: []
 type: interface

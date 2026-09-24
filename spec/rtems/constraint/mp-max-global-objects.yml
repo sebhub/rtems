@@ -7,7 +7,6 @@ links:
   uid: /req/usage-constraints
 rationale: null
 text: |
-  The number of global objects available to the application is configured
-  through the ${/acfg/if/mp-max-global-objects:/name} application configuration
-  option.
+  The number of global objects available to the application is configured through
+  the ${/acfg/if/mp-max-global-objects:/name} application configuration option.
 type: constraint

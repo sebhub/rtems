@@ -8,7 +8,7 @@ links:
 rationale: null
 text: |
   A value of zero for the application configuration option is mandatory for the
-  pre-qualified feature set of RTEMS.  Applications which are restricted to
-  only use interfaces of the pre-qualified feature set of RTEMS shall define
-  the application configuration option to zero.
+  pre-qualified feature set of RTEMS. Applications which are restricted to only
+  use interfaces of the pre-qualified feature set of RTEMS shall define the
+  application configuration option to zero.
 type: constraint

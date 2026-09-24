@@ -67,8 +67,7 @@ post-conditions:
     text: |
       The calling task shall surrender the mutex as specified by
       ${/score/mtx/req/surrender:/spec} where an enqueue blocks, a recursive seize is
-      allowed, the owner is checked, and a priority inheritance protocol is
-      used.
+      allowed, the owner is checked, and a priority inheritance protocol is used.
   - name: CeilingMtxSurrender
     test-code: |
       ctx->tq_ctx.enqueue_variant = TQ_ENQUEUE_BLOCKS;
@@ -94,8 +93,7 @@ post-conditions:
     text: |
       The calling task shall surrender the mutex as specified by
       ${/score/mtx/req/surrender:/spec} where an enqueue is sticky, a recursive seize
-      returns an error status, the owner is checked, and a priority ceiling is
-      used.
+      returns an error status, the owner is checked, and a priority ceiling is used.
   test-epilogue: null
   test-prologue: |
     rtems_status_code sc;
@@ -130,7 +128,7 @@ pre-conditions:
   - name: MrsP
     test-code: |
       ctx->attribute_set |= RTEMS_BINARY_SEMAPHORE |
-        RTEMS_MULTIPROCESSOR_RESOURCE_SHARING;
+                            RTEMS_MULTIPROCESSOR_RESOURCE_SHARING;
     text: |
       While the semaphore object is a MrsP semaphore.
   test-epilogue: null
@@ -157,25 +155,25 @@ pre-conditions:
     test-code: |
       /* Nothing to prepare */
     text: |
-      While the ${../if/release:/params[0]/name} parameter is associated with
-      the semaphore.
+      While the ${../if/release:/params[0]/name} parameter is associated with the
+      semaphore.
   - name: Invalid
     test-code: |
       /* Nothing to prepare */
     text: |
-      While the ${../if/release:/params[0]/name} parameter is not associated
-      with a semaphore.
+      While the ${../if/release:/params[0]/name} parameter is not associated with a
+      semaphore.
   test-epilogue: null
   test-prologue: null
 rationale: null
 requirement-type: functional
 skip-reasons:
   NeedsPriorityDiscipline: |
-    Binary semaphores with a locking protocol are required to use the priority
-    task wait queue discipline.
+    Binary semaphores with a locking protocol are required to use the priority task
+    wait queue discipline.
   NoMrsP: |
-    Where the system is build with SMP support disabled, the MrsP locking
-    protocol is not available.
+    Where the system is build with SMP support disabled, the MrsP locking protocol
+    is not available.
 test-action: |
   rtems_status_code sc;
 
@@ -200,9 +198,8 @@ test-action: |
     T_rsc_success( sc );
   }
 test-brief: null
-test-cleanup:
+test-cleanup: |
   rtems_status_code sc;
-
   sc = rtems_semaphore_delete( ctx->tq_ctx.thread_queue_id );
   T_rsc_success( sc );
 test-context:
@@ -258,7 +255,8 @@ test-teardown:
     TQDestroy( &ctx->tq_ctx );
     RestoreRunnerPriority();
   description: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

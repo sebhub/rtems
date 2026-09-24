@@ -4,16 +4,6 @@ brief: |
   map.
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
-description: null
-enabled-by: true
-identifier: RTEMSDeviceGRLIBSPWTDP
-index-entries: []
-interface-type: register-block
-links:
-- role: interface-ingroup
-  uid: group
-- role: interface-placement
-  uid: spwtdp-header
 definition:
 - default:
     count: 1
@@ -200,106 +190,150 @@ definition:
     name: ED0ET4
   offset: 0x124
   variants: []
-register-prefix: null
+description: null
+enabled-by: true
+identifier: RTEMSDeviceGRLIBSPWTDP
+index-entries: []
+interface-type: register-block
+links:
+- role: interface-ingroup
+  uid: group
+- role: interface-placement
+  uid: spwtdp-header
+name: spwtdp
+notes: null
 register-block-group: SPWTDP
 register-block-size: 296
+register-prefix: null
 registers:
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'JE'
+      name: JE
+      properties:
+      - r
+      - w
       start: 24
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'ST'
+      name: ST
+      properties:
+      - r
+      - w
       start: 21
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'EP'
+      name: EP
+      properties:
+      - r
+      - w
       start: 20
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'ET'
+      name: ET
+      properties:
+      - r
+      - w
       start: 19
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'SP'
+      name: SP
+      properties:
+      - r
+      - w
       start: 18
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'SE'
+      name: SE
+      properties:
+      - r
+      - w
       start: 17
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'LE'
+      name: LE
+      properties:
+      - r
+      - w
       start: 16
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'AE'
+      name: AE
+      properties:
+      - r
+      - w
       start: 15
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'MAPPING'
+      name: MAPPING
+      properties:
+      - r
+      - w
       start: 8
       width: 5
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'TD'
+      name: TD
+      properties:
+      - r
+      - w
       start: 7
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'MU'
+      name: MU
+      properties:
+      - r
+      - w
       start: 6
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'SEL'
+      name: SEL
+      properties:
+      - r
+      - w
       start: 4
       width: 2
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'ME'
+      name: ME
+      properties:
+      - r
+      - w
       start: 3
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'RE'
+      name: RE
+      properties:
+      - r
+      - w
       start: 2
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'TE'
+      name: TE
+      properties:
+      - r
+      - w
       start: 1
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'RS'
+      name: RS
+      properties:
+      - r
+      - w
       start: 0
       width: 1
     variants: []
@@ -310,46 +344,60 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'STM'
+      name: STM
+      properties:
+      - r
+      - w
       start: 16
       width: 6
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'DI64R'
+      name: DI64R
+      properties:
+      - r
+      - w
       start: 13
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'DI64T'
+      name: DI64T
+      properties:
+      - r
+      - w
       start: 12
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'DI64'
+      name: DI64
+      properties:
+      - r
+      - w
       start: 11
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'DI'
+      name: DI
+      properties:
+      - r
+      - w
       start: 10
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'INRX'
+      name: INRX
+      properties:
+      - r
+      - w
       start: 5
       width: 5
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'INTX'
+      name: INTX
+      properties:
+      - r
+      - w
       start: 0
       width: 5
     variants: []
@@ -360,28 +408,36 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'NC'
+      name: NC
+      properties:
+      - r
+      - w
       start: 31
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'IS'
+      name: IS
+      properties:
+      - r
+      - w
       start: 30
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'SPWTC'
+      name: SPWTC
+      properties:
+      - r
+      - w
       start: 16
       width: 8
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'CPF'
+      name: CPF
+      properties:
+      - r
+      - w
       start: 0
       width: 16
     variants: []
@@ -392,10 +448,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'CET0'
+      name: CET0
+      properties:
+      - r
+      - w
       start: 0
       width: 32
     variants: []
@@ -406,10 +464,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'CET1'
+      name: CET1
+      properties:
+      - r
+      - w
       start: 0
       width: 32
     variants: []
@@ -420,10 +480,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'CET2'
+      name: CET2
+      properties:
+      - r
+      - w
       start: 0
       width: 32
     variants: []
@@ -434,10 +496,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'CET3'
+      name: CET3
+      properties:
+      - r
+      - w
       start: 0
       width: 32
     variants: []
@@ -448,10 +512,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'CET4'
+      name: CET4
+      properties:
+      - r
+      - w
       start: 24
       width: 8
     variants: []
@@ -462,10 +528,11 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'DPF'
+      name: DPF
+      properties:
+      - r
       start: 0
       width: 16
     variants: []
@@ -476,10 +543,11 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'DET0'
+      name: DET0
+      properties:
+      - r
       start: 0
       width: 32
     variants: []
@@ -490,10 +558,11 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'DET1'
+      name: DET1
+      properties:
+      - r
       start: 0
       width: 32
     variants: []
@@ -504,10 +573,11 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'DET2'
+      name: DET2
+      properties:
+      - r
       start: 0
       width: 32
     variants: []
@@ -518,10 +588,11 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'DET3'
+      name: DET3
+      properties:
+      - r
       start: 0
       width: 32
     variants: []
@@ -532,10 +603,11 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'DET4'
+      name: DET4
+      properties:
+      - r
       start: 24
       width: 8
     variants: []
@@ -546,10 +618,11 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'TRPF'
+      name: TRPF
+      properties:
+      - r
       start: 0
       width: 16
     variants: []
@@ -560,10 +633,11 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'TR0'
+      name: TR0
+      properties:
+      - r
       start: 0
       width: 32
     variants: []
@@ -574,10 +648,11 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'TR1'
+      name: TR1
+      properties:
+      - r
       start: 0
       width: 32
     variants: []
@@ -588,10 +663,11 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'TR2'
+      name: TR2
+      properties:
+      - r
       start: 0
       width: 32
     variants: []
@@ -602,10 +678,11 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'TR3'
+      name: TR3
+      properties:
+      - r
       start: 0
       width: 32
     variants: []
@@ -616,10 +693,11 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'TR4'
+      name: TR4
+      properties:
+      - r
       start: 24
       width: 8
     variants: []
@@ -630,16 +708,19 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'TSTC'
+      name: TSTC
+      properties:
+      - r
+      - w
       start: 24
       width: 8
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'TTPF'
+      name: TTPF
+      properties:
+      - r
       start: 0
       width: 16
     variants: []
@@ -650,10 +731,11 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'TT0'
+      name: TT0
+      properties:
+      - r
       start: 0
       width: 32
     variants: []
@@ -664,10 +746,11 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'TT1'
+      name: TT1
+      properties:
+      - r
       start: 0
       width: 32
     variants: []
@@ -678,10 +761,11 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'TT2'
+      name: TT2
+      properties:
+      - r
       start: 0
       width: 32
     variants: []
@@ -692,10 +776,11 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'TT3'
+      name: TT3
+      properties:
+      - r
       start: 0
       width: 32
     variants: []
@@ -706,10 +791,11 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'TT4'
+      name: TT4
+      properties:
+      - r
       start: 24
       width: 8
     variants: []
@@ -720,10 +806,11 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'LPF'
+      name: LPF
+      properties:
+      - r
       start: 0
       width: 16
     variants: []
@@ -734,76 +821,100 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'NCTCE'
+      name: NCTCE
+      properties:
+      - r
+      - w
       start: 19
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'SETE'
+      name: SETE
+      properties:
+      - r
+      - w
       start: 10
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'EDIE3'
+      name: EDIE3
+      properties:
+      - r
+      - w
       start: 9
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'EDIE2'
+      name: EDIE2
+      properties:
+      - r
+      - w
       start: 8
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'EDIE1'
+      name: EDIE1
+      properties:
+      - r
+      - w
       start: 7
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'EDIE0'
+      name: EDIE0
+      properties:
+      - r
+      - w
       start: 6
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'DITE'
+      name: DITE
+      properties:
+      - r
+      - w
       start: 5
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'DIRE'
+      name: DIRE
+      properties:
+      - r
+      - w
       start: 4
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'TTE'
+      name: TTE
+      properties:
+      - r
+      - w
       start: 3
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'TME'
+      name: TME
+      properties:
+      - r
+      - w
       start: 2
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'TRE'
+      name: TRE
+      properties:
+      - r
+      - w
       start: 1
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'SE'
+      name: SE
+      properties:
+      - r
+      - w
       start: 0
       width: 1
     variants: []
@@ -814,10 +925,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'DC'
+      name: DC
+      properties:
+      - r
+      - w
       start: 0
       width: 15
     variants: []
@@ -828,16 +941,20 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'EN'
+      name: EN
+      properties:
+      - r
+      - w
       start: 31
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'CD'
+      name: CD
+      properties:
+      - r
+      - w
       start: 0
       width: 24
     variants: []
@@ -848,10 +965,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'EDM0'
+      name: EDM0
+      properties:
+      - r
+      - w
       start: 0
       width: 32
     variants: []
@@ -862,10 +981,11 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'EDPF0'
+      name: EDPF0
+      properties:
+      - r
       start: 0
       width: 16
     variants: []
@@ -876,10 +996,11 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'ED0ET0'
+      name: ED0ET0
+      properties:
+      - r
       start: 0
       width: 32
     variants: []
@@ -890,10 +1011,11 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'ED0ET1'
+      name: ED0ET1
+      properties:
+      - r
       start: 0
       width: 32
     variants: []
@@ -904,10 +1026,11 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'ED0ET2'
+      name: ED0ET2
+      properties:
+      - r
       start: 0
       width: 32
     variants: []
@@ -918,10 +1041,11 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'ED0ET3'
+      name: ED0ET3
+      properties:
+      - r
       start: 0
       width: 32
     variants: []
@@ -932,10 +1056,11 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'ED0ET4'
+      name: ED0ET4
+      properties:
+      - r
       start: 24
       width: 8
     variants: []
@@ -944,6 +1069,4 @@ registers:
   description: null
   name: ED0ET4
   width: 32
-name: spwtdp
-notes: null
 type: interface

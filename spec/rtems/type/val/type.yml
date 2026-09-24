@@ -10,8 +10,8 @@ test-actions:
     /* Nothing to do */
   checks:
   - brief: |
-      Assert that ${../if/id-none:/name} cannot be associated with an object
-      because it has an object index outside the range of valid object indices.
+      Assert that ${../if/id-none:/name} cannot be associated with an object because
+      it has an object index outside the range of valid object indices.
     code: |
       RTEMS_STATIC_ASSERT(
         ( ( RTEMS_ID_NONE >> OBJECTS_INDEX_START_BIT ) &

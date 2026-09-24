@@ -4,16 +4,6 @@ brief: |
   map.
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
-description: null
-enabled-by: true
-identifier: RTEMSDeviceGRLIBMEMSCRUB
-index-entries: []
-interface-type: register-block
-links:
-- role: interface-ingroup
-  uid: group
-- role: interface-placement
-  uid: memscrub-header
 definition:
 - default:
     count: 1
@@ -75,70 +65,98 @@ definition:
     name: RANGEH2
   offset: 0x30
   variants: []
-register-prefix: null
+description: null
+enabled-by: true
+identifier: RTEMSDeviceGRLIBMEMSCRUB
+index-entries: []
+interface-type: register-block
+links:
+- role: interface-ingroup
+  uid: group
+- role: interface-placement
+  uid: memscrub-header
+name: memscrub
+notes: null
 register-block-group: MEMSCRUB
 register-block-size: 52
+register-prefix: null
 registers:
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'CECNT'
+      name: CECNT
+      properties:
+      - r
+      - w
       start: 22
       width: 10
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'UECNT'
+      name: UECNT
+      properties:
+      - r
+      - w
       start: 14
       width: 8
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'DONE'
+      name: DONE
+      properties:
+      - r
       start: 13
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'SEC'
+      name: SEC
+      properties:
+      - r
+      - w
       start: 11
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'SBC'
+      name: SBC
+      properties:
+      - r
+      - w
       start: 10
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'CE'
+      name: CE
+      properties:
+      - r
+      - w
       start: 9
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'NE'
+      name: NE
+      properties:
+      - r
+      - w
       start: 8
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'HWRITE'
+      name: HWRITE
+      properties:
+      - r
       start: 7
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'HMASTER'
+      name: HMASTER
+      properties:
+      - r
       start: 3
       width: 4
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'HSIZE'
+      name: HSIZE
+      properties:
+      - r
       start: 0
       width: 3
     variants: []
@@ -149,10 +167,11 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'AHB_FAILING_ADDRESS'
+      name: AHB_FAILING_ADDRESS
+      properties:
+      - r
       start: 0
       width: 32
     variants: []
@@ -163,28 +182,36 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'CECNTT'
+      name: CECNTT
+      properties:
+      - r
+      - w
       start: 22
       width: 10
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'UECNTT'
+      name: UECNTT
+      properties:
+      - r
+      - w
       start: 14
       width: 8
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'CECTE'
+      name: CECTE
+      properties:
+      - r
+      - w
       start: 1
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'UECTE'
+      name: UECTE
+      properties:
+      - r
+      - w
       start: 0
       width: 1
     variants: []
@@ -195,34 +222,40 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'RUNCOUNT'
+      name: RUNCOUNT
+      properties:
+      - r
       start: 22
       width: 10
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'BLKCOUNT'
+      name: BLKCOUNT
+      properties:
+      - r
       start: 14
       width: 8
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'DONE'
+      name: DONE
+      properties:
+      - r
+      - w1c
       start: 13
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'BURSTLEN'
+      name: BURSTLEN
+      properties:
+      - r
       start: 1
       width: 4
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'ACTIVE'
+      name: ACTIVE
+      properties:
+      - r
       start: 0
       width: 1
     variants: []
@@ -233,46 +266,60 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'DELAY'
+      name: DELAY
+      properties:
+      - r
+      - w
       start: 8
       width: 8
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'IRQD'
+      name: IRQD
+      properties:
+      - r
+      - w
       start: 7
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'SERA'
+      name: SERA
+      properties:
+      - r
+      - w
       start: 5
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'LOOP'
+      name: LOOP
+      properties:
+      - r
+      - w
       start: 4
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'MODE'
+      name: MODE
+      properties:
+      - r
+      - w
       start: 2
       width: 2
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'ES'
+      name: ES
+      properties:
+      - r
+      - w
       start: 1
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'SCEN'
+      name: SCEN
+      properties:
+      - r
+      - w
       start: 0
       width: 1
     variants: []
@@ -283,10 +330,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'RLADDR'
+      name: RLADDR
+      properties:
+      - r
+      - w
       start: 0
       width: 32
     variants: []
@@ -297,10 +346,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'RHADDR'
+      name: RHADDR
+      properties:
+      - r
+      - w
       start: 0
       width: 32
     variants: []
@@ -311,10 +362,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'POSITION'
+      name: POSITION
+      properties:
+      - r
+      - w
       start: 0
       width: 32
     variants: []
@@ -325,28 +378,36 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'RECT'
+      name: RECT
+      properties:
+      - r
+      - w
       start: 22
       width: 10
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'BECT'
+      name: BECT
+      properties:
+      - r
+      - w
       start: 14
       width: 8
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'RECTE'
+      name: RECTE
+      properties:
+      - r
+      - w
       start: 1
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'BECTE'
+      name: BECTE
+      properties:
+      - r
+      - w
       start: 0
       width: 1
     variants: []
@@ -357,10 +418,11 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [w]
-      brief: null
+    - brief: null
       description: null
-      name: 'DATA'
+      name: DATA
+      properties:
+      - w
       start: 0
       width: 32
     variants: []
@@ -371,10 +433,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'RLADDR'
+      name: RLADDR
+      properties:
+      - r
+      - w
       start: 0
       width: 32
     variants: []
@@ -385,10 +449,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'RHADDR'
+      name: RHADDR
+      properties:
+      - r
+      - w
       start: 0
       width: 32
     variants: []
@@ -397,6 +463,4 @@ registers:
   description: null
   name: RANGEH2
   width: 32
-name: memscrub
-notes: null
 type: interface

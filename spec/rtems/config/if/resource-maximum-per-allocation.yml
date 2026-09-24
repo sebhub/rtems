@@ -30,7 +30,8 @@ links:
 name: rtems_resource_maximum_per_allocation
 notes: null
 params:
-- description: is the resource number.
+- description: |
+    is the resource number.
   dir: null
   name: _resource
 return:

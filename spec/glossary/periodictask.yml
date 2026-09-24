@@ -8,6 +8,5 @@ links:
   uid: group
 term: periodic task
 text: |
-  A task which must execute at regular intervals and comply with a hard
-  deadline.
+  A task which must execute at regular intervals and comply with a hard deadline.
 type: glossary

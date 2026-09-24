@@ -8,6 +8,6 @@ links:
   uid: group
 term: Multiprocessor Configuration Table
 text: |
-  The data structure defining the characteristics of the multiprocessor
-  target system with which RTEMS will communicate.
+  The data structure defining the characteristics of the multiprocessor target
+  system with which RTEMS will communicate.
 type: glossary

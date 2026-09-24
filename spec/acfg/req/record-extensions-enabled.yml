@@ -11,6 +11,5 @@ links:
 rationale: null
 requirement-type: functional
 text: |
-  The application configuration option shall enable the event record
-  extensions.
+  The application configuration option shall enable the event record extensions.
 type: requirement

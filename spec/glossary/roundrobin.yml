@@ -8,6 +8,6 @@ links:
   uid: group
 term: round-robin
 text: |
-  A task scheduling discipline in which tasks of equal priority are
-  executed in the order in which they are made ready.
+  A task scheduling discipline in which tasks of equal priority are executed in
+  the order in which they are made ready.
 type: glossary

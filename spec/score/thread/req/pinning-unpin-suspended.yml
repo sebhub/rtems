@@ -2,14 +2,14 @@ SPDX-License-Identifier: CC-BY-SA-4.0
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
 enabled-by: RTEMS_SMP
+functional-type: function
 links:
 - role: requirement-refinement
   uid: pinning
-functional-type: function
 rationale: |
-  Unpinning the thread is done with thread dispatching disabled.  Other
-  processors or interrupts may suspend the thread while it runs with thread
-  dispatching disabled.
+  Unpinning the thread is done with thread dispatching disabled. Other processors
+  or interrupts may suspend the thread while it runs with thread dispatching
+  disabled.
 requirement-type: functional
 text: |
   While a thread is suspended, the thread may be unpinned.

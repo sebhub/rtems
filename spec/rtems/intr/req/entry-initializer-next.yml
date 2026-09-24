@@ -2,14 +2,14 @@ SPDX-License-Identifier: CC-BY-SA-4.0
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
 enabled-by: true
+functional-type: function
 links:
 - role: interface-function
   uid: ../if/entry-initializer
-functional-type: function
 rationale: null
 requirement-type: functional
 text: |
   When the ${../if/entry-initializer:/name} is used to statically initialize an
-  object of type ${../if/entry:/name}, the `next` member of the object shall
-  be initialized to a value equal to ${/c/if/null:/name}.
+  object of type ${../if/entry:/name}, the `next` member of the object shall be
+  initialized to a value equal to ${/c/if/null:/name}.
 type: requirement

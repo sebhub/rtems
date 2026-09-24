@@ -35,7 +35,6 @@ notes: |
 params: []
 return:
   return: |
-    Returns the maximum number of processors configured for this
-    application.
+    Returns the maximum number of processors configured for this application.
   return-values: []
 type: interface

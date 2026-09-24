@@ -7,6 +7,6 @@ links:
   uid: ../req/errata-gr712rc-05
 method: by-review-of-design
 text: |
-  The errata of the ${/glossary/gr712rc:/term} is not applicable to the
-  software product since it does not provide a high-level SPI driver.
+  The errata of the ${/glossary/gr712rc:/term} is not applicable to the software
+  product since it does not provide a high-level SPI driver.
 type: validation

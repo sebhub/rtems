@@ -7,7 +7,7 @@ links:
   uid: ../req/errata-gr712rc-09
 method: by-review-of-design
 text: |
-  The errata of the ${/glossary/gr712rc:/term} is not applicable to the
-  software product since it assumes that the boot loader correctly configured
-  the memory controller.
+  The errata of the ${/glossary/gr712rc:/term} is not applicable to the software
+  product since it assumes that the boot loader correctly configured the memory
+  controller.
 type: validation

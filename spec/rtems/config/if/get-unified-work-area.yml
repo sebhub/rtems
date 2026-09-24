@@ -33,7 +33,7 @@ notes: |
 params: []
 return:
   return: |
-    Returns true, if the RTEMS Workspace and C Program Heap are configured to
-    be unified for this application, otherwise false.
+    Returns true, if the RTEMS Workspace and C Program Heap are configured to be
+    unified for this application, otherwise false.
   return-values: []
 type: interface

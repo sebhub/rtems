@@ -3,8 +3,8 @@ appl-config-option-type: feature-enable
 copyrights:
 - Copyright (C) 1988, 2008 On-Line Applications Research Corporation (OAR)
 description: |
-  In case this configuration option is defined, then the Simple Console Driver
-  is initialized during system initialization.
+  In case this configuration option is defined, then the Simple Console Driver is
+  initialized during system initialization.
 enabled-by: true
 index-entries: []
 interface-type: appl-config-option

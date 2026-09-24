@@ -4,10 +4,10 @@ copyrights:
 enabled-by:
 - arm
 - riscv
+functional-type: function
 links:
 - role: requirement-refinement
   uid: global-construction
-functional-type: function
 rationale: null
 requirement-type: functional
 text: |

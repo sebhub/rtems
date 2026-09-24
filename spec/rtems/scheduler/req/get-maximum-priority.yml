@@ -33,24 +33,24 @@ post-conditions:
   states:
   - name: Set
     test-code: |
-      #if defined(RTEMS_SMP)
-      T_eq_u32( ctx->priority_obj, INT_MAX );
+      #if defined( RTEMS_SMP )
+        T_eq_u32( ctx->priority_obj, INT_MAX );
       #else
-      T_eq_u32( ctx->priority_obj, 127 );
+        T_eq_u32( ctx->priority_obj, 127 );
       #endif
     text: |
       The value of the object referenced by the
-      ${../if/get-maximum-priority:/params[1]/name} parameter shall be set to
-      the maximum priority value of the scheduler specified by the
-      ${../if/get-maximum-priority:/params[0]/name} parameter after the return
-      of the ${../if/get-maximum-priority:/name} call.
+      ${../if/get-maximum-priority:/params[1]/name} parameter shall be set to the
+      maximum priority value of the scheduler specified by the
+      ${../if/get-maximum-priority:/params[0]/name} parameter after the return of the
+      ${../if/get-maximum-priority:/name} call.
   - name: Nop
     test-code: |
       T_eq_u32( ctx->priority_obj, PRIO_INVALID );
     text: |
       Objects referenced by the ${../if/get-maximum-priority:/params[1]/name}
-      parameter in past calls to ${../if/get-maximum-priority:/name} shall
-      not be accessed by the ${../if/get-maximum-priority:/name} call.
+      parameter in past calls to ${../if/get-maximum-priority:/name} shall not be
+      accessed by the ${../if/get-maximum-priority:/name} call.
   test-epilogue: null
   test-prologue: null
 pre-conditions:
@@ -66,8 +66,8 @@ pre-conditions:
     test-code: |
       ctx->id = ctx->scheduler_id;
     text: |
-      While the ${../if/get-maximum-priority:/params[0]/name} parameter is
-      associated with a scheduler.
+      While the ${../if/get-maximum-priority:/params[0]/name} parameter is associated
+      with a scheduler.
   test-epilogue: null
   test-prologue: null
 - name: Prio
@@ -76,14 +76,14 @@ pre-conditions:
     test-code: |
       ctx->priority = &ctx->priority_obj;
     text: |
-      While the ${../if/get-maximum-priority:/params[1]/name} parameter
-      references an object of type ${../../type/if/priority:/name}.
+      While the ${../if/get-maximum-priority:/params[1]/name} parameter references an
+      object of type ${../../type/if/priority:/name}.
   - name: 'Null'
     test-code: |
       ctx->priority = NULL;
     text: |
-      While the ${../if/get-maximum-priority:/params[1]/name} parameter is
-      equal to ${/c/if/null:/name}.
+      While the ${../if/get-maximum-priority:/params[1]/name} parameter is equal to
+      ${/c/if/null:/name}.
   test-epilogue: null
   test-prologue: null
 rationale: null
@@ -139,17 +139,15 @@ test-setup:
   code: |
     rtems_status_code sc;
 
-    sc = rtems_scheduler_ident(
-      TEST_SCHEDULER_A_NAME,
-      &ctx->scheduler_id
-    );
+    sc = rtems_scheduler_ident( TEST_SCHEDULER_A_NAME, &ctx->scheduler_id );
     T_rsc_success( sc );
   description: null
 test-stop: null
 test-support: null
 test-target: testsuites/validation/tc-scheduler-get-maximum-priority.c
 test-teardown: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

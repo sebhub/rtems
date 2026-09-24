@@ -7,7 +7,7 @@ links:
   uid: /req/unit-test-compiler-builtins
 test-actions:
 - action-brief: |
-    Check the return value of __builtin_clz() for a sample set of inputs.
+    Check the return value of \_\_builtin_clz() for a sample set of inputs.
   action-code: |
     volatile unsigned int n;
 
@@ -28,7 +28,7 @@ test-actions:
     role: unit-test
     uid: ../../if/domain
 - action-brief: |
-    Check the return value of __builtin_clzll() for a sample set of inputs.
+    Check the return value of \_\_builtin_clzll() for a sample set of inputs.
   action-code: |
     volatile unsigned long long n;
 
@@ -55,7 +55,7 @@ test-actions:
     role: unit-test
     uid: ../../if/domain
 - action-brief: |
-    Check the return value of __builtin_ctz() for a sample set of inputs.
+    Check the return value of \_\_builtin_ctz() for a sample set of inputs.
   action-code: |
     volatile unsigned int n;
 
@@ -76,7 +76,7 @@ test-actions:
     role: unit-test
     uid: ../../if/domain
 - action-brief: |
-    Check the return value of __builtin_ctzll() for a sample set of inputs.
+    Check the return value of \_\_builtin_ctzll() for a sample set of inputs.
   action-code: |
     volatile unsigned long long n;
 
@@ -103,7 +103,7 @@ test-actions:
     role: unit-test
     uid: ../../if/domain
 - action-brief: |
-    Check the return value of __builtin_ffs() for a sample set of inputs.
+    Check the return value of \_\_builtin_ffs() for a sample set of inputs.
   action-code: |
     volatile unsigned int n;
 
@@ -124,7 +124,7 @@ test-actions:
     role: unit-test
     uid: ../../if/domain
 - action-brief: |
-    Check the return value of __builtin_ffsll() for a sample set of inputs.
+    Check the return value of \_\_builtin_ffsll() for a sample set of inputs.
   action-code: |
     volatile unsigned long long n;
 
@@ -151,7 +151,7 @@ test-actions:
     role: unit-test
     uid: ../../if/domain
 - action-brief: |
-    Check the return value of __builtin_parity() for a sample set of inputs.
+    Check the return value of \_\_builtin_parity() for a sample set of inputs.
   action-code: |
     volatile unsigned int n;
 
@@ -169,7 +169,7 @@ test-actions:
     role: unit-test
     uid: ../../if/domain
 - action-brief: |
-    Check the return value of __builtin_parityll() for a sample set of inputs.
+    Check the return value of \_\_builtin_parityll() for a sample set of inputs.
   action-code: |
     volatile unsigned long long n;
 
@@ -187,7 +187,7 @@ test-actions:
     role: unit-test
     uid: ../../if/domain
 - action-brief: |
-    Check the return value of __builtin_popcount() for a sample set of inputs.
+    Check the return value of \_\_builtin_popcount() for a sample set of inputs.
   action-code: |
     volatile unsigned int n;
 
@@ -208,7 +208,7 @@ test-actions:
     role: unit-test
     uid: ../../if/domain
 - action-brief: |
-    Check the return value of __builtin_popcountll() for a sample set of inputs.
+    Check the return value of \_\_builtin_popcountll() for a sample set of inputs.
   action-code: |
     volatile unsigned long long n;
 
@@ -229,7 +229,7 @@ test-actions:
     role: unit-test
     uid: ../../if/domain
 - action-brief: |
-    Check the return value of __builtin_bswap32() for a sample set of inputs.
+    Check the return value of \_\_builtin_bswap32() for a sample set of inputs.
   action-code: |
     volatile uint32_t n;
 
@@ -253,7 +253,7 @@ test-actions:
     role: unit-test
     uid: ../../if/domain
 - action-brief: |
-    Check the return value of __builtin_bswap64() for a sample set of inputs.
+    Check the return value of \_\_builtin_bswap64() for a sample set of inputs.
   action-code: |
     volatile uint64_t n;
 
@@ -342,7 +342,7 @@ test-actions:
     Check signed 64-bit arithmetic left shift for a sample set of values.
   action-code: |
     volatile int64_t i;
-    volatile int s;
+    volatile int     s;
 
     i = 0;
     RTEMS_OBFUSCATE_VARIABLE( i );
@@ -373,7 +373,7 @@ test-actions:
     Check signed 64-bit arithmetic right shift for a sample set of values.
   action-code: |
     volatile int64_t i;
-    volatile int s;
+    volatile int     s;
 
     i = 0;
     RTEMS_OBFUSCATE_VARIABLE( i );
@@ -404,7 +404,7 @@ test-actions:
     Check unsigned 64-bit logical right shift for a sample set of values.
   action-code: |
     volatile uint64_t i;
-    volatile int s;
+    volatile int      s;
 
     i = 0;
     RTEMS_OBFUSCATE_VARIABLE( i );
@@ -616,7 +616,7 @@ test-actions:
       x = n / d;
     }
 
-    #if defined(TEST_UDIVMODDI4_WITHOUT_REMINDER)
+    #if defined( TEST_UDIVMODDI4_WITHOUT_REMINDER )
     do_longjmp = true;
 
     if ( setjmp( exception_return_context ) == 0 ) {
@@ -632,7 +632,7 @@ test-actions:
       x = n / d;
     }
 
-    #if defined(TEST_UDIVMODDI4_WITHOUT_REMINDER)
+    #if defined( TEST_UDIVMODDI4_WITHOUT_REMINDER )
     do_longjmp = true;
 
     if ( setjmp( exception_return_context ) == 0 ) {
@@ -648,7 +648,7 @@ test-actions:
       x = n / d;
     }
 
-    #if defined(TEST_UDIVMODDI4_WITHOUT_REMINDER)
+    #if defined( TEST_UDIVMODDI4_WITHOUT_REMINDER )
     do_longjmp = true;
 
     if ( setjmp( exception_return_context ) == 0 ) {
@@ -664,7 +664,7 @@ test-actions:
       x = n / d;
     }
 
-    #if defined(TEST_UDIVMODDI4_WITHOUT_REMINDER)
+    #if defined( TEST_UDIVMODDI4_WITHOUT_REMINDER )
     do_longjmp = true;
 
     if ( setjmp( exception_return_context ) == 0 ) {
@@ -680,7 +680,7 @@ test-actions:
       x = n / d;
     }
 
-    #if defined(TEST_UDIVMODDI4_WITHOUT_REMINDER)
+    #if defined( TEST_UDIVMODDI4_WITHOUT_REMINDER )
     do_longjmp = true;
 
     if ( setjmp( exception_return_context ) == 0 ) {
@@ -691,70 +691,70 @@ test-actions:
     n = UINT64_C( 0 );
     d = UINT64_C( 1 );
     T_eq_u64( n / d, UINT64_C( 0 ) );
-    #if defined(TEST_UDIVMODDI4_WITHOUT_REMINDER)
+    #if defined( TEST_UDIVMODDI4_WITHOUT_REMINDER )
     T_eq_u64( __udivmoddi4( n, d, NULL ), UINT64_C( 0 ) );
     #endif
 
     n = UINT64_C( 1 );
     d = UINT64_C( 1 );
     T_eq_u64( n / d, UINT64_C( 1 ) );
-    #if defined(TEST_UDIVMODDI4_WITHOUT_REMINDER)
+    #if defined( TEST_UDIVMODDI4_WITHOUT_REMINDER )
     T_eq_u64( __udivmoddi4( n, d, NULL ), UINT64_C( 1 ) );
     #endif
 
     n = UINT64_C( 0xffffffffffffffff );
     d = UINT64_C( 1 );
     T_eq_u64( n / d, UINT64_C( 0xffffffffffffffff ) );
-    #if defined(TEST_UDIVMODDI4_WITHOUT_REMINDER)
+    #if defined( TEST_UDIVMODDI4_WITHOUT_REMINDER )
     T_eq_u64( __udivmoddi4( n, d, NULL ), UINT64_C( 0xffffffffffffffff ) );
     #endif
 
     n = UINT64_C( 2 );
     d = UINT64_C( 1 );
     T_eq_u64( n / d, UINT64_C( 2 ) );
-    #if defined(TEST_UDIVMODDI4_WITHOUT_REMINDER)
+    #if defined( TEST_UDIVMODDI4_WITHOUT_REMINDER )
     T_eq_u64( __udivmoddi4( n, d, NULL ), UINT64_C( 2 ) );
     #endif
 
     n = UINT64_C( 1 );
     d = UINT64_C( 0xffffffffffffffff );
     T_eq_u64( n / d, UINT64_C( 0 ) );
-    #if defined(TEST_UDIVMODDI4_WITHOUT_REMINDER)
+    #if defined( TEST_UDIVMODDI4_WITHOUT_REMINDER )
     T_eq_u64( __udivmoddi4( n, d, NULL ), UINT64_C( 0 ) );
     #endif
 
     n = UINT64_C( 0xffffffffffffffff );
     d = UINT64_C( 0xffffffffffffffff );
     T_eq_u64( n / d, UINT64_C( 1 ) );
-    #if defined(TEST_UDIVMODDI4_WITHOUT_REMINDER)
+    #if defined( TEST_UDIVMODDI4_WITHOUT_REMINDER )
     T_eq_u64( __udivmoddi4( n, d, NULL ), UINT64_C( 1 ) );
     #endif
 
     n = UINT64_C( 0xffffffffffffffff );
     d = UINT64_C( 0x8000000000000000 );
     T_eq_u64( n / d, UINT64_C( 1 ) );
-    #if defined(TEST_UDIVMODDI4_WITHOUT_REMINDER)
+    #if defined( TEST_UDIVMODDI4_WITHOUT_REMINDER )
     T_eq_u64( __udivmoddi4( n, d, NULL ), UINT64_C( 1 ) );
     #endif
 
     n = UINT64_C( 0x0000000100000001 );
     d = UINT64_C( 0x0000000f00000000 );
     T_eq_u64( n / d, UINT64_C( 0 ) );
-    #if defined(TEST_UDIVMODDI4_WITHOUT_REMINDER)
+    #if defined( TEST_UDIVMODDI4_WITHOUT_REMINDER )
     T_eq_u64( __udivmoddi4( n, d, NULL ), UINT64_C( 0 ) );
     #endif
 
     n = UINT64_C( 0x0000000100000000 );
     d = UINT64_C( 0x0000000f00000001 );
     T_eq_u64( n / d, UINT64_C( 0 ) );
-    #if defined(TEST_UDIVMODDI4_WITHOUT_REMINDER)
+    #if defined( TEST_UDIVMODDI4_WITHOUT_REMINDER )
     T_eq_u64( __udivmoddi4( n, d, NULL ), UINT64_C( 0 ) );
     #endif
 
     n = UINT64_C( 0xffffffff0000000f );
     d = UINT64_C( 0x000000010000000f );
     T_eq_u64( n / d, UINT64_C( 4294967280 ) );
-    #if defined(TEST_UDIVMODDI4_WITHOUT_REMINDER)
+    #if defined( TEST_UDIVMODDI4_WITHOUT_REMINDER )
     T_eq_u64( __udivmoddi4( n, d, NULL ), UINT64_C( 4294967280 ) );
     #endif
   checks: []
@@ -876,7 +876,7 @@ test-actions:
     d = INT64_C( 0x000000ff0000000f );
     T_eq_i64( n % d, INT64_C( 64424509455 ) );
 
-    #if defined(TEST_UDIVMODDI4)
+    #if defined( TEST_UDIVMODDI4 )
     /*
      * The above test cases may use __udivmoddi4().  However, the below
      * parameter values for __udivmoddi4() cannot be obtained through the
@@ -955,8 +955,8 @@ test-brief: |
 test-context: []
 test-context-support: null
 test-description: |
-  Explicitly test the 64-bit integer division and modulo operations.  They are
-  essential for the timekeeping services.  On most 32-bit targets, they need a
+  Explicitly test the 64-bit integer division and modulo operations. They are
+  essential for the timekeeping services. On most 32-bit targets, they need a
   software implementation.
 test-header: null
 test-includes:

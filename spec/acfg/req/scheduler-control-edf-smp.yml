@@ -14,6 +14,6 @@ rationale: null
 requirement-type: functional
 text: |
   The ${../if/scheduler-control-edf-smp:/name} macro shall define a scheduler
-  control data structure for the ${/ref/rtems/c-user/scheduler-smp-edf:/name} scheduler
-  with the specified name.
+  control data structure for the ${/ref/rtems/c-user/scheduler-smp-edf:/name}
+  scheduler with the specified name.
 type: requirement

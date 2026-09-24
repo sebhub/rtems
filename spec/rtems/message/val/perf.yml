@@ -71,8 +71,9 @@ test-support: |
 
   typedef ${.:/test-context-type} Context;
 
-  static RTEMS_MESSAGE_QUEUE_BUFFER( MAXIMUM_MESSAGE_SIZE )
-    storage_area[ MAXIMUM_PENDING_MESSAGES ];
+  static RTEMS_MESSAGE_QUEUE_BUFFER(
+    MAXIMUM_MESSAGE_SIZE
+  ) storage_area[ MAXIMUM_PENDING_MESSAGES ];
 
   rtems_message_queue_config config = {
     .name = OBJECT_NAME,

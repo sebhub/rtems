@@ -8,10 +8,10 @@ links:
   uid: group
 term: receiver
 text: |
-  In this particular case, *receiver* shall be a ${/glossary/task:/term}
-  which has invoked directive ${../if/receive:/name} with
+  In this particular case, *receiver* shall be a ${/glossary/task:/term} which
+  has invoked directive ${../if/receive:/name} with
   ${../if/receive:/params[3]/name} set to ${../../option/if/wait:/name} on an
-  empty ${/glossary/messagequeue:/term} and which is still waiting to receive
-  a message when a ${../if/send:/name} or ${../if/urgent:/name} directive
-  is invoked on that ${/glossary/messagequeue:/term}.
+  empty ${/glossary/messagequeue:/term} and which is still waiting to receive a
+  message when a ${../if/send:/name} or ${../if/urgent:/name} directive is
+  invoked on that ${/glossary/messagequeue:/term}.
 type: glossary

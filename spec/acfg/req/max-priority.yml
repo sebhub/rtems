@@ -11,6 +11,6 @@ links:
 rationale: null
 requirement-type: functional
 text: |
-  The application configuration option shall define the maximum numeric
-  priority of tasks.
+  The application configuration option shall define the maximum numeric priority
+  of tasks.
 type: requirement

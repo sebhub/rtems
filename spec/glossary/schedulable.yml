@@ -8,6 +8,6 @@ links:
   uid: group
 term: schedulable
 text: |
-  A set of tasks which can be guaranteed to meet their deadlines based upon
-  a specific scheduling algorithm.
+  A set of tasks which can be guaranteed to meet their deadlines based upon a
+  specific scheduling algorithm.
 type: glossary

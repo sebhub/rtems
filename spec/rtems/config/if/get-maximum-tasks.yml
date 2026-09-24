@@ -32,7 +32,7 @@ notes: |
 params: []
 return:
   return: |
-    Returns the resource number of ${/rtems/task/if/group:/name} objects
-    configured for this application.
+    Returns the resource number of ${/rtems/task/if/group:/name} objects configured
+    for this application.
   return-values: []
 type: interface

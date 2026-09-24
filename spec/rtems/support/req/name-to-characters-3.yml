@@ -2,15 +2,15 @@ SPDX-License-Identifier: CC-BY-SA-4.0
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
 enabled-by: true
+functional-type: function
 links:
 - role: interface-function
   uid: ../if/name-to-characters
-functional-type: function
 rationale: null
 requirement-type: functional
 text: |
   When the call to ${../if/name-to-characters:/name} returned, the object
   referenced by the ${../if/name-to-characters:/params[3]/name} parameter shall
-  be set the value of ${../if/name-to-characters:/params[0]/name} divided by
-  256 modulo 256.
+  be set the value of ${../if/name-to-characters:/params[0]/name} divided by 256
+  modulo 256.
 type: requirement

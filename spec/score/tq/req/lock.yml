@@ -11,6 +11,6 @@ non-functional-type: design
 rationale: null
 requirement-type: non-functional
 text: |
-  The state of each thread queue object shall be protected by an
-  object-specific lock.
+  The state of each thread queue object shall be protected by an object-specific
+  lock.
 type: requirement

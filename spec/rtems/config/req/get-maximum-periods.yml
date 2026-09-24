@@ -2,10 +2,10 @@ SPDX-License-Identifier: CC-BY-SA-4.0
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
 enabled-by: true
+functional-type: function
 links:
 - role: interface-function
   uid: ../if/get-maximum-periods
-functional-type: function
 rationale: |
   The directive may be used to check the setting of the
   ${/acfg/if/max-periods:/name} application configuration option.

@@ -46,8 +46,8 @@ notes: |
   ${task-delete:/name}.
 params:
 - description: |
-    is the ${/glossary/tcb:/term} of the executing thread.  When the idle
-    thread is created, the executing thread is equal to ${/c/if/null:/name}.
+    is the ${/glossary/tcb:/term} of the executing thread. When the idle thread is
+    created, the executing thread is equal to ${/c/if/null:/name}.
   dir: null
   name: executing
 - description: |

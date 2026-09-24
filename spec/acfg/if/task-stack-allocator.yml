@@ -6,8 +6,8 @@ default-value: |
   The default value is `_Workspace_Allocate`, which indicates that task
   stacks will be allocated from the RTEMS Workspace.
 description: |
-  The value of this configuration option initializes the stack allocator
-  allocate handler.
+  The value of this configuration option initializes the stack allocator allocate
+  handler.
 enabled-by: true
 index-entries:
 - task stack allocator

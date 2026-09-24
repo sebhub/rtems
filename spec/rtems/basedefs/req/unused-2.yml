@@ -9,9 +9,8 @@ links:
 rationale: null
 requirement-type: functional
 text: |
-  When the code is compiled with the GNU C compiler,
-  and the ${../if/unused:/name} macro is attached to a type
-  (including a union or a struct),
-  the ${../if/unused:/name} macro shall prevent the compiler from emitting
-  a warning if variables of this type are not used.
+  When the code is compiled with the GNU C compiler, and the
+  ${../if/unused:/name} macro is attached to a type (including a union or a
+  struct), the ${../if/unused:/name} macro shall prevent the compiler from
+  emitting a warning if variables of this type are not used.
 type: requirement

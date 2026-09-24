@@ -15,11 +15,11 @@ definition:
   variants: []
 description: |
   This directive returns the segment specified by ${.:/params[1]/name} to the
-  region specified by ${.:/params[0]/name}.  The returned segment is merged
-  with its neighbors to form the largest possible segment.  The first task on
-  the wait queue is examined to determine if its segment request can now be
-  satisfied.  If so, it is given a segment and unblocked.  This process is
-  repeated until the first task's segment request cannot be satisfied.
+  region specified by ${.:/params[0]/name}. The returned segment is merged with
+  its neighbors to form the largest possible segment. The first task on the wait
+  queue is examined to determine if its segment request can now be satisfied. If
+  so, it is given a segment and unblocked. This process is repeated until the
+  first task's segment request cannot be satisfied.
 enabled-by: true
 index-entries:
 - return segment to region

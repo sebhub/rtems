@@ -2,16 +2,16 @@ SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
 enabled-by: RTEMS_SMP
+functional-type: function
 links:
 - role: requirement-refinement
   uid: /req/fatal-error
 - role: requirement-refinement
   uid: ../if/group
-functional-type: function
 rationale: null
 requirement-type: functional
 text: |
   If the processor receives an SMP shutdown request message, then the system
-  shall terminate with the ${/score/interr/if/source-smp:/name} fatal source
-  and the ${../if/fatal-shutdown-response:/name} fatal code.
+  shall terminate with the ${/score/interr/if/source-smp:/name} fatal source and
+  the ${../if/fatal-shutdown-response:/name} fatal code.
 type: requirement

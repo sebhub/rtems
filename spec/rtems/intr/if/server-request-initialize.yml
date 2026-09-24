@@ -41,8 +41,8 @@ notes: |
   ${server-request-destroy:/name}.
 params:
 - description: |
-    is the interrupt server index.  The constant ${server-default:/name} may be
-    used to specify the default interrupt server.
+    is the interrupt server index. The constant ${server-default:/name} may be used
+    to specify the default interrupt server.
   dir: null
   name: server_index
 - description: |

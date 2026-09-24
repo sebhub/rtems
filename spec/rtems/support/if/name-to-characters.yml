@@ -36,19 +36,24 @@ links:
 name: rtems_name_to_characters
 notes: null
 params:
-- description: is the object name to break into four component characters.
+- description: |
+    is the object name to break into four component characters.
   dir: null
   name: name
-- description: is the first character of the object name.
+- description: |
+    is the first character of the object name.
   dir: out
   name: c1
-- description: is the second character of the object name.
+- description: |
+    is the second character of the object name.
   dir: out
   name: c2
-- description: is the third character of the object name.
+- description: |
+    is the third character of the object name.
   dir: out
   name: c3
-- description: is the fourth character of the object name.
+- description: |
+    is the fourth character of the object name.
   dir: out
   name: c4
 return: null

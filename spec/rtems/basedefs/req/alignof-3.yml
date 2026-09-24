@@ -9,6 +9,6 @@ links:
 rationale: null
 requirement-type: functional
 text: |
-  The macro ${../if/alignof:/name} shall result in
-  an constant integer of type size_t.
+  The macro ${../if/alignof:/name} shall result in an constant integer of type
+  size_t.
 type: requirement

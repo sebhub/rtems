@@ -8,8 +8,8 @@ links:
   uid: group
 term: calling convention
 text: |
-  The processor and compiler dependent rules which define the mechanism
-  used to invoke subroutines in a high-level language.  These rules define
-  the passing of arguments, the call and return mechanism, and the register
-  set which must be preserved.
+  The processor and compiler dependent rules which define the mechanism used to
+  invoke subroutines in a high-level language. These rules define the passing of
+  arguments, the call and return mechanism, and the register set which must be
+  preserved.
 type: glossary

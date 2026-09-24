@@ -1,8 +1,7 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 brief: |
-  If this define has a non-zero value, then the interrupt lock operations
-  require an object of type ${lock:/name}, otherwise no lock object is
-  required.
+  If this define has a non-zero value, then the interrupt lock operations require
+  an object of type ${lock:/name}, otherwise no lock object is required.
 copyrights:
 - Copyright (C) 2024 embedded brains GmbH & Co. KG
 definition:

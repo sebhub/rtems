@@ -28,8 +28,8 @@ name: rtems_cache_get_instruction_cache_size
 notes: null
 params:
 - description: |
-    is the requested instruction cache level.  The cache level zero specifies
-    the entire instruction cache.
+    is the requested instruction cache level. The cache level zero specifies the
+    entire instruction cache.
   dir: null
   name: level
 return:

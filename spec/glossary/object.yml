@@ -8,7 +8,7 @@ links:
   uid: group
 term: object
 text: |
-  In this document, this term is used to refer collectively to tasks,
-  timers, message queues, partitions, regions, semaphores, ports, and rate
-  monotonic periods.  All RTEMS objects have IDs and user-assigned names.
+  In this document, this term is used to refer collectively to tasks, timers,
+  message queues, partitions, regions, semaphores, ports, and rate monotonic
+  periods. All RTEMS objects have IDs and user-assigned names.
 type: glossary

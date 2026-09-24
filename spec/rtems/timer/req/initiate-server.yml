@@ -37,7 +37,7 @@ post-conditions:
       ${../../status/if/too-many:/name}.
   - name: Unsat
     test-code: |
-      T_rsc( ctx->status, RTEMS_UNSATISFIED  );
+      T_rsc( ctx->status, RTEMS_UNSATISFIED );
     text: |
       The return status of ${../if/initiate-server:/name} shall be
       ${../../status/if/unsatisfied:/name}.
@@ -49,8 +49,8 @@ post-conditions:
     test-code: |
       T_true( ExistTimerServer() );
     text: |
-      The Timer Server task shall be started after the
-      ${../if/initiate-server:/name} call.
+      The Timer Server task shall be started after the ${../if/initiate-server:/name}
+      call.
   - name: 'No'
     test-code: |
       T_false( ExistTimerServer() );
@@ -69,15 +69,15 @@ post-conditions:
         T_eq_u32( GetTimerServerPriority(), ctx->priority );
       }
     text: |
-      The priority of the Timer Server task shall be equal to the priority
-      specified by the ${../if/initiate-server:/params[0]/name} parameter in
-      the ${../if/initiate-server:/name} call.
+      The priority of the Timer Server task shall be equal to the priority specified
+      by the ${../if/initiate-server:/params[0]/name} parameter in the
+      ${../if/initiate-server:/name} call.
   - name: Nop
     test-code: |
       T_eq_u32( GetTimerServerPriority(), ctx->before_priority );
     text: |
-      The priority of the Timer Server task shall not be modified
-      by the ${../if/initiate-server:/name} call.
+      The priority of the Timer Server task shall not be modified by the
+      ${../if/initiate-server:/name} call.
   test-epilogue: null
   test-prologue: null
 - name: TaskStack
@@ -86,15 +86,15 @@ post-conditions:
     test-code: |
       T_ge_sz( GetTimerServerStackSize(), ctx->stack_size );
     text: |
-      The stack size of the Timer Server task shall be greater than or equal to
-      the stack size specified by the ${../if/initiate-server:/params[1]/name}
-      parameter in the ${../if/initiate-server:/name} call.
+      The stack size of the Timer Server task shall be greater than or equal to the
+      stack size specified by the ${../if/initiate-server:/params[1]/name} parameter
+      in the ${../if/initiate-server:/name} call.
   - name: Nop
     test-code: |
       T_ge_sz( GetTimerServerStackSize(), ctx->before_stack_size );
     text: |
-      The stack size of the Timer Server task shall not be modified
-      by the ${../if/initiate-server:/name} call.
+      The stack size of the Timer Server task shall not be modified by the
+      ${../if/initiate-server:/name} call.
   test-epilogue: null
   test-prologue: null
 - name: TaskAttr
@@ -141,14 +141,14 @@ pre-conditions:
     test-code: |
       ctx->stack_size = RTEMS_MINIMUM_STACK_SIZE;
     text: |
-      While the ${../if/initiate-server:/params[1]/name} parameter specifies a
-      task stack size which is allocatable by the system.
+      While the ${../if/initiate-server:/params[1]/name} parameter specifies a task
+      stack size which is allocatable by the system.
   - name: TooLarge
     test-code: |
       ctx->stack_size = SIZE_MAX;
     text: |
-      While the ${../if/initiate-server:/params[1]/name} parameter specifies a
-      task stack size which is not allocatable by the system.
+      While the ${../if/initiate-server:/params[1]/name} parameter specifies a task
+      stack size which is not allocatable by the system.
   test-epilogue: null
   test-prologue: null
 - name: Started
@@ -183,10 +183,7 @@ pre-conditions:
       While the system has at least one inactive task object available.
   - name: Unavailable
     test-code: |
-      ctx->task_objects = T_seize_objects(
-        AllocateTaskObject,
-        NULL
-      );
+      ctx->task_objects = T_seize_objects( AllocateTaskObject, NULL );
     text: |
       While the system has no inactive task object available.
   test-epilogue: null
@@ -211,32 +208,30 @@ test-cleanup: |
   T_surrender_objects( &ctx->task_objects, rtems_task_delete );
 test-context:
 - brief: |
-    If the Timer Server task exists before the action,
-    its priority before the action.
+    If the Timer Server task exists before the action, its priority before the
+    action.
   description: null
   member: |
     rtems_task_priority before_priority
 - brief: |
-    If the Timer Server task exists before the action,
-    its stack size before the action.
+    If the Timer Server task exists before the action, its stack size before the
+    action.
   description: null
   member: |
     size_t before_stack_size
 - brief: |
-    If the Timer Server task exists before the action,
-    whether the floating point attribute is set before the action.
+    If the Timer Server task exists before the action, whether the floating point
+    attribute is set before the action.
   description: null
   member: |
     bool before_has_floating_point
 - brief: |
-    The ${../if/initiate-server:/params[0]/name}
-    parameter for the action.
+    The ${../if/initiate-server:/params[0]/name} parameter for the action.
   description: null
   member: |
     rtems_task_priority priority
 - brief: |
-    The ${../if/initiate-server:/params[1]/name}
-    parameter for the action.
+    The ${../if/initiate-server:/params[1]/name} parameter for the action.
   description: null
   member: |
     size_t stack_size
@@ -246,8 +241,8 @@ test-context:
   member: |
     rtems_status_code status
 - brief: |
-    This member is used by the T_seize_objects() and T_surrender_objects()
-    support functions.
+    This member is used by the T_seize_objects() and T_surrender_objects() support
+    functions.
   description: null
   member: |
     void *task_objects
@@ -280,7 +275,7 @@ test-support: |
   static size_t GetTimerServerStackSize( void )
   {
     rtems_tcb *tcb;
-    rtems_id server_task_id;
+    rtems_id   server_task_id;
     server_task_id = GetTimerServerTaskId();
     T_ne_u32( server_task_id, RTEMS_INVALID_ID );
     tcb = GetThread( server_task_id );
@@ -291,7 +286,7 @@ test-support: |
   static bool HasTimerServerFloatingPoint( void )
   {
     rtems_tcb *tcb;
-    rtems_id server_task_id;
+    rtems_id   server_task_id;
     server_task_id = GetTimerServerTaskId();
     T_ne_u32( server_task_id, RTEMS_INVALID_ID );
     tcb = GetThread( server_task_id );
@@ -312,14 +307,15 @@ test-support: |
       task_id
     );
   }
-
 test-target: testsuites/validation/tc-timer-initiate-server.c
 test-teardown:
-  brief: Make sure the time server in not running after this test.
+  brief: |
+    Make sure the time server in not running after this test.
   code: |
     DeleteTimerServer();
   description: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:
@@ -330,14 +326,14 @@ transition-map:
     TaskAttr: Set
   pre-conditions:
     Priority:
-      - Valid
-      - Default
+    - Valid
+    - Default
     Stack:
-      - Allocatable
+    - Allocatable
     Started:
-      - 'No'
+    - 'No'
     TaskObj:
-      - Available
+    - Available
 - enabled-by: true
   post-conditions:
     Status: IncStat
@@ -349,53 +345,53 @@ transition-map:
     Priority: all
     Stack: all
     Started:
-      - 'Yes'
+    - 'Yes'
     TaskObj: all
 - enabled-by: true
   post-conditions:
     Status: InvPrio
     Started: 'No'
-    TaskPrio: "N/A"
-    TaskStack: "N/A"
-    TaskAttr: "N/A"
+    TaskPrio: N/A
+    TaskStack: N/A
+    TaskAttr: N/A
   pre-conditions:
     Priority:
-      - Invalid
+    - Invalid
     Stack: all
     Started:
-      - 'No'
+    - 'No'
     TaskObj: all
 - enabled-by: true
   post-conditions:
     Status: TooMany
     Started: 'No'
-    TaskPrio: "N/A"
-    TaskStack: "N/A"
-    TaskAttr: "N/A"
+    TaskPrio: N/A
+    TaskStack: N/A
+    TaskAttr: N/A
   pre-conditions:
     Priority:
-      - Valid
-      - Default
+    - Valid
+    - Default
     Stack: all
     Started:
-      - 'No'
+    - 'No'
     TaskObj:
-      - Unavailable
+    - Unavailable
 - enabled-by: true
   post-conditions:
     Status: Unsat
     Started: 'No'
-    TaskPrio: "N/A"
-    TaskStack: "N/A"
-    TaskAttr: "N/A"
+    TaskPrio: N/A
+    TaskStack: N/A
+    TaskAttr: N/A
   pre-conditions:
     Priority:
-      - Valid
-      - Default
+    - Valid
+    - Default
     Stack:
-      - TooLarge
+    - TooLarge
     Started:
-      - 'No'
+    - 'No'
     TaskObj:
-      - Available
+    - Available
 type: requirement

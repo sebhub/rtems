@@ -14,8 +14,8 @@ definition:
   variants: []
 description: |
   This directive blocks a task until the date and time specified in
-  ${.:/params[0]/name}.  At the requested date and time, the calling task will
-  be unblocked and made ready to execute.
+  ${.:/params[0]/name}. At the requested date and time, the calling task will be
+  unblocked and made ready to execute.
 enabled-by: true
 index-entries:
 - delay a task until a wall time

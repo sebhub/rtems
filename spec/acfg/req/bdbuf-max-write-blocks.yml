@@ -11,6 +11,6 @@ links:
 rationale: null
 requirement-type: functional
 text: |
-  The application configuration option shall define the maximum blocks per
-  write request issued by the Block Device Cache.
+  The application configuration option shall define the maximum blocks per write
+  request issued by the Block Device Cache.
 type: requirement

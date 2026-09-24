@@ -15,10 +15,10 @@ definition:
     return: ${../../status/if/code:/name}
   variants: []
 description: |
-  This directive converts a dual-ported memory address from external to
-  internal representation for the specified port.  If the given external
-  address is invalid for the specified port, then the internal address is set
-  to the given external address.
+  This directive converts a dual-ported memory address from external to internal
+  representation for the specified port. If the given external address is invalid
+  for the specified port, then the internal address is set to the given external
+  address.
 enabled-by: true
 index-entries:
 - convert external to internal address
@@ -50,9 +50,9 @@ params:
   dir: null
   name: external
 - description: |
-    is the pointer to a `void` pointer object.  When the directive call is
-    successful, the external address associated with the internal address will
-    be stored in this object.
+    is the pointer to a `void` pointer object. When the directive call is
+    successful, the external address associated with the internal address will be
+    stored in this object.
   dir: out
   name: internal
 return:

@@ -5,9 +5,9 @@ enabled-by: true
 links: []
 test-actions:
 - action-brief: |
-    Submit an ISR request during system initialization.  Check the stack of the
-    interrupted context while the ISR request is serviced.  Store the result of
-    the check in interrupted_stack_at_multitasking_start_is_valid.
+    Submit an ISR request during system initialization. Check the stack of the
+    interrupted context while the ISR request is serviced. Store the result of the
+    check in interrupted_stack_at_multitasking_start_is_valid.
   action-code: |
     /*
      * The actions are performed during system initialization and the
@@ -15,8 +15,8 @@ test-actions:
      */
   checks:
   - brief: |
-      Check that stack of the interrupted context was valid when an interrupt
-      was serviced during the multitasking start.
+      Check that stack of the interrupted context was valid when an interrupt was
+      serviced during the multitasking start.
     code: |
       T_true( interrupted_stack_at_multitasking_start_is_valid );
     links:

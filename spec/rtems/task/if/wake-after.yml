@@ -16,8 +16,8 @@ definition:
 description: |
   This directive blocks the calling task for the specified ${.:/params[0]/name}
   count of clock ticks if the value is not equal to ${yield-processor:/name}.
-  When the requested count of ticks have occurred, the task is made ready.  The
-  clock tick directives automatically update the delay period.  The calling task
+  When the requested count of ticks have occurred, the task is made ready. The
+  clock tick directives automatically update the delay period. The calling task
   may give up the processor and remain in the ready state by specifying a value
   of ${yield-processor:/name} in ${.:/params[0]/name}.
 enabled-by: true

@@ -9,6 +9,6 @@ links:
 term: sporadic task
 text: |
   A task which executes at irregular intervals and must comply with a hard
-  deadline.  A minimum period of time between successive iterations of the
-  task can be guaranteed.
+  deadline. A minimum period of time between successive iterations of the task
+  can be guaranteed.
 type: glossary

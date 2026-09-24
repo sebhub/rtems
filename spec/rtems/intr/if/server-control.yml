@@ -56,8 +56,7 @@ definition:
   variants: []
 - default:
     brief: |
-      This member is the optional handler to destroy the interrupt server
-      control.
+      This member is the optional handler to destroy the interrupt server control.
     definition: void ( *${.:name} )( struct rtems_interrupt_server_control * )
     description: null
     kind: member

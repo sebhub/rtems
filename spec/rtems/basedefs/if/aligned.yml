@@ -1,7 +1,6 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 brief: |
-  Instructs the compiler in a declaration or definition to enforce the
-  alignment.
+  Instructs the compiler in a declaration or definition to enforce the alignment.
 copyrights:
 - Copyright (C) 2016 embedded brains GmbH & Co. KG
 definition:

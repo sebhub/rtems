@@ -9,6 +9,6 @@ links:
 rationale: null
 requirement-type: functional
 text: |
-  The macro ${../if/concat:/name} shall make its result
-  subject to C pre-processor operations.
+  The macro ${../if/concat:/name} shall make its result subject to C
+  pre-processor operations.
 type: requirement

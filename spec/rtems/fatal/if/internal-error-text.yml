@@ -35,7 +35,7 @@ params:
   name: internal_error_code
 return:
   return: |
-    Returns a descriptive text for the internal error code.  The text for the
+    Returns a descriptive text for the internal error code. The text for the
     internal error code is the enumerator constant name.
   return-values:
   - description: |

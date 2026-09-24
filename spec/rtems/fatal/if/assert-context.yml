@@ -16,8 +16,8 @@ definition:
   variants: []
 - default:
     brief: |
-      This member provides the line number in the source code file containing
-      the failed assertion statement.
+      This member provides the line number in the source code file containing the
+      failed assertion statement.
     definition: int ${.:name}
     description: null
     kind: member

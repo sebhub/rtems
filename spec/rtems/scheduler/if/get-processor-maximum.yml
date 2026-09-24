@@ -11,16 +11,16 @@ definition:
     return: ${/c/if/uint32_t:/name}
   variants: []
 description: |
-  Where the system was built with SMP support disabled, this directive
-  evaluates to a compile time constant of one.
+  Where the system was built with SMP support disabled, this directive evaluates
+  to a compile time constant of one.
 
-  Where the system was built with SMP support enabled, this directive returns
-  the minimum of the processors (physically or virtually) available at the
-  ${/glossary/target:/term} and the configured processor maximum
-  (see ${/acfg/if/max-processors:/name}).  Not all processors in the range from
+  Where the system was built with SMP support enabled, this directive returns the
+  minimum of the processors (physically or virtually) available at the
+  ${/glossary/target:/term} and the configured processor maximum (see
+  ${/acfg/if/max-processors:/name}). Not all processors in the range from
   processor index zero to the last processor index (which is the processor
-  maximum minus one) may be configured to be used by a scheduler or may be
-  online (online processors have a scheduler assigned).
+  maximum minus one) may be configured to be used by a scheduler or may be online
+  (online processors have a scheduler assigned).
 enabled-by: true
 index-entries: []
 interface-type: function

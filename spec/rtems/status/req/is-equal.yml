@@ -18,8 +18,7 @@ post-conditions:
     test-code: |
       T_false( ctx->result );
     text: |
-      The return value of ${../if/is-equal:/name} shall be
-      ${/c/if/false:/name}.
+      The return value of ${../if/is-equal:/name} shall be ${/c/if/false:/name}.
   test-epilogue: null
   test-prologue: null
 pre-conditions:
@@ -37,8 +36,8 @@ pre-conditions:
       ctx->status_0 = RTEMS_SUCCESSFUL;
       ctx->status_1 = RTEMS_INVALID_ID;
     text: |
-      While the ${../if/is-equal:/params[0]/name} parameter is not equal to
-      the ${../if/is-equal:/params[1]/name} parameter.
+      While the ${../if/is-equal:/params[0]/name} parameter is not equal to the
+      ${../if/is-equal:/params[1]/name} parameter.
   test-epilogue: null
   test-prologue: null
 rationale: null
@@ -55,14 +54,12 @@ test-context:
   member: |
     bool result
 - brief: |
-    This member specifies if the ${../if/is-equal:/params[0]/name}
-    parameter value.
+    This member specifies if the ${../if/is-equal:/params[0]/name} parameter value.
   description: null
   member: |
     rtems_status_code status_0
 - brief: |
-    This member specifies if the ${../if/is-equal:/params[1]/name}
-    parameter value.
+    This member specifies if the ${../if/is-equal:/params[1]/name} parameter value.
   description: null
   member: |
     rtems_status_code status_1
@@ -78,7 +75,8 @@ test-stop: null
 test-support: null
 test-target: testsuites/validation/tc-status-is-equal.c
 test-teardown: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

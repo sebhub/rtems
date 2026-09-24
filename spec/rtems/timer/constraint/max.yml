@@ -7,6 +7,6 @@ links:
   uid: /req/usage-constraints
 rationale: null
 text: |
-  The number of timers available to the application is configured through
-  the ${/acfg/if/max-timers:/name} application configuration option.
+  The number of timers available to the application is configured through the
+  ${/acfg/if/max-timers:/name} application configuration option.
 type: constraint

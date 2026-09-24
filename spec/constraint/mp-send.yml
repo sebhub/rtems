@@ -8,5 +8,5 @@ links:
 rationale: null
 text: |
   When the directive operates on a global object, the directive sends a message
-  to remote nodes.  This may preempt the calling task.
+  to remote nodes. This may preempt the calling task.
 type: constraint

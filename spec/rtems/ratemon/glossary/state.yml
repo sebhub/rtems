@@ -9,12 +9,12 @@ links:
 term: state
 text: |
   The rate monotonic state indicates whether the period is currently used to
-  execute ${../glossary/job:/plural} or not.  In the former case it also
-  indicates whether the current ${../glossary/job:/term} is still within the
-  planed time ${../glossary/interval:/term} or not.  A rate monotonic period can
-  be in one of these three states:
+  execute ${../glossary/job:/plural} or not. In the former case it also indicates
+  whether the current ${../glossary/job:/term} is still within the planed time
+  ${../glossary/interval:/term} or not. A rate monotonic period can be in one of
+  these three states:
 
-  * ${../glossary/inactive:/term}
-  * ${../glossary/active:/term}
-  * ${../glossary/expired:/term}
+  - ${../glossary/inactive:/term}
+  - ${../glossary/active:/term}
+  - ${../glossary/expired:/term}
 type: glossary

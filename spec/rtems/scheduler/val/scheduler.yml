@@ -14,8 +14,8 @@ test-actions:
     cpu_index_macro = GetProcessorMacro();
   checks:
   - brief: |
-      Check that the values returned by ${../if/get-processor:/name}
-      and ${../if/get-processor-macro:/name} are equal.
+      Check that the values returned by ${../if/get-processor:/name} and
+      ${../if/get-processor-macro:/name} are equal.
     code: |
       T_step_eq_u32( ${.:/step}, cpu_index, cpu_index_macro );
     links:
@@ -32,8 +32,8 @@ test-actions:
     cpu_max_macro = GetProcessorMaximumMacro();
   checks:
   - brief: |
-      Check that the values returned by ${../if/get-processor-maximum:/name}
-      and ${../if/get-processor-maximum-macro:/name} are equal.
+      Check that the values returned by ${../if/get-processor-maximum:/name} and
+      ${../if/get-processor-maximum-macro:/name} are equal.
     code: |
       T_step_eq_u32( ${.:/step}, cpu_max, cpu_max_macro );
     links:
@@ -41,8 +41,8 @@ test-actions:
       uid: ../req/get-processor-maximum
   links: []
 test-brief: |
-  This test case collection provides validation test cases for
-  general requirements of the ${../if/group:/name}.
+  This test case collection provides validation test cases for general
+  requirements of the ${../if/group:/name}.
 test-context: []
 test-context-support: null
 test-description: null

@@ -1,14 +1,14 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 brief: |
-  The Cache Manager provides functions to perform maintenance operations for
-  data and instruction caches.
+  The Cache Manager provides functions to perform maintenance operations for data
+  and instruction caches.
 copyrights:
 - Copyright (C) 2014, 2020 embedded brains GmbH & Co. KG
 - Copyright (C) 2000, 2008 On-Line Applications Research Corporation (OAR)
 description: |
   The actual actions of the Cache Manager operations depend on the hardware and
   the implementation provided by the CPU architecture port or a board support
-  package.  Cache implementations tend to be highly hardware dependent.
+  package. Cache implementations tend to be highly hardware dependent.
 enabled-by: true
 identifier: RTEMSAPIClassicCache
 index-entries: []

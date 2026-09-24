@@ -7,6 +7,6 @@ links:
   uid: /req/usage-constraints
 rationale: null
 text: |
-  The directive may be used exclusively by the task which created the
-  associated object.
+  The directive may be used exclusively by the task which created the associated
+  object.
 type: constraint

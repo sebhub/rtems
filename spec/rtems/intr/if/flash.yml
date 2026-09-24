@@ -14,7 +14,7 @@ definition:
   variants: []
 description: |
   This directive is functionally equivalent to a calling ${enable:/name}
-  immediately followed by a ${disable:/name}.  On some architectures it is
+  immediately followed by a ${disable:/name}. On some architectures it is
   possible to provide an optimized implementation for this sequence.
 enabled-by:
   not: RTEMS_SMP

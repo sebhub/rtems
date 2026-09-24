@@ -12,9 +12,9 @@ definition:
     return: ${../../status/if/code:/name}
   variants: []
 description: |
-  The directive disables the interrupt vector specified by
-  ${.:/params[0]/name}.  This prevents that an interrupt service request is
-  issued to the target processors of the interrupt vector.
+  The directive disables the interrupt vector specified by ${.:/params[0]/name}.
+  This prevents that an interrupt service request is issued to the target
+  processors of the interrupt vector.
 enabled-by: true
 index-entries: []
 interface-type: function

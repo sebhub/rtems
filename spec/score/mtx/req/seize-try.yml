@@ -39,18 +39,12 @@ post-conditions:
   states:
   - name: Other
     test-code: |
-      T_eq_ptr(
-        ctx->owner_after,
-        ctx->tq_ctx->base.worker_tcb[ TQ_BLOCKER_B ]
-      );
+      T_eq_ptr( ctx->owner_after, ctx->tq_ctx->base.worker_tcb[ TQ_BLOCKER_B ] );
     text: |
       The owner of the mutex shall not be modified.
   - name: Caller
     test-code: |
-      T_eq_ptr(
-        ctx->owner_after,
-        ctx->tq_ctx->base.worker_tcb[ TQ_BLOCKER_A ]
-      );
+      T_eq_ptr( ctx->owner_after, ctx->tq_ctx->base.worker_tcb[ TQ_BLOCKER_A ] );
     text: |
       The owner of the mutex shall be the calling thread.
   - name: None
@@ -103,8 +97,7 @@ pre-conditions:
         ${.:skip}
       }
     text: |
-      Where the mutex does not use the priority ceiling or MrsP locking
-      protocol.
+      Where the mutex does not use the priority ceiling or MrsP locking protocol.
   test-epilogue: null
   test-prologue: null
 - name: Discipline
@@ -175,31 +168,30 @@ pre-conditions:
     test-code: |
       ctx->priority_before = ctx->tq_ctx->priority_ceiling - 1;
     text: |
-      While the calling thread has a ${/glossary/priority-current:/term} higher
-      than the priority ceiling.
+      While the calling thread has a ${/glossary/priority-current:/term} higher than
+      the priority ceiling.
   - name: Equal
     test-code: |
       ctx->priority_before = ctx->tq_ctx->priority_ceiling;
     text: |
-      While the calling thread has a ${/glossary/priority-current:/term} equal
-      to the priority ceiling.
+      While the calling thread has a ${/glossary/priority-current:/term} equal to the
+      priority ceiling.
   - name: Low
     test-code: |
       ctx->priority_before = ctx->tq_ctx->priority_ceiling + 1;
     text: |
-      While the calling thread has a ${/glossary/priority-current:/term} lower
-      than the priority ceiling.
+      While the calling thread has a ${/glossary/priority-current:/term} lower than
+      the priority ceiling.
   test-epilogue: null
   test-prologue: null
 rationale: null
 requirement-type: functional
 skip-reasons:
   CeilingOwner: |
-    Where the mutex provides a priority ceiling, the owner of the mutex cannot
-    have a ${/glossary/priority-current:/term} lower than the priority ceiling.
+    Where the mutex provides a priority ceiling, the owner of the mutex cannot have
+    a ${/glossary/priority-current:/term} lower than the priority ceiling.
   PriorityDisciplineByProtocol: |
-    The priority ceiling and MrsP locking protocol requires a priority
-    discipline.
+    The priority ceiling and MrsP locking protocol requires a priority discipline.
 test-action: |
   TQSetScheduler(
     &ctx->tq_ctx->base,
@@ -223,8 +215,8 @@ test-context:
   member: |
     bool owner_caller
 - brief: |
-    If this member is true, then a thread other than the calling thread shall
-    be the owner of the mutex.
+    If this member is true, then a thread other than the calling thread shall be
+    the owner of the mutex.
   description: null
   member: |
     bool owner_other

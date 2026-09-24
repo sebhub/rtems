@@ -13,12 +13,12 @@ definition:
     return: ${../../status/if/code:/name}
   variants: []
 description: |
-  This directive resets the timer specified by ${.:/params[0]/name}.  This
-  timer must have been previously initiated with either the ${fire-after:/name}
-  or ${server-fire-after:/name} directive.  If active the timer is canceled,
-  after which the timer is reinitiated using the same interval and timer
-  service routine which the original ${fire-after:/name} or
-  ${server-fire-after:/name} directive used.
+  This directive resets the timer specified by ${.:/params[0]/name}. This timer
+  must have been previously initiated with either the ${fire-after:/name} or
+  ${server-fire-after:/name} directive. If active the timer is canceled, after
+  which the timer is reinitiated using the same interval and timer service
+  routine which the original ${fire-after:/name} or ${server-fire-after:/name}
+  directive used.
 enabled-by: true
 index-entries:
 - reset a timer
@@ -45,7 +45,8 @@ notes: |
   Restarting a cancelled after timer results in the timer being reinitiated
   with its previous timer service routine and interval.
 params:
-- description: is the timer identifier.
+- description: |
+    is the timer identifier.
   dir: null
   name: id
 return:

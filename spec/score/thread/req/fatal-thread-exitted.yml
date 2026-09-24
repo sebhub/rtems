@@ -2,17 +2,17 @@ SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
 enabled-by: true
+functional-type: function
 links:
 - role: requirement-refinement
   uid: /req/fatal-error
 - role: requirement-refinement
   uid: ../if/group
-functional-type: function
 rationale: null
 requirement-type: functional
 text: |
-  If a thread body function returned and the thread exitted extension
-  invocation for the thread returned, then the system shall terminate with the
+  If a thread body function returned and the thread exitted extension invocation
+  for the thread returned, then the system shall terminate with the
   ${/score/interr/if/internal-error-core:/name} fatal source and the
   ${/score/interr/if/thread-exitted:/name} fatal code.
 type: requirement

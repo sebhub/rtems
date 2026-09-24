@@ -5,8 +5,8 @@ copyrights:
 - Copyright (C) 1988, 2008 On-Line Applications Research Corporation (OAR)
 description: |
   In case this configuration option is defined, then the
-  ${/ref/rtems/c-user/scheduler-priority:/name}
-  algorithm is made available to the application.
+  ${/ref/rtems/c-user/scheduler-priority:/name} algorithm is made available to
+  the application.
 enabled-by: true
 index-entries: []
 interface-type: appl-config-option

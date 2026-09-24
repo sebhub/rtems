@@ -39,9 +39,9 @@ params:
   dir: null
   name: bytes
 - description: |
-    is the pointer to a `void` pointer object.  When the directive call is
-    successful, the begin address of the allocated memory area will be stored
-    in this object.
+    is the pointer to a `void` pointer object. When the directive call is
+    successful, the begin address of the allocated memory area will be stored in
+    this object.
   dir: out
   name: pointer
 return:

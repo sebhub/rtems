@@ -7,12 +7,11 @@ links:
 - role: interface-function
   uid: ../if/xconcat
 rationale: |
-  All possible C pre-processor substitutions include here
-  calls to the macro itself as well as none if no substitution is
-  possible.
+  All possible C pre-processor substitutions include here calls to the macro
+  itself as well as none if no substitution is possible.
 requirement-type: functional
 text: |
-  The macro ${../if/xconcat:/name} shall apply all possible C
-  pre-processor substitutions to its argument values
-  before it concatenates the resulting values.
+  The macro ${../if/xconcat:/name} shall apply all possible C pre-processor
+  substitutions to its argument values before it concatenates the resulting
+  values.
 type: requirement

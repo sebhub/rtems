@@ -70,7 +70,7 @@ return:
       ${.:/params[0]/name}.
     value: ${../../status/if/invalid-id:/name}
   - description: |
-      The memory area specified by ${.:/params[1]/name} and
-      ${.:/params[2]/name} was insufficient to extend the heap.
+      The memory area specified by ${.:/params[1]/name} and ${.:/params[2]/name} was
+      insufficient to extend the heap.
     value: ${../../status/if/invalid-address:/name}
 type: interface

@@ -7,7 +7,7 @@ links:
   uid: validation
 test-brief: |
   This validation test suite is intended test cases related to the use of
-  timecouters.  The ${/glossary/clock-driver:/term} is disabled.
+  timecouters. The ${/glossary/clock-driver:/term} is disabled.
 test-code: |
   const char rtems_test_name[] = "${.:/test-suite-name}";
 

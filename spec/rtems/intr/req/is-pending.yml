@@ -36,23 +36,21 @@ post-conditions:
       memset( &pending, 0xa5, sizeof( pending ) );
       T_eq_mem( &ctx->pending_obj, &pending, sizeof( pending ) );
     text: |
-      Objects referenced by the ${../if/is-pending:/params[1]/name}
-      parameter in past calls to ${../if/is-pending:/name} shall not be
-      accessed by the ${../if/is-pending:/name} call.
+      Objects referenced by the ${../if/is-pending:/params[1]/name} parameter in past
+      calls to ${../if/is-pending:/name} shall not be accessed by the
+      ${../if/is-pending:/name} call.
   - name: 'Yes'
     test-code: |
       /* Validation is done by CheckIsPending() for each interrupt vector */
     text: |
-      The value of the object referenced by the
-      ${../if/is-pending:/params[1]/name} parameter shall be set to
-      ${/c/if/true:/name}.
+      The value of the object referenced by the ${../if/is-pending:/params[1]/name}
+      parameter shall be set to ${/c/if/true:/name}.
   - name: 'No'
     test-code: |
       /* Validation is done by CheckIsPending() for each interrupt vector */
     text: |
-      The value of the object referenced by the
-      ${../if/is-pending:/params[1]/name} parameter shall be set to
-      ${/c/if/false:/name}.
+      The value of the object referenced by the ${../if/is-pending:/params[1]/name}
+      parameter shall be set to ${/c/if/false:/name}.
   test-epilogue: null
   test-prologue: |
     bool pending;
@@ -63,14 +61,14 @@ pre-conditions:
     test-code: |
       ctx->valid_vector = true;
     text: |
-      While the ${../if/is-pending:/params[0]/name} parameter is
-      associated with an interrupt vector.
+      While the ${../if/is-pending:/params[0]/name} parameter is associated with an
+      interrupt vector.
   - name: Invalid
     test-code: |
       ctx->valid_vector = false;
     text: |
-      While the ${../if/is-pending:/params[0]/name} parameter is
-      not associated with an interrupt vector.
+      While the ${../if/is-pending:/params[0]/name} parameter is not associated with
+      an interrupt vector.
   test-epilogue: null
   test-prologue: null
 - name: Pending
@@ -79,14 +77,14 @@ pre-conditions:
     test-code: |
       ctx->pending = &ctx->pending_obj;
     text: |
-      While the ${../if/is-pending:/params[1]/name} parameter references an
-      object of type `bool`.
+      While the ${../if/is-pending:/params[1]/name} parameter references an object of
+      type `bool`.
   - name: 'Null'
     test-code: |
       ctx->pending = NULL;
     text: |
-      While the ${../if/is-pending:/params[1]/name} parameter is equal
-      to ${/c/if/null:/name}.
+      While the ${../if/is-pending:/params[1]/name} parameter is equal to
+      ${/c/if/null:/name}.
   test-epilogue: null
   test-prologue: null
 - name: IsPending
@@ -96,17 +94,15 @@ pre-conditions:
       /* Validation is done by CheckIsPending() for each interrupt vector */
     text: |
       While the interrupt associated with the interrupt vector specified by
-      ${../if/is-pending:/params[0]/name} was pending for the processor
-      executing the ${../if/is-pending:/name} call at some time point during
-      the call.
+      ${../if/is-pending:/params[0]/name} was pending for the processor executing the
+      ${../if/is-pending:/name} call at some time point during the call.
   - name: 'No'
     test-code: |
       /* Validation is done by CheckIsPending() for each interrupt vector */
     text: |
       While the interrupt associated with the interrupt vector specified by
-      ${../if/is-pending:/params[0]/name} was not pending for the processor
-      executing the ${../if/is-pending:/name} call at some time point during
-      the call.
+      ${../if/is-pending:/params[0]/name} was not pending for the processor executing
+      the ${../if/is-pending:/name} call at some time point during the call.
   test-epilogue: null
   test-prologue: null
 rationale: null
@@ -170,20 +166,19 @@ test-context:
   member: |
     bool pending_obj
 - brief: |
-    If this member is true, then the ${../if/is-pending:/params[0]/name}
-    parameter shall be valid.
+    If this member is true, then the ${../if/is-pending:/params[0]/name} parameter
+    shall be valid.
   description: null
   member: |
     bool valid_vector
 - brief: |
-    This member specifies if the ${../if/is-pending:/params[1]/name}
-    parameter value.
+    This member specifies if the ${../if/is-pending:/params[1]/name} parameter
+    value.
   description: null
   member: |
     bool *pending
 - brief: |
-    This member contains the return value of the ${../if/is-pending:/name}
-    call.
+    This member contains the return value of the ${../if/is-pending:/name} call.
   description: null
   member: |
     rtems_status_code status
@@ -306,7 +301,7 @@ test-support: |
       );
       T_rsc_success( sc );
 
-      if ( !IsPending( ctx) && ( attr->can_enable || IsEnabled( ctx ) ) ) {
+      if ( !IsPending( ctx ) && ( attr->can_enable || IsEnabled( ctx ) ) ) {
         Disable( ctx );
         Raise( ctx );
 
@@ -340,7 +335,8 @@ test-support: |
   }
 test-target: testsuites/validation/tc-intr-is-pending.c
 test-teardown: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

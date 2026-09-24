@@ -6,8 +6,8 @@ default: |
   If this configuration option is undefined, then there will be separate memory
   pools for the RTEMS Workspace and C Program Heap.
 description: |
-  In case this configuration option is defined, then the RTEMS Workspace and
-  the C Program Heap will be one pool of memory.
+  In case this configuration option is defined, then the RTEMS Workspace and the
+  C Program Heap will be one pool of memory.
 enabled-by: true
 index-entries:
 - unified work areas

@@ -71,16 +71,16 @@ test-actions:
     rtems_id            id_by_cpu;
     rtems_task_priority priority;
 
-    sc = rtems_scheduler_ident( TEST_SCHEDULER_A_NAME, &id[ 0 ]);
+    sc = rtems_scheduler_ident( TEST_SCHEDULER_A_NAME, &id[ 0 ] );
     T_step_rsc_success( ${.:/step}, sc );
 
-    sc = rtems_scheduler_ident( TEST_SCHEDULER_B_NAME, &id[ 1 ]);
+    sc = rtems_scheduler_ident( TEST_SCHEDULER_B_NAME, &id[ 1 ] );
     T_step_rsc_success( ${.:/step}, sc );
 
-    sc = rtems_scheduler_ident( TEST_SCHEDULER_C_NAME, &id[ 2 ]);
+    sc = rtems_scheduler_ident( TEST_SCHEDULER_C_NAME, &id[ 2 ] );
     T_step_rsc_success( ${.:/step}, sc );
 
-    sc = rtems_scheduler_ident( TEST_SCHEDULER_D_NAME, &id[ 3 ]);
+    sc = rtems_scheduler_ident( TEST_SCHEDULER_D_NAME, &id[ 3 ] );
     T_step_rsc_success( ${.:/step}, sc );
   checks:
   - brief: |

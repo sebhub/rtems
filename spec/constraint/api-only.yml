@@ -7,7 +7,7 @@ links:
   uid: /req/usage-constraints
 rationale: null
 text: |
-  The user of the software product shall only directly use interfaces of
-  exactly the ${/acfg/if/domain:/name}, ${/c/if/domain:/name}, and
-  ${/if/domain:/name} interface domains.
+  The user of the software product shall only directly use interfaces of exactly
+  the ${/acfg/if/domain:/name}, ${/c/if/domain:/name}, and ${/if/domain:/name}
+  interface domains.
 type: constraint

@@ -4,8 +4,8 @@ copyrights:
 - Copyright (C) 1988, 2008 On-Line Applications Research Corporation (OAR)
 default-value: 0
 description: |
-  The value of this configuration option defines the number of bytes reserved
-  for message queue buffers in the RTEMS Workspace.
+  The value of this configuration option defines the number of bytes reserved for
+  message queue buffers in the RTEMS Workspace.
 enabled-by: true
 index-entries:
 - configure message queue buffer memory

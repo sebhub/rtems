@@ -52,8 +52,7 @@ post-conditions:
       event = TQGetNextAskForHelp( &ctx->tq_ctx, &index );
       T_eq_ptr( event, &T_scheduler_event_null );
     text: |
-      The thread shall ask all its ${/glossary/scheduler-eligible:/term} for
-      help.
+      The thread shall ask all its ${/glossary/scheduler-eligible:/term} for help.
   - name: 'No'
     test-code: |
       event = TQGetNextAskForHelp( &ctx->tq_ctx, &index );
@@ -135,8 +134,8 @@ pre-conditions:
     test-code: |
       ctx->other_ready = true;
     text: |
-      While at least one ready thread with a priority equal to the priority of
-      the thread exists in the ${/glossary/scheduler-home:/term} of the thread.
+      While at least one ready thread with a priority equal to the priority of the
+      thread exists in the ${/glossary/scheduler-home:/term} of the thread.
   - name: 'No'
     test-code: |
       ctx->other_ready = false;
@@ -153,14 +152,14 @@ skip-reasons:
   HelpingNeedsSMP: |
     A helping scheduler is only available where the system was built with SMP
     support enabled.
+  HomeNeedsScheduled: |
+    While a thread uses its home scheduler, it is scheduled in the home scheduler.
+  Sticky: |
+    Sticky threads are never blocked in their home scheduler. Only sticky threads
+    may be scheduled on two schedulers at the same time.
   StickyNeedsSMP: |
     A thread may be sticky only where the system was built with SMP support
     enabled.
-  Sticky: |
-    Sticky threads are never blocked in their home scheduler.  Only sticky
-    threads may be scheduled on two schedulers at the same time.
-  HomeNeedsScheduled: |
-    While a thread uses its home scheduler, it is scheduled in the home scheduler.
 test-action: |
   const Per_CPU_Control *cpu;
   bool                   other_busy;
@@ -255,8 +254,7 @@ test-context:
   member: |
     bool use_helping
 - brief: |
-    If this member is true, then the runner shall be ready in its home
-    scheduler.
+    If this member is true, then the runner shall be ready in its home scheduler.
   description: null
   member: |
     bool ready
@@ -266,8 +264,8 @@ test-context:
   member: |
     bool sticky
 - brief: |
-    If this member is true, then another ready task in the home scheduler of
-    the runner shall be ready with an equal priority.
+    If this member is true, then another ready task in the home scheduler of the
+    runner shall be ready with an equal priority.
   description: null
   member: |
     bool other_ready
@@ -317,7 +315,7 @@ test-setup:
 
     TQSetPriority( &ctx->tq_ctx, COUNTER, PRIO_NORMAL );
 
-    #if defined(RTEMS_SMP)
+    #if defined( RTEMS_SMP )
     TQSetScheduler( &ctx->tq_ctx, HELPER, SCHEDULER_B_ID, PRIO_NORMAL );
     TQSetPriority( &ctx->tq_ctx, MOVER, PRIO_HIGH );
     #endif
@@ -361,47 +359,47 @@ transition-map:
     HomeSchedulerState:
     - if:
         pre-conditions:
-          UsedScheduler: Home
           HomeSchedulerState: Scheduled
           Other: 'No'
+          UsedScheduler: Home
       then: Scheduled
     - if:
         pre-conditions:
-          UsedScheduler: Home
           HomeSchedulerState: Scheduled
           Other: 'Yes'
+          UsedScheduler: Home
       then: Ready
     - if:
         pre-conditions:
           EligibleScheduler: Helping
-          UsedScheduler: Helping
           HomeSchedulerState: Scheduled
-          Sticky: 'Yes'
           Other: 'No'
+          Sticky: 'Yes'
+          UsedScheduler: Helping
       then: Idle
     - if:
         pre-conditions:
           EligibleScheduler: Helping
-          UsedScheduler: Helping
           HomeSchedulerState: Scheduled
-          Sticky: 'Yes'
           Other: 'Yes'
+          Sticky: 'Yes'
+          UsedScheduler: Helping
       then: Ready
     - if:
         pre-conditions:
           EligibleScheduler: Helping
-          UsedScheduler: Helping
           HomeSchedulerState: Blocked
           Sticky: 'No'
+          UsedScheduler: Helping
       then: Blocked
     - else: Ready
     AskForHelp:
     - if:
         pre-conditions:
           EligibleScheduler: Helping
-          UsedScheduler: Home
           HomeSchedulerState: Scheduled
           Other: 'Yes'
+          UsedScheduler: Home
       then: 'Yes'
     - else: 'No'
   pre-conditions:

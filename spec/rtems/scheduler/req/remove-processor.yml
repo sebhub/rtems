@@ -87,14 +87,14 @@ pre-conditions:
     test-code: |
       ctx->id = INVALID_ID;
     text: |
-      While the ${../if/remove-processor:/params[0]/name} parameter is not
-      associated with a scheduler.
+      While the ${../if/remove-processor:/params[0]/name} parameter is not associated
+      with a scheduler.
   - name: Scheduler
     test-code: |
       ctx->id = SCHEDULER_A_ID;
     text: |
-      While the ${../if/remove-processor:/params[0]/name} parameter is
-      associated with a scheduler.
+      While the ${../if/remove-processor:/params[0]/name} parameter is associated
+      with a scheduler.
   test-epilogue: null
   test-prologue: null
 - name: CPUIndex
@@ -103,14 +103,14 @@ pre-conditions:
     test-code: |
       ctx->cpu_index = 0;
     text: |
-      While the ${../if/remove-processor:/params[1]/name} parameter is less than
-      the configured processor maximum.
+      While the ${../if/remove-processor:/params[1]/name} parameter is less than the
+      configured processor maximum.
   - name: Invalid
     test-code: |
       ctx->cpu_index = rtems_configuration_get_maximum_processors();
     text: |
-      While the ${../if/remove-processor:/params[1]/name} parameter is greater
-      than or equal to the configured processor maximum.
+      While the ${../if/remove-processor:/params[1]/name} parameter is greater than
+      or equal to the configured processor maximum.
   test-epilogue: null
   test-prologue: null
 - name: Owned
@@ -119,18 +119,16 @@ pre-conditions:
     test-code: |
       ctx->owned = true;
     text: |
-      While the processor specified by the
-      ${../if/remove-processor:/params[1]/name} parameter is owned by the
-      scheduler specified by the ${../if/remove-processor:/params[0]/name}
-      parameter.
+      While the processor specified by the ${../if/remove-processor:/params[1]/name}
+      parameter is owned by the scheduler specified by the
+      ${../if/remove-processor:/params[0]/name} parameter.
   - name: 'No'
     test-code: |
       ctx->owned = false;
     text: |
-      While the processor specified by the
-      ${../if/remove-processor:/params[1]/name} parameter is not owned by the
-      scheduler specified by the ${../if/remove-processor:/params[0]/name}
-      parameter.
+      While the processor specified by the ${../if/remove-processor:/params[1]/name}
+      parameter is not owned by the scheduler specified by the
+      ${../if/remove-processor:/params[0]/name} parameter.
   test-epilogue: null
   test-prologue: null
 - name: Last
@@ -139,17 +137,15 @@ pre-conditions:
     test-code: |
       ctx->last = true;
     text: |
-      While the processor specified by the
-      ${../if/remove-processor:/params[1]/name} parameter is the last processor
-      owned by the scheduler specified by the
+      While the processor specified by the ${../if/remove-processor:/params[1]/name}
+      parameter is the last processor owned by the scheduler specified by the
       ${../if/remove-processor:/params[0]/name} parameter.
   - name: 'No'
     test-code: |
       ctx->last = false;
     text: |
-      While the processor specified by the
-      ${../if/remove-processor:/params[1]/name} parameter is not the last
-      processor owned by the scheduler specified by the
+      While the processor specified by the ${../if/remove-processor:/params[1]/name}
+      parameter is not the last processor owned by the scheduler specified by the
       ${../if/remove-processor:/params[0]/name} parameter.
   test-epilogue: null
   test-prologue: null
@@ -159,9 +155,9 @@ pre-conditions:
     test-code: |
       ctx->home = true;
     text: |
-      While at least one non-idle task exists which uses the scheduler
-      specified by the ${../if/remove-processor:/params[0]/name} parameter as
-      its ${/glossary/scheduler-home:/term}.
+      While at least one non-idle task exists which uses the scheduler specified by
+      the ${../if/remove-processor:/params[0]/name} parameter as its
+      ${/glossary/scheduler-home:/term}.
   - name: 'No'
     test-code: |
       ctx->home = false;
@@ -177,20 +173,20 @@ pre-conditions:
     test-code: |
       ctx->required_by_affinity = true;
     text: |
-      While at least one non-idle task which uses the scheduler specified by
-      the ${../if/remove-processor:/params[0]/name} parameter as its
-      ${/glossary/scheduler-home:/term} exists those processor affinity set
-      requires the processor specified by the
-      ${../if/remove-processor:/params[1]/name} parameter.
+      While at least one non-idle task which uses the scheduler specified by the
+      ${../if/remove-processor:/params[0]/name} parameter as its
+      ${/glossary/scheduler-home:/term} exists those processor affinity set requires
+      the processor specified by the ${../if/remove-processor:/params[1]/name}
+      parameter.
   - name: 'No'
     test-code: |
       ctx->required_by_affinity = false;
     text: |
       While no non-idle task which uses the scheduler specified by the
       ${../if/remove-processor:/params[0]/name} parameter as its
-      ${/glossary/scheduler-home:/term} exists those processor affinity set
-      requires the processor specified by the
-      ${../if/remove-processor:/params[1]/name} parameter.
+      ${/glossary/scheduler-home:/term} exists those processor affinity set requires
+      the processor specified by the ${../if/remove-processor:/params[1]/name}
+      parameter.
   test-epilogue: null
   test-prologue: null
 - name: UsedBy
@@ -201,18 +197,16 @@ pre-conditions:
       ctx->task = false;
       ctx->helping = false;
     text: |
-      While the processor specified by the
-      ${../if/remove-processor:/params[1]/name} parameter is used by an idle
-      task.
+      While the processor specified by the ${../if/remove-processor:/params[1]/name}
+      parameter is used by an idle task.
   - name: Task
     test-code: |
       ctx->idle = false;
       ctx->task = true;
       ctx->helping = false;
     text: |
-      While the processor specified by the
-      ${../if/remove-processor:/params[1]/name} parameter is used by a task
-      task which uses the scheduler specified by the
+      While the processor specified by the ${../if/remove-processor:/params[1]/name}
+      parameter is used by a task task which uses the scheduler specified by the
       ${../if/remove-processor:/params[0]/name} parameter as its
       ${/glossary/scheduler-home:/term}.
   - name: TaskIdle
@@ -221,11 +215,10 @@ pre-conditions:
       ctx->task = true;
       ctx->helping = false;
     text: |
-      While the processor specified by the
-      ${../if/remove-processor:/params[1]/name} parameter is used by an idle
-      task on behalf of a task task which uses the scheduler specified by the
-      ${../if/remove-processor:/params[0]/name} parameter as its
-      ${/glossary/scheduler-home:/term}.
+      While the processor specified by the ${../if/remove-processor:/params[1]/name}
+      parameter is used by an idle task on behalf of a task task which uses the
+      scheduler specified by the ${../if/remove-processor:/params[0]/name} parameter
+      as its ${/glossary/scheduler-home:/term}.
   - name: Helping
     test-code: |
       if ( !ctx->last && rtems_scheduler_get_processor_maximum() < 3 ) {
@@ -236,9 +229,8 @@ pre-conditions:
         ctx->helping = true;
       }
     text: |
-      While the processor specified by the
-      ${../if/remove-processor:/params[1]/name} parameter is used by a task
-      task which uses the scheduler specified by the
+      While the processor specified by the ${../if/remove-processor:/params[1]/name}
+      parameter is used by a task task which uses the scheduler specified by the
       ${../if/remove-processor:/params[0]/name} parameter as a
       ${/glossary/scheduler-helping:/term}.
   test-epilogue: null
@@ -246,16 +238,16 @@ pre-conditions:
 rationale: null
 requirement-type: functional
 skip-reasons:
-  OnlyOneCPU: |
-    Where the system is build with SMP support disabled, the system has exactly
-    one processor and there is no processor available to remove from a
-    scheduler.  In addition, the scheduler helping protocol is not available.
-  NoHomeNoTaskUser: |
-    The processor can only be used by a task if a task uses the scheduler as
-    its home scheduler.
   LastIsRequired: |
-    The last processor is required by a task which uses the scheduler as its
+    The last processor is required by a task which uses the scheduler as its home
+    scheduler.
+  NoHomeNoTaskUser: |
+    The processor can only be used by a task if a task uses the scheduler as its
     home scheduler.
+  OnlyOneCPU: |
+    Where the system is build with SMP support disabled, the system has exactly one
+    processor and there is no processor available to remove from a scheduler. In
+    addition, the scheduler helping protocol is not available.
 test-action: |
   if (
     ctx->id == INVALID_ID ||
@@ -421,8 +413,8 @@ test-context:
   member: |
     bool last
 - brief: |
-    If this member is true, then at least one non-idle task shall use the
-    scheduler as its home scheduler.
+    If this member is true, then at least one non-idle task shall use the scheduler
+    as its home scheduler.
   description: null
   member: |
     bool home
@@ -433,20 +425,20 @@ test-context:
   member: |
     bool required_by_affinity
 - brief: |
-    If this member is true, then the processor to remove shall be used by an
-    idle task.
+    If this member is true, then the processor to remove shall be used by an idle
+    task.
   description: null
   member: |
     bool idle
 - brief: |
-    If this member is true, then the processor to remove shall be used by a
-    task or on behalf of a task which uses the scheduler as its home scheduler.
+    If this member is true, then the processor to remove shall be used by a task or
+    on behalf of a task which uses the scheduler as its home scheduler.
   description: null
   member: |
     bool task
 - brief: |
-    If this member is true, then the processor to remove shall be used by a
-    task which uses the scheduler as a helping scheduler.
+    If this member is true, then the processor to remove shall be used by a task
+    which uses the scheduler as a helping scheduler.
   description: null
   member: |
     bool helping
@@ -456,30 +448,25 @@ test-context:
   member: |
     T_scheduler_log_4 scheduler_log
 - brief: |
-    This member contains the return value of the
-    ${../if/remove-processor:/name} call.
+    This member contains the return value of the ${../if/remove-processor:/name}
+    call.
   description: null
   member: |
     rtems_status_code status
 - brief: |
-    This member specifies the ${../if/remove-processor:/params[0]/name}
-    parameter value.
+    This member specifies the ${../if/remove-processor:/params[0]/name} parameter
+    value.
   description: null
   member: |
     rtems_id id
 - brief: |
-    This member specifies the ${../if/remove-processor:/params[1]/name}
-    parameter value.
+    This member specifies the ${../if/remove-processor:/params[1]/name} parameter
+    value.
   description: null
   member: |
     uint32_t cpu_index
 test-context-support: |
-  typedef enum {
-    WORKER_A,
-    WORKER_B,
-    WORKER_C,
-    WORKER_COUNT
-  } WorkerIndex;
+  typedef enum { WORKER_A, WORKER_B, WORKER_C, WORKER_COUNT } WorkerIndex;
 test-description: null
 test-header: null
 test-includes:
@@ -495,61 +482,61 @@ test-prepare: |
 test-setup:
   brief: null
   code: |
-    #if defined(RTEMS_SMP)
-    rtems_status_code   sc;
-    rtems_task_priority priority;
+    #if defined( RTEMS_SMP )
+      rtems_status_code   sc;
+      rtems_task_priority priority;
 
-    ctx->runner_id = rtems_task_self();
-    ctx->mutex_id = CreateMutex();
+      ctx->runner_id = rtems_task_self();
+      ctx->mutex_id = CreateMutex();
 
-    sc = rtems_semaphore_create(
-      rtems_build_name( 'S', 'T', 'K', 'Y' ),
-      1,
-      RTEMS_BINARY_SEMAPHORE | RTEMS_PRIORITY |
-        RTEMS_MULTIPROCESSOR_RESOURCE_SHARING,
-      PRIO_NORMAL,
-      &ctx->sticky_id
-    );
-    T_rsc_success( sc );
+      sc = rtems_semaphore_create(
+        rtems_build_name( 'S', 'T', 'K', 'Y' ),
+        1,
+        RTEMS_BINARY_SEMAPHORE | RTEMS_PRIORITY |
+          RTEMS_MULTIPROCESSOR_RESOURCE_SHARING,
+        PRIO_NORMAL,
+        &ctx->sticky_id
+      );
+      T_rsc_success( sc );
 
-    sc = rtems_semaphore_set_priority(
-      ctx->sticky_id,
-      SCHEDULER_B_ID,
-      PRIO_NORMAL,
-      &priority
-    );
-    T_rsc_success( sc );
-
-    if ( rtems_scheduler_get_processor_maximum() >= 3 ) {
       sc = rtems_semaphore_set_priority(
         ctx->sticky_id,
-        SCHEDULER_C_ID,
-        PRIO_LOW,
+        SCHEDULER_B_ID,
+        PRIO_NORMAL,
         &priority
       );
       T_rsc_success( sc );
 
-      ctx->worker_id[ WORKER_C ] = CreateTask( "WRKC", PRIO_NORMAL );
-      SetScheduler( ctx->worker_id[ WORKER_C ], SCHEDULER_C_ID, PRIO_NORMAL );
-      StartTask( ctx->worker_id[ WORKER_C ], WorkerC, ctx );
+      if ( rtems_scheduler_get_processor_maximum() >= 3 ) {
+        sc = rtems_semaphore_set_priority(
+          ctx->sticky_id,
+          SCHEDULER_C_ID,
+          PRIO_LOW,
+          &priority
+        );
+        T_rsc_success( sc );
 
-      if ( rtems_scheduler_get_processor_maximum() >= 4 ) {
-        RemoveProcessor( SCHEDULER_C_ID, 3 );
+        ctx->worker_id[ WORKER_C ] = CreateTask( "WRKC", PRIO_NORMAL );
+        SetScheduler( ctx->worker_id[ WORKER_C ], SCHEDULER_C_ID, PRIO_NORMAL );
+        StartTask( ctx->worker_id[ WORKER_C ], WorkerC, ctx );
+
+        if ( rtems_scheduler_get_processor_maximum() >= 4 ) {
+          RemoveProcessor( SCHEDULER_C_ID, 3 );
+        }
       }
-    }
 
-    SetSelfPriority( PRIO_NORMAL );
-    SetSelfAffinityOne( 0 );
+      SetSelfPriority( PRIO_NORMAL );
+      SetSelfAffinityOne( 0 );
 
-    ctx->worker_id[ WORKER_A ] = CreateTask( "WRKA", PRIO_HIGH );
-    StartTask( ctx->worker_id[ WORKER_A ], WorkerA, ctx );
+      ctx->worker_id[ WORKER_A ] = CreateTask( "WRKA", PRIO_HIGH );
+      StartTask( ctx->worker_id[ WORKER_A ], WorkerA, ctx );
 
-    ctx->worker_id[ WORKER_B ] = CreateTask( "WRKB", PRIO_HIGH );
-    StartTask( ctx->worker_id[ WORKER_B ], WorkerB, ctx );
+      ctx->worker_id[ WORKER_B ] = CreateTask( "WRKB", PRIO_HIGH );
+      StartTask( ctx->worker_id[ WORKER_B ], WorkerB, ctx );
 
-    WrapThreadQueueInitialize( &ctx->wrap_tq_ctx, RequestISR, ctx );
+      WrapThreadQueueInitialize( &ctx->wrap_tq_ctx, RequestISR, ctx );
     #else
-    (void) ctx;
+      (void) ctx;
     #endif
   description: null
 test-stop: null
@@ -573,7 +560,7 @@ test-support: |
     }
   }
 
-  #if defined(RTEMS_SMP)
+  #if defined( RTEMS_SMP )
 
   #define EVENT_SYNC_RUNNER RTEMS_EVENT_0
 
@@ -701,7 +688,7 @@ test-support: |
     /* Clean up all used resources */
     SetSelfPriority( PRIO_NORMAL );
     SendEvents( ctx->worker_id[ WORKER_A ], EVENT_RELEASE );
-    T_busy(100000);
+    T_busy( 100000 );
   }
 
   static void Worker( rtems_task_argument arg, WorkerIndex worker )
@@ -756,7 +743,7 @@ test-support: |
         sc = rtems_task_restart(
           ctx->worker_id[ WORKER_B ],
           (rtems_task_argument) ctx
-          );
+        );
         T_rsc_success( sc );
 
         T_eq_u32( rtems_scheduler_get_processor(), 0 );
@@ -764,7 +751,11 @@ test-support: |
         if ( !ctx->last ) {
           RemoveProcessor( SCHEDULER_B_ID, 2 );
           AddProcessor( SCHEDULER_C_ID, 2 );
-          SetScheduler( ctx->worker_id[ WORKER_C ], SCHEDULER_C_ID, PRIO_NORMAL );
+          SetScheduler(
+            ctx->worker_id[ WORKER_C ],
+            SCHEDULER_C_ID,
+            PRIO_NORMAL
+          );
         }
       }
 
@@ -799,25 +790,26 @@ test-target: testsuites/validation/tc-scheduler-remove-processor.c
 test-teardown:
   brief: null
   code: |
-    #if defined(RTEMS_SMP)
-    DeleteTask( ctx->worker_id[ WORKER_A ] );
-    DeleteTask( ctx->worker_id[ WORKER_B ] );
-    DeleteTask( ctx->worker_id[ WORKER_C ] );
-    DeleteMutex( ctx->mutex_id );
-    DeleteMutex( ctx->sticky_id );
-    WrapThreadQueueDestroy( &ctx->wrap_tq_ctx );
+    #if defined( RTEMS_SMP )
+      DeleteTask( ctx->worker_id[ WORKER_A ] );
+      DeleteTask( ctx->worker_id[ WORKER_B ] );
+      DeleteTask( ctx->worker_id[ WORKER_C ] );
+      DeleteMutex( ctx->mutex_id );
+      DeleteMutex( ctx->sticky_id );
+      WrapThreadQueueDestroy( &ctx->wrap_tq_ctx );
 
-    if ( rtems_scheduler_get_processor_maximum() >= 4 ) {
-      AddProcessor( SCHEDULER_C_ID, 3 );
-    }
+      if ( rtems_scheduler_get_processor_maximum() >= 4 ) {
+        AddProcessor( SCHEDULER_C_ID, 3 );
+      }
 
-    RestoreRunnerPriority();
-    SetSelfAffinityAll();
+      RestoreRunnerPriority();
+      SetSelfAffinityAll();
     #else
-    (void) ctx;
+      (void) ctx;
     #endif
   description: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

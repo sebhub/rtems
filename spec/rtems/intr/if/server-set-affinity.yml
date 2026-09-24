@@ -44,20 +44,19 @@ notes: |
   via ${server-suspend:/name}.
 params:
 - description: |
-    is the interrupt server index.  The constant ${server-default:/name} may be
-    used to specify the default interrupt server.
+    is the interrupt server index. The constant ${server-default:/name} may be used
+    to specify the default interrupt server.
   dir: null
   name: server_index
 - description: |
-    is the size of the processor set referenced by ${.:/params[2]/name} in
-    bytes.
+    is the size of the processor set referenced by ${.:/params[2]/name} in bytes.
   dir: null
   name: affinity_size
 - description: |
-    is the pointer to a ${/c/if/cpu_set_t:/name} object.  The processor set
-    defines the new processor affinity set of the interrupt server.  A set bit
-    in the processor set means that the corresponding processor shall be in the
-    processor affinity set of the task, otherwise the bit shall be cleared.
+    is the pointer to a ${/c/if/cpu_set_t:/name} object. The processor set defines
+    the new processor affinity set of the interrupt server. A set bit in the
+    processor set means that the corresponding processor shall be in the processor
+    affinity set of the task, otherwise the bit shall be cleared.
   dir: null
   name: affinity
 - description: |
@@ -67,9 +66,8 @@ params:
 return:
   return: |
     The directive uses ${../../scheduler/if/ident-by-processor-set:/name},
-    ${../../task/if/set-scheduler:/name}, and
-    ${../../task/if/set-affinity:/name}.  If one of these directive fails, then
-    its error status will be returned.
+    ${../../task/if/set-scheduler:/name}, and ${../../task/if/set-affinity:/name}.
+    If one of these directive fails, then its error status will be returned.
   return-values:
   - description: |
       The requested operation was successful.

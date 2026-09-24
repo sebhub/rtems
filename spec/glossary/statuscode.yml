@@ -8,8 +8,7 @@ links:
   uid: group
 term: status code
 text: |
-  A status code indicates the completion status of an operation.  For
-  example most RTEMS directives return a status code through the
-  ${returnvalue:/term} to indicate a successful operation or error
-  conditions.
+  A status code indicates the completion status of an operation. For example most
+  RTEMS directives return a status code through the ${returnvalue:/term} to
+  indicate a successful operation or error conditions.
 type: glossary

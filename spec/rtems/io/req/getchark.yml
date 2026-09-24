@@ -13,8 +13,8 @@ post-conditions:
     test-code: |
       T_eq_int( ctx->result, 123 );
     text: |
-      The return value of ${../if/getchark:/name} shall be the return value of
-      the function referenced by ${../if/bsp-poll-char:/name}.
+      The return value of ${../if/getchark:/name} shall be the return value of the
+      function referenced by ${../if/bsp-poll-char:/name}.
   - name: MinusOne
     test-code: |
       T_eq_int( ctx->result, -1 );
@@ -29,8 +29,8 @@ post-conditions:
     test-code: |
       T_eq_u32( ctx->input_count, 1 );
     text: |
-      The function referenced by ${../if/bsp-poll-char:/name} shall be called
-      exactly once to get the return value for ${../if/getchark:/name}.
+      The function referenced by ${../if/bsp-poll-char:/name} shall be called exactly
+      once to get the return value for ${../if/getchark:/name}.
   test-epilogue: null
   test-prologue: null
 pre-conditions:
@@ -100,7 +100,8 @@ test-support: |
   }
 test-target: testsuites/validation/tc-io-getchark.c
 test-teardown: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

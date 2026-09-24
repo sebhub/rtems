@@ -11,7 +11,7 @@ non-functional-type: quality
 rationale: null
 requirement-type: non-functional
 text: |
-  The system shall provide a benchmark program to show the static memory usage
-  of a basic application configuration with calls to ${../if/create:/name} and
+  The system shall provide a benchmark program to show the static memory usage of
+  a basic application configuration with calls to ${../if/create:/name} and
   ${../if/delete:/name}.
 type: requirement

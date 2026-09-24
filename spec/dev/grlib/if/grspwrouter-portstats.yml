@@ -4,16 +4,6 @@ brief: |
   map.
 copyrights:
 - Copyright (C) 2023 embedded brains GmbH & Co. KG
-description: null
-enabled-by: true
-identifier: RTEMSDeviceGRSPWRouterPortStats
-index-entries: []
-interface-type: register-block
-links:
-- role: interface-ingroup
-  uid: grspwrouter
-- role: interface-placement
-  uid: grspwrouter-header
 definition:
 - default:
     count: 1
@@ -35,22 +25,38 @@ definition:
     name: IPKTCNT
   offset: 0xc
   variants: []
-register-prefix: grspwrouter
+description: null
+enabled-by: true
+identifier: RTEMSDeviceGRSPWRouterPortStats
+index-entries: []
+interface-type: register-block
+links:
+- role: interface-ingroup
+  uid: grspwrouter
+- role: interface-placement
+  uid: grspwrouter-header
+name: grspwrouter_portstats
+notes: null
 register-block-group: SpaceWire Router Port Statistics
 register-block-size: 16
+register-prefix: grspwrouter
 registers:
 - bits:
   - default:
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'OR'
+      name: OR
+      properties:
+      - r
+      - w1c
       start: 31
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'CC'
+      name: CC
+      properties:
+      - r
+      - w
       start: 0
       width: 31
     variants: []
@@ -61,16 +67,20 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'OR'
+      name: OR
+      properties:
+      - r
+      - w1c
       start: 31
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'CC'
+      name: CC
+      properties:
+      - r
+      - w
       start: 0
       width: 31
     variants: []
@@ -81,16 +91,20 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'OR'
+      name: OR
+      properties:
+      - r
+      - w1c
       start: 31
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'PC'
+      name: PC
+      properties:
+      - r
+      - w
       start: 0
       width: 31
     variants: []
@@ -101,16 +115,20 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'OR'
+      name: OR
+      properties:
+      - r
+      - w1c
       start: 31
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'PC'
+      name: PC
+      properties:
+      - r
+      - w
       start: 0
       width: 31
     variants: []
@@ -119,6 +137,4 @@ registers:
   description: null
   name: IPKTCNT
   width: 32
-name: grspwrouter_portstats
-notes: null
 type: interface

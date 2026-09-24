@@ -15,15 +15,15 @@ post-conditions:
       T_eq_int( ctx->output[ 1 ], (unsigned char) '\n' );
       T_eq_sz( ctx->output_count, 2 );
     text: |
-      The function referenced by ${../if/bsp-output-char:/name} shall be called
-      with a `CR` character followed by a call with a `NL` character.
+      The function referenced by ${../if/bsp-output-char:/name} shall be called with
+      a `CR` character followed by a call with a `NL` character.
   - name: Other
     test-code: |
       T_eq_int( ctx->output[ 0 ], 0xff );
       T_eq_sz( ctx->output_count, 1 );
     text: |
-      The function referenced by ${../if/bsp-output-char:/name} shall be called
-      with the character specified by ${../if/put-char:/params[0]/name}.
+      The function referenced by ${../if/bsp-output-char:/name} shall be called with
+      the character specified by ${../if/put-char:/params[0]/name}.
   test-epilogue: null
   test-prologue: null
 pre-conditions:
@@ -33,14 +33,12 @@ pre-conditions:
     test-code: |
       ctx->character = '\n';
     text: |
-      While the ${../if/put-char:/params[0]/name} parameter is
-      equal to `NL`.
+      While the ${../if/put-char:/params[0]/name} parameter is equal to `NL`.
   - name: Other
     test-code: |
       ctx->character = 0xff;
     text: |
-      While the ${../if/put-char:/params[0]/name} parameter is
-      not equal to `NL`.
+      While the ${../if/put-char:/params[0]/name} parameter is not equal to `NL`.
   test-epilogue: null
   test-prologue: null
 rationale: null
@@ -70,8 +68,7 @@ test-context:
   member: |
     size_t output_count
 - brief: |
-    This member specifies if the ${../if/put-char:/params[0]/name}
-    parameter value.
+    This member specifies if the ${../if/put-char:/params[0]/name} parameter value.
   description: null
   member: |
     int character
@@ -113,7 +110,8 @@ test-support: |
   }
 test-target: testsuites/validation/tc-io-put-char.c
 test-teardown: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

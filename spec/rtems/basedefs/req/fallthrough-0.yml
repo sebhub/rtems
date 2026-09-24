@@ -10,6 +10,6 @@ rationale: null
 requirement-type: functional
 text: |
   While the ${../if/fallthrough:/name} macro is used prior to a case statement,
-  the ${../if/fallthrough:/name} macro shall prevent the compiler from
-  emitting a warning that the statement may fall through.
+  the ${../if/fallthrough:/name} macro shall prevent the compiler from emitting a
+  warning that the statement may fall through.
 type: requirement

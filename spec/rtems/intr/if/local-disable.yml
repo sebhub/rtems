@@ -75,8 +75,8 @@ notes: |
   ```
 params:
 - description: |
-    is a variable of type ${level:/name} which will be used to save the
-    previous interrupt level.
+    is a variable of type ${level:/name} which will be used to save the previous
+    interrupt level.
   dir: out
   name: _isr_cookie
 return: null

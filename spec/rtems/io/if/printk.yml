@@ -50,7 +50,6 @@ params:
   name: '...'
 return:
   return: |
-    Returns the number of characters output to the kernel character output
-    device.
+    Returns the number of characters output to the kernel character output device.
   return-values: []
 type: interface

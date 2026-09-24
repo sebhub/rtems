@@ -5,8 +5,8 @@ enabled-by: true
 links: []
 test-actions:
 - action-brief: |
-    Create threads which execute an thread idle body.  Check that the thread
-    idle body does not return.  If it would return, then an
+    Create threads which execute an thread idle body. Check that the thread idle
+    body does not return. If it would return, then an
     ${/score/interr/if/thread-exitted:/name} fatal error would occur.
   action-code: |
     SetSelfPriority( PRIO_NORMAL );
@@ -19,11 +19,10 @@ test-actions:
     - role: validation
       uid: ../req/idle-body-no-return
   - brief: |
-      Where the BSP provides an idle thread body, check that it does not
-      return.
+      Where the BSP provides an idle thread body, check that it does not return.
     code: |
-      #if defined(BSP_IDLE_TASK_BODY)
-      CheckIdleBody( ctx, BSPIdleTaskBody );
+      #if defined( BSP_IDLE_TASK_BODY )
+        CheckIdleBody( ctx, BSPIdleTaskBody );
       #endif
     links:
     - role: validation

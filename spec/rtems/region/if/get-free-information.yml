@@ -15,8 +15,8 @@ definition:
   variants: []
 description: |
   This directive is used to obtain information about the free memory in the
-  region specified by ${.:/params[0/name}. This is a snapshot at the time of
-  the call. The information will be returned in the structure pointed to by
+  region specified by ${.:/params[0/name}. This is a snapshot at the time of the
+  call. The information will be returned in the structure pointed to by
   ${.:/params[1]/name}.
 enabled-by: true
 index-entries:
@@ -53,9 +53,9 @@ params:
   dir: null
   name: id
 - description: |
-    is the pointer to a ${/score/heap/if/information-block:/name} object.  When
-    the directive call is successful, the free information of the region will
-    be stored in this object.
+    is the pointer to a ${/score/heap/if/information-block:/name} object. When the
+    directive call is successful, the free information of the region will be stored
+    in this object.
   dir: out
   name: the_info
 return:

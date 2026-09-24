@@ -5,15 +5,15 @@ enabled-by: true
 links: []
 test-actions:
 - action-brief: |
-    Create five dynamic extensions.  Call the system termination procedure.
-    Delete three dynamic extension during the fatal extension invocation.
-    Delete the two remaining dynamic extensions.
+    Create five dynamic extensions. Call the system termination procedure. Delete
+    three dynamic extension during the fatal extension invocation. Delete the two
+    remaining dynamic extensions.
   action-code: |
     rtems_status_code      sc;
     rtems_extensions_table table;
     bool                   shutdown_ok;
 
-    #if defined(RTEMS_SMP)
+    #if defined( RTEMS_SMP )
     shutdown_ok =
       ( _Per_CPU_Get_state( _Per_CPU_Get_snapshot() ) == PER_CPU_STATE_UP );
     #else
@@ -71,15 +71,16 @@ test-actions:
     test_case_active = false;
   checks:
   - brief: |
-      Where the system was built with SMP support enabled, check that a
-      shutdown request was issued.
+      Where the system was built with SMP support enabled, check that a shutdown
+      request was issued.
     code: |
-      #if defined(RTEMS_SMP)
-      shutdown_ok = ( shutdown_ok && _ISR_Get_level() != 0 &&
-        _Per_CPU_Get_state( _Per_CPU_Get() ) == PER_CPU_STATE_SHUTDOWN );
-      _ISR_Set_level( 0 );
+      #if defined( RTEMS_SMP )
+        shutdown_ok =
+          ( shutdown_ok && _ISR_Get_level() != 0 &&
+            _Per_CPU_Get_state( _Per_CPU_Get() ) == PER_CPU_STATE_SHUTDOWN );
+        _ISR_Set_level( 0 );
       #endif
-      T_step_true( ${.:/step}, shutdown_ok );
+        T_step_true( ${.:/step}, shutdown_ok );
     links:
     - role: validation
       uid: ../req/terminate-shutdown
@@ -129,8 +130,8 @@ test-actions:
     - role: validation
       uid: ../req/terminate-userext
   - brief: |
-      Check that the fatal extensions were invoked with the expected always set
-      to false argument.
+      Check that the fatal extensions were invoked with the expected always set to
+      false argument.
     code: |
       T_step_false( ${.:/step}, info[ 0 ].always_set_to_false );
       T_step_false( ${.:/step}, info[ 1 ].always_set_to_false );
@@ -166,8 +167,7 @@ test-actions:
     - role: validation
       uid: /rtems/userext/req/fatal-order
   - brief: |
-      Check that the fatal extension in the deleted extension set was not
-      invoked.
+      Check that the fatal extension in the deleted extension set was not invoked.
     code: |
       T_step_eq_int( ${.:/step}, info[ 3 ].source, 0 );
       T_step_false( ${.:/step}, info[ 3 ].always_set_to_false );

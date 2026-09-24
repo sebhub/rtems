@@ -11,13 +11,10 @@ test-actions:
     rtems_extensions_table bsp = BSP_INITIAL_EXTENSION;
   checks:
   - brief: |
-      Check the default value ${/acfg/if/idle-task-body:/name} where the
-      optional BSP-provided default value is disabled.
+      Check the default value ${/acfg/if/idle-task-body:/name} where the optional
+      BSP-provided default value is disabled.
     code: |
-      T_eq_ptr(
-        rtems_configuration_get_idle_task(),
-        _CPU_Thread_Idle_body
-      );
+      T_eq_ptr( rtems_configuration_get_idle_task(), _CPU_Thread_Idle_body );
     links:
     - role: validation
       uid: ../if/idle-task-body
@@ -53,10 +50,7 @@ test-actions:
       Check the BSP-provided initial extension is not registered.
     code: |
       T_eq_sz( _User_extensions_Initial_count, 1 );
-      T_ne_ptr(
-        _User_extensions_Initial_extensions[ 0 ].fatal,
-        bsp.fatal
-      );
+      T_ne_ptr( _User_extensions_Initial_extensions[ 0 ].fatal, bsp.fatal );
     links:
     - role: validation
       uid: ../req/bsp-initial-extension

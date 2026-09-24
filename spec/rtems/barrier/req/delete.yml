@@ -66,14 +66,14 @@ pre-conditions:
     test-code: |
       ctx->id = 0;
     text: |
-      While the ${../if/delete:/params[0]/name} parameter is not associated
-      with a barrier.
+      While the ${../if/delete:/params[0]/name} parameter is not associated with a
+      barrier.
   - name: Barrier
     test-code: |
       ctx->id = ctx->barrier_id;
     text: |
-      While the ${../if/delete:/params[0]/name} parameter is associated with
-      a barrier.
+      While the ${../if/delete:/params[0]/name} parameter is associated with a
+      barrier.
   test-epilogue: null
   test-prologue: null
 rationale: null
@@ -166,10 +166,7 @@ test-support: |
       );
       T_rsc_success( sc );
 
-      sc = rtems_barrier_wait(
-        ctx->barrier_id,
-        RTEMS_NO_TIMEOUT
-      );
+      sc = rtems_barrier_wait( ctx->barrier_id, RTEMS_NO_TIMEOUT );
       T_rsc( sc, RTEMS_OBJECT_WAS_DELETED );
 
       ++ctx->wait_done;
@@ -185,7 +182,8 @@ test-teardown:
     DeleteTask( ctx->worker_id );
     RestoreRunnerPriority();
   description: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

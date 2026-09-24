@@ -23,8 +23,8 @@ test-actions:
   - role: validation
     uid: ../req/get-processor-non-smp
 - action-brief: |
-    Assert that ${../if/get-processor-maximum:/name} is a constant expression
-    which evaluates to zero.
+    Assert that ${../if/get-processor-maximum:/name} is a constant expression which
+    evaluates to zero.
   action-code: |
     RTEMS_STATIC_ASSERT(
       rtems_scheduler_get_processor_maximum() == 1,

@@ -8,7 +8,6 @@ links:
   uid: group
 term: timeslicing
 text: |
-  A task scheduling discipline in which tasks of equal priority are
-  executed for a specific period of time before being preempted by another
-  task.
+  A task scheduling discipline in which tasks of equal priority are executed for
+  a specific period of time before being preempted by another task.
 type: glossary

@@ -11,9 +11,9 @@ links:
 rationale: null
 requirement-type: functional
 text: |
-  When the ${../if/scheduler-assign-processor-mandatory:/name} define is used
-  as the second parameter in the ${../if/scheduler-assign:/name} macro in an
-  entry of a ${../if/scheduler-assignments:/name} application configuration
-  option value, the presence of the processor associated with the entry in the
+  When the ${../if/scheduler-assign-processor-mandatory:/name} define is used as
+  the second parameter in the ${../if/scheduler-assign:/name} macro in an entry
+  of a ${../if/scheduler-assignments:/name} application configuration option
+  value, the presence of the processor associated with the entry in the
   ${/glossary/target:/term} shall be mandatory.
 type: requirement

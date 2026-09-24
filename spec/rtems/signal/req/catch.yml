@@ -32,9 +32,8 @@ post-conditions:
       Where the system needs inter-processor interrupts, the return status of
       ${../if/catch:/name} shall be ${../../status/if/not-implemented:/name}.
 
-      Where the system does not need inter-processor interrupts, the return
-      status of ${../if/catch:/name} shall be
-      ${../../status/if/successful:/name}.
+      Where the system does not need inter-processor interrupts, the return status of
+      ${../if/catch:/name} shall be ${../../status/if/successful:/name}.
   - name: NotImplNoPreempt
     test-code: |
       if ( rtems_configuration_get_maximum_processors() > 1 ) {
@@ -43,12 +42,11 @@ post-conditions:
         T_rsc_success( ctx->catch_status );
       }
     text: |
-      Where the scheduler does not support the no-preempt mode, the return
-      status of ${../if/catch:/name} shall be
-      ${../../status/if/not-implemented:/name}.
+      Where the scheduler does not support the no-preempt mode, the return status of
+      ${../if/catch:/name} shall be ${../../status/if/not-implemented:/name}.
 
-      Where the scheduler does support the no-preempt mode, the return status
-      of ${../if/catch:/name} shall be ${../../status/if/successful:/name}.
+      Where the scheduler does support the no-preempt mode, the return status of
+      ${../if/catch:/name} shall be ${../../status/if/successful:/name}.
   test-epilogue: null
   test-prologue: null
 - name: ASRInfo
@@ -57,8 +55,8 @@ post-conditions:
     test-code: |
       CheckNoASRChange( ctx );
     text: |
-      The ASR information of the caller of ${../if/catch:/name} shall not be
-      changed by the ${../if/catch:/name} call.
+      The ASR information of the caller of ${../if/catch:/name} shall not be changed
+      by the ${../if/catch:/name} call.
   - name: NopIntLvlSMP
     test-code: |
       if ( rtems_configuration_get_maximum_processors() > 1 ) {
@@ -67,14 +65,14 @@ post-conditions:
         CheckNewASRSettings( ctx );
       }
     text: |
-      Where the system needs inter-processor interrupts, the ASR information of
-      the caller of ${../if/catch:/name} shall not be changed by the
-      ${../if/catch:/name} call.
+      Where the system needs inter-processor interrupts, the ASR information of the
+      caller of ${../if/catch:/name} shall not be changed by the ${../if/catch:/name}
+      call.
 
-      Where the system does not need inter-processor interrupts, the ASR
-      processing for the caller of ${../if/catch:/name} shall be done using the
-      handler specified by ${../if/catch:/params[0]/name} in the mode specified
-      by ${../if/catch:/params[1]/name}.
+      Where the system does not need inter-processor interrupts, the ASR processing
+      for the caller of ${../if/catch:/name} shall be done using the handler
+      specified by ${../if/catch:/params[0]/name} in the mode specified by
+      ${../if/catch:/params[1]/name}.
   - name: NopNoPreempt
     test-code: |
       if ( rtems_configuration_get_maximum_processors() > 1 ) {
@@ -83,21 +81,21 @@ post-conditions:
         CheckNewASRSettings( ctx );
       }
     text: |
-      Where the scheduler does not support the no-preempt mode, the ASR
-      information of the caller of ${../if/catch:/name} shall not be changed by
-      the ${../if/catch:/name} call.
+      Where the scheduler does not support the no-preempt mode, the ASR information
+      of the caller of ${../if/catch:/name} shall not be changed by the
+      ${../if/catch:/name} call.
 
-      Where the scheduler does support the no-preempt mode, the ASR processing
-      for the caller of ${../if/catch:/name} shall be done using the handler
-      specified by ${../if/catch:/params[0]/name} in the mode specified by
+      Where the scheduler does support the no-preempt mode, the ASR processing for
+      the caller of ${../if/catch:/name} shall be done using the handler specified by
+      ${../if/catch:/params[0]/name} in the mode specified by
       ${../if/catch:/params[1]/name}.
   - name: New
     test-code: |
       CheckNewASRSettings( ctx );
     text: |
-      The ASR processing for the caller of ${../if/catch:/name} shall be done
-      using the handler specified by ${../if/catch:/params[0]/name} in the mode
-      specified by ${../if/catch:/params[1]/name}.
+      The ASR processing for the caller of ${../if/catch:/name} shall be done using
+      the handler specified by ${../if/catch:/params[0]/name} in the mode specified
+      by ${../if/catch:/params[1]/name}.
   - name: Inactive
     test-code: |
       T_rsc( ctx->send_status, RTEMS_NOT_DEFINED );
@@ -105,8 +103,7 @@ post-conditions:
       T_eq_u32( ctx->handler_calls, 0 );
       T_eq_u32( ctx->handler_mode, 0xffffffff );
     text: |
-      The ASR processing for the caller of ${../if/catch:/name} shall be
-      deactivated.
+      The ASR processing for the caller of ${../if/catch:/name} shall be deactivated.
 
       The pending signals of the caller of ${../if/catch:/name} shall be cleared.
   test-epilogue: null
@@ -156,14 +153,14 @@ pre-conditions:
         ctx->normal_mode |= RTEMS_NO_PREEMPT;
       }
     text: |
-      While the ${../if/catch:/params[1]/name} parameter specifies that
-      preemption is enabled.
+      While the ${../if/catch:/params[1]/name} parameter specifies that preemption is
+      enabled.
   - name: 'No'
     test-code: |
       ctx->mode |= RTEMS_NO_PREEMPT;
     text: |
-      While the ${../if/catch:/params[1]/name} parameter specifies that
-      preemption is disabled.
+      While the ${../if/catch:/params[1]/name} parameter specifies that preemption is
+      disabled.
   test-epilogue: null
   test-prologue: null
 - name: Timeslice
@@ -172,14 +169,14 @@ pre-conditions:
     test-code: |
       ctx->mode |= RTEMS_TIMESLICE;
     text: |
-      While the ${../if/catch:/params[1]/name} parameter specifies that
-      timeslicing is enabled.
+      While the ${../if/catch:/params[1]/name} parameter specifies that timeslicing
+      is enabled.
   - name: 'No'
     test-code: |
       ctx->normal_mode |= RTEMS_TIMESLICE;
     text: |
-      While the ${../if/catch:/params[1]/name} parameter specifies that
-      timeslicing is disabled.
+      While the ${../if/catch:/params[1]/name} parameter specifies that timeslicing
+      is disabled.
   test-epilogue: null
   test-prologue: null
 - name: ASR
@@ -190,32 +187,32 @@ pre-conditions:
        * We cannot disable ASR processing at normal task level for this state.
        */
     text: |
-      While the ${../if/catch:/params[1]/name} parameter specifies that
-      ASR processing is enabled.
+      While the ${../if/catch:/params[1]/name} parameter specifies that ASR
+      processing is enabled.
   - name: 'No'
     test-code: |
       ctx->mode |= RTEMS_NO_ASR;
     text: |
-      While the ${../if/catch:/params[1]/name} parameter specifies that
-      ASR processing is disabled.
+      While the ${../if/catch:/params[1]/name} parameter specifies that ASR
+      processing is disabled.
   test-epilogue: null
   test-prologue: null
 - name: IntLvl
   states:
   - name: Zero
     test-code: |
-      #if CPU_ENABLE_ROBUST_THREAD_DISPATCH == FALSE && !defined(RTEMS_SMP)
-      ctx->normal_mode |= RTEMS_INTERRUPT_LEVEL( 1 );
+      #if CPU_ENABLE_ROBUST_THREAD_DISPATCH == FALSE && !defined( RTEMS_SMP )
+        ctx->normal_mode |= RTEMS_INTERRUPT_LEVEL( 1 );
       #endif
     text: |
-      While the ${../if/catch:/params[1]/name} parameter specifies an interrupt
-      level of zero.
+      While the ${../if/catch:/params[1]/name} parameter specifies an interrupt level
+      of zero.
   - name: Positive
     test-code: |
       ctx->mode |= RTEMS_INTERRUPT_LEVEL( 1 );
     text: |
-      While the ${../if/catch:/params[1]/name} parameter specifies an interrupt
-      level greater than or equal to one and less than or equal to
+      While the ${../if/catch:/params[1]/name} parameter specifies an interrupt level
+      greater than or equal to one and less than or equal to
       ${/score/cpu/if/modes-interrupt-mask:/name}.
   test-epilogue: null
   test-prologue: null
@@ -258,13 +255,13 @@ test-context:
   description: null
   member: |
     rtems_id worker_id
-- brief: null
-    If this member is non-zero, then rtems_signal_catch() is called with
+- brief: |
+    null If this member is non-zero, then rtems_signal_catch() is called with
     pending signals, otherwise it is called with no pending signals.
   description: null
   member: |
     uint32_t pending_signals
-- brief: 
+- brief: |
     This member provides a barrier to synchronize the runner and worker tasks.
   description: null
   member: |
@@ -305,14 +302,14 @@ test-context:
   member: |
     rtems_mode mode
 - brief: |
-    This member contains the return status of the rtems_signal_catch() call of
-    the action.
+    This member contains the return status of the rtems_signal_catch() call of the
+    action.
   description: null
   member: |
     rtems_status_code catch_status
 - brief: |
-    This member contains the return status of the rtems_signal_send() call of
-    the action.
+    This member contains the return status of the rtems_signal_send() call of the
+    action.
   description: null
   member: |
     rtems_status_code send_status
@@ -442,7 +439,8 @@ test-teardown:
     DeleteTask( ctx->worker_id );
     RestoreRunnerASR();
   description: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

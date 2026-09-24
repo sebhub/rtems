@@ -10,9 +10,9 @@ definition:
     enabled-by:
     - ${/compiler/if/stdc-version:/name} >= 199409L
 description: |
-  Zero-length arrays are valid in C99 as flexible array members.  C++11 does
-  not allow flexible array members.  Use the GNU extension which is also
-  supported by other compilers.
+  Zero-length arrays are valid in C99 as flexible array members. C++11 does not
+  allow flexible array members. Use the GNU extension which is also supported by
+  other compilers.
 enabled-by: true
 index-entries: []
 interface-type: define

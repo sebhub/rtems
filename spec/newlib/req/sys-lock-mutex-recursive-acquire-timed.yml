@@ -2,6 +2,7 @@ SPDX-License-Identifier: CC-BY-SA-4.0
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
 enabled-by: true
+functional-type: function
 links:
 - role: interface-function
   uid: ../if/sys-lock-mutex-recursive-acquire-timed
@@ -9,10 +10,9 @@ links:
   uid: /score/mtx/req/seize-wait
 - role: requirement-refinement
   uid: sys-lock
-functional-type: function
 rationale: null
 requirement-type: functional
 text: |
-  The ${../if/sys-lock-mutex-recursive-acquire-timed:/name} directive shall
-  seize the mutex as specified by ${/score/mtx/req/seize-wait:/spec}.
+  The ${../if/sys-lock-mutex-recursive-acquire-timed:/name} directive shall seize
+  the mutex as specified by ${/score/mtx/req/seize-wait:/spec}.
 type: requirement

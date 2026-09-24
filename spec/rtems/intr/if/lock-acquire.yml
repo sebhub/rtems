@@ -16,8 +16,8 @@ definition:
   variants: []
 description: |
   This directive acquires the ISR lock specified by ${.:/params[0]/name} using
-  the lock context provided by ${.:/params[1]/name}.  Maskable interrupts will
-  be disabled on the current processor.
+  the lock context provided by ${.:/params[1]/name}. Maskable interrupts will be
+  disabled on the current processor.
 enabled-by: true
 index-entries: []
 interface-type: macro
@@ -64,8 +64,8 @@ params:
   dir: inout
   name: _lock
 - description: |
-    is the ISR lock context.  This lock context shall be used to release the
-    lock by calling ${lock-release:/name}.
+    is the ISR lock context. This lock context shall be used to release the lock by
+    calling ${lock-release:/name}.
   dir: out
   name: _lock_context
 return: null

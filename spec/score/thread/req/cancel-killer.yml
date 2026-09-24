@@ -2,14 +2,14 @@ SPDX-License-Identifier: CC-BY-SA-4.0
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
 enabled-by: true
+functional-type: function
 links:
 - role: requirement-refinement
   uid: ../if/group
-functional-type: function
 rationale: null
 requirement-type: functional
 text: |
   While a terminating thread has exactly one joining thread, while the joining
-  thread can be cancelled, if the terminating thread cancels the joining
-  thread, then the terminating thread shall wait for threads to join.
+  thread can be cancelled, if the terminating thread cancels the joining thread,
+  then the terminating thread shall wait for threads to join.
 type: requirement

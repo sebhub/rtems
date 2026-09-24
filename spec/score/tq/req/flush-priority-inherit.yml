@@ -61,15 +61,12 @@ post-conditions:
       event = GetPriorityUpdate( ctx, &i );
       T_eq_ptr( event, &T_scheduler_event_null );
 
-      T_eq_u32(
-        GetPriority( ctx->tq_ctx->worker_id[ TQ_BLOCKER_A ] ),
-        PRIO_HIGH
-      );
+      T_eq_u32( GetPriority( ctx->tq_ctx->worker_id[ TQ_BLOCKER_A ] ), PRIO_HIGH );
     text: |
       The enqueued threads of the thread queue shall be extracted in
-      ${/glossary/priority:/term} order for each priority queue associated with
-      a scheduler.  The priority queues of the thread queue shall be accessed
-      in ${/glossary/fifo:/term} order.
+      ${/glossary/priority:/term} order for each priority queue associated with a
+      scheduler. The priority queues of the thread queue shall be accessed in
+      ${/glossary/fifo:/term} order.
   test-epilogue: null
   test-prologue: |
     size_t                   i;
@@ -82,15 +79,15 @@ post-conditions:
     test-code: |
       /* Checked by `Extract` post-condition state `Nop` */
     text: |
-      The ${/glossary/priority-current:/term} of the owner of the thread queue
-      shall not be updated by the thread queue flush operation.
+      The ${/glossary/priority-current:/term} of the owner of the thread queue shall
+      not be updated by the thread queue flush operation.
   - name: 'Yes'
     test-code: |
       /* Checked by `Extract` post-condition state `All` */
     text: |
-      The ${/glossary/priority-current:/term} of the owner of the thread queue
-      shall be updated by the thread queue flush operation to reflect the loss
-      of inherited priorities of the flushed threads.
+      The ${/glossary/priority-current:/term} of the owner of the thread queue shall
+      be updated by the thread queue flush operation to reflect the loss of inherited
+      priorities of the flushed threads.
   test-epilogue: null
   test-prologue: null
 pre-conditions:
@@ -100,14 +97,14 @@ pre-conditions:
     test-code: |
       ctx->minimum = true;
     text: |
-      While a minimum priority of the owner of the thread queue is inherited
-      from a thread enqueued on the thread queue.
+      While a minimum priority of the owner of the thread queue is inherited from a
+      thread enqueued on the thread queue.
   - name: NotMinimum
     test-code: |
       ctx->minimum = false;
     text: |
-      While no minimum priority of the owner of the thread queue is inherited
-      from a thread enqueued on the thread queue.
+      While no minimum priority of the owner of the thread queue is inherited from a
+      thread enqueued on the thread queue.
   test-epilogue: null
   test-prologue: null
 - name: Queue
@@ -213,7 +210,10 @@ test-support: |
     return TQGetNextUnblock( ctx->tq_ctx, index );
   }
 
-  static const T_scheduler_event *GetPriorityUpdate( Context *ctx, size_t *index )
+  static const T_scheduler_event *GetPriorityUpdate(
+    Context *ctx,
+    size_t  *index
+  )
   {
     return T_scheduler_next(
       &ctx->tq_ctx->scheduler_log.header,
@@ -246,10 +246,7 @@ test-support: |
 
     ctx = arg;
 
-    if (
-      when == T_SCHEDULER_BEFORE &&
-      event->operation == T_SCHEDULER_BLOCK
-    ) {
+    if ( when == T_SCHEDULER_BEFORE && event->operation == T_SCHEDULER_BLOCK ) {
       ctx->request.handler = Flush;
       ctx->request.arg = ctx;
       CallWithinISRSubmit( &ctx->request );
@@ -271,25 +268,25 @@ transition-map:
     Extract: Nop
     PriorityUpdate: 'No'
   pre-conditions:
+    Priority: N/A
     Queue:
     - Empty
-    Priority: N/A
 - enabled-by: true
   post-conditions:
     Extract: All
     PriorityUpdate: 'No'
   pre-conditions:
-    Queue:
-    - NonEmpty
     Priority:
     - NotMinimum
+    Queue:
+    - NonEmpty
 - enabled-by: true
   post-conditions:
     Extract: All
     PriorityUpdate: 'Yes'
   pre-conditions:
-    Queue:
-    - NonEmpty
     Priority:
     - Minimum
+    Queue:
+    - NonEmpty
 type: requirement

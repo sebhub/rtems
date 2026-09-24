@@ -54,19 +54,18 @@ post-conditions:
 
       T_eq_int( CPU_CMP( &ctx->cpuset_obj, &set ), 0 );
     text: |
-      The value of the object referenced by the
-      ${../if/get-affinity:/params[2]/name} parameter shall be set to the
-      processor affinity set of the task specified by the
-      ${../if/get-affinity:/params[0]/name} parameter at some point during the
+      The value of the object referenced by the ${../if/get-affinity:/params[2]/name}
+      parameter shall be set to the processor affinity set of the task specified by
+      the ${../if/get-affinity:/params[0]/name} parameter at some point during the
       call after the return of the ${../if/get-affinity:/name} call.
   - name: Nop
     test-code: |
       CPU_ZERO( &set );
       T_eq_int( CPU_CMP( &ctx->cpuset_obj, &set ), 0 );
     text: |
-      Objects referenced by the ${../if/get-affinity:/params[2]/name}
-      parameter in past calls to ${../if/get-affinity:/name} shall
-      not be accessed by the ${../if/get-affinity:/name} call.
+      Objects referenced by the ${../if/get-affinity:/params[2]/name} parameter in
+      past calls to ${../if/get-affinity:/name} shall not be accessed by the
+      ${../if/get-affinity:/name} call.
   test-epilogue: null
   test-prologue: |
     cpu_set_t set;
@@ -79,14 +78,14 @@ pre-conditions:
     test-code: |
       ctx->id = INVALID_ID;
     text: |
-      While the ${../if/get-affinity:/params[0]/name} parameter is not
-      associated with a task.
+      While the ${../if/get-affinity:/params[0]/name} parameter is not associated
+      with a task.
   - name: Task
     test-code: |
       ctx->id = RTEMS_SELF;
     text: |
-      While the ${../if/get-affinity:/params[0]/name} parameter is
-      associated with a task.
+      While the ${../if/get-affinity:/params[0]/name} parameter is associated with a
+      task.
   test-epilogue: null
   test-prologue: null
 - name: CPUSetSize
@@ -96,24 +95,23 @@ pre-conditions:
       ctx->cpusetsize = sizeof( ctx->cpuset_obj );
     text: |
       While the ${../if/get-affinity:/params[1]/name} parameter is an integral
-      multiple of the size of long, while the
-      ${../if/get-affinity:/params[1]/name} parameter specifies a processor set
-      which is large enough to contain the processor affinity set of the task.
+      multiple of the size of long, while the ${../if/get-affinity:/params[1]/name}
+      parameter specifies a processor set which is large enough to contain the
+      processor affinity set of the task.
   - name: TooSmall
     test-code: |
       ctx->cpusetsize = 0;
     text: |
       While the ${../if/get-affinity:/params[1]/name} parameter is an integral
-      multiple of the size of long, while the
-      ${../if/get-affinity:/params[1]/name} parameter specifies a processor set
-      which is not large enough to contain the processor affinity set of the
-      task.
+      multiple of the size of long, while the ${../if/get-affinity:/params[1]/name}
+      parameter specifies a processor set which is not large enough to contain the
+      processor affinity set of the task.
   - name: Askew
     test-code: |
       ctx->cpusetsize = SIZE_MAX;
     text: |
-      While the ${../if/get-affinity:/params[1]/name} parameter is not an
-      integral multiple of the size of long.
+      While the ${../if/get-affinity:/params[1]/name} parameter is not an integral
+      multiple of the size of long.
   test-epilogue: null
   test-prologue: null
 - name: CPUSet
@@ -122,8 +120,8 @@ pre-conditions:
     test-code: |
       ctx->cpuset = &ctx->cpuset_obj;
     text: |
-      While the ${../if/get-affinity:/params[2]/name} parameter references an
-      object of type ${/c/if/cpu_set_t:/name}.
+      While the ${../if/get-affinity:/params[2]/name} parameter references an object
+      of type ${/c/if/cpu_set_t:/name}.
   - name: 'Null'
     test-code: |
       ctx->cpuset = NULL;
@@ -151,26 +149,25 @@ test-context:
   member: |
     cpu_set_t cpuset_obj
 - brief: |
-    This member contains the return value of the ${../if/get-affinity:/name}
-    call.
+    This member contains the return value of the ${../if/get-affinity:/name} call.
   description: null
   member: |
     rtems_status_code status
 - brief: |
-    This member specifies if the ${../if/get-affinity:/params[0]/name}
-    parameter value.
+    This member specifies if the ${../if/get-affinity:/params[0]/name} parameter
+    value.
   description: null
   member: |
     rtems_id id
 - brief: |
-    This member specifies if the ${../if/get-affinity:/params[1]/name}
-    parameter value.
+    This member specifies if the ${../if/get-affinity:/params[1]/name} parameter
+    value.
   description: null
   member: |
     size_t cpusetsize
 - brief: |
-    This member specifies if the ${../if/get-affinity:/params[2]/name}
-    parameter value.
+    This member specifies if the ${../if/get-affinity:/params[2]/name} parameter
+    value.
   description: null
   member: |
     cpu_set_t *cpuset
@@ -188,7 +185,8 @@ test-stop: null
 test-support: null
 test-target: testsuites/validation/tc-task-get-affinity.c
 test-teardown: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

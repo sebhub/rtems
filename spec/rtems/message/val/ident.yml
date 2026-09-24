@@ -7,8 +7,8 @@ links:
   uid: ../req/ident
 test-actions:
 - action-brief: |
-    Run the generic object identification tests for Classic API message queue
-    class objects defined by ${../../req/ident:/spec}.
+    Run the generic object identification tests for Classic API message queue class
+    objects defined by ${../../req/ident:/spec}.
   action-code: |
     rtems_status_code sc;
     rtems_id          id_local_object;
@@ -29,7 +29,8 @@ test-actions:
     T_rsc_success( sc );
   checks: []
   links: []
-test-brief: Test the ${../if/ident:/name} directive.
+test-brief: |
+  Test the ${../if/ident:/name} directive.
 test-context: []
 test-context-support: null
 test-description: null

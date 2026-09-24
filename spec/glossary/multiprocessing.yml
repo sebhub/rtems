@@ -8,6 +8,6 @@ links:
   uid: group
 term: multiprocessing
 text: |
-  The simultaneous execution of two or more processes by a multiple
-  processor computer system.
+  The simultaneous execution of two or more processes by a multiple processor
+  computer system.
 type: glossary

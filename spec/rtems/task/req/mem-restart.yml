@@ -11,6 +11,6 @@ non-functional-type: quality
 rationale: null
 requirement-type: non-functional
 text: |
-  The system shall provide a benchmark program to show the static memory usage
-  of a basic application configuration with a call to ${../if/restart:/name}.
+  The system shall provide a benchmark program to show the static memory usage of
+  a basic application configuration with a call to ${../if/restart:/name}.
 type: requirement

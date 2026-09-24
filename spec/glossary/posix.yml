@@ -9,5 +9,5 @@ links:
 term: POSIX
 text: |
   This term is an acronym for
-  `Portable Operating System Interface <https://en.wikipedia.org/wiki/POSIX>`_.
+  [Portable Operating System Interface](https://en.wikipedia.org/wiki/POSIX).
 type: glossary

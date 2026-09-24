@@ -41,7 +41,7 @@ test-actions:
   - brief: |
       Check that the maskable interrupt status is restored by the call to
       ${../if/local-enable:/name} according to the
-      ${../if/local-enable:/params[0]/name} parameter.  In this case maskable
+      ${../if/local-enable:/params[0]/name} parameter. In this case maskable
       interrupts are still disabled afterwards.
     code: |
       T_false( AreInterruptsEnabled() );
@@ -57,7 +57,7 @@ test-actions:
   - brief: |
       Check that the maskable interrupt status is restored by the call to
       ${../if/local-enable:/name} according to the
-      ${../if/local-enable:/params[0]/name} parameter.  In this case maskable
+      ${../if/local-enable:/params[0]/name} parameter. In this case maskable
       interrupts are enabled afterwards.
     code: |
       T_false( AreInterruptsEnabled() );
@@ -74,7 +74,7 @@ test-actions:
 - action-brief: |
     Validate the interrupt lock directives.
   action-code: |
-    RTEMS_INTERRUPT_LOCK_DEFINE( , lock, "name" );
+    RTEMS_INTERRUPT_LOCK_DEFINE(, lock, "name" );
     rtems_interrupt_lock_context lock_context;
   checks:
   - brief: |
@@ -147,10 +147,10 @@ test-actions:
 - action-brief: |
     Validate the interrupt entry initialization.
   action-code: |
-    int entry_arg;
-    int entry_arg_2;
-    const char entry_info[] = "1";
-    const char entry_info_2[] = "1";
+    int                   entry_arg;
+    int                   entry_arg_2;
+    const char            entry_info[] = "1";
+    const char            entry_info_2[] = "1";
     rtems_interrupt_entry entry = RTEMS_INTERRUPT_ENTRY_INITIALIZER(
       EntryRoutine,
       &entry_arg,
@@ -175,7 +175,7 @@ test-actions:
     - role: validation
       uid: ../req/entry-initializer-info
   - brief: |
-      Call ${../if/entry-initialize:/name}.  Check that the entry is properly
+      Call ${../if/entry-initialize:/name}. Check that the entry is properly
       initialized by ${../if/entry-initialize:/name}.
     code: |
       entry.next = &entry;

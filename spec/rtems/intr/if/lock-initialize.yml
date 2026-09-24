@@ -33,8 +33,8 @@ params:
   dir: out
   name: _lock
 - description: |
-    is the ISR lock name.  It shall be a string.  The name is only used where
-    the system was built with profiling support enabled.
+    is the ISR lock name. It shall be a string. The name is only used where the
+    system was built with profiling support enabled.
   dir: null
   name: _name
 return: null

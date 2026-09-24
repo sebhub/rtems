@@ -9,5 +9,5 @@ links:
 term: ReqIF
 text: |
   This term is an acronym for
-  `Requirements Interchange Format <https://www.omg.org/spec/ReqIF/About-ReqIF/>`_.
+  [Requirements Interchange Format](https://www.omg.org/spec/ReqIF/About-ReqIF/).
 type: glossary

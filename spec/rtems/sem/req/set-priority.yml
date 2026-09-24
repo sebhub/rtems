@@ -49,17 +49,17 @@ post-conditions:
       ReleaseSemaphore( ctx );
     text: |
       The current priority of the owner task of the semaphore for the scheduler
-      specified by the ${../if/set-priority:/params[1]/name} parameter shall
-      not be modified by the ${../if/set-priority:/name} call.
+      specified by the ${../if/set-priority:/params[1]/name} parameter shall not be
+      modified by the ${../if/set-priority:/name} call.
   - name: New
     test-code: |
       T_eq_u32( GetSelfPriority(), PRIO_VERY_HIGH );
       ReleaseSemaphore( ctx );
     text: |
       The current priority of the owner task of the semaphore for the scheduler
-      specified by the ${../if/set-priority:/params[1]/name} parameter shall be
-      less than or equal to the value of the
-      ${../if/set-priority:/params[2]/name} parameter.
+      specified by the ${../if/set-priority:/params[1]/name} parameter shall be less
+      than or equal to the value of the ${../if/set-priority:/params[2]/name}
+      parameter.
   test-epilogue: null
   test-prologue: null
 - name: SemPrio
@@ -72,7 +72,7 @@ post-conditions:
           CheckPriority( ctx, ctx->other_scheduler_id, PRIO_VERY_HIGH );
         } else {
           CheckPriority( ctx, ctx->runner_scheduler_id, PRIO_VERY_HIGH );
-      #if defined(RTEMS_SMP)
+      #if defined( RTEMS_SMP )
           CheckPriority( ctx, ctx->other_scheduler_id, 0 );
       #endif
         }
@@ -82,16 +82,16 @@ post-conditions:
       }
     text: |
       The priority used for the scheduler specified by the
-      ${../if/set-priority:/params[1]/name} parameter of the semaphore
-      associated with the identifier specified by the
-      ${../if/set-priority:/params[0]/name} parameter shall be set to the
-      prioriy specified by the ${../if/set-priority:/params[2]/name} parameter
-      during the ${../if/set-priority:/name} call.
+      ${../if/set-priority:/params[1]/name} parameter of the semaphore associated
+      with the identifier specified by the ${../if/set-priority:/params[0]/name}
+      parameter shall be set to the prioriy specified by the
+      ${../if/set-priority:/params[2]/name} parameter during the
+      ${../if/set-priority:/name} call.
   - name: Nop
     test-code: |
       if ( ( ctx->attribute_set & RTEMS_MULTIPROCESSOR_RESOURCE_SHARING ) != 0 ) {
         CheckPriority( ctx, ctx->runner_scheduler_id, PRIO_HIGH );
-      #if defined(RTEMS_SMP)
+      #if defined( RTEMS_SMP )
         CheckPriority( ctx, ctx->other_scheduler_id, 0 );
       #endif
       } else if ( ( ctx->attribute_set & RTEMS_PRIORITY_CEILING ) != 0 ) {
@@ -115,13 +115,12 @@ post-conditions:
         T_eq_u32( ctx->old_priority_value, PRIO_HIGH );
       }
     text: |
-      The value of the object referenced by the
-      ${../if/set-priority:/params[3]/name} parameter shall be set to the
-      priority used for the scheduler specified by the
-      ${../if/set-priority:/params[1]/name} parameter of the semaphore
-      associated with the identifier specified by the
-      ${../if/set-priority:/params[0]/name} parameter right before the priority
-      is set by the ${../if/set-priority:/name} call.
+      The value of the object referenced by the ${../if/set-priority:/params[3]/name}
+      parameter shall be set to the priority used for the scheduler specified by the
+      ${../if/set-priority:/params[1]/name} parameter of the semaphore associated
+      with the identifier specified by the ${../if/set-priority:/params[0]/name}
+      parameter right before the priority is set by the ${../if/set-priority:/name}
+      call.
   - name: Nop
     test-code: |
       T_eq_u32( ctx->old_priority_value, PRIO_INVALID );
@@ -153,15 +152,15 @@ pre-conditions:
     test-code: |
       ctx->attribute_set |= RTEMS_BINARY_SEMAPHORE | RTEMS_PRIORITY_CEILING;
     text: |
-      While the semaphore object is a priority ceiling semaphore, while the
-      semaphore has no owner.
+      While the semaphore object is a priority ceiling semaphore, while the semaphore
+      has no owner.
   - name: PrioCeilingOwner
     test-code: |
       ctx->attribute_set |= RTEMS_BINARY_SEMAPHORE | RTEMS_PRIORITY_CEILING;
       ctx->count = 0;
     text: |
-      While the semaphore object is a priority ceiling semaphore, while the
-      semaphore has an owner.
+      While the semaphore object is a priority ceiling semaphore, while the semaphore
+      has an owner.
   - name: PrioInherit
     test-code: |
       ctx->attribute_set |= RTEMS_BINARY_SEMAPHORE | RTEMS_INHERIT_PRIORITY;
@@ -170,7 +169,7 @@ pre-conditions:
   - name: MrsP
     test-code: |
       ctx->attribute_set |= RTEMS_BINARY_SEMAPHORE |
-        RTEMS_MULTIPROCESSOR_RESOURCE_SHARING;
+                            RTEMS_MULTIPROCESSOR_RESOURCE_SHARING;
     text: |
       While the semaphore object is a MrsP semaphore.
   test-epilogue: null
@@ -181,14 +180,14 @@ pre-conditions:
     test-code: |
       ctx->valid_id = true;
     text: |
-      While the ${../if/set-priority:/params[0]/name} parameter is associated
-      with the semaphore.
+      While the ${../if/set-priority:/params[0]/name} parameter is associated with
+      the semaphore.
   - name: Invalid
     test-code: |
       ctx->valid_id = false;
     text: |
-      While the ${../if/set-priority:/params[0]/name} parameter is not
-      associated with a semaphore.
+      While the ${../if/set-priority:/params[0]/name} parameter is not associated
+      with a semaphore.
   test-epilogue: null
   test-prologue: null
 - name: SchedId
@@ -203,16 +202,14 @@ pre-conditions:
     test-code: |
       ctx->scheduler_id = ctx->runner_scheduler_id;
     text: |
-    text: |
       While the ${../if/set-priority:/params[1]/name} parameter is associated with
       the scheduler used to create the semaphore.
   - name: Other
     test-code: |
       ctx->scheduler_id = ctx->other_scheduler_id;
     text: |
-    text: |
-      While the ${../if/set-priority:/params[1]/name} parameter is associated
-      with a scheduler other than the one used to create the semaphore.
+      While the ${../if/set-priority:/params[1]/name} parameter is associated with a
+      scheduler other than the one used to create the semaphore.
   test-epilogue: null
   test-prologue: null
 - name: NewPrio
@@ -228,16 +225,15 @@ pre-conditions:
       ctx->new_priority = PRIO_VERY_HIGH;
     text: |
       While the ${../if/set-priority:/params[2]/name} parameter is not equal to
-      ${../../task/if/current-priority:/name} and valid with respect to the
-      scheduler specified by the ${../if/set-priority:/params[1]/name}
-      parameter.
+      ${../../task/if/current-priority:/name} and valid with respect to the scheduler
+      specified by the ${../if/set-priority:/params[1]/name} parameter.
   - name: Invalid
     test-code: |
       ctx->new_priority = PRIO_INVALID;
     text: |
       While the ${../if/set-priority:/params[2]/name} parameter is invalid with
-      respect to the scheduler specified by the
-      ${../if/set-priority:/params[1]/name} parameter.
+      respect to the scheduler specified by the ${../if/set-priority:/params[1]/name}
+      parameter.
   test-epilogue: null
   test-prologue: null
 - name: OldPrio
@@ -246,8 +242,8 @@ pre-conditions:
     test-code: |
       ctx->old_priority = &ctx->old_priority_value;
     text: |
-      While the ${../if/set-priority:/params[3]/name} parameter references an
-      object of type ${../../type/if/priority:/name}.
+      While the ${../if/set-priority:/params[3]/name} parameter references an object
+      of type ${../../type/if/priority:/name}.
   - name: 'Null'
     test-code: |
       ctx->old_priority = NULL;
@@ -260,8 +256,8 @@ rationale: null
 requirement-type: functional
 skip-reasons:
   NoOtherScheduler: |
-    Where the system was built with SMP support disabled, exactly one scheduler
-    is present in an application.
+    Where the system was built with SMP support disabled, exactly one scheduler is
+    present in an application.
 test-action: |
   rtems_status_code sc;
 
@@ -301,8 +297,8 @@ test-context:
   member: |
     rtems_id runner_scheduler_id
 - brief: |
-    This member contains the scheduler identifier of a scheduler not used by
-    the runner task.
+    This member contains the scheduler identifier of a scheduler not used by the
+    runner task.
   description: null
   member: |
     rtems_id other_scheduler_id
@@ -323,8 +319,8 @@ test-context:
     rtems_id the_semaphore_id
 - brief: |
     If this member is true, then the ${../if/set-priority:/params[0]/name}
-    parameter value shall be associated with the semaphore, otherwise it shall
-    be not associated with a semaphore.
+    parameter value shall be associated with the semaphore, otherwise it shall be
+    not associated with a semaphore.
   description: null
   member: |
     bool valid_id
@@ -335,26 +331,26 @@ test-context:
   member: |
     rtems_task_priority old_priority_value
 - brief: |
-    This member specifies the ${../if/set-priority:/params[0]/name} parameter
-    for the ${../if/set-priority:/name} call.
+    This member specifies the ${../if/set-priority:/params[0]/name} parameter for
+    the ${../if/set-priority:/name} call.
   description: null
   member: |
     rtems_id semaphore_id
 - brief: |
-    This member specifies the ${../if/set-priority:/params[1]/name} parameter
-    for the ${../if/set-priority:/name} call.
+    This member specifies the ${../if/set-priority:/params[1]/name} parameter for
+    the ${../if/set-priority:/name} call.
   description: null
   member: |
     rtems_id scheduler_id
 - brief: |
-    This member specifies the ${../if/set-priority:/params[2]/name} parameter
-    for the ${../if/set-priority:/name} call.
+    This member specifies the ${../if/set-priority:/params[2]/name} parameter for
+    the ${../if/set-priority:/name} call.
   description: null
   member: |
     rtems_task_priority new_priority
 - brief: |
-    This member specifies the ${../if/set-priority:/params[3]/name} parameter
-    for the ${../if/set-priority:/name} call.
+    This member specifies the ${../if/set-priority:/params[3]/name} parameter for
+    the ${../if/set-priority:/name} call.
   description: null
   member: |
     rtems_task_priority *old_priority
@@ -388,7 +384,7 @@ test-setup:
     sc = rtems_task_get_scheduler( RTEMS_SELF, &ctx->runner_scheduler_id );
     T_rsc_success( sc );
 
-    #if defined(RTEMS_SMP)
+    #if defined( RTEMS_SMP )
     sc = rtems_scheduler_ident(
       TEST_SCHEDULER_B_NAME,
       &ctx->other_scheduler_id
@@ -414,7 +410,7 @@ test-support: |
 
   static void ChangeScheduler( rtems_id scheduler_id )
   {
-  #if defined(RTEMS_SMP)
+  #if defined( RTEMS_SMP )
     rtems_status_code sc;
 
     sc = rtems_task_set_scheduler( RTEMS_SELF, scheduler_id, PRIO_NORMAL );
@@ -447,12 +443,9 @@ test-support: |
     ChangeScheduler( ctx->runner_scheduler_id );
   }
 
-  static void CheckNotDefined(
-    const Context      *ctx,
-    rtems_id            scheduler_id
-  )
+  static void CheckNotDefined( const Context *ctx, rtems_id scheduler_id )
   {
-  #if defined(RTEMS_SMP)
+  #if defined( RTEMS_SMP )
     rtems_status_code sc;
 
     ChangeScheduler( scheduler_id );
@@ -476,7 +469,8 @@ test-teardown:
   code: |
     RestoreRunnerPriority();
   description: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:
@@ -491,14 +485,13 @@ transition-map:
     OldPrioVar: Nop
   pre-conditions:
     Class: all
+    SemId: all
+    SchedId:
+    - Invalid
+    - Create
+    NewPrio: all
     OldPrio:
     - 'Null'
-    SchedId:
-    SchedId:
-    - Invalid
-    - Create
-    SemId: all
-    NewPrio: all
 - enabled-by: true
   post-conditions:
     Status: InvId
@@ -512,12 +505,12 @@ transition-map:
     OldPrioVar: Nop
   pre-conditions:
     Class: all
-    OldPrio:
-    - Valid
+    SemId: all
     SchedId:
     - Invalid
-    SemId: all
     NewPrio: all
+    OldPrio:
+    - Valid
 - enabled-by: true
   post-conditions:
     Status: InvId
@@ -531,13 +524,13 @@ transition-map:
     OldPrioVar: Nop
   pre-conditions:
     Class: all
-    OldPrio:
-    - Valid
-    SchedId:
-    - Create
     SemId:
     - Invalid
+    SchedId:
+    - Create
     NewPrio: all
+    OldPrio:
+    - Valid
 - enabled-by: true
   post-conditions:
     Status: InvPrio
@@ -558,14 +551,14 @@ transition-map:
     - PrioCeilingOwner
     - PrioInherit
     - MrsP
-    OldPrio:
+    SemId:
     - Valid
     SchedId:
     - Create
-    SemId:
-    - Valid
     NewPrio:
     - Invalid
+    OldPrio:
+    - Valid
 - enabled-by: true
   post-conditions:
     Status: NotDef
@@ -583,14 +576,14 @@ transition-map:
     - Simple
     - Binary
     - PrioInherit
-    OldPrio:
+    SemId:
     - Valid
     SchedId:
     - Create
-    SemId:
-    - Valid
     NewPrio:
     - Current
+    - Valid
+    OldPrio:
     - Valid
 - enabled-by: true
   post-conditions:
@@ -619,24 +612,24 @@ transition-map:
     - PrioCeilingNoOwner
     - PrioCeilingOwner
     - MrsP
-    OldPrio:
+    SemId:
     - Valid
     SchedId:
     - Create
-    SemId:
-    - Valid
     NewPrio:
     - Current
+    - Valid
+    OldPrio:
     - Valid
 - enabled-by: true
   post-conditions: NoOtherScheduler
   pre-conditions:
     Class: all
-    OldPrio: all
+    SemId: all
     SchedId:
     - Other
-    SemId: all
     NewPrio: all
+    OldPrio: all
 - enabled-by: RTEMS_SMP
   post-conditions:
     Status: InvAddr
@@ -650,12 +643,12 @@ transition-map:
     OldPrioVar: Nop
   pre-conditions:
     Class: all
-    OldPrio:
-    - 'Null'
+    SemId: all
     SchedId:
     - Other
-    SemId: all
     NewPrio: all
+    OldPrio:
+    - 'Null'
 - enabled-by: RTEMS_SMP
   post-conditions:
     Status: InvId
@@ -669,13 +662,13 @@ transition-map:
     OldPrioVar: Nop
   pre-conditions:
     Class: all
-    OldPrio:
-    - Valid
-    SchedId:
-    - Other
     SemId:
     - Invalid
+    SchedId:
+    - Other
     NewPrio: all
+    OldPrio:
+    - Valid
 - enabled-by: RTEMS_SMP
   post-conditions:
     Status: InvPrio
@@ -696,14 +689,14 @@ transition-map:
     - PrioCeilingOwner
     - PrioInherit
     - MrsP
-    OldPrio:
+    SemId:
     - Valid
     SchedId:
     - Other
-    SemId:
-    - Valid
     NewPrio:
     - Invalid
+    OldPrio:
+    - Valid
 - enabled-by: RTEMS_SMP
   post-conditions:
     Status: NotDef
@@ -721,14 +714,14 @@ transition-map:
     - Simple
     - Binary
     - PrioInherit
-    OldPrio:
+    SemId:
     - Valid
     SchedId:
     - Other
-    SemId:
-    - Valid
     NewPrio:
     - Current
+    - Valid
+    OldPrio:
     - Valid
 - enabled-by: RTEMS_SMP
   post-conditions:
@@ -745,14 +738,14 @@ transition-map:
     Class:
     - PrioCeilingNoOwner
     - PrioCeilingOwner
-    OldPrio:
+    SemId:
     - Valid
     SchedId:
     - Other
-    SemId:
-    - Valid
     NewPrio:
     - Current
+    - Valid
+    OldPrio:
     - Valid
 - enabled-by: RTEMS_SMP
   post-conditions:
@@ -768,13 +761,13 @@ transition-map:
   pre-conditions:
     Class:
     - MrsP
-    OldPrio:
+    SemId:
     - Valid
     SchedId:
     - Other
-    SemId:
-    - Valid
     NewPrio:
     - Current
+    - Valid
+    OldPrio:
     - Valid
 type: requirement

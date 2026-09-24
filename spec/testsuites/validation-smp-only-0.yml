@@ -6,8 +6,8 @@ links:
 - role: requirement-refinement
   uid: validation
 test-brief: |
-  This test suite for SMP-only test cases provides enough resources to run
-  basic tests for all specified managers and functions.
+  This test suite for SMP-only test cases provides enough resources to run basic
+  tests for all specified managers and functions.
 test-code: |
   const char rtems_test_name[] = "${.:/test-suite-name}";
 
@@ -15,8 +15,8 @@ test-code: |
 
   #include "ts-default.h"
 test-description: |
-  Up to three scheduler instances using the SMP EDF scheduler are provided
-  using up to four processors.
+  Up to three scheduler instances using the SMP EDF scheduler are provided using
+  up to four processors.
 test-includes: []
 test-local-includes: []
 test-target: testsuites/validation/ts-validation-smp-only-0.c

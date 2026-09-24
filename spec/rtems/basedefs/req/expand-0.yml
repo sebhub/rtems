@@ -9,7 +9,6 @@ links:
 rationale: null
 requirement-type: functional
 text: |
-  The macro ${../if/expand:/name} shall apply all possible C
-  pre-processor substitutions to its argument value
-  before it results in the substituted value.
+  The macro ${../if/expand:/name} shall apply all possible C pre-processor
+  substitutions to its argument value before it results in the substituted value.
 type: requirement

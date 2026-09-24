@@ -17,22 +17,22 @@ post-conditions:
   states:
   - name: Ok
     test-code: |
-      T_rsc(ctx->status, RTEMS_SUCCESSFUL);
+      T_rsc( ctx->status, RTEMS_SUCCESSFUL );
     text: |
       The return status shall be ${../status/if/successful:/name}.
   - name: InvAddr
     test-code: |
-      T_rsc(ctx->status, RTEMS_INVALID_ADDRESS);
+      T_rsc( ctx->status, RTEMS_INVALID_ADDRESS );
     text: |
       The return status shall be ${../status/if/invalid-address:/name}.
   - name: InvName
     test-code: |
-      T_rsc(ctx->status, RTEMS_INVALID_NAME);
+      T_rsc( ctx->status, RTEMS_INVALID_NAME );
     text: |
       The return status shall be ${../status/if/invalid-name:/name}.
   - name: InvNode
     test-code: |
-      T_rsc(ctx->status, RTEMS_INVALID_NODE);
+      T_rsc( ctx->status, RTEMS_INVALID_NODE );
     text: |
       The return status shall be ${../status/if/invalid-node:/name}.
   test-epilogue: null
@@ -41,40 +41,39 @@ post-conditions:
   states:
   - name: Nop
     test-code: |
-      T_eq_ptr(ctx->id, &ctx->id_value);
-      T_eq_u32(ctx->id_value, 0xffffffff);
+      T_eq_ptr( ctx->id, &ctx->id_value );
+      T_eq_u32( ctx->id_value, 0xffffffff );
     text: |
-      The value of the object identifier referenced by the id parameter shall
-      be the value before the action.
+      The value of the object identifier referenced by the id parameter shall be the
+      value before the action.
   - name: 'Null'
     test-code: |
-      T_null(ctx->id)
+      T_null( ctx->id )
     text: |
       While the id is NULL.
   - name: LocalObj
     test-code: |
-      T_eq_ptr(ctx->id, &ctx->id_value);
-      T_eq_u32(ctx->id_value, ctx->id_local_object);
+      T_eq_ptr( ctx->id, &ctx->id_value );
+      T_eq_u32( ctx->id_value, ctx->id_local_object );
     text: |
-      The value of the object identifier referenced by the id parameter shall
-      be the identifier of a local object of the specified class with a name
-      equal to the name parameter.  If more than one local object of the
-      specified class with such a name exists, then it shall be the identifier
-      of the object with the lowest object index.
+      The value of the object identifier referenced by the id parameter shall be the
+      identifier of a local object of the specified class with a name equal to the
+      name parameter. If more than one local object of the specified class with such
+      a name exists, then it shall be the identifier of the object with the lowest
+      object index.
   - name: RemoteObj
     test-code: |
-      T_eq_ptr(ctx->id, &ctx->id_value);
-      T_eq_u32(ctx->id_value, ctx->id_remote_object);
+      T_eq_ptr( ctx->id, &ctx->id_value );
+      T_eq_u32( ctx->id_value, ctx->id_remote_object );
     text: |
-      The value of the object identifier referenced by the id parameter shall
-      be the identifier of a remote object of the specified class on a eligible
-      node defined by the node parameter with a name equal to the name
-      parameter.  If more than one local object of the specified class with
-      such a name exists, then it shall be the identifier of the object with
-      the lowest object index.  Otherwise, if more than one object of the
-      specified class with such a name exists on remote eligible nodes, then it
-      shall be the identifier of the object with the lowest node index and the
-      lowest object index on this node.
+      The value of the object identifier referenced by the id parameter shall be the
+      identifier of a remote object of the specified class on a eligible node defined
+      by the node parameter with a name equal to the name parameter. If more than one
+      local object of the specified class with such a name exists, then it shall be
+      the identifier of the object with the lowest object index. Otherwise, if more
+      than one object of the specified class with such a name exists on remote
+      eligible nodes, then it shall be the identifier of the object with the lowest
+      node index and the lowest object index on this node.
   test-epilogue: null
   test-prologue: null
 pre-conditions:
@@ -84,14 +83,14 @@ pre-conditions:
     test-code: |
       ctx->name = 1;
     text: |
-      While the `name` parameter is not associated with an active object of
-      the specified class .
+      While the `name` parameter is not associated with an active object of the
+      specified class .
   - name: Valid
     test-code: |
       ctx->name = ctx->name_local_object;
     text: |
-      While the `name` parameter is associated with an active object of the
-      specified class .
+      While the `name` parameter is associated with an active object of the specified
+      class .
   test-epilogue: null
   test-prologue: null
 - name: Node
@@ -135,8 +134,7 @@ pre-conditions:
       ctx->id_value = 0xffffffff;
       ctx->id = &ctx->id_value;
     text: |
-      While the `id` parameter references an object of type
-      ${../type/if/id:/name}.
+      While the `id` parameter references an object of type ${../type/if/id:/name}.
   - name: 'Null'
     test-code: |
       ctx->id = NULL;
@@ -211,59 +209,59 @@ text: |
 transition-map:
 - enabled-by: true
   post-conditions:
-    Id: LocalObj
     Status: Ok
+    Id: LocalObj
   pre-conditions:
-    Id:
-    - Valid
     Name:
     - Valid
     Node:
     - SearchAll
     - SearchLocal
     - Local
-- enabled-by: true
-  post-conditions:
-    Id: Nop
-    Status: InvName
-  pre-conditions:
     Id:
     - Valid
+- enabled-by: true
+  post-conditions:
+    Status: InvName
+    Id: Nop
+  pre-conditions:
     Name:
     - Valid
     Node:
     - Invalid
     - SearchOther
     - Remote
-- enabled-by: true
-  post-conditions:
-    Id: Nop
-    Status: InvName
-  pre-conditions:
     Id:
     - Valid
+- enabled-by: true
+  post-conditions:
+    Status: InvName
+    Id: Nop
+  pre-conditions:
     Name:
     - Invalid
     Node: all
+    Id:
+    - Valid
 - enabled-by: true
   post-conditions:
-    Id: 'Null'
     Status: InvAddr
+    Id: 'Null'
   pre-conditions:
-    Id:
-    - 'Null'
     Name: all
     Node: all
+    Id:
+    - 'Null'
 - enabled-by: RTEMS_MULTIPROCESSING
   post-conditions:
-    Id: RemoteObj
     Status: Ok
+    Id: RemoteObj
   pre-conditions:
-    Id:
-    - Valid
     Name:
     - Valid
     Node:
     - SearchOther
     - Remote
+    Id:
+    - Valid
 type: requirement

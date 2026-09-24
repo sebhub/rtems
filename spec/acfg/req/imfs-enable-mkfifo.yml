@@ -11,6 +11,6 @@ links:
 rationale: null
 requirement-type: functional
 text: |
-  The application configuration option shall disable the support to make FIFOs
-  in the root IMFS.
+  The application configuration option shall disable the support to make FIFOs in
+  the root IMFS.
 type: requirement

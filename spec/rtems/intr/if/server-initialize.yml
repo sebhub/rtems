@@ -17,10 +17,10 @@ definition:
   variants: []
 description: |
   The directive tries to create an interrupt server task for each online
-  processor in the system.  The tasks will have the initial priority specified
-  by ${.:/params[0]/name}, the stack size specified by ${.:/params[1]/name},
-  the initial mode set specified by ${.:/params[2]/name}, and the attribute set
-  specified by ${.:/params[3]/name}.  The count of successfully created server
+  processor in the system. The tasks will have the initial priority specified by
+  ${.:/params[0]/name}, the stack size specified by ${.:/params[1]/name}, the
+  initial mode set specified by ${.:/params[2]/name}, and the attribute set
+  specified by ${.:/params[3]/name}. The count of successfully created server
   tasks will be returned in ${.:/params[4]/name} if the pointer is not equal to
   ${/c/if/null:/name}.
 enabled-by: true
@@ -69,15 +69,15 @@ params:
   name: attributes
 - description: |
     is the pointer to an ${/c/if/uint32_t:/name} object or ${/c/if/null:/name}.
-    When the pointer is not equal to ${/c/if/null:/name}, the count of
-    successfully created interrupt servers is stored in this object regardless
-    of the return status.
+    When the pointer is not equal to ${/c/if/null:/name}, the count of successfully
+    created interrupt servers is stored in this object regardless of the return
+    status.
   dir: out
   name: server_count
 return:
   return: |
-    The directive uses ${../../task/if/create:/name}.  If this directive fails,
-    then its error status will be returned.
+    The directive uses ${../../task/if/create:/name}. If this directive fails, then
+    its error status will be returned.
   return-values:
   - description: |
       The requested operation was successful.

@@ -71,14 +71,14 @@ pre-conditions:
     test-code: |
       ctx->valid_vector = true;
     text: |
-      While the ${../if/set-affinity:/params[0]/name} parameter is
-      associated with an interrupt vector.
+      While the ${../if/set-affinity:/params[0]/name} parameter is associated with an
+      interrupt vector.
   - name: Invalid
     test-code: |
       ctx->valid_vector = false;
     text: |
-      While the ${../if/set-affinity:/params[0]/name} parameter is not
-      associated with an interrupt vector.
+      While the ${../if/set-affinity:/params[0]/name} parameter is not associated
+      with an interrupt vector.
   test-epilogue: null
   test-prologue: null
 - name: CPUSetSize
@@ -87,24 +87,24 @@ pre-conditions:
     test-code: |
       ctx->cpusetsize = SIZE_MAX;
     text: |
-      While the ${../if/set-affinity:/params[1]/name} parameter is not an
-      integral multiple of the size of long.
+      While the ${../if/set-affinity:/params[1]/name} parameter is not an integral
+      multiple of the size of long.
   - name: Normal
     test-code: |
       ctx->cpusetsize = sizeof( ctx->cpuset_obj[ 0 ] );
     text: |
       While the ${../if/set-affinity:/params[1]/name} parameter is an integral
-      multiple of the size of long,
-      while the ${../if/set-affinity:/params[1]/name} parameter is less than or
-      equal to the maximum processor set size storable in the system.
+      multiple of the size of long, while the ${../if/set-affinity:/params[1]/name}
+      parameter is less than or equal to the maximum processor set size storable in
+      the system.
   - name: Huge
     test-code: |
       ctx->cpusetsize = sizeof( ctx->cpuset_obj );
     text: |
       While the ${../if/set-affinity:/params[1]/name} parameter is an integral
-      multiple of the size of long,
-      while the ${../if/set-affinity:/params[1]/name} parameter is greater than
-      the maximum processor set size storable in the system.
+      multiple of the size of long, while the ${../if/set-affinity:/params[1]/name}
+      parameter is greater than the maximum processor set size storable in the
+      system.
   test-epilogue: null
   test-prologue: null
 - name: CPUSetOnline
@@ -114,21 +114,19 @@ pre-conditions:
       /* Already prepared */
     text: |
       While the intersection of the processor set specified by the
-      ${../if/set-affinity:/params[1]/name} and
-      ${../if/set-affinity:/params[2]/name} parameters and the set of online
-      processors is not empty,
-      while the intersection of the processor set specified by the
-      ${../if/set-affinity:/params[1]/name} and
-      ${../if/set-affinity:/params[2]/name} parameters and the set of online
-      processors is a processor affinity set supported by the interrupt vector.
+      ${../if/set-affinity:/params[1]/name} and ${../if/set-affinity:/params[2]/name}
+      parameters and the set of online processors is not empty, while the
+      intersection of the processor set specified by the
+      ${../if/set-affinity:/params[1]/name} and ${../if/set-affinity:/params[2]/name}
+      parameters and the set of online processors is a processor affinity set
+      supported by the interrupt vector.
   - name: Empty
     test-code: |
       CPU_ZERO( &ctx->cpuset_obj[ 0 ] );
     text: |
       While the intersection of the processor set specified by the
-      ${../if/set-affinity:/params[1]/name} and
-      ${../if/set-affinity:/params[2]/name} parameters and the set of online
-      processors is empty.
+      ${../if/set-affinity:/params[1]/name} and ${../if/set-affinity:/params[2]/name}
+      parameters and the set of online processors is empty.
   test-epilogue: null
   test-prologue: null
 - name: CPUSetHuge
@@ -137,18 +135,15 @@ pre-conditions:
     test-code: |
       /* Already prepared */
     text: |
-      While the processor set specified by the
-      ${../if/set-affinity:/params[1]/name} and
-      ${../if/set-affinity:/params[2]/name} parameters contains at least one
-      processor which is not storable in a processor set supported by the
-      system.
+      While the processor set specified by the ${../if/set-affinity:/params[1]/name}
+      and ${../if/set-affinity:/params[2]/name} parameters contains at least one
+      processor which is not storable in a processor set supported by the system.
   - name: Zero
     test-code: |
       CPU_ZERO( &ctx->cpuset_obj[ 1 ] );
     text: |
-      While the processor set specified by the
-      ${../if/set-affinity:/params[1]/name} and
-      ${../if/set-affinity:/params[2]/name} parameters contains no processor
+      While the processor set specified by the ${../if/set-affinity:/params[1]/name}
+      and ${../if/set-affinity:/params[2]/name} parameters contains no processor
       which is not storable in a processor set supported by the system.
   test-epilogue: null
   test-prologue: null
@@ -158,8 +153,8 @@ pre-conditions:
     test-code: |
       ctx->cpuset = &ctx->cpuset_obj[ 0 ];
     text: |
-      While the ${../if/set-affinity:/params[2]/name} parameter references an
-      object of type ${/c/if/cpu_set_t:/name}.
+      While the ${../if/set-affinity:/params[2]/name} parameter references an object
+      of type ${/c/if/cpu_set_t:/name}.
   - name: 'Null'
     test-code: |
       ctx->cpuset = NULL;
@@ -267,8 +262,7 @@ test-context:
   member: |
     cpu_set_t cpuset_obj[ 2 ]
 - brief: |
-    This member contains the return value of the ${../if/set-affinity:/name}
-    call.
+    This member contains the return value of the ${../if/set-affinity:/name} call.
   description: null
   member: |
     rtems_status_code status
@@ -279,14 +273,14 @@ test-context:
   member: |
     bool valid_vector
 - brief: |
-    This member specifies if the ${../if/set-affinity:/params[1]/name}
-    parameter value.
+    This member specifies if the ${../if/set-affinity:/params[1]/name} parameter
+    value.
   description: null
   member: |
     size_t cpusetsize
 - brief: |
-    This member specifies if the ${../if/set-affinity:/params[2]/name}
-    parameter value.
+    This member specifies if the ${../if/set-affinity:/params[2]/name} parameter
+    value.
   description: null
   member: |
     cpu_set_t *cpuset
@@ -350,7 +344,8 @@ test-support: |
   }
 test-target: testsuites/validation/tc-intr-set-affinity.c
 test-teardown: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

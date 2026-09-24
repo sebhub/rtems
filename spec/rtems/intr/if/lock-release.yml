@@ -15,8 +15,8 @@ definition:
   variants: []
 description: |
   This directive releases the ISR lock specified by ${.:/params[0]/name} using
-  the lock context provided by ${.:/params[1]/name}.  The previous interrupt
-  level will be restored on the current processor.
+  the lock context provided by ${.:/params[1]/name}. The previous interrupt level
+  will be restored on the current processor.
 enabled-by: true
 index-entries: []
 interface-type: macro
@@ -44,8 +44,8 @@ params:
   dir: inout
   name: _lock
 - description: |
-    is the ISR lock context.  This lock context shall have been used to acquire
-    the lock by calling ${lock-acquire:/name}.
+    is the ISR lock context. This lock context shall have been used to acquire the
+    lock by calling ${lock-acquire:/name}.
   dir: inout
   name: _lock_context
 return: null

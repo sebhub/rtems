@@ -16,19 +16,19 @@ definition:
 description: |
   One of the following mutually exclusive options
 
-  * ${unique:/name}, and
+  - ${unique:/name}, and
 
-  * ${shared:/name}
+  - ${shared:/name}
 
   shall be set in the ${.:/params[1]/name} parameter.
 
   The handler routine of the entry specified by ${.:/params[2]/name} will be
-  called with the handler argument of the entry when dispatched.  The order in
-  which shared interrupt handlers are dispatched for one vector is defined by
-  the installation order.  The first installed handler is dispatched first.
+  called with the handler argument of the entry when dispatched. The order in
+  which shared interrupt handlers are dispatched for one vector is defined by the
+  installation order. The first installed handler is dispatched first.
 
-  If the option ${unique:/name} is set, then it will be ensured that the
-  handler will be the only one for the interrupt vector.
+  If the option ${unique:/name} is set, then it will be ensured that the handler
+  will be the only one for the interrupt vector.
 
   If the option ${shared:/name} is set, then multiple handlers may be installed
   for the interrupt vector.
@@ -93,17 +93,16 @@ return:
       An option specified by ${.:/params[1]/name} was not applicable.
     value: ${../../status/if/invalid-number:/name}
   - description: |
-      The ${unique:/name} option was set in ${.:/params[2]/name} and the
-      interrupt vector was already occupied by a handler.
+      The ${unique:/name} option was set in ${.:/params[2]/name} and the interrupt
+      vector was already occupied by a handler.
     value: ${../../status/if/resource-in-use:/name}
   - description: |
-      The ${shared:/name} option was set in ${.:/params[2]/name} and the
-      interrupt vector was already occupied by a unique handler.
+      The ${shared:/name} option was set in ${.:/params[2]/name} and the interrupt
+      vector was already occupied by a unique handler.
     value: ${../../status/if/resource-in-use:/name}
   - description: |
-      The handler routine of the entry specified by ${.:/params[2]/name} was
-      already installed for the interrupt vector specified by
-      ${.:/params[0]/name} with an argument equal to the handler argument of
-      the entry.
+      The handler routine of the entry specified by ${.:/params[2]/name} was already
+      installed for the interrupt vector specified by ${.:/params[0]/name} with an
+      argument equal to the handler argument of the entry.
     value: ${../../status/if/too-many:/name}
 type: interface

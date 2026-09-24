@@ -52,7 +52,7 @@ test-teardown:
 text: |
   While the execution environment is ${.:/environment}, while the barrier is an
   automatic release barrier, while the measurement sample is the runtime of
-  exactly one successful call to ${../if/wait:/name} which automatically
-  releases the barrier, when exactly ${../val/perf:/params/sample-count}
-  samples are collected, the ${.:/limit-kind} shall be ${.:/limit-condition}.
+  exactly one successful call to ${../if/wait:/name} which automatically releases
+  the barrier, when exactly ${../val/perf:/params/sample-count} samples are
+  collected, the ${.:/limit-kind} shall be ${.:/limit-condition}.
 type: requirement

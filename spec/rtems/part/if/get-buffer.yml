@@ -15,8 +15,8 @@ definition:
   variants: []
 description: |
   This directive allows a buffer to be obtained from the partition specified by
-  ${.:/params[0]/name}.  The address of the allocated buffer is returned
-  through the ${.:/params[1]/name} parameter.
+  ${.:/params[0]/name}. The address of the allocated buffer is returned through
+  the ${.:/params[1]/name} parameter.
 enabled-by: true
 index-entries:
 - get buffer from partition
@@ -46,13 +46,13 @@ notes: |
   node will generate a request telling the remote node to allocate a buffer
   from the partition.
 params:
-- description: is the partition identifier.
+- description: |
+    is the partition identifier.
   dir: null
   name: id
 - description: |
-    is the pointer to a `void` pointer object.  When the directive call is
-    successful, the pointer to the allocated buffer will be stored in this
-    object.
+    is the pointer to a `void` pointer object. When the directive call is
+    successful, the pointer to the allocated buffer will be stored in this object.
   dir: out
   name: buffer
 return:

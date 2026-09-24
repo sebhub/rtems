@@ -22,7 +22,7 @@ test-prepare: null
 test-setup: null
 test-teardown:
   brief: |
-    Delete the worker.  Discard samples interrupted by a clock tick.
+    Delete the worker. Discard samples interrupted by a clock tick.
   code: |
     T_quiet_rsc_success( ctx->status );
 

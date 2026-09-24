@@ -11,13 +11,10 @@ rationale: |
   alignment but under some circumstances, it can also decrease the alignment.
 requirement-type: functional
 text: |
-  When the argument ${../if/aligned:/params[0]/name} is a
-  positive power of two integer,
-  and the macro ${../if/aligned:/name} is used on a none-`static`
-  variable or structure field,
-  and the used linker supports alignments of the size given by the
-  ${../if/aligned:/params[0]/name} argument,
-  and the code is compiled with the GNU C compiler,
-  the macro shall specify a minimum alignment for the variable or
-  structure field, measured in bytes.
+  When the argument ${../if/aligned:/params[0]/name} is a positive power of two
+  integer, and the macro ${../if/aligned:/name} is used on a none-`static`
+  variable or structure field, and the used linker supports alignments of the
+  size given by the ${../if/aligned:/params[0]/name} argument, and the code is
+  compiled with the GNU C compiler, the macro shall specify a minimum alignment
+  for the variable or structure field, measured in bytes.
 type: requirement

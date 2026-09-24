@@ -9,7 +9,7 @@ definition:
 description: |
   It is an unsigned 32-bit integer which can be treated as a numeric value or
   initialized using ${../../object/if/build-name:/name} to encode four ASCII
-  characters.  A value of zero may have a special meaning in some directives.
+  characters. A value of zero may have a special meaning in some directives.
 enabled-by: true
 index-entries: []
 interface-type: typedef

@@ -30,7 +30,6 @@ notes: null
 params: []
 return:
   return: |
-    Returns a pointer to the Classic API Configuration Table of this
-    application.
+    Returns a pointer to the Classic API Configuration Table of this application.
   return-values: []
 type: interface

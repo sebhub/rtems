@@ -5,9 +5,9 @@ copyrights:
 description: |
   In case
 
-  * this configuration option is defined
+  - this configuration option is defined
 
-  * and ${record-per-processor-items:/name} is properly defined,
+  - and ${record-per-processor-items:/name} is properly defined,
 
   then the interrupt event recording is enabled.
 enabled-by: true

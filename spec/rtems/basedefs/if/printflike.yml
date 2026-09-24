@@ -36,8 +36,7 @@ params:
   dir: null
   name: _format_pos
 - description: |
-    is the position of the argument pointer parameter index (starting with
-    one).
+    is the position of the argument pointer parameter index (starting with one).
   dir: null
   name: _ap_pos
 return: null

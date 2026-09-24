@@ -2,15 +2,15 @@ SPDX-License-Identifier: CC-BY-SA-4.0
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
 enabled-by: RTEMS_SMP
+functional-type: function
 links:
 - role: interface-function
   uid: ../if/get-processor-maximum-macro
-functional-type: function
 rationale: null
 requirement-type: functional
 text: |
   The return value of the ${../if/get-processor-maximum-macro:/name} directive
   shall be the minimum of the processors available at the
-  ${/glossary/target:/term} and the ${/acfg/if/max-processors:/name}
-  application configuration option value.
+  ${/glossary/target:/term} and the ${/acfg/if/max-processors:/name} application
+  configuration option value.
 type: requirement

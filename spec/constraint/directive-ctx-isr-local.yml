@@ -7,6 +7,6 @@ links:
   uid: /req/usage-constraints
 rationale: null
 text: |
-  When the directive operates on a local object, the directive may be called
-  from within interrupt context.
+  When the directive operates on a local object, the directive may be called from
+  within interrupt context.
 type: constraint

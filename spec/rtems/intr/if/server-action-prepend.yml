@@ -49,13 +49,13 @@ notes: |
   No error checking is performed by the directive.
 params:
 - description: |
-    is the interrupt server entry to prepend the interrupt server action.  It
-    shall have been initialized via ${server-entry-initialize:/name}.
+    is the interrupt server entry to prepend the interrupt server action. It shall
+    have been initialized via ${server-entry-initialize:/name}.
   dir: inout
   name: entry
 - description: |
-    is the interrupt server action to initialize and prepend to the list of
-    actions of the entry.
+    is the interrupt server action to initialize and prepend to the list of actions
+    of the entry.
   dir: out
   name: action
 - description: |

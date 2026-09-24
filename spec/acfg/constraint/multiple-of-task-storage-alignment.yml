@@ -7,6 +7,6 @@ links:
   uid: /req/usage-constraints
 rationale: null
 text: |
-  The value of the application configuration option shall be an integral
-  multiple of ${/rtems/task/if/storage-alignment:/name}.
+  The value of the application configuration option shall be an integral multiple
+  of ${/rtems/task/if/storage-alignment:/name}.
 type: constraint

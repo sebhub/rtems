@@ -3,6 +3,7 @@ copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
 enabled-by:
   not: RTEMS_SMP
+functional-type: function
 links:
 - role: requirement-refinement
   uid: sys-lock-mutex-acquire
@@ -16,7 +17,6 @@ links:
   uid: sys-lock-mutex-recursive-acquire-timed
 - role: requirement-refinement
   uid: sys-lock-mutex-recursive-release
-functional-type: function
 rationale: null
 requirement-type: functional
 text: |

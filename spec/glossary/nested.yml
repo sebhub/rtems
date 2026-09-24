@@ -8,6 +8,6 @@ links:
   uid: group
 term: nested
 text: |
-  A term used to describe an ASR that occurs during another ASR or an ISR
-  that occurs during another ISR.
+  A term used to describe an ASR that occurs during another ASR or an ISR that
+  occurs during another ISR.
 type: glossary

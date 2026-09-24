@@ -8,7 +8,7 @@ links:
   uid: /req/unit-test-data-structures
 test-actions:
 - action-brief: |
-    Call _RBTree_Initialize_one() and check the tree properties.
+    Call \_RBTree_Initialize_one() and check the tree properties.
   action-code: |
     RBTree_Control tree;
     RBTree_Node    node;
@@ -110,8 +110,8 @@ test-actions:
     role: unit-test
     uid: ../../if/domain
 - action-brief: |
-    Call _RBTree_Insert_inline() and check the return status for a sample set
-    of nodes.
+    Call \_RBTree_Insert_inline() and check the return status for a sample set of
+    nodes.
   action-code: |
     RBTree_Control tree;
     TestNode       a;
@@ -122,7 +122,7 @@ test-actions:
     _RBTree_Initialize_empty( &tree );
   checks:
   - brief: |
-      Insert the first node.  Check that it is the new minimum node.
+      Insert the first node. Check that it is the new minimum node.
     code: |
       _RBTree_Initialize_node( &b.Node );
       b.key = 2;
@@ -133,7 +133,7 @@ test-actions:
       role: unit-test
       uid: ../../if/domain
   - brief: |
-      Insert the second node.  Check that it is not the new minimum node.
+      Insert the second node. Check that it is not the new minimum node.
     code: |
       _RBTree_Initialize_node( &c.Node );
       c.key = 3;
@@ -144,7 +144,7 @@ test-actions:
       role: unit-test
       uid: ../../if/domain
   - brief: |
-      Insert the third node.  Check that it is the new minimum node.
+      Insert the third node. Check that it is the new minimum node.
     code: |
       _RBTree_Initialize_node( &a.Node );
       a.key = 1;
@@ -159,8 +159,7 @@ test-actions:
     role: unit-test
     uid: ../../if/domain
 - action-brief: |
-    Call _RBTree_Insert_inline() and _RBTree_Extract() for a sample set of
-    trees.
+    Call \_RBTree_Insert_inline() and \_RBTree_Extract() for a sample set of trees.
   action-code: |
     size_t n;
 

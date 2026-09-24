@@ -8,9 +8,9 @@ links:
   uid: group
 term: heir task
 text: |
-  A task is an heir if it is registered as an heir in a processor of the
-  system.  A task can be the heir on at most one processor in the system.
-  In case the executing and heir tasks differ on a processor and a thread
-  dispatch is marked as necessary, then the next thread dispatch will make
-  the heir task the executing task.
+  A task is an heir if it is registered as an heir in a processor of the system.
+  A task can be the heir on at most one processor in the system. In case the
+  executing and heir tasks differ on a processor and a thread dispatch is marked
+  as necessary, then the next thread dispatch will make the heir task the
+  executing task.
 type: glossary

@@ -13,8 +13,7 @@ post-conditions:
     test-code: |
       /* Validation is done by spec:/score/tq/req/enqueue-priority */
     text: |
-      The first thread in priority order shall be dequeued from the thread
-      queue.
+      The first thread in priority order shall be dequeued from the thread queue.
   test-epilogue: null
   test-prologue: null
 - name: Unblock
@@ -36,14 +35,13 @@ post-conditions:
     test-code: |
       T_eq_u32( ctx->priority_after, PRIO_NORMAL );
     text: |
-      Each ${/glossary/priority-eligible:/term} of the previous owner which had
-      the highest priority inherited through the thread queue shall be updated.
+      Each ${/glossary/priority-eligible:/term} of the previous owner which had the
+      highest priority inherited through the thread queue shall be updated.
   - name: Nop
     test-code: |
       T_eq_u32( ctx->priority_after, ctx->priority_before );
     text: |
-      No ${/glossary/priority-eligible:/term} of the previous owner shall be
-      updated.
+      No ${/glossary/priority-eligible:/term} of the previous owner shall be updated.
   test-epilogue: null
   test-prologue: null
 - name: RemoveHelper
@@ -57,9 +55,9 @@ post-conditions:
       );
       T_rsc( sc, RTEMS_NOT_DEFINED );
     text: |
-      Each ${/glossary/scheduler-helping:/term} of the previous owner which was
-      only available due to a priority inherited through the thread queue shall
-      be removed from the previous owner.
+      Each ${/glossary/scheduler-helping:/term} of the previous owner which was only
+      available due to a priority inherited through the thread queue shall be removed
+      from the previous owner.
   - name: 'No'
     test-code: |
       sc = rtems_task_get_priority(
@@ -67,7 +65,7 @@ post-conditions:
         SCHEDULER_B_ID,
         &priority
       );
-      #if defined(RTEMS_SMP)
+      #if defined( RTEMS_SMP )
       T_rsc_success( sc );
 
       if ( ctx->tq_ctx->enqueue_variant == TQ_ENQUEUE_STICKY ) {
@@ -79,8 +77,8 @@ post-conditions:
       T_rsc( sc, RTEMS_INVALID_ID );
       #endif
     text: |
-      No ${/glossary/scheduler-helping:/term} shall be removed from the
-      previous owner.
+      No ${/glossary/scheduler-helping:/term} shall be removed from the previous
+      owner.
   test-epilogue: null
   test-prologue: |
     rtems_status_code   sc;
@@ -103,8 +101,8 @@ post-conditions:
       }
     text: |
       Each ${/glossary/scheduler-helping:/term} of the new owner which is only
-      available due to a priority inherited through the thread queue shall be
-      added to the new owner.
+      available due to a priority inherited through the thread queue shall be added
+      to the new owner.
   - name: 'No'
     test-code: |
       sc = rtems_task_get_priority(
@@ -112,7 +110,7 @@ post-conditions:
         SCHEDULER_A_ID,
         &priority
       );
-      #if defined(RTEMS_SMP)
+      #if defined( RTEMS_SMP )
       T_rsc( sc, RTEMS_NOT_DEFINED );
       #else
       T_rsc_success( sc );
@@ -145,14 +143,14 @@ pre-conditions:
     test-code: |
       ctx->inherited_priorities_are_dispensible = false;
     text: |
-      While at least one priority inherited through the thread queue for the
-      previous owner is the highest priority of the previous owner.
+      While at least one priority inherited through the thread queue for the previous
+      owner is the highest priority of the previous owner.
   - name: Dispensable
     test-code: |
       ctx->inherited_priorities_are_dispensible = true;
     text: |
-      While all priorities inherited through the thread queue for the previous
-      owner are not the highest priority of the previous owner.
+      While all priorities inherited through the thread queue for the previous owner
+      are not the highest priority of the previous owner.
   test-epilogue: null
   test-prologue: null
 - name: PreviousHelping
@@ -161,15 +159,14 @@ pre-conditions:
     test-code: |
       ctx->helping_schedules_are_dispensible = false;
     text: |
-      While at least one ${/glossary/scheduler-helping:/term} of the previous
-      owner is only available due to a priority inherited through the thread
-      queue.
+      While at least one ${/glossary/scheduler-helping:/term} of the previous owner
+      is only available due to a priority inherited through the thread queue.
   - name: Dispensable
     test-code: |
       ctx->helping_schedules_are_dispensible = true;
     text: |
-      While all ${/glossary/scheduler-helping:/term} of the previous owner are
-      not only available due to a priority inherited through the thread queue.
+      While all ${/glossary/scheduler-helping:/term} of the previous owner are not
+      only available due to a priority inherited through the thread queue.
   test-epilogue: null
   test-prologue: null
 - name: Scheduler
@@ -178,15 +175,13 @@ pre-conditions:
     test-code: |
       ctx->use_helping_scheduler = false;
     text: |
-      While the previous owner executes in its
-      ${/glossary/scheduler-home:/term}.
+      While the previous owner executes in its ${/glossary/scheduler-home:/term}.
   - name: Helping
     test-code: |
       ctx->use_helping_scheduler = true;
     text: |
-      While the previous owner executes in a
-      ${/glossary/scheduler-helping:/term} which is available due to a priority
-      inherited through the thread queue.
+      While the previous owner executes in a ${/glossary/scheduler-helping:/term}
+      which is available due to a priority inherited through the thread queue.
   test-epilogue: null
   test-prologue: null
 - name: NewHelping
@@ -195,14 +190,14 @@ pre-conditions:
     test-code: |
       ctx->gains_new_helping_scheduler = true;
     text: |
-      While at least one ${/glossary/scheduler-helping:/term} of the new owner
-      is only available due to a priority inherited through the thread queue.
+      While at least one ${/glossary/scheduler-helping:/term} of the new owner is
+      only available due to a priority inherited through the thread queue.
   - name: Dispensable
     test-code: |
       ctx->gains_new_helping_scheduler = false;
     text: |
-      While all ${/glossary/scheduler-helping:/term} of the new owner are not
-      only available due to a priority inherited through the thread queue.
+      While all ${/glossary/scheduler-helping:/term} of the new owner are not only
+      available due to a priority inherited through the thread queue.
   test-epilogue: null
   test-prologue: null
 - name: Suspended
@@ -225,8 +220,7 @@ pre-conditions:
     test-code: |
       ctx->intend_to_block = true;
     text: |
-      While the new owner is in the intend to block wait
-      state.
+      While the new owner is in the intend to block wait state.
   test-epilogue: null
   test-prologue: null
 rationale: null
@@ -322,11 +316,7 @@ test-cleanup: |
     ResumeTask( ctx->tq_ctx->worker_id[ TQ_BLOCKER_A ] );
   }
 
-  TQSendAndSynchronizeRunner(
-    ctx->tq_ctx,
-    TQ_BLOCKER_A,
-    TQ_EVENT_SURRENDER
-  );
+  TQSendAndSynchronizeRunner( ctx->tq_ctx, TQ_BLOCKER_A, TQ_EVENT_SURRENDER );
 
   if ( ctx->gains_new_helping_scheduler ) {
     TQSendAndSynchronizeRunner(
@@ -384,8 +374,8 @@ test-context:
   member: |
     bool use_helping_scheduler
 - brief: |
-    If this member is true, then the new owner thread shall gain a vital
-    helping scheduler.
+    If this member is true, then the new owner thread shall gain a vital helping
+    scheduler.
   description: null
   member: |
     bool gains_new_helping_scheduler
@@ -401,14 +391,14 @@ test-context:
   member: |
     bool intend_to_block
 - brief: |
-    This member contains the current priority of the previous owner thread
-    before the thread queue surrender operation.
+    This member contains the current priority of the previous owner thread before
+    the thread queue surrender operation.
   description: null
   member: |
     rtems_task_priority priority_before
 - brief: |
-    This member contains the current priority of the previous owner thread
-    after the thread queue surrender operation.
+    This member contains the current priority of the previous owner thread after
+    the thread queue surrender operation.
   description: null
   member: |
     rtems_task_priority priority_after
@@ -474,6 +464,12 @@ transition-map:
   post-conditions:
     Dequeue: Priority
     Unblock: 'No'
+    PreviousOwnerPriority:
+    - if:
+        pre-conditions:
+          InheritedPriority: Vital
+      then: Drop
+    - else: Nop
     RemoveHelper:
     - if:
         pre-conditions:
@@ -486,12 +482,6 @@ transition-map:
           NewHelping: Dispensable
       then: 'No'
     - else: 'Yes'
-    PreviousOwnerPriority:
-    - if:
-        pre-conditions:
-          InheritedPriority: Vital
-      then: Drop
-    - else: Nop
     Suspended:
     - specified-by: Suspended
   pre-conditions:

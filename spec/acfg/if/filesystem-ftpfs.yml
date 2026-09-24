@@ -4,8 +4,8 @@ copyrights:
 - Copyright (C) 2020 embedded brains GmbH & Co. KG
 description: |
   In case this configuration option is defined, then the FTP filesystem (FTP
-  client) is registered, so that instances of this filesystem
-  can be mounted by the application.
+  client) is registered, so that instances of this filesystem can be mounted by
+  the application.
 enabled-by: true
 index-entries: []
 interface-type: appl-config-option

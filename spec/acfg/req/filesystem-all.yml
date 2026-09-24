@@ -11,6 +11,6 @@ links:
 rationale: null
 requirement-type: functional
 text: |
-  The application configuration option shall enable all file systems provided
-  by the system.
+  The application configuration option shall enable all file systems provided by
+  the system.
 type: requirement

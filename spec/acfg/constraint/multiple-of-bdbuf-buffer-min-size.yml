@@ -7,6 +7,6 @@ links:
   uid: /req/usage-constraints
 rationale: null
 text: |
-  The value of the application configuration option shall be an integral
-  multiple of ${../if/bdbuf-buffer-min-size:/name}.
+  The value of the application configuration option shall be an integral multiple
+  of ${../if/bdbuf-buffer-min-size:/name}.
 type: constraint

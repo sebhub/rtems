@@ -2,14 +2,14 @@ SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
 enabled-by: true
+functional-type: function
 links:
 - role: requirement-refinement
   uid: ../if/group
-functional-type: function
 rationale: null
 requirement-type: functional
 text: |
-  Where an uniprocessor scheduler is configured, the owner of a semaphore
-  created with the ${../../attr/if/multiprocessor-resource-sharing:/name}
-  attribute shall not be made sticky.
+  Where an uniprocessor scheduler is configured, the owner of a semaphore created
+  with the ${../../attr/if/multiprocessor-resource-sharing:/name} attribute shall
+  not be made sticky.
 type: requirement

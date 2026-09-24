@@ -8,6 +8,6 @@ links:
   uid: group
 term: dispatch
 text: |
-  The act of loading a task's context onto the CPU and transferring control
-  of the CPU to that task.
+  The act of loading a task's context onto the CPU and transferring control of
+  the CPU to that task.
 type: glossary

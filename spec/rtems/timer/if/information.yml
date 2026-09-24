@@ -26,8 +26,8 @@ definition:
       This member indicates the time the timer was initially scheduled.
     definition: ${/score/watchdog/if/interval:/name} ${.:name}
     description: |
-      The time is in clock ticks since the clock driver initialization or the
-      last clock tick counter overflow.
+      The time is in clock ticks since the clock driver initialization or the last
+      clock tick counter overflow.
     kind: member
     name: start_time
   variants: []
@@ -36,8 +36,8 @@ definition:
       This member indicates the time the timer was scheduled to fire.
     definition: ${/score/watchdog/if/interval:/name} ${.:name}
     description: |
-      The time is in clock ticks since the clock driver initialization or the
-      last clock tick counter overflow.
+      The time is in clock ticks since the clock driver initialization or the last
+      clock tick counter overflow.
     kind: member
     name: stop_time
   variants: []

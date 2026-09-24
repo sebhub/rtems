@@ -8,6 +8,6 @@ links:
   uid: group
 term: Doorstop
 text: |
-  `Doorstop <https://github.com/doorstop-dev/doorstop>`_ is a
-  requirements management tool.
+  [Doorstop](https://github.com/doorstop-dev/doorstop) is a requirements
+  management tool.
 type: glossary

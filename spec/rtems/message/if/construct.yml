@@ -1,7 +1,6 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 brief: |
-  Constructs a message queue from the specified the message queue
-  configuration.
+  Constructs a message queue from the specified the message queue configuration.
 copyrights:
 - Copyright (C) 2020, 2021 embedded brains GmbH & Co. KG
 definition:
@@ -52,14 +51,13 @@ notes: |
   memory for message queues constructed by ${.:/name}.
 params:
 - description: |
-    is the pointer to an ${config:/name} object.  It configures the message
-    queue.
+    is the pointer to an ${config:/name} object. It configures the message queue.
   dir: null
   name: config
 - description: |
-    is the pointer to an ${../../type/if/id:/name} object.  When the directive
-    call is successful, the identifier of the constructed message queue will be
-    stored in this object.
+    is the pointer to an ${../../type/if/id:/name} object. When the directive call
+    is successful, the identifier of the constructed message queue will be stored
+    in this object.
   dir: out
   name: id
 return:
@@ -84,8 +82,8 @@ return:
       The maximum message size in the configuration was zero.
     value: ${../../status/if/invalid-size:/name}
   - description: |
-      There was no inactive message queue object available to construct a
-      message queue.
+      There was no inactive message queue object available to construct a message
+      queue.
     value: ${../../status/if/too-many:/name}
   - description: |
       In multiprocessing configurations, there was no inactive global object
@@ -93,21 +91,21 @@ return:
     value: ${../../status/if/too-many:/name}
   - description: |
       The maximum message size in the configuration was too big and resulted in
-      integer overflows in calculations carried out to determine the size of
-      the message buffer area.
+      integer overflows in calculations carried out to determine the size of the
+      message buffer area.
     value: ${../../status/if/invalid-size:/name}
   - description: |
-      The maximum number of pending messages in the configuration was too big
-      and resulted in integer overflows in calculations carried out to
-      determine the size of the message buffer area.
+      The maximum number of pending messages in the configuration was too big and
+      resulted in integer overflows in calculations carried out to determine the size
+      of the message buffer area.
     value: ${../../status/if/invalid-number:/name}
   - description: |
       The message queue storage area begin pointer in the configuration was
       ${/c/if/null:/name}.
     value: ${../../status/if/unsatisfied:/name}
   - description: |
-      The message queue storage area size in the configuration was not equal to
-      the size calculated from the maximum number of pending messages and the
-      maximum message size.
+      The message queue storage area size in the configuration was not equal to the
+      size calculated from the maximum number of pending messages and the maximum
+      message size.
     value: ${../../status/if/unsatisfied:/name}
 type: interface

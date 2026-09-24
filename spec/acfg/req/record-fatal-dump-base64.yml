@@ -11,6 +11,6 @@ links:
 rationale: null
 requirement-type: functional
 text: |
-  The application configuration option shall enable the dump of the event
-  records in Base64 encoding in a fatal error extension.
+  The application configuration option shall enable the dump of the event records
+  in Base64 encoding in a fatal error extension.
 type: requirement

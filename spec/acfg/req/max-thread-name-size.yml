@@ -11,6 +11,6 @@ links:
 rationale: null
 requirement-type: functional
 text: |
-  The application configuration option shall define the maximum thread name
-  size in bytes.
+  The application configuration option shall define the maximum thread name size
+  in bytes.
 type: requirement

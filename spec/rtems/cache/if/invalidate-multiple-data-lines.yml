@@ -13,8 +13,8 @@ definition:
     return: void
   variants: []
 description: |
-  The cache lines covering the area are marked as invalid.  A later read
-  access in the area will load the data from memory.
+  The cache lines covering the area are marked as invalid. A later read access in
+  the area will load the data from memory.
 enabled-by: true
 index-entries: []
 interface-type: function

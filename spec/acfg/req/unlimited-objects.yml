@@ -11,6 +11,5 @@ links:
 rationale: null
 requirement-type: functional
 text: |
-  The application configuration option shall enable unlimited objects by
-  default.
+  The application configuration option shall enable unlimited objects by default.
 type: requirement

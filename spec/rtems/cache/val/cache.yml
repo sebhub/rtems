@@ -5,8 +5,7 @@ enabled-by: true
 links: []
 test-actions:
 - action-brief: |
-    Call the ${../if/disable-data:/name} and ${../if/enable-data:/name}
-    directives.
+    Call the ${../if/disable-data:/name} and ${../if/enable-data:/name} directives.
   action-code: |
     rtems_cache_disable_data();
     rtems_cache_enable_data();
@@ -17,15 +16,15 @@ test-actions:
   - role: validation
     uid: ../req/enable-data
 - action-brief: |
-    Call the ${../if/disable-data:/name} and ${../if/enable-data:/name}
-    directives with maskable interrupts disabled.
+    Call the ${../if/disable-data:/name} and ${../if/enable-data:/name} directives
+    with maskable interrupts disabled.
   action-code: |
     rtems_interrupt_level level;
 
-    rtems_interrupt_local_disable(level);
+    rtems_interrupt_local_disable( level );
     rtems_cache_disable_data();
     rtems_cache_enable_data();
-    rtems_interrupt_local_enable(level);
+    rtems_interrupt_local_enable( level );
   checks: []
   links:
   - role: validation
@@ -46,15 +45,14 @@ test-actions:
     uid: ../req/enable-instruction
 - action-brief: |
     Call the ${../if/disable-instruction:/name} and
-    ${../if/enable-instruction:/name} directives with maskable interrupts
-    disabled.
+    ${../if/enable-instruction:/name} directives with maskable interrupts disabled.
   action-code: |
     rtems_interrupt_level level;
 
-    rtems_interrupt_local_disable(level);
+    rtems_interrupt_local_disable( level );
     rtems_cache_disable_instruction();
     rtems_cache_enable_instruction();
-    rtems_interrupt_local_enable(level);
+    rtems_interrupt_local_enable( level );
   checks: []
   links:
   - role: validation
@@ -74,15 +72,15 @@ test-actions:
   - role: validation
     uid: ../req/unfreeze-data
 - action-brief: |
-    Call the ${../if/freeze-data:/name} and ${../if/unfreeze-data:/name}
-    directives with maskable interrupts disabled.
+    Call the ${../if/freeze-data:/name} and ${../if/unfreeze-data:/name} directives
+    with maskable interrupts disabled.
   action-code: |
     rtems_interrupt_level level;
 
-    rtems_interrupt_local_disable(level);
+    rtems_interrupt_local_disable( level );
     rtems_cache_freeze_data();
     rtems_cache_unfreeze_data();
-    rtems_interrupt_local_enable(level);
+    rtems_interrupt_local_enable( level );
   checks: []
   links:
   - role: validation
@@ -108,10 +106,10 @@ test-actions:
   action-code: |
     rtems_interrupt_level level;
 
-    rtems_interrupt_local_disable(level);
+    rtems_interrupt_local_disable( level );
     rtems_cache_freeze_instruction();
     rtems_cache_unfreeze_instruction();
-    rtems_interrupt_local_enable(level);
+    rtems_interrupt_local_enable( level );
   checks: []
   links:
   - role: validation
@@ -124,11 +122,11 @@ test-actions:
   action-code: |
     rtems_interrupt_level level;
 
-    rtems_interrupt_local_disable(level);
+    rtems_interrupt_local_disable( level );
     rtems_cache_disable_data();
     rtems_cache_invalidate_entire_data();
     rtems_cache_enable_data();
-    rtems_interrupt_local_enable(level);
+    rtems_interrupt_local_enable( level );
   checks: []
   links:
   - role: validation
@@ -142,14 +140,14 @@ test-actions:
   - role: validation
     uid: ../req/invalidate-entire-instruction
 - action-brief: |
-    Call the ${../if/invalidate-entire-instruction:/name} directive with
-    maskable interrupts disabled.
+    Call the ${../if/invalidate-entire-instruction:/name} directive with maskable
+    interrupts disabled.
   action-code: |
     rtems_interrupt_level level;
 
-    rtems_interrupt_local_disable(level);
+    rtems_interrupt_local_disable( level );
     rtems_cache_invalidate_entire_instruction();
-    rtems_interrupt_local_enable(level);
+    rtems_interrupt_local_enable( level );
   checks: []
   links:
   - role: validation
@@ -163,21 +161,21 @@ test-actions:
   - role: validation
     uid: ../req/flush-entire-data
 - action-brief: |
-    Call the ${../if/flush-entire-data:/name} directive with maskable
-    interrupts disabled.
+    Call the ${../if/flush-entire-data:/name} directive with maskable interrupts
+    disabled.
   action-code: |
     rtems_interrupt_level level;
 
-    rtems_interrupt_local_disable(level);
+    rtems_interrupt_local_disable( level );
     rtems_cache_flush_entire_data();
-    rtems_interrupt_local_enable(level);
+    rtems_interrupt_local_enable( level );
   checks: []
   links:
   - role: validation
     uid: ../req/flush-entire-data
 - action-brief: |
-    Call the ${../if/flush-multiple-data-lines:/name} directive with a sample
-    set of memory areas.
+    Call the ${../if/flush-multiple-data-lines:/name} directive with a sample set
+    of memory areas.
   action-code: |
     CallFlushMultipleDataLines();
   checks: []
@@ -185,14 +183,14 @@ test-actions:
   - role: validation
     uid: ../req/flush-multiple-data-lines
 - action-brief: |
-    Call the ${../if/flush-multiple-data-lines:/name} directive with a sample
-    set of memory areas with maskable interrupts disabled.
+    Call the ${../if/flush-multiple-data-lines:/name} directive with a sample set
+    of memory areas with maskable interrupts disabled.
   action-code: |
     rtems_interrupt_level level;
 
-    rtems_interrupt_local_disable(level);
+    rtems_interrupt_local_disable( level );
     CallFlushMultipleDataLines();
-    rtems_interrupt_local_enable(level);
+    rtems_interrupt_local_enable( level );
   checks: []
   links:
   - role: validation
@@ -212,16 +210,16 @@ test-actions:
   action-code: |
     rtems_interrupt_level level;
 
-    rtems_interrupt_local_disable(level);
+    rtems_interrupt_local_disable( level );
     CallInvalidateMultipleDataLines();
-    rtems_interrupt_local_enable(level);
+    rtems_interrupt_local_enable( level );
   checks: []
   links:
   - role: validation
     uid: ../req/invalidate-multiple-data-lines
 - action-brief: |
-    Call the ${../if/invalidate-multiple-instruction-lines:/name} directive
-    with a sample set of memory areas.
+    Call the ${../if/invalidate-multiple-instruction-lines:/name} directive with a
+    sample set of memory areas.
   action-code: |
     CallInvalidateMultipleInstructionLines();
   checks: []
@@ -229,21 +227,21 @@ test-actions:
   - role: validation
     uid: ../req/invalidate-multiple-instruction-lines
 - action-brief: |
-    Call the ${../if/invalidate-multiple-instruction-lines:/name} directive
-    with a sample set of memory areas with maskable interrupts disabled.
+    Call the ${../if/invalidate-multiple-instruction-lines:/name} directive with a
+    sample set of memory areas with maskable interrupts disabled.
   action-code: |
     rtems_interrupt_level level;
 
-    rtems_interrupt_local_disable(level);
+    rtems_interrupt_local_disable( level );
     CallInvalidateMultipleInstructionLines();
-    rtems_interrupt_local_enable(level);
+    rtems_interrupt_local_enable( level );
   checks: []
   links:
   - role: validation
     uid: ../req/invalidate-multiple-instruction-lines
 - action-brief: |
-    Call the ${../if/instruction-sync-after-code-change:/name} directive
-    with a sample set of memory areas.
+    Call the ${../if/instruction-sync-after-code-change:/name} directive with a
+    sample set of memory areas.
   action-code: |
     CallInstructionSyncAfterCodeChange();
   checks: []
@@ -251,14 +249,14 @@ test-actions:
   - role: validation
     uid: ../req/instruction-sync-after-code-change
 - action-brief: |
-    Call the ${../if/instruction-sync-after-code-change:/name} directive
-    with a sample set of memory areas with maskable interrupts disabled.
+    Call the ${../if/instruction-sync-after-code-change:/name} directive with a
+    sample set of memory areas with maskable interrupts disabled.
   action-code: |
     rtems_interrupt_level level;
 
-    rtems_interrupt_local_disable(level);
+    rtems_interrupt_local_disable( level );
     CallInstructionSyncAfterCodeChange();
-    rtems_interrupt_local_enable(level);
+    rtems_interrupt_local_enable( level );
   checks: []
   links:
   - role: validation
@@ -277,8 +275,8 @@ test-actions:
     maximal_line_size = rtems_cache_get_maximal_line_size();
   checks:
   - brief: |
-      Check that the maximal cache line size is greater than or equal to the
-      data cache line size.
+      Check that the maximal cache line size is greater than or equal to the data
+      cache line size.
     code: |
       T_step_ge_sz( ${.:/step}, maximal_line_size, data_line_size );
     links:
@@ -303,20 +301,20 @@ test-actions:
     ${../if/get-maximal-line-size:/name} directives with maskable interrupts
     disabled.
   action-code: |
-    size_t data_line_size;
-    size_t instruction_line_size;
-    size_t maximal_line_size;
+    size_t                data_line_size;
+    size_t                instruction_line_size;
+    size_t                maximal_line_size;
     rtems_interrupt_level level;
 
-    rtems_interrupt_local_disable(level);
+    rtems_interrupt_local_disable( level );
     data_line_size = rtems_cache_get_data_line_size();
     instruction_line_size = rtems_cache_get_instruction_line_size();
     maximal_line_size = rtems_cache_get_maximal_line_size();
-    rtems_interrupt_local_enable(level);
+    rtems_interrupt_local_enable( level );
   checks:
   - brief: |
-      Check that the maximal cache line size is greater than or equal to the
-      data cache line size.
+      Check that the maximal cache line size is greater than or equal to the data
+      cache line size.
     code: |
       T_step_ge_sz( ${.:/step}, maximal_line_size, data_line_size );
     links:
@@ -336,8 +334,8 @@ test-actions:
   - role: validation
     uid: ../req/get-instruction-line-size
 - action-brief: |
-    Call the ${../if/get-data-size:/name} directive with increasing level
-    starting with zero until it returns zero.
+    Call the ${../if/get-data-size:/name} directive with increasing level starting
+    with zero until it returns zero.
   action-code: |
     CallGetDataSize();
   checks: []
@@ -351,21 +349,21 @@ test-actions:
   - role: validation
     uid: ../req/get-data-size-no-level
 - action-brief: |
-    Call the ${../if/get-data-size:/name} directive with increasing level
-    starting with zero until it returns zero with maskable interrupts disabled.
+    Call the ${../if/get-data-size:/name} directive with increasing level starting
+    with zero until it returns zero with maskable interrupts disabled.
   action-code: |
     rtems_interrupt_level level;
 
-    rtems_interrupt_local_disable(level);
+    rtems_interrupt_local_disable( level );
     CallGetDataSize();
-    rtems_interrupt_local_enable(level);
+    rtems_interrupt_local_enable( level );
   checks: []
   links:
   - role: validation
     uid: ../req/get-data-size
 - action-brief: |
-    Call the ${../if/get-instruction-size:/name} directive with increasing
-    level starting with zero until it returns zero.
+    Call the ${../if/get-instruction-size:/name} directive with increasing level
+    starting with zero until it returns zero.
   action-code: |
     CallGetInstructionSize();
   checks: []
@@ -379,15 +377,14 @@ test-actions:
   - role: validation
     uid: ../req/get-instruction-size-no-level
 - action-brief: |
-    Call the ${../if/get-instruction-size:/name} directive with increasing
-    level starting with zero until it returns zero with maskable interrupts
-    disabled.
+    Call the ${../if/get-instruction-size:/name} directive with increasing level
+    starting with zero until it returns zero with maskable interrupts disabled.
   action-code: |
     rtems_interrupt_level level;
 
-    rtems_interrupt_local_disable(level);
+    rtems_interrupt_local_disable( level );
     CallGetInstructionSize();
-    rtems_interrupt_local_enable(level);
+    rtems_interrupt_local_enable( level );
   checks: []
   links:
   - role: validation

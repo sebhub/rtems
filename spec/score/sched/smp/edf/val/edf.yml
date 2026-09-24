@@ -5,13 +5,12 @@ enabled-by: RTEMS_SMP
 links: []
 test-actions:
 - action-brief: |
-    Validate a set affinity error case with an unsupported subset.  This
-    requires an affinity set with at least two processors.  On a system with
-    exactly two processors, this is the set of all online processors and the
-    unsupported subset is infeasible since the scheduler would select an
-    affinity to all processors.  In this case, fake the set of online
-    processors.  On systems with three or more processors, unsupported subsets
-    are possible to construct.
+    Validate a set affinity error case with an unsupported subset. This requires an
+    affinity set with at least two processors. On a system with exactly two
+    processors, this is the set of all online processors and the unsupported subset
+    is infeasible since the scheduler would select an affinity to all processors.
+    In this case, fake the set of online processors. On systems with three or more
+    processors, unsupported subsets are possible to construct.
   action-code: |
     rtems_status_code sc;
     cpu_set_t         affinity;
@@ -27,7 +26,7 @@ test-actions:
       _Processor_mask_Set( &_SMP_Online_processors, 2 );
     }
 
-    sc = rtems_task_set_affinity( RTEMS_SELF, sizeof( affinity), &affinity );
+    sc = rtems_task_set_affinity( RTEMS_SELF, sizeof( affinity ), &affinity );
     T_rsc( sc, RTEMS_INVALID_NUMBER );
 
     if ( rtems_scheduler_get_processor_maximum() < 3 ) {

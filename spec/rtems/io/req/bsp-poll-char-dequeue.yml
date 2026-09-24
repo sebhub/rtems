@@ -2,15 +2,15 @@ SPDX-License-Identifier: CC-BY-SA-4.0
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
 enabled-by: true
+functional-type: function
 links:
 - role: interface-function
   uid: ../if/bsp-poll-char
-functional-type: function
 rationale: null
 requirement-type: functional
 text: |
-  While the ${../if/bsp-poll-char:/name} pointer references a function, while
-  the kernel character input device used by the function has a character
-  enqueued, the function shall dequeue the least recently enqueued character
-  and return it as an unsigned character value.
+  While the ${../if/bsp-poll-char:/name} pointer references a function, while the
+  kernel character input device used by the function has a character enqueued,
+  the function shall dequeue the least recently enqueued character and return it
+  as an unsigned character value.
 type: requirement

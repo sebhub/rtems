@@ -36,16 +36,15 @@ name: RTEMS_DEFINE_GLOBAL_SYMBOL
 notes: null
 params:
 - description: |
-    is the user defined name of the symbol.  The name shall be a valid
-    designator.  On the name a macro expansion is performed and afterwards it
-    is stringified.
+    is the user defined name of the symbol. The name shall be a valid designator.
+    On the name a macro expansion is performed and afterwards it is stringified.
   dir: null
   name: _name
 - description: |
-    is the value of the symbol.  On the value a macro expansion is performed
-    and afterwards it is stringified.  It shall expand to an integer expression
-    understood by the assembler.  The value shall be representable in the code
-    model of the ${/glossary/target-arch:/term}.
+    is the value of the symbol. On the value a macro expansion is performed and
+    afterwards it is stringified. It shall expand to an integer expression
+    understood by the assembler. The value shall be representable in the code model
+    of the ${/glossary/target-arch:/term}.
   dir: null
   name: _value
 return: null

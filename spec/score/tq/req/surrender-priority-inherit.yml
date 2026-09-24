@@ -13,8 +13,7 @@ post-conditions:
     test-code: |
       /* Validation is done by spec:/score/tq/req/enqueue-priority */
     text: |
-      The first thread in priority order shall be dequeued from the thread
-      queue.
+      The first thread in priority order shall be dequeued from the thread queue.
   test-epilogue: null
   test-prologue: null
 - name: Unblock
@@ -24,8 +23,7 @@ post-conditions:
       T_eq_ptr( GetUnblock( ctx, &i ), GetTCB( ctx, NEW_OWNER ) );
       T_eq_ptr( GetUnblock( ctx, &i ), NULL );
     text: |
-      The dequeued thread shall be unblocked by the thread queue surrender
-      operation.
+      The dequeued thread shall be unblocked by the thread queue surrender operation.
   - name: 'No'
     test-code: |
       T_eq_ptr( GetUnblock( ctx, &i ), NULL );
@@ -43,14 +41,13 @@ post-conditions:
     test-code: |
       T_eq_u32( ctx->priority_after, PRIO_NORMAL );
     text: |
-      Each ${/glossary/priority-eligible:/term} of the previous owner which had
-      the highest priority inherited through the thread queue shall be updated.
+      Each ${/glossary/priority-eligible:/term} of the previous owner which had the
+      highest priority inherited through the thread queue shall be updated.
   - name: Nop
     test-code: |
       T_eq_u32( ctx->priority_after, ctx->priority_before );
     text: |
-      No ${/glossary/priority-eligible:/term} of the previous owner shall be
-      updated.
+      No ${/glossary/priority-eligible:/term} of the previous owner shall be updated.
   test-epilogue: null
   test-prologue: null
 - name: NewPriority
@@ -65,8 +62,8 @@ post-conditions:
       T_rsc_success( sc );
       T_eq_u32( priority, PRIO_LOW );
     text: |
-      Each ${/glossary/priority-eligible:/term} of the new owner which
-      inherited the highest priority through the thread queue shall be updated.
+      Each ${/glossary/priority-eligible:/term} of the new owner which inherited the
+      highest priority through the thread queue shall be updated.
   - name: Nop
     test-code: |
       if ( ctx->gains_new_helping_scheduler ) {
@@ -80,7 +77,7 @@ post-conditions:
         scheduler_id,
         &priority
       );
-      #if defined(RTEMS_SMP)
+      #if defined( RTEMS_SMP )
       T_rsc( sc, RTEMS_NOT_DEFINED );
       #else
       T_rsc_success( sc );
@@ -104,9 +101,9 @@ post-conditions:
       );
       T_rsc( sc, RTEMS_NOT_DEFINED );
     text: |
-      Each ${/glossary/scheduler-helping:/term} of the previous owner which was
-      only available due to a priority inherited through the thread queue shall
-      be removed from the previous owner.
+      Each ${/glossary/scheduler-helping:/term} of the previous owner which was only
+      available due to a priority inherited through the thread queue shall be removed
+      from the previous owner.
   - name: 'No'
     test-code: |
       sc = rtems_task_get_priority(
@@ -114,7 +111,7 @@ post-conditions:
         SCHEDULER_B_ID,
         &priority
       );
-      #if defined(RTEMS_SMP)
+      #if defined( RTEMS_SMP )
       T_rsc_success( sc );
 
       if ( ctx->tq_ctx->enqueue_variant == TQ_ENQUEUE_STICKY ) {
@@ -126,8 +123,8 @@ post-conditions:
       T_rsc( sc, RTEMS_INVALID_ID );
       #endif
     text: |
-      No ${/glossary/scheduler-helping:/term} shall be removed from the
-      previous owner.
+      No ${/glossary/scheduler-helping:/term} shall be removed from the previous
+      owner.
   test-epilogue: null
   test-prologue: |
     rtems_task_priority priority;
@@ -156,8 +153,8 @@ post-conditions:
       }
     text: |
       Each ${/glossary/scheduler-helping:/term} of the new owner which is only
-      available due to a priority inherited through the thread queue shall be
-      added to the new owner.
+      available due to a priority inherited through the thread queue shall be added
+      to the new owner.
   - name: 'No'
     test-code: |
       if ( ctx->gains_new_priority ) {
@@ -171,7 +168,7 @@ post-conditions:
         scheduler_id,
         &priority
       );
-      #if defined(RTEMS_SMP)
+      #if defined( RTEMS_SMP )
       T_rsc( sc, RTEMS_NOT_DEFINED );
       #else
       T_rsc_success( sc );
@@ -230,14 +227,14 @@ pre-conditions:
     test-code: |
       ctx->inherited_priorities_are_dispensible = false;
     text: |
-      While at least one priority inherited through the thread queue for the
-      previous owner is the highest priority of the previous owner.
+      While at least one priority inherited through the thread queue for the previous
+      owner is the highest priority of the previous owner.
   - name: Dispensable
     test-code: |
       ctx->inherited_priorities_are_dispensible = true;
     text: |
-      While all priorities inherited through the thread queue for the previous
-      owner are not the highest priority of the previous owner.
+      While all priorities inherited through the thread queue for the previous owner
+      are not the highest priority of the previous owner.
   test-epilogue: null
   test-prologue: null
 - name: PreviousHelping
@@ -246,15 +243,14 @@ pre-conditions:
     test-code: |
       ctx->helping_schedules_are_dispensible = false;
     text: |
-      While at least one ${/glossary/scheduler-helping:/term} of the previous
-      owner is only available due to a priority inherited through the thread
-      queue.
+      While at least one ${/glossary/scheduler-helping:/term} of the previous owner
+      is only available due to a priority inherited through the thread queue.
   - name: Dispensable
     test-code: |
       ctx->helping_schedules_are_dispensible = true;
     text: |
-      While all ${/glossary/scheduler-helping:/term} of the previous owner are
-      not only available due to a priority inherited through the thread queue.
+      While all ${/glossary/scheduler-helping:/term} of the previous owner are not
+      only available due to a priority inherited through the thread queue.
   test-epilogue: null
   test-prologue: null
 - name: UsedScheduler
@@ -263,15 +259,13 @@ pre-conditions:
     test-code: |
       ctx->use_helping_scheduler = false;
     text: |
-      While the previous owner executes in its
-      ${/glossary/scheduler-home:/term}.
+      While the previous owner executes in its ${/glossary/scheduler-home:/term}.
   - name: Helping
     test-code: |
       ctx->use_helping_scheduler = true;
     text: |
-      While the previous owner executes in a
-      ${/glossary/scheduler-helping:/term} which is available due to a priority
-      inherited through the thread queue.
+      While the previous owner executes in a ${/glossary/scheduler-helping:/term}
+      which is available due to a priority inherited through the thread queue.
   test-epilogue: null
   test-prologue: null
 - name: NewPriority
@@ -280,14 +274,14 @@ pre-conditions:
     test-code: |
       ctx->gains_new_priority = true;
     text: |
-      While at least one highest priority of the new owner is only available
-      due to a priority inherited through the thread queue.
+      While at least one highest priority of the new owner is only available due to a
+      priority inherited through the thread queue.
   - name: Dispensable
     test-code: |
       ctx->gains_new_priority = false;
     text: |
-      While all highest priorities of the new owner are not only available due
-      to a priority inherited through the thread queue.
+      While all highest priorities of the new owner are not only available due to a
+      priority inherited through the thread queue.
   test-epilogue: null
   test-prologue: null
 - name: NewHelping
@@ -296,14 +290,14 @@ pre-conditions:
     test-code: |
       ctx->gains_new_helping_scheduler = true;
     text: |
-      While at least one ${/glossary/scheduler-helping:/term} of the new owner
-      is only available due to a priority inherited through the thread queue.
+      While at least one ${/glossary/scheduler-helping:/term} of the new owner is
+      only available due to a priority inherited through the thread queue.
   - name: Dispensable
     test-code: |
       ctx->gains_new_helping_scheduler = false;
     text: |
-      While all ${/glossary/scheduler-helping:/term} of the new owner are not
-      only available due to a priority inherited through the thread queue.
+      While all ${/glossary/scheduler-helping:/term} of the new owner are not only
+      available due to a priority inherited through the thread queue.
   test-epilogue: null
   test-prologue: null
 - name: Suspended
@@ -331,25 +325,23 @@ pre-conditions:
     test-code: |
       ctx->intend_to_block = true;
     text: |
-      While the new owner is in the intend to block wait
-      state.
+      While the new owner is in the intend to block wait state.
   test-epilogue: null
   test-prologue: null
 rationale: null
 requirement-type: functional
 skip-reasons:
   NeedsSecondCPUForIntentToBlock: |
-    Where the system was built with SMP support disabled, exactly one scheduler
-    is present in an application using exactly one processor.  There is at most
-    one executing thread.  Thread queues with an owner can only be surrendered
-    by the previous owner.  Thus, the new owner of the thread queue cannot be
-    in the intend to block wait state.
+    Where the system was built with SMP support disabled, exactly one scheduler is
+    present in an application using exactly one processor. There is at most one
+    executing thread. Thread queues with an owner can only be surrendered by the
+    previous owner. Thus, the new owner of the thread queue cannot be in the intend
+    to block wait state.
   NeedsSecondScheduler: |
-    A second scheduler is required to get a
-    ${/glossary/scheduler-helping:/term}.
+    A second scheduler is required to get a ${/glossary/scheduler-helping:/term}.
   NeedsThirdScheduler: |
-    A third scheduler is required to get a vital scheduler and a vital priority
-    for the new owner at the same time.
+    A third scheduler is required to get a vital scheduler and a vital priority for
+    the new owner at the same time.
 test-action: |
   if ( ctx->tq_ctx->enqueue_variant == TQ_ENQUEUE_STICKY ) {
     ActionSticky( ctx );
@@ -395,14 +387,13 @@ test-context:
   member: |
     bool use_helping_scheduler
 - brief: |
-    If this member is true, then the new owner thread shall gain a vital
-    priority.
+    If this member is true, then the new owner thread shall gain a vital priority.
   description: null
   member: |
     bool gains_new_priority
 - brief: |
-    If this member is true, then the new owner thread shall gain a vital
-    helping scheduler.
+    If this member is true, then the new owner thread shall gain a vital helping
+    scheduler.
   description: null
   member: |
     bool gains_new_helping_scheduler
@@ -423,14 +414,14 @@ test-context:
   member: |
     bool action_performed
 - brief: |
-    This member contains the current priority of the previous owner thread
-    before the thread queue surrender operation.
+    This member contains the current priority of the previous owner thread before
+    the thread queue surrender operation.
   description: null
   member: |
     rtems_task_priority priority_before
 - brief: |
-    This member contains the current priority of the previous owner thread
-    after the thread queue surrender operation.
+    This member contains the current priority of the previous owner thread after
+    the thread queue surrender operation.
   description: null
   member: |
     rtems_task_priority priority_after
@@ -529,7 +520,7 @@ test-support: |
     ctx->priority_after = GetSelfPriority();
   }
 
-  #if defined(RTEMS_SMP)
+  #if defined( RTEMS_SMP )
   static void Delay( void *arg )
   {
     Context          *ctx;
@@ -555,10 +546,7 @@ test-support: |
 
     ctx = arg;
 
-    if (
-      when == T_SCHEDULER_BEFORE &&
-      event->operation == T_SCHEDULER_BLOCK
-    ) {
+    if ( when == T_SCHEDULER_BEFORE && event->operation == T_SCHEDULER_BLOCK ) {
       T_scheduler_set_event_handler( NULL, NULL );
       ctx->request.handler = Delay;
       CallWithinISRSubmit( &ctx->request );
@@ -568,7 +556,7 @@ test-support: |
 
   static void Setup( Context *ctx )
   {
-  #if defined(RTEMS_SMP)
+  #if defined( RTEMS_SMP )
     TQSetScheduler( ctx->tq_ctx, NEW_OWNER, SCHEDULER_B_ID, PRIO_NORMAL );
     TQSetPriority( ctx->tq_ctx, PREV_OWNER_HELPER_A, PRIO_VERY_HIGH );
     TQSetScheduler(
@@ -600,15 +588,15 @@ test-support: |
 
   static void Action( Context *ctx )
   {
-    Status_Control    status;
-  #if defined(RTEMS_SMP)
+    Status_Control status;
+  #if defined( RTEMS_SMP )
     SMP_barrier_State state;
   #endif
 
     ctx->action_performed = true;
     ctx->previous_owner = ctx->tq_ctx->runner_id;
     TQMutexObtain( ctx->tq_ctx, TQ_MUTEX_A );
-  #if defined(RTEMS_SMP)
+  #if defined( RTEMS_SMP )
     TQSendAndWaitForExecutionStop(
       ctx->tq_ctx,
       NEW_OWNER,
@@ -624,7 +612,7 @@ test-support: |
       );
     }
 
-  #if defined(RTEMS_SMP)
+  #if defined( RTEMS_SMP )
     if ( ctx->helping_schedules_are_dispensible ) {
       TQSendAndWaitForExecutionStop(
         ctx->tq_ctx,
@@ -645,7 +633,7 @@ test-support: |
     status = TQEnqueue( ctx->tq_ctx, TQ_NO_WAIT );
     T_eq_int( status, TQConvertStatus( ctx->tq_ctx, STATUS_SUCCESSFUL ) );
 
-  #if defined(RTEMS_SMP)
+  #if defined( RTEMS_SMP )
     if ( ctx->intend_to_block ) {
       _SMP_barrier_Control_initialize( &ctx->barrier );
       _SMP_barrier_State_initialize( &state );
@@ -656,11 +644,7 @@ test-support: |
       /* B0 */
       _SMP_barrier_Wait( &ctx->barrier, &state, 2 );
     } else {
-      TQSendAndWaitForExecutionStop(
-        ctx->tq_ctx,
-        NEW_OWNER,
-        TQ_EVENT_ENQUEUE
-      );
+      TQSendAndWaitForExecutionStop( ctx->tq_ctx, NEW_OWNER, TQ_EVENT_ENQUEUE );
     }
 
     if ( ctx->gains_new_priority ) {
@@ -720,17 +704,13 @@ test-support: |
       ctx->tq_ctx->busy_wait[ PREV_OWNER_MOVER ] = false;
     }
   #else
-    TQSend(
-      ctx->tq_ctx,
-      NEW_OWNER,
-      TQ_EVENT_HELPER_B_SYNC | TQ_EVENT_ENQUEUE
-    );
+    TQSend( ctx->tq_ctx, NEW_OWNER, TQ_EVENT_HELPER_B_SYNC | TQ_EVENT_ENQUEUE );
     TQSynchronizeRunner();
   #endif
 
     Surrender( ctx );
 
-  #if defined(RTEMS_SMP)
+  #if defined( RTEMS_SMP )
     if ( ctx->intend_to_block ) {
       /* B1 */
       _SMP_barrier_Wait( &ctx->barrier, &state, 2 );
@@ -744,23 +724,16 @@ test-support: |
       ResumeTask( ctx->tq_ctx->worker_id[ NEW_OWNER ] );
     }
 
-    TQSendAndSynchronizeRunner(
-      ctx->tq_ctx,
-      NEW_OWNER,
-      TQ_EVENT_SURRENDER
-    );
+    TQSendAndSynchronizeRunner( ctx->tq_ctx, NEW_OWNER, TQ_EVENT_SURRENDER );
     TQWaitForExecutionStop( ctx->tq_ctx, NEW_OWNER );
 
-  #if defined(RTEMS_SMP)
+  #if defined( RTEMS_SMP )
     TQSendAndSynchronizeRunner(
       ctx->tq_ctx,
       NEW_OWNER,
       TQ_EVENT_MUTEX_B_RELEASE
     );
-    TQWaitForExecutionStop(
-      ctx->tq_ctx,
-      NEW_OWNER
-    );
+    TQWaitForExecutionStop( ctx->tq_ctx, NEW_OWNER );
 
     if ( ctx->gains_new_priority ) {
       TQSendAndSynchronizeRunner(
@@ -793,14 +766,10 @@ test-support: |
 
   static void SetupSticky( Context *ctx )
   {
-  #if defined(RTEMS_SMP)
+  #if defined( RTEMS_SMP )
     TQSetScheduler( ctx->tq_ctx, NEW_OWNER, SCHEDULER_B_ID, PRIO_NORMAL );
     TQSetPriority( ctx->tq_ctx, PREV_OWNER_HELPER_A, PRIO_VERY_HIGH );
-    TQSetScheduler( ctx->tq_ctx,
-      PREV_OWNER_HELPER_B,
-      SCHEDULER_B_ID,
-      PRIO_LOW
-    );
+    TQSetScheduler( ctx->tq_ctx, PREV_OWNER_HELPER_B, SCHEDULER_B_ID, PRIO_LOW );
     TQSetPriority( ctx->tq_ctx, NEW_OWNER_NEW_HELPER, PRIO_VERY_HIGH );
     TQSetPriority( ctx->tq_ctx, PREV_OWNER, PRIO_NORMAL );
   #else
@@ -810,7 +779,7 @@ test-support: |
 
   static void ActionSticky( Context *ctx )
   {
-  #if defined(RTEMS_SMP)
+  #if defined( RTEMS_SMP )
     ctx->action_performed = true;
     ctx->previous_owner = ctx->tq_ctx->worker_id[ PREV_OWNER ];
 
@@ -851,20 +820,12 @@ test-support: |
     );
     SetSelfScheduler( SCHEDULER_A_ID, PRIO_ULTRA_HIGH );
 
-    TQSendAndWaitForIntendToBlock(
-      ctx->tq_ctx,
-      NEW_OWNER,
-      TQ_EVENT_ENQUEUE
-    );
+    TQSendAndWaitForIntendToBlock( ctx->tq_ctx, NEW_OWNER, TQ_EVENT_ENQUEUE );
 
     SetSelfScheduler( SCHEDULER_B_ID, PRIO_ULTRA_HIGH );
 
     if ( ctx->gains_new_helping_scheduler ) {
-      TQSend(
-        ctx->tq_ctx,
-        NEW_OWNER_NEW_HELPER,
-        TQ_EVENT_ENQUEUE
-      );
+      TQSend( ctx->tq_ctx, NEW_OWNER_NEW_HELPER, TQ_EVENT_ENQUEUE );
       YieldTask( ctx->tq_ctx->worker_id[ PREV_OWNER ] );
       TQWaitForEventsReceived( ctx->tq_ctx, NEW_OWNER_NEW_HELPER );
       TQWaitForIntendToBlock( ctx->tq_ctx, NEW_OWNER_NEW_HELPER );
@@ -883,14 +844,10 @@ test-support: |
     TQSendAndWaitForExecutionStop(
       ctx->tq_ctx,
       PREV_OWNER,
-      TQ_EVENT_SCHEDULER_RECORD_START |
-        TQ_EVENT_SURRENDER
+      TQ_EVENT_SCHEDULER_RECORD_START | TQ_EVENT_SURRENDER
     );
     TQSchedulerRecordStop( ctx->tq_ctx );
-    T_eq_ptr(
-      TQGetOwner( ctx->tq_ctx ),
-      ctx->tq_ctx->worker_tcb[ NEW_OWNER ]
-    );
+    T_eq_ptr( TQGetOwner( ctx->tq_ctx ), ctx->tq_ctx->worker_tcb[ NEW_OWNER ] );
     ctx->priority_after = TQGetPriority( ctx->tq_ctx, PREV_OWNER );
   #else
     (void) ctx;
@@ -899,18 +856,14 @@ test-support: |
 
   static void CleanupSticky( Context *ctx )
   {
-  #if defined(RTEMS_SMP)
+  #if defined( RTEMS_SMP )
     SetSelfScheduler( SCHEDULER_A_ID, PRIO_ULTRA_HIGH );
 
     if ( ctx->suspended ) {
       ResumeTask( ctx->tq_ctx->worker_id[ NEW_OWNER ] );
     }
 
-    TQSendAndSynchronizeRunner(
-      ctx->tq_ctx,
-      NEW_OWNER,
-      TQ_EVENT_SURRENDER
-    );
+    TQSendAndSynchronizeRunner( ctx->tq_ctx, NEW_OWNER, TQ_EVENT_SURRENDER );
 
     if ( ctx->gains_new_helping_scheduler ) {
       TQSendAndSynchronizeRunner(

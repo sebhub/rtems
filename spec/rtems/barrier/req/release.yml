@@ -35,15 +35,15 @@ post-conditions:
     test-code: |
       T_eq_u32( ctx->released_value, ctx->waiting_tasks );
     text: |
-      The value of the object referenced by the
-      ${../if/release:/params[1]/name} parameter shall be set to the number of
-      released tasks after the return of the ${../if/release:/name} call.
+      The value of the object referenced by the ${../if/release:/params[1]/name}
+      parameter shall be set to the number of released tasks after the return of the
+      ${../if/release:/name} call.
   - name: Nop
     test-code: |
       T_eq_u32( ctx->released_value, RELEASED_INVALID_VALUE );
     text: |
-      Objects referenced by the ${../if/release:/params[1]/name} parameter in
-      past calls to ${../if/release:/name} shall not be accessed by the
+      Objects referenced by the ${../if/release:/params[1]/name} parameter in past
+      calls to ${../if/release:/name} shall not be accessed by the
       ${../if/release:/name} call.
   test-epilogue: null
   test-prologue: null
@@ -54,8 +54,8 @@ pre-conditions:
     test-code: |
       ctx->id = 0xffffffff;
     text: |
-      While the ${../if/release:/params[0]/name} parameter is not associated
-      with a barrier.
+      While the ${../if/release:/params[0]/name} parameter is not associated with a
+      barrier.
   - name: Manual
     test-code: |
       ctx->id = ctx->manual_release_id;
@@ -76,14 +76,13 @@ pre-conditions:
     test-code: |
       ctx->released = &ctx->released_value;
     text: |
-      While the ${../if/release:/params[1]/name} parameter references an object
-      of type ${/c/if/uint32_t:/name}.
+      While the ${../if/release:/params[1]/name} parameter references an object of
+      type ${/c/if/uint32_t:/name}.
   - name: 'Null'
     test-code: |
       ctx->released = NULL;
     text: |
-      While the ${../if/release:/params[1]/name} parameter is
-      ${/c/if/null:/name}.
+      While the ${../if/release:/params[1]/name} parameter is ${/c/if/null:/name}.
   test-epilogue: null
   test-prologue: |
     ctx->released_value = RELEASED_INVALID_VALUE;
@@ -226,7 +225,8 @@ test-teardown:
 
     RestoreRunnerPriority();
   description: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

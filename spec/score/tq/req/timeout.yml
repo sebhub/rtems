@@ -69,8 +69,7 @@ pre-conditions:
       Yield();
       TQEnqueueDone( ctx->tq_ctx );
     text: |
-      While the thread of the timeout operation is in the intend to block wait
-      state.
+      While the thread of the timeout operation is in the intend to block wait state.
   - name: ReadyAgain
     test-code: |
       TQEnqueuePrepare( ctx->tq_ctx );
@@ -80,8 +79,7 @@ pre-conditions:
       TQEnqueueDone( ctx->tq_ctx );
       TQSend( ctx->tq_ctx, TQ_BLOCKER_A, TQ_EVENT_SURRENDER );
     text: |
-      While the thread of the timeout operation is in the ready again wait
-      state.
+      While the thread of the timeout operation is in the ready again wait state.
   test-epilogue: null
   test-prologue: null
 rationale: null
@@ -166,10 +164,7 @@ test-support: |
 
     ctx = arg;
 
-    if (
-      when == T_SCHEDULER_BEFORE &&
-      event->operation == T_SCHEDULER_BLOCK
-    ) {
+    if ( when == T_SCHEDULER_BEFORE && event->operation == T_SCHEDULER_BLOCK ) {
       T_scheduler_set_event_handler( NULL, NULL );
       ctx->request.handler = Tick;
       CallWithinISRSubmit( &ctx->request );
@@ -182,9 +177,7 @@ test-support: |
 
     ctx = arg;
     TQSchedulerRecordStart( ctx->tq_ctx );
-    _Thread_Timeout(
-      &ctx->tq_ctx->worker_tcb[ TQ_BLOCKER_A ]->Timer.Watchdog
-    );
+    _Thread_Timeout( &ctx->tq_ctx->worker_tcb[ TQ_BLOCKER_A ]->Timer.Watchdog );
     TQSchedulerRecordStop( ctx->tq_ctx );
   }
 
@@ -199,8 +192,7 @@ test-support: |
     ctx = arg;
 
     if (
-      when == T_SCHEDULER_BEFORE &&
-      event->operation == T_SCHEDULER_UNBLOCK
+      when == T_SCHEDULER_BEFORE && event->operation == T_SCHEDULER_UNBLOCK
     ) {
       T_scheduler_set_event_handler( NULL, NULL );
       ctx->request.handler = ThreadTimeout;

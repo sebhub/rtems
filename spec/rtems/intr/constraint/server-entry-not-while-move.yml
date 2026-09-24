@@ -8,6 +8,6 @@ links:
 rationale: null
 text: |
   The directive shall not be called concurrently with
-  ${../if/server-entry-move:/name} with the same interrupt server entry.
-  Calling the directive under this condition is undefined behaviour.
+  ${../if/server-entry-move:/name} with the same interrupt server entry. Calling
+  the directive under this condition is undefined behaviour.
 type: constraint

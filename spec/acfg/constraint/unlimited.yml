@@ -10,6 +10,6 @@ text: |
   The value of the application configuration option may be defined through
   ${/rtems/config/if/resource-unlimited:/name} the enable unlimited objects for
   the object class, if the value passed to
-  ${/rtems/config/if/resource-unlimited:/name} satisfies all other constraints
-  of the configuration option.
+  ${/rtems/config/if/resource-unlimited:/name} satisfies all other constraints of
+  the configuration option.
 type: constraint

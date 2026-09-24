@@ -44,8 +44,8 @@ test-teardown:
   description: null
 text: |
   While the execution environment is ${.:/environment}, while the measurement
-  sample is the runtime of exactly one successful call to
-  ${../if/restart:/name} which does not preempt the caller, when exactly
-  ${../val/perf:/params/sample-count} samples are collected, the
-  ${.:/limit-kind} shall be ${.:/limit-condition}.
+  sample is the runtime of exactly one successful call to ${../if/restart:/name}
+  which does not preempt the caller, when exactly
+  ${../val/perf:/params/sample-count} samples are collected, the ${.:/limit-kind}
+  shall be ${.:/limit-condition}.
 type: requirement

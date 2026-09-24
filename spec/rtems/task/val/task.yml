@@ -12,8 +12,8 @@ test-actions:
     id = rtems_task_self();
   checks:
   - brief: |
-      Check that the returned value is equal to the object identifier of the
-      calling task.
+      Check that the returned value is equal to the object identifier of the calling
+      task.
     code: |
       T_step_eq_u32( ${.:/step}, id, 0x0a010001 );
     links: []
@@ -41,8 +41,8 @@ test-actions:
     iter_ctx.owner_after = _RTEMS_Allocator_is_owner();
   checks:
   - brief: |
-      Check that the all counter is equal to the count of tasks.  Check that
-      the calling task was visited exacly once.  Firstly, this shows that
+      Check that the all counter is equal to the count of tasks. Check that the
+      calling task was visited exacly once. Firstly, this shows that
       ${../if/iterate:/name} used the parameters specified by
       ${../if/iterate:/params[0]/name} and ${../if/iterate:/params[1]/name}.
       Secondly, this shows that the iteration was done over all tasks.
@@ -55,9 +55,8 @@ test-actions:
     - role: validation
       uid: ../req/iterate-done
   - brief: |
-      Check that the object alloctor mutex was not owned before and after the
-      call.  Check that the object alloctor mutex was owned during the
-      iteration.
+      Check that the object alloctor mutex was not owned before and after the call.
+      Check that the object alloctor mutex was owned during the iteration.
     code: |
       T_step_false( ${.:/step}, iter_ctx.owner_before );
       T_step_true( ${.:/step}, iter_ctx.owner_in_visitor );
@@ -71,8 +70,7 @@ test-actions:
   - role: validation
     uid: ../req/iterate-start
 - action-brief: |
-    Call ${../if/iterate:/name} with a visitor which returns
-    ${/c/if/true:/name}.
+    Call ${../if/iterate:/name} with a visitor which returns ${/c/if/true:/name}.
   action-code: |
     TaskIterateContext iter_ctx;
 
@@ -81,8 +79,8 @@ test-actions:
     rtems_task_iterate( TaskVisitor, &iter_ctx );
   checks:
   - brief: |
-      Check that the all counter is equal to one.  This shows that the
-      iteration stops when the visitor returns ${/c/if/true:/name}.
+      Check that the all counter is equal to one. This shows that the iteration stops
+      when the visitor returns ${/c/if/true:/name}.
     code: |
       T_step_eq_u32( ${.:/step}, iter_ctx.counter_all, 1 );
     links:
@@ -102,8 +100,8 @@ test-actions:
   - role: validation
     uid: ../req/storage-alignment
 - action-brief: |
-    Assert that ${../if/no-priority:/name} is a constant expression which
-    evaluates to the expected value.
+    Assert that ${../if/no-priority:/name} is a constant expression which evaluates
+    to the expected value.
   action-code: |
     RTEMS_STATIC_ASSERT(
       RTEMS_NO_PRIORITY == RTEMS_CURRENT_PRIORITY,
@@ -152,8 +150,8 @@ test-actions:
     rtems_status_code sc;
   checks:
   - brief: |
-      Check that ${../if/is-suspended:/name} returns the expected status if
-      called with a task identifier parameter of ${../if/self-define:/name}.
+      Check that ${../if/is-suspended:/name} returns the expected status if called
+      with a task identifier parameter of ${../if/self-define:/name}.
     code: |
       sc = rtems_task_is_suspended( RTEMS_SELF );
       T_step_rsc_success( ${.:/step}, sc );
@@ -169,8 +167,8 @@ test-actions:
     rtems_id          id;
   checks:
   - brief: |
-      Create a task.  Check that the home scheduler of the created task is
-      scheduler A.
+      Create a task. Check that the home scheduler of the created task is scheduler
+      A.
     code: |
       sc = rtems_task_create(
         OBJECT_NAME,
@@ -188,8 +186,8 @@ test-actions:
     - role: validation
       uid: ../req/create-home-scheduler
   - brief: |
-      Construct a task.  Check that the home scheduler of the constructed task
-      is scheduler A.
+      Construct a task. Check that the home scheduler of the constructed task is
+      scheduler A.
     code: |
       sc = rtems_task_construct( &DefaultTaskConfig, &id );
       T_step_rsc_success( ${.:/step}, sc );

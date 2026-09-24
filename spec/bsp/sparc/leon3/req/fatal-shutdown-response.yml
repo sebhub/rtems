@@ -5,14 +5,14 @@ enabled-by:
   and:
   - RTEMS_SMP
   - bsps/sparc/leon3
+functional-type: function
 links:
 - role: interface-function
   uid: /bsp/if/fatal-extension
-functional-type: function
 rationale: null
 requirement-type: functional
 text: |
-  While the fatal source is ${/score/interr/if/source-smp:/name}, while the
-  fatal code is ${/score/smp/if/fatal-shutdown-response:/name}, the
+  While the fatal source is ${/score/interr/if/source-smp:/name}, while the fatal
+  code is ${/score/smp/if/fatal-shutdown-response:/name}, the
   ${/bsp/if/fatal-extension:/name} directive shall power down the processor.
 type: requirement

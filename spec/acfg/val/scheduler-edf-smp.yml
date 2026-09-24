@@ -11,9 +11,9 @@ test-actions:
     uint32_t          yield_count_before;
   checks:
   - brief: |
-      Check that the Earliest Deadline First SMP Scheduler which was configured
-      by the ${/acfg/if/scheduler-edf-smp:/name} application configuration in
-      the test suite.
+      Check that the Earliest Deadline First SMP Scheduler which was configured by
+      the ${/acfg/if/scheduler-edf-smp:/name} application configuration in the test
+      suite.
     code: |
       yield_count_before = yield_count;
       sc = rtems_task_wake_after( RTEMS_YIELD_PROCESSOR );

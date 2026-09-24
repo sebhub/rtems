@@ -6,20 +6,21 @@ default-value: 255
 description: |
   For the following schedulers
 
-  * ${/ref/rtems/c-user/scheduler-priority:/name}, which is the default in uniprocessor
-    configurations and can be configured through the
+  - ${/ref/rtems/c-user/scheduler-priority:/name}, which is the default in
+    uniprocessor configurations and can be configured through the
     ${scheduler-priority:/name} configuration option,
 
-  * ${/ref/rtems/c-user/scheduler-smp-priority:/name} which can be configured through the
-    ${scheduler-priority-smp:/name} configuration option, and
+  - ${/ref/rtems/c-user/scheduler-smp-priority:/name} which can be configured
+    through the ${scheduler-priority-smp:/name} configuration option, and
 
-  * ${/ref/rtems/c-user/scheduler-smp-priority-affinity:/name} which can be configured through the
-    ${scheduler-priority-affinity-smp:/name} configuration option
+  - ${/ref/rtems/c-user/scheduler-smp-priority-affinity:/name} which can be
+    configured through the ${scheduler-priority-affinity-smp:/name} configuration
+    option
 
   this configuration option specifies the maximum numeric priority of any task
-  for these schedulers and one less that the number of priority levels for
-  these schedulers.  For all other schedulers provided by RTEMS, this
-  configuration option has no effect.
+  for these schedulers and one less that the number of priority levels for these
+  schedulers. For all other schedulers provided by RTEMS, this configuration
+  option has no effect.
 enabled-by: true
 index-entries:
 - maximum priority

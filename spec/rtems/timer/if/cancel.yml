@@ -13,8 +13,8 @@ definition:
     return: ${../../status/if/code:/name}
   variants: []
 description: |
-  This directive cancels the timer specified by ${.:/params[0]/name}.  This
-  timer will be reinitiated by the next invocation of ${reset:/name},
+  This directive cancels the timer specified by ${.:/params[0]/name}. This timer
+  will be reinitiated by the next invocation of ${reset:/name},
   ${fire-after:/name}, ${fire-when:/name}, ${server-fire-after:/name}, or
   ${server-fire-when:/name} with the same timer identifier.
 enabled-by: true
@@ -37,7 +37,8 @@ links:
 name: rtems_timer_cancel
 notes: null
 params:
-- description: is the timer identifier.
+- description: |
+    is the timer identifier.
   dir: null
   name: id
 return:

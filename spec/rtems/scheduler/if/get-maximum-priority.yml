@@ -33,9 +33,8 @@ params:
   dir: null
   name: scheduler_id
 - description: |
-    is the pointer to an ${../../type/if/priority:/name} object.  When the
-    directive the maximum priority of the scheduler will be stored in this
-    object.
+    is the pointer to an ${../../type/if/priority:/name} object. When the directive
+    the maximum priority of the scheduler will be stored in this object.
   dir: out
   name: priority
 return:

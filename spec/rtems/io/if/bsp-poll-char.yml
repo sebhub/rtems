@@ -8,11 +8,11 @@ definition:
   default: ${bsp-polling-getchar-function-type:/name} ${.:/name}
   variants: []
 description: |
-  This function pointer may be ${/c/if/null:/name}.  It may reference a
-  function provided by the ${/glossary/bsp:/term}.  Referenced functions shall
-  dequeue the least recently received character from the device and return it
-  as an unsigned character.  If no character is enqueued on the device, then
-  the function shall immediately return the value minus one.
+  This function pointer may be ${/c/if/null:/name}. It may reference a function
+  provided by the ${/glossary/bsp:/term}. Referenced functions shall dequeue the
+  least recently received character from the device and return it as an unsigned
+  character. If no character is enqueued on the device, then the function shall
+  immediately return the value minus one.
 enabled-by: true
 index-entries: []
 interface-type: variable

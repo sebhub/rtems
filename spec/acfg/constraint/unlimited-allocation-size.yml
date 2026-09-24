@@ -7,6 +7,6 @@ links:
   uid: /req/usage-constraints
 rationale: null
 text: |
-  The value of the application configuration option shall meet the constraints
-  of all object classes to which it is applied.
+  The value of the application configuration option shall meet the constraints of
+  all object classes to which it is applied.
 type: constraint

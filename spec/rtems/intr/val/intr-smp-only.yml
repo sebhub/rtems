@@ -11,9 +11,7 @@ test-actions:
       int a;
       RTEMS_INTERRUPT_LOCK_MEMBER( member )
       int b;
-    } lock = {
-      .member = RTEMS_INTERRUPT_LOCK_INITIALIZER( "name" )
-    };
+    } lock = { .member = RTEMS_INTERRUPT_LOCK_INITIALIZER( "name" ) };
 
     RTEMS_INTERRUPT_LOCK_REFERENCE( ref, &the_lock )
     rtems_interrupt_lock_context lock_context;
@@ -30,8 +28,7 @@ test-actions:
       uid: ../req/lock-needs-object
   - brief: |
       Check that ${../if/lock-reference:/name} expanded to a lock reference
-      definition.  Check that the lock is available after static
-      initialization.
+      definition. Check that the lock is available after static initialization.
     code: |
       T_true( ISRLockIsAvailable( ref ) );
     links:
@@ -66,7 +63,7 @@ test-actions:
       uid: ../req/lock-store-interrupt-status
   - brief: |
       Check that the maskable interrupt status is not changed by the
-      ${../if/lock-acquire-isr:/name} call.  Check that the lock is no longer
+      ${../if/lock-acquire-isr:/name} call. Check that the lock is no longer
       available.
     code: |
       T_false( AreInterruptsEnabled() );
@@ -80,7 +77,7 @@ test-actions:
   - brief: |
       Check that the maskable interrupt status is restored by the call to
       ${../if/lock-release:/name} according to the
-      ${../if/lock-release:/params[1]/name} parameter.  Check that the lock is
+      ${../if/lock-release:/params[1]/name} parameter. Check that the lock is
       available afterwards.
     code: |
       T_false( AreInterruptsEnabled() );
@@ -104,8 +101,8 @@ test-actions:
     - role: validation
       uid: ../req/lock-destroy
   - brief: |
-      Initialize the lock using ${../if/lock-initialize:/name}.  Check that the
-      lock is available after initialization.
+      Initialize the lock using ${../if/lock-initialize:/name}. Check that the lock
+      is available after initialization.
     code: |
       rtems_interrupt_lock_initialize( &lock.member, "name" );
       T_true( ISRLockIsAvailable( &lock.member ) );
@@ -114,8 +111,8 @@ test-actions:
       uid: ../req/lock-initialize
   - brief: |
       Check that maskable interrupts are disabled before the call to
-      ${../if/lock-acquire:/name} and disabled afterwards.  Check that the lock
-      is no longer available.
+      ${../if/lock-acquire:/name} and disabled afterwards. Check that the lock is no
+      longer available.
     code: |
       T_true( AreInterruptsEnabled() );
       T_true( ISRLockIsAvailable( &lock.member ) );
@@ -132,7 +129,7 @@ test-actions:
   - brief: |
       Check that the maskable interrupt status is restored by the call to
       ${../if/lock-release:/name} according to the
-      ${../if/lock-release:/params[1]/name} parameter.  Check that the lock is
+      ${../if/lock-release:/params[1]/name} parameter. Check that the lock is
       available afterwards.
     code: |
       T_false( AreInterruptsEnabled() );

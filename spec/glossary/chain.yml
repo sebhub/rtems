@@ -8,7 +8,7 @@ links:
   uid: group
 term: chain
 text: |
-  A data structure which allows for efficient dynamic addition and removal
-  of elements.  It differs from an array in that it is not limited to a
-  predefined size.
+  A data structure which allows for efficient dynamic addition and removal of
+  elements. It differs from an array in that it is not limited to a predefined
+  size.
 type: glossary

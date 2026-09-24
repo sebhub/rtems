@@ -42,8 +42,8 @@ post-conditions:
     text: |
       The fatal error with a fatal source of
       ${/score/interr/if/internal-error-core:/name} and a fatal code of
-      ${/score/interr/if/bad-thread-dispatch-disable-level:/name} shall occur
-      through the ${../if/delete:/name} call.
+      ${/score/interr/if/bad-thread-dispatch-disable-level:/name} shall occur through
+      the ${../if/delete:/name} call.
   - name: Nop
     test-code: |
       T_eq_u32( ctx->calls.fatal, 0 );
@@ -57,14 +57,14 @@ post-conditions:
     test-code: |
       T_eq_u32( ctx->worker_state & STATES_ZOMBIE, STATES_ZOMBIE )
     text: |
-      The task specified by the ${../if/delete:/params[0]/name} parameter shall
-      be in the zombie state after the ${../if/delete:/name} call.
+      The task specified by the ${../if/delete:/params[0]/name} parameter shall be in
+      the zombie state after the ${../if/delete:/name} call.
   - name: 'No'
     test-code: |
       T_eq_u32( ctx->worker_state & STATES_ZOMBIE, 0 )
     text: |
-      The task specified by the ${../if/delete:/params[0]/name} parameter shall
-      not be in the zombie state after the ${../if/delete:/name} call.
+      The task specified by the ${../if/delete:/params[0]/name} parameter shall not
+      be in the zombie state after the ${../if/delete:/name} call.
   test-epilogue: null
   test-prologue: null
 - name: TaskPriority
@@ -73,16 +73,15 @@ post-conditions:
     test-code: |
       T_eq_u32( ctx->worker_priority, PRIO_ULTRA_HIGH );
     text: |
-      Each priority of the calling task which is higher than the highest
-      priority of the task specified by the ${../if/delete:/params[0]/name}
-      parameter shall be made the highest priority of the task.
+      Each priority of the calling task which is higher than the highest priority of
+      the task specified by the ${../if/delete:/params[0]/name} parameter shall be
+      made the highest priority of the task.
   - name: Nop
     test-code: |
       T_eq_u32( ctx->worker_priority, PRIO_NORMAL );
     text: |
-      The priorities of the task specified by the
-      ${../if/delete:/params[0]/name} parameter shall not be changed by the
-      ${../if/delete:/name} call.
+      The priorities of the task specified by the ${../if/delete:/params[0]/name}
+      parameter shall not be changed by the ${../if/delete:/name} call.
   test-epilogue: null
   test-prologue: null
 - name: RestartExtensions
@@ -117,14 +116,14 @@ post-conditions:
     test-code: |
       T_eq_u32( ctx->worker_state & STATES_DORMANT, STATES_DORMANT )
     text: |
-      The task specified by the ${../if/delete:/params[0]/name} parameter shall
-      be dormant after the ${../if/delete:/name} call.
+      The task specified by the ${../if/delete:/params[0]/name} parameter shall be
+      dormant after the ${../if/delete:/name} call.
   - name: 'No'
     test-code: |
       T_eq_u32( ctx->worker_state & STATES_DORMANT, 0 )
     text: |
-      The task specified by the ${../if/delete:/params[0]/name} parameter shall
-      not be dormant after the ${../if/delete:/name} call.
+      The task specified by the ${../if/delete:/params[0]/name} parameter shall not
+      be dormant after the ${../if/delete:/name} call.
   test-epilogue: null
   test-prologue: null
 - name: Suspended
@@ -133,14 +132,14 @@ post-conditions:
     test-code: |
       T_eq_u32( ctx->worker_state & STATES_SUSPENDED, STATES_SUSPENDED )
     text: |
-      The task specified by the ${../if/delete:/params[0]/name} parameter shall
-      be suspended after the ${../if/delete:/name} call.
+      The task specified by the ${../if/delete:/params[0]/name} parameter shall be
+      suspended after the ${../if/delete:/name} call.
   - name: 'No'
     test-code: |
       T_eq_u32( ctx->worker_state & STATES_SUSPENDED, 0 )
     text: |
-      The task specified by the ${../if/delete:/params[0]/name} parameter shall
-      not be suspended after the ${../if/delete:/name} call.
+      The task specified by the ${../if/delete:/params[0]/name} parameter shall not
+      be suspended after the ${../if/delete:/name} call.
   test-epilogue: null
   test-prologue: null
 - name: Restarting
@@ -149,14 +148,14 @@ post-conditions:
     test-code: |
       T_ne_int( ctx->worker_life_state & THREAD_LIFE_RESTARTING, 0 );
     text: |
-      The task specified by the ${../if/delete:/params[0]/name} parameter
-      shall be restarting after the ${../if/delete:/name} call.
+      The task specified by the ${../if/delete:/params[0]/name} parameter shall be
+      restarting after the ${../if/delete:/name} call.
   - name: 'No'
     test-code: |
       T_eq_int( ctx->worker_life_state & THREAD_LIFE_RESTARTING, 0 );
     text: |
-      The task specified by the ${../if/delete:/params[0]/name} parameter
-      shall not be restarting after the ${../if/delete:/name} call.
+      The task specified by the ${../if/delete:/params[0]/name} parameter shall not
+      be restarting after the ${../if/delete:/name} call.
   test-epilogue: null
   test-prologue: null
 - name: Terminating
@@ -165,14 +164,14 @@ post-conditions:
     test-code: |
       T_ne_int( ctx->worker_life_state & THREAD_LIFE_TERMINATING, 0 );
     text: |
-      The task specified by the ${../if/delete:/params[0]/name} parameter
-      shall be terminating after the ${../if/delete:/name} call.
+      The task specified by the ${../if/delete:/params[0]/name} parameter shall be
+      terminating after the ${../if/delete:/name} call.
   - name: 'No'
     test-code: |
       T_eq_int( ctx->worker_life_state & THREAD_LIFE_TERMINATING, 0 );
     text: |
-      The task specified by the ${../if/delete:/params[0]/name} parameter
-      shall not be terminating after the ${../if/delete:/name} call.
+      The task specified by the ${../if/delete:/params[0]/name} parameter shall not
+      be terminating after the ${../if/delete:/name} call.
   test-epilogue: null
   test-prologue: null
 - name: Protected
@@ -181,16 +180,14 @@ post-conditions:
     test-code: |
       T_ne_int( ctx->worker_life_state & THREAD_LIFE_PROTECTED, 0 );
     text: |
-      The thread life of the task specified by the
-      ${../if/delete:/params[0]/name} parameter be protected after the
-      ${../if/delete:/name} call.
+      The thread life of the task specified by the ${../if/delete:/params[0]/name}
+      parameter be protected after the ${../if/delete:/name} call.
   - name: 'No'
     test-code: |
       T_eq_int( ctx->worker_life_state & THREAD_LIFE_PROTECTED, 0 );
     text: |
-      The thread life of the task specified by the
-      ${../if/delete:/params[0]/name} parameter shall not be protected after
-      the ${../if/delete:/name} call.
+      The thread life of the task specified by the ${../if/delete:/params[0]/name}
+      parameter shall not be protected after the ${../if/delete:/name} call.
   test-epilogue: null
   test-prologue: null
 - name: State
@@ -198,24 +195,24 @@ post-conditions:
   - name: Enqueued
     test-code: |
       T_ne_u32( ctx->worker_state & STATES_BLOCKED, 0 )
-      T_not_null( ctx->worker_wait_queue );
+        T_not_null( ctx->worker_wait_queue );
     text: |
-      The task specified by the ${../if/delete:/params[0]/name} parameter shall
-      be enqueued on a ${/glossary/waitqueue:/term} and blocked.
+      The task specified by the ${../if/delete:/params[0]/name} parameter shall be
+      enqueued on a ${/glossary/waitqueue:/term} and blocked.
   - name: Ready
     test-code: |
       T_eq_u32( ctx->worker_state & STATES_BLOCKED, 0 )
-      T_null( ctx->worker_wait_queue );
+        T_null( ctx->worker_wait_queue );
     text: |
-      The task specified by the ${../if/delete:/params[0]/name} parameter shall
-      not be enqueued on a ${/glossary/waitqueue:/term} and not blocked.
+      The task specified by the ${../if/delete:/params[0]/name} parameter shall not
+      be enqueued on a ${/glossary/waitqueue:/term} and not blocked.
   - name: Blocked
     test-code: |
       T_ne_u32( ctx->worker_state & STATES_BLOCKED, 0 )
-      T_null( ctx->worker_wait_queue );
+        T_null( ctx->worker_wait_queue );
     text: |
-      The task specified by the ${../if/delete:/params[0]/name} parameter shall
-      be not enqueued on a ${/glossary/waitqueue:/term} and blocked.
+      The task specified by the ${../if/delete:/params[0]/name} parameter shall be
+      not enqueued on a ${/glossary/waitqueue:/term} and blocked.
   test-epilogue: null
   test-prologue: null
 - name: Timer
@@ -241,20 +238,20 @@ pre-conditions:
     test-code: |
       ctx->id = RTEMS_SELF;
     text: |
-      While the ${../if/delete:/params[0]/name} parameter is associated with
-      the calling task.
+      While the ${../if/delete:/params[0]/name} parameter is associated with the
+      calling task.
   - name: Other
     test-code: |
       ctx->id = ctx->worker_id;
     text: |
-      While the ${../if/delete:/params[0]/name} parameter is associated with a
-      task other than the calling task.
+      While the ${../if/delete:/params[0]/name} parameter is associated with a task
+      other than the calling task.
   - name: Invalid
     test-code: |
       ctx->id = INVALID_ID;
     text: |
-      While the ${../if/delete:/params[0]/name} parameter is not associated with
-      a task.
+      While the ${../if/delete:/params[0]/name} parameter is not associated with a
+      task.
   test-epilogue: null
   test-prologue: null
 - name: Context
@@ -263,14 +260,13 @@ pre-conditions:
     test-code: |
       ctx->interrupt = false;
     text: |
-      While the ${../if/delete:/name} directive is called from within task
-      context.
+      While the ${../if/delete:/name} directive is called from within task context.
   - name: Interrupt
     test-code: |
       ctx->interrupt = true;
     text: |
-      While the ${../if/delete:/name} directive is called from within
-      interrupt context.
+      While the ${../if/delete:/name} directive is called from within interrupt
+      context.
   test-epilogue: null
   test-prologue: null
 - name: ThreadDispatch
@@ -293,16 +289,16 @@ pre-conditions:
     test-code: |
       ctx->vital_deleter_priority = true;
     text: |
-      While at least one priority of the calling task is higher than the
-      highest priority of the task specified by the
-      ${../if/delete:/params[0]/name} parameter.
+      While at least one priority of the calling task is higher than the highest
+      priority of the task specified by the ${../if/delete:/params[0]/name}
+      parameter.
   - name: Dispensable
     test-code: |
       ctx->vital_deleter_priority = false;
     text: |
-      While all priorities of the calling task are lower than or equal to the
-      highest priority of the task specified by the
-      ${../if/delete:/params[0]/name} parameter.
+      While all priorities of the calling task are lower than or equal to the highest
+      priority of the task specified by the ${../if/delete:/params[0]/name}
+      parameter.
   test-epilogue: null
   test-prologue: null
 - name: Dormant
@@ -311,14 +307,14 @@ pre-conditions:
     test-code: |
       ctx->dormant = false;
     text: |
-      While the task specified by the ${../if/delete:/params[0]/name} parameter
-      is not dormant.
+      While the task specified by the ${../if/delete:/params[0]/name} parameter is
+      not dormant.
   - name: 'Yes'
     test-code: |
       ctx->dormant = true;
     text: |
-      While the task specified by the ${../if/delete:/params[0]/name} parameter
-      is dormant.
+      While the task specified by the ${../if/delete:/params[0]/name} parameter is
+      dormant.
   test-epilogue: null
   test-prologue: null
 - name: Suspended
@@ -327,14 +323,14 @@ pre-conditions:
     test-code: |
       ctx->suspended = true;
     text: |
-      While the task specified by the ${../if/delete:/params[0]/name} parameter
-      is suspended.
+      While the task specified by the ${../if/delete:/params[0]/name} parameter is
+      suspended.
   - name: 'No'
     test-code: |
       ctx->suspended = false;
     text: |
-      While the task specified by the ${../if/delete:/params[0]/name} parameter
-      is not suspended.
+      While the task specified by the ${../if/delete:/params[0]/name} parameter is
+      not suspended.
   test-epilogue: null
   test-prologue: null
 - name: Restarting
@@ -343,14 +339,14 @@ pre-conditions:
     test-code: |
       ctx->restarting = false;
     text: |
-      While the task specified by the ${../if/delete:/params[0]/name} parameter
-      is not restarting.
+      While the task specified by the ${../if/delete:/params[0]/name} parameter is
+      not restarting.
   - name: 'Yes'
     test-code: |
       ctx->restarting = true;
     text: |
-      While the task specified by the ${../if/delete:/params[0]/name} parameter
-      is restarting.
+      While the task specified by the ${../if/delete:/params[0]/name} parameter is
+      restarting.
   test-epilogue: null
   test-prologue: null
 - name: Terminating
@@ -359,14 +355,14 @@ pre-conditions:
     test-code: |
       ctx->terminating = false;
     text: |
-      While the task specified by the ${../if/delete:/params[0]/name} parameter
-      is not terminating.
+      While the task specified by the ${../if/delete:/params[0]/name} parameter is
+      not terminating.
   - name: 'Yes'
     test-code: |
       ctx->terminating = true;
     text: |
-      While the task specified by the ${../if/delete:/params[0]/name} parameter
-      is terminating.
+      While the task specified by the ${../if/delete:/params[0]/name} parameter is
+      terminating.
   test-epilogue: null
   test-prologue: null
 - name: Protected
@@ -375,14 +371,14 @@ pre-conditions:
     test-code: |
       ctx->protected = true;
     text: |
-      While thread life of the task specified by the
-      ${../if/delete:/params[0]/name} parameter is protected.
+      While thread life of the task specified by the ${../if/delete:/params[0]/name}
+      parameter is protected.
   - name: 'No'
     test-code: |
       ctx->protected = false;
     text: |
-      While thread life of the task specified by the
-      ${../if/delete:/params[0]/name} parameter is not protected.
+      While thread life of the task specified by the ${../if/delete:/params[0]/name}
+      parameter is not protected.
   test-epilogue: null
   test-prologue: null
 - name: State
@@ -392,23 +388,22 @@ pre-conditions:
       ctx->blocked = true;
       ctx->enqueued = true;
     text: |
-      While the task specified by the ${../if/delete:/params[0]/name}
-      parameter is enqueued on a ${/glossary/waitqueue:/term}.
+      While the task specified by the ${../if/delete:/params[0]/name} parameter is
+      enqueued on a ${/glossary/waitqueue:/term}.
   - name: Ready
     test-code: |
       ctx->blocked = false;
       ctx->enqueued = false;
     text: |
-      While the task specified by the ${../if/delete:/params[0]/name}
-      parameter is a ${/glossary/readytask:/term} or a
-      ${/glossary/scheduledtask:/term}.
+      While the task specified by the ${../if/delete:/params[0]/name} parameter is a
+      ${/glossary/readytask:/term} or a ${/glossary/scheduledtask:/term}.
   - name: Blocked
     test-code: |
       ctx->blocked = true;
       ctx->enqueued = false;
     text: |
-      While the task specified by the ${../if/delete:/params[0]/name}
-      parameter is blocked.
+      While the task specified by the ${../if/delete:/params[0]/name} parameter is
+      blocked.
   test-epilogue: null
   test-prologue: null
 - name: Timer
@@ -509,8 +504,8 @@ test-context:
   member: |
     rtems_id mutex_id
 - brief: |
-    This member provides an event set used to set up the blocking conditions of
-    the task to delete.
+    This member provides an event set used to set up the blocking conditions of the
+    task to delete.
   description: null
   member: |
     rtems_event_set events
@@ -525,8 +520,8 @@ test-context:
   member: |
     rtems_tcb *worker_tcb
 - brief: |
-    This member contains the worker state at the end of the
-    ${../if/delete:/name} call.
+    This member contains the worker state at the end of the ${../if/delete:/name}
+    call.
   description: null
   member: |
     States_Control worker_state
@@ -607,8 +602,8 @@ test-context:
   member: |
     bool suspended
 - brief: |
-    If this member is true, then the thread life of the worker shall be
-    protected before the ${../if/delete:/name} call.
+    If this member is true, then the thread life of the worker shall be protected
+    before the ${../if/delete:/name} call.
   description: null
   member: |
     bool protected
@@ -625,8 +620,8 @@ test-context:
   member: |
     bool terminating
 - brief: |
-    If this member is true, then the ${../if/delete:/name} shall be called
-    from within interrupt context.
+    If this member is true, then the ${../if/delete:/name} shall be called from
+    within interrupt context.
   description: null
   member: |
     bool interrupt
@@ -648,20 +643,20 @@ test-context:
   member: |
     bool worker_is_mutex_owner
 - brief: |
-    If this member is true, then the timer of the worker shall be active before
-    the ${../if/delete:/name} call.
+    If this member is true, then the timer of the worker shall be active before the
+    ${../if/delete:/name} call.
   description: null
   member: |
     bool timer_active
 - brief: |
-    If this member is true, then the deleter shall have a vital priority for
-    the worker.
+    If this member is true, then the deleter shall have a vital priority for the
+    worker.
   description: null
   member: |
     bool vital_deleter_priority
 - brief: |
-    If this member is true, then thread dispatching is disabled by the worker
-    task before the ${../if/delete:/name} call.
+    If this member is true, then thread dispatching is disabled by the worker task
+    before the ${../if/delete:/name} call.
   description: null
   member: |
     bool dispatch_disabled
@@ -671,14 +666,12 @@ test-context:
   member: |
     bool delete_worker_expected
 - brief: |
-    This member contains the return value of the ${../if/delete:/name}
-    call.
+    This member contains the return value of the ${../if/delete:/name} call.
   description: null
   member: |
     rtems_status_code status
 - brief: |
-    This member specifies if the ${../if/delete:/params[0]/name}
-    parameter value.
+    This member specifies if the ${../if/delete:/params[0]/name} parameter value.
   description: null
   member: |
     rtems_id id
@@ -754,8 +747,9 @@ test-support: |
       ctx->worker_wait_queue = ctx->worker_tcb->Wait.queue;
       ctx->worker_state = ctx->worker_tcb->current_state;
       ctx->worker_life_state = ctx->worker_tcb->Life.state;
-      ctx->worker_priority =
-        SCHEDULER_PRIORITY_UNMAP( _Thread_Get_priority( ctx->worker_tcb ) );
+      ctx->worker_priority = SCHEDULER_PRIORITY_UNMAP(
+        _Thread_Get_priority( ctx->worker_tcb )
+      );
       CopyExtensionCalls( &ctx->calls, &ctx->calls_after_restart );
       GetTaskTimerInfoByThread( ctx->worker_tcb, &ctx->worker_timer_info );
     }
@@ -771,7 +765,7 @@ test-support: |
   static void VerifyTaskPreparation( const Context *ctx )
   {
     if ( ctx->id != INVALID_ID ) {
-      States_Control state;
+      States_Control    state;
       Thread_Life_state life_state;
 
       state = STATES_READY;
@@ -835,7 +829,7 @@ test-support: |
     longjmp( ctx->thread_dispatch_context, 1 );
   }
 
-  static void DeleteAndJumpBack( Context * const ctx )
+  static void DeleteAndJumpBack( Context *const ctx )
   {
     if ( setjmp( ctx->thread_dispatch_context ) == 0 ) {
       ctx->status = rtems_task_delete( ctx->id );
@@ -928,8 +922,8 @@ test-support: |
   }
 
   static void BlockAndJumpBack(
-    Context         * const ctx,
-    Per_CPU_Control * const cpu_self
+    Context *const         ctx,
+    Per_CPU_Control *const cpu_self
   )
   {
     if ( setjmp( ctx->thread_dispatch_context ) == 0 ) {
@@ -1101,7 +1095,7 @@ test-support: |
     if (
       ctx->id == INVALID_ID ||
       ( ctx->calls.thread_terminate == 0 &&
-      !( ctx->dormant && ctx->status != RTEMS_CALLED_FROM_ISR ) )
+        !( ctx->dormant && ctx->status != RTEMS_CALLED_FROM_ISR ) )
     ) {
       DeleteTask( ctx->worker_id );
     }
@@ -1132,7 +1126,8 @@ test-teardown:
     RestoreRunnerASR();
     RestoreRunnerPriority();
   description: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

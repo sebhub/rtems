@@ -36,16 +36,16 @@ post-conditions:
       memset( &attr, 0xa5, sizeof( attr ) );
       T_eq_mem( &ctx->attributes_obj, &attr, sizeof( attr ) );
     text: |
-      Objects referenced by the ${../if/get-attributes:/params[1]/name}
-      parameter in past calls to ${../if/get-attributes:/name} shall not be
-      accessed by the ${../if/get-attributes:/name} call.
+      Objects referenced by the ${../if/get-attributes:/params[1]/name} parameter in
+      past calls to ${../if/get-attributes:/name} shall not be accessed by the
+      ${../if/get-attributes:/name} call.
   - name: Zero
     test-code: |
       memset( &attr, 0, sizeof( attr ) );
       T_eq_mem( &ctx->attributes_obj, &attr, sizeof( attr ) );
     text: |
-      The object referenced by the ${../if/get-attributes:/params[1]/name}
-      parameter shall cleared to zero.
+      The object referenced by the ${../if/get-attributes:/params[1]/name} parameter
+      shall cleared to zero.
   - name: Set
     test-code: |
       memset( &attr, 0xa5, sizeof( attr ) );
@@ -65,14 +65,14 @@ pre-conditions:
     test-code: |
       ctx->valid_vector = true;
     text: |
-      While the ${../if/get-attributes:/params[0]/name} parameter is
-      associated with an interrupt vector.
+      While the ${../if/get-attributes:/params[0]/name} parameter is associated with
+      an interrupt vector.
   - name: Invalid
     test-code: |
       ctx->valid_vector = false;
     text: |
-      While the ${../if/get-attributes:/params[0]/name} parameter is
-      not associated with an interrupt vector.
+      While the ${../if/get-attributes:/params[0]/name} parameter is not associated
+      with an interrupt vector.
   test-epilogue: null
   test-prologue: null
 - name: Attributes
@@ -87,8 +87,8 @@ pre-conditions:
     test-code: |
       ctx->attributes = NULL;
     text: |
-      While the ${../if/get-attributes:/params[1]/name} parameter is equal
-      to ${/c/if/null:/name}.
+      While the ${../if/get-attributes:/params[1]/name} parameter is equal to
+      ${/c/if/null:/name}.
   test-epilogue: null
   test-prologue: null
 rationale: null
@@ -148,8 +148,8 @@ test-context:
   member: |
     bool valid_vector
 - brief: |
-    This member specifies if the ${../if/get-attributes:/params[1]/name}
-    parameter value.
+    This member specifies if the ${../if/get-attributes:/params[1]/name} parameter
+    value.
   description: null
   member: |
     rtems_interrupt_attributes *attributes
@@ -174,7 +174,8 @@ test-stop: null
 test-support: null
 test-target: testsuites/validation/tc-intr-get-attributes.c
 test-teardown: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

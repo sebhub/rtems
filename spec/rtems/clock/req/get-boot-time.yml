@@ -2,6 +2,7 @@ SPDX-License-Identifier: CC-BY-SA-4.0
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
 enabled-by: true
+functional-type: function
 links:
 - role: interface-function
   uid: ../if/get-boot-time
@@ -11,7 +12,6 @@ links:
   uid: ../if/get-boot-time-timeval
 - role: function-implementation
   uid: /score/timecounter/req/get-coarse
-functional-type: function
 rationale: null
 requirement-type: functional
 text: |

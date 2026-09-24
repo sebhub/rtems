@@ -13,7 +13,7 @@ definition:
     return: ${../../status/if/code:/name}
   variants: []
 description: |
-  This directive deletes the period specified by ${.:/params[0]/name}.  If the
+  This directive deletes the period specified by ${.:/params[0]/name}. If the
   period is running, it is automatically canceled.
 enabled-by: true
 index-entries:

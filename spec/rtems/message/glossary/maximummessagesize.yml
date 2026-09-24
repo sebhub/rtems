@@ -8,9 +8,9 @@ links:
   uid: group
 term: maximum message size
 text: |
-  The maximum message size is different for each
-  ${/glossary/messagequeue:/term} but equal for all directives called
-  on the same ${/glossary/messagequeue:/term}.  It is defined by
-  the value of member ${../if/config:/definition[2]/default/name} of type
-  ${../if/config:/name} used to construct the ${/glossary/messagequeue:/term}.
+  The maximum message size is different for each ${/glossary/messagequeue:/term}
+  but equal for all directives called on the same
+  ${/glossary/messagequeue:/term}. It is defined by the value of member
+  ${../if/config:/definition[2]/default/name} of type ${../if/config:/name} used
+  to construct the ${/glossary/messagequeue:/term}.
 type: glossary

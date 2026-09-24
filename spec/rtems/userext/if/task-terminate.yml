@@ -35,8 +35,8 @@ notes: |
   recursion.
 params:
 - description: |
-    is the ${/glossary/tcb:/term} of the executing thread.  This is the
-    terminating thread.
+    is the ${/glossary/tcb:/term} of the executing thread. This is the terminating
+    thread.
   dir: null
   name: executing
 return: null

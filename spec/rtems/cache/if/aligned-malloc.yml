@@ -1,7 +1,6 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 brief: |
-  Allocates memory from the C Program Heap which begins at a cache line
-  boundary.
+  Allocates memory from the C Program Heap which begins at a cache line boundary.
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
 definition:
@@ -38,8 +37,8 @@ params:
   name: size
 return:
   return: |
-    Returns the begin address of the allocated memory.  The begin address is on
-    a cache line boundary.
+    Returns the begin address of the allocated memory. The begin address is on a
+    cache line boundary.
   return-values:
   - description: |
       There is not enough memory available to satisfy the allocation request.

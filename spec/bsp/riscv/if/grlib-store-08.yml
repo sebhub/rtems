@@ -7,7 +7,7 @@ definition:
   default:
     attributes: null
     body: |
-     *address = value;
+      *address = value;
     params:
     - volatile ${/c/if/uint8_t:/name} *${.:/params[0]/name}
     - ${/c/if/uint8_t:/name} ${.:/params[1]/name}

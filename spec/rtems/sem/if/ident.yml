@@ -18,17 +18,18 @@ description: |
   This directive obtains a semaphore identifier associated with the semaphore
   name specified in ${.:/params[0]/name}.
 
-  The node to search is specified in ${.:/params[1]/name}.  It shall be
+  The node to search is specified in ${.:/params[1]/name}. It shall be
 
-  * a valid node number,
+  - a valid node number,
 
-  * the constant ${../../object/if/search-all-nodes:/name} to search in all nodes,
+  - the constant ${../../object/if/search-all-nodes:/name} to search in all
+    nodes,
 
-  * the constant ${../../object/if/search-local-node:/name} to search in the local
-    node only, or
+  - the constant ${../../object/if/search-local-node:/name} to search in the
+    local node only, or
 
-  * the constant ${../../object/if/search-other-nodes:/name} to search in all nodes
-    except the local node.
+  - the constant ${../../object/if/search-other-nodes:/name} to search in all
+    nodes except the local node.
 enabled-by: true
 index-entries: []
 interface-type: function
@@ -71,9 +72,9 @@ params:
   dir: null
   name: node
 - description: |
-    is the pointer to an ${../../type/if/id:/name} object.  When the directive
-    call is successful, the object identifier of an object with the specified
-    name will be stored in this object.
+    is the pointer to an ${../../type/if/id:/name} object. When the directive call
+    is successful, the object identifier of an object with the specified name will
+    be stored in this object.
   dir: out
   name: id
 return:

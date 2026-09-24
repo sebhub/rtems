@@ -11,6 +11,6 @@ links:
 rationale: null
 requirement-type: functional
 text: |
-  The application configuration option shall define the initial execution mode
-  of the Classic API initialization task.
+  The application configuration option shall define the initial execution mode of
+  the Classic API initialization task.
 type: requirement

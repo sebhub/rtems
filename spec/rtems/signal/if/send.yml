@@ -14,14 +14,14 @@ definition:
     return: ${../../status/if/code:/name}
   variants: []
 description: |
-  This directive sends the signal set, ${.:/params[1]/name}, to the target
-  task identified by ${.:/params[0]/name}.
+  This directive sends the signal set, ${.:/params[1]/name}, to the target task
+  identified by ${.:/params[0]/name}.
 
   If a caller sends a signal set to a task with an invalid
-  ${/glossary/asr:/term}, then an error code is returned to the caller.  If a
+  ${/glossary/asr:/term}, then an error code is returned to the caller. If a
   caller sends a signal set to a task whose ASR is valid but disabled, then the
   signal set will be caught and left pending for the ASR to process when it is
-  enabled.  If a caller sends a signal set to a task with an ASR that is both
+  enabled. If a caller sends a signal set to a task with an ASR that is both
   valid and enabled, then the signal set is caught and the ASR will execute the
   next time the task is dispatched to run.
 enabled-by: true

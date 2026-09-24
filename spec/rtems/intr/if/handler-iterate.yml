@@ -15,8 +15,8 @@ definition:
   variants: []
 description: |
   For each installed handler at the interrupt vector the visitor function
-  specified by ${.:/params[1]/name} will be called with the argument specified
-  by ${.:/params[2]/name} and the handler information, options, routine and
+  specified by ${.:/params[1]/name} will be called with the argument specified by
+  ${.:/params[2]/name} and the handler information, options, routine and
   argument.
 enabled-by: true
 index-entries: []
@@ -35,7 +35,7 @@ links:
 name: rtems_interrupt_handler_iterate
 notes: |
   The directive is intended for system information and diagnostics.
- 
+
   Never install or remove an interrupt handler within the visitor function.
   This may result in a deadlock.
 params:
@@ -47,7 +47,7 @@ params:
     is the visitor routine.
   dir: null
   name: routine
-- description: 
+- description: |
     is the visitor argument.
   dir: null
   name: arg

@@ -15,8 +15,8 @@ definition:
   variants: []
 description: |
   Afterwards the heap has at most ${.:/params[1]/name} allocatable blocks of
-  sizes specified by ${.:/params[0]/name}.  The ${.:/params[0]/name} must point
-  to an array with ${.:/params[1]/name} members.  All other blocks are used.
+  sizes specified by ${.:/params[0]/name}. The ${.:/params[0]/name} must point to
+  an array with ${.:/params[1]/name} members. All other blocks are used.
 enabled-by: true
 index-entries: []
 interface-type: function
@@ -40,7 +40,7 @@ params:
   name: block_count
 return:
   return: |
-    The returned pointer value may be used to free the greedy allocation by
-    calling ${workspace-greedy-free:/name}.
+    The returned pointer value may be used to free the greedy allocation by calling
+    ${workspace-greedy-free:/name}.
   return-values: []
 type: interface

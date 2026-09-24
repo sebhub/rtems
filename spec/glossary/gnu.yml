@@ -8,5 +8,5 @@ links:
   uid: group
 term: GNU
 text: |
-  This term is an acronym for `GNU's Not Unix <https://www.gnu.org/>`_.
+  This term is an acronym for [GNU's Not Unix](https://www.gnu.org/).
 type: glossary

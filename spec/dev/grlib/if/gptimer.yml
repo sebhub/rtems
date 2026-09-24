@@ -4,19 +4,6 @@ brief: |
   map.
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
-description: null
-enabled-by: true
-identifier: RTEMSDeviceGRLIBGPTIMER
-index-entries: []
-interface-type: register-block
-links:
-- role: interface-ingroup
-  uid: group
-- role: interface-placement
-  uid: gptimer-header
-- name: TIMER
-  role: register-block-include
-  uid: gptimer-timer
 definition:
 - default:
     count: 1
@@ -43,16 +30,33 @@ definition:
     name: TIMER
   offset: 0x10
   variants: []
-register-prefix: null
+description: null
+enabled-by: true
+identifier: RTEMSDeviceGRLIBGPTIMER
+index-entries: []
+interface-type: register-block
+links:
+- role: interface-ingroup
+  uid: group
+- role: interface-placement
+  uid: gptimer-header
+- name: TIMER
+  role: register-block-include
+  uid: gptimer-timer
+name: gptimer
+notes: null
 register-block-group: GPTIMER
 register-block-size: 256
+register-prefix: null
 registers:
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'SCALER'
+      name: SCALER
+      properties:
+      - r
+      - w
       start: 0
       width: 16
     variants: []
@@ -63,10 +67,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'SRELOAD'
+      name: SRELOAD
+      properties:
+      - r
+      - w
       start: 0
       width: 16
     variants: []
@@ -77,52 +83,65 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'EV'
+      name: EV
+      properties:
+      - r
+      - w
       start: 13
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'ES'
+      name: ES
+      properties:
+      - r
+      - w
       start: 12
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'EL'
+      name: EL
+      properties:
+      - r
+      - w
       start: 11
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'EE'
+      name: EE
+      properties:
+      - r
+      - w
       start: 10
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'DF'
+      name: DF
+      properties:
+      - r
+      - w
       start: 9
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'SI'
+      name: SI
+      properties:
+      - r
       start: 8
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'IRQ'
+      name: IRQ
+      properties:
+      - r
       start: 3
       width: 5
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'TIMERS'
+      name: TIMERS
+      properties:
+      - r
       start: 0
       width: 3
     variants: []
@@ -133,10 +152,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'LATCHSEL'
+      name: LATCHSEL
+      properties:
+      - r
+      - w
       start: 0
       width: 32
     variants: []
@@ -145,6 +166,4 @@ registers:
   description: null
   name: LATCHCFG
   width: 32
-name: gptimer
-notes: null
 type: interface

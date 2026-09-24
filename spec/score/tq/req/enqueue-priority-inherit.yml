@@ -15,8 +15,8 @@ post-conditions:
       T_eq_ptr( GetUnblock( ctx, &i ), NULL );
     text: |
       A priority queue associated with the scheduler which contains exactly the
-      enqueueing thread shall be created as the first priority queue of the
-      thread queue.
+      enqueueing thread shall be created as the first priority queue of the thread
+      queue.
   - name: InitialLast
     test-code: |
       T_eq_ptr( GetUnblock( ctx, &i ), GetTCB( ctx, TQ_BLOCKER_C ) );
@@ -24,24 +24,24 @@ post-conditions:
       T_eq_ptr( GetUnblock( ctx, &i ), NULL );
     text: |
       A priority queue associated with the scheduler which contains exactly the
-      enqueueing thread shall be created as the last priority queue of the
-      thread queue.
+      enqueueing thread shall be created as the last priority queue of the thread
+      queue.
   - name: First
     test-code: |
       T_eq_ptr( GetUnblock( ctx, &i ), GetTCB( ctx, TQ_BLOCKER_A ) );
       T_eq_ptr( GetUnblock( ctx, &i ), GetTCB( ctx, TQ_BLOCKER_B ) );
       T_eq_ptr( GetUnblock( ctx, &i ), NULL );
     text: |
-      The enqueueing thread shall be enqueued in the priority queue associated
-      with the scheduler.
+      The enqueueing thread shall be enqueued in the priority queue associated with
+      the scheduler.
   - name: Second
     test-code: |
       T_eq_ptr( GetUnblock( ctx, &i ), GetTCB( ctx, TQ_BLOCKER_B ) );
       T_eq_ptr( GetUnblock( ctx, &i ), GetTCB( ctx, TQ_BLOCKER_A ) );
       T_eq_ptr( GetUnblock( ctx, &i ), NULL );
     text: |
-      The enqueueing thread shall be enqueued in the priority queue associated
-      with the scheduler.
+      The enqueueing thread shall be enqueued in the priority queue associated with
+      the scheduler.
   - name: FirstFirst
     test-code: |
       T_eq_ptr( GetUnblock( ctx, &i ), GetTCB( ctx, TQ_BLOCKER_A ) );
@@ -49,8 +49,8 @@ post-conditions:
       T_eq_ptr( GetUnblock( ctx, &i ), GetTCB( ctx, TQ_BLOCKER_B ) );
       T_eq_ptr( GetUnblock( ctx, &i ), NULL );
     text: |
-      The enqueueing thread shall be enqueued in the priority queue associated
-      with the scheduler.
+      The enqueueing thread shall be enqueued in the priority queue associated with
+      the scheduler.
 
       The position of the priority queue in the thread queue shall not change.
   - name: SecondFirst
@@ -60,8 +60,8 @@ post-conditions:
       T_eq_ptr( GetUnblock( ctx, &i ), GetTCB( ctx, TQ_BLOCKER_A ) );
       T_eq_ptr( GetUnblock( ctx, &i ), NULL );
     text: |
-      The enqueueing thread shall be enqueued in the priority queue associated
-      with the scheduler.
+      The enqueueing thread shall be enqueued in the priority queue associated with
+      the scheduler.
 
       The position of the priority queue in the thread queue shall not change.
   - name: FirstLast
@@ -71,8 +71,8 @@ post-conditions:
       T_eq_ptr( GetUnblock( ctx, &i ), GetTCB( ctx, TQ_BLOCKER_B ) );
       T_eq_ptr( GetUnblock( ctx, &i ), NULL );
     text: |
-      The enqueueing thread shall be enqueued in the priority queue associated
-      with the scheduler.
+      The enqueueing thread shall be enqueued in the priority queue associated with
+      the scheduler.
 
       The position of the priority queue in the thread queue shall not change.
   - name: SecondLast
@@ -82,8 +82,8 @@ post-conditions:
       T_eq_ptr( GetUnblock( ctx, &i ), GetTCB( ctx, TQ_BLOCKER_A ) );
       T_eq_ptr( GetUnblock( ctx, &i ), NULL );
     text: |
-      The enqueueing thread shall be enqueued in the priority queue associated
-      with the scheduler.
+      The enqueueing thread shall be enqueued in the priority queue associated with
+      the scheduler.
 
       The position of the priority queue in the thread queue shall not change.
   test-epilogue: null
@@ -101,8 +101,8 @@ post-conditions:
       CheckPriorityRaise( ctx, ctx->owner_priority );
     text: |
       Each priority of the enqueueing thread which is higher than the highest
-      priority of the owner of the thread queue shall be made the highest
-      priority of the owner.
+      priority of the owner of the thread queue shall be made the highest priority of
+      the owner.
   - name: Nop
     test-code: |
       CheckPriorityNop( ctx, ctx->owner_priority );
@@ -116,16 +116,16 @@ post-conditions:
     test-code: |
       CheckSchedulerNewHelper( ctx, ctx->owner_priority );
     text: |
-      Each ${/glossary/scheduler-eligible:/term} of the enqueueing thread which
-      is not an ${/glossary/scheduler-eligible:/term} of the owner of the
-      thread queue shall be made a ${/glossary/scheduler-helping:/term} of the
-      owner with the priority of the enqueueing thread.
+      Each ${/glossary/scheduler-eligible:/term} of the enqueueing thread which is
+      not an ${/glossary/scheduler-eligible:/term} of the owner of the thread queue
+      shall be made a ${/glossary/scheduler-helping:/term} of the owner with the
+      priority of the enqueueing thread.
   - name: Nop
     test-code: |
       CheckSchedulerNop( ctx, ctx->owner_priority );
     text: |
-      The set of ${/glossary/scheduler-eligible:/plural} of the owner of the
-      thread queue shall not change.
+      The set of ${/glossary/scheduler-eligible:/plural} of the owner of the thread
+      queue shall not change.
   test-epilogue: null
   test-prologue: null
 - name: OwnerOwnerPriority
@@ -135,8 +135,8 @@ post-conditions:
       CheckPriorityRaise( ctx, ctx->owner_owner_priority );
     text: |
       Each priority of the enqueueing thread which is higher than the highest
-      priority of the owner of the thread queue on which the owner of the
-      thread queue is enqueued shall be made the highest priority of the owner.
+      priority of the owner of the thread queue on which the owner of the thread
+      queue is enqueued shall be made the highest priority of the owner.
   - name: Nop
     test-code: |
       if ( ctx->owner_obtain == TQ_EVENT_MUTEX_C_OBTAIN ) {
@@ -159,11 +159,11 @@ post-conditions:
     test-code: |
       CheckSchedulerNewHelper( ctx, ctx->owner_owner_priority );
     text: |
-      Each ${/glossary/scheduler-eligible:/term} of the enqueueing thread which
-      is not an ${/glossary/scheduler-eligible:/term} of the owner of the
-      thread queue on which the owner of the thread queue is enqueued shall be
-      made a ${/glossary/scheduler-helping:/term} of the owner with the
-      priority of the enqueueing thread.
+      Each ${/glossary/scheduler-eligible:/term} of the enqueueing thread which is
+      not an ${/glossary/scheduler-eligible:/term} of the owner of the thread queue
+      on which the owner of the thread queue is enqueued shall be made a
+      ${/glossary/scheduler-helping:/term} of the owner with the priority of the
+      enqueueing thread.
   - name: Nop
     test-code: |
       if ( ctx->owner_obtain == TQ_EVENT_MUTEX_C_OBTAIN ) {
@@ -174,9 +174,8 @@ post-conditions:
         T_eq_u32( ctx->owner_owner_priority[ 3 ], PRIO_INVALID );
       }
     text: |
-      The set of ${/glossary/scheduler-eligible:/plural} of the owner of the
-      thread queue on which the owner of the thread queue is enqueued shall not
-      change.
+      The set of ${/glossary/scheduler-eligible:/plural} of the owner of the thread
+      queue on which the owner of the thread queue is enqueued shall not change.
   test-epilogue: null
   test-prologue: null
 pre-conditions:
@@ -226,27 +225,27 @@ pre-conditions:
       ctx->queue_priority = PRIO_ULTRA_HIGH;
     text: |
       While a priority queue of the thread queue associated with an eligible
-      scheduler of the enqueueing thread is non-empty,
-      while the highest priority of the priority queue is higher than the
-      priority of the enqueueing thread with respect to the eligible scheduler.
+      scheduler of the enqueueing thread is non-empty, while the highest priority of
+      the priority queue is higher than the priority of the enqueueing thread with
+      respect to the eligible scheduler.
   - name: Equal
     test-code: |
       ++ctx->tq_ctx->how_many;
       ctx->queue_priority = PRIO_VERY_HIGH;
     text: |
       While a priority queue of the thread queue associated with an eligible
-      scheduler of the enqueueing thread is non-empty,
-      while the highest priority of the priority queue is equal to the priority
-      of the enqueueing thread with respect to the eligible scheduler.
+      scheduler of the enqueueing thread is non-empty, while the highest priority of
+      the priority queue is equal to the priority of the enqueueing thread with
+      respect to the eligible scheduler.
   - name: Low
     test-code: |
       ++ctx->tq_ctx->how_many;
       ctx->queue_priority = PRIO_HIGH;
     text: |
       While a priority queue of the thread queue associated with an eligible
-      scheduler of the enqueueing thread is non-empty,
-      while the highest priority of the priority queue is lower than the
-      priority of the enqueueing thread with respect to the eligible scheduler.
+      scheduler of the enqueueing thread is non-empty, while the highest priority of
+      the priority queue is lower than the priority of the enqueueing thread with
+      respect to the eligible scheduler.
   test-epilogue: null
   test-prologue: null
 - name: QueueIneligible
@@ -256,8 +255,8 @@ pre-conditions:
       ctx->other_before = false;
       ctx->other_after = false;
     text: |
-      While each priority queue of the thread queue is associated with an
-      eligible scheduler of the enqueueing thread.
+      While each priority queue of the thread queue is associated with an eligible
+      scheduler of the enqueueing thread.
   - name: Only
     test-code: |
       ++ctx->tq_ctx->how_many;
@@ -272,20 +271,20 @@ pre-conditions:
       ctx->other_before = true;
       ctx->other_after = false;
     text: |
-      While a priority queue of the thread queue exists which is not
-      associated with an eligible scheduler of the enqueueing thread,
-      while the priority queue is positioned before all priority queues which
-      are associated with eligible schedulers of the enqueueing thread.
+      While a priority queue of the thread queue exists which is not associated with
+      an eligible scheduler of the enqueueing thread, while the priority queue is
+      positioned before all priority queues which are associated with eligible
+      schedulers of the enqueueing thread.
   - name: After
     test-code: |
       ++ctx->tq_ctx->how_many;
       ctx->other_before = false;
       ctx->other_after = true;
     text: |
-      While a priority queue of the thread queue exists which is not associated
-      with an eligible scheduler of the enqueueing thread,
-      while the priority queue is positioned after all priority queues which
-      are associated with eligible schedulers of the enqueueing thread.
+      While a priority queue of the thread queue exists which is not associated with
+      an eligible scheduler of the enqueueing thread, while the priority queue is
+      positioned after all priority queues which are associated with eligible
+      schedulers of the enqueueing thread.
   test-epilogue: null
   test-prologue: null
 - name: PriorityForOwner
@@ -294,8 +293,8 @@ pre-conditions:
     test-code: |
       ctx->vital_priority = true;
     text: |
-      While at least one priority of the enqueueing thread is higher than the
-      highest priority of the owner of the thread queue.
+      While at least one priority of the enqueueing thread is higher than the highest
+      priority of the owner of the thread queue.
   - name: Dispensable
     test-code: |
       ctx->vital_priority = false;
@@ -310,16 +309,15 @@ pre-conditions:
     test-code: |
       ctx->vital_scheduler = true;
     text: |
-      While at least one ${/glossary/scheduler-eligible:/term} of the
-      enqueueing thread is not an ${/glossary/scheduler-eligible:/term} of the
-      owner of the thread queue.
+      While at least one ${/glossary/scheduler-eligible:/term} of the enqueueing
+      thread is not an ${/glossary/scheduler-eligible:/term} of the owner of the
+      thread queue.
   - name: Dispensable
     test-code: |
       ctx->vital_scheduler = false;
     text: |
-      While all ${/glossary/scheduler-eligible:/plural} of the enqueueing
-      thread are an ${/glossary/scheduler-eligible:/term} of the owner of the
-      thread queue.
+      While all ${/glossary/scheduler-eligible:/plural} of the enqueueing thread are
+      an ${/glossary/scheduler-eligible:/term} of the owner of the thread queue.
   test-epilogue: null
   test-prologue: null
 - name: OwnerState
@@ -342,34 +340,33 @@ pre-conditions:
       ctx->owner_obtain = TQ_EVENT_MUTEX_NO_PROTOCOL_OBTAIN;
       ctx->owner_release = TQ_EVENT_MUTEX_NO_PROTOCOL_RELEASE;
     text: |
-      While the owner of the thread queue is enqueued on a thread queue in
-      priority order.
+      While the owner of the thread queue is enqueued on a thread queue in priority
+      order.
   - name: PriorityInherit
     test-code: |
       ctx->owner_obtain = TQ_EVENT_MUTEX_C_OBTAIN;
       ctx->owner_release = TQ_EVENT_MUTEX_C_RELEASE;
     text: |
-      While the owner of the thread queue is enqueued on a thread queue in
-      priority order with priority inheritance.
+      While the owner of the thread queue is enqueued on a thread queue in priority
+      order with priority inheritance.
   test-epilogue: null
   test-prologue: null
 rationale: null
 requirement-type: functional
 skip-reasons:
+  NeedsAnotherQueue: |
+    A priority queue must be present to have another priority queue positioned
+    before or after the priority queue.
+  NeedsSchedulerForVitalPriority: |
+    A dedicated scheduler is necessary to provide a vital priority for the owner.
+  NeedsSchedulerForVitalScheduler: |
+    A dedicated scheduler is necessary to provide a vital eligible scheduler for
+    the owner.
+  NoOtherQueue: |
+    If only one priority queue shall be present, then no other priority queue can
+    exist.
   NoOtherScheduler: |
     Where the system has exactly one scheduler, no other scheduler can exist.
-  NeedsAnotherQueue: |
-    A priority queue must be present to have another
-    priority queue positioned before or after the priority queue.
-  NoOtherQueue: |
-    If only one priority queue shall be present, then no other priority queue
-    can exist.
-  NeedsSchedulerForVitalPriority: |
-    A dedicated scheduler is necessary to provide a vital priority for the
-    owner.
-  NeedsSchedulerForVitalScheduler: |
-    A dedicated scheduler is necessary to provide a vital eligible scheduler
-    for the owner.
 test-action: |
   TQSend( ctx->tq_ctx, TQ_BLOCKER_A, TQ_EVENT_MUTEX_A_OBTAIN );
   TQSend(
@@ -504,30 +501,28 @@ test-context:
   member: |
     rtems_task_priority queue_priority
 - brief: |
-    If this member is true, then a thread those eligible schedulers are
-    ineligible scheduler to the enqueueing task should be enqueued before a
-    thread with an eligible scheduler equal to an eligible scheduler of the
-    enqueueing thread.
+    If this member is true, then a thread those eligible schedulers are ineligible
+    scheduler to the enqueueing task should be enqueued before a thread with an
+    eligible scheduler equal to an eligible scheduler of the enqueueing thread.
   description: null
   member: |
     size_t other_before
 - brief: |
-    If this member is true, then a thread those eligible schedulers are
-    ineligible scheduler to the enqueueing task should be enqueued after a
-    thread with an eligible scheduler equal to an eligible scheduler of the
-    enqueueing thread.
+    If this member is true, then a thread those eligible schedulers are ineligible
+    scheduler to the enqueueing task should be enqueued after a thread with an
+    eligible scheduler equal to an eligible scheduler of the enqueueing thread.
   description: null
   member: |
     size_t other_after
 - brief: |
-    This this member is true, then the priorities of the enqueueing thread
-    shall be dispensable for the owner of the thread queue.
+    This this member is true, then the priorities of the enqueueing thread shall be
+    dispensable for the owner of the thread queue.
   description: null
   member: |
     bool vital_priority
 - brief: |
-    This this member is true, then the eligible scheduler of the enqueueing
-    thread shall be dispensable for the owner of the thread queue.
+    This this member is true, then the eligible scheduler of the enqueueing thread
+    shall be dispensable for the owner of the thread queue.
   description: null
   member: |
     bool vital_scheduler
@@ -538,8 +533,8 @@ test-context:
   member: |
     rtems_task_priority owner_priority[ 4 ]
 - brief: |
-    This member contains the priorities of the owner of the thread queue on
-    which the thread queue owner is blocked after the enqueue.
+    This member contains the priorities of the owner of the thread queue on which
+    the thread queue owner is blocked after the enqueue.
   description: null
   member: |
     rtems_task_priority owner_owner_priority[ 4 ]
@@ -550,8 +545,8 @@ test-context:
   member: |
     rtems_event_set owner_obtain
 - brief: |
-    This member specifies which mutex release event shall be used to unblock
-    the thread queue owner.
+    This member specifies which mutex release event shall be used to unblock the
+    thread queue owner.
   description: null
   member: |
     rtems_event_set owner_release
@@ -573,7 +568,7 @@ test-header:
 test-includes: []
 test-local-includes:
 - tr-tq-enqueue-priority-inherit.h
-test-prepare:
+test-prepare: |
   ctx->tq_ctx->how_many = 1;
 test-setup:
   brief: null
@@ -583,12 +578,7 @@ test-setup:
     TQSetPriority( ctx->tq_ctx, TQ_HELPER_C, PRIO_HIGH );
 
     #if defined( RTEMS_SMP )
-    TQSetScheduler(
-      ctx->tq_ctx,
-      TQ_BLOCKER_C,
-      SCHEDULER_B_ID,
-      PRIO_ULTRA_LOW
-    );
+    TQSetScheduler( ctx->tq_ctx, TQ_BLOCKER_C, SCHEDULER_B_ID, PRIO_ULTRA_LOW );
 
     if ( rtems_scheduler_get_processor_maximum() > 3 ) {
       RemoveProcessor( SCHEDULER_C_ID, 3 );
@@ -658,9 +648,8 @@ test-support: |
   )
   {
     if (
-      ctx->vital_priority &&
-      ( ctx->queue_priority == PRIO_VERY_HIGH ||
-        ctx->queue_priority == PRIO_ULTRA_HIGH )
+      ctx->vital_priority && ( ctx->queue_priority == PRIO_VERY_HIGH ||
+                               ctx->queue_priority == PRIO_ULTRA_HIGH )
     ) {
       if ( ctx->other_before || ctx->other_after ) {
         T_eq_u32( priority[ 3 ], PRIO_VERY_LOW );
@@ -677,7 +666,7 @@ test-support: |
         T_eq_u32( priority[ 2 ], PRIO_INVALID );
       }
 
-       T_eq_u32( priority[ 3 ], PRIO_INVALID );
+      T_eq_u32( priority[ 3 ], PRIO_INVALID );
     }
   }
 
@@ -687,9 +676,8 @@ test-support: |
   )
   {
     if (
-      ctx->vital_priority &&
-      ( ctx->queue_priority == PRIO_VERY_HIGH ||
-        ctx->queue_priority == PRIO_ULTRA_HIGH )
+      ctx->vital_priority && ( ctx->queue_priority == PRIO_VERY_HIGH ||
+                               ctx->queue_priority == PRIO_ULTRA_HIGH )
     ) {
       if ( !ctx->other_before && !ctx->other_after ) {
         T_eq_u32( priority[ 2 ], PRIO_INVALID );

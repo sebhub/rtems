@@ -7,10 +7,10 @@ links:
   uid: root
 non-functional-type: design
 rationale: |
-  In general, dead code should be avoided.  For justified exceptions it is
+  In general, dead code should be avoided. For justified exceptions it is
   acceptable, for example to avoid hard to maintain deviations from the RTEMS
-  mainline code.  For these exceptions, unit tests may be used to achieve the
-  code and branch coverage goals.
+  mainline code. For these exceptions, unit tests may be used to achieve the code
+  and branch coverage goals.
 requirement-type: non-functional
 text: |
   Unit tests may be used to test code which is not testable through the

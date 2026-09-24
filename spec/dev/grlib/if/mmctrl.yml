@@ -4,16 +4,6 @@ brief: |
   map.
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
-description: null
-enabled-by: true
-identifier: RTEMSDeviceGRLIBMMCTRL
-index-entries: []
-interface-type: register-block
-links:
-- role: interface-ingroup
-  uid: group
-- role: interface-placement
-  uid: mmctrl-header
 definition:
 - default:
     count: 1
@@ -50,70 +40,100 @@ definition:
     name: FTBND
   offset: 0x30
   variants: []
-register-prefix: null
+description: null
+enabled-by: true
+identifier: RTEMSDeviceGRLIBMMCTRL
+index-entries: []
+interface-type: register-block
+links:
+- role: interface-ingroup
+  uid: group
+- role: interface-placement
+  uid: mmctrl-header
+name: mmctrl
+notes: null
 register-block-group: MMCTRL
 register-block-size: 52
+register-prefix: null
 registers:
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'RF'
+      name: RF
+      properties:
+      - r
+      - w
       start: 31
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'TRP'
+      name: TRP
+      properties:
+      - r
+      - w
       start: 30
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'TRFC'
+      name: TRFC
+      properties:
+      - r
+      - w
       start: 27
       width: 3
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'TC'
+      name: TC
+      properties:
+      - r
+      - w
       start: 26
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'BANKSZ'
+      name: BANKSZ
+      properties:
+      - r
+      - w
       start: 23
       width: 3
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'COLSZ'
+      name: COLSZ
+      properties:
+      - r
+      - w
       start: 21
       width: 2
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'COMMAND'
+      name: COMMAND
+      properties:
+      - r
+      - w
       start: 18
       width: 3
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'MS'
+      name: MS
+      properties:
+      - r
       start: 16
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
       name: '64'
+      properties:
+      - r
       start: 15
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'RFLOAD'
+      name: RFLOAD
+      properties:
+      - r
+      - w
       start: 0
       width: 15
     variants: []
@@ -124,28 +144,36 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'CE'
+      name: CE
+      properties:
+      - r
+      - w
       start: 30
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'EN2T'
+      name: EN2T
+      properties:
+      - r
+      - w
       start: 15
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'DCS'
+      name: DCS
+      properties:
+      - r
+      - w
       start: 14
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'BPARK'
+      name: BPARK
+      properties:
+      - r
+      - w
       start: 13
       width: 1
     variants: []
@@ -156,64 +184,80 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'ERRLOC'
+      name: ERRLOC
+      properties:
+      - r
       start: 20
       width: 12
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'DDERR'
+      name: DDERR
+      properties:
+      - r
       start: 19
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'DWIDTH'
+      name: DWIDTH
+      properties:
+      - r
       start: 16
       width: 3
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'BEID'
+      name: BEID
+      properties:
+      - r
       start: 12
       width: 4
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'DATAMUX'
+      name: DATAMUX
+      properties:
+      - r
+      - w
       start: 5
       width: 3
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'CEN'
+      name: CEN
+      properties:
+      - r
+      - w
       start: 4
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'BAUPD'
+      name: BAUPD
+      properties:
+      - r
+      - w
       start: 3
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'BAEN'
+      name: BAEN
+      properties:
+      - r
+      - w
       start: 2
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'CODE'
+      name: CODE
+      properties:
+      - r
+      - w
       start: 1
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'EDEN'
+      name: EDEN
+      properties:
+      - r
+      - w
       start: 0
       width: 1
     variants: []
@@ -224,10 +268,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'FTDA'
+      name: FTDA
+      properties:
+      - r
+      - w
       start: 2
       width: 30
     variants: []
@@ -238,28 +284,36 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'CBD'
+      name: CBD
+      properties:
+      - r
+      - w
       start: 24
       width: 8
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'CBC'
+      name: CBC
+      properties:
+      - r
+      - w
       start: 16
       width: 8
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'CBB'
+      name: CBB
+      properties:
+      - r
+      - w
       start: 8
       width: 8
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'CBA'
+      name: CBA
+      properties:
+      - r
+      - w
       start: 0
       width: 8
     variants: []
@@ -270,10 +324,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'DATA'
+      name: DATA
+      properties:
+      - r
+      - w
       start: 0
       width: 32
     variants: []
@@ -284,10 +340,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'FTBND_31_3'
+      name: FTBND_31_3
+      properties:
+      - r
+      - w
       start: 3
       width: 29
     variants: []
@@ -296,6 +354,4 @@ registers:
   description: null
   name: FTBND
   width: 32
-name: mmctrl
-notes: null
 type: interface

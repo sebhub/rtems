@@ -32,7 +32,6 @@ notes: |
 params: []
 return:
   return: |
-    Returns the number of clock ticks per second configured for this
-    application.
+    Returns the number of clock ticks per second configured for this application.
   return-values: []
 type: interface

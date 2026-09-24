@@ -8,6 +8,6 @@ links:
   uid: group
 term: task switch
 text: |
-  Alternate terminology for context switch.  Taking control of the
-  processor from one task and given to another.
+  Alternate terminology for context switch. Taking control of the processor from
+  one task and given to another.
 type: glossary

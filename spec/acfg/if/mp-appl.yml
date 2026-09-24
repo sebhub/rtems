@@ -7,8 +7,8 @@ default: |
   are not initialized.
 description: |
   This configuration option is defined to indicate that the application intends
-  to be part of a multiprocessing configuration.  Additional configuration
-  options are assumed to be provided.
+  to be part of a multiprocessing configuration. Additional configuration options
+  are assumed to be provided.
 enabled-by: true
 index-entries: []
 interface-type: appl-config-option

@@ -23,16 +23,16 @@ notes: |
   The fatal extension should be extremely careful with respect to the RTEMS
   directives it calls.  Depending on the system termination source, the system
   may be in an undefined and corrupt state.
-  
+
   It is recommended to register fatal extensions through
   ${/glossary/initial-extension-sets:/term}, see
   ${/acfg/if/initial-extensions:/name}.
 params:
 - description: |
-    is the system termination source.  The source indicates the component which
-    caused the system termination request, see ${fatal-source:/name}.  The
-    system termination code may provide additional information related to the
-    system termination request.
+    is the system termination source. The source indicates the component which
+    caused the system termination request, see ${fatal-source:/name}. The system
+    termination code may provide additional information related to the system
+    termination request.
   dir: null
   name: source
 - description: |
@@ -40,8 +40,8 @@ params:
   dir: null
   name: always_set_to_false
 - description: |
-    is the system termination code.  This value must be interpreted with
-    respect to the source.
+    is the system termination code. This value must be interpreted with respect to
+    the source.
   dir: null
   name: code
 return: null

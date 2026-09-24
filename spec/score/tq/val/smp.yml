@@ -5,9 +5,8 @@ enabled-by: RTEMS_SMP
 links: []
 test-actions:
 - action-brief: |
-    Create two or three worker threads and a mutex.  Use the mutex and the
-    worker to do a thread priority change in parallel with a thread queue
-    extraction.
+    Create two or three worker threads and a mutex. Use the mutex and the worker to
+    do a thread priority change in parallel with a thread queue extraction.
   action-code: |
     _SMP_barrier_Control_initialize( &ctx->barrier );
     _SMP_barrier_State_initialize( &ctx->barrier_state );
@@ -27,16 +26,16 @@ test-actions:
       ObtainMutex( ctx->mutex_a_id );
     links: []
   - brief: |
-      Create and start worker A on a second processor.
-      mutex.  Let it wait on the barrier.
+      Create and start worker A on a second processor. mutex. Let it wait on the
+      barrier.
     code: |
       ctx->worker_a_id = CreateTask( "WRKA", PRIO_NORMAL );
       SetScheduler( ctx->worker_a_id, SCHEDULER_B_ID, PRIO_NORMAL );
       StartTask( ctx->worker_a_id, PriorityChangeWorker, ctx );
     links: []
   - brief: |
-      If there are more than two processors, then create and start also
-      worker C.  Let it wait on the barrier.
+      If there are more than two processors, then create and start also worker C. Let
+      it wait on the barrier.
     code: |
       if ( ctx->used_cpus > 2 ) {
         ctx->worker_c_id = CreateTask( "WRKC", PRIO_NORMAL );
@@ -45,10 +44,10 @@ test-actions:
       }
     links: []
   - brief: |
-      Create and start worker B.  Let it try to obtain the mutex which is owned
-      by the runner.  Delete worker B to extract it from the thread queue.
-      Wrap the thread queue extract operation to do a parallel thread priority
-      change carried out by worker A (and maybe C).
+      Create and start worker B. Let it try to obtain the mutex which is owned by the
+      runner. Delete worker B to extract it from the thread queue. Wrap the thread
+      queue extract operation to do a parallel thread priority change carried out by
+      worker A (and maybe C).
     code: |
       ctx->worker_b_id = CreateTask( "WRKB", PRIO_HIGH );
       StartTask( ctx->worker_b_id, MutexObtainWorker, ctx );
@@ -79,13 +78,12 @@ test-actions:
     links: []
   links: []
 - action-brief: |
-    Build a cyclic dependency graph using several worker threads and mutexes.
-    Use the mutexes and the worker to construct a thread queue deadlock which
-    is detected on one processor while it uses thread queue links inserted by
-    another processor.  The runner thread controls the test scenario via the
-    two thread queue locks.  This is an important test scenario which shows why
-    the thread queue implementation is a bit more complicated in SMP
-    configurations.
+    Build a cyclic dependency graph using several worker threads and mutexes. Use
+    the mutexes and the worker to construct a thread queue deadlock which is
+    detected on one processor while it uses thread queue links inserted by another
+    processor. The runner thread controls the test scenario via the two thread
+    queue locks. This is an important test scenario which shows why the thread
+    queue implementation is a bit more complicated in SMP configurations.
   action-code: |
     Thread_queue_Queue *queue_b;
     Thread_queue_Queue *queue_c;
@@ -128,8 +126,8 @@ test-actions:
     SetScheduler( ctx->worker_e_id, SCHEDULER_C_ID, PRIO_NORMAL );
   checks:
   - brief: |
-      Let worker D wait for mutex A.  Let worker C wait for mutex D.  Let
-      worker B wait for mutex C.
+      Let worker D wait for mutex A. Let worker C wait for mutex D. Let worker B wait
+      for mutex C.
     code: |
       StartTask( ctx->worker_a_id, DeadlockWorkerA, ctx );
 
@@ -143,8 +141,8 @@ test-actions:
       WaitForExecutionStop( ctx->worker_b_id );
     links: []
   - brief: |
-      Let worker A attempt to obtain mutex B.  Let worker A wait on the lock of
-      mutex C.  Worker A will insert two thread queue links.
+      Let worker A attempt to obtain mutex B. Let worker A wait on the lock of mutex
+      C. Worker A will insert two thread queue links.
     code: |
       _ISR_lock_ISR_disable( &lock_context );
       _Thread_queue_Queue_acquire_critical(
@@ -160,14 +158,14 @@ test-actions:
       TicketLockWaitForOthers( &queue_c->Lock, 1 );
     links: []
   - brief: |
-      Let worker E try to obtain mutex D.  Worker E will add a thread queue
-      link which is later used by worker A to detect the deadlock.
+      Let worker E try to obtain mutex D. Worker E will add a thread queue link which
+      is later used by worker A to detect the deadlock.
     code: |
       StartTask( ctx->worker_e_id, DeadlockWorkerE, ctx );
       TicketLockWaitForOthers( &queue_b->Lock, 1 );
     links: []
   - brief: |
-      Let worker A continue the obtain sequence.  It will detect a deadlock.
+      Let worker A continue the obtain sequence. It will detect a deadlock.
     code: |
       _ISR_lock_ISR_disable( &lock_context );
       _Thread_queue_Queue_release( queue_c, &lock_context );

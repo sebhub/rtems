@@ -8,6 +8,6 @@ links:
   uid: group
 term: logical address
 text: |
-  An address used by an application.  In a system without memory
-  management, logical addresses will equal physical addresses.
+  An address used by an application. In a system without memory management,
+  logical addresses will equal physical addresses.
 type: glossary

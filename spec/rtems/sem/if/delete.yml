@@ -38,7 +38,7 @@ links:
 name: rtems_semaphore_delete
 notes: |
   Binary semaphores with an owner cannot be deleted.
-  
+
   When a semaphore is deleted, all tasks blocked waiting to obtain the
   semaphore will be readied and returned a status code which indicates that the
   semaphore was deleted.

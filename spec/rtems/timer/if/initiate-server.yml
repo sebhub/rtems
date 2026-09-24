@@ -15,7 +15,7 @@ definition:
     return: ${../../status/if/code:/name}
   variants: []
 description: |
-  This directive initiates the Timer Server task.  This task is responsible for
+  This directive initiates the Timer Server task. This task is responsible for
   executing all timers initiated via the ${server-fire-after:/name} or
   ${server-fire-when:/name} directives.
 enabled-by: true
@@ -42,13 +42,16 @@ notes: |
   The Timer Server task is created using the ${../../task/if/create:/name}
   directive and must be accounted for when configuring the system.
 params:
-- description: is the task priority.
+- description: |
+    is the task priority.
   dir: null
   name: priority
-- description: is the task stack size in bytes.
+- description: |
+    is the task stack size in bytes.
   dir: null
   name: stack_size
-- description: is the task attribute set.
+- description: |
+    is the task attribute set.
   dir: null
   name: attribute_set
 return:
@@ -64,13 +67,12 @@ return:
       The task priority was invalid.
     value: ${../../status/if/invalid-priority:/name}
   - description: |
-      There was no inactive task object available to create the Timer Server
-      task.
+      There was no inactive task object available to create the Timer Server task.
     value: ${../../status/if/too-many:/name}
   - description: |
-      There was not enough memory to allocate the task storage area.  The task
-      storage area contains the task stack, the thread-local storage, and the
-      floating point context.
+      There was not enough memory to allocate the task storage area. The task storage
+      area contains the task stack, the thread-local storage, and the floating point
+      context.
     value: ${../../status/if/unsatisfied:/name}
   - description: |
       One of the task create extensions failed to create the Timer Server task.

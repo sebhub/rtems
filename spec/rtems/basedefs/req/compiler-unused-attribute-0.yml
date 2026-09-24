@@ -9,6 +9,6 @@ links:
 rationale: null
 requirement-type: functional
 text: |
-  The macro ${../if/compiler-unused-attribute:/name} shall
-  have exactly the same effect as the macro ${../if/unused:/name}.
+  The macro ${../if/compiler-unused-attribute:/name} shall have exactly the same
+  effect as the macro ${../if/unused:/name}.
 type: requirement

@@ -1,9 +1,9 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+author: Frontgrade Gaisler
 copyrights:
 - Copyright (C) 2026 embedded brains GmbH & Co. KG
 enabled-by: true
 links: []
-author: Frontgrade Gaisler
 organization: Frontgrade Gaisler AB
 reference-type: manual
 title: GRLIB-TN-0011, LEON3/FT AHB Lock Release during Atomic Operation, Issue 1.5

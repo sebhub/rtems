@@ -8,7 +8,6 @@ links:
   uid: group
 term: tick
 text: |
-  The basic unit of time used by RTEMS.  It is a user-configurable number
-  of microseconds.  The current tick expires when a clock tick directive is
-  invoked.
+  The basic unit of time used by RTEMS. It is a user-configurable number of
+  microseconds. The current tick expires when a clock tick directive is invoked.
 type: glossary

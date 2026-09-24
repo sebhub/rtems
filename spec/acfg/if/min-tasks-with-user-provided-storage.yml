@@ -4,8 +4,8 @@ copyrights:
 - Copyright (C) 2020 embedded brains GmbH & Co. KG
 default-value: 0
 description: |
-  The value of this configuration option defines the minimum count of Classic
-  API Tasks which are constructed by ${/rtems/task/if/construct:/name}.
+  The value of this configuration option defines the minimum count of Classic API
+  Tasks which are constructed by ${/rtems/task/if/construct:/name}.
 enabled-by: true
 index-entries: []
 interface-type: appl-config-option

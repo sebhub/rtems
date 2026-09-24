@@ -9,11 +9,10 @@ links:
 rationale: null
 requirement-type: functional
 text: |
-  When the code is compiled with the GNU C compiler,
-  and argument ${../if/obfuscate-variable:/params[0]/name}
-  is an automatic variable or function argument,
-  and the value of that variable or function argument is of a type
-  which fits into a register,
-  the ${../if/obfuscate-variable:/name} macro shall prevent the compiler
-  from performing optimizations based on the variable value.
+  When the code is compiled with the GNU C compiler, and argument
+  ${../if/obfuscate-variable:/params[0]/name} is an automatic variable or
+  function argument, and the value of that variable or function argument is of a
+  type which fits into a register, the ${../if/obfuscate-variable:/name} macro
+  shall prevent the compiler from performing optimizations based on the variable
+  value.
 type: requirement

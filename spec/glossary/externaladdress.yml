@@ -8,6 +8,6 @@ links:
   uid: group
 term: external address
 text: |
-  The address used to access dual-ported memory by all the nodes in a
-  system which do not own the memory.
+  The address used to access dual-ported memory by all the nodes in a system
+  which do not own the memory.
 type: glossary

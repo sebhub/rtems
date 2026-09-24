@@ -9,6 +9,6 @@ links:
 term: target architecture
 text: |
   The target architecture is the instruction set architecture (ISA) of the
-  ${target:/term}.  Some RTEMS features depend on the target architecture.  For
-  the details consult the *RTEMS CPU Architecture Supplement*.
+  ${target:/term}. Some RTEMS features depend on the target architecture. For the
+  details consult the *RTEMS CPU Architecture Supplement*.
 type: glossary

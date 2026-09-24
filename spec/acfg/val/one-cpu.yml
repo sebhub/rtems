@@ -12,8 +12,8 @@ test-actions:
     uint32_t          yield_count_before;
   checks:
   - brief: |
-      Check that the ${/acfg/if/max-priority:/name} application configuration
-      option resulted in the expected system setting using
+      Check that the ${/acfg/if/max-priority:/name} application configuration option
+      resulted in the expected system setting using
       ${/rtems/task/if/maximum-priority:/spec}.
     code: |
       T_eq_u32( RTEMS_MAXIMUM_PRIORITY, 127 );
@@ -23,9 +23,9 @@ test-actions:
     - role: validation
       uid: /rtems/task/req/maximum-priority
   - brief: |
-      Check that the Deterministic Priority Scheduler which was configured by
-      the ${/acfg/if/scheduler-priority:/name} application configuration in the
-      test suite.
+      Check that the Deterministic Priority Scheduler which was configured by the
+      ${/acfg/if/scheduler-priority:/name} application configuration in the test
+      suite.
     code: |
       yield_count_before = yield_count;
       sc = rtems_task_wake_after( RTEMS_YIELD_PROCESSOR );
@@ -35,9 +35,9 @@ test-actions:
     - role: validation
       uid: ../req/scheduler-priority
   - brief: |
-      Check that we are able to identify the scheduler by the name configured
-      by the ${/acfg/if/scheduler-priority:/name} application configuration
-      option in the test suite.
+      Check that we are able to identify the scheduler by the name configured by the
+      ${/acfg/if/scheduler-priority:/name} application configuration option in the
+      test suite.
     code: |
       sc = rtems_scheduler_ident( TEST_SCHEDULER_A_NAME, &id );
       T_rsc_success( sc );

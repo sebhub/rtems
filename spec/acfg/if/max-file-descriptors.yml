@@ -4,8 +4,8 @@ copyrights:
 - Copyright (C) 1988, 2008 On-Line Applications Research Corporation (OAR)
 default-value: 3
 description: |
-  The value of this configuration option defines the maximum number of file
-  like objects that can be concurrently open.
+  The value of this configuration option defines the maximum number of file like
+  objects that can be concurrently open.
 enabled-by: true
 index-entries:
 - maximum file descriptors

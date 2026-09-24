@@ -2,15 +2,14 @@ SPDX-License-Identifier: CC-BY-SA-4.0
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
 enabled-by: true
+functional-type: function
 links:
 - role: interface-function
   uid: ../if/entry-initializer
-functional-type: function
 rationale: null
 requirement-type: functional
 text: |
   When the ${../if/entry-initializer:/name} is used to statically initialize an
-  object of type ${../if/entry:/name}, the `arg` member of the object
-  shall be initialized to the value of the
-  ${../if/entry-initializer:/params[1]/name}.
+  object of type ${../if/entry:/name}, the `arg` member of the object shall be
+  initialized to the value of the ${../if/entry-initializer:/params[1]/name}.
 type: requirement

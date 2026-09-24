@@ -31,7 +31,6 @@ notes: null
 params: []
 return:
   return: |
-    Returns the highest valid value for the API component of an object
-    identifier.
+    Returns the highest valid value for the API component of an object identifier.
   return-values: []
 type: interface

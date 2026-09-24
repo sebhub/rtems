@@ -6,8 +6,8 @@ default-value: |
   The default value is two times the value of
   ${min-task-stack-size:/name}.
 description: |
-  The value of this configuration option defines the minimum stack size in
-  bytes for every POSIX thread in the system.
+  The value of this configuration option defines the minimum stack size in bytes
+  for every POSIX thread in the system.
 enabled-by: true
 index-entries:
 - minimum POSIX thread stack size

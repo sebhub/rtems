@@ -2,6 +2,7 @@ SPDX-License-Identifier: CC-BY-SA-4.0
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
 enabled-by: true
+functional-type: function
 links:
 - role: interface-function
   uid: ../if/self-define
@@ -33,7 +34,6 @@ links:
   uid: ../../event/if/system-send
 - role: interface-function
   uid: ../../signal/if/send
-functional-type: function
 rationale: null
 requirement-type: functional
 text: |

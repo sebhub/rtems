@@ -15,11 +15,11 @@ definition:
   variants: []
 description: |
   This directive resets the task specified by ${.:/params[0]/name} to begin
-  execution at its original entry point.  The task's priority and execution
-  mode are set to the original creation values.  If the task is currently
-  blocked, RTEMS automatically makes the task ready.  A task can be restarted
-  from any state, except the dormant state.  The task's entry point argument is
-  contained in ${.:/params[1]/name}.
+  execution at its original entry point. The task's priority and execution mode
+  are set to the original creation values. If the task is currently blocked,
+  RTEMS automatically makes the task ready. A task can be restarted from any
+  state, except the dormant state. The task's entry point argument is contained
+  in ${.:/params[1]/name}.
 enabled-by: true
 index-entries:
 - restarting a task
@@ -56,7 +56,7 @@ notes: |
   RTEMS and then delete itself.
 params:
 - description: |
-    is the task identifier.  The constant ${self-define:/name} may be used to
+    is the task identifier. The constant ${self-define:/name} may be used to
     specify the calling task.
   dir: null
   name: id

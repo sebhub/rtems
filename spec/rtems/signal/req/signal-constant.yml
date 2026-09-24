@@ -2,6 +2,7 @@ SPDX-License-Identifier: CC-BY-SA-4.0
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
 enabled-by: true
+functional-type: function
 links:
 - role: interface-function
   uid: ../if/signal-00
@@ -67,11 +68,10 @@ links:
   uid: ../if/signal-30
 - role: interface-function
   uid: ../if/signal-31
-functional-type: function
 rationale: null
 requirement-type: functional
 text: |
-  Let {math}`J\in\{0, 1, ..., 31\}`.  The {math}`J`-th signal constant shall be
-  a constant expression which evaluates to the integer representation of signal
+  Let {math}`J\in\{0, 1, ..., 31\}`. The {math}`J`-th signal constant shall be a
+  constant expression which evaluates to the integer representation of signal
   {math}`J`.
 type: requirement

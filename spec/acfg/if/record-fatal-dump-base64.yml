@@ -5,14 +5,14 @@ copyrights:
 description: |
   In case
 
-  * this configuration option is defined
+  - this configuration option is defined
 
-  * and ${record-per-processor-items:/name} is properly defined,
+  - and ${record-per-processor-items:/name} is properly defined,
 
-  * and ${record-fatal-dump-base64-zlib:/name} is undefined,
+  - and ${record-fatal-dump-base64-zlib:/name} is undefined,
 
-  then the event records are dumped in Base64 encoding in a fatal error
-  extension (see ${/ref/rtems/c-user/terminate:/name}).
+  then the event records are dumped in Base64 encoding in a fatal error extension
+  (see ${/ref/rtems/c-user/terminate:/name}).
 enabled-by: true
 index-entries: []
 interface-type: appl-config-option

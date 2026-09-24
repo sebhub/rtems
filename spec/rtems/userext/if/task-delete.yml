@@ -40,14 +40,14 @@ notes: |
   extension of the extension set.
 params:
 - description: |
-    is the ${/glossary/tcb:/term} of the executing thread.  If the idle thread
-    is created and one of the initial task create extension fails, then the
-    executing thread is equal to ${/c/if/null:/name}.
+    is the ${/glossary/tcb:/term} of the executing thread. If the idle thread is
+    created and one of the initial task create extension fails, then the executing
+    thread is equal to ${/c/if/null:/name}.
   dir: null
   name: executing
 - description: |
-    is the ${/glossary/tcb:/term} of the deleted thread.  The executing and
-    deleted arguments are never equal.
+    is the ${/glossary/tcb:/term} of the deleted thread. The executing and deleted
+    arguments are never equal.
   dir: null
   name: created
 return: null

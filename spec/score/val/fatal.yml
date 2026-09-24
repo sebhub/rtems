@@ -5,8 +5,8 @@ enabled-by: true
 links: []
 test-actions:
 - action-brief: |
-    Construct a task with a task body which returns.  Check that the right
-    fatal error occurred.
+    Construct a task with a task body which returns. Check that the right fatal
+    error occurred.
   action-code: |
     rtems_id     id;
     unsigned int counter;
@@ -27,9 +27,8 @@ test-actions:
     uid: ../thread/req/fatal-thread-exitted
 - action-brief: |
     Construct a task which performs a direct thread dispatch with maskable
-    interrupts disabled.  Where robust thread dispatching is required, check
-    that the right fatal error occurred, otherwise check that no fatal error
-    occurred.
+    interrupts disabled. Where robust thread dispatching is required, check that
+    the right fatal error occurred, otherwise check that no fatal error occurred.
   action-code: |
     rtems_id     id;
     unsigned int counter;
@@ -64,9 +63,8 @@ test-actions:
     uid: ../thread/req/thread-dispatch-isr-disabled
 - action-brief: |
     Construct a task which performs an on demand thread dispatch with maskable
-    interrupts disabled.  Where robust thread dispatching is required, check
-    that the right fatal error occurred, otherwise check that no fatal error
-    occurred.
+    interrupts disabled. Where robust thread dispatching is required, check that
+    the right fatal error occurred, otherwise check that no fatal error occurred.
   action-code: |
     rtems_id     id;
     unsigned int counter;
@@ -100,9 +98,8 @@ test-actions:
   - role: validation
     uid: ../thread/req/thread-dispatch-isr-disabled
 - action-brief: |
-    Construct a task which performs a direct thread dispatch with a thread
-    dispatch level not equal to one.  Check that the right fatal error
-    occurred.
+    Construct a task which performs a direct thread dispatch with a thread dispatch
+    level not equal to one. Check that the right fatal error occurred.
   action-code: |
     rtems_id     id;
     unsigned int counter;
@@ -122,8 +119,8 @@ test-actions:
   - role: validation
     uid: ../thread/req/fatal-bad-thread-dispatch-disable-level
 - action-brief: |
-    Create a mutex and construct a task which produces a deadlock which
-    involves the allocator mutex.
+    Create a mutex and construct a task which produces a deadlock which involves
+    the allocator mutex.
   action-code: |
     rtems_extensions_table extensions;
     rtems_status_code      sc;
@@ -173,7 +170,7 @@ test-actions:
   - role: validation
     uid: ../object/req/fatal-allocator-mutex-deadlock
 - action-brief: |
-    Check that ${/rtems/fatal/if/fatal:/name} terminates the system.  Since
+    Check that ${/rtems/fatal/if/fatal:/name} terminates the system. Since
     SetFatalHandler() requires an initial extension this validates
     ${/acfg/if/initial-extensions:/name}.
   action-code: |

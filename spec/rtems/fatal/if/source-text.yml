@@ -35,8 +35,8 @@ params:
   name: fatal_source
 return:
   return: |
-    Returns a descriptive text for the fatal source.  The text for the fatal
-    source is the enumerator constant name.
+    Returns a descriptive text for the fatal source. The text for the fatal source
+    is the enumerator constant name.
   return-values:
   - description: |
       The ${.:/params[0]/name} parameter value was not a fatal source.

@@ -35,9 +35,9 @@ post-conditions:
     test-code: |
       T_eq( ctx->is_enabled, !ctx->enabled_obj );
     text: |
-      Objects referenced by the ${../if/vector-is-enabled:/params[1]/name}
-      parameter in past calls to ${../if/vector-is-enabled:/name} shall not be
-      accessed by the ${../if/vector-is-enabled:/name} call.
+      Objects referenced by the ${../if/vector-is-enabled:/params[1]/name} parameter
+      in past calls to ${../if/vector-is-enabled:/name} shall not be accessed by the
+      ${../if/vector-is-enabled:/name} call.
   - name: 'Yes'
     test-code: |
       /* Validation is done by WhileIsEnabled() for each interrupt vector */
@@ -61,14 +61,14 @@ pre-conditions:
     test-code: |
       ctx->valid_vector = true;
     text: |
-      While the ${../if/vector-is-enabled:/params[0]/name} parameter is
-      associated with an interrupt vector.
+      While the ${../if/vector-is-enabled:/params[0]/name} parameter is associated
+      with an interrupt vector.
   - name: Invalid
     test-code: |
       ctx->valid_vector = false;
     text: |
-      While the ${../if/vector-is-enabled:/params[0]/name} parameter is
-      not associated with an interrupt vector.
+      While the ${../if/vector-is-enabled:/params[0]/name} parameter is not
+      associated with an interrupt vector.
   test-epilogue: null
   test-prologue: null
 - name: Enabled
@@ -83,8 +83,8 @@ pre-conditions:
     test-code: |
       ctx->enabled = NULL;
     text: |
-      While the ${../if/vector-is-enabled:/params[1]/name} parameter is equal
-      to ${/c/if/null:/name}.
+      While the ${../if/vector-is-enabled:/params[1]/name} parameter is equal to
+      ${/c/if/null:/name}.
   test-epilogue: null
   test-prologue: null
 - name: IsEnabled
@@ -96,8 +96,8 @@ pre-conditions:
     text: |
       While the interrupt associated with the interrupt vector specified by
       ${../if/vector-is-enabled:/params[0]/name} was enabled for the processor
-      executing the ${../if/vector-is-enabled:/name} call at some time point
-      during the call.
+      executing the ${../if/vector-is-enabled:/name} call at some time point during
+      the call.
   - name: 'No'
     test-code: |
       ctx->is_enabled = false;
@@ -105,8 +105,8 @@ pre-conditions:
     text: |
       While the interrupt associated with the interrupt vector specified by
       ${../if/vector-is-enabled:/params[0]/name} was disabled for the processor
-      executing the ${../if/vector-is-enabled:/name} call at some time point
-      during the call.
+      executing the ${../if/vector-is-enabled:/name} call at some time point during
+      the call.
   test-epilogue: null
   test-prologue: null
 rationale: null
@@ -166,8 +166,8 @@ test-context:
   member: |
     rtems_vector_number vector
 - brief: |
-    If this member is true, then the interrupt vector shall be enabled before
-    the ${../if/vector-is-enabled:/name} call.
+    If this member is true, then the interrupt vector shall be enabled before the
+    ${../if/vector-is-enabled:/name} call.
   description: null
   member: |
     bool is_enabled
@@ -212,10 +212,7 @@ test-support: |
   static void CheckIsEnabled( Context *ctx, bool expected )
   {
     ctx->enabled_obj = !expected;
-    ctx->status = rtems_interrupt_vector_is_enabled(
-      ctx->vector,
-      ctx->enabled
-    );
+    ctx->status = rtems_interrupt_vector_is_enabled( ctx->vector, ctx->enabled );
     T_rsc_success( ctx->status );
     T_eq( ctx->enabled_obj, expected );
   }
@@ -225,7 +222,7 @@ test-support: |
     rtems_status_code sc;
 
     sc = rtems_interrupt_vector_enable( ctx->vector );
-   T_rsc_success( sc );
+    T_rsc_success( sc );
   }
 
   static void Disable( const Context *ctx )
@@ -294,11 +291,11 @@ test-support: |
     if ( has_installed_entries ) {
       if ( attr->can_enable && attr->can_disable ) {
         rtems_status_code sc;
-        cpu_set_t affinity_old;
-        cpu_set_t affinity_new;
+        cpu_set_t         affinity_old;
+        cpu_set_t         affinity_new;
 
-        CPU_ZERO(&affinity_old);
-        CPU_ZERO(&affinity_new);
+        CPU_ZERO( &affinity_old );
+        CPU_ZERO( &affinity_new );
 
         if ( attr->can_get_affinity ) {
           /*
@@ -360,7 +357,8 @@ test-support: |
   }
 test-target: testsuites/validation/tc-intr-vector-is-enabled.c
 test-teardown: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

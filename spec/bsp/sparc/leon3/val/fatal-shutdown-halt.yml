@@ -8,12 +8,11 @@ test-actions:
     Check the effects of the leon3 BSP family shutdown procedure.
   action-code: |
     uint32_t counter;
-
   checks:
   - brief: |
-      Check that no dynamic fatal error extension was invoked.  This shows that
-      the leon3 BSP family shutdown procedure called the wrapped
-      _CPU_Fatal_halt() function of the test suite.
+      Check that no dynamic fatal error extension was invoked. This shows that the
+      leon3 BSP family shutdown procedure called the wrapped \_CPU_Fatal_halt()
+      function of the test suite.
     code: |
       T_step_rsc_success( ${.:/step}, status );
       counter = Add( &dynamic_fatal_extension_counter, 0 );

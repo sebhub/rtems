@@ -4,13 +4,13 @@ copyrights:
 enabled-by:
 - arm
 - riscv
+functional-type: function
 links:
 - role: requirement-refinement
   uid: global-construction
-functional-type: function
 rationale: null
 requirement-type: functional
 text: |
-  The handlers registered in the `.preinit_array` table shall be called
-  before the global constructors.
+  The handlers registered in the `.preinit_array` table shall be called before
+  the global constructors.
 type: requirement

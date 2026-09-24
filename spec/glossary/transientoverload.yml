@@ -8,7 +8,7 @@ links:
   uid: group
 term: transient overload
 text: |
-  A temporary rise in system activity which may cause deadlines to be
-  missed.  Rate Monotonic Scheduling can be used to determine if all
-  deadlines will be met under transient overload.
+  A temporary rise in system activity which may cause deadlines to be missed.
+  Rate Monotonic Scheduling can be used to determine if all deadlines will be met
+  under transient overload.
 type: glossary

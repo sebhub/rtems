@@ -1,7 +1,7 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 brief: |
-  Installs the interrupt handler routine and argument at the interrupt vector
-  on the interrupt server.
+  Installs the interrupt handler routine and argument at the interrupt vector on
+  the interrupt server.
 copyrights:
 - Copyright (C) 2008, 2021 embedded brains GmbH & Co. KG
 definition:
@@ -41,8 +41,8 @@ notes: |
   See also ${handler-install:/name}.
 params:
 - description: |
-    is the interrupt server index.  The constant ${server-default:/name} may be
-    used to specify the default interrupt server.
+    is the interrupt server index. The constant ${server-default:/name} may be used
+    to specify the default interrupt server.
   dir: null
   name: server_index
 - description: |
@@ -89,20 +89,20 @@ return:
       An option specified by ${.:/params[2]/name} was not applicable.
     value: ${../../status/if/invalid-number:/name}
   - description: |
-      The ${unique:/name} option was set in ${.:/params[2]/name} and the
-      interrupt vector was already occupied by a handler.
+      The ${unique:/name} option was set in ${.:/params[2]/name} and the interrupt
+      vector was already occupied by a handler.
     value: ${../../status/if/resource-in-use:/name}
   - description: |
-      The ${shared:/name} option was set in ${.:/params[2]/name} and the
-      interrupt vector was already occupied by a unique handler.
+      The ${shared:/name} option was set in ${.:/params[2]/name} and the interrupt
+      vector was already occupied by a unique handler.
     value: ${../../status/if/resource-in-use:/name}
   - description: |
-      The handler specified by ${.:/params[4]/name} was already installed for
-      the interrupt vector specified by ${.:/params[1]/name} with an argument
-      equal to the argument specified by ${.:/params[5]/name}.
+      The handler specified by ${.:/params[4]/name} was already installed for the
+      interrupt vector specified by ${.:/params[1]/name} with an argument equal to
+      the argument specified by ${.:/params[5]/name}.
     value: ${../../status/if/too-many:/name}
   - description: |
-      The ${replace:/name} option was set in ${.:/params[2]/name} and no
-      handler to replace was installed.
+      The ${replace:/name} option was set in ${.:/params[2]/name} and no handler to
+      replace was installed.
     value: ${../../status/if/unsatisfied:/name}
 type: interface

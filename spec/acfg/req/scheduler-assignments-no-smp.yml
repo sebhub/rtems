@@ -12,6 +12,6 @@ links:
 rationale: null
 requirement-type: functional
 text: |
-  Using the ${../if/scheduler-assignments:/name} application configuration
-  option in an application configuration shall have no effect.
+  Using the ${../if/scheduler-assignments:/name} application configuration option
+  in an application configuration shall have no effect.
 type: requirement

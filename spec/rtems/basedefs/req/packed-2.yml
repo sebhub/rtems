@@ -9,9 +9,8 @@ links:
 rationale: null
 requirement-type: functional
 text: |
-  When the code is compiled with the GNU C compiler,
-  and the ${../if/packed:/name} macro is attached to a
-  enum type definition,
-  the ${../if/packed:/name} macro shall cause the use of the smallest integral
-  type to represent the values of the enum.
+  When the code is compiled with the GNU C compiler, and the
+  ${../if/packed:/name} macro is attached to a enum type definition, the
+  ${../if/packed:/name} macro shall cause the use of the smallest integral type
+  to represent the values of the enum.
 type: requirement

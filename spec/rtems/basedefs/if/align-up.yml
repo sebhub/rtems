@@ -28,9 +28,9 @@ params:
   dir: null
   name: _value
 - description: |
-    is the desired alignment in bytes.  The alignment shall be a power of two,
-    otherwise the returned value is undefined.  The alignment parameter is
-    evaluated twice.
+    is the desired alignment in bytes. The alignment shall be a power of two,
+    otherwise the returned value is undefined. The alignment parameter is evaluated
+    twice.
   dir: null
   name: _alignment
 return:

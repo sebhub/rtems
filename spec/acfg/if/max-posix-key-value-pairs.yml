@@ -8,8 +8,8 @@ default-value: |
   ( ${max-tasks:/name} +
   ${max-posix-threads:/name} ).
 description: |
-  The value of this configuration option defines the maximum number of key
-  value pairs used by POSIX API Keys that can be concurrently active.
+  The value of this configuration option defines the maximum number of key value
+  pairs used by POSIX API Keys that can be concurrently active.
 enabled-by: true
 index-entries: []
 interface-type: appl-config-option

@@ -13,10 +13,10 @@ definition:
     return: ${../../status/if/code:/name}
   variants: []
 description: |
-  This directive deletes the message queue specified by ${.:/params[0]/name}.
-  As a result of this directive, all tasks blocked waiting to receive a message
-  from this queue will be readied and returned a status code which indicates
-  that the message queue was deleted.
+  This directive deletes the message queue specified by ${.:/params[0]/name}. As
+  a result of this directive, all tasks blocked waiting to receive a message from
+  this queue will be readied and returned a status code which indicates that the
+  message queue was deleted.
 enabled-by: true
 index-entries:
 - delete a message queue

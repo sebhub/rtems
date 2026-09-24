@@ -4,16 +4,6 @@ brief: |
   map.
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
-description: null
-enabled-by: true
-identifier: RTEMSDeviceGRETHGBIT
-index-entries: []
-interface-type: register-block
-links:
-- role: interface-ingroup
-  uid: group
-- role: interface-placement
-  uid: grethgbit-header
 definition:
 - default:
     count: 1
@@ -60,130 +50,177 @@ definition:
     name: EDCLMACLSB
   offset: 0x2c
   variants: []
-register-prefix: null
+description: null
+enabled-by: true
+identifier: RTEMSDeviceGRETHGBIT
+index-entries: []
+interface-type: register-block
+links:
+- role: interface-ingroup
+  uid: group
+- role: interface-placement
+  uid: grethgbit-header
+name: grethgbit
+notes: null
 register-block-group: GRETH_GBIT
 register-block-size: 48
+register-prefix: null
 registers:
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'EA'
+      name: EA
+      properties:
+      - r
       start: 31
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'BS'
+      name: BS
+      properties:
+      - r
       start: 28
       width: 3
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'GA'
+      name: GA
+      properties:
+      - r
       start: 27
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'MA'
+      name: MA
+      properties:
+      - r
       start: 26
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'MC'
+      name: MC
+      properties:
+      - r
       start: 25
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'ED'
+      name: ED
+      properties:
+      - r
+      - w
       start: 14
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'RD'
+      name: RD
+      properties:
+      - r
+      - w
       start: 13
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'DD'
+      name: DD
+      properties:
+      - r
+      - w
       start: 12
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'ME'
+      name: ME
+      properties:
+      - r
+      - w
       start: 11
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'PI'
+      name: PI
+      properties:
+      - r
+      - w
       start: 10
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'BM'
+      name: BM
+      properties:
+      - r
+      - w
       start: 9
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'GB'
+      name: GB
+      properties:
+      - r
+      - w
       start: 8
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'SP'
+      name: SP
+      properties:
+      - r
+      - w
       start: 7
       width: 1
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'RS'
+      name: RS
+      properties:
+      - r
+      - w1c
       start: 6
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'PM'
+      name: PM
+      properties:
+      - r
+      - w
       start: 5
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'FD'
+      name: FD
+      properties:
+      - r
+      - w
       start: 4
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'RI'
+      name: RI
+      properties:
+      - r
+      - w
       start: 3
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'TI'
+      name: TI
+      properties:
+      - r
+      - w
       start: 2
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'RE'
+      name: RE
+      properties:
+      - r
+      - w
       start: 1
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'TE'
+      name: TE
+      properties:
+      - r
+      - w
       start: 0
       width: 1
     variants: []
@@ -194,58 +231,76 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'PS'
+      name: PS
+      properties:
+      - r
+      - w1c
       start: 8
       width: 1
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'IA'
+      name: IA
+      properties:
+      - r
+      - w1c
       start: 7
       width: 1
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'TS'
+      name: TS
+      properties:
+      - r
+      - w1c
       start: 6
       width: 1
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'TA'
+      name: TA
+      properties:
+      - r
+      - w1c
       start: 5
       width: 1
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'RA'
+      name: RA
+      properties:
+      - r
+      - w1c
       start: 4
       width: 1
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'TI'
+      name: TI
+      properties:
+      - r
+      - w1c
       start: 3
       width: 1
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'RI'
+      name: RI
+      properties:
+      - r
+      - w1c
       start: 2
       width: 1
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'TE'
+      name: TE
+      properties:
+      - r
+      - w1c
       start: 1
       width: 1
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'RE'
+      name: RE
+      properties:
+      - r
+      - w1c
       start: 0
       width: 1
     variants: []
@@ -256,10 +311,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'MSB'
+      name: MSB
+      properties:
+      - r
+      - w
       start: 0
       width: 16
     variants: []
@@ -270,10 +327,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'LSB'
+      name: LSB
+      properties:
+      - r
+      - w
       start: 0
       width: 32
     variants: []
@@ -284,46 +343,58 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'DATA'
+      name: DATA
+      properties:
+      - r
+      - w
       start: 16
       width: 16
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'PHYADDR'
+      name: PHYADDR
+      properties:
+      - r
+      - w
       start: 11
       width: 5
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'REGADDR'
+      name: REGADDR
+      properties:
+      - r
+      - w
       start: 6
       width: 5
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'BU'
+      name: BU
+      properties:
+      - r
       start: 3
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'LF'
+      name: LF
+      properties:
+      - r
       start: 2
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'RD'
+      name: RD
+      properties:
+      - r
+      - w
       start: 1
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'WR'
+      name: WR
+      properties:
+      - r
+      - w
       start: 0
       width: 1
     variants: []
@@ -334,16 +405,20 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'BASEADDR'
+      name: BASEADDR
+      properties:
+      - r
+      - w
       start: 10
       width: 22
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'DESCPNT'
+      name: DESCPNT
+      properties:
+      - r
+      - w
       start: 3
       width: 7
     variants: []
@@ -354,16 +429,20 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'BASEADDR'
+      name: BASEADDR
+      properties:
+      - r
+      - w
       start: 10
       width: 22
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'DESCPNT'
+      name: DESCPNT
+      properties:
+      - r
+      - w
       start: 3
       width: 7
     variants: []
@@ -374,10 +453,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'MSB'
+      name: MSB
+      properties:
+      - r
+      - w
       start: 0
       width: 16
     variants: []
@@ -388,10 +469,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'LSB'
+      name: LSB
+      properties:
+      - r
+      - w
       start: 0
       width: 32
     variants: []
@@ -400,6 +483,4 @@ registers:
   description: null
   name: EDCLMACLSB
   width: 32
-name: grethgbit
-notes: null
 type: interface

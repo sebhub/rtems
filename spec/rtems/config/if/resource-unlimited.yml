@@ -33,7 +33,8 @@ notes: |
   This directive should be used to configure unlimited objects, see
   ${/ref/rtems/c-user/config-unlimited-objects:/name}.
 params:
-- description: is the resource number to augment.
+- description: |
+    is the resource number to augment.
   dir: null
   name: _resource
 return:

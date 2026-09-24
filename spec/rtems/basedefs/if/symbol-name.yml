@@ -32,8 +32,8 @@ name: RTEMS_SYMBOL_NAME
 notes: null
 params:
 - description: |
-    is the user defined name of the symbol.  The name shall be a valid
-    designator.  On the name a macro expansion is performed.
+    is the user defined name of the symbol. The name shall be a valid designator.
+    On the name a macro expansion is performed.
   dir: null
   name: _name
 return:

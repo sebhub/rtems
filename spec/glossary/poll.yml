@@ -8,7 +8,7 @@ links:
   uid: group
 term: poll
 text: |
-  A mechanism used to determine if an event has occurred by periodically
-  checking for a particular status.  Typical events include arrival of
-  data, completion of an action, and errors.
+  A mechanism used to determine if an event has occurred by periodically checking
+  for a particular status. Typical events include arrival of data, completion of
+  an action, and errors.
 type: glossary

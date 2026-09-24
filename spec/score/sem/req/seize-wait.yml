@@ -34,11 +34,11 @@ post-conditions:
           break;
       }
     text: |
-      Where the thread queue uses the FIFO discipline, the calling thread shall
-      be enqueued in FIFO order.
+      Where the thread queue uses the FIFO discipline, the calling thread shall be
+      enqueued in FIFO order.
 
-      Where the thread queue uses the priority discipline, the calling thread
-      shall be enqueued in priority order.
+      Where the thread queue uses the priority discipline, the calling thread shall
+      be enqueued in priority order.
   test-epilogue: null
   test-prologue: |
     Status_Control status;
@@ -62,17 +62,14 @@ post-conditions:
     test-code: |
       /* Checked by GetProperties() */
     text: |
-      Where the directive was called with a timeout in clock ticks, the thread
-      timer of the calling task shall fire after the specified clock ticks.
+      Where the directive was called with a timeout in clock ticks, the thread timer
+      of the calling task shall fire after the specified clock ticks.
 
       Where the directive was called without a timeout, the thread timer of the
       calling task shall be inactive.
   - name: 'No'
     test-code: |
-      T_eq_int(
-        T_get_thread_timer_state( RTEMS_SELF ),
-        T_THREAD_TIMER_INACTIVE
-      );
+      T_eq_int( T_get_thread_timer_state( RTEMS_SELF ), T_THREAD_TIMER_INACTIVE );
     text: |
       The thread timer of the calling task shall be inactive.
   test-epilogue: null

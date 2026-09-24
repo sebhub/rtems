@@ -8,10 +8,9 @@ links:
   uid: group
 term: real priority
 text: |
-  Each ${task:/term} has exactly one real priority.  The real priority is
-  always with respect to the ${scheduler-home:/term} of a task.  It is defined
-  during task initialization.  It may be changed by directives such as
-  ${/rtems/task/if/set-priority:/name} and
-  ${/rtems/task/if/set-scheduler:/name}.  The real priority is the foundation
-  of the ${priority-current:/term}.
+  Each ${task:/term} has exactly one real priority. The real priority is always
+  with respect to the ${scheduler-home:/term} of a task. It is defined during
+  task initialization. It may be changed by directives such as
+  ${/rtems/task/if/set-priority:/name} and ${/rtems/task/if/set-scheduler:/name}.
+  The real priority is the foundation of the ${priority-current:/term}.
 type: glossary

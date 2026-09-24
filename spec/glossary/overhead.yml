@@ -8,6 +8,5 @@ links:
   uid: group
 term: overhead
 text: |
-  The portion of the CPUs processing power consumed by the operating
-  system.
+  The portion of the CPUs processing power consumed by the operating system.
 type: glossary

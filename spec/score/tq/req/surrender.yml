@@ -23,8 +23,7 @@ post-conditions:
       T_eq_u32( TQGetWorkerCounter( ctx->tq_ctx, TQ_BLOCKER_A ), 1 );
       T_eq_u32( TQGetWorkerCounter( ctx->tq_ctx, TQ_BLOCKER_B ), 2 );
     text: |
-      The first thread in priority order shall be dequeued from the thread
-      queue.
+      The first thread in priority order shall be dequeued from the thread queue.
   test-epilogue: null
   test-prologue: null
 - name: Unblock
@@ -101,9 +100,9 @@ requirement-type: functional
 skip-reasons:
   OnlyOneExecutingThread: |
     Where the system was built with SMP support disabled, there is at most one
-    executing thread.  Thread queues with an owner can only be surrendered by
-    the previous owner thread.  Thus, the dequeued thread cannot be in the
-    intend to block wait state.
+    executing thread. Thread queues with an owner can only be surrendered by the
+    previous owner thread. Thus, the dequeued thread cannot be in the intend to
+    block wait state.
 test-action: |
   Status_Control status;
 
@@ -238,7 +237,7 @@ test-setup:
     TQSetPriority( ctx->tq_ctx, TQ_BLOCKER_A, PRIO_VERY_HIGH );
     TQSetPriority( ctx->tq_ctx, TQ_BLOCKER_B, PRIO_HIGH );
 
-    #if defined(RTEMS_SMP)
+    #if defined( RTEMS_SMP )
     /*
      * For the mutexes with priority ceiling protocol, we need a scheduler with
      * two processors to set up the intend to block wait state.
@@ -275,7 +274,7 @@ test-support: |
     TQSchedulerRecordStop( ctx->tq_ctx );
   }
 
-  #if defined(RTEMS_SMP)
+  #if defined( RTEMS_SMP )
   static void Delay( void *arg )
   {
     Context          *ctx;
@@ -302,12 +301,9 @@ test-support: |
 
     ctx = arg;
 
-    if (
-      when == T_SCHEDULER_BEFORE &&
-      event->operation == T_SCHEDULER_BLOCK
-    ) {
+    if ( when == T_SCHEDULER_BEFORE && event->operation == T_SCHEDULER_BLOCK ) {
       T_scheduler_set_event_handler( NULL, NULL );
-  #if defined(RTEMS_SMP)
+  #if defined( RTEMS_SMP )
       ctx->request.handler = Delay;
   #else
       ctx->request.handler = Surrender;
@@ -321,7 +317,7 @@ test-teardown:
   code: |
     TQReset( ctx->tq_ctx );
 
-    #if defined(RTEMS_SMP)
+    #if defined( RTEMS_SMP )
     RemoveProcessor( SCHEDULER_A_ID, 1 );
     AddProcessor( SCHEDULER_B_ID, 1 );
     #endif

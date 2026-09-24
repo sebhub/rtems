@@ -1,7 +1,7 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 brief: |
-  Gets a ${/glossary/clock-tick:/term} value which is at least delta
-  microseconds in the future.
+  Gets a ${/glossary/clock-tick:/term} value which is at least delta microseconds
+  in the future.
 copyrights:
 - Copyright (C) 2014, 2021 embedded brains GmbH & Co. KG
 definition:
@@ -16,8 +16,8 @@ definition:
        * Add one additional tick, since we do not know the time to the clock
        * next tick.
        */
-      return ${/score/watchdog/if/ticks-since-boot:/name} + 1
-        + ( ${.:/params[0]/name} + us_per_tick - 1 ) / us_per_tick;
+      return ${/score/watchdog/if/ticks-since-boot:/name} + 1 +
+             ( ${.:/params[0]/name} + us_per_tick - 1 ) / us_per_tick;
     params:
     - ${../../type/if/interval:/name} ${.:/params[0]/name}
     return: ${../../type/if/interval:/name}

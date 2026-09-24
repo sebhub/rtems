@@ -40,10 +40,12 @@ links:
 name: rtems_event_transient_receive
 notes: null
 params:
-- description: is the option set.
+- description: |
+    is the option set.
   dir: null
   name: option_set
-- description: is the optional timeout in clock ticks.
+- description: |
+    is the optional timeout in clock ticks.
   dir: null
   name: ticks
 return: null

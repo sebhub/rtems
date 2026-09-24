@@ -19,8 +19,8 @@ post-conditions:
     test-code: |
       T_not_null( ctx->ptr );
     text: |
-      The return value of ${../if/calloc:/name} shall be equal to the begin
-      address of the allocated memory area.
+      The return value of ${../if/calloc:/name} shall be equal to the begin address
+      of the allocated memory area.
   test-epilogue: null
   test-prologue: null
 - name: Alignment
@@ -29,8 +29,8 @@ post-conditions:
     test-code: |
       T_eq_uptr( (uintptr_t) ctx->ptr % CPU_HEAP_ALIGNMENT, 0 );
     text: |
-      The begin address of the allocated memory area shall be an integral
-      multiple of the heap alignment of the ${/glossary/target-arch:/term}.
+      The begin address of the allocated memory area shall be an integral multiple of
+      the heap alignment of the ${/glossary/target-arch:/term}.
   test-epilogue: null
   test-prologue: null
 - name: Size
@@ -70,8 +70,8 @@ pre-conditions:
     test-code: |
       ctx->nelem = SIZE_MAX;
     text: |
-      While the `nelem` parameter is not equal to zero, while the `nelem`
-      parameter is too large to allocate a memory area with the specified size.
+      While the `nelem` parameter is not equal to zero, while the `nelem` parameter
+      is too large to allocate a memory area with the specified size.
   - name: Zero
     test-code: |
       ctx->nelem = 0;
@@ -81,9 +81,8 @@ pre-conditions:
     test-code: |
       ctx->nelem = 1;
     text: |
-      While the `nelem` parameter is not equal to zero, while the `nelem`
-      parameter is small enough to allocate a memory area with the specified
-      size.
+      While the `nelem` parameter is not equal to zero, while the `nelem` parameter
+      is small enough to allocate a memory area with the specified size.
   test-epilogue: null
   test-prologue: null
 - name: ElementSize
@@ -92,8 +91,8 @@ pre-conditions:
     test-code: |
       ctx->elsize = SIZE_MAX;
     text: |
-      While the `elsize` parameter is not equal to zero, while the `elsize`
-      parameter is too large to allocate a memory area with the specified size.
+      While the `elsize` parameter is not equal to zero, while the `elsize` parameter
+      is too large to allocate a memory area with the specified size.
   - name: Zero
     test-code: |
       ctx->elsize = 0;
@@ -103,9 +102,8 @@ pre-conditions:
     test-code: |
       ctx->elsize = sizeof( uint64_t );
     text: |
-      While the `elsize` parameter is not equal to zero, while the `elsize`
-      parameter is small enough to allocate a memory area with the specified
-      size.
+      While the `elsize` parameter is not equal to zero, while the `elsize` parameter
+      is small enough to allocate a memory area with the specified size.
   test-epilogue: null
   test-prologue: null
 rationale: null
@@ -157,7 +155,8 @@ test-teardown:
   code: |
     MemoryRestore( &ctx->mem_ctx );
   description: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

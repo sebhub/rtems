@@ -8,6 +8,6 @@ links:
   uid: group
 term: heap
 text: |
-  A data structure used to dynamically allocate and deallocate variable
-  sized blocks of memory.
+  A data structure used to dynamically allocate and deallocate variable sized
+  blocks of memory.
 type: glossary

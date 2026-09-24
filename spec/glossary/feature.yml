@@ -9,9 +9,8 @@ links:
 term: feature
 text: |
   In general, a
-  `software feature <https://en.wikipedia.org/wiki/Software_feature>`_
-  is vaguely defined.  A domain-specific definition is required.  In
-  ${rtems:/term}, a feature is a collection of interfaces together with their
-  implementation which provides a specific function or a service of the
-  operating system.
+  [software feature](https://en.wikipedia.org/wiki/Software_feature) is vaguely
+  defined. A domain-specific definition is required. In ${rtems:/term}, a feature
+  is a collection of interfaces together with their implementation which provides
+  a specific function or a service of the operating system.
 type: glossary

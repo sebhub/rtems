@@ -27,7 +27,7 @@ definition:
     enabled-by: ${/score/isr/if/lock-needs-object:/name}
 description: |
   This directive acquires the ISR lock specified by ${.:/params[0]/name} using
-  the lock context provided by ${.:/params[1]/name}.  The interrupt level will
+  the lock context provided by ${.:/params[1]/name}. The interrupt level will
   remain unchanged.
 enabled-by: true
 index-entries: []
@@ -64,8 +64,8 @@ params:
   dir: inout
   name: _lock
 - description: |
-    is the ISR lock context.  This lock context shall be used to release the
-    lock by calling ${lock-release-isr:/name}.
+    is the ISR lock context. This lock context shall be used to release the lock by
+    calling ${lock-release-isr:/name}.
   dir: out
   name: _lock_context
 return: null

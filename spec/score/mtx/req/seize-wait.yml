@@ -81,32 +81,26 @@ post-conditions:
       priority ceiling locking protocol.
   - name: PriorityMrsP
     test-code: |
-      #if defined(RTEMS_SMP)
-      ${../../tq/req/enqueue-mrsp:/test-run}( &ctx->tq_ctx->base );
+      #if defined( RTEMS_SMP )
+        ${../../tq/req/enqueue-mrsp:/test-run}( &ctx->tq_ctx->base );
       #else
-      T_unreachable();
+        T_unreachable();
       #endif
     text: |
-      The calling thread shall be enqueued in priority order according to the
-      MrsP locking protocol.
+      The calling thread shall be enqueued in priority order according to the MrsP
+      locking protocol.
   test-epilogue: null
   test-prologue: null
 - name: Owner
   states:
   - name: Other
     test-code: |
-      T_eq_ptr(
-        ctx->owner_after,
-        ctx->tq_ctx->base.worker_tcb[ TQ_BLOCKER_B ]
-      );
+      T_eq_ptr( ctx->owner_after, ctx->tq_ctx->base.worker_tcb[ TQ_BLOCKER_B ] );
     text: |
       The owner of the mutex shall not be modified.
   - name: Caller
     test-code: |
-      T_eq_ptr(
-        ctx->owner_after,
-        ctx->tq_ctx->base.worker_tcb[ TQ_BLOCKER_A ]
-      );
+      T_eq_ptr( ctx->owner_after, ctx->tq_ctx->base.worker_tcb[ TQ_BLOCKER_A ] );
     text: |
       The owner of the mutex shall be the calling thread.
   - name: None
@@ -248,31 +242,30 @@ pre-conditions:
     test-code: |
       ctx->priority_before = ctx->tq_ctx->priority_ceiling - 1;
     text: |
-      While the calling thread has a ${/glossary/priority-current:/term} higher
-      than the priority ceiling.
+      While the calling thread has a ${/glossary/priority-current:/term} higher than
+      the priority ceiling.
   - name: Equal
     test-code: |
       ctx->priority_before = ctx->tq_ctx->priority_ceiling;
     text: |
-      While the calling thread has a ${/glossary/priority-current:/term} equal
-      to the priority ceiling.
+      While the calling thread has a ${/glossary/priority-current:/term} equal to the
+      priority ceiling.
   - name: Low
     test-code: |
       ctx->priority_before = ctx->tq_ctx->priority_ceiling + 1;
     text: |
-      While the calling thread has a ${/glossary/priority-current:/term} lower
-      than the priority ceiling.
+      While the calling thread has a ${/glossary/priority-current:/term} lower than
+      the priority ceiling.
   test-epilogue: null
   test-prologue: null
 rationale: null
 requirement-type: functional
 skip-reasons:
   CeilingOwner: |
-    Where the mutex provides a priority ceiling, the owner of the mutex cannot
-    have a ${/glossary/priority-current:/term} lower than the priority ceiling.
+    Where the mutex provides a priority ceiling, the owner of the mutex cannot have
+    a ${/glossary/priority-current:/term} lower than the priority ceiling.
   PriorityDisciplineByProtocol: |
-    The priority ceiling and MrsP locking protocol requires a priority
-    discipline.
+    The priority ceiling and MrsP locking protocol requires a priority discipline.
 test-action: |
   TQSetScheduler(
     &ctx->tq_ctx->base,
@@ -296,8 +289,8 @@ test-context:
   member: |
     bool owner_caller
 - brief: |
-    If this member is true, then a thread other than the calling thread shall
-    be the owner of the mutex.
+    If this member is true, then a thread other than the calling thread shall be
+    the owner of the mutex.
   description: null
   member: |
     bool owner_other
@@ -354,7 +347,7 @@ test-prepare: |
 test-setup: null
 test-stop: null
 test-support: |
-  #if defined(RTEMS_SMP)
+  #if defined( RTEMS_SMP )
   #include "tr-tq-enqueue-mrsp.h"
   #endif
 
@@ -621,7 +614,7 @@ transition-map:
     Status:
     - if:
         pre-conditions:
-           DeadlockResult: Fatal
+          DeadlockResult: Fatal
       then: DeadlockFatal
     - else: DeadlockStatus
     Enqueued: 'No'
@@ -643,7 +636,7 @@ transition-map:
     Status:
     - if:
         pre-conditions:
-           DeadlockResult: Fatal
+          DeadlockResult: Fatal
       then: DeadlockFatal
     - else: DeadlockStatus
     Enqueued: 'No'
@@ -668,7 +661,7 @@ transition-map:
     Status:
     - if:
         pre-conditions:
-           DeadlockResult: Fatal
+          DeadlockResult: Fatal
       then: DeadlockFatal
     - else: DeadlockStatus
     Enqueued: 'No'
@@ -689,7 +682,7 @@ transition-map:
     Status:
     - if:
         pre-conditions:
-           DeadlockResult: Fatal
+          DeadlockResult: Fatal
       then: DeadlockFatal
     - else: DeadlockStatus
     Enqueued: 'No'
@@ -747,7 +740,7 @@ transition-map:
     Status:
     - if:
         pre-conditions:
-           DeadlockResult: Fatal
+          DeadlockResult: Fatal
       then: DeadlockFatal
     - else: DeadlockStatus
     Enqueued: 'No'

@@ -11,8 +11,7 @@ non-functional-type: quality
 rationale: null
 requirement-type: non-functional
 text: |
-  The system shall provide a benchmark program to show the static memory usage
-  of a basic application configuration with ${/acfg/if/max-processors:/name}
-  defined to one using the SMP EDF scheduler
-  (${/acfg/if/scheduler-edf-smp:/name}).
+  The system shall provide a benchmark program to show the static memory usage of
+  a basic application configuration with ${/acfg/if/max-processors:/name} defined
+  to one using the SMP EDF scheduler (${/acfg/if/scheduler-edf-smp:/name}).
 type: requirement

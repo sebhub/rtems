@@ -27,19 +27,19 @@ definition:
       ${period:/name} using ${/glossary/clock-monotonic:/term}.
     definition: ${/c/if/timespec:/name} ${.:name}
     description: |
-      If the period is expired or has not been initiated, then this value has
-      no meaning.
+      If the period is expired or has not been initiated, then this value has no
+      meaning.
     kind: member
     name: since_last_period
   variants: []
 - default:
     brief: |
-      This member contains the processor time consumed by the owner task since
-      the last successful invocation ${period:/name}.
+      This member contains the processor time consumed by the owner task since the
+      last successful invocation ${period:/name}.
     definition: ${/c/if/timespec:/name} ${.:name}
     description: |
-      If the period is expired or has not been initiated, then this value has
-      no meaning.
+      If the period is expired or has not been initiated, then this value has no
+      meaning.
     kind: member
     name: executed_since_last_period
   variants: []

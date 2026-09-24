@@ -5,13 +5,13 @@ enabled-by: true
 links: []
 test-actions:
 - action-brief: |
-    Create a worker thread and two MrsP mutexes.  Obtain the Mrsp mutexes and
-    check that a task yield works (owner is not sticky).  We need two mutexes
-    since the uniprocessor schedulers do not increment the stick level in the
-    scheduler unblock operation.
+    Create a worker thread and two MrsP mutexes. Obtain the Mrsp mutexes and check
+    that a task yield works (owner is not sticky). We need two mutexes since the
+    uniprocessor schedulers do not increment the stick level in the scheduler
+    unblock operation.
   action-code: |
-    rtems_status_code   sc;
-    rtems_id            worker_id;
+    rtems_status_code sc;
+    rtems_id          worker_id;
 
     sc = rtems_semaphore_create(
       rtems_build_name( 'M', 'T', 'X', '1' ),

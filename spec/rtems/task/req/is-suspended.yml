@@ -36,14 +36,14 @@ pre-conditions:
     test-code: |
       ctx->id = INVALID_ID;
     text: |
-      While the ${../if/is-suspended:/params[0]/name} parameter is not
-      associated with a task.
+      While the ${../if/is-suspended:/params[0]/name} parameter is not associated
+      with a task.
   - name: Task
     test-code: |
       ctx->id = ctx->worker_id;
     text: |
-      While the ${../if/is-suspended:/params[0]/name} parameter is
-      associated with a task.
+      While the ${../if/is-suspended:/params[0]/name} parameter is associated with a
+      task.
   test-epilogue: null
   test-prologue: null
 - name: Suspended
@@ -52,14 +52,14 @@ pre-conditions:
     test-code: |
       ctx->suspend = true;
     text: |
-      While the task specified by the ${../if/is-suspended:/params[0]/name}
-      parameter is suspended.
+      While the task specified by the ${../if/is-suspended:/params[0]/name} parameter
+      is suspended.
   - name: 'No'
     test-code: |
       ctx->suspend = false;
     text: |
-      While the task specified by the ${../if/is-suspended:/params[0]/name}
-      parameter is not suspended.
+      While the task specified by the ${../if/is-suspended:/params[0]/name} parameter
+      is not suspended.
   test-epilogue: null
   test-prologue: null
 rationale: null
@@ -90,14 +90,13 @@ test-context:
   member: |
     bool suspend
 - brief: |
-    This member contains the return value of the ${../if/is-suspended:/name}
-    call.
+    This member contains the return value of the ${../if/is-suspended:/name} call.
   description: null
   member: |
     rtems_status_code status
 - brief: |
-    This member specifies if the ${../if/is-suspended:/params[0]/name}
-    parameter value.
+    This member specifies if the ${../if/is-suspended:/params[0]/name} parameter
+    value.
   description: null
   member: |
     rtems_id id
@@ -131,7 +130,8 @@ test-teardown:
   code: |
     DeleteTask( ctx->worker_id );
   description: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

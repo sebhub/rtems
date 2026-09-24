@@ -3,13 +3,13 @@ copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
 enabled-by:
   not: RTEMS_SMP
+functional-type: function
 links:
 - role: interface-function
   uid: ../if/get-processor-maximum-macro
-functional-type: function
 rationale: null
 requirement-type: functional
 text: |
-  The ${../if/get-processor-maximum-macro:/name} directive call shall evaluate
-  to a constant expression which is equal to one.
+  The ${../if/get-processor-maximum-macro:/name} directive call shall evaluate to
+  a constant expression which is equal to one.
 type: requirement

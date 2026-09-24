@@ -24,11 +24,11 @@ post-conditions:
       ${/score/tq/req/timeout:/spec}.
   - name: TimeoutMrsP
     test-code: |
-      #if defined(RTEMS_SMP)
-      ctx->tq_ctx.wait = TQ_WAIT_TIMED;
-      ${/score/tq/req/timeout-mrsp:/test-run}( &ctx->tq_ctx );
+      #if defined( RTEMS_SMP )
+        ctx->tq_ctx.wait = TQ_WAIT_TIMED;
+        ${/score/tq/req/timeout-mrsp:/test-run}( &ctx->tq_ctx );
       #else
-      T_unreachable();
+        T_unreachable();
       #endif
     text: |
       The semaphore obtain timeout actions shall be done as specified by
@@ -78,8 +78,8 @@ pre-conditions:
   - name: MrsP
     test-code: |
       ctx->attribute_set |= RTEMS_BINARY_SEMAPHORE |
-        RTEMS_MULTIPROCESSOR_RESOURCE_SHARING;
-      #if defined(RTEMS_SMP)
+                            RTEMS_MULTIPROCESSOR_RESOURCE_SHARING;
+      #if defined( RTEMS_SMP )
       ctx->tq_ctx.enqueue_variant = TQ_ENQUEUE_STICKY;
       #else
       ctx->tq_ctx.enqueue_variant = TQ_ENQUEUE_BLOCKS;
@@ -108,8 +108,8 @@ rationale: null
 requirement-type: functional
 skip-reasons:
   NeedsPriorityDiscipline: |
-    Binary semaphores with a locking protocol are required to use the priority
-    task wait queue discipline.
+    Binary semaphores with a locking protocol are required to use the priority task
+    wait queue discipline.
 test-action: |
   rtems_status_code sc;
 
@@ -167,7 +167,7 @@ test-setup:
   description: null
 test-stop: null
 test-support: |
-  #if defined(RTEMS_SMP)
+  #if defined( RTEMS_SMP )
   #include "tr-tq-timeout-mrsp.h"
   #endif
 test-target: testsuites/validation/tc-sem-timeout.c

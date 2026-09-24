@@ -335,6 +335,6 @@ links:
   uid: /score/wkspace/if/size
 method: by-review-of-design
 text: |
-  This interface is an implementation interface.  It is implicitly validated by
+  This interface is an implementation interface. It is implicitly validated by
   the ${/glossary/api:/term} elements which use this interface.
 type: validation

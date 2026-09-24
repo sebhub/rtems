@@ -54,8 +54,8 @@ post-conditions:
        * vector.
        */
     text: |
-      The interrupt vector specified by ${../if/vector-disable:/params[0]/name}
-      shall be disabled.
+      The interrupt vector specified by ${../if/vector-disable:/params[0]/name} shall
+      be disabled.
   - name: Maybe
     test-code: |
       /*
@@ -63,8 +63,8 @@ post-conditions:
        * vector.
        */
     text: |
-      The interrupt vector specified by ${../if/vector-disable:/params[0]/name}
-      may be disabled.
+      The interrupt vector specified by ${../if/vector-disable:/params[0]/name} may
+      be disabled.
   test-epilogue: null
   test-prologue: null
 pre-conditions:
@@ -74,14 +74,14 @@ pre-conditions:
     test-code: |
       ctx->valid_vector = true;
     text: |
-      While the ${../if/vector-disable:/params[0]/name} parameter is
-      associated with an interrupt vector.
+      While the ${../if/vector-disable:/params[0]/name} parameter is associated with
+      an interrupt vector.
   - name: Invalid
     test-code: |
       ctx->valid_vector = false;
     text: |
-      While the ${../if/vector-disable:/params[0]/name} parameter is
-      not associated with an interrupt vector.
+      While the ${../if/vector-disable:/params[0]/name} parameter is not associated
+      with an interrupt vector.
   test-epilogue: null
   test-prologue: null
 - name: IsEnabled
@@ -284,8 +284,8 @@ test-support: |
       cpu_set_t affinity_old;
       cpu_set_t affinity_new;
 
-      CPU_ZERO(&affinity_old);
-      CPU_ZERO(&affinity_new);
+      CPU_ZERO( &affinity_old );
+      CPU_ZERO( &affinity_new );
       T_true( IsEnabled( ctx ) );
 
       if ( attr->can_get_affinity ) {
@@ -371,7 +371,8 @@ test-support: |
   }
 test-target: testsuites/validation/tc-intr-vector-disable.c
 test-teardown: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

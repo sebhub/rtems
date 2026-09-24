@@ -4,16 +4,6 @@ brief: |
   map.
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
-description: null
-enabled-by: true
-identifier: RTEMSDeviceGRLIBGPTIMERTimer
-index-entries: []
-interface-type: register-block
-links:
-- role: interface-ingroup
-  uid: gptimer
-- role: interface-placement
-  uid: gptimer-header
 definition:
 - default:
     count: 1
@@ -35,16 +25,30 @@ definition:
     name: TLATCH
   offset: 0xc
   variants: []
-register-prefix: gptimer
+description: null
+enabled-by: true
+identifier: RTEMSDeviceGRLIBGPTIMERTimer
+index-entries: []
+interface-type: register-block
+links:
+- role: interface-ingroup
+  uid: gptimer
+- role: interface-placement
+  uid: gptimer-header
+name: gptimer_timer
+notes: null
 register-block-group: GPTIMER TIMER
 register-block-size: 16
+register-prefix: gptimer
 registers:
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'TCVAL'
+      name: TCVAL
+      properties:
+      - r
+      - w
       start: 0
       width: 32
     variants: []
@@ -55,10 +59,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'TRLDVAL'
+      name: TRLDVAL
+      properties:
+      - r
+      - w
       start: 0
       width: 32
     variants: []
@@ -69,58 +75,75 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'WS'
+      name: WS
+      properties:
+      - r
+      - w
       start: 8
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'WN'
+      name: WN
+      properties:
+      - r
+      - w
       start: 7
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'DH'
+      name: DH
+      properties:
+      - r
       start: 6
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'CH'
+      name: CH
+      properties:
+      - r
+      - w
       start: 5
       width: 1
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'IP'
+      name: IP
+      properties:
+      - r
+      - w1c
       start: 4
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'IE'
+      name: IE
+      properties:
+      - r
+      - w
       start: 3
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'LD'
+      name: LD
+      properties:
+      - r
+      - w
       start: 2
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'RS'
+      name: RS
+      properties:
+      - r
+      - w
       start: 1
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'EN'
+      name: EN
+      properties:
+      - r
+      - w
       start: 0
       width: 1
     variants: []
@@ -131,10 +154,11 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'LTCV'
+      name: LTCV
+      properties:
+      - r
       start: 0
       width: 32
     variants: []
@@ -143,6 +167,4 @@ registers:
   description: null
   name: TLATCH
   width: 32
-name: gptimer_timer
-notes: null
 type: interface

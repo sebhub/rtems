@@ -8,6 +8,6 @@ links:
   uid: group
 term: device
 text: |
-  A peripheral used by the application that requires special operation
-  software.  See also device driver.
+  A peripheral used by the application that requires special operation software.
+  See also device driver.
 type: glossary

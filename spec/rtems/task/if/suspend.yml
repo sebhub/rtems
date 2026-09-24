@@ -13,12 +13,12 @@ definition:
     return: ${../../status/if/code:/name}
   variants: []
 description: |
-  This directive suspends the task specified by ${.:/params[0]/name} from
-  further execution by placing it in the suspended state.  This state is
-  additive to any other blocked state that the task may already be in.  The
-  task will not execute again until another task issues the ${resume:/name}
-  directive for this task and any blocked state has been removed.  The
-  ${restart:/name} directive will also remove the suspended state.
+  This directive suspends the task specified by ${.:/params[0]/name} from further
+  execution by placing it in the suspended state. This state is additive to any
+  other blocked state that the task may already be in. The task will not execute
+  again until another task issues the ${resume:/name} directive for this task and
+  any blocked state has been removed. The ${restart:/name} directive will also
+  remove the suspended state.
 enabled-by: true
 index-entries:
 - suspending a task
@@ -44,7 +44,7 @@ notes: |
   resumed.
 params:
 - description: |
-    is the task identifier.  The constant ${self-define:/name} may be used to
+    is the task identifier. The constant ${self-define:/name} may be used to
     specify the calling task.
   dir: null
   name: id

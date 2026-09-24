@@ -7,8 +7,7 @@ default: |
   configured filesystems are initialized during system initialization.
 description: |
   In case this configuration option is defined, then **no base filesystem** is
-  initialized during system initialization and **no filesystems** are
-  configured.
+  initialized during system initialization and **no filesystems** are configured.
 enabled-by: true
 index-entries: []
 interface-type: appl-config-option

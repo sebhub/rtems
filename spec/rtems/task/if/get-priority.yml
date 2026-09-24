@@ -15,9 +15,9 @@ definition:
     return: ${../../status/if/code:/name}
   variants: []
 description: |
-  This directive returns the current priority in ${.:/params[2]/name} of the
-  task specified by ${.:/params[0]/name} with respect to the scheduler
-  specified by ${.:/params[1]/name}.
+  This directive returns the current priority in ${.:/params[2]/name} of the task
+  specified by ${.:/params[0]/name} with respect to the scheduler specified by
+  ${.:/params[1]/name}.
 enabled-by: true
 index-entries:
 - current task priority
@@ -44,7 +44,7 @@ notes: |
   and the POSIX sporadic server.
 params:
 - description: |
-    is the task identifier.  The constant ${self-define:/name} may be used to
+    is the task identifier. The constant ${self-define:/name} may be used to
     specify the calling task.
   dir: null
   name: task_id
@@ -53,9 +53,9 @@ params:
   dir: null
   name: scheduler_id
 - description: |
-    is the pointer to an ${../../type/if/priority:/name} object.  When the
-    directive call is successful, the current priority of the task with respect
-    to the specified scheduler will be stored in this object.
+    is the pointer to an ${../../type/if/priority:/name} object. When the directive
+    call is successful, the current priority of the task with respect to the
+    specified scheduler will be stored in this object.
   dir: out
   name: priority
 return:

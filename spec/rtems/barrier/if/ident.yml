@@ -14,8 +14,8 @@ definition:
     return: ${../../status/if/code:/name}
   variants: []
 description: |
-  This directive obtains a barrier identifier associated with the barrier
-  name specified in ${.:/params[0]/name}.
+  This directive obtains a barrier identifier associated with the barrier name
+  specified in ${.:/params[0]/name}.
 enabled-by: true
 index-entries: []
 interface-type: function
@@ -45,9 +45,9 @@ params:
   dir: null
   name: name
 - description: |
-    is the pointer to an ${../../type/if/id:/name} object.  When the directive call
-    is successful, the object identifier of an object with the specified name
-    will be stored in this object.
+    is the pointer to an ${../../type/if/id:/name} object. When the directive call
+    is successful, the object identifier of an object with the specified name will
+    be stored in this object.
   dir: out
   name: id
 return:

@@ -18,30 +18,28 @@ description: |
   This directive obtains the semaphore specified by ${.:/params[0]/name}.
 
   The **option set** specified in ${.:/params[1]/name} is built through a
-  *bitwise or* of the option constants described below.  Not all combinations
-  of options are allowed.  Some options are mutually exclusive.
-  Combining mutually exclusive options may throw an error or run silently
-  with unintended default values.
-  Options not mentioned below are not evaluated by this directive and have no
-  effect.
-  Default options can be selected by using the ${../../option/if/default:/name}
-  constant.
+  *bitwise or* of the option constants described below. Not all combinations of
+  options are allowed. Some options are mutually exclusive. Combining mutually
+  exclusive options may throw an error or run silently with unintended default
+  values. Options not mentioned below are not evaluated by this directive and
+  have no effect. Default options can be selected by using the
+  ${../../option/if/default:/name} constant.
 
-  The calling task can **wait** or **try to obtain** the semaphore according
-  to the mutually exclusive ${../../option/if/wait:/name} and
+  The calling task can **wait** or **try to obtain** the semaphore according to
+  the mutually exclusive ${../../option/if/wait:/name} and
   ${../../option/if/no-wait:/name} options.
 
-  * **Waiting to obtain** the semaphore is the default and can be emphasized
-    through the use of the ${../../option/if/wait:/name} option.  The
+  - **Waiting to obtain** the semaphore is the default and can be emphasized
+    through the use of the ${../../option/if/wait:/name} option. The
     ${.:/params[2]/name} parameter defines how long the calling task is willing
-    to wait.  Use ${../../type/if/no-timeout:/name} to wait potentially
-    forever, otherwise set a timeout interval in clock ticks.
+    to wait. Use ${../../type/if/no-timeout:/name} to wait potentially forever,
+    otherwise set a timeout interval in clock ticks.
 
-  * **Trying to obtain** the semaphore is selected by the
-    ${../../option/if/no-wait:/name} option.  If this option is defined, then
-    the ${.:/params[2]/name} parameter is ignored.  When the semaphore cannot
-    be immediately obtained, then the ${../../status/if/unsatisfied:/name}
-    status is returned.
+  - **Trying to obtain** the semaphore is selected by the
+    ${../../option/if/no-wait:/name} option. If this option is defined, then the
+    ${.:/params[2]/name} parameter is ignored. When the semaphore cannot be
+    immediately obtained, then the ${../../status/if/unsatisfied:/name} status is
+    returned.
 
   With either ${../../option/if/wait:/name} or ${../../option/if/no-wait:/name}
   if the current semaphore count is positive, then it is decremented by one and
@@ -54,15 +52,15 @@ description: |
 
   If the calling task chooses to wait for a semaphore and the current semaphore
   count is zero, then the calling task is placed on the semaphore's wait queue
-  and blocked.  If a local, binary semaphore was created with the
+  and blocked. If a local, binary semaphore was created with the
   ${../../attr/if/inherit-priority:/name} attribute, then the priority of the
   task currently holding the binary semaphore will inherit the current priority
-  set of the blocking task.  The priority inheritance is carried out
-  recursively.  This means, that if the task currently holding the binary
-  semaphore is blocked on another local, binary semaphore using the priority
-  inheritance locking protocol, then the owner of this semaphore will inherit
-  the current priority sets of both tasks, and so on.  A task has a current
-  priority for each scheduler.
+  set of the blocking task. The priority inheritance is carried out recursively.
+  This means, that if the task currently holding the binary semaphore is blocked
+  on another local, binary semaphore using the priority inheritance locking
+  protocol, then the owner of this semaphore will inherit the current priority
+  sets of both tasks, and so on. A task has a current priority for each
+  scheduler.
 enabled-by: true
 index-entries:
 - obtain a semaphore
@@ -126,7 +124,7 @@ params:
   name: option_set
 - description: |
     is the timeout in ${/glossary/clock-tick:/plural} if the
-    ${../../option/if/wait:/name} option is set.  Use
+    ${../../option/if/wait:/name} option is set. Use
     ${../../type/if/no-timeout:/name} to wait potentially forever.
   dir: null
   name: timeout
@@ -141,8 +139,8 @@ return:
       ${.:/params[0]/name}.
     value: ${../../status/if/invalid-id:/name}
   - description: |
-      The semaphore uses a priority ceiling and there was no priority ceiling
-      defined for the ${/glossary/scheduler-home:/term} of the calling task.
+      The semaphore uses a priority ceiling and there was no priority ceiling defined
+      for the ${/glossary/scheduler-home:/term} of the calling task.
     value: ${../../status/if/not-defined:/name}
   - description: |
       The semaphore could not be obtained immediately.
@@ -152,23 +150,23 @@ return:
       priority less than the priority ceiling.
     value: ${../../status/if/invalid-priority:/name}
   - description: |
-      Acquiring of the local, binary semaphore by the calling task would have
-      cased a deadlock.
+      Acquiring of the local, binary semaphore by the calling task would have cased a
+      deadlock.
     value: ${../../status/if/incorrect-state:/name}
   - description: |
-      The calling task attempted to recursively obtain a local, binary
-      semaphore using the MrsP locking protocol.
+      The calling task attempted to recursively obtain a local, binary semaphore
+      using the MrsP locking protocol.
     value: ${../../status/if/incorrect-state:/name}
   - description: |
-      The semaphore was flushed while the calling task was waiting to obtain
-      the semaphore.
+      The semaphore was flushed while the calling task was waiting to obtain the
+      semaphore.
     value: ${../../status/if/unsatisfied:/name}
   - description: |
       The timeout happened while the calling task was waiting to obtain the
       semaphore.
     value: ${../../status/if/timeout:/name}
   - description: |
-      The semaphore was deleted while the calling task was waiting to obtain
-      the semaphore.
+      The semaphore was deleted while the calling task was waiting to obtain the
+      semaphore.
     value: ${../../status/if/object-was-deleted:/name}
 type: interface

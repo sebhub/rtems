@@ -8,6 +8,6 @@ links:
   uid: group
 term: Last In First Out
 text: |
-  A discipline for manipulating entries in a data structure.  See also
+  A discipline for manipulating entries in a data structure. See also
   ${firstinfirstout:/term}.
 type: glossary

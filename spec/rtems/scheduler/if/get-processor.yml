@@ -11,13 +11,12 @@ definition:
     return: ${/c/if/uint32_t:/name}
   variants: []
 description: |
-  Where the system was built with SMP support disabled, this directive
-  evaluates to a compile time constant of zero.
+  Where the system was built with SMP support disabled, this directive evaluates
+  to a compile time constant of zero.
 
-  Where the system was built with SMP support enabled, this directive returns
-  the index of the current processor.  The set of processor indices is the
-  range of integers starting with zero up to ${get-processor-maximum:/name}
-  minus one.
+  Where the system was built with SMP support enabled, this directive returns the
+  index of the current processor. The set of processor indices is the range of
+  integers starting with zero up to ${get-processor-maximum:/name} minus one.
 enabled-by: true
 index-entries: []
 interface-type: function

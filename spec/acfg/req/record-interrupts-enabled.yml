@@ -11,5 +11,6 @@ links:
 rationale: null
 requirement-type: functional
 text: |
-  The application configuration option shall enable the interrupt event recording.
+  The application configuration option shall enable the interrupt event
+  recording.
 type: requirement

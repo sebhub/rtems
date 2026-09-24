@@ -8,19 +8,17 @@ description: |
   microseconds between clock ticks (clock tick quantum).
 
   When the clock tick quantum value is too low, the system will spend so much
-  time processing clock ticks that it does not have processing time available
-  to perform application work. In this case, the system will become
-  unresponsive.
+  time processing clock ticks that it does not have processing time available to
+  perform application work. In this case, the system will become unresponsive.
 
   The lowest practical time quantum varies widely based upon the speed of the
-  target hardware and the architectural overhead associated with
-  interrupts. In general terms, you do not want to configure it lower than is
-  needed for the application.
-
-  The clock tick quantum should be selected such that it all blocking and
-  delay times in the application are evenly divisible by it. Otherwise,
-  rounding errors will be introduced which may negatively impact the
+  target hardware and the architectural overhead associated with interrupts. In
+  general terms, you do not want to configure it lower than is needed for the
   application.
+
+  The clock tick quantum should be selected such that it all blocking and delay
+  times in the application are evenly divisible by it. Otherwise, rounding errors
+  will be introduced which may negatively impact the application.
 enabled-by: true
 index-entries:
 - clock tick quantum

@@ -4,11 +4,11 @@ copyrights:
 - Copyright (C) 1988, 2022 On-Line Applications Research Corporation (OAR)
 default-value: 1
 description: |
-  The value of this configuration option defines the maximum number of
-  processors an application intends to use.  The number of actually available
-  processors depends on the hardware and may be less.  It is recommended to use
-  the smallest value suitable for the application in order to save memory.
-  Each processor needs an IDLE task stack and interrupt stack for example.
+  The value of this configuration option defines the maximum number of processors
+  an application intends to use. The number of actually available processors
+  depends on the hardware and may be less. It is recommended to use the smallest
+  value suitable for the application in order to save memory. Each processor
+  needs an IDLE task stack and interrupt stack for example.
 enabled-by: true
 index-entries: []
 interface-type: appl-config-option

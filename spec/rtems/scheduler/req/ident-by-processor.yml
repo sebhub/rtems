@@ -45,15 +45,14 @@ post-conditions:
       The value of the object referenced by the
       ${../if/ident-by-processor:/params[1]/name} parameter shall be set to the
       identifier of the scheduler which owned the processor specified by the
-      ${../if/ident-by-processor:/params[0]/name} parameter at some point
-      during the call after the return of the ${../if/ident-by-processor:/name}
-      call.
+      ${../if/ident-by-processor:/params[0]/name} parameter at some point during the
+      call after the return of the ${../if/ident-by-processor:/name} call.
   - name: Nop
     test-code: |
       T_eq_u32( ctx->id_value, INVALID_ID );
     text: |
-      Objects referenced by the ${../if/ident-by-processor:/params[1]/name} parameter in
-      past calls to ${../if/ident-by-processor:/name} shall not be accessed by the
+      Objects referenced by the ${../if/ident-by-processor:/params[1]/name} parameter
+      in past calls to ${../if/ident-by-processor:/name} shall not be accessed by the
       ${../if/ident-by-processor:/name} call.
   test-epilogue: null
   test-prologue: null
@@ -65,8 +64,7 @@ pre-conditions:
       ctx->cpu_has_scheduler = true;
     text: |
       While the processor specified by the
-      ${../if/ident-by-processor:/params[0]/name} parameter is owned by a
-      scheduler.
+      ${../if/ident-by-processor:/params[0]/name} parameter is owned by a scheduler.
   - name: 'No'
     test-code: |
       ctx->cpu_has_scheduler = false;
@@ -82,8 +80,8 @@ pre-conditions:
     test-code: |
       ctx->cpu_index = rtems_scheduler_get_processor_maximum();
     text: |
-      While the ${../if/ident-by-processor:/params[0]/name} parameter is
-      greater than or equal to the processor maximum.
+      While the ${../if/ident-by-processor:/params[0]/name} parameter is greater than
+      or equal to the processor maximum.
   - name: Valid
     test-code: |
       if ( ctx->cpu_has_scheduler ) {
@@ -92,8 +90,8 @@ pre-conditions:
         ctx->cpu_index = 1;
       }
     text: |
-      While the ${../if/ident-by-processor:/params[0]/name} parameter is less
-      than the processor maximum.
+      While the ${../if/ident-by-processor:/params[0]/name} parameter is less than
+      the processor maximum.
   test-epilogue: null
   test-prologue: null
 - name: Id
@@ -103,8 +101,8 @@ pre-conditions:
       ctx->id_value = INVALID_ID;
       ctx->id = &ctx->id_value;
     text: |
-      While the ${../if/ident-by-processor:/params[1]/name} parameter references an object
-      of type ${../../type/if/id:/name}.
+      While the ${../if/ident-by-processor:/params[1]/name} parameter references an
+      object of type ${../../type/if/id:/name}.
   - name: 'Null'
     test-code: |
       ctx->id = NULL;
@@ -117,8 +115,8 @@ rationale: null
 requirement-type: functional
 skip-reasons:
   NoSecondCPU: |
-    Where the system is build with SMP support disabled, the system has exactly
-    one processor available and this processor is always owned by a scheduler.
+    Where the system is build with SMP support disabled, the system has exactly one
+    processor available and this processor is always owned by a scheduler.
 test-action: |
   #if defined(RTEMS_SMP)
   rtems_status_code sc;
@@ -159,19 +157,20 @@ test-context:
   member: |
     bool cpu_has_scheduler
 - brief: |
-    This member contains the return value of the ${../if/ident-by-processor:/name} call.
+    This member contains the return value of the ${../if/ident-by-processor:/name}
+    call.
   description: null
   member: |
     rtems_status_code status
 - brief: |
-    This member specifies if the ${../if/ident-by-processor:/params[0]/name} parameter
-    value.
+    This member specifies if the ${../if/ident-by-processor:/params[0]/name}
+    parameter value.
   description: null
   member: |
     uint32_t cpu_index
 - brief: |
-    This member specifies if the ${../if/ident-by-processor:/params[1]/name} parameter
-    value.
+    This member specifies if the ${../if/ident-by-processor:/params[1]/name}
+    parameter value.
   description: null
   member: |
     rtems_id *id
@@ -188,23 +187,24 @@ test-prepare: |
 test-setup:
   brief: null
   code: |
-    #if defined(RTEMS_SMP)
-    rtems_status_code sc;
+    #if defined( RTEMS_SMP )
+      rtems_status_code sc;
 
-    sc = rtems_scheduler_ident(
-      TEST_SCHEDULER_B_NAME,
-      &ctx->second_scheduler_id
-    );
-    T_rsc_success( sc );
+      sc = rtems_scheduler_ident(
+        TEST_SCHEDULER_B_NAME,
+        &ctx->second_scheduler_id
+      );
+      T_rsc_success( sc );
     #else
-    ctx->second_scheduler_id = INVALID_ID;
+      ctx->second_scheduler_id = INVALID_ID;
     #endif
   description: null
 test-stop: null
 test-support: null
 test-target: testsuites/validation/tc-scheduler-ident-by-processor.c
 test-teardown: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

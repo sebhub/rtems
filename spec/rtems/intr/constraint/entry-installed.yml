@@ -7,6 +7,5 @@ links:
   uid: /req/usage-constraints
 rationale: null
 text: |
-  The interrupt entry shall have been installed by
-  ${../if/entry-install:/name}.
+  The interrupt entry shall have been installed by ${../if/entry-install:/name}.
 type: constraint

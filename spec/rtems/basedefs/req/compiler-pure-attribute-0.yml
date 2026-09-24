@@ -9,6 +9,6 @@ links:
 rationale: null
 requirement-type: functional
 text: |
-  The macro ${../if/compiler-pure-attribute:/name} shall
-  have exactly the same effect as the macro ${../if/pure:/name}.
+  The macro ${../if/compiler-pure-attribute:/name} shall have exactly the same
+  effect as the macro ${../if/pure:/name}.
 type: requirement

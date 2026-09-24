@@ -1,7 +1,7 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 brief: |
-  Gets a ${/glossary/clock-tick:/term} value which is at least delta clock
-  ticks in the future.
+  Gets a ${/glossary/clock-tick:/term} value which is at least delta clock ticks
+  in the future.
 copyrights:
 - Copyright (C) 2014, 2021 embedded brains GmbH & Co. KG
 definition:

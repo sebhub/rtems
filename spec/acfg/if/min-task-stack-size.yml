@@ -4,8 +4,8 @@ copyrights:
 - Copyright (C) 1988, 2008 On-Line Applications Research Corporation (OAR)
 default-value: ${/score/cpu/if/stack-minimum-size:/name}
 description: |
-  The value of this configuration option defines the minimum stack size in
-  bytes for every user task or thread in the system.
+  The value of this configuration option defines the minimum stack size in bytes
+  for every user task or thread in the system.
 enabled-by: true
 index-entries:
 - minimum task stack size

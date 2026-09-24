@@ -14,7 +14,7 @@ test-actions:
 
     _Atomic_Init_uint( &ctx->counter, 0 );
 
-    for ( i = 0; i < TEST_MAXIMUM_TIMERS ; ++i ) {
+    for ( i = 0; i < TEST_MAXIMUM_TIMERS; ++i ) {
       sc = rtems_timer_create(
         rtems_build_name( 'T', 'E', 'S', 'T' ),
         &ctx->timer_ids[ i ]
@@ -41,7 +41,7 @@ test-actions:
     code: |
       FinalClockTick();
 
-      for ( i = 0; i < TEST_MAXIMUM_TIMERS ; ++i ) {
+      for ( i = 0; i < TEST_MAXIMUM_TIMERS; ++i ) {
         T_eq_sz( ctx->counter_snapshots[ i ], i + 1 );
       }
     links:
@@ -50,7 +50,7 @@ test-actions:
   - brief: |
       Clean up all used resources.
     code: |
-      for ( i = 0; i < TEST_MAXIMUM_TIMERS ; ++i ) {
+      for ( i = 0; i < TEST_MAXIMUM_TIMERS; ++i ) {
         sc = rtems_timer_delete( ctx->timer_ids[ i ] );
         T_rsc_success( sc );
       }

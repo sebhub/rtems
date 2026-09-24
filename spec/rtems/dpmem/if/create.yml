@@ -17,11 +17,10 @@ definition:
     return: ${../../status/if/code:/name}
   variants: []
 description: |
-  This directive creates a port which resides on the local node.  The port has
-  the user-defined object name specified in ${.:/params[0]/name}.  The assigned
-  object identifier is returned in ${.:/params[4]/name}.  This identifier is
-  used to access the port with other dual-ported memory port related
-  directives.
+  This directive creates a port which resides on the local node. The port has the
+  user-defined object name specified in ${.:/params[0]/name}. The assigned object
+  identifier is returned in ${.:/params[4]/name}. This identifier is used to
+  access the port with other dual-ported memory port related directives.
 enabled-by: true
 index-entries:
 - create a port
@@ -68,9 +67,9 @@ params:
   dir: null
   name: length
 - description: |
-    is the pointer to an ${../../type/if/id:/name} object.  When the directive
-    call is successful, the identifier of the created port will be stored in
-    this object.
+    is the pointer to an ${../../type/if/id:/name} object. When the directive call
+    is successful, the identifier of the created port will be stored in this
+    object.
   dir: out
   name: id
 return:
@@ -92,8 +91,8 @@ return:
       The ${.:/params[2]/name} parameter was not properly aligned.
     value: ${../../status/if/invalid-address:/name}
   - description: |
-      There was no inactive object available to create a port.  The number of
-      port available to the application is configured through the
+      There was no inactive object available to create a port. The number of port
+      available to the application is configured through the
       ${/acfg/if/max-ports:/name} application configuration option.
     value: ${../../status/if/too-many:/name}
 type: interface

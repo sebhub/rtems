@@ -39,9 +39,9 @@ post-conditions:
       T_eq_ptr( GetUnblock( ctx, &i ), &T_scheduler_event_null );
     text: |
       The enqueued threads of the thread queue may be extracted in
-      ${/glossary/priority:/term} order for each priority queue associated with
-      a scheduler.  The priority queues of the thread queue shall be accessed
-      in ${/glossary/fifo:/term} order.
+      ${/glossary/priority:/term} order for each priority queue associated with a
+      scheduler. The priority queues of the thread queue shall be accessed in
+      ${/glossary/fifo:/term} order.
   test-epilogue: null
   test-prologue: |
     size_t                   i;
@@ -170,10 +170,7 @@ test-support: |
 
     ctx = arg;
 
-    if (
-      when == T_SCHEDULER_BEFORE &&
-      event->operation == T_SCHEDULER_BLOCK
-    ) {
+    if ( when == T_SCHEDULER_BEFORE && event->operation == T_SCHEDULER_BLOCK ) {
       ctx->request.handler = Flush;
       ctx->request.arg = ctx;
       CallWithinISRSubmit( &ctx->request );

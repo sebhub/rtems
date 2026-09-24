@@ -13,9 +13,9 @@ definition:
     return: ${../../status/if/code:/name}
   variants: []
 description: |
-  This directive deletes the barrier specified by ${.:/params[0]/name}.  All
-  tasks blocked waiting for the barrier to be released will be readied and
-  returned a status code which indicates that the barrier was deleted.
+  This directive deletes the barrier specified by ${.:/params[0]/name}. All tasks
+  blocked waiting for the barrier to be released will be readied and returned a
+  status code which indicates that the barrier was deleted.
 enabled-by: true
 index-entries:
 - delete a barrier

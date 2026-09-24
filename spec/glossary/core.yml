@@ -8,7 +8,7 @@ links:
   uid: group
 term: core
 text: |
-  When used in this manual, this term refers to the internal executive
-  utility functions.  In the interest of application portability, the core
-  of the executive should not be used directly by applications.
+  When used in this manual, this term refers to the internal executive utility
+  functions. In the interest of application portability, the core of the
+  executive should not be used directly by applications.
 type: glossary

@@ -9,6 +9,6 @@ links:
 term: interrupt level
 text: |
   A mask used to by the CPU to determine which pending interrupts should be
-  serviced.  If a pending interrupt is below the current interrupt level,
-  then the CPU does not recognize that interrupt.
+  serviced. If a pending interrupt is below the current interrupt level, then the
+  CPU does not recognize that interrupt.
 type: glossary

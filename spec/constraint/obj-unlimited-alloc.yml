@@ -8,6 +8,5 @@ links:
 rationale: null
 text: |
   Where the object class corresponding to the directive is configured to use
-  unlimited objects, the directive may allocate memory from the RTEMS
-  Workspace.
+  unlimited objects, the directive may allocate memory from the RTEMS Workspace.
 type: constraint

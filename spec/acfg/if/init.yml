@@ -1,4 +1,3 @@
-type: interface
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 appl-config-option-type: feature
 copyrights:
@@ -10,10 +9,9 @@ default: |
 description: |
   While this configuration option is defined, when the ${header-confdefs:/path}
   is included, the system settings defined by present application configuration
-  options are statically allocated and initialized.  All user provided
-  application configuration options defined before the include of
-  ${header-confdefs:/path} are evaluated.  They define the actual system
-  settings.
+  options are statically allocated and initialized. All user provided application
+  configuration options defined before the include of ${header-confdefs:/path}
+  are evaluated. They define the actual system settings.
 enabled-by: true
 index-entries: []
 interface-type: appl-config-option

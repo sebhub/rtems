@@ -9,5 +9,5 @@ links:
 term: running
 text: |
   The state of a rate monotonic timer while it is being used to delineate a
-  period.  The timer exits this state by either expiring or being canceled.
+  period. The timer exits this state by either expiring or being canceled.
 type: glossary

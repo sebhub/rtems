@@ -9,14 +9,14 @@ test-actions:
 - action-brief: |
     Call get_config_max() indirectly through
     rtems_configuration_get_maximum_semaphores() with a specially manipulated
-    argument to enter an if-branch only accessed when unlimited objects
-    are configured.
+    argument to enter an if-branch only accessed when unlimited objects are
+    configured.
   action-code: |
     uint32_t max = rtems_configuration_get_maximum_semaphores();
   checks:
   - brief: |
-      The value returned by the function call must be the one artificially
-      injected by this test.
+      The value returned by the function call must be the one artificially injected
+      by this test.
     code: |
       T_eq_u32( max, SEMAPHORES_PER_BLOCK | RTEMS_UNLIMITED_OBJECTS );
     links: []
@@ -36,11 +36,10 @@ test-context:
 test-context-support: |
   #define SEMAPHORES_PER_BLOCK 32
 test-description: |
-  Parts of the file `cpukit/sapi/src/getconfigmax.c`
-  are only executed when unlimited objects are configured.  The
-  space qualified code subset does not support this feature.  This test
-  exercises the code parts otherwise not reached in order to achieve full
-  code coverage.
+  Parts of the file `cpukit/sapi/src/getconfigmax.c` are only executed when
+  unlimited objects are configured. The space qualified code subset does not
+  support this feature. This test exercises the code parts otherwise not reached
+  in order to achieve full code coverage.
 test-header: null
 test-includes:
 - rtems.h

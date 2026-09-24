@@ -8,10 +8,10 @@ enabled-by:
     - aarch64
     - arm
     - riscv
+functional-type: function
 links:
 - role: requirement-refinement
   uid: ../if/group
-functional-type: function
 rationale: null
 requirement-type: functional
 text: |

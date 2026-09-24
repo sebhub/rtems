@@ -55,18 +55,15 @@ post-conditions:
     test-code: |
       T_eq_u64( ctx->timer_info.expire_ticks, 0xffffffffffffffff );
     text: |
-      The timer of the calling task shall expire at the last valid time point
-      of the clock specified by the `clock_id` parameter.
+      The timer of the calling task shall expire at the last valid time point of the
+      clock specified by the `clock_id` parameter.
   - name: Absolute
     test-code: |
       T_eq_i64( ctx->timer_info.expire_timespec.tv_sec, ctx->rqtp_obj.tv_sec );
-      T_eq_long(
-        ctx->timer_info.expire_timespec.tv_nsec,
-        ctx->rqtp_obj.tv_nsec
-      );
+      T_eq_long( ctx->timer_info.expire_timespec.tv_nsec, ctx->rqtp_obj.tv_nsec );
     text: |
-      The timer of the calling task shall expire at the time point specified by
-      the `rqtp` parameter.
+      The timer of the calling task shall expire at the time point specified by the
+      `rqtp` parameter.
   - name: Relative
     test-code: |
       expire = ctx->now_monotonic;
@@ -81,8 +78,8 @@ post-conditions:
       T_eq_i64( ctx->timer_info.expire_timespec.tv_sec, expire.tv_sec );
       T_eq_long( ctx->timer_info.expire_timespec.tv_nsec, expire.tv_nsec );
     text: |
-      The timer of the calling task shall expire at the time point specified by
-      the sum of the current time of the clock specified by
+      The timer of the calling task shall expire at the time point specified by the
+      sum of the current time of the clock specified by
       ${../if/clock-monotonic:/name} and the interval specified by the `rqtp`
       parameter.
   test-epilogue: null
@@ -93,24 +90,15 @@ post-conditions:
   - name: Block
     test-code: |
       T_eq_sz( ctx->scheduler_log.header.recorded, 1 );
-      T_eq_int(
-        ctx->scheduler_log.events[ 0 ].operation,
-        T_SCHEDULER_BLOCK
-      );
+      T_eq_int( ctx->scheduler_log.events[ 0 ].operation, T_SCHEDULER_BLOCK );
     text: |
       The calling task shall be blocked by the scheduler exactly once by the
       ${../if/clock-nanosleep:/name} call.
   - name: BlockUnblock
     test-code: |
       T_eq_sz( ctx->scheduler_log.header.recorded, 2 );
-      T_eq_int(
-        ctx->scheduler_log.events[ 0 ].operation,
-        T_SCHEDULER_BLOCK
-      );
-      T_eq_int(
-        ctx->scheduler_log.events[ 1 ].operation,
-        T_SCHEDULER_UNBLOCK
-      );
+      T_eq_int( ctx->scheduler_log.events[ 0 ].operation, T_SCHEDULER_BLOCK );
+      T_eq_int( ctx->scheduler_log.events[ 1 ].operation, T_SCHEDULER_UNBLOCK );
     text: |
       The calling task shall be blocked exactly once by the scheduler and then
       unblocked in the same thread dispatch critical section by the
@@ -130,8 +118,8 @@ post-conditions:
       T_eq_i64( ctx->rmtp_obj.tv_sec, 0 );
       T_eq_long( ctx->rmtp_obj.tv_nsec, 0 );
     text: |
-      The object referenced by the `rmtp` parameter shall be cleared to zero
-      after the return of the ${../if/clock-nanosleep:/name} call.
+      The object referenced by the `rmtp` parameter shall be cleared to zero after
+      the return of the ${../if/clock-nanosleep:/name} call.
   - name: Nop
     test-code: |
       T_eq_i64( ctx->rmtp_obj.tv_sec, -1 );
@@ -197,14 +185,14 @@ pre-conditions:
     test-code: |
       ctx->rqtp_obj.tv_nsec = 999999999;
     text: |
-      While the `tv_nsec` member of the object referenced by the `rqtp`
-      parameter is a valid nanoseconds value.
+      While the `tv_nsec` member of the object referenced by the `rqtp` parameter is
+      a valid nanoseconds value.
   - name: Invalid
     test-code: |
       ctx->rqtp_obj.tv_nsec = -1;
     text: |
-      While the `tv_nsec` member of the object referenced by the `rqtp`
-      parameter is an invalid nanoseconds value.
+      While the `tv_nsec` member of the object referenced by the `rqtp` parameter is
+      an invalid nanoseconds value.
   test-epilogue: null
   test-prologue: null
 - name: RQTpSec
@@ -213,22 +201,21 @@ pre-conditions:
     test-code: |
       ctx->rqtp_obj.tv_sec = -238479;
     text: |
-      While the `tv_sec` member of the object referenced by the `rqtp`
-      parameter is negative.
+      While the `tv_sec` member of the object referenced by the `rqtp` parameter is
+      negative.
   - name: FarFuture
     test-code: |
       ctx->rqtp_obj.tv_sec = INT64_MAX;
     text: |
-      While the `tv_sec` member of the object referenced by the `rqtp`
-      parameter specifies a time point which is past the implementation limit.
+      While the `tv_sec` member of the object referenced by the `rqtp` parameter
+      specifies a time point which is past the implementation limit.
   - name: Future
     test-code: |
       ctx->rqtp_obj.tv_sec = 1621322302;
     text: |
-      While the `tv_sec` member of the object referenced by the `rqtp`
-      parameter specifies a time point which is after the current time of the
-      clock specified by the `clock_id` parameter and is within the
-      implementation limits.
+      While the `tv_sec` member of the object referenced by the `rqtp` parameter
+      specifies a time point which is after the current time of the clock specified
+      by the `clock_id` parameter and is within the implementation limits.
   - name: PastOrNow
     test-code: |
       ctx->rqtp_obj.tv_sec = 0;
@@ -237,9 +224,9 @@ pre-conditions:
         ctx->rqtp_obj.tv_nsec = 0;
       }
     text: |
-      While the `tv_sec` member of the object referenced by the `rqtp`
-      parameter is non-negative and specifies a time point which is before or
-      at the current time of the clock specified by the `clock_id` parameter.
+      While the `tv_sec` member of the object referenced by the `rqtp` parameter is
+      non-negative and specifies a time point which is before or at the current time
+      of the clock specified by the `clock_id` parameter.
   test-epilogue: null
   test-prologue: null
 - name: RMTp
@@ -404,37 +391,38 @@ test-teardown:
     DeleteTask( ctx->worker_id );
     RestoreRunnerPriority();
   description: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:
     Status: Zero
     Timer:
     - if:
-       pre-conditions:
-         RQTpSec:
-         - Negative
-         - PastOrNow
+        pre-conditions:
+          RQTpSec:
+          - Negative
+          - PastOrNow
       then: Inactive
     - specified-by: ClockId
     Expire:
     - if:
-       pre-conditions:
-         RQTpSec:
-         - Negative
-         - PastOrNow
+        pre-conditions:
+          RQTpSec:
+          - Negative
+          - PastOrNow
       then: N/A
     - if:
-       pre-conditions:
-         RQTpSec: FarFuture
+        pre-conditions:
+          RQTpSec: FarFuture
       then: Last
     - else: Absolute
     Scheduler:
     - if:
-       pre-conditions:
-         RQTpSec:
-         - Negative
-         - PastOrNow
+        pre-conditions:
+          RQTpSec:
+          - Negative
+          - PastOrNow
       then: BlockUnblock
     - else: Block
     RMTp: Nop
@@ -446,33 +434,33 @@ transition-map:
     - 'Yes'
     RQTp:
     - Valid
-    RQTpSec: all
     RQTpNSec:
     - Valid
+    RQTpSec: all
     RMTp: all
 - enabled-by: true
   post-conditions:
     Status: Zero
     Timer:
     - if:
-       pre-conditions:
-         RQTpSec: PastOrNow
+        pre-conditions:
+          RQTpSec: PastOrNow
       then: Inactive
     - else: Monotonic
     Expire:
     - if:
-       pre-conditions:
-         RQTpSec: PastOrNow
+        pre-conditions:
+          RQTpSec: PastOrNow
       then: N/A
     - if:
-       pre-conditions:
-         RQTpSec: FarFuture
+        pre-conditions:
+          RQTpSec: FarFuture
       then: Last
     - else: Relative
     Scheduler:
     - if:
-       pre-conditions:
-         RQTpSec: PastOrNow
+        pre-conditions:
+          RQTpSec: PastOrNow
       then: BlockUnblock
     - else: Block
     RMTp:
@@ -489,12 +477,12 @@ transition-map:
     - 'No'
     RQTp:
     - Valid
+    RQTpNSec:
+    - Valid
     RQTpSec:
     - FarFuture
     - Future
     - PastOrNow
-    RQTpNSec:
-    - Valid
     RMTp: all
 - enabled-by: true
   post-conditions:
@@ -509,8 +497,8 @@ transition-map:
     Abstime: all
     RQTp:
     - Valid
-    RQTpSec: all
     RQTpNSec: all
+    RQTpSec: all
     RMTp: all
 - enabled-by: true
   post-conditions:
@@ -525,8 +513,8 @@ transition-map:
     Abstime: all
     RQTp:
     - 'Null'
-    RQTpSec: N/A
     RQTpNSec: N/A
+    RQTpSec: N/A
     RMTp: all
 - enabled-by: true
   post-conditions:
@@ -548,8 +536,8 @@ transition-map:
     Abstime: all
     RQTp:
     - 'Null'
-    RQTpSec: N/A
     RQTpNSec: N/A
+    RQTpSec: N/A
     RMTp: all
 - enabled-by: true
   post-conditions:
@@ -571,9 +559,9 @@ transition-map:
     Abstime: all
     RQTp:
     - Valid
-    RQTpSec: all
     RQTpNSec:
     - Invalid
+    RQTpSec: all
     RMTp: all
 - enabled-by: true
   post-conditions:
@@ -595,10 +583,10 @@ transition-map:
     - 'No'
     RQTp:
     - Valid
-    RQTpSec:
-    - Negative
     RQTpNSec:
     - Valid
+    RQTpSec:
+    - Negative
     RMTp: all
 - enabled-by: true
   post-conditions: NeedClock
@@ -608,9 +596,9 @@ transition-map:
     Abstime: all
     RQTp:
     - Valid
+    RQTpNSec: all
     RQTpSec:
     - Future
     - PastOrNow
-    RQTpNSec: all
     RMTp: all
 type: requirement

@@ -38,10 +38,12 @@ notes: |
   Returning a buffer multiple times is an error.  It will corrupt the internal
   state of the partition.
 params:
-- description: is the partition identifier.
+- description: |
+    is the partition identifier.
   dir: null
   name: id
-- description: is the pointer to the buffer to return.
+- description: |
+    is the pointer to the buffer to return.
   dir: null
   name: buffer
 return:
@@ -55,7 +57,6 @@ return:
       ${.:/params[0]/name}.
     value: ${../../status/if/invalid-id:/name}
   - description: |
-      The buffer referenced by ${.:/params[1]/name} was not in the
-      partition.
+      The buffer referenced by ${.:/params[1]/name} was not in the partition.
     value: ${../../status/if/invalid-address:/name}
 type: interface

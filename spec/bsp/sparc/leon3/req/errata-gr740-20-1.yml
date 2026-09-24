@@ -14,6 +14,6 @@ non-functional-type: design
 rationale: null
 requirement-type: non-functional
 text: |
-  The software product shall take the errata 20-1 (Stores to ASI 0x1C
-  (MMU/cache bypass) can update data cache contents) into account.
+  The software product shall take the errata 20-1 (Stores to ASI 0x1C (MMU/cache
+  bypass) can update data cache contents) into account.
 type: requirement

@@ -8,8 +8,7 @@ links:
   uid: group
 term: GR712RC
 text: |
-  The
-  `GR712RC <https://www.gaisler.com/index.php/products/components/gr712rc>`_
-  is a ${system-on-chip:/term} containing two processors of the ${sparc:/term}
+  The [GR712RC](https://www.gaisler.com/index.php/products/components/gr712rc) is
+  a ${system-on-chip:/term} containing two processors of the ${sparc:/term}
   ${target-arch:/term}.
 type: glossary

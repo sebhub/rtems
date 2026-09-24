@@ -33,9 +33,8 @@ params:
   dir: null
   name: cpu_index
 - description: |
-    is the pointer to an ${../../type/if/id:/name} object.  When the directive
-    call is successful, the identifier of the scheduler will be stored in this
-    object.
+    is the pointer to an ${../../type/if/id:/name} object. When the directive call
+    is successful, the identifier of the scheduler will be stored in this object.
   dir: out
   name: id
 return:
@@ -51,7 +50,7 @@ return:
       The processor index was invalid.
     value: ${../../status/if/invalid-name:/name}
   - description: |
-      The processor index was valid, however, the corresponding processor was
-      not owned by a scheduler.
+      The processor index was valid, however, the corresponding processor was not
+      owned by a scheduler.
     value: ${../../status/if/incorrect-state:/name}
 type: interface

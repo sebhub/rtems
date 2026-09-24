@@ -8,6 +8,6 @@ links:
   uid: group
 term: user-provided
 text: |
-  These terms are used to designate any software routines which must be
-  written by the application designer.
+  These terms are used to designate any software routines which must be written
+  by the application designer.
 type: glossary

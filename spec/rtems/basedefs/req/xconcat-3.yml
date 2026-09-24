@@ -9,6 +9,6 @@ links:
 rationale: null
 requirement-type: functional
 text: |
-  The macro ${../if/xconcat:/name} shall make its result
-  subject to C pre-processor substitutions.
+  The macro ${../if/xconcat:/name} shall make its result subject to C
+  pre-processor substitutions.
 type: requirement

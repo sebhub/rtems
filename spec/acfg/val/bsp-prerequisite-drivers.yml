@@ -10,7 +10,7 @@ links:
   uid: /ref/rtems/source
 method: by-inspection
 text: |
-  Inspection of the referenced ${/glossary/sourcecode:/term} file showed that
-  the ${../req/bsp-prerequisite-drivers:/spec} requirement is implemented as
+  Inspection of the referenced ${/glossary/sourcecode:/term} file showed that the
+  ${../req/bsp-prerequisite-drivers:/spec} requirement is implemented as
   specified.
 type: validation

@@ -8,6 +8,6 @@ links:
   uid: group
 term: registers
 text: |
-  Registers are locations physically located within a component, typically
-  used for device control or general purpose storage.
+  Registers are locations physically located within a component, typically used
+  for device control or general purpose storage.
 type: glossary

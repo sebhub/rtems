@@ -45,8 +45,8 @@ post-conditions:
       );
       T_eq_ptr( scheduler_node->user, scheduled );
     text: |
-      An idle task on behalf of the second task shall execute on the processor
-      owned by the ${/glossary/scheduler-home:/term} of the obtaining task.
+      An idle task on behalf of the second task shall execute on the processor owned
+      by the ${/glossary/scheduler-home:/term} of the obtaining task.
   test-epilogue: null
   test-prologue: |
     const Per_CPU_Control *cpu;
@@ -56,7 +56,7 @@ post-conditions:
 
     cpu = _Per_CPU_Get_by_index( 0 );
     scheduled = cpu->heir;
-    task_cpu_index = rtems_scheduler_get_processor(); 
+    task_cpu_index = rtems_scheduler_get_processor();
 - name: Helping
   states:
   - name: Idle
@@ -102,8 +102,8 @@ post-conditions:
       );
       T_eq_ptr( scheduler_node->user, scheduled );
     text: |
-      An idle task on behalf of the helping task shall execute on the processor
-      owned by the ${/glossary/scheduler-helping:/term} of the obtaining task.
+      An idle task on behalf of the helping task shall execute on the processor owned
+      by the ${/glossary/scheduler-helping:/term} of the obtaining task.
   - name: Third
     test-code: |
       T_eq_u32( task_cpu_index, 0 );
@@ -120,8 +120,8 @@ post-conditions:
       );
       T_eq_ptr( scheduler_node->user, scheduled );
     text: |
-      An idle task on behalf of the third task shall execute on the processor
-      owned by the ${/glossary/scheduler-helping:/term} of the obtaining task.
+      An idle task on behalf of the third task shall execute on the processor owned
+      by the ${/glossary/scheduler-helping:/term} of the obtaining task.
   test-epilogue: null
   test-prologue: |
     const Per_CPU_Control *cpu;
@@ -131,7 +131,7 @@ post-conditions:
 
     cpu = _Per_CPU_Get_by_index( 1 );
     scheduled = cpu->heir;
-    task_cpu_index = rtems_scheduler_get_processor(); 
+    task_cpu_index = rtems_scheduler_get_processor();
 pre-conditions:
 - name: Home
   states:
@@ -151,9 +151,8 @@ pre-conditions:
     test-code: |
       ctx->scheduler_a_idle = true;
     text: |
-      While an idle task on behalf of the obtaining task executes on the
-      processor owned by the ${/glossary/scheduler-home:/term} of the obtaining
-      task.
+      While an idle task on behalf of the obtaining task executes on the processor
+      owned by the ${/glossary/scheduler-home:/term} of the obtaining task.
   - name: Second
     test-code: |
       ctx->second_active = true;
@@ -165,8 +164,8 @@ pre-conditions:
       ctx->second_active = true;
       ctx->scheduler_a_idle = true;
     text: |
-      While an idle task on behalf of the second task executes on the processor
-      owned by the ${/glossary/scheduler-home:/term} of the obtaining task.
+      While an idle task on behalf of the second task executes on the processor owned
+      by the ${/glossary/scheduler-home:/term} of the obtaining task.
   test-epilogue: null
   test-prologue: null
 - name: Helping
@@ -188,17 +187,17 @@ pre-conditions:
       ctx->task_owns_mrsp_semaphore = true;
       ctx->helping_active = true;
     text: |
-      While a helping task of the obtaining task executes on the processor
-      owned by the ${/glossary/scheduler-helping:/term} of the obtaining task.
+      While a helping task of the obtaining task executes on the processor owned by
+      the ${/glossary/scheduler-helping:/term} of the obtaining task.
   - name: HelpingIdle
     test-code: |
       ctx->task_owns_mrsp_semaphore = true;
       ctx->helping_active = true;
       ctx->scheduler_b_idle = true;
     text: |
-      While an idle task on behalf of a helping task of the obtaining task
-      executes on the processor owned by the
-      ${/glossary/scheduler-helping:/term} of the obtaining task.
+      While an idle task on behalf of a helping task of the obtaining task executes
+      on the processor owned by the ${/glossary/scheduler-helping:/term} of the
+      obtaining task.
   - name: Third
     test-code: |
       ctx->third_active = true;
@@ -210,8 +209,8 @@ pre-conditions:
       ctx->third_active = true;
       ctx->scheduler_b_idle = true;
     text: |
-      While an idle task on behalf of the third task executes on the processor
-      owned by the ${/glossary/scheduler-helping:/term} of the obtaining task.
+      While an idle task on behalf of the third task executes on the processor owned
+      by the ${/glossary/scheduler-helping:/term} of the obtaining task.
   test-epilogue: null
   test-prologue: null
 - name: PriorityHome
@@ -221,41 +220,40 @@ pre-conditions:
       ctx->second_priority = PRIO_HIGH;
       ctx->sema_priority_scheduler_a = PRIO_NORMAL;
     text: |
-      While no ceiling priority with respect to the
-      ${/glossary/scheduler-home:/term} of the obtaining task is already
-      available to the task.
+      While no ceiling priority with respect to the ${/glossary/scheduler-home:/term}
+      of the obtaining task is already available to the task.
   - name: NewHigh
     test-code: |
       ctx->task_owns_mrsp_semaphore = true;
       ctx->sema_priority_scheduler_a = PRIO_HIGH;
     text: |
       While the ceiling priority of the semaphore with respect to the
-      ${/glossary/scheduler-home:/term} of the obtaining task is higher than
-      the ceiling priorities already available to the task.
+      ${/glossary/scheduler-home:/term} of the obtaining task is higher than the
+      ceiling priorities already available to the task.
   - name: NewEqual
     test-code: |
       ctx->task_owns_mrsp_semaphore = true;
       ctx->sema_priority_scheduler_a = PRIO_NORMAL;
     text: |
       While the ceiling priority of the semaphore with respect to the
-      ${/glossary/scheduler-home:/term} of the obtaining task is equal to the
-      ceiling priorities already available to the task.
+      ${/glossary/scheduler-home:/term} of the obtaining task is equal to the ceiling
+      priorities already available to the task.
   - name: SecondHigh
     test-code: |
       ctx->second_priority = PRIO_HIGH;
       ctx->sema_priority_scheduler_a = PRIO_VERY_HIGH;
     text: |
       While the ceiling priority of the semaphore with respect to the
-      ${/glossary/scheduler-home:/term} of the obtaining task is higher than
-      the priority of the second task.
+      ${/glossary/scheduler-home:/term} of the obtaining task is higher than the
+      priority of the second task.
   - name: SecondEqual
     test-code: |
       ctx->second_priority = PRIO_HIGH;
       ctx->sema_priority_scheduler_a = PRIO_HIGH;
     text: |
       While the ceiling priority of the semaphore with respect to the
-      ${/glossary/scheduler-home:/term} of the obtaining task is equal to
-      the priority of the second task.
+      ${/glossary/scheduler-home:/term} of the obtaining task is equal to the
+      priority of the second task.
   - name: SecondLow
     test-code: |
       ctx->second_priority = PRIO_HIGH;
@@ -273,8 +271,8 @@ pre-conditions:
       ctx->sema_priority_scheduler_b = PRIO_NORMAL;
     text: |
       While no ceiling priority with respect to the
-      ${/glossary/scheduler-helping:/term} of the obtaining task is already
-      available to the task.
+      ${/glossary/scheduler-helping:/term} of the obtaining task is already available
+      to the task.
   - name: Helping
     test-code: |
       ctx->helping_active = true;
@@ -290,36 +288,36 @@ pre-conditions:
       ctx->sema_priority_scheduler_b = PRIO_NORMAL;
     text: |
       While the ceiling priority of the semaphore with respect to the
-      ${/glossary/scheduler-helping:/term} of the obtaining task is higher than
-      the priority of the third task.
+      ${/glossary/scheduler-helping:/term} of the obtaining task is higher than the
+      priority of the third task.
   - name: ThirdEqual
     test-code: |
       ctx->third_priority = PRIO_NORMAL;
       ctx->sema_priority_scheduler_b = PRIO_NORMAL;
     text: |
       While the ceiling priority of the semaphore with respect to the
-      ${/glossary/scheduler-helping:/term} of the obtaining task is equal to
-      the priority of the third task.
+      ${/glossary/scheduler-helping:/term} of the obtaining task is equal to the
+      priority of the third task.
   - name: ThirdLow
     test-code: |
       ctx->third_priority = PRIO_HIGH;
       ctx->sema_priority_scheduler_b = PRIO_NORMAL;
     text: |
       While the ceiling priority of the semaphore with respect to the
-      ${/glossary/scheduler-helping:/term} of the obtaining task is lower than
-      the priority of the third task.
+      ${/glossary/scheduler-helping:/term} of the obtaining task is lower than the
+      priority of the third task.
   test-epilogue: null
   test-prologue: null
 rationale: null
 requirement-type: functional
 skip-reasons:
-  TaskExecutesExactlyOnce: |
-    The task executes on either the home or the helping scheduler.
   MrsPCeilingRequired: |
-    The availability of MrsP ceiling priorities depends on the ownership of a
-    MrsP semaphore and helping tasks associated with such a semaphore.
+    The availability of MrsP ceiling priorities depends on the ownership of a MrsP
+    semaphore and helping tasks associated with such a semaphore.
   SecondProrityNeedsSecondTask: |
     The second task is required to have a priority relative to the second task.
+  TaskExecutesExactlyOnce: |
+    The task executes on either the home or the helping scheduler.
   ThirdProrityNeedsThirdTask: |
     The third task is required to have a priority relative to the third task.
 test-action: |
@@ -656,10 +654,10 @@ test-support: |
     uint32_t cpu;
 
     if ( scheduler_id == SCHEDULER_A_ID ) {
-      other_scheduler_id =  SCHEDULER_B_ID;
+      other_scheduler_id = SCHEDULER_B_ID;
       cpu = 0;
     } else {
-      other_scheduler_id =  SCHEDULER_A_ID;
+      other_scheduler_id = SCHEDULER_A_ID;
       cpu = 1;
     }
 

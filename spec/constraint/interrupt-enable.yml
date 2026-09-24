@@ -8,7 +8,7 @@ links:
 rationale: null
 text: |
   While at least one maskable interrupt is pending, when the directive enables
-  maskable interrupts, the pending interrupts are immediately serviced.  The
-  interrupt service routines may unblock higher priority tasks which may
-  preempt the calling task.
+  maskable interrupts, the pending interrupts are immediately serviced. The
+  interrupt service routines may unblock higher priority tasks which may preempt
+  the calling task.
 type: constraint

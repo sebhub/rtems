@@ -6,17 +6,15 @@ links:
 - role: requirement-refinement
   uid: validation
 test-brief: |
-  This validation test suite contains test cases which test the kernel
-  character input/output device provided by the ${/glossary/bsp:/term} before
-  the system initialization is performed.
+  This validation test suite contains test cases which test the kernel character
+  input/output device provided by the ${/glossary/bsp:/term} before the system
+  initialization is performed.
 test-code: |
   const char rtems_test_name[] = "${.:/test-suite-name}";
 
   static char buffer[ 512 ];
 
-  static const T_action actions[] = {
-    T_report_hash_sha256
-  };
+  static const T_action actions[] = { T_report_hash_sha256 };
 
   static const T_config test_config = {
     .name = rtems_test_name,
@@ -72,7 +70,9 @@ test-code: |
 
   #define CONFIGURE_SCHEDULER
 
-  #define CONFIGURE_SCHEDULER_TABLE_ENTRIES { }
+  #define CONFIGURE_SCHEDULER_TABLE_ENTRIES \
+    {                                       \
+    }
 
   #define CONFIGURE_IDLE_TASK_STORAGE_SIZE RTEMS_MINIMUM_STACK_SIZE
 

@@ -6,9 +6,8 @@ links:
 - role: requirement-refinement
   uid: validation
 test-brief: |
-  This validation test suite is used to validate the default value of
-  application configuration options taking the optional BSP provided settings
-  into account.
+  This validation test suite is used to validate the default value of application
+  configuration options taking the optional BSP provided settings into account.
 test-code: |
   const char rtems_test_name[] = "${.:/test-suite-name}";
 

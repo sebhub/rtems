@@ -8,8 +8,7 @@ links:
   uid: group
 term: dynamic extension sets
 text: |
-  The dynamic extension sets are a list of ${userextensions:/term}.  The list
-  is defined by the system services used by the application and directive calls
-  such as ${/rtems/userext/if/create:/name}.  See also
-  ${initial-extension-sets:/term}.
+  The dynamic extension sets are a list of ${userextensions:/term}. The list is
+  defined by the system services used by the application and directive calls such
+  as ${/rtems/userext/if/create:/name}. See also ${initial-extension-sets:/term}.
 type: glossary

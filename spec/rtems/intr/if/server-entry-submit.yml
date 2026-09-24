@@ -12,10 +12,9 @@ definition:
     return: void
   variants: []
 description: |
-  The directive appends the entry to the pending entries of the interrupt
-  server.  The interrupt server is notified that a new entry is pending.  Once
-  the interrupt server is scheduled it services the actions of all pending
-  entries.
+  The directive appends the entry to the pending entries of the interrupt server.
+  The interrupt server is notified that a new entry is pending. Once the
+  interrupt server is scheduled it services the actions of all pending entries.
 enabled-by: true
 index-entries: []
 interface-type: function

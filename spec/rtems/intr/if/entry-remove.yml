@@ -62,7 +62,7 @@ return:
       The directive was called from within interrupt context.
     value: ${../../status/if/called-from-isr:/name}
   - description: |
-      The entry specified by ${.:/params[1]/name} was not installed at the
-      interrupt vector specified by ${.:/params[0]/name}.
+      The entry specified by ${.:/params[1]/name} was not installed at the interrupt
+      vector specified by ${.:/params[0]/name}.
     value: ${../../status/if/unsatisfied:/name}
 type: interface

@@ -49,16 +49,16 @@ pre-conditions:
     test-code: |
       ctx->more = false;
     text: |
-      While the owner of the thread queue is enqueued on another thread queue
-      owned by the calling thread.
+      While the owner of the thread queue is enqueued on another thread queue owned
+      by the calling thread.
   - name: More
     test-code: |
       ctx->more = true;
     text: |
-      While the owner of the thread queue is enqueued on another thread queue
-      owned by a thread other than the calling thread, and so on, while the
-      owner of the last thread queue of this dependency chain is enqueued on a
-      thread queue owned by the calling thread.
+      While the owner of the thread queue is enqueued on another thread queue owned
+      by a thread other than the calling thread, and so on, while the owner of the
+      last thread queue of this dependency chain is enqueued on a thread queue owned
+      by the calling thread.
   test-epilogue: null
   test-prologue: null
 rationale: null
@@ -141,8 +141,8 @@ test-brief: null
 test-cleanup: null
 test-context:
 - brief: |
-    If this member is true, then more than one mutex shall be used for the
-    deadlock scenario.
+    If this member is true, then more than one mutex shall be used for the deadlock
+    scenario.
   description: null
   member: |
     bool more

@@ -13,8 +13,8 @@ definition:
     return: ${../../status/if/code:/name}
   variants: []
 description: |
-  This directive removes the processor specified by the ${.:/params[1]/name}
-  from the scheduler specified by ${.:/params[0]/name}.
+  This directive removes the processor specified by the ${.:/params[1]/name} from
+  the scheduler specified by ${.:/params[0]/name}.
 enabled-by: true
 index-entries: []
 interface-type: function
@@ -60,8 +60,8 @@ return:
       scheduler as its ${/glossary/scheduler-home:/term}.
     value: ${../../status/if/resource-in-use:/name}
   - description: |
-      The processor was the last processor owned by the scheduler and there was
-      at least one task that used the scheduler as a
+      The processor was the last processor owned by the scheduler and there was at
+      least one task that used the scheduler as a
       ${/glossary/scheduler-helping:/term}.
     value: ${../../status/if/resource-in-use:/name}
 type: interface

@@ -44,9 +44,9 @@ post-conditions:
     test-code: |
       T_eq_u32( ctx->id_value, INVALID_ID );
     text: |
-      Objects referenced by the ${../if/ident:/params[1]/name} parameter in
-      past calls to ${../if/ident:/name} shall not be accessed by the
-      ${../if/ident:/name} call.
+      Objects referenced by the ${../if/ident:/params[1]/name} parameter in past
+      calls to ${../if/ident:/name} shall not be accessed by the ${../if/ident:/name}
+      call.
   test-epilogue: null
   test-prologue: null
 pre-conditions:
@@ -56,8 +56,8 @@ pre-conditions:
     test-code: |
       ctx->name = 0;
     text: |
-      While the ${../if/ident:/params[0]/name} parameter is not associated with
-      a scheduler.
+      While the ${../if/ident:/params[0]/name} parameter is not associated with a
+      scheduler.
   - name: Valid
     test-code: |
       ctx->name = TEST_SCHEDULER_A_NAME;
@@ -72,8 +72,8 @@ pre-conditions:
     test-code: |
       ctx->id = &ctx->id_value;
     text: |
-      While the ${../if/ident:/params[1]/name} parameter references an object
-      of type ${../../type/if/id:/name}.
+      While the ${../if/ident:/params[1]/name} parameter references an object of type
+      ${../../type/if/id:/name}.
   - name: 'Null'
     test-code: |
       ctx->id = NULL;
@@ -102,14 +102,12 @@ test-context:
   member: |
     rtems_status_code status
 - brief: |
-    This member specifies if the ${../if/ident:/params[0]/name} parameter
-    value.
+    This member specifies if the ${../if/ident:/params[0]/name} parameter value.
   description: null
   member: |
     rtems_name name
 - brief: |
-    This member specifies if the ${../if/ident:/params[1]/name} parameter
-    value.
+    This member specifies if the ${../if/ident:/params[1]/name} parameter value.
   description: null
   member: |
     rtems_id *id
@@ -128,7 +126,8 @@ test-stop: null
 test-support: null
 test-target: testsuites/validation/tc-scheduler-ident.c
 test-teardown: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

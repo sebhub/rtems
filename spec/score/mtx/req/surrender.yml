@@ -38,26 +38,17 @@ post-conditions:
       The mutex shall have no owner.
   - name: Caller
     test-code: |
-      T_eq_ptr(
-        ctx->owner_after,
-        ctx->tq_ctx->base.runner_tcb
-      );
+      T_eq_ptr( ctx->owner_after, ctx->tq_ctx->base.runner_tcb );
     text: |
       The owner of the mutex shall be the calling thread.
   - name: Other
     test-code: |
-      T_eq_ptr(
-        ctx->owner_after,
-        ctx->tq_ctx->base.worker_tcb[ TQ_HELPER_A ]
-      );
+      T_eq_ptr( ctx->owner_after, ctx->tq_ctx->base.worker_tcb[ TQ_HELPER_A ] );
     text: |
       The owner of the mutex shall not be modified.
   - name: First
     test-code: |
-      T_eq_ptr(
-        ctx->owner_after,
-        ctx->tq_ctx->base.worker_tcb[ TQ_BLOCKER_A ]
-      );
+      T_eq_ptr( ctx->owner_after, ctx->tq_ctx->base.worker_tcb[ TQ_BLOCKER_A ] );
     text: |
       The owner of the mutex shall be dequeued thread.
   test-epilogue: null
@@ -86,19 +77,18 @@ post-conditions:
       T_eq_u32( ctx->counter, 1 );
       ${../../tq/req/surrender-priority-inherit:/test-run}( &ctx->tq_ctx->base );
     text: |
-      The thread queue of the mutex shall be surrendered in priority order
-      with priority inheritance.
+      The thread queue of the mutex shall be surrendered in priority order with
+      priority inheritance.
   - name: MrsP
     test-code: |
-      #if defined(RTEMS_SMP)
-      T_eq_u32( ctx->counter, 1 );
-      ${../../tq/req/surrender-mrsp:/test-run}( &ctx->tq_ctx->base );
+      #if defined( RTEMS_SMP )
+        T_eq_u32( ctx->counter, 1 );
+        ${../../tq/req/surrender-mrsp:/test-run}( &ctx->tq_ctx->base );
       #else
-      T_unreachable();
+        T_unreachable();
       #endif
     text: |
-      The thread queue of the mutex shall be surrendered in priority order
-      with MrsP.
+      The thread queue of the mutex shall be surrendered in priority order with MrsP.
   test-epilogue: null
   test-prologue: null
 - name: Priority
@@ -107,15 +97,14 @@ post-conditions:
     test-code: |
       T_eq_u32( ctx->priority_after, ctx->priority_before );
     text: |
-      The ${/glossary/priority-current:/term} of the calling thread shall be
-      not be modified.
+      The ${/glossary/priority-current:/term} of the calling thread shall be not be
+      modified.
   - name: Low
     test-code: |
       T_eq_u32( ctx->priority_after, ctx->priority_real );
     text: |
-      The ${/glossary/priority-current:/term} of the calling thread shall be
-      lowered to reflect the removal of the priorities available through the
-      mutex.
+      The ${/glossary/priority-current:/term} of the calling thread shall be lowered
+      to reflect the removal of the priorities available through the mutex.
   test-epilogue: null
   test-prologue: null
 pre-conditions:
@@ -202,8 +191,7 @@ pre-conditions:
         ${.:skip}
       }
     text: |
-      Where the surrender does not check that the mutex owner is the calling
-      thread.
+      Where the surrender does not check that the mutex owner is the calling thread.
   test-epilogue: null
   test-prologue: null
 - name: Owner
@@ -262,23 +250,23 @@ pre-conditions:
     test-code: |
       ctx->priority_real = PRIO_ULTRA_HIGH;
     text: |
-      While the ${/glossary/priority-current:/term} of the calling thread
-      without the priorities available through the mutex would be higher than
-      the highest priority of the priorities available through the mutex.
+      While the ${/glossary/priority-current:/term} of the calling thread without the
+      priorities available through the mutex would be higher than the highest
+      priority of the priorities available through the mutex.
   - name: Equal
     test-code: |
       ctx->priority_real = PRIO_VERY_HIGH;
     text: |
-      While the ${/glossary/priority-current:/term} of the calling thread
-      without the priorities available through the mutex would be equal to the
-      highest priority of the priorities available through the mutex.
+      While the ${/glossary/priority-current:/term} of the calling thread without the
+      priorities available through the mutex would be equal to the highest priority
+      of the priorities available through the mutex.
   - name: Low
     test-code: |
       ctx->priority_real = PRIO_HIGH;
     text: |
-      While the ${/glossary/priority-current:/term} of the calling thread
-      without the priorities available through the mutex would be lower than
-      the highest priority of the priorities available through the mutex.
+      While the ${/glossary/priority-current:/term} of the calling thread without the
+      priorities available through the mutex would be lower than the highest priority
+      of the priorities available through the mutex.
   test-epilogue: null
   test-prologue: null
 rationale: null
@@ -286,13 +274,13 @@ requirement-type: functional
 skip-reasons:
   BlockedNeedsOwner: |
     Blocked threads only exist, if the mutex has an owner.
+  MustBeOwner: |
+    Where the mutex does not check that the mutex owner is the calling thread, the
+    mutex owner must be the calling thread, otherwise the system behaviour is
+    undefined.
   NestedNeedsRecursive: |
     Where the mutex does not allow a recursive seize, the mutex cannot be
     recursively seized.
-  MustBeOwner: |
-    Where the mutex does not check that the mutex owner is the calling thread,
-    the mutex owner must be the calling thread, otherwise the system behaviour
-    is undefined.
   PriorityDisciplineByProtocol: |
     The locking protocol require a priority discipline.
 test-action: |
@@ -311,8 +299,8 @@ test-context:
   member: |
     bool owner_caller
 - brief: |
-    If this member is true, then a thread other than the calling thread shall
-    be the owner of the mutex.
+    If this member is true, then a thread other than the calling thread shall be
+    the owner of the mutex.
   description: null
   member: |
     bool owner_other
@@ -323,8 +311,8 @@ test-context:
   member: |
     bool nested
 - brief: |
-    If this member is true, then there shall be a thread blocked waiting for
-    the mutex.
+    If this member is true, then there shall be a thread blocked waiting for the
+    mutex.
   description: null
   member: |
     bool blocked
@@ -394,7 +382,7 @@ test-prepare: |
 test-setup: null
 test-stop: null
 test-support: |
-  #if defined(RTEMS_SMP)
+  #if defined( RTEMS_SMP )
   #include "tr-tq-surrender-mrsp.h"
   #endif
 
@@ -708,7 +696,6 @@ transition-map:
     Recursive: all
     OwnerCheck:
     - 'Yes'
-    Owner: all
     Owner:
     - None
     - Other

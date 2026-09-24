@@ -1,8 +1,7 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 brief: |
-  Gets the number of ${/glossary/clock-tick:/plural} since some time point
-  during the system initialization or the last overflow of the clock tick
-  counter.
+  Gets the number of ${/glossary/clock-tick:/plural} since some time point during
+  the system initialization or the last overflow of the clock tick counter.
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
 - Copyright (C) 1988, 2008 On-Line Applications Research Corporation (OAR)

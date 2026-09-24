@@ -12,6 +12,6 @@ links:
 method: by-inspection
 text: |
   Inspection of the referenced ${/glossary/sourcecode:/term} file showed that
-  using ${../if/scheduler-edf-smp:/name} where ${/build-options/if/smp:/name}
-  is not defined will result in a C preprocessor error.
+  using ${../if/scheduler-edf-smp:/name} where ${/build-options/if/smp:/name} is
+  not defined will result in a C preprocessor error.
 type: validation

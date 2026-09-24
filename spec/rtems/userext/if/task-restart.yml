@@ -38,7 +38,7 @@ params:
   dir: null
   name: executing
 - description: |
-    is the ${/glossary/tcb:/term} of the executing thread.  Yes, the executing
+    is the ${/glossary/tcb:/term} of the executing thread. Yes, the executing
     thread.
   dir: null
   name: restarted

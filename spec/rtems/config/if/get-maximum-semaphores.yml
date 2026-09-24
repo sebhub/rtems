@@ -1,7 +1,7 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 brief: |
-  Gets the resource number of ${/rtems/sem/if/group:/name} objects configured
-  for this application.
+  Gets the resource number of ${/rtems/sem/if/group:/name} objects configured for
+  this application.
 copyrights:
 - Copyright (C) 2020 embedded brains GmbH & Co. KG
 definition:
@@ -32,7 +32,7 @@ notes: |
 params: []
 return:
   return: |
-    Returns the resource number of ${/rtems/sem/if/group:/name} objects
-    configured for this application.
+    Returns the resource number of ${/rtems/sem/if/group:/name} objects configured
+    for this application.
   return-values: []
 type: interface

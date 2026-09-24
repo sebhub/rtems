@@ -8,8 +8,8 @@ default: |
 description: |
   This configuration option is defined to indicate that the user has configured
   **no** user initialization tasks or threads and that the user provided IDLE
-  task will perform application initialization and then transform itself into
-  an IDLE task.
+  task will perform application initialization and then transform itself into an
+  IDLE task.
 enabled-by: true
 index-entries: []
 interface-type: appl-config-option

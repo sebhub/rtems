@@ -1,7 +1,7 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 brief: |
-  Instructs the compiler in a declaration to issue a warning whenever a
-  variable, function, or type using this declaration will be used.
+  Instructs the compiler in a declaration to issue a warning whenever a variable,
+  function, or type using this declaration will be used.
 copyrights:
 - Copyright (C) 2009 embedded brains GmbH & Co. KG
 definition:

@@ -4,9 +4,9 @@ copyrights:
 - Copyright (C) 1988, 2008 On-Line Applications Research Corporation (OAR)
 default-value: 8
 description: |
-  If ${unlimited-objects:/name} is defined, then the value of this
-  configuration option defines the default objects maximum of all object
-  classes supporting ${/ref/rtems/c-user/config-unlimited-objects:/name} to
+  If ${unlimited-objects:/name} is defined, then the value of this configuration
+  option defines the default objects maximum of all object classes supporting
+  ${/ref/rtems/c-user/config-unlimited-objects:/name} to
   `rtems_resource_unlimited( CONFIGURE_UNLIMITED_ALLOCATION_SIZE )`.
 enabled-by: true
 index-entries: []

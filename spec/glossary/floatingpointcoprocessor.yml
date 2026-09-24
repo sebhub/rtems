@@ -8,7 +8,7 @@ links:
   uid: group
 term: floating point coprocessor
 text: |
-  A component used in computer systems to enhance performance in
-  mathematically intensive situations.  It is typically viewed as a logical
-  extension of the primary processor.
+  A component used in computer systems to enhance performance in mathematically
+  intensive situations. It is typically viewed as a logical extension of the
+  primary processor.
 type: glossary

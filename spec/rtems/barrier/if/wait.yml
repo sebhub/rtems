@@ -14,15 +14,15 @@ definition:
     return: ${../../status/if/code:/name}
   variants: []
 description: |
-  This directive waits at the barrier specified by ${.:/params[0]/name}.  The
-  ${.:/params[1]/name} parameter defines how long the calling task is willing
-  to wait.  Use ${../../type/if/no-timeout:/name} to wait potentially forever,
+  This directive waits at the barrier specified by ${.:/params[0]/name}. The
+  ${.:/params[1]/name} parameter defines how long the calling task is willing to
+  wait. Use ${../../type/if/no-timeout:/name} to wait potentially forever,
   otherwise set a timeout interval in clock ticks.
 
-  Conceptually, the calling task should always be thought of as blocking when
-  it makes this call and being unblocked when the barrier is released.  If the
+  Conceptually, the calling task should always be thought of as blocking when it
+  makes this call and being unblocked when the barrier is released. If the
   barrier is configured for manual release, this rule of thumb will always be
-  valid.  If the barrier is configured for automatic release, all callers will
+  valid. If the barrier is configured for automatic release, all callers will
   block except for the one which trips the automatic release condition.
 enabled-by: true
 index-entries:
@@ -47,8 +47,8 @@ params:
   dir: null
   name: id
 - description: |
-    is the timeout in clock ticks.  Use ${../../type/if/no-timeout:/name} to
-    wait potentially forever.
+    is the timeout in clock ticks. Use ${../../type/if/no-timeout:/name} to wait
+    potentially forever.
   dir: null
   name: timeout
 return:
@@ -65,7 +65,6 @@ return:
       The timeout happened while the calling task was waiting at the barrier.
     value: ${../../status/if/timeout:/name}
   - description: |
-      The barrier was deleted while the calling task was waiting at the
-      barrier.
+      The barrier was deleted while the calling task was waiting at the barrier.
     value: ${../../status/if/object-was-deleted:/name}
 type: interface

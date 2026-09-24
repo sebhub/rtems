@@ -134,8 +134,8 @@ test-actions:
   links: []
 - action-brief: |
     Call ${../if/apbuart-outbyte-polled:/name} to store a character to the data
-    register.  The transmitter FIFO shall be initially non-empty.  The status
-    is checked by ${../if/apbuart-outbyte-wait:/name}.
+    register. The transmitter FIFO shall be initially non-empty. The status is
+    checked by ${../if/apbuart-outbyte-wait:/name}.
   action-code: |
     apbuart regs;
 

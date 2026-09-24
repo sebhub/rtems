@@ -10,8 +10,8 @@ definition:
       ${local-disable:/name}, otherwise it is false.
     definition: bool ${.:name}
     description: |
-      Interrupt vectors which are not maskable by ${local-disable:/name} should
-      be used with care since they cannot use most operating system services.
+      Interrupt vectors which are not maskable by ${local-disable:/name} should be
+      used with care since they cannot use most operating system services.
     kind: member
     name: is_maskable
   variants: []
@@ -21,9 +21,9 @@ definition:
       ${vector-enable:/name}, otherwise it is false.
     definition: bool ${.:name}
     description: |
-      When an interrupt vector can be enabled, this means that the enabled
-      state can always be changed from disabled to enabled.  For an interrupt
-      vector which can be enabled it follows that it may be enabled.
+      When an interrupt vector can be enabled, this means that the enabled state can
+      always be changed from disabled to enabled. For an interrupt vector which can
+      be enabled it follows that it may be enabled.
     kind: member
     name: can_enable
   variants: []
@@ -33,11 +33,11 @@ definition:
       ${vector-enable:/name}, otherwise it is false.
     definition: bool ${.:name}
     description: |
-      When an interrupt vector may be enabled, this means that the enabled
-      state may be changed from disabled to enabled.  The requested enabled
-      state change should be checked by ${vector-is-enabled:/name}.  Some
-      interrupt vectors may be optionally available and cannot be enabled on a
-      particular ${/glossary/target:/term}.
+      When an interrupt vector may be enabled, this means that the enabled state may
+      be changed from disabled to enabled. The requested enabled state change should
+      be checked by ${vector-is-enabled:/name}. Some interrupt vectors may be
+      optionally available and cannot be enabled on a particular
+      ${/glossary/target:/term}.
     kind: member
     name: maybe_enable
   variants: []
@@ -47,9 +47,9 @@ definition:
       ${vector-disable:/name}, otherwise it is false.
     definition: bool ${.:name}
     description: |
-      When an interrupt vector can be disabled, this means that the enabled
-      state can be changed from enabled to disabled.  For an interrupt vector
-      which can be disabled it follows that it may be disabled.
+      When an interrupt vector can be disabled, this means that the enabled state can
+      be changed from enabled to disabled. For an interrupt vector which can be
+      disabled it follows that it may be disabled.
     kind: member
     name: can_disable
   variants: []
@@ -59,18 +59,17 @@ definition:
       ${vector-disable:/name}, otherwise it is false.
     definition: bool ${.:name}
     description: |
-      When an interrupt vector may be disabled, this means that the enabled
-      state may be changed from enabled to disabled.  The requested enabled
-      state change should be checked by ${vector-is-enabled:/name}.  Some
-      interrupt vectors may be always enabled and cannot be disabled on a
-      particular ${/glossary/target:/term}.
+      When an interrupt vector may be disabled, this means that the enabled state may
+      be changed from enabled to disabled. The requested enabled state change should
+      be checked by ${vector-is-enabled:/name}. Some interrupt vectors may be always
+      enabled and cannot be disabled on a particular ${/glossary/target:/term}.
     kind: member
     name: maybe_disable
   variants: []
 - default:
     brief: |
-      This member is true, if the interrupt vector can be raised by
-      ${raise:/name}, otherwise it is false.
+      This member is true, if the interrupt vector can be raised by ${raise:/name},
+      otherwise it is false.
     definition: bool ${.:name}
     description: null
     kind: member
@@ -78,8 +77,8 @@ definition:
   variants: []
 - default:
     brief: |
-      This member is true, if the interrupt vector can be raised on a processor
-      by ${raise-on:/name}, otherwise it is false.
+      This member is true, if the interrupt vector can be raised on a processor by
+      ${raise-on:/name}, otherwise it is false.
     definition: bool ${.:name}
     description: null
     kind: member
@@ -87,8 +86,8 @@ definition:
   variants: []
 - default:
     brief: |
-      This member is true, if the interrupt vector can be cleared by
-      ${clear:/name}, otherwise it is false.
+      This member is true, if the interrupt vector can be cleared by ${clear:/name},
+      otherwise it is false.
     definition: bool ${.:name}
     description: null
     kind: member
@@ -96,9 +95,9 @@ definition:
   variants: []
 - default:
     brief: |
-      This member is true, if the pending status of the interrupt associated
-      with the interrupt vector is cleared by an interrupt acknowledge from the
-      processor, otherwise it is false.
+      This member is true, if the pending status of the interrupt associated with the
+      interrupt vector is cleared by an interrupt acknowledge from the processor,
+      otherwise it is false.
     definition: bool ${.:name}
     description: null
     kind: member
@@ -115,8 +114,8 @@ definition:
   variants: []
 - default:
     brief: |
-      This member is true, if the affinity set of the interrupt vector can be
-      set by ${set-affinity:/name}, otherwise it is false.
+      This member is true, if the affinity set of the interrupt vector can be set by
+      ${set-affinity:/name}, otherwise it is false.
     definition: bool ${.:name}
     description: null
     kind: member
@@ -124,25 +123,24 @@ definition:
   variants: []
 - default:
     brief: |
-      This member is true, if the interrupt associated with the interrupt
-      vector can be triggered by a message.
+      This member is true, if the interrupt associated with the interrupt vector can
+      be triggered by a message.
     definition: bool ${.:name}
     description: |
       Interrupts may be also triggered by signals, ${raise:/name}, or
-      ${raise-on:/name}.  Examples for message triggered interrupts are the
-      PCIe MSI/MSI-X and the ARM GICv3 Locality-specific Peripheral Interrupts
-      (LPI).
+      ${raise-on:/name}. Examples for message triggered interrupts are the PCIe
+      MSI/MSI-X and the ARM GICv3 Locality-specific Peripheral Interrupts (LPI).
     kind: member
     name: can_be_triggered_by_message
   variants: []
 - default:
     brief: |
-      This member describes the trigger signal of the interrupt associated with
-      the interrupt vector.
+      This member describes the trigger signal of the interrupt associated with the
+      interrupt vector.
     definition: ${signal-variant:/name} ${.:name}
     description: |
       Interrupts are normally triggered by signals which indicate an interrupt
-      request from a peripheral.  Interrupts may be also triggered by messages,
+      request from a peripheral. Interrupts may be also triggered by messages,
       ${raise:/name}, or ${raise-on:/name}.
     kind: member
     name: trigger_signal

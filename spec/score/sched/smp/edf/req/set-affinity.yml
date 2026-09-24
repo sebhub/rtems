@@ -22,8 +22,7 @@ post-conditions:
       );
       T_eq_ptr( scheduler_node->user, scheduled );
     text: |
-      An idle task on behalf of task `T` shall be scheduled on processor
-      `X`.
+      An idle task on behalf of task `T` shall be scheduled on processor `X`.
   - name: Alpha
     test-code: |
       T_eq_ptr( scheduled, ctx->tq_ctx.worker_tcb[ ALPHA ] );
@@ -37,8 +36,7 @@ post-conditions:
       );
       T_eq_ptr( scheduler_node->user, scheduled );
     text: |
-      An idle task on behalf of task `A` shall be scheduled on processor
-      `X`.
+      An idle task on behalf of task `A` shall be scheduled on processor `X`.
   - name: Beta
     test-code: |
       T_eq_ptr( scheduled, ctx->tq_ctx.worker_tcb[ BETA ] );
@@ -52,8 +50,7 @@ post-conditions:
       );
       T_eq_ptr( scheduler_node->user, scheduled );
     text: |
-      An idle task on behalf of task `B` shall be scheduled on processor
-      `X`.
+      An idle task on behalf of task `B` shall be scheduled on processor `X`.
   test-epilogue: null
   test-prologue: |
     const Per_CPU_Control *cpu;
@@ -77,8 +74,7 @@ post-conditions:
       );
       T_eq_ptr( scheduler_node->user, scheduled );
     text: |
-      An idle task on behalf of task `T` shall be scheduled on processor
-      `Y`.
+      An idle task on behalf of task `T` shall be scheduled on processor `Y`.
   - name: Alpha
     test-code: |
       T_eq_ptr( scheduled, ctx->tq_ctx.worker_tcb[ ALPHA ] );
@@ -92,8 +88,7 @@ post-conditions:
       );
       T_eq_ptr( scheduler_node->user, scheduled );
     text: |
-      An idle task on behalf of task `A` shall be scheduled on processor
-      `Y`.
+      An idle task on behalf of task `A` shall be scheduled on processor `Y`.
   - name: Beta
     test-code: |
       T_eq_ptr( scheduled, ctx->tq_ctx.worker_tcb[ BETA ] );
@@ -107,8 +102,7 @@ post-conditions:
       );
       T_eq_ptr( scheduler_node->user, scheduled );
     text: |
-      An idle task on behalf of task `B` shall be scheduled on processor
-      `Y`.
+      An idle task on behalf of task `B` shall be scheduled on processor `Y`.
   test-epilogue: null
   test-prologue: |
     const Per_CPU_Control *cpu;
@@ -125,15 +119,15 @@ pre-conditions:
       CPU_FILL( &ctx->task_affinity_before );
     text: |
       While task `T` is affine to all processors of its
-      ${/glossary/scheduler-home:/term} before the new thread to processor
-      affinity is set.
+      ${/glossary/scheduler-home:/term} before the new thread to processor affinity
+      is set.
   - name: X
     test-code: |
       CPU_ZERO( &ctx->task_affinity_before );
       CPU_SET( 0, &ctx->task_affinity_before );
     text: |
-      While task `T` is affine to processor `X` before the new thread to
-      processor affinity is set.
+      While task `T` is affine to processor `X` before the new thread to processor
+      affinity is set.
   test-epilogue: null
   test-prologue: null
 - name: After
@@ -250,8 +244,7 @@ pre-conditions:
     test-code: |
       ctx->alpha_idle = true;
     text: |
-      While task `A` is sticky,
-      while task `A` is blocked.
+      While task `A` is sticky, while task `A` is blocked.
   - name: 'No'
     test-code: |
       ctx->alpha_idle = false;
@@ -295,8 +288,7 @@ pre-conditions:
     test-code: |
       ctx->beta_idle = true;
     text: |
-      While task `B` is sticky,
-      while task `B` is blocked.
+      While task `B` is sticky, while task `B` is blocked.
   - name: 'No'
     test-code: |
       ctx->beta_idle = false;
@@ -476,8 +468,8 @@ test-context:
   member: |
     cpu_set_t alpha_affinity
 - brief: |
-    If this member is true, then an idle task shall execute on behalf of the
-    alpha task.
+    If this member is true, then an idle task shall execute on behalf of the alpha
+    task.
   description: null
   member: |
     bool alpha_idle
@@ -492,8 +484,8 @@ test-context:
   member: |
     cpu_set_t beta_affinity
 - brief: |
-    If this member is true, then an idle task shall execute on behalf of the
-    beta task.
+    If this member is true, then an idle task shall execute on behalf of the beta
+    task.
   description: null
   member: |
     bool beta_idle
@@ -600,19 +592,19 @@ transition-map:
     - if:
         and:
         - pre-conditions:
-            State: Ready
             Pinned: 'Yes'
+            State: Ready
         - or:
           - pre-conditions:
               Priority: High
           - pre-conditions:
-              Priority: Low
               AlphaPriority: Low
-          - pre-conditions:
               Priority: Low
-              AlphaPriority: High
+          - pre-conditions:
               AlphaAffinity: All
+              AlphaPriority: High
               BetaPriority: Low
+              Priority: Low
       then: Task
     - if:
         and:
@@ -624,15 +616,15 @@ transition-map:
             State: Ready
         - or:
           - pre-conditions:
+              AlphaAffinity: All
               AlphaPriority: Low
-              AlphaAffinity: All
-              BetaPriority: Low
               BetaAffinity: All
+              BetaPriority: Low
           - pre-conditions:
-              AlphaPriority: High
               AlphaAffinity: All
-              BetaPriority: Low
+              AlphaPriority: High
               BetaAffinity: All
+              BetaPriority: Low
           - pre-conditions:
               AlphaPriority: Low
               BetaPriority: High
@@ -648,15 +640,15 @@ transition-map:
             Sticky: 'Yes'
         - or:
           - pre-conditions:
+              AlphaAffinity: All
               AlphaPriority: Low
-              AlphaAffinity: All
-              BetaPriority: Low
               BetaAffinity: All
+              BetaPriority: Low
           - pre-conditions:
-              AlphaPriority: High
               AlphaAffinity: All
-              BetaPriority: Low
+              AlphaPriority: High
               BetaAffinity: All
+              BetaPriority: Low
           - pre-conditions:
               AlphaPriority: Low
               BetaPriority: High
@@ -691,8 +683,8 @@ transition-map:
     - if:
         and:
         - pre-conditions:
-           BetaAffinity: All
-           BetaIdle: 'No'
+            BetaAffinity: All
+            BetaIdle: 'No'
         - or:
           - pre-conditions:
               State: Ready
@@ -702,28 +694,28 @@ transition-map:
         - or:
           - pre-conditions:
               After: Y
-              Priority: High
               AlphaPriority: Low
               BetaPriority: High
-          - pre-conditions:
               Priority: High
-              AlphaPriority: High
-              AlphaAffinity: All
-              BetaPriority: High
           - pre-conditions:
-              Priority: Low
+              AlphaAffinity: All
+              AlphaPriority: High
+              BetaPriority: High
+              Priority: High
+          - pre-conditions:
               AlphaAffinity: All
               BetaPriority: Low
-          - pre-conditions:
               Priority: Low
-              AlphaPriority: High
+          - pre-conditions:
               AlphaAffinity: All
+              AlphaPriority: High
               BetaPriority: High
+              Priority: Low
       then: Beta
     - if:
         and:
         - pre-conditions:
-           BetaAffinity: All
+            BetaAffinity: All
         - or:
           - pre-conditions:
               State: Ready
@@ -733,24 +725,24 @@ transition-map:
         - or:
           - pre-conditions:
               After: Y
-              Priority: High
               AlphaPriority: Low
               BetaPriority: High
-          - pre-conditions:
               Priority: High
-              AlphaPriority: High
-              AlphaAffinity: All
-              BetaPriority: High
           - pre-conditions:
-              Priority: Low
               AlphaAffinity: All
-              BetaPriority: Low
+              AlphaPriority: High
+              BetaPriority: High
+              Priority: High
+          - pre-conditions:
+              AlphaAffinity: All
               BetaAffinity: All
-          - pre-conditions:
+              BetaPriority: Low
               Priority: Low
-              AlphaPriority: High
+          - pre-conditions:
               AlphaAffinity: All
+              AlphaPriority: High
               BetaPriority: High
+              Priority: Low
       then: BetaIdle
     - if:
         pre-conditions:
@@ -768,9 +760,9 @@ transition-map:
             After:
             - All
             - Y
+            BetaPriority: Low
             Priority: High
             State: Ready
-            BetaPriority: Low
       then: Task
     - if:
         and:
@@ -782,10 +774,10 @@ transition-map:
             After:
             - All
             - Y
+            BetaPriority: Low
             Priority: High
             State: Blocked
             Sticky: 'Yes'
-            BetaPriority: Low
       then: TaskIdle
     - if:
         and:
@@ -797,9 +789,9 @@ transition-map:
             After:
             - All
             - Y
+            AlphaPriority: Low
             Priority: High
             State: Ready
-            AlphaPriority: Low
       then: Task
     - if:
         and:
@@ -811,10 +803,10 @@ transition-map:
             After:
             - All
             - Y
+            AlphaPriority: Low
             Priority: High
             State: Blocked
             Sticky: 'Yes'
-            AlphaPriority: Low
       then: TaskIdle
     - if:
         and:

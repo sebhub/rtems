@@ -13,6 +13,6 @@ rationale: |
 requirement-type: non-functional
 text: |
   A ${/glossary/target:/term} state in which the caches are fully loaded with
-  dirty data and instructions unrelated to the measured code section and data
-  bus load from background tasks shall be a runtime measurement environment.
+  dirty data and instructions unrelated to the measured code section and data bus
+  load from background tasks shall be a runtime measurement environment.
 type: requirement

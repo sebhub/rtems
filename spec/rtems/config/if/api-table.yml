@@ -7,8 +7,8 @@ copyrights:
 definition:
 - default:
     brief: |
-      This member contains the maximum number of Classic API Tasks configured
-      for this application.
+      This member contains the maximum number of Classic API Tasks configured for
+      this application.
     definition: ${/c/if/uint32_t:/name} ${.:name}
     description: |
       See ${/acfg/if/max-tasks:/name}.
@@ -17,8 +17,8 @@ definition:
   variants: []
 - default:
     brief: |
-      This member is true, if the Classic API Notepads are enabled, otherwise
-      it is false.
+      This member is true, if the Classic API Notepads are enabled, otherwise it is
+      false.
     definition: ${/c/if/bool:/name} ${.:name}
     description: null
     kind: member
@@ -26,8 +26,8 @@ definition:
   variants: []
 - default:
     brief: |
-      This member contains the maximum number of Classic API Timers configured
-      for this application.
+      This member contains the maximum number of Classic API Timers configured for
+      this application.
     definition: ${/c/if/uint32_t:/name} ${.:name}
     description: |
       See ${/acfg/if/max-timers:/name}.
@@ -36,8 +36,8 @@ definition:
   variants: []
 - default:
     brief: |
-      This member contains the maximum number of Classic API Semaphores
-      configured for this application.
+      This member contains the maximum number of Classic API Semaphores configured
+      for this application.
     definition: ${/c/if/uint32_t:/name} ${.:name}
     description: |
       See ${/acfg/if/max-semaphores:/name}.
@@ -56,8 +56,8 @@ definition:
   variants: []
 - default:
     brief: |
-      This member contains the maximum number of Classic API Partitions
-      configured for this application.
+      This member contains the maximum number of Classic API Partitions configured
+      for this application.
     definition: ${/c/if/uint32_t:/name} ${.:name}
     description: |
       See ${/acfg/if/max-partitions:/name}.
@@ -66,8 +66,8 @@ definition:
   variants: []
 - default:
     brief: |
-      This member contains the maximum number of Classic API Regions configured
-      for this application.
+      This member contains the maximum number of Classic API Regions configured for
+      this application.
     definition: ${/c/if/uint32_t:/name} ${.:name}
     description: |
       See ${/acfg/if/max-regions:/name}.
@@ -76,8 +76,8 @@ definition:
   variants: []
 - default:
     brief: |
-      This member contains the maximum number of Classic API Dual-Ported
-      Memories configured for this application.
+      This member contains the maximum number of Classic API Dual-Ported Memories
+      configured for this application.
     definition: ${/c/if/uint32_t:/name} ${.:name}
     description: |
       See ${/acfg/if/max-ports:/name}.
@@ -86,8 +86,8 @@ definition:
   variants: []
 - default:
     brief: |
-      This member contains the maximum number of Classic API Rate Monotonic
-      Periods configured for this application.
+      This member contains the maximum number of Classic API Rate Monotonic Periods
+      configured for this application.
     definition: ${/c/if/uint32_t:/name} ${.:name}
     description: |
       See ${/acfg/if/max-periods:/name}.
@@ -96,8 +96,8 @@ definition:
   variants: []
 - default:
     brief: |
-      This member contains the maximum number of Classic API Barriers
-      configured for this application.
+      This member contains the maximum number of Classic API Barriers configured for
+      this application.
     definition: ${/c/if/uint32_t:/name} ${.:name}
     description: |
       See ${/acfg/if/max-barriers:/name}.
@@ -106,8 +106,8 @@ definition:
   variants: []
 - default:
     brief: |
-      This member contains the number of Classic API Initialization
-      Tasks configured for this application.
+      This member contains the number of Classic API Initialization Tasks configured
+      for this application.
     definition: ${/c/if/uint32_t:/name} ${.:name}
     description: |
       See ${/acfg/if/rtems-init-tasks-table:/name}.
@@ -116,8 +116,8 @@ definition:
   variants: []
 - default:
     brief: |
-      This member contains the pointer to Classic API Initialization Tasks
-      Table of this application.
+      This member contains the pointer to Classic API Initialization Tasks Table of
+      this application.
     definition: const ${../../task/if/initialization-table:/name} *${.:name}
     description: |
       See ${/acfg/if/rtems-init-tasks-table:/name}.

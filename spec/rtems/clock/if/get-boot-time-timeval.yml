@@ -34,12 +34,11 @@ notes: |
   will also set the boot time.
 params:
 - description: |
-    is the pointer to a ${/c/if/timeval:/name} object.  The time elapsed since
-    the ${/glossary/unix-epoch:/term} at some time point during system
-    initialization call will be stored in this object.
-    A null pointer causes an acess atempt to an invalid memory address, a trap
-    is raised in some hardware configurations whereas in others garbage is stored 
-    at 0x00000000.
+    is the pointer to a ${/c/if/timeval:/name} object. The time elapsed since the
+    ${/glossary/unix-epoch:/term} at some time point during system initialization
+    call will be stored in this object. A null pointer causes an acess atempt to an
+    invalid memory address, a trap is raised in some hardware configurations
+    whereas in others garbage is stored at 0x00000000.
   dir: out
   name: boot_time
 return: null

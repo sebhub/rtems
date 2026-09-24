@@ -54,14 +54,13 @@ notes: |
   ${../../intr/if/lock-initialize:/name}.
 params:
 - description: |
-    is the ${/glossary/tcb:/term} of the executing thread.  In SMP
-    configurations, this is the previously executing thread also known as the
-    ancestor thread.
+    is the ${/glossary/tcb:/term} of the executing thread. In SMP configurations,
+    this is the previously executing thread also known as the ancestor thread.
   dir: null
   name: executing
 - description: |
-    is the ${/glossary/tcb:/term} of the heir thread.  In SMP configurations,
-    this is the executing thread.
+    is the ${/glossary/tcb:/term} of the heir thread. In SMP configurations, this
+    is the executing thread.
   dir: null
   name: heir
 return: null

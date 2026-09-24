@@ -8,6 +8,6 @@ links:
   uid: group
 term: events
 text: |
-  A method for task communication and synchronization. The directives
-  provided by the event manager are used to service events.
+  A method for task communication and synchronization. The directives provided by
+  the event manager are used to service events.
 type: glossary

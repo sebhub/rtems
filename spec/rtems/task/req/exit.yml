@@ -15,8 +15,8 @@ post-conditions:
     text: |
       The fatal error with a fatal source of
       ${/score/interr/if/internal-error-core:/name} and a fatal code of
-      ${/score/interr/if/bad-thread-dispatch-disable-level:/name} shall occur
-      by the ${../if/exit:/name} call.
+      ${/score/interr/if/bad-thread-dispatch-disable-level:/name} shall occur by the
+      ${../if/exit:/name} call.
   - name: Nop
     test-code: |
       T_eq_u32( ctx->fatal_extension_calls, 0 );
@@ -93,8 +93,8 @@ post-conditions:
       event = T_scheduler_next_any( &ctx->scheduler_log.header, &index );
       T_eq_int( event->operation, T_SCHEDULER_NOP );
     text: |
-      The thread state of the calling task shall be set to the zombie state by
-      the ${../if/exit:/name} call.
+      The thread state of the calling task shall be set to the zombie state by the
+      ${../if/exit:/name} call.
   - name: 'No'
     test-code: |
       T_eq_sz( ctx->scheduler_log.header.recorded, 0 );
@@ -131,14 +131,13 @@ post-conditions:
     test-code: |
       T_eq_u32( ctx->delete_extension_calls, 1 );
     text: |
-      The calling task shall be deleted by the next directive which allocates a
-      task.
+      The calling task shall be deleted by the next directive which allocates a task.
   - name: Nop
     test-code: |
       T_eq_u32( ctx->delete_extension_calls, 0 );
     text: |
-      The calling task shall not be deleted by the next directive which
-      allocates a task.
+      The calling task shall not be deleted by the next directive which allocates a
+      task.
   test-epilogue: |
     DeleteTask( id );
   test-prologue: |
@@ -290,8 +289,8 @@ test-context:
   member: |
     uint32_t terminate_extension_calls
 - brief: |
-    If this member is true, then the thread life of the worker is protected
-    before the ${../if/exit:/name} call.
+    If this member is true, then the thread life of the worker is protected before
+    the ${../if/exit:/name} call.
   description: null
   member: |
     bool protected
@@ -313,8 +312,8 @@ test-context:
   member: |
     bool terminating
 - brief: |
-    If this member is true, then thread dispatching is disabled by the worker
-    task before the ${../if/exit:/name} call.
+    If this member is true, then thread dispatching is disabled by the worker task
+    before the ${../if/exit:/name} call.
   description: null
   member: |
     bool dispatch_disabled
@@ -512,7 +511,8 @@ test-teardown:
     RestoreRunnerASR();
     RestoreRunnerPriority();
   description: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

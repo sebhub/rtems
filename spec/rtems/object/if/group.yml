@@ -1,9 +1,9 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 brief: |
   RTEMS provides a collection of services to assist in the management and usage
-  of the objects created and utilized via other managers.  These services
-  assist in the manipulation of RTEMS objects independent of the API used to
-  create them.
+  of the objects created and utilized via other managers. These services assist
+  in the manipulation of RTEMS objects independent of the API used to create
+  them.
 copyrights:
 - Copyright (C) 2020 embedded brains GmbH & Co. KG
 - Copyright (C) 1988, 2008 On-Line Applications Research Corporation (OAR)

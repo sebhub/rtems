@@ -8,10 +8,10 @@ links:
   uid: group
 term: Weak APA
 text: |
-  Weak APA is a specialization of ${apa:/term}.  This refers to Linux's push
-  and pull implementation of APA model. When a ${thread:/term} becomes ready
-  for execution, it is allocated a processor if there is an idle processor, or
-  a processor executing a lower priority thread in its affinity set.  Unlike
+  Weak APA is a specialization of ${apa:/term}. This refers to Linux's push and
+  pull implementation of APA model. When a ${thread:/term} becomes ready for
+  execution, it is allocated a processor if there is an idle processor, or a
+  processor executing a lower priority thread in its affinity set. Unlike
   ${strongapa:/term}, no thread is migrated from its processor to find a thread
-  to processor mapping.  See also ${/ref/research/cerqueira-2014-lpa:/cite}.
+  to processor mapping. See also ${/ref/research/cerqueira-2014-lpa:/cite}.
 type: glossary

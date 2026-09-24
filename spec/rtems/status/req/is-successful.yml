@@ -13,14 +13,12 @@ post-conditions:
     test-code: |
       T_true( ctx->result );
     text: |
-      The return value of ${../if/is-successful:/name} shall be
-      ${/c/if/true:/name}.
+      The return value of ${../if/is-successful:/name} shall be ${/c/if/true:/name}.
   - name: 'False'
     test-code: |
       T_false( ctx->result );
     text: |
-      The return value of ${../if/is-successful:/name} shall be
-      ${/c/if/false:/name}.
+      The return value of ${../if/is-successful:/name} shall be ${/c/if/false:/name}.
   test-epilogue: null
   test-prologue: null
 pre-conditions:
@@ -30,14 +28,14 @@ pre-conditions:
     test-code: |
       ctx->status = RTEMS_SUCCESSFUL;
     text: |
-      While the ${../if/is-successful:/params[0]/name} parameter is
-      equal to ${../if/successful:/name}.
+      While the ${../if/is-successful:/params[0]/name} parameter is equal to
+      ${../if/successful:/name}.
   - name: Other
     test-code: |
       ctx->status = RTEMS_INVALID_ID;
     text: |
-      While the ${../if/is-successful:/params[0]/name} parameter is not
-      equal to ${../if/successful:/name}.
+      While the ${../if/is-successful:/params[0]/name} parameter is not equal to
+      ${../if/successful:/name}.
   test-epilogue: null
   test-prologue: null
 rationale: null
@@ -54,8 +52,8 @@ test-context:
   member: |
     bool result
 - brief: |
-    This member specifies if the ${../if/is-successful:/params[0]/name}
-    parameter value.
+    This member specifies if the ${../if/is-successful:/params[0]/name} parameter
+    value.
   description: null
   member: |
     rtems_status_code status
@@ -71,7 +69,8 @@ test-stop: null
 test-support: null
 test-target: testsuites/validation/tc-status-is-successful.c
 test-teardown: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

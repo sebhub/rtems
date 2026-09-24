@@ -8,6 +8,5 @@ links:
   uid: group
 term: OpenMP
 text: |
-  This term is an acronym for
-  `Open Multi-Processing <https://www.openmp.org/>`_.
+  This term is an acronym for [Open Multi-Processing](https://www.openmp.org/).
 type: glossary

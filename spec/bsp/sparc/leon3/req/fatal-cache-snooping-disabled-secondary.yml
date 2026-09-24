@@ -5,12 +5,12 @@ enabled-by:
   and:
   - RTEMS_SMP
   - bsps/sparc/leon3
+functional-type: function
 links:
 - role: requirement-refinement
   uid: /req/fatal-error
 - role: requirement-refinement
   uid: ../if/group
-functional-type: function
 rationale: null
 requirement-type: functional
 text: |

@@ -15,8 +15,8 @@ definition:
   variants: []
 - default:
     brief: |
-      This member defines the maximum number of pending messages supported by
-      the message queue.
+      This member defines the maximum number of pending messages supported by the
+      message queue.
     definition: ${/c/if/uint32_t:/name} ${.:name}
     description: null
     kind: member
@@ -24,8 +24,7 @@ definition:
   variants: []
 - default:
     brief: |
-      This member defines the maximum message size supported by the message
-      queue.
+      This member defines the maximum message size supported by the message queue.
     definition: ${/c/if/size_t:/name} ${.:name}
     description: null
     kind: member
@@ -36,9 +35,9 @@ definition:
       This member shall point to the message buffer storage area begin.
     definition: void *${.:name}
     description: |
-      The message buffer storage area for the message queue shall be an array
-      of the type defined by ${buffer:/name} with a maximum message size equal
-      to the maximum message size of this configuration.
+      The message buffer storage area for the message queue shall be an array of the
+      type defined by ${buffer:/name} with a maximum message size equal to the
+      maximum message size of this configuration.
     kind: member
     name: storage_area
   variants: []
@@ -52,14 +51,14 @@ definition:
   variants: []
 - default:
     brief: |
-      This member defines the optional handler to free the message buffer
-      storage area.
+      This member defines the optional handler to free the message buffer storage
+      area.
     definition: void ( *${.:name} )( void * )
     description: |
-      It is called when the message queue is deleted.  It is called from task
-      context under protection of the object allocator lock.  It is allowed to
-      call ${/c/if/free:/name} in this handler.  If handler is
-      ${/c/if/null:/name}, then no action will be performed.
+      It is called when the message queue is deleted. It is called from task context
+      under protection of the object allocator lock. It is allowed to call
+      ${/c/if/free:/name} in this handler. If handler is ${/c/if/null:/name}, then no
+      action will be performed.
     kind: member
     name: storage_free
   variants: []

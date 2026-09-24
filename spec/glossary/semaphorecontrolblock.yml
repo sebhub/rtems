@@ -8,6 +8,6 @@ links:
   uid: group
 term: Semaphore Control Block
 text: |
-  A data structure associated with each semaphore used by RTEMS to manage
-  that semaphore.
+  A data structure associated with each semaphore used by RTEMS to manage that
+  semaphore.
 type: glossary

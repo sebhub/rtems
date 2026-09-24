@@ -7,9 +7,9 @@ default-value: |
   the task storage area for each ${/glossary/idletask:/term} will allocated
   from the RTEMS Workspace or through a custom IDLE task stack allocator.
 description: |
-  If this configuration option is specified, then the task storage areas for
-  the ${/glossary/idletask:/plural} are statically allocated by
-  ${header-confdefs:/path}.  The value of this configuration option defines the
+  If this configuration option is specified, then the task storage areas for the
+  ${/glossary/idletask:/plural} are statically allocated by
+  ${header-confdefs:/path}. The value of this configuration option defines the
   size in bytes of the task storage area of each IDLE task in the system.
 enabled-by: true
 index-entries:

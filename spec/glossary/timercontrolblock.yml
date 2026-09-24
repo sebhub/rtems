@@ -8,6 +8,5 @@ links:
   uid: group
 term: Timer Control Block
 text: |
-  A data structure associated with each timer used by RTEMS to manage that
-  timer.
+  A data structure associated with each timer used by RTEMS to manage that timer.
 type: glossary

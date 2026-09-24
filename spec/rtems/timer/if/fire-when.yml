@@ -16,12 +16,12 @@ definition:
     return: ${../../status/if/code:/name}
   variants: []
 description: |
-  This directive initiates the timer specified by ${.:/params[0]/name}.  If the
-  timer is running, it is automatically canceled before being initiated.  The
+  This directive initiates the timer specified by ${.:/params[0]/name}. If the
+  timer is running, it is automatically canceled before being initiated. The
   timer is scheduled to fire at the time of day specified by
-  ${.:/params[1]/name}.  When the timer fires, the timer service routine
-  ${.:/params[2]/name} will be invoked with the argument ${.:/params[3]/name}
-  in the context of the clock tick ${/glossary/isr:/term}.
+  ${.:/params[1]/name}. When the timer fires, the timer service routine
+  ${.:/params[2]/name} will be invoked with the argument ${.:/params[3]/name} in
+  the context of the clock tick ${/glossary/isr:/term}.
 enabled-by: true
 index-entries:
 - fire a timer at time of day
@@ -42,16 +42,20 @@ links:
 name: rtems_timer_fire_when
 notes: null
 params:
-- description: is the timer identifier.
+- description: |
+    is the timer identifier.
   dir: null
   name: id
-- description: is the time of day when the routine is fired.
+- description: |
+    is the time of day when the routine is fired.
   dir: null
   name: wall_time
-- description: is the routine to schedule.
+- description: |
+    is the routine to schedule.
   dir: null
   name: routine
-- description: is the argument passed to the routine when it is fired.
+- description: |
+    is the argument passed to the routine when it is fired.
   dir: null
   name: user_data
 return:
