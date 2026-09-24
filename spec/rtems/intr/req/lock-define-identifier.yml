@@ -2,14 +2,13 @@ SPDX-License-Identifier: CC-BY-SA-4.0
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
 enabled-by: RTEMS_SMP
+functional-type: function
 links:
 - role: interface-function
   uid: ../if/lock-define
-functional-type: function
 rationale: null
 requirement-type: functional
 text: |
-  The ${../if/lock-define:/name} macro shall expand to an object definition
-  with an identifier specified by the ${../if/lock-define:/params[1]/name}
-  parameter.
+  The ${../if/lock-define:/name} macro shall expand to an object definition with
+  an identifier specified by the ${../if/lock-define:/params[1]/name} parameter.
 type: requirement

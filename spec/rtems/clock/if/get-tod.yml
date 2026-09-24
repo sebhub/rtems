@@ -32,10 +32,10 @@ name: rtems_clock_get_tod
 notes: null
 params:
 - description: |
-    is the pointer to an ${../../type/if/time-of-day:/name} object.  When the
+    is the pointer to an ${../../type/if/time-of-day:/name} object. When the
     directive call is successful, the time of day associated with the
-    ${/glossary/clock-realtime:/term} at some point during the directive call
-    will be stored in this object.
+    ${/glossary/clock-realtime:/term} at some point during the directive call will
+    be stored in this object.
   dir: null
   name: time_of_day
 return:
@@ -48,7 +48,7 @@ return:
       The ${.:/params[0]/name} parameter was ${/c/if/null:/name}.
     value: ${../../status/if/invalid-address:/name}
   - description: |
-      The ${/glossary/clock-realtime:/term} was not set.  It can be set with
+      The ${/glossary/clock-realtime:/term} was not set. It can be set with
       ${set:/name}.
     value: ${../../status/if/not-defined:/name}
 type: interface

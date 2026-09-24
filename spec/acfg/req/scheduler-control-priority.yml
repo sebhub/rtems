@@ -14,6 +14,6 @@ rationale: null
 requirement-type: functional
 text: |
   The ${../if/scheduler-control-priority:/name} macro shall define a scheduler
-  control data structure for the ${/ref/rtems/c-user/scheduler-priority:/name} scheduler
-  with the specified name and priority count.
+  control data structure for the ${/ref/rtems/c-user/scheduler-priority:/name}
+  scheduler with the specified name and priority count.
 type: requirement

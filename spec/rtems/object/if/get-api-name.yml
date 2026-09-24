@@ -29,7 +29,7 @@ links:
   uid: /constraint/directive-no-preempt
 name: rtems_object_get_api_name
 notes: |
-  The string returned is from constant space.  Do not modify or free it.
+  The string returned is from constant space. Do not modify or free it.
 params:
 - description: |
     is the object API to get the name.

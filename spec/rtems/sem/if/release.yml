@@ -13,13 +13,13 @@ definition:
     return: ${../../status/if/code:/name}
   variants: []
 description: |
-  This directive releases the semaphore specified by ${.:/params[0]/name}.  If
-  the semaphore's wait queue is not empty, then
+  This directive releases the semaphore specified by ${.:/params[0]/name}. If the
+  semaphore's wait queue is not empty, then
 
-  * the first task on the wait queue is removed and unblocked, the semaphore's
+  - the first task on the wait queue is removed and unblocked, the semaphore's
     count is not changed, otherwise
 
-  * the semaphore's count is incremented by one for counting semaphores and set
+  - the semaphore's count is incremented by one for counting semaphores and set
     to one for binary and simple binary semaphores.
 enabled-by: true
 index-entries:
@@ -47,20 +47,18 @@ notes: |
   made ready for execution.
 
   The outermost release of a local, binary semaphore using the priority
-  inheritance, priority ceiling, or MrsP locking protocol may result
-  in the calling task having its priority lowered.  This will occur if the
-  highest priority of the calling task was available due to the ownership of
-  the released semaphore.  If a task was on the semaphore's wait queue, then
-  the priority associated with the semaphore will be transferred to the new
-  owner.
+  inheritance, priority ceiling, or MrsP locking protocol may result in the
+  calling task having its priority lowered. This will occur if the highest
+  priority of the calling task was available due to the ownership of the released
+  semaphore. If a task was on the semaphore's wait queue, then the priority
+  associated with the semaphore will be transferred to the new owner.
 
   Releasing a global semaphore which does not reside on the local node will
   generate a request telling the remote node to release the semaphore.
 
   If the task to be unblocked resides on a different node from the semaphore,
-  then the semaphore allocation is forwarded to the appropriate node, the
-  waiting task is unblocked, and the proxy used to represent the task is
-  reclaimed.
+  then the semaphore allocation is forwarded to the appropriate node, the waiting
+  task is unblocked, and the proxy used to represent the task is reclaimed.
 params:
 - description: |
     is the semaphore identifier.

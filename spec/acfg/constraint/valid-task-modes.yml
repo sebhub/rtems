@@ -7,6 +7,6 @@ links:
   uid: /req/usage-constraints
 rationale: null
 text: |
-  The value of the application configuration option shall be a valid task
-  mode set.
+  The value of the application configuration option shall be a valid task mode
+  set.
 type: constraint

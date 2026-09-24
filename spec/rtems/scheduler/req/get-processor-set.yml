@@ -46,16 +46,16 @@ post-conditions:
       The value of the object referenced by the
       ${../if/get-processor-set:/params[2]/name} parameter shall be set to the
       processor set owned by the scheduler specified by the
-      ${../if/get-processor-set:/params[0]/name} parameter at some point during
-      the call after the return of the ${../if/get-processor-set:/name} call.
+      ${../if/get-processor-set:/params[0]/name} parameter at some point during the
+      call after the return of the ${../if/get-processor-set:/name} call.
   - name: Nop
     test-code: |
       CPU_FILL( &set );
       T_eq_int( CPU_CMP( &ctx->cpuset_value, &set ), 0 );
     text: |
-      Objects referenced by the ${../if/get-processor-set:/params[2]/name}
-      parameter in past calls to ${../if/get-processor-set:/name} shall
-      not be accessed by the ${../if/get-processor-set:/name} call.
+      Objects referenced by the ${../if/get-processor-set:/params[2]/name} parameter
+      in past calls to ${../if/get-processor-set:/name} shall not be accessed by the
+      ${../if/get-processor-set:/name} call.
   test-epilogue: null
   test-prologue: |
     cpu_set_t set;
@@ -72,8 +72,8 @@ pre-conditions:
     test-code: |
       ctx->id = ctx->scheduler_id;
     text: |
-      While the ${../if/get-processor-set:/params[0]/name} parameter is
-      associated with a scheduler.
+      While the ${../if/get-processor-set:/params[0]/name} parameter is associated
+      with a scheduler.
   test-epilogue: null
   test-prologue: null
 - name: CPUSetSize
@@ -82,20 +82,18 @@ pre-conditions:
     test-code: |
       ctx->cpusetsize = sizeof( ctx->cpuset_value );
     text: |
-      While the ${../if/get-processor-set:/params[1]/name} parameter is an
-      integral multiple of the size of long, while the
-      ${../if/get-processor-set:/params[1]/name} parameter specifies a
-      processor set which is large enough to contain the processor set of the
-      scheduler.
+      While the ${../if/get-processor-set:/params[1]/name} parameter is an integral
+      multiple of the size of long, while the
+      ${../if/get-processor-set:/params[1]/name} parameter specifies a processor set
+      which is large enough to contain the processor set of the scheduler.
   - name: TooSmall
     test-code: |
       ctx->cpusetsize = 0;
     text: |
-      While the ${../if/get-processor-set:/params[1]/name} parameter is an
-      integral multiple of the size of long, while the
-      ${../if/get-processor-set:/params[1]/name} parameter specifies a
-      processor set which is not large enough to contain the processor set of
-      the scheduler.
+      While the ${../if/get-processor-set:/params[1]/name} parameter is an integral
+      multiple of the size of long, while the
+      ${../if/get-processor-set:/params[1]/name} parameter specifies a processor set
+      which is not large enough to contain the processor set of the scheduler.
   - name: Askew
     test-code: |
       ctx->cpusetsize = SIZE_MAX;
@@ -110,14 +108,14 @@ pre-conditions:
     test-code: |
       ctx->cpuset = &ctx->cpuset_value;
     text: |
-      While the ${../if/get-processor-set:/params[2]/name} parameter
-      references an object of type ${/c/if/cpu_set_t:/name}.
+      While the ${../if/get-processor-set:/params[2]/name} parameter references an
+      object of type ${/c/if/cpu_set_t:/name}.
   - name: 'Null'
     test-code: |
       ctx->cpuset = NULL;
     text: |
-      While the ${../if/get-processor-set:/params[2]/name} parameter is
-      equal to ${/c/if/null:/name}.
+      While the ${../if/get-processor-set:/params[2]/name} parameter is equal to
+      ${/c/if/null:/name}.
   test-epilogue: null
   test-prologue: null
 rationale: null
@@ -144,8 +142,8 @@ test-context:
   member: |
     cpu_set_t cpuset_value
 - brief: |
-    This member contains the return value of the
-    ${../if/get-processor-set:/name} call.
+    This member contains the return value of the ${../if/get-processor-set:/name}
+    call.
   description: null
   member: |
     rtems_status_code status
@@ -182,17 +180,15 @@ test-setup:
   code: |
     rtems_status_code sc;
 
-    sc = rtems_scheduler_ident(
-      TEST_SCHEDULER_A_NAME,
-      &ctx->scheduler_id
-    );
+    sc = rtems_scheduler_ident( TEST_SCHEDULER_A_NAME, &ctx->scheduler_id );
     T_rsc_success( sc );
   description: null
 test-stop: null
 test-support: null
 test-target: testsuites/validation/tc-scheduler-get-processor-set.c
 test-teardown: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

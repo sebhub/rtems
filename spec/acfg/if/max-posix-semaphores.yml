@@ -4,8 +4,8 @@ copyrights:
 - Copyright (C) 1988, 2008 On-Line Applications Research Corporation (OAR)
 default-value: 0
 description: |
-  The value of this configuration option defines the maximum number of POSIX
-  API Named Semaphores that can be concurrently active.
+  The value of this configuration option defines the maximum number of POSIX API
+  Named Semaphores that can be concurrently active.
 enabled-by: true
 index-entries: []
 interface-type: appl-config-option
@@ -33,8 +33,7 @@ notes: |
   This object class can be configured in unlimited allocation mode, see
   ${/ref/rtems/c-user/config-unlimited-objects:/name}.
 
-  Named semaphores are created with ${/c/if/sem_open:/name}.  Semaphores
-  initialized with ${/c/if/sem_init:/name} are not affected by this
-  configuration option since the storage space for these semaphores is
-  user-provided.
+  Named semaphores are created with ${/c/if/sem_open:/name}. Semaphores
+  initialized with ${/c/if/sem_init:/name} are not affected by this configuration
+  option since the storage space for these semaphores is user-provided.
 type: interface

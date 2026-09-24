@@ -13,6 +13,6 @@ links:
   uid: /ref/rtems/source
 method: by-inspection
 text: |
-  A special `rett` sequence errata workaround was implemented for the
-  interrupt trap handler.
+  A special `rett` sequence errata workaround was implemented for the interrupt
+  trap handler.
 type: validation

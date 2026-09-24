@@ -31,7 +31,7 @@ notes: |
 params: []
 return:
   return: |
-    Returns true, if the task stack allocator is configured to avoid the
-    RTEMS Workspace for this application, otherwise false.
+    Returns true, if the task stack allocator is configured to avoid the RTEMS
+    Workspace for this application, otherwise false.
   return-values: []
 type: interface

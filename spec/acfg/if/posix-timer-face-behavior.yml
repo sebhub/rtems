@@ -4,7 +4,7 @@ copyrights:
 - Copyright (C) 2022 On-Line Applications Research Corporation (OAR)
 description: |
   If this configuration option is defined, then POSIX timers may not be created
-  to use the ${/glossary/clock-realtime:/term}.  Per POSIX, this is allowed
+  to use the ${/glossary/clock-realtime:/term}. Per POSIX, this is allowed
   behavior but per the FACE Technical Standard, it is not. Using POSIX timers
   based on CLOCK_REALTIME (e.g., time of day) is unsafe for real-time safety
   systems as setting CLOCK_REALTIME will perturb any active timers.

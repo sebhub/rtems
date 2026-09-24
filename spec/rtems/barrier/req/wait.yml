@@ -47,8 +47,8 @@ pre-conditions:
     test-code: |
       ctx->id = 0xffffffff;
     text: |
-      While the ${../if/release:/params[0]/name} parameter is not associated
-      with a barrier.
+      While the ${../if/release:/params[0]/name} parameter is not associated with a
+      barrier.
   - name: Manual
     test-code: |
       ctx->id = ctx->manual_release_id;
@@ -69,8 +69,7 @@ pre-conditions:
     test-code: |
       ctx->timeout = UINT32_MAX;
     text: |
-      While the ${../if/release:/params[1]/name} parameter is a clock tick
-      interval.
+      While the ${../if/release:/params[1]/name} parameter is a clock tick interval.
   - name: Forever
     test-code: |
       ctx->timeout = RTEMS_NO_TIMEOUT;
@@ -89,8 +88,8 @@ pre-conditions:
         SendEvents( ctx->low_worker_id, EVENT_TIMER_EXPIRE );
       }
     text: |
-      While the calling task waits at the barrier, while the barrier is not
-      released or deleted.
+      While the calling task waits at the barrier, while the barrier is not released
+      or deleted.
   - name: Wait
     test-code: |
       SendEvents( ctx->high_worker_id, EVENT_WAIT );
@@ -100,14 +99,12 @@ pre-conditions:
     test-code: |
       SendEvents( ctx->low_worker_id, EVENT_RELEASE );
     text: |
-      While the calling task waits at the barrier, while the barrier is
-      released.
+      While the calling task waits at the barrier, while the barrier is released.
   - name: Delete
     test-code: |
       SendEvents( ctx->low_worker_id, EVENT_DELETE );
     text: |
-      While the calling task waits at the barrier, while the barrier is
-      deleted.
+      While the calling task waits at the barrier, while the barrier is deleted.
   test-epilogue: null
   test-prologue: null
 rationale: null
@@ -296,7 +293,8 @@ test-teardown:
 
     RestoreRunnerPriority();
   description: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

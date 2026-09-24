@@ -8,6 +8,5 @@ links:
   uid: group
 term: return value
 text: |
-  The value returned by a function.  A return value may be a
-  ${statuscode:/term}.
+  The value returned by a function. A return value may be a ${statuscode:/term}.
 type: glossary

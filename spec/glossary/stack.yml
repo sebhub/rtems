@@ -8,7 +8,7 @@ links:
   uid: group
 term: stack
 text: |
-  A data structure that is managed using a Last In First Out (LIFO)
-  discipline.  Each task has a stack associated with it which is used to
-  store return information and local variables.
+  A data structure that is managed using a Last In First Out (LIFO) discipline.
+  Each task has a stack associated with it which is used to store return
+  information and local variables.
 type: glossary

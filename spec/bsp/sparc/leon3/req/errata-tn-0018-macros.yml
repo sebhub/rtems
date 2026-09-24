@@ -9,6 +9,6 @@ non-functional-type: design
 rationale: null
 requirement-type: non-functional
 text: |
-  The software product shall provide ${/glossary/assemblerlanguage:/term}
-  macros to help implementing workarounds for the errata.
+  The software product shall provide ${/glossary/assemblerlanguage:/term} macros
+  to help implementing workarounds for the errata.
 type: requirement

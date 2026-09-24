@@ -35,9 +35,9 @@ links:
 name: rtems_interrupt_server_request
 notes: |
   This structure shall be treated as an opaque data type from the
-  ${/glossary/api:/term} point of view.  Members shall not be accessed
-  directly.  A request is initialized by ${server-request-initialize:/name} and
-  destroyed by ${server-request-destroy:/name}.  The interrupt vector of the
-  request can be set by ${server-request-set-vector:/name}.  The request is
-  submitted to be serviced by ${server-request-submit:/name}.
+  ${/glossary/api:/term} point of view. Members shall not be accessed directly. A
+  request is initialized by ${server-request-initialize:/name} and destroyed by
+  ${server-request-destroy:/name}. The interrupt vector of the request can be set
+  by ${server-request-set-vector:/name}. The request is submitted to be serviced
+  by ${server-request-submit:/name}.
 type: interface

@@ -24,9 +24,9 @@ notes: |
   ${/glossary/extension-forward-order:/term}.
 
   In SMP configurations, the thread may already run on another processor before
-  the task start extensions are actually invoked.  Task switch and task begin
-  extensions may run before or in parallel with the thread start extension in
-  SMP configurations, see ${task-switch:/name} and ${task-begin:/name}.
+  the task start extensions are actually invoked. Task switch and task begin
+  extensions may run before or in parallel with the thread start extension in SMP
+  configurations, see ${task-switch:/name} and ${task-begin:/name}.
 params:
 - description: |
     is the ${/glossary/tcb:/term} of the executing thread.

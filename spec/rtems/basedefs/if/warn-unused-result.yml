@@ -1,7 +1,7 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 brief: |
-  Tells the compiler in a declaration that the result of this function should
-  be used.
+  Tells the compiler in a declaration that the result of this function should be
+  used.
 copyrights:
 - Copyright (C) 2018 embedded brains GmbH & Co. KG
 definition:

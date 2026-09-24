@@ -31,7 +31,7 @@ links:
 name: rtems_io_write
 notes: |
   Write operations typically require a buffer address as part of the argument
-  parameter block.  The contents of this buffer will be sent to the device.
+  parameter block. The contents of this buffer will be sent to the device.
 params:
 - description: |
     is the major number of the device.

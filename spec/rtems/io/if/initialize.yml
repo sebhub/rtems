@@ -35,7 +35,7 @@ notes: |
   ${register-driver:/name} directive.
 
   A device driver initialization entry is responsible for initializing all
-  hardware and data structures associated with a device.  If necessary, it can
+  hardware and data structures associated with a device. If necessary, it can
   allocate memory to be used during other operations.
 params:
 - description: |
@@ -52,8 +52,7 @@ params:
   name: argument
 return:
   return: |
-    Other status codes may be returned by the device driver initialization
-    entry.
+    Other status codes may be returned by the device driver initialization entry.
   return-values:
   - description: |
       The requested operation was successful.

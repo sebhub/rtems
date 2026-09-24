@@ -25,8 +25,8 @@ post-conditions:
         value <<= 1;
       }
     text: |
-      The return value of ${../if/flsl:/name} shall be equal to the index of
-      the most-significant bit set in the parameter value.
+      The return value of ${../if/flsl:/name} shall be equal to the index of the
+      most-significant bit set in the parameter value.
   test-epilogue: null
   test-prologue: |
     int    expected_result;
@@ -68,7 +68,8 @@ test-stop: null
 test-support: null
 test-target: testsuites/validation/tc-flsl.c
 test-teardown: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

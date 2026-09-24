@@ -1,7 +1,7 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 brief: |
-  This constant indicates that an object name to identifier search is being
-  asked for the identifier of the currently executing task.
+  This constant indicates that an object name to identifier search is being asked
+  for the identifier of the currently executing task.
 copyrights:
 - Copyright (C) 2020 embedded brains GmbH & Co. KG
 - Copyright (C) 1988, 2008 On-Line Applications Research Corporation (OAR)

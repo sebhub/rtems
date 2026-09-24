@@ -7,8 +7,8 @@ enabled-by:
 links: []
 test-actions:
 - action-brief: |
-    Validate the `.preinit_array` constructor invocation.  Mark that the test
-    case executed.
+    Validate the `.preinit_array` constructor invocation. Mark that the test case
+    executed.
   action-code: |
     test_case_executed = true;
   checks:
@@ -20,16 +20,16 @@ test-actions:
     - role: validation
       uid: ../req/global-construction-preinit-array
   - brief: |
-      Check that the `.preeinit_array` construction was done by the Classic
-      API user initialization task.
+      Check that the `.preeinit_array` construction was done by the Classic API user
+      initialization task.
     code: |
       T_eq_u32( constructor_id, rtems_task_self() );
     links:
     - role: validation
       uid: ../req/global-construction-classic
   - brief: |
-      Check that the `.preinit_array` constructor was called before the
-      global constructor invocations.
+      Check that the `.preinit_array` constructor was called before the global
+      constructor invocations.
     code: |
       T_eq_u32( constructor_counter, 1 );
       T_eq_u32( normal_constructor_counter, 2 );

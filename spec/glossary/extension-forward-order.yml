@@ -8,12 +8,12 @@ links:
   uid: group
 term: extension forward order
 text: |
-  The ${userextensions:/term} may be invoked in extension forward order.  In
+  The ${userextensions:/term} may be invoked in extension forward order. In
   forward order, all user extensions of the ${initial-extension-sets:/term} are
-  invoked before all user extensions of the ${dynamic-extension-sets:/term}.
-  In the initial extension sets the order is defined by the table index.  The
-  user extension with the lowest table index is invoked first.  In the dynamic
-  extension sets the order is defined by the registration order.  The first
-  registered user extension is invoked first.  See also
+  invoked before all user extensions of the ${dynamic-extension-sets:/term}. In
+  the initial extension sets the order is defined by the table index. The user
+  extension with the lowest table index is invoked first. In the dynamic
+  extension sets the order is defined by the registration order. The first
+  registered user extension is invoked first. See also
   ${extension-reverse-order:/term}.
 type: glossary

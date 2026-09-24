@@ -8,8 +8,7 @@ links:
 rationale: null
 text: |
   The value of the application configuration option shall be defined to a macro
-  which accepts exactly one parameter and returns an unsigned integer.  The
-  parameter will be an allocation size and the macro shall return this size
-  plus the overhead of the allocator to manage an allocation request for this
-  size.
+  which accepts exactly one parameter and returns an unsigned integer. The
+  parameter will be an allocation size and the macro shall return this size plus
+  the overhead of the allocator to manage an allocation request for this size.
 type: constraint

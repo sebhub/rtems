@@ -6,24 +6,21 @@ links:
 - role: validation
   uid: /req/unit-test-dead-code
 test-actions:
-
-#### _CORE_message_queue_Insert_message() ####################################
-
 - action-brief: |
-    Use _CORE_message_queue_Insert_message() to insert two messages into
-    a ${/glossary/messagequeue:/term} and use the POSIX message priority
-    to define their order in the queue.
+    Use \_CORE_message_queue_Insert_message() to insert two messages into a
+    ${/glossary/messagequeue:/term} and use the POSIX message priority to define
+    their order in the queue.
   action-code: |
     rtems_status_code status_submit_low;
     rtems_status_code status_submit_high;
     rtems_status_code status_receive_low;
     rtems_status_code status_receive_high;
-    uint8_t message_low[] = MESSAGE_CONTENT_LOW;
-    uint8_t message_high[] = MESSAGE_CONTENT_HIGH;
-    uint8_t message_buffer_low[ MAXIMUM_MESSAGE_SIZE ];
-    uint8_t message_buffer_high[ MAXIMUM_MESSAGE_SIZE ];
-    size_t message_size_low;
-    size_t message_size_high;
+    uint8_t           message_low[] = MESSAGE_CONTENT_LOW;
+    uint8_t           message_high[] = MESSAGE_CONTENT_HIGH;
+    uint8_t           message_buffer_low[ MAXIMUM_MESSAGE_SIZE ];
+    uint8_t           message_buffer_high[ MAXIMUM_MESSAGE_SIZE ];
+    size_t            message_size_low;
+    size_t            message_size_high;
 
     status_submit_low = SubmitMessage(
       ctx->message_queue_id,
@@ -52,7 +49,7 @@ test-actions:
     );
   checks:
   - brief: |
-      Check that _CORE_message_queue_Submit() was executed successfully.
+      Check that \_CORE_message_queue_Submit() was executed successfully.
     code: |
       T_rsc_success( status_submit_low );
       T_rsc_success( status_submit_high );
@@ -69,17 +66,13 @@ test-actions:
       T_eq_sz( message_size_low, sizeof( message_low ) );
       T_eq_mem( message_buffer_low, message_low, message_size_low );
     links: []
-  links: []
   links:
   - name: _CORE_message_queue_Insert_message
     role: unit-test
     uid: ../../if/domain
-
-#### _CORE_message_queue_Seize(), _CORE_message_queue_Submit() ################
-
 - action-brief: |
-    Submit three messages into a ${/glossary/messagequeue:/term} which can
-    only store two and have the third submit() blocked till a seize() occurs.
+    Submit three messages into a ${/glossary/messagequeue:/term} which can only
+    store two and have the third submit() blocked till a seize() occurs.
   action-code: |
     bool is_worker_blocked_after_third_send;
     bool is_worker_blocked_after_first_receive;
@@ -96,14 +89,12 @@ test-actions:
     T_rsc_success( ReceiveOneMessages( ctx ) );
   checks:
   - brief: |
-      Check that the third _CORE_message_queue_Submit() did actually block
-      till there was room for the message in the
-      ${/glossary/messagequeue:/term}.
+      Check that the third \_CORE_message_queue_Submit() did actually block till
+      there was room for the message in the ${/glossary/messagequeue:/term}.
     code: |
       T_true( is_worker_blocked_after_third_send );
       T_true( !is_worker_blocked_after_first_receive );
     links: []
-  links: []
   links:
   - name: _CORE_message_queue_Seize
     role: unit-test
@@ -111,9 +102,6 @@ test-actions:
   - name: _CORE_message_queue_Submit
     role: unit-test
     uid: ../../if/domain
-
-#### _CORE_message_queue_Submit() in ISR ######################################
-
 - action-brief: |
     Submit messages in the queue from within an ${/glossary/isr:/term}.
   action-code: |
@@ -121,11 +109,11 @@ test-actions:
     rtems_status_code status_send_second_message;
     rtems_status_code status_send_third_message;
 
-    CallWithinISR( ( void (*)(void*) ) SendMessage, ctx );
+    CallWithinISR( (void ( * )( void * )) SendMessage, ctx );
     status_send_first_message = ctx->send_status;
-    CallWithinISR( ( void (*)(void*) ) SendMessage, ctx );
+    CallWithinISR( (void ( * )( void * )) SendMessage, ctx );
     status_send_second_message = ctx->send_status;
-    CallWithinISR( ( void (*)(void*) ) SendMessage, ctx );
+    CallWithinISR( (void ( * )( void * )) SendMessage, ctx );
     status_send_third_message = ctx->send_status;
 
     T_rsc_success( ReceiveOneMessages( ctx ) );
@@ -143,14 +131,10 @@ test-actions:
     code: |
       T_rsc( status_send_third_message, STATUS_CLASSIC_INTERNAL_ERROR );
     links: []
-  links: []
   links:
   - name: _CORE_message_queue_Submit
     role: unit-test
     uid: ../../if/domain
-
-##############################################################################
-
 test-brief: |
   Unit tests for the Message Queue Handler.
 test-context:
@@ -161,28 +145,27 @@ test-context:
   member: |
     rtems_id message_queue_id
 - brief: |
-    This member is used as storage area for the
-    ${/glossary/messagequeue:/term}.
+    This member is used as storage area for the ${/glossary/messagequeue:/term}.
   description: null
   member: |
     RTEMS_MESSAGE_QUEUE_BUFFER( MAXIMUM_MESSAGE_SIZE )
       storage_area[ MAXIMUM_PENDING_MESSAGES]
 - brief: |
-    This member contains the ${/glossary/task:/term} identifier of the
-    worker ${/glossary/task:/term}.
+    This member contains the ${/glossary/task:/term} identifier of the worker
+    ${/glossary/task:/term}.
   description: null
   member: |
     rtems_id worker_id
 - brief: |
-    This member indicated whether the worker ${/glossary/task:/term}
-    is currently sending a message (`true`) or whether it is
-    waiting to receive an event (`false`).
+    This member indicated whether the worker ${/glossary/task:/term} is currently
+    sending a message (`true`) or whether it is waiting to receive an event
+    (`false`).
   description: null
   member: |
     bool is_worker_working
 - brief: |
-    This member contains the returned ${/glossary/statuscode:/term}
-    of the SendMessage() function.
+    This member contains the returned ${/glossary/statuscode:/term} of the
+    SendMessage() function.
   description: null
   member: |
     rtems_status_code send_status
@@ -193,10 +176,10 @@ test-context-support: |
   static void WorkerTask( rtems_task_argument argument );
 test-description: |
   Parts of the files `cpukit/score/src/coremsginsert.c`,
-  `cpukit/score/src/coremsgseize.c`, and `cpukit/score/src/coremsgsubmit.c`
-  are only executed by the POSIX API.  Currently, the pre-qualified subset of
-  RTEMS does not contain the POSIX API.  This test exercises the code parts
-  otherwise only reached by the POSIX API to achieve full code coverage.
+  `cpukit/score/src/coremsgseize.c`, and `cpukit/score/src/coremsgsubmit.c` are
+  only executed by the POSIX API. Currently, the pre-qualified subset of RTEMS
+  does not contain the POSIX API. This test exercises the code parts otherwise
+  only reached by the POSIX API to achieve full code coverage.
 test-header: null
 test-includes:
 - rtems.h
@@ -208,21 +191,18 @@ test-local-includes:
 test-setup:
   brief: null
   code: |
-    rtems_status_code status;
+    rtems_status_code          status;
     rtems_message_queue_config config = {
-      .name                     = rtems_build_name( 'M', 'S', 'G', 'Q' ),
+      .name = rtems_build_name( 'M', 'S', 'G', 'Q' ),
       .maximum_pending_messages = MAXIMUM_PENDING_MESSAGES,
-      .maximum_message_size     = MAXIMUM_MESSAGE_SIZE,
-      .storage_area             = ctx->storage_area,
-      .storage_size             = sizeof( ctx->storage_area ),
-      .storage_free             = NULL,
-      .attributes               = RTEMS_DEFAULT_ATTRIBUTES
+      .maximum_message_size = MAXIMUM_MESSAGE_SIZE,
+      .storage_area = ctx->storage_area,
+      .storage_size = sizeof( ctx->storage_area ),
+      .storage_free = NULL,
+      .attributes = RTEMS_DEFAULT_ATTRIBUTES
     };
 
-    status = rtems_message_queue_construct(
-      &config,
-      &ctx->message_queue_id
-    );
+    status = rtems_message_queue_construct( &config, &ctx->message_queue_id );
     T_rsc_success( status );
 
     SetSelfPriority( PRIO_NORMAL );

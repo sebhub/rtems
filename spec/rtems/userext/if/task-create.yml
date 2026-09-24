@@ -35,19 +35,17 @@ notes: |
   The task create extensions are invoked after a new task has been completely
   initialized, but before it is started.
 
-  While normal tasks are created, the executing thread is the owner of the
-  object allocator mutex.  The object allocator mutex allows nesting, so the
-  normal memory allocation routines can be used allocate memory for the created
-  thread.
+  While normal tasks are created, the executing thread is the owner of the object
+  allocator mutex. The object allocator mutex allows nesting, so the normal
+  memory allocation routines can be used allocate memory for the created thread.
 
-  If the task create extension returns ${/c/if/false:/name}, then the task
-  create operation stops immediately and the entire task create operation will
-  fail.  In this case, all task delete extensions are invoked, see
-  ${task-delete:/name}.
+  If the task create extension returns ${/c/if/false:/name}, then the task create
+  operation stops immediately and the entire task create operation will fail. In
+  this case, all task delete extensions are invoked, see ${task-delete:/name}.
 params:
 - description: |
-    is the ${/glossary/tcb:/term} of the executing thread.  When the idle
-    thread is created, the executing thread is equal to ${/c/if/null:/name}.
+    is the ${/glossary/tcb:/term} of the executing thread. When the idle thread is
+    created, the executing thread is equal to ${/c/if/null:/name}.
   dir: null
   name: executing
 - description: |

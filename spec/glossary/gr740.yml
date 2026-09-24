@@ -8,8 +8,7 @@ links:
   uid: group
 term: GR740
 text: |
-  The
-  `GR740 <https://www.gaisler.com/index.php/products/components/gr740>`_
-  is a ${system-on-chip:/term} containing four processors of the ${sparc:/term}
+  The [GR740](https://www.gaisler.com/index.php/products/components/gr740) is a
+  ${system-on-chip:/term} containing four processors of the ${sparc:/term}
   ${target-arch:/term}.
 type: glossary

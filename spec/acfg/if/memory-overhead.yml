@@ -26,8 +26,7 @@ links:
 name: CONFIGURE_MEMORY_OVERHEAD
 notes: |
   This configuration option should only be used when it is suspected that a bug
-  in ${header-confdefs:/path} has resulted in an underestimation.  Typically the
-  memory allocation will be too low when an application does not account for
-  all message queue buffers or task stacks, see
-  ${message-buffer-memory:/name}.
+  in ${header-confdefs:/path} has resulted in an underestimation. Typically the
+  memory allocation will be too low when an application does not account for all
+  message queue buffers or task stacks, see ${message-buffer-memory:/name}.
 type: interface

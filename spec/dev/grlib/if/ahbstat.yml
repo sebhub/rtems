@@ -4,16 +4,6 @@ brief: |
   map.
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
-description: null
-enabled-by: true
-identifier: RTEMSDeviceGRLIBAHBSTAT
-index-entries: []
-interface-type: register-block
-links:
-- role: interface-ingroup
-  uid: group
-- role: interface-placement
-  uid: ahbstat-header
 definition:
 - default:
     count: 1
@@ -25,64 +15,90 @@ definition:
     name: AHBFAR
   offset: 0x4
   variants: []
-register-prefix: null
+description: null
+enabled-by: true
+identifier: RTEMSDeviceGRLIBAHBSTAT
+index-entries: []
+interface-type: register-block
+links:
+- role: interface-ingroup
+  uid: group
+- role: interface-placement
+  uid: ahbstat-header
+name: ahbstat
+notes: null
 register-block-group: AHBSTAT
 register-block-size: 8
+register-prefix: null
 registers:
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'ME'
+      name: ME
+      properties:
+      - r
+      - w
       start: 13
       width: 1
-    - properties: [w]
-      brief: null
+    - brief: null
       description: null
-      name: 'FW'
+      name: FW
+      properties:
+      - w
       start: 12
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'CF'
+      name: CF
+      properties:
+      - r
+      - w
       start: 11
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'AF'
+      name: AF
+      properties:
+      - r
+      - w
       start: 10
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'CE'
+      name: CE
+      properties:
+      - r
+      - w
       start: 9
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'NE'
+      name: NE
+      properties:
+      - r
+      - w
       start: 8
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'HWRITE'
+      name: HWRITE
+      properties:
+      - r
       start: 7
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'HMASTER'
+      name: HMASTER
+      properties:
+      - r
       start: 3
       width: 4
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'HSIZE'
+      name: HSIZE
+      properties:
+      - r
       start: 0
       width: 3
     variants: []
@@ -93,10 +109,11 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'HADDR'
+      name: HADDR
+      properties:
+      - r
       start: 0
       width: 32
     variants: []
@@ -105,6 +122,4 @@ registers:
   description: null
   name: AHBFAR
   width: 32
-name: ahbstat
-notes: null
 type: interface

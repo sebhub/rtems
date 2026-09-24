@@ -27,7 +27,7 @@ definition:
     enabled-by: ${/score/isr/if/lock-needs-object:/name}
 description: |
   This directive acquires the ISR lock specified by ${.:/params[0]/name} using
-  the lock context provided by ${.:/params[1]/name}.  The interrupt level will
+  the lock context provided by ${.:/params[1]/name}. The interrupt level will
   remain unchanged.
 enabled-by: true
 index-entries: []
@@ -43,20 +43,20 @@ links:
   uid: /constraint/directive-no-preempt
 name: rtems_interrupt_lock_acquire_isr
 notes: |
-  A caller-specific lock context shall be provided for each acquire/release
-  pair, for example an automatic variable.
+  A caller-specific lock context shall be provided for each acquire/release pair,
+  for example an automatic variable.
 
-  Where the system was built with SMP support enabled, this directive acquires
-  an SMP lock.  An attempt to recursively acquire the lock may result in an
-  infinite loop.
+  Where the system was built with SMP support enabled, this directive acquires an
+  SMP lock. An attempt to recursively acquire the lock may result in an infinite
+  loop.
 
   This directive is intended for device drivers and should be called from the
   corresponding interrupt service routine.
 
   In case the corresponding interrupt service routine can be interrupted by
   higher priority interrupts and these interrupts enter the critical section
-  protected by this lock, then the result is unpredictable.  This directive may
-  be used under specific circumstances as an optimization.  In doubt, use
+  protected by this lock, then the result is unpredictable. This directive may be
+  used under specific circumstances as an optimization. In doubt, use
   ${lock-acquire:/name} and ${lock-release:/name}.
 params:
 - description: |
@@ -64,8 +64,8 @@ params:
   dir: inout
   name: _lock
 - description: |
-    is the ISR lock context.  This lock context shall be used to release the
-    lock by calling ${lock-release-isr:/name}.
+    is the ISR lock context. This lock context shall be used to release the lock by
+    calling ${lock-release-isr:/name}.
   dir: out
   name: _lock_context
 return: null

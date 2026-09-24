@@ -47,7 +47,7 @@ post-conditions:
       ${../../status/if/too-many:/name}.
   - name: Unsat
     test-code: |
-      T_rsc( ctx->status, RTEMS_UNSATISFIED  );
+      T_rsc( ctx->status, RTEMS_UNSATISFIED );
     text: |
       The return status of ${../if/construct:/name} shall be
       ${../../status/if/unsatisfied:/name}.
@@ -62,8 +62,8 @@ post-conditions:
       T_rsc_success( sc );
       T_eq_u32( id, ctx->id_obj );
     text: |
-      The unique object name shall identify the message queue constructed by
-      the ${../if/construct:/name} call.
+      The unique object name shall identify the message queue constructed by the
+      ${../if/construct:/name} call.
   - name: Invalid
     test-code: |
       sc = rtems_message_queue_ident( NAME, RTEMS_SEARCH_LOCAL_NODE, &id );
@@ -81,16 +81,15 @@ post-conditions:
       T_eq_ptr( ctx->id, &ctx->id_obj );
       T_ne_u32( ctx->id_obj, INVALID_ID );
     text: |
-      The value of the object referenced by the
-      ${../if/construct:/params[1]/name} parameter shall be set to the object
-      identifier of the constructed message queue after the return of the
-      ${../if/construct:/name} call.
+      The value of the object referenced by the ${../if/construct:/params[1]/name}
+      parameter shall be set to the object identifier of the constructed message
+      queue after the return of the ${../if/construct:/name} call.
   - name: Nop
     test-code: |
       T_eq_u32( ctx->id_obj, INVALID_ID );
     text: |
-      Objects referenced by the ${../if/construct:/params[1]/name} parameter in
-      past calls to ${../if/construct:/name} shall not be accessed by the
+      Objects referenced by the ${../if/construct:/params[1]/name} parameter in past
+      calls to ${../if/construct:/name} shall not be accessed by the
       ${../if/construct:/name} call.
   test-epilogue: null
   test-prologue: null
@@ -100,9 +99,9 @@ post-conditions:
     test-code: |
       ctx->expected_storage_free_counter = 1;
     text: |
-      The storage free handler of the message queue configuration specified by
-      the ${../if/construct:/params[0]/name} parameter shall be used to free
-      the message queue storage area.
+      The storage free handler of the message queue configuration specified by the
+      ${../if/construct:/params[0]/name} parameter shall be used to free the message
+      queue storage area.
   - name: Nop
     test-code: |
       ctx->expected_storage_free_counter = 0;
@@ -117,14 +116,13 @@ pre-conditions:
     test-code: |
       ctx->config = &ctx->config_obj;
     text: |
-      While the ${../if/construct:/params[0]/name} parameter references an
-      object of type ${../if/config:/name}.
+      While the ${../if/construct:/params[0]/name} parameter references an object of
+      type ${../if/config:/name}.
   - name: 'Null'
     test-code: |
       ctx->config = NULL;
     text: |
-      While the ${../if/construct:/params[0]/name} parameter is
-      ${/c/if/null:/name}.
+      While the ${../if/construct:/params[0]/name} parameter is ${/c/if/null:/name}.
   test-epilogue: null
   test-prologue: null
 - name: Name
@@ -147,14 +145,13 @@ pre-conditions:
     test-code: |
       ctx->id = &ctx->id_obj;
     text: |
-      While the ${../if/construct:/params[1]/name} parameter references an
-      object of type ${../../type/if/id:/name}.
+      While the ${../if/construct:/params[1]/name} parameter references an object of
+      type ${../../type/if/id:/name}.
   - name: 'Null'
     test-code: |
       ctx->id = NULL;
     text: |
-      While the ${../if/construct:/params[1]/name} parameter is
-      ${/c/if/null:/name}.
+      While the ${../if/construct:/params[1]/name} parameter is ${/c/if/null:/name}.
   test-epilogue: null
   test-prologue: null
 - name: MaxPending
@@ -163,21 +160,21 @@ pre-conditions:
     test-code: |
       ctx->config_obj.maximum_pending_messages = MAX_PENDING_MESSAGES;
     text: |
-      While the maximum number of pending messages of the message queue
-      configuration is valid.
+      While the maximum number of pending messages of the message queue configuration
+      is valid.
   - name: Zero
     test-code: |
       ctx->config_obj.maximum_pending_messages = 0;
     text: |
-      While the maximum number of pending messages of the message queue
-      configuration is zero.
+      While the maximum number of pending messages of the message queue configuration
+      is zero.
   - name: Big
     test-code: |
       ctx->config_obj.maximum_pending_messages = UINT32_MAX;
     text: |
-      While the maximum number of pending messages of the message queue
-      configuration is big enough so that a calculation to get the message
-      buffer storage area size overflows.
+      While the maximum number of pending messages of the message queue configuration
+      is big enough so that a calculation to get the message buffer storage area size
+      overflows.
   test-epilogue: null
   test-prologue: null
 - name: MaxSize
@@ -191,27 +188,24 @@ pre-conditions:
          * message size is valid with respect to calculations involving only
          * the message size.
          */
-        ctx->config_obj.maximum_message_size = SIZE_MAX - sizeof( uintptr_t ) +
-          1 - sizeof( CORE_message_queue_Buffer );
+        ctx->config_obj.maximum_message_size = SIZE_MAX - sizeof( uintptr_t ) + 1 -
+                                               sizeof( CORE_message_queue_Buffer );
       } else {
         ctx->config_obj.maximum_message_size = MAX_MESSAGE_SIZE;
       }
     text: |
-      While the maximum message size of the message queue configuration is
-      valid.
+      While the maximum message size of the message queue configuration is valid.
   - name: Zero
     test-code: |
       ctx->config_obj.maximum_message_size = 0;
     text: |
-      While the maximum message size of the message queue configuration is
-      zero.
+      While the maximum message size of the message queue configuration is zero.
   - name: Big
     test-code: |
       ctx->config_obj.maximum_message_size = SIZE_MAX;
     text: |
-      While the maximum message size of the message queue configuration is big
-      enough so that a calculation to get the message buffer storage area size
-      overflows.
+      While the maximum message size of the message queue configuration is big enough
+      so that a calculation to get the message buffer storage area size overflows.
   test-epilogue: null
   test-prologue: null
 - name: Free
@@ -220,8 +214,7 @@ pre-conditions:
     test-code: |
       /* Nothing to do */
     text: |
-      While the system has at least one inactive message queue object
-      available.
+      While the system has at least one inactive message queue object available.
   - name: 'No'
     test-code: |
       i = 0;
@@ -253,14 +246,14 @@ pre-conditions:
     test-code: |
       ctx->config_obj.storage_size = sizeof( buffers );
     text: |
-      While the message buffer storage area size of the message queue
-      configuration is valid.
+      While the message buffer storage area size of the message queue configuration
+      is valid.
   - name: Invalid
     test-code: |
       ctx->config_obj.storage_size = SIZE_MAX;
     text: |
-      While the message buffer storage area size of the message queue
-      configuration is invalid.
+      While the message buffer storage area size of the message queue configuration
+      is invalid.
   test-epilogue: null
   test-prologue: null
 - name: StorageFree
@@ -269,14 +262,14 @@ pre-conditions:
     test-code: |
       ctx->config_obj.storage_free = NULL;
     text: |
-      While the storage free member of the message queue configuration is
-      equal to ${/c/if/null:/name}.
+      While the storage free member of the message queue configuration is equal to
+      ${/c/if/null:/name}.
   - name: Handler
     test-code: |
       ctx->config_obj.storage_free = StorageFree;
     text: |
-      While the storage free member of the message queue configuration
-      references a storage free handler.
+      While the storage free member of the message queue configuration references a
+      storage free handler.
   test-epilogue: null
   test-prologue: null
 rationale: null
@@ -357,11 +350,13 @@ test-support: |
 
   typedef ${.:/test-context-type} Context;
 
-  static RTEMS_MESSAGE_QUEUE_BUFFER( MAX_MESSAGE_SIZE )
-    buffers_to_seize[ MAX_MESSAGE_QUEUES ][ MAX_PENDING_MESSAGES ];
+  static RTEMS_MESSAGE_QUEUE_BUFFER(
+    MAX_MESSAGE_SIZE
+  ) buffers_to_seize[ MAX_MESSAGE_QUEUES ][ MAX_PENDING_MESSAGES ];
 
-  static RTEMS_MESSAGE_QUEUE_BUFFER( MAX_MESSAGE_SIZE )
-    buffers[ MAX_PENDING_MESSAGES ];
+  static RTEMS_MESSAGE_QUEUE_BUFFER(
+    MAX_MESSAGE_SIZE
+  ) buffers[ MAX_PENDING_MESSAGES ];
 
   static rtems_status_code Create( void *arg, uint32_t *id )
   {
@@ -379,7 +374,7 @@ test-support: |
     config.storage_area = buffers_to_seize[ *i ];
     config.attributes = RTEMS_DEFAULT_ATTRIBUTES;
 
-    ++(*i);
+    ++( *i );
 
     return rtems_message_queue_construct( &config, id );
   }
@@ -394,7 +389,8 @@ test-support: |
   }
 test-target: testsuites/validation/tc-message-construct.c
 test-teardown: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:
@@ -469,13 +465,13 @@ transition-map:
       then: Free
     - else: N/A
   pre-conditions:
-    Area: all
-    AreaSize: all
     Config: all
+    Name: all
     Id: all
     MaxPending: all
     MaxSize: all
-    Name: all
     Free: all
+    Area: all
+    AreaSize: all
     StorageFree: all
 type: requirement

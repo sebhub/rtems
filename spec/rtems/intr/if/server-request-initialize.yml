@@ -33,16 +33,16 @@ links:
   uid: /constraint/object-allocator
 name: rtems_interrupt_server_request_initialize
 notes: |
-  An interrupt server requests consists of an interrupt server entry and
-  exactly one interrupt server action.  The interrupt vector of the request may
-  be changed with ${server-request-set-vector:/name}.  Interrupt server
-  requests may be submitted to get serviced by the interrupt server with
-  ${server-request-submit:/name}.  Requests may be destroyed by
+  An interrupt server requests consists of an interrupt server entry and exactly
+  one interrupt server action. The interrupt vector of the request may be changed
+  with ${server-request-set-vector:/name}. Interrupt server requests may be
+  submitted to get serviced by the interrupt server with
+  ${server-request-submit:/name}. Requests may be destroyed by
   ${server-request-destroy:/name}.
 params:
 - description: |
-    is the interrupt server index.  The constant ${server-default:/name} may be
-    used to specify the default interrupt server.
+    is the interrupt server index. The constant ${server-default:/name} may be used
+    to specify the default interrupt server.
   dir: null
   name: server_index
 - description: |

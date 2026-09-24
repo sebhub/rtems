@@ -32,9 +32,8 @@ post-conditions:
     test-code: |
       ${/score/tq/req/flush-fifo:/test-run}( &ctx->tq_ctx, true );
     text: |
-      The first count threads specified by the `count` parameter shall be
-      extracted from the thread queue of the futex object in
-      ${/glossary/fifo:/term} order.
+      The first count threads specified by the `count` parameter shall be extracted
+      from the thread queue of the futex object in ${/glossary/fifo:/term} order.
   test-epilogue: null
   test-prologue: null
 pre-conditions:
@@ -156,7 +155,8 @@ test-teardown:
   code: |
     TQDestroy( &ctx->tq_ctx );
   description: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

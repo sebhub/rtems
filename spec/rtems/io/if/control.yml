@@ -31,11 +31,11 @@ links:
   uid: /constraint/directive-not-pre-qualified
 name: rtems_io_control
 notes: |
-  The exact functionality of the driver entry called by this directive is
-  driver dependent.  It should not be assumed that the control entries of two
-  device drivers are compatible.  For example, an RS-232 driver I/O control
-  operation may change the baud of a serial line, while an I/O control
-  operation for a floppy disk driver may cause a seek operation.
+  The exact functionality of the driver entry called by this directive is driver
+  dependent. It should not be assumed that the control entries of two device
+  drivers are compatible. For example, an RS-232 driver I/O control operation may
+  change the baud of a serial line, while an I/O control operation for a floppy
+  disk driver may cause a seek operation.
 params:
 - description: |
     is the major number of the device.
@@ -51,8 +51,7 @@ params:
   name: argument
 return:
   return: |
-    Other status codes may be returned by the device driver I/O control
-    entry.
+    Other status codes may be returned by the device driver I/O control entry.
   return-values:
   - description: |
       The requested operation was successful.

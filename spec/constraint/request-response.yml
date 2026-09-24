@@ -7,6 +7,6 @@ links:
   uid: /req/usage-constraints
 rationale: null
 text: |
-  The directive sends a request to another task and waits for a response.  This
+  The directive sends a request to another task and waits for a response. This
   may cause the calling task to be blocked and unblocked.
 type: constraint

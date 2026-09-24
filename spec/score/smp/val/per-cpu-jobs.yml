@@ -5,17 +5,17 @@ enabled-by: RTEMS_SMP
 links: []
 test-actions:
 - action-brief: |
-    Issue two jobs on the current processor with interrupts disabled.  Wait for
+    Issue two jobs on the current processor with interrupts disabled. Wait for
     completion of the second job.
   action-code: |
     rtems_interrupt_level level;
     Per_CPU_Control      *cpu;
 
-    rtems_interrupt_local_disable(level);
+    rtems_interrupt_local_disable( level );
     cpu = _Per_CPU_Get();
     _Per_CPU_Add_job( cpu, &job_0 );
     _Per_CPU_Submit_job( cpu, &job_1 );
-    rtems_interrupt_local_enable(level);
+    rtems_interrupt_local_enable( level );
 
     _Per_CPU_Wait_for_job( cpu, &job_1 );
   checks:

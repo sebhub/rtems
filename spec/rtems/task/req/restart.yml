@@ -42,8 +42,8 @@ post-conditions:
     text: |
       The fatal error with a fatal source of
       ${/score/interr/if/internal-error-core:/name} and a fatal code of
-      ${/score/interr/if/bad-thread-dispatch-disable-level:/name} shall occur
-      through the ${../if/restart:/name} call.
+      ${/score/interr/if/bad-thread-dispatch-disable-level:/name} shall occur through
+      the ${../if/restart:/name} call.
   - name: Nop
     test-code: |
       T_eq_u32( ctx->calls.fatal, 0 );
@@ -56,33 +56,33 @@ post-conditions:
   - name: Set
     test-code: |
       if ( ctx->restart_counter != 0 ) {
-        #if CPU_SIZEOF_POINTER > 4
+      #if CPU_SIZEOF_POINTER > 4
         T_eq_u64( ctx->actual_argument, RESTART_ARGUMENT );
-        #else
+      #else
         T_eq_u32( ctx->actual_argument, RESTART_ARGUMENT );
-        #endif
+      #endif
 
         T_eq_u32( ctx->restart_counter, 1 );
       } else {
-        #if CPU_SIZEOF_POINTER > 4
+      #if CPU_SIZEOF_POINTER > 4
         T_eq_u64(
           ctx->worker_tcb->Start.Entry.Kinds.Numeric.argument,
           RESTART_ARGUMENT
         );
         T_eq_u64( ctx->actual_argument, UNSET_ARGUMENT );
-        #else
+      #else
         T_eq_u32(
           ctx->worker_tcb->Start.Entry.Kinds.Numeric.argument,
           RESTART_ARGUMENT
         );
         T_eq_u32( ctx->actual_argument, UNSET_ARGUMENT );
-        #endif
+      #endif
       }
     text: |
       The entry point argument of the task specified by the
-      ${../if/restart:/params[0]/name} parameter shall be set to the value
-      specified by the ${../if/restart:/params[1]/name} parameter before the task
-      is unblocked by the ${../if/restart:/name} call.
+      ${../if/restart:/params[0]/name} parameter shall be set to the value specified
+      by the ${../if/restart:/params[1]/name} parameter before the task is unblocked
+      by the ${../if/restart:/name} call.
   - name: Nop
     test-code: |
       T_eq_u32( ctx->actual_argument, UNSET_ARGUMENT );
@@ -98,7 +98,7 @@ post-conditions:
     test-code: |
       T_eq_u32( ctx->worker_state, STATES_DORMANT )
 
-      event = T_scheduler_next_any( &ctx->scheduler_log.header, &index );
+        event = T_scheduler_next_any( &ctx->scheduler_log.header, &index );
       T_eq_int( event->operation, T_SCHEDULER_NOP );
     text: |
       The state of the task specified by the ${../if/restart:/params[0]/name}
@@ -107,18 +107,18 @@ post-conditions:
     test-code: |
       T_eq_u32( ctx->worker_state, STATES_DORMANT | STATES_SUSPENDED )
 
-      event = T_scheduler_next_any( &ctx->scheduler_log.header, &index );
+        event = T_scheduler_next_any( &ctx->scheduler_log.header, &index );
       T_eq_int( event->operation, T_SCHEDULER_NOP );
     text: |
       The state of the task specified by the ${../if/restart:/params[0]/name}
-      parameter shall be dormant and suspended after the ${../if/restart:/name}
-      call.
+      parameter shall be dormant and suspended after the ${../if/restart:/name} call.
   - name: Blocked
     test-code: |
       T_ne_u32( ctx->worker_state & STATES_BLOCKED, 0 )
-      T_eq_u32( ctx->worker_state & STATES_BLOCKED, ctx->worker_state )
+        T_eq_u32( ctx->worker_state & STATES_BLOCKED, ctx->worker_state )
 
-      if ( ctx->suspended && !ctx->blocked ) {
+          if ( ctx->suspended && !ctx->blocked )
+      {
         event = T_scheduler_next_any( &ctx->scheduler_log.header, &index );
         T_eq_int( event->operation, T_SCHEDULER_UNBLOCK );
         T_eq_ptr( event->thread, ctx->worker_tcb );
@@ -139,13 +139,16 @@ post-conditions:
     test-code: |
       T_eq_u32( ctx->worker_state, STATES_READY )
 
-      if ( ctx->protected ) {
+        if ( ctx->protected )
+      {
         if ( ctx->suspended ) {
           event = T_scheduler_next_any( &ctx->scheduler_log.header, &index );
           T_eq_int( event->operation, T_SCHEDULER_UNBLOCK );
           T_eq_ptr( event->thread, ctx->worker_tcb );
         }
-      } else {
+      }
+      else
+      {
         if ( ctx->suspended || ctx->blocked ) {
           event = T_scheduler_next_any( &ctx->scheduler_log.header, &index );
           T_eq_int( event->operation, T_SCHEDULER_UNBLOCK );
@@ -176,13 +179,16 @@ post-conditions:
     test-code: |
       T_eq_u32( ctx->worker_state, STATES_ZOMBIE )
 
-      if ( ctx->protected ) {
+        if ( ctx->protected )
+      {
         if ( ctx->suspended ) {
           event = T_scheduler_next_any( &ctx->scheduler_log.header, &index );
           T_eq_int( event->operation, T_SCHEDULER_UNBLOCK );
           T_eq_ptr( event->thread, ctx->worker_tcb );
         }
-      } else {
+      }
+      else
+      {
         if ( ctx->suspended ) {
           event = T_scheduler_next_any( &ctx->scheduler_log.header, &index );
           T_eq_int( event->operation, T_SCHEDULER_UNBLOCK );
@@ -218,13 +224,13 @@ post-conditions:
       T_eq_int( event->operation, T_SCHEDULER_NOP );
     text: |
       The state of the task specified by the ${../if/restart:/params[0]/name}
-      parameter shall be the zombie state after the ${../if/restart:/name}
-      call.
+      parameter shall be the zombie state after the ${../if/restart:/name} call.
   - name: Nop
     test-code: |
       T_ne_u32( ctx->worker_state & STATES_LIFE_IS_CHANGING, 0 )
 
-      if ( !ctx->real_priority_is_initial ) {
+        if ( !ctx->real_priority_is_initial )
+      {
         event = T_scheduler_next_any( &ctx->scheduler_log.header, &index );
         T_eq_int( event->operation, T_SCHEDULER_UPDATE_PRIORITY );
         T_eq_ptr( event->thread, ctx->worker_tcb );
@@ -247,30 +253,30 @@ post-conditions:
     test-code: |
       T_not_null( ctx->worker_tcb->Wait.queue );
     text: |
-      The task specified by the ${../if/restart:/params[0]/name} parameter
-      shall be enqueued on a ${/glossary/waitqueue:/term}
-      after the ${../if/restart:/name} call.
+      The task specified by the ${../if/restart:/params[0]/name} parameter shall be
+      enqueued on a ${/glossary/waitqueue:/term} after the ${../if/restart:/name}
+      call.
   - name: 'No'
     test-code: |
       T_null( ctx->worker_tcb->Wait.queue );
     text: |
-      The task specified by the ${../if/restart:/params[0]/name} parameter
-      shall not be enqueued on a ${/glossary/waitqueue:/term} after the
-      ${../if/restart:/name} call.
+      The task specified by the ${../if/restart:/params[0]/name} parameter shall not
+      be enqueued on a ${/glossary/waitqueue:/term} after the ${../if/restart:/name}
+      call.
   test-epilogue: null
   test-prologue: null
 - name: Timer
   states:
   - name: Active
     test-code: |
-      GetTaskTimerInfoByThread( ctx->worker_tcb, &info);
+      GetTaskTimerInfoByThread( ctx->worker_tcb, &info );
       T_eq_int( info.state, TASK_TIMER_TICKS );
     text: |
       The timer of the task specified by the ${../if/restart:/params[0]/name}
       parameter shall be active after the ${../if/restart:/name} call.
   - name: Inactive
     test-code: |
-      GetTaskTimerInfoByThread( ctx->worker_tcb, &info);
+      GetTaskTimerInfoByThread( ctx->worker_tcb, &info );
       T_eq_int( info.state, TASK_TIMER_INACTIVE );
     text: |
       The timer of the task specified by the ${../if/restart:/params[0]/name}
@@ -284,14 +290,14 @@ post-conditions:
     test-code: |
       T_ne_int( ctx->worker_life_state & THREAD_LIFE_RESTARTING, 0 );
     text: |
-      The task specified by the ${../if/restart:/params[0]/name} parameter
-      shall be restarting after the ${../if/restart:/name} call.
+      The task specified by the ${../if/restart:/params[0]/name} parameter shall be
+      restarting after the ${../if/restart:/name} call.
   - name: 'No'
     test-code: |
       T_eq_int( ctx->worker_life_state & THREAD_LIFE_RESTARTING, 0 );
     text: |
-      The task specified by the ${../if/restart:/params[0]/name} parameter
-      shall not be restarting after the ${../if/restart:/name} call.
+      The task specified by the ${../if/restart:/params[0]/name} parameter shall not
+      be restarting after the ${../if/restart:/name} call.
   test-epilogue: null
   test-prologue: null
 - name: Terminating
@@ -300,14 +306,14 @@ post-conditions:
     test-code: |
       T_ne_int( ctx->worker_life_state & THREAD_LIFE_TERMINATING, 0 );
     text: |
-      The task specified by the ${../if/restart:/params[0]/name} parameter
-      shall be terminating after the ${../if/restart:/name} call.
+      The task specified by the ${../if/restart:/params[0]/name} parameter shall be
+      terminating after the ${../if/restart:/name} call.
   - name: 'No'
     test-code: |
       T_eq_int( ctx->worker_life_state & THREAD_LIFE_TERMINATING, 0 );
     text: |
-      The task specified by the ${../if/restart:/params[0]/name} parameter
-      shall not be terminating after the ${../if/restart:/name} call.
+      The task specified by the ${../if/restart:/params[0]/name} parameter shall not
+      be terminating after the ${../if/restart:/name} call.
   test-epilogue: null
   test-prologue: null
 - name: Protected
@@ -316,16 +322,14 @@ post-conditions:
     test-code: |
       T_ne_int( ctx->worker_life_state & THREAD_LIFE_PROTECTED, 0 );
     text: |
-      The thread life of the task specified by the
-      ${../if/restart:/params[0]/name} parameter be protected after the
-      ${../if/restart:/name} call.
+      The thread life of the task specified by the ${../if/restart:/params[0]/name}
+      parameter be protected after the ${../if/restart:/name} call.
   - name: 'No'
     test-code: |
       T_eq_int( ctx->worker_life_state & THREAD_LIFE_PROTECTED, 0 );
     text: |
-      The thread life of the task specified by the
-      ${../if/restart:/params[0]/name} parameter shall not be protected after
-      the ${../if/restart:/name} call.
+      The thread life of the task specified by the ${../if/restart:/params[0]/name}
+      parameter shall not be protected after the ${../if/restart:/name} call.
   test-epilogue: null
   test-prologue: null
 - name: RestartExtensions
@@ -367,20 +371,20 @@ pre-conditions:
     test-code: |
       ctx->id = INVALID_ID;
     text: |
-      While the ${../if/restart:/params[0]/name} parameter is not associated with
-      a task.
+      While the ${../if/restart:/params[0]/name} parameter is not associated with a
+      task.
   - name: Executing
     test-code: |
       ctx->id = RTEMS_SELF;
     text: |
-      While the ${../if/restart:/params[0]/name} parameter is associated with
-      the calling task.
+      While the ${../if/restart:/params[0]/name} parameter is associated with the
+      calling task.
   - name: Other
     test-code: |
       ctx->id = ctx->worker_id;
     text: |
-      While the ${../if/restart:/params[0]/name} parameter is associated with a
-      task other than the calling task.
+      While the ${../if/restart:/params[0]/name} parameter is associated with a task
+      other than the calling task.
   test-epilogue: null
   test-prologue: null
 - name: Dormant
@@ -389,14 +393,14 @@ pre-conditions:
     test-code: |
       ctx->dormant = true;
     text: |
-      While the task specified by the ${../if/restart:/params[0]/name} parameter
-      is dormant.
+      While the task specified by the ${../if/restart:/params[0]/name} parameter is
+      dormant.
   - name: 'No'
     test-code: |
       ctx->dormant = false;
     text: |
-      While the task specified by the ${../if/restart:/params[0]/name} parameter
-      is not dormant.
+      While the task specified by the ${../if/restart:/params[0]/name} parameter is
+      not dormant.
   test-epilogue: null
   test-prologue: null
 - name: Suspended
@@ -405,14 +409,14 @@ pre-conditions:
     test-code: |
       ctx->suspended = true;
     text: |
-      While the task specified by the ${../if/restart:/params[0]/name} parameter
-      is suspended.
+      While the task specified by the ${../if/restart:/params[0]/name} parameter is
+      suspended.
   - name: 'No'
     test-code: |
       ctx->suspended = false;
     text: |
-      While the task specified by the ${../if/restart:/params[0]/name} parameter
-      is not suspended.
+      While the task specified by the ${../if/restart:/params[0]/name} parameter is
+      not suspended.
   test-epilogue: null
   test-prologue: null
 - name: Restarting
@@ -421,14 +425,14 @@ pre-conditions:
     test-code: |
       ctx->restarting = true;
     text: |
-      While the task specified by the ${../if/restart:/params[0]/name} parameter
-      is restarting.
+      While the task specified by the ${../if/restart:/params[0]/name} parameter is
+      restarting.
   - name: 'No'
     test-code: |
       ctx->restarting = false;
     text: |
-      While the task specified by the ${../if/restart:/params[0]/name} parameter
-      is not restarting.
+      While the task specified by the ${../if/restart:/params[0]/name} parameter is
+      not restarting.
   test-epilogue: null
   test-prologue: null
 - name: Terminating
@@ -437,14 +441,14 @@ pre-conditions:
     test-code: |
       ctx->terminating = true;
     text: |
-      While the task specified by the ${../if/restart:/params[0]/name} parameter
-      is terminating.
+      While the task specified by the ${../if/restart:/params[0]/name} parameter is
+      terminating.
   - name: 'No'
     test-code: |
       ctx->terminating = false;
     text: |
-      While the task specified by the ${../if/restart:/params[0]/name} parameter
-      is not terminating.
+      While the task specified by the ${../if/restart:/params[0]/name} parameter is
+      not terminating.
   test-epilogue: null
   test-prologue: null
 - name: Protected
@@ -453,14 +457,14 @@ pre-conditions:
     test-code: |
       ctx->protected = true;
     text: |
-      While thread life of the task specified by the
-      ${../if/restart:/params[0]/name} parameter is protected.
+      While thread life of the task specified by the ${../if/restart:/params[0]/name}
+      parameter is protected.
   - name: 'No'
     test-code: |
       ctx->protected = false;
     text: |
-      While thread life of the task specified by the
-      ${../if/restart:/params[0]/name} parameter is not protected.
+      While thread life of the task specified by the ${../if/restart:/params[0]/name}
+      parameter is not protected.
   test-epilogue: null
   test-prologue: null
 - name: Context
@@ -470,15 +474,14 @@ pre-conditions:
       ctx->interrupt = false;
       ctx->nested_request = false;
     text: |
-      While the ${../if/restart:/name} directive is called from within task
-      context.
+      While the ${../if/restart:/name} directive is called from within task context.
   - name: Interrupt
     test-code: |
       ctx->interrupt = true;
       ctx->nested_request = false;
     text: |
-      While the ${../if/restart:/name} directive is called from within
-      interrupt context.
+      While the ${../if/restart:/name} directive is called from within interrupt
+      context.
   - name: NestedRequest
     test-code: |
       ctx->interrupt = false;
@@ -494,23 +497,22 @@ pre-conditions:
     test-code: |
       ctx->blocked = false;
     text: |
-      While the task specified by the ${../if/restart:/params[0]/name}
-      parameter is a ${/glossary/readytask:/term} or
-      ${/glossary/scheduledtask:/term}.
+      While the task specified by the ${../if/restart:/params[0]/name} parameter is a
+      ${/glossary/readytask:/term} or ${/glossary/scheduledtask:/term}.
   - name: Blocked
     test-code: |
       ctx->blocked = true;
       ctx->enqueued = false;
     text: |
-      While the task specified by the ${../if/restart:/params[0]/name}
-      parameter is blocked.
+      While the task specified by the ${../if/restart:/params[0]/name} parameter is
+      blocked.
   - name: Enqueued
     test-code: |
       ctx->blocked = true;
       ctx->enqueued = true;
     text: |
-      While the task specified by the ${../if/restart:/params[0]/name}
-      parameter is enqueued on a ${/glossary/waitqueue:/term}.
+      While the task specified by the ${../if/restart:/params[0]/name} parameter is
+      enqueued on a ${/glossary/waitqueue:/term}.
   test-epilogue: null
   test-prologue: null
 - name: Timer
@@ -536,8 +538,7 @@ pre-conditions:
       ctx->real_priority_is_initial = true;
     text: |
       While ${/glossary/priority-real:/term} of the task specified by the
-      ${../if/restart:/params[0]/name} parameter is equal to the initial
-      priority.
+      ${../if/restart:/params[0]/name} parameter is equal to the initial priority.
   - name: Changed
     test-code: |
       ctx->real_priority_is_initial = false;
@@ -577,8 +578,8 @@ skip-reasons:
   NestedRequestNotDormant: |
     A nested request can only happen if the thread is not dormant.
   NestedRequestNotProtected: |
-    A nested request can only happen if the thread life protection of the task
-    is disabled.
+    A nested request can only happen if the thread life protection of the task is
+    disabled.
   NotBlockedHasInactiveTimer: |
     The timer of a not blocked thread is inactive.
   ThreadDispatchDisabled: |
@@ -690,8 +691,8 @@ test-context:
   member: |
     rtems_id mutex_id
 - brief: |
-    This member provides an event set used to set up the blocking conditions of
-    the task to restart.
+    This member provides an event set used to set up the blocking conditions of the
+    task to restart.
   description: null
   member: |
     rtems_event_set events
@@ -706,8 +707,8 @@ test-context:
   member: |
     rtems_tcb *worker_tcb
 - brief: |
-    This member contains the worker state at the end of the
-    ${../if/restart:/name} call.
+    This member contains the worker state at the end of the ${../if/restart:/name}
+    call.
   description: null
   member: |
     States_Control worker_state
@@ -765,8 +766,8 @@ test-context:
   member: |
     bool suspended
 - brief: |
-    If this member is true, then the thread life of the worker shall be
-    protected before the ${../if/restart:/name} call.
+    If this member is true, then the thread life of the worker shall be protected
+    before the ${../if/restart:/name} call.
   description: null
   member: |
     bool protected
@@ -783,15 +784,14 @@ test-context:
   member: |
     bool terminating
 - brief: |
-    If this member is true, then the ${../if/restart:/name} shall be called
-    from within interrupt context.
+    If this member is true, then the ${../if/restart:/name} shall be called from
+    within interrupt context.
   description: null
   member: |
     bool interrupt
 - brief: |
-    If this member is true, then the ${../if/restart:/name} shall be called
-    during another ${../if/restart:/name} call with the same task as a nested
-    request.
+    If this member is true, then the ${../if/restart:/name} shall be called during
+    another ${../if/restart:/name} call with the same task as a nested request.
   description: null
   member: |
     bool nested_request
@@ -808,20 +808,20 @@ test-context:
   member: |
     bool enqueued
 - brief: |
-    If this member is true, then the timer of the worker shall be active before
-    the ${../if/restart:/name} call.
+    If this member is true, then the timer of the worker shall be active before the
+    ${../if/restart:/name} call.
   description: null
   member: |
     bool timer_active
 - brief: |
-    If this member is true, then the real priority of the worker shall be equal
-    to its initial priority before the ${../if/restart:/name} call.
+    If this member is true, then the real priority of the worker shall be equal to
+    its initial priority before the ${../if/restart:/name} call.
   description: null
   member: |
     bool real_priority_is_initial
 - brief: |
-    If this member is true, then thread dispatching is disabled by the worker
-    task before the ${../if/restart:/name} call.
+    If this member is true, then thread dispatching is disabled by the worker task
+    before the ${../if/restart:/name} call.
   description: null
   member: |
     bool dispatch_disabled
@@ -831,14 +831,12 @@ test-context:
   member: |
     bool delete_worker_expected
 - brief: |
-    This member contains the return value of the ${../if/restart:/name}
-    call.
+    This member contains the return value of the ${../if/restart:/name} call.
   description: null
   member: |
     rtems_status_code status
 - brief: |
-    This member specifies if the ${../if/restart:/params[0]/name}
-    parameter value.
+    This member specifies if the ${../if/restart:/params[0]/name} parameter value.
   description: null
   member: |
     rtems_id id
@@ -932,7 +930,7 @@ test-support: |
   static void VerifyTaskPreparation( const Context *ctx )
   {
     if ( ctx->id != INVALID_ID ) {
-      States_Control state;
+      States_Control    state;
       Thread_Life_state life_state;
 
       state = STATES_READY;
@@ -1090,26 +1088,23 @@ test-support: |
   }
 
   static void TriggerNestedRequestViaSelfRestart(
-    Context         * const ctx,
-    Per_CPU_Control * const cpu_self
+    Context *const         ctx,
+    Per_CPU_Control *const cpu_self
   )
   {
     WrapThreadQueueExtract( &ctx->wrap_tq_ctx, ctx->worker_tcb );
     SetFatalHandler( ResumeThreadDispatch, ctx );
 
     if ( setjmp( ctx->thread_dispatch_context ) == 0 ) {
-      (void) rtems_task_restart(
-        RTEMS_SELF,
-        (rtems_task_argument) ctx
-      );
+      (void) rtems_task_restart( RTEMS_SELF, (rtems_task_argument) ctx );
     } else {
       _Thread_Dispatch_unnest( cpu_self );
     }
   }
 
   static void BlockAndJumpBack(
-    Context         * const ctx,
-    Per_CPU_Control * const cpu_self
+    Context *const         ctx,
+    Per_CPU_Control *const cpu_self
   )
   {
     if ( setjmp( ctx->thread_dispatch_context ) == 0 ) {
@@ -1287,7 +1282,8 @@ test-teardown:
     RestoreRunnerPriority();
     WrapThreadQueueDestroy( &ctx->wrap_tq_ctx );
   description: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

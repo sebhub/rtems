@@ -9,6 +9,6 @@ non-functional-type: design
 rationale: null
 requirement-type: non-functional
 text: |
-  Each non-default task mode constant shall be a power of two representable as
-  an integer of type ${../if/mode:/name}.
+  Each non-default task mode constant shall be a power of two representable as an
+  integer of type ${../if/mode:/name}.
 type: requirement

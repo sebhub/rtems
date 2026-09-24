@@ -92,8 +92,8 @@ test-actions:
     - role: validation
       uid: ../req/lock-white-space
   - brief: |
-      Check that ${../if/lock-acquire-isr:/name} expands to a code block which
-      marks the second parameter as used.
+      Check that ${../if/lock-acquire-isr:/name} expands to a code block which marks
+      the second parameter as used.
     code: |
       s = RTEMS_XSTRING( rtems_interrupt_lock_acquire_isr( x, y ) );
       T_true( IsEqualIgnoreWhiteSpace( s, "do{(void)y;}while(0)" ) );
@@ -103,8 +103,8 @@ test-actions:
     - role: validation
       uid: ../req/lock-use-context
   - brief: |
-      Check that ${../if/lock-release-isr:/name} expands to a code block which
-      marks the second parameter as used.
+      Check that ${../if/lock-release-isr:/name} expands to a code block which marks
+      the second parameter as used.
     code: |
       s = RTEMS_XSTRING( rtems_interrupt_lock_release_isr( x, y ) );
       T_true( IsEqualIgnoreWhiteSpace( s, "do{(void)y;}while(0)" ) );

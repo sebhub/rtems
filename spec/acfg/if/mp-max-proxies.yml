@@ -25,11 +25,10 @@ links:
   uid: /ref/rtems/c-user/mp-proxies
 name: CONFIGURE_MP_MAXIMUM_PROXIES
 notes: |
-  Since a proxy is used to represent a remote task/thread which is blocking
-  on this node. This configuration parameter reflects the maximum number of
-  remote tasks/threads which can be blocked on objects on this node, see
+  Since a proxy is used to represent a remote task/thread which is blocking on
+  this node. This configuration parameter reflects the maximum number of remote
+  tasks/threads which can be blocked on objects on this node, see
   ${/ref/rtems/c-user/mp-proxies:/name}.
 
-  This configuration option is only evaluated if
-  ${mp-appl:/name} is defined.
+  This configuration option is only evaluated if ${mp-appl:/name} is defined.
 type: interface

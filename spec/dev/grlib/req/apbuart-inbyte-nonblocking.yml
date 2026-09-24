@@ -13,15 +13,15 @@ post-conditions:
     test-code: |
       T_eq_int( ctx->result, 0xff );
     text: |
-      The return value of ${../if/apbuart-inbyte-nonblocking:/name} shall be
-      the data read from the data register of the register block specified by
+      The return value of ${../if/apbuart-inbyte-nonblocking:/name} shall be the data
+      read from the data register of the register block specified by
       ${../if/apbuart-inbyte-nonblocking:/params[0]/name}.
   - name: MinusOne
     test-code: |
       T_eq_int( ctx->result, -1 );
     text: |
-      The return value of ${../if/apbuart-inbyte-nonblocking:/name} shall be
-      minus one.
+      The return value of ${../if/apbuart-inbyte-nonblocking:/name} shall be minus
+      one.
   test-epilogue: null
   test-prologue: null
 - name: ErrorFlags
@@ -42,16 +42,15 @@ pre-conditions:
     test-code: |
       ctx->regs.status |= APBUART_STATUS_DR;
     text: |
-      While the data ready flag is set in the status register of the register
-      block specified by ${../if/apbuart-inbyte-nonblocking:/params[0]/name}
-      parameter.
+      While the data ready flag is set in the status register of the register block
+      specified by ${../if/apbuart-inbyte-nonblocking:/params[0]/name} parameter.
   - name: 'No'
     test-code: |
       ctx->regs.status &= ~APBUART_STATUS_DR;
     text: |
-      While the data ready flag is cleared in the status register of the
-      register block specified by
-      ${../if/apbuart-inbyte-nonblocking:/params[0]/name} parameter.
+      While the data ready flag is cleared in the status register of the register
+      block specified by ${../if/apbuart-inbyte-nonblocking:/params[0]/name}
+      parameter.
   test-epilogue: null
   test-prologue: null
 rationale: null
@@ -89,7 +88,8 @@ test-stop: null
 test-support: null
 test-target: testsuites/validation/tc-dev-grlib-apbuart-inbyte-nonblocking.c
 test-teardown: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

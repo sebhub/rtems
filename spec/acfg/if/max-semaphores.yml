@@ -34,6 +34,7 @@ notes: |
   ${/ref/rtems/c-user/config-unlimited-objects:/name}.
 
   In SMP configurations, the size of a Semaphore Control Block depends on the
-  scheduler count (see ${/ref/rtems/c-user/config-scheduler-table:/name}).  The semaphores
-  using the ${/ref/rtems/c-user/mrsp:/name} need a ceiling priority per scheduler.
+  scheduler count (see ${/ref/rtems/c-user/config-scheduler-table:/name}). The
+  semaphores using the ${/ref/rtems/c-user/mrsp:/name} need a ceiling priority
+  per scheduler.
 type: interface

@@ -9,7 +9,7 @@ links:
 term: ready task
 text: |
   A task occupies this state when it is available to be given control of a
-  processor.  A ready task has no processor assigned.  The scheduler
-  decided that other tasks are currently more important.  A task that is
-  ready to execute and has a processor assigned is called scheduled.
+  processor. A ready task has no processor assigned. The scheduler decided that
+  other tasks are currently more important. A task that is ready to execute and
+  has a processor assigned is called scheduled.
 type: glossary

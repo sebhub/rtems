@@ -8,6 +8,5 @@ links:
   uid: group
 term: C language
 text: |
-  The C language for this project is defined in terms of
-  ${c11:/term}.
+  The C language for this project is defined in terms of ${c11:/term}.
 type: glossary

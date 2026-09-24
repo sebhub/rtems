@@ -8,6 +8,6 @@ links:
   uid: group
 term: mutual exclusion
 text: |
-  A term used to describe the act of preventing other tasks from accessing
-  a resource simultaneously.
+  A term used to describe the act of preventing other tasks from accessing a
+  resource simultaneously.
 type: glossary

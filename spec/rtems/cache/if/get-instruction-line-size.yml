@@ -28,8 +28,8 @@ notes: null
 params: []
 return:
   return: |
-    Returns the instruction cache line size in bytes.  For multi-level caches
-    this is the maximum of the cache line sizes of all levels.
+    Returns the instruction cache line size in bytes. For multi-level caches this
+    is the maximum of the cache line sizes of all levels.
   return-values:
   - description: |
       There is no instruction cache present.

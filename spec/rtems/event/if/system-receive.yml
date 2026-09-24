@@ -36,21 +36,22 @@ name: rtems_event_system_receive
 notes: null
 params:
 - description: |
-    is the event set of interest.  Use ${pending-events:/name} to get the
-    pending events.
+    is the event set of interest. Use ${pending-events:/name} to get the pending
+    events.
   dir: null
   name: event_in
-- description: is the option set.
+- description: |
+    is the option set.
   dir: null
   name: option_set
 - description: |
     is the timeout in clock ticks if the ${../../option/if/wait:/name} option was
-    set.  Use ${../../type/if/no-timeout:/name} to wait potentially forever.
+    set. Use ${../../type/if/no-timeout:/name} to wait potentially forever.
   dir: null
   name: ticks
 - description: |
-    is the pointer to an event set.  The received or pending events are stored
-    in the referenced event set if the operation was successful.
+    is the pointer to an event set. The received or pending events are stored in
+    the referenced event set if the operation was successful.
   dir: null
   name: event_out
 return: null

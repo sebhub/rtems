@@ -8,7 +8,7 @@ links:
 non-functional-type: design
 rationale: |
   For example, the 64-bit integer division and modulo operations are essential
-  for the timekeeping services.  On most 32-bit targets, they need a software
+  for the timekeeping services. On most 32-bit targets, they need a software
   implementation.
 requirement-type: non-functional
 text: |

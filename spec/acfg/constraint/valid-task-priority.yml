@@ -7,7 +7,7 @@ links:
   uid: /req/usage-constraints
 rationale: null
 text: |
-  The value of the application configuration option shall be a valid Classic
-  API task priority.  The set of valid task priorities depends on the scheduler
+  The value of the application configuration option shall be a valid Classic API
+  task priority. The set of valid task priorities depends on the scheduler
   configuration.
 type: constraint

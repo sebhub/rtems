@@ -16,8 +16,8 @@ definition:
 description: |
   This directive blocks the calling task for the specified ${.:/params[0]/name}
   count of clock ticks if the value is not equal to ${yield-processor:/name}.
-  When the requested count of ticks have occurred, the task is made ready.  The
-  clock tick directives automatically update the delay period.  The calling task
+  When the requested count of ticks have occurred, the task is made ready. The
+  clock tick directives automatically update the delay period. The calling task
   may give up the processor and remain in the ready state by specifying a value
   of ${yield-processor:/name} in ${.:/params[0]/name}.
 enabled-by: true
@@ -38,11 +38,11 @@ links:
   uid: /constraint/fatal-bad-thread-dispatch-disable-level
 name: rtems_task_wake_after
 notes: |
-  Setting the system date and time with the ${../../clock/if/set:/name}
-  directive and similar directives which set ${/glossary/clock-realtime:/term}
-  have no effect on a ${wake-after:/name} blocked task.  The delay until first
-  clock tick will never be a whole clock tick interval since this directive will
-  never execute exactly on a clock tick.  Applications requiring use of a clock
+  Setting the system date and time with the ${../../clock/if/set:/name} directive
+  and similar directives which set ${/glossary/clock-realtime:/term} have no
+  effect on a ${wake-after:/name} blocked task. The delay until first clock tick
+  will never be a whole clock tick interval since this directive will never
+  execute exactly on a clock tick. Applications requiring use of a clock
   (${/glossary/clock-realtime:/term} or ${/glossary/clock-monotonic:/term})
   instead of clock ticks should make use of ${/c/if/clock-nanosleep:/name}.
 params:

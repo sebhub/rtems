@@ -3,8 +3,8 @@ appl-config-option-type: feature-enable
 copyrights:
 - Copyright (C) 1988, 2008 On-Line Applications Research Corporation (OAR)
 description: |
-  In case this configuration option is defined, then the Simple Console Driver
-  is initialized during system initialization.
+  In case this configuration option is defined, then the Simple Console Driver is
+  initialized during system initialization.
 enabled-by: true
 index-entries: []
 interface-type: appl-config-option
@@ -17,24 +17,24 @@ links:
   uid: ../constraint/option-not-pre-qualified
 name: CONFIGURE_APPLICATION_NEEDS_SIMPLE_CONSOLE_DRIVER
 notes: |
-  This device driver is responsible for providing the {file}`/dev/console`
-  device file.  This device is used to initialize the standard input, output,
-  and error file descriptors.
+  This device driver is responsible for providing the {file}`/dev/console` device
+  file. This device is used to initialize the standard input, output, and error
+  file descriptors.
 
   This device driver reads via ${/rtems/io/if/getchark:/name}.
 
   This device driver writes via ${/rtems/io/if/putc:/name}.
 
-  The Termios framework is not used.  There is no support to change device
+  The Termios framework is not used. There is no support to change device
   settings, e.g. baud, stop bits, parity, etc.
 
   The
 
-  * ${appl-needs-console-driver:/name},
+  - ${appl-needs-console-driver:/name},
 
-  * `CONFIGURE_APPLICATION_NEEDS_SIMPLE_CONSOLE_DRIVER`, and
+  - `CONFIGURE_APPLICATION_NEEDS_SIMPLE_CONSOLE_DRIVER`, and
 
-  * ${appl-needs-simple-task-console-driver:/name}
+  - ${appl-needs-simple-task-console-driver:/name}
 
   configuration options are mutually exclusive.
 type: interface

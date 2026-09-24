@@ -24,13 +24,15 @@ links:
 name: rtems_status_text
 notes: null
 params:
-- description: is the status code.
+- description: |
+    is the status code.
   dir: null
   name: status_code
 return:
   return: |
     Returns a text describing the status code, if the status code is valid.
   return-values:
-  - description: The status code is invalid.
+  - description: |
+      The status code is invalid.
     value: '"?"'
 type: interface

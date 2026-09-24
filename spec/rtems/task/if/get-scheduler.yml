@@ -14,9 +14,8 @@ definition:
     return: ${../../status/if/code:/name}
   variants: []
 description: |
-  This directive returns the identifier of the
-  ${/glossary/scheduler-home:/term} of the task specified by
-  ${.:/params[0]/name} in ${.:/params[1]/name}.
+  This directive returns the identifier of the ${/glossary/scheduler-home:/term}
+  of the task specified by ${.:/params[0]/name} in ${.:/params[1]/name}.
 enabled-by: true
 index-entries: []
 interface-type: function
@@ -37,14 +36,14 @@ name: rtems_task_get_scheduler
 notes: null
 params:
 - description: |
-    is the task identifier.  The constant ${self-define:/name} may be used to
+    is the task identifier. The constant ${self-define:/name} may be used to
     specify the calling task.
   dir: null
   name: task_id
 - description: |
-    is the pointer to an ${../../type/if/id:/name} object.  When the directive
-    call is successful, the identifier of the ${/glossary/scheduler-home:/term}
-    of the task will be stored in this object.
+    is the pointer to an ${../../type/if/id:/name} object. When the directive call
+    is successful, the identifier of the ${/glossary/scheduler-home:/term} of the
+    task will be stored in this object.
   dir: out
   name: scheduler_id
 return:

@@ -25,8 +25,8 @@ links:
   uid: group
 name: RTEMS_INTERRUPT_ENTRY_INITIALIZER
 notes: |
-  Alternatively, ${entry-initialize:/name} may be used to dynamically
-  initialize an interrupt entry.
+  Alternatively, ${entry-initialize:/name} may be used to dynamically initialize
+  an interrupt entry.
 params:
 - description: |
     is the interrupt handler routine for the entry.

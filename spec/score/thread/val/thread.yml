@@ -6,16 +6,14 @@ links: []
 test-actions:
 - action-brief: |
     Create an extension set with a thread terminate extension which deletes the
-    killer task if it is invoked for the worker task.  Create and start the
-    worker task.  Create and start the killer task.  The killer task deletes
-    the worker task.
+    killer task if it is invoked for the worker task. Create and start the worker
+    task. Create and start the killer task. The killer task deletes the worker
+    task.
   action-code: |
-    rtems_extensions_table table = {
-      .thread_terminate = TaskTerminate
-    };
-    rtems_status_code sc;
-    rtems_id          id;
-    rtems_tcb        *worker_tcb;
+    rtems_extensions_table table = { .thread_terminate = TaskTerminate };
+    rtems_status_code      sc;
+    rtems_id               id;
+    rtems_tcb             *worker_tcb;
 
     sc = rtems_extension_create(
       rtems_build_name( 'T', 'E', 'S', 'T' ),
@@ -54,16 +52,13 @@ test-actions:
   - brief: |
       Check that the worker task is waiting for a joining thread.
     code: |
-      T_eq_u32(
-        worker_tcb->current_state,
-        STATES_WAITING_FOR_JOIN_AT_EXIT
-      );
+      T_eq_u32( worker_tcb->current_state, STATES_WAITING_FOR_JOIN_AT_EXIT );
     links: []
   - brief: |
       Delete the worker task using brute force.
     code: |
-      worker_tcb->Life.state = THREAD_LIFE_DETACHED |
-        THREAD_LIFE_PROTECTED | THREAD_LIFE_TERMINATING;
+      worker_tcb->Life.state = THREAD_LIFE_DETACHED | THREAD_LIFE_PROTECTED |
+                               THREAD_LIFE_TERMINATING;
       _Thread_Clear_state( worker_tcb, STATES_WAITING_FOR_JOIN_AT_EXIT );
     links: []
   - brief: |
@@ -86,7 +81,7 @@ test-actions:
 
     SetSelfPriority( PRIO_NORMAL );
     sc = rtems_task_create(
-      rtems_build_name( 'W', 'O', 'R', 'K'),
+      rtems_build_name( 'W', 'O', 'R', 'K' ),
       PRIO_HIGH,
       TEST_MINIMUM_STACK_SIZE,
       RTEMS_DEFAULT_MODES,
@@ -96,7 +91,7 @@ test-actions:
     T_rsc_success( sc );
   checks:
   - brief: |
-      Start the worker thread.  Let it use the
+      Start the worker thread. Let it use the
       ${/glossary/floatingpointcoprocessor:/term}.
     code: |
       StartTask( ctx->worker_id, FloatingPointTask, ctx );
@@ -116,8 +111,8 @@ test-actions:
     links: []
   links: []
 - action-brief: |
-    Validate the ${/glossary/global-construction:/term}.  Mark that the test
-    case executed.
+    Validate the ${/glossary/global-construction:/term}. Mark that the test case
+    executed.
   action-code: |
     test_case_executed = true;
   checks:
@@ -145,9 +140,9 @@ test-actions:
       uid: ../req/global-construction-classic-before-entry
   links: []
 - action-brief: |
-    Validate that thread dispatching does not recurse.  Issue a couple of
-    thread context switches during a thread dispatch.  Record the stack
-    pointers of the heir threads.
+    Validate that thread dispatching does not recurse. Issue a couple of thread
+    context switches during a thread dispatch. Record the stack pointers of the
+    heir threads.
   action-code: |
     SetSelfPriority( PRIO_NORMAL );
     ctx->worker_id = CreateTask( "WORK", PRIO_HIGH );
@@ -166,8 +161,8 @@ test-actions:
     RestoreRunnerPriority();
   checks:
   - brief: |
-      Check that the thread dispatching did not recurse through the recorded
-      stack pointers.
+      Check that the thread dispatching did not recurse through the recorded stack
+      pointers.
     code: |
       T_eq_uptr( ctx->runner_stack[ 0 ], ctx->runner_stack[ 1 ] );
       T_eq_uptr( ctx->worker_stack[ 0 ], ctx->worker_stack[ 1 ] );

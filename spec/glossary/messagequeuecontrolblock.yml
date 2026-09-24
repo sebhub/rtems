@@ -8,6 +8,6 @@ links:
   uid: group
 term: Message Queue Control Block
 text: |
-  A data structure associated with each message queue used by RTEMS to
-  manage that message queue.
+  A data structure associated with each message queue used by RTEMS to manage
+  that message queue.
 type: glossary

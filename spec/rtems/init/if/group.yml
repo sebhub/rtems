@@ -6,8 +6,8 @@ copyrights:
 - Copyright (C) 1988, 2008 On-Line Applications Research Corporation (OAR)
 description: |
   The system initialization includes the initialization of the Board Support
-  Package, RTEMS, device drivers, the root filesystem, and the application.
-  The ${../../fatal/if/group:/name} is responsible for the system shutdown.
+  Package, RTEMS, device drivers, the root filesystem, and the application. The
+  ${../../fatal/if/group:/name} is responsible for the system shutdown.
 enabled-by: true
 identifier: RTEMSAPIClassicInit
 index-entries: []

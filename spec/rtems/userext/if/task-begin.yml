@@ -24,10 +24,9 @@ notes: |
   The task begin extensions are invoked in
   ${/glossary/extension-forward-order:/term}.
 
-  Task begin extensions are invoked with thread dispatching enabled.  This
-  allows the use of dynamic memory allocation, creation of POSIX keys, and use
-  of C++ thread-local storage.  Blocking synchronization primitives are allowed
-  also.
+  Task begin extensions are invoked with thread dispatching enabled. This allows
+  the use of dynamic memory allocation, creation of POSIX keys, and use of C++
+  thread-local storage. Blocking synchronization primitives are allowed also.
 
   The task begin extensions are invoked before the global construction.
 

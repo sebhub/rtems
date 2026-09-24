@@ -11,6 +11,6 @@ rationale: |
   nested macro calls is undefined.
 requirement-type: functional
 text: |
-  The macro shall result in both argument values
-  concatenated textually unaltered in the order they are provided.
+  The macro shall result in both argument values concatenated textually unaltered
+  in the order they are provided.
 type: requirement

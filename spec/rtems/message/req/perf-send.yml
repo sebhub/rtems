@@ -26,7 +26,7 @@ test-prepare: null
 test-setup: null
 test-teardown:
   brief: |
-    Flush the message queue.  Discard samples interrupted by a clock tick.
+    Flush the message queue. Discard samples interrupted by a clock tick.
   code: |
     rtems_status_code sc;
     uint32_t          count;
@@ -40,9 +40,9 @@ test-teardown:
     return tic == toc;
   description: null
 text: |
-  While the execution environment is ${.:/environment}, while a message queue
-  is empty, while no task waits on the message queue, while the measurement
-  sample is the runtime of exactly one successful call to ${../if/send:/name},
-  when exactly ${../val/perf:/params/sample-count} samples are collected, the
+  While the execution environment is ${.:/environment}, while a message queue is
+  empty, while no task waits on the message queue, while the measurement sample
+  is the runtime of exactly one successful call to ${../if/send:/name}, when
+  exactly ${../val/perf:/params/sample-count} samples are collected, the
   ${.:/limit-kind} shall be ${.:/limit-condition}.
 type: requirement

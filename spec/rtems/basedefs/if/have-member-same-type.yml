@@ -52,7 +52,7 @@ params:
   name: _m_rhs
 return:
   return: |
-    Returns to true, if the members of two types have compatible types,
-    otherwise false.
+    Returns to true, if the members of two types have compatible types, otherwise
+    false.
   return-values: []
 type: interface

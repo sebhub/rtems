@@ -38,8 +38,8 @@ test-prepare:
 test-setup: null
 test-teardown:
   brief: |
-    Move the worker back to scheduler B.  Discard samples interrupted by a
-    clock tick.
+    Move the worker back to scheduler B. Discard samples interrupted by a clock
+    tick.
   code: |
     T_quiet_rsc_success( ctx->status );
 
@@ -50,8 +50,8 @@ test-teardown:
 text: |
   While the execution environment is ${.:/environment}, while the measurement
   sample is the runtime of exactly one successful call to
-  ${../if/set-scheduler:/name} which moves the task to the home scheduler of
-  the caller which does not preempt the caller, when exactly
-  ${../val/perf:/params/sample-count} samples are collected, the
-  ${.:/limit-kind} shall be ${.:/limit-condition}.
+  ${../if/set-scheduler:/name} which moves the task to the home scheduler of the
+  caller which does not preempt the caller, when exactly
+  ${../val/perf:/params/sample-count} samples are collected, the ${.:/limit-kind}
+  shall be ${.:/limit-condition}.
 type: requirement

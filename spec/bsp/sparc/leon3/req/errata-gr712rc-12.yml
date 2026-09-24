@@ -16,6 +16,6 @@ non-functional-type: design
 rationale: null
 requirement-type: non-functional
 text: |
-  The software product shall take the errata 12 (Technical Note on GRETH
-  Ethernet Controller Behaviour) into account.
+  The software product shall take the errata 12 (Technical Note on GRETH Ethernet
+  Controller Behaviour) into account.
 type: requirement

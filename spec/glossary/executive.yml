@@ -8,6 +8,6 @@ links:
   uid: group
 term: executive
 text: |
-  In this document, this term is used to referred to RTEMS.  Commonly, an
+  In this document, this term is used to referred to RTEMS. Commonly, an
   executive is a small real-time operating system used in embedded systems.
 type: glossary

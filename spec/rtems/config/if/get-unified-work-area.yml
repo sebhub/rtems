@@ -28,12 +28,12 @@ links:
   uid: /constraint/directive-no-preempt
 name: rtems_configuration_get_unified_work_area
 notes: |
-  The setting is defined by the ${/acfg/if/unified-work-areas:/name}
-  application configuration option.
+  The setting is defined by the ${/acfg/if/unified-work-areas:/name} application
+  configuration option.
 params: []
 return:
   return: |
-    Returns true, if the RTEMS Workspace and C Program Heap are configured to
-    be unified for this application, otherwise false.
+    Returns true, if the RTEMS Workspace and C Program Heap are configured to be
+    unified for this application, otherwise false.
   return-values: []
 type: interface

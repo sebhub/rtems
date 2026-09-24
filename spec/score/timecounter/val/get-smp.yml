@@ -7,13 +7,13 @@ test-actions:
 - action-brief: |
     Install timecounter of different quality levels and frequencies.
   action-code: |
-    Timecounter     *tc;
-    rtems_id         worker_id;
-    struct bintime   bt;
-    sbintime_t       sbt;
-    struct timespec  ts;
-    struct timeval   tv;
-    unsigned int     i;
+    Timecounter    *tc;
+    rtems_id        worker_id;
+    struct bintime  bt;
+    sbintime_t      sbt;
+    struct timespec ts;
+    struct timeval  tv;
+    unsigned int    i;
 
     tc = &test_timecounter;
     tc->base.tc_get_timecount = GetTimecount;
@@ -41,9 +41,8 @@ test-actions:
     tc->base.tc_get_timecount = GetTimecountBarrier;
   checks:
   - brief: |
-      Call the ${/rtems/clock/if/get-realtime:/name} directive and let it
-      observe a generation number of zero as well as a generation number
-      change.
+      Call the ${/rtems/clock/if/get-realtime:/name} directive and let it observe a
+      generation number of zero as well as a generation number change.
     code: |
       PrepareSynchronousWork( tc );
       rtems_clock_get_realtime( &ts );
@@ -56,9 +55,8 @@ test-actions:
     - role: validation
       uid: /rtems/clock/req/get-realtime
   - brief: |
-      Call the ${/rtems/clock/if/get-realtime-bintime:/name} directive and let
-      it observe a generation number of zero as well as a generation number
-      change.
+      Call the ${/rtems/clock/if/get-realtime-bintime:/name} directive and let it
+      observe a generation number of zero as well as a generation number change.
     code: |
       PrepareSynchronousWork( tc );
       rtems_clock_get_realtime_bintime( &bt );
@@ -71,9 +69,8 @@ test-actions:
     - role: validation
       uid: /rtems/clock/req/get-realtime
   - brief: |
-      Call the ${/rtems/clock/if/get-realtime-timeval:/name} directive and let
-      it observe a generation number of zero as well as a generation number
-      change.
+      Call the ${/rtems/clock/if/get-realtime-timeval:/name} directive and let it
+      observe a generation number of zero as well as a generation number change.
     code: |
       PrepareSynchronousWork( tc );
       rtems_clock_get_realtime_timeval( &tv );
@@ -86,9 +83,8 @@ test-actions:
     - role: validation
       uid: /rtems/clock/req/get-realtime
   - brief: |
-      Call the ${/rtems/clock/if/get-monotonic:/name} directive and let it
-      observe a generation number of zero as well as a generation number
-      change.
+      Call the ${/rtems/clock/if/get-monotonic:/name} directive and let it observe a
+      generation number of zero as well as a generation number change.
     code: |
       PrepareSynchronousWork( tc );
       rtems_clock_get_monotonic( &ts );
@@ -101,9 +97,8 @@ test-actions:
     - role: validation
       uid: /rtems/clock/req/get-monotonic
   - brief: |
-      Call the ${/rtems/clock/if/get-monotonic-bintime:/name} directive and let
-      it observe a generation number of zero as well as a generation number
-      change.
+      Call the ${/rtems/clock/if/get-monotonic-bintime:/name} directive and let it
+      observe a generation number of zero as well as a generation number change.
     code: |
       PrepareSynchronousWork( tc );
       rtems_clock_get_monotonic_bintime( &bt );
@@ -116,9 +111,8 @@ test-actions:
     - role: validation
       uid: /rtems/clock/req/get-monotonic
   - brief: |
-      Call the ${/rtems/clock/if/get-monotonic-sbintime:/name} directive and let
-      it observe a generation number of zero as well as a generation number
-      change.
+      Call the ${/rtems/clock/if/get-monotonic-sbintime:/name} directive and let it
+      observe a generation number of zero as well as a generation number change.
     code: |
       PrepareSynchronousWork( tc );
       sbt = rtems_clock_get_monotonic_sbintime();
@@ -130,9 +124,8 @@ test-actions:
     - role: validation
       uid: /rtems/clock/req/get-monotonic
   - brief: |
-      Call the ${/rtems/clock/if/get-monotonic-timeval:/name} directive and let
-      it observe a generation number of zero as well as a generation number
-      change.
+      Call the ${/rtems/clock/if/get-monotonic-timeval:/name} directive and let it
+      observe a generation number of zero as well as a generation number change.
     code: |
       PrepareSynchronousWork( tc );
       rtems_clock_get_monotonic_timeval( &tv );
@@ -145,8 +138,8 @@ test-actions:
     - role: validation
       uid: /rtems/clock/req/get-monotonic
   - brief: |
-      Delete the synchronous worker task.  Reinitialize the barrier and barrier
-      states.  Start the zero worker task.
+      Delete the synchronous worker task. Reinitialize the barrier and barrier
+      states. Start the zero worker task.
     code: |
       tc->base.tc_get_timecount = GetTimecount;
       DeleteTask( worker_id );
@@ -160,8 +153,8 @@ test-actions:
       StartTask( worker_id, ZeroWorker, tc );
     links: []
   - brief: |
-      Call the ${/rtems/clock/if/get-realtime-coarse:/name} directive and try
-      to let it observe a generation number of zero.
+      Call the ${/rtems/clock/if/get-realtime-coarse:/name} directive and try to let
+      it observe a generation number of zero.
     code: |
       PrepareZeroWork( tc );
       rtems_clock_get_realtime_coarse( &ts );
@@ -172,8 +165,8 @@ test-actions:
     - role: validation
       uid: /rtems/clock/req/get-realtime-coarse
   - brief: |
-      Call the ${/rtems/clock/if/get-realtime-coarse-bintime:/name} directive
-      and try to let it observe a generation number of zero.
+      Call the ${/rtems/clock/if/get-realtime-coarse-bintime:/name} directive and try
+      to let it observe a generation number of zero.
     code: |
       PrepareZeroWork( tc );
       rtems_clock_get_realtime_coarse_bintime( &bt );
@@ -184,8 +177,8 @@ test-actions:
     - role: validation
       uid: /rtems/clock/req/get-realtime-coarse
   - brief: |
-      Call the ${/rtems/clock/if/get-realtime-coarse-timeval:/name} directive
-      and try to let it observe a generation number of zero.
+      Call the ${/rtems/clock/if/get-realtime-coarse-timeval:/name} directive and try
+      to let it observe a generation number of zero.
     code: |
       PrepareZeroWork( tc );
       rtems_clock_get_realtime_coarse_timeval( &tv );
@@ -196,8 +189,8 @@ test-actions:
     - role: validation
       uid: /rtems/clock/req/get-realtime-coarse
   - brief: |
-      Call the ${/rtems/clock/if/get-monotonic-coarse:/name} directive and try
-      to let it observe a generation number of zero.
+      Call the ${/rtems/clock/if/get-monotonic-coarse:/name} directive and try to let
+      it observe a generation number of zero.
     code: |
       PrepareZeroWork( tc );
       rtems_clock_get_monotonic_coarse( &ts );
@@ -208,8 +201,8 @@ test-actions:
     - role: validation
       uid: /rtems/clock/req/get-monotonic-coarse
   - brief: |
-      Call the ${/rtems/clock/if/get-monotonic-coarse-bintime:/name} directive
-      and try to let it observe a generation number of zero.
+      Call the ${/rtems/clock/if/get-monotonic-coarse-bintime:/name} directive and
+      try to let it observe a generation number of zero.
     code: |
       PrepareZeroWork( tc );
       rtems_clock_get_monotonic_coarse_bintime( &bt );
@@ -220,8 +213,8 @@ test-actions:
     - role: validation
       uid: /rtems/clock/req/get-monotonic-coarse
   - brief: |
-      Call the ${/rtems/clock/if/get-monotonic-coarse-timeval:/name} directive
-      and try to let it observe a generation number of zero.
+      Call the ${/rtems/clock/if/get-monotonic-coarse-timeval:/name} directive and
+      try to let it observe a generation number of zero.
     code: |
       PrepareZeroWork( tc );
       rtems_clock_get_monotonic_coarse_timeval( &tv );
@@ -232,8 +225,8 @@ test-actions:
     - role: validation
       uid: /rtems/clock/req/get-monotonic-coarse
   - brief: |
-      Call the ${/rtems/clock/if/get-boot-time:/name} directive and try
-      to let it observe a generation number of zero.
+      Call the ${/rtems/clock/if/get-boot-time:/name} directive and try to let it
+      observe a generation number of zero.
     code: |
       PrepareZeroWork( tc );
       rtems_clock_get_boot_time( &ts );
@@ -244,8 +237,8 @@ test-actions:
     - role: validation
       uid: /rtems/clock/req/get-boot-time
   - brief: |
-      Call the ${/rtems/clock/if/get-boot-time-bintime:/name} directive
-      and try to let it observe a generation number of zero.
+      Call the ${/rtems/clock/if/get-boot-time-bintime:/name} directive and try to
+      let it observe a generation number of zero.
     code: |
       PrepareZeroWork( tc );
       rtems_clock_get_boot_time_bintime( &bt );
@@ -256,8 +249,8 @@ test-actions:
     - role: validation
       uid: /rtems/clock/req/get-boot-time
   - brief: |
-      Call the ${/rtems/clock/if/get-boot-time-timeval:/name} directive
-      and try to let it observe a generation number of zero.
+      Call the ${/rtems/clock/if/get-boot-time-timeval:/name} directive and try to
+      let it observe a generation number of zero.
     code: |
       PrepareZeroWork( tc );
       rtems_clock_get_boot_time_timeval( &tv );
@@ -268,8 +261,8 @@ test-actions:
     - role: validation
       uid: /rtems/clock/req/get-boot-time
   - brief: |
-      Delete the zero worker task.  Reinitialize the barrier and barrier
-      states.  Start the change worker task.
+      Delete the zero worker task. Reinitialize the barrier and barrier states. Start
+      the change worker task.
     code: |
       DeleteTask( worker_id );
 
@@ -282,8 +275,8 @@ test-actions:
       StartTask( worker_id, ChangeWorker, tc );
     links: []
   - brief: |
-      Call the ${/rtems/clock/if/get-realtime-coarse:/name} directive and try
-      to let it observe a changing generation number.
+      Call the ${/rtems/clock/if/get-realtime-coarse:/name} directive and try to let
+      it observe a changing generation number.
     code: |
       PrepareChangeWork( tc );
 
@@ -298,8 +291,8 @@ test-actions:
     - role: validation
       uid: /rtems/clock/req/get-realtime-coarse
   - brief: |
-      Call the ${/rtems/clock/if/get-realtime-coarse-bintime:/name} directive
-      and try to let it observe a changing generation number.
+      Call the ${/rtems/clock/if/get-realtime-coarse-bintime:/name} directive and try
+      to let it observe a changing generation number.
     code: |
       PrepareChangeWork( tc );
 
@@ -314,8 +307,8 @@ test-actions:
     - role: validation
       uid: /rtems/clock/req/get-realtime-coarse
   - brief: |
-      Call the ${/rtems/clock/if/get-realtime-coarse-timeval:/name} directive
-      and try to let it observe a changing generation number.
+      Call the ${/rtems/clock/if/get-realtime-coarse-timeval:/name} directive and try
+      to let it observe a changing generation number.
     code: |
       PrepareChangeWork( tc );
 
@@ -330,8 +323,8 @@ test-actions:
     - role: validation
       uid: /rtems/clock/req/get-realtime-coarse
   - brief: |
-      Call the ${/rtems/clock/if/get-monotonic-coarse:/name} directive and try
-      to let it observe a changing generation number.
+      Call the ${/rtems/clock/if/get-monotonic-coarse:/name} directive and try to let
+      it observe a changing generation number.
     code: |
       PrepareChangeWork( tc );
 
@@ -346,8 +339,8 @@ test-actions:
     - role: validation
       uid: /rtems/clock/req/get-monotonic-coarse
   - brief: |
-      Call the ${/rtems/clock/if/get-monotonic-coarse-bintime:/name} directive
-      and try to let it observe a changing generation number.
+      Call the ${/rtems/clock/if/get-monotonic-coarse-bintime:/name} directive and
+      try to let it observe a changing generation number.
     code: |
       PrepareChangeWork( tc );
 
@@ -362,8 +355,8 @@ test-actions:
     - role: validation
       uid: /rtems/clock/req/get-monotonic-coarse
   - brief: |
-      Call the ${/rtems/clock/if/get-monotonic-coarse-timeval:/name} directive
-      and try to let it observe a changing generation number.
+      Call the ${/rtems/clock/if/get-monotonic-coarse-timeval:/name} directive and
+      try to let it observe a changing generation number.
     code: |
       PrepareChangeWork( tc );
 
@@ -378,8 +371,8 @@ test-actions:
     - role: validation
       uid: /rtems/clock/req/get-monotonic-coarse
   - brief: |
-      Call the ${/rtems/clock/if/get-boot-time:/name} directive and try
-      to let it observe a changing generation number.
+      Call the ${/rtems/clock/if/get-boot-time:/name} directive and try to let it
+      observe a changing generation number.
     code: |
       PrepareChangeWork( tc );
 
@@ -394,8 +387,8 @@ test-actions:
     - role: validation
       uid: /rtems/clock/req/get-boot-time
   - brief: |
-      Call the ${/rtems/clock/if/get-boot-time-bintime:/name} directive
-      and try to let it observe a changing generation number.
+      Call the ${/rtems/clock/if/get-boot-time-bintime:/name} directive and try to
+      let it observe a changing generation number.
     code: |
       PrepareChangeWork( tc );
 
@@ -410,8 +403,8 @@ test-actions:
     - role: validation
       uid: /rtems/clock/req/get-boot-time
   - brief: |
-      Call the ${/rtems/clock/if/get-boot-time-timeval:/name} directive
-      and try to let it observe a changing generation number.
+      Call the ${/rtems/clock/if/get-boot-time-timeval:/name} directive and try to
+      let it observe a changing generation number.
     code: |
       PrepareChangeWork( tc );
 

@@ -10,7 +10,7 @@ non-functional-type: performance-runtime-environment
 rationale: |
   This runtime measurement environment is used to measure the runtime of code
   sections while data and instructions of the code section are already in the
-  cache.  This should give a good estimate of best case conditions.
+  cache. This should give a good estimate of best case conditions.
 requirement-type: non-functional
 text: |
   A ${/glossary/target:/term} state in which the caches are fully loaded with

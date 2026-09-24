@@ -51,8 +51,8 @@ links:
   uid: /ref/rtems/c-user/scheduler-priority-simple
 name: CONFIGURE_SCHEDULER_NAME
 notes: |
-  This scheduler configuration option is an advanced configuration option.
-  Think twice before you use it.
+  This scheduler configuration option is an advanced configuration option. Think
+  twice before you use it.
 
   Schedulers can be identified via ${/rtems/scheduler/if/ident:/name}.
 

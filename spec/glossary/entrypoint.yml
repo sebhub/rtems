@@ -8,6 +8,6 @@ links:
   uid: group
 term: entry point
 text: |
-  The address at which a function or task begins to execute.  In C, the
-  entry point of a function is the function's name.
+  The address at which a function or task begins to execute. In C, the entry
+  point of a function is the function's name.
 type: glossary

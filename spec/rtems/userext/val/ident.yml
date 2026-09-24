@@ -14,11 +14,7 @@ test-actions:
     rtems_status_code                   sc;
     rtems_id                            id_local_object;
 
-    sc = rtems_extension_create(
-      NAME_LOCAL_OBJECT,
-      &table,
-      &id_local_object
-    );
+    sc = rtems_extension_create( NAME_LOCAL_OBJECT, &table, &id_local_object );
     T_assert_rsc_success( sc );
 
     ${../../req/ident-local:/test-run}(
@@ -31,7 +27,8 @@ test-actions:
     T_rsc_success( sc );
   checks: []
   links: []
-test-brief: Test the ${../if/ident:/name} directive.
+test-brief: |
+  Test the ${../if/ident:/name} directive.
 test-context: []
 test-context-support: null
 test-description: null

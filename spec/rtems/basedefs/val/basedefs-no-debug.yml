@@ -16,10 +16,7 @@ test-actions:
     code: |
       T_step_true(
         ${.:/step},
-        IsEqualIgnoreWhiteSpace(
-          s,
-          "__builtin_unreachable()"
-        )
+        IsEqualIgnoreWhiteSpace( s, "__builtin_unreachable()" )
       );
     links:
     - role: validation
@@ -37,10 +34,7 @@ test-actions:
     code: |
       T_step_true(
         ${.:/step},
-        IsEqualIgnoreWhiteSpace(
-          s,
-          "RtemsBasedefsValBasedefsNoDebug_Action_1"
-        )
+        IsEqualIgnoreWhiteSpace( s, "RtemsBasedefsValBasedefsNoDebug_Action_1" )
       );
     links:
     - role: validation

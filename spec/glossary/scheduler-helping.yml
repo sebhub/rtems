@@ -9,6 +9,6 @@ links:
 term: helping scheduler
 text: |
   A helping scheduler of a ${task:/term} is a ${scheduler:/term} which is a
-  ${scheduler-eligible:/term} and which is not the ${scheduler-home:/term} of
-  the task.
+  ${scheduler-eligible:/term} and which is not the ${scheduler-home:/term} of the
+  task.
 type: glossary

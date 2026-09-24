@@ -8,6 +8,5 @@ links:
   uid: group
 term: dormant
 text: |
-  The state entered by a task after it is created and before it has been
-  started.
+  The state entered by a task after it is created and before it has been started.
 type: glossary

@@ -8,8 +8,7 @@ links:
   uid: group
 term: priority inheritance
 text: |
-  An algorithm that calls for the lower priority task holding a resource to
-  have its priority increased to that of the highest priority task blocked
-  waiting for that resource.  This avoids the problem of priority
-  inversion.
+  An algorithm that calls for the lower priority task holding a resource to have
+  its priority increased to that of the highest priority task blocked waiting for
+  that resource. This avoids the problem of priority inversion.
 type: glossary

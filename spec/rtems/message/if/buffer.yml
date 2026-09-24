@@ -1,7 +1,7 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 brief: |
-  Defines a structure which can be used as a message queue buffer for messages
-  of the specified maximum size.
+  Defines a structure which can be used as a message queue buffer for messages of
+  the specified maximum size.
 copyrights:
 - Copyright (C) 2020 embedded brains GmbH & Co. KG
 definition:

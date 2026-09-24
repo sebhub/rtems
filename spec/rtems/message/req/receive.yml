@@ -33,7 +33,7 @@ post-conditions:
       ${../../status/if/invalid-address:/name}.
   - name: Unsat
     test-code: |
-      T_rsc( ctx->status, RTEMS_UNSATISFIED  );
+      T_rsc( ctx->status, RTEMS_UNSATISFIED );
     text: |
       The return status of ${../if/receive:/name} shall be
       ${../../status/if/unsatisfied:/name}.
@@ -62,8 +62,7 @@ post-conditions:
     test-code: |
       T_eq_u32( ctx->action_duration, timeout_ticks );
     text: |
-      The ${../if/receive:/name} call shall return after the timeout
-      period in ticks.
+      The ${../if/receive:/name} call shall return after the timeout period in ticks.
   - name: Forever
     test-code: |
       T_gt_u32( ctx->action_duration, timeout_ticks );
@@ -75,57 +74,44 @@ post-conditions:
   states:
   - name: First
     test-code: |
-      CheckForFirstMessage(
-        ctx->status,
-        ctx->receive_buffer,
-        ctx->receive_size
-      );
+      CheckForFirstMessage( ctx->status, ctx->receive_buffer, ctx->receive_size );
     text: |
-      The value of the object referenced by the
-      ${../if/receive:/params[2]/name} parameter shall be set to the size of
-      the ${../glossary/firstmessage:/term} (the same value as provided by
-      parameter ${../if/send:/params[2]/name} of the ${../if/send:/name}
-      or ${../if/urgent:/name} directive which added the message to
-      the queue) after the return of the ${../if/receive:/name} call.
+      The value of the object referenced by the ${../if/receive:/params[2]/name}
+      parameter shall be set to the size of the ${../glossary/firstmessage:/term}
+      (the same value as provided by parameter ${../if/send:/params[2]/name} of the
+      ${../if/send:/name} or ${../if/urgent:/name} directive which added the message
+      to the queue) after the return of the ${../if/receive:/name} call.
   - name: Nop
     test-code: |
       T_eq_sz( ctx->receive_size, SIZE_MAX );
     text: |
-      Objects referenced by the ${../if/receive:/params[2]/name}
-      parameter in past calls to ${../if/receive:/name} shall not be
-      accessed by the ${../if/receive:/name} call (see also
-      ${../glossary/nop:/term}).
+      Objects referenced by the ${../if/receive:/params[2]/name} parameter in past
+      calls to ${../if/receive:/name} shall not be accessed by the
+      ${../if/receive:/name} call (see also ${../glossary/nop:/term}).
   test-epilogue: null
   test-prologue: null
 - name: Msg
   states:
   - name: First
     test-code: |
-      CheckForFirstMessage(
-        ctx->status,
-        ctx->receive_buffer,
-        ctx->receive_size
-      );
+      CheckForFirstMessage( ctx->status, ctx->receive_buffer, ctx->receive_size );
     text: |
-      The bytes 0 till ${../if/receive:/params[2]/name} - 1 of the object
-      referenced by the ${../if/receive:/params[3]/name} parameter shall
-      contain a copy of the content of the ${../glossary/firstmessage:/term}
-      (all bytes unchanged and in the same order as provided
-      by parameter ${../if/send:/params[1]/name} of the
-      ${../if/send:/name} or ${../if/urgent:/name} directive which added
-      the message to the queue) after the return of the
-      ${../if/receive:/name} call.
+      The bytes 0 till ${../if/receive:/params[2]/name} - 1 of the object referenced
+      by the ${../if/receive:/params[3]/name} parameter shall contain a copy of the
+      content of the ${../glossary/firstmessage:/term} (all bytes unchanged and in
+      the same order as provided by parameter ${../if/send:/params[1]/name} of the
+      ${../if/send:/name} or ${../if/urgent:/name} directive which added the message
+      to the queue) after the return of the ${../if/receive:/name} call.
   - name: Nop
     test-code: |
       int i;
       for ( i = 0; i < MAXIMUM_MESSAGE_SIZE; ++i ) {
-        T_eq_u8( ctx->receive_buffer[i], UINT8_MAX );
+        T_eq_u8( ctx->receive_buffer[ i ], UINT8_MAX );
       }
     text: |
-      Objects referenced by the ${../if/receive:/params[3]/name}
-      parameter in past calls to ${../if/receive:/name} shall not be
-      accessed by the ${../if/receive:/name} call (see also
-      ${../glossary/nop:/term}).
+      Objects referenced by the ${../if/receive:/params[3]/name} parameter in past
+      calls to ${../if/receive:/name} shall not be accessed by the
+      ${../if/receive:/name} call (see also ${../glossary/nop:/term}).
   test-epilogue: null
   test-prologue: null
 - name: MsgQueue
@@ -134,8 +120,8 @@ post-conditions:
     test-code: |
       PopMessage( ctx, CheckForNoMessage );
     text: |
-      The ${/glossary/messagequeue:/term} shall be empty after the
-      return of the ${../if/receive:/name} call.
+      The ${/glossary/messagequeue:/term} shall be empty after the return of the
+      ${../if/receive:/name} call.
   - name: OneLess
     test-code: |
       PopMessage( ctx, CheckForSecondMessage );
@@ -143,16 +129,15 @@ post-conditions:
       PopMessage( ctx, CheckForNoMessage );
     text: |
       The ${../glossary/firstmessage:/term} shall be removed from the
-      ${/glossary/messagequeue:/term} after the
-      return of the ${../if/receive:/name} call.
+      ${/glossary/messagequeue:/term} after the return of the ${../if/receive:/name}
+      call.
   - name: Nop
     test-code: |
       ctx->check_msgq_unchanged( ctx );
     text: |
-      Objects referenced by the ${../if/receive:/params[0]/name}
-      parameter in past calls to ${../if/receive:/name} shall not be
-      accessed by the ${../if/receive:/name} call (see also
-      ${../glossary/nop:/term}).
+      Objects referenced by the ${../if/receive:/params[0]/name} parameter in past
+      calls to ${../if/receive:/name} shall not be accessed by the
+      ${../if/receive:/name} call (see also ${../glossary/nop:/term}).
   test-epilogue: |
     MessageQueueTeardown( ctx );
   test-prologue: null
@@ -162,14 +147,14 @@ post-conditions:
     test-code: |
       ${/score/tq/req/enqueue-fifo:/test-run}( &ctx->tq_ctx );
     text: |
-      Where the thread queue uses the FIFO discipline, the calling thread shall
-      be enqueued in FIFO order.
+      Where the thread queue uses the FIFO discipline, the calling thread shall be
+      enqueued in FIFO order.
   - name: Priority
     test-code: |
       ${/score/tq/req/enqueue-priority:/test-run}( &ctx->tq_ctx );
     text: |
-      Where the thread queue uses the priority discipline, the calling thread
-      shall be enqueued in priority order.
+      Where the thread queue uses the priority discipline, the calling thread shall
+      be enqueued in priority order.
   test-epilogue: |
     MessageQueueTeardown( ctx );
   test-prologue: |
@@ -181,15 +166,14 @@ pre-conditions:
     test-code: |
       ctx->buffer_param = ctx->receive_buffer;
     text: |
-      While the ${../if/receive:/params[1]/name} parameter references a memory
-      area able to store a message up to the maximum size permitted in this
+      While the ${../if/receive:/params[1]/name} parameter references a memory area
+      able to store a message up to the maximum size permitted in this
       ${/glossary/messagequeue:/term}.
   - name: 'Null'
     test-code: |
       ctx->buffer_param = NULL;
     text: |
-      While the ${../if/receive:/params[1]/name} parameter is
-      ${/c/if/null:/name}.
+      While the ${../if/receive:/params[1]/name} parameter is ${/c/if/null:/name}.
   test-epilogue: null
   test-prologue: null
 - name: Size
@@ -198,14 +182,13 @@ pre-conditions:
     test-code: |
       ctx->size_param = &ctx->receive_size;
     text: |
-      While the ${../if/receive:/params[2]/name} parameter references an object
-      of type `size_t`.
+      While the ${../if/receive:/params[2]/name} parameter references an object of
+      type `size_t`.
   - name: 'Null'
     test-code: |
       ctx->size_param = NULL;
     text: |
-      While the ${../if/receive:/params[2]/name} parameter is
-      ${/c/if/null:/name}.
+      While the ${../if/receive:/params[2]/name} parameter is ${/c/if/null:/name}.
   test-epilogue: null
   test-prologue: null
 - name: Id
@@ -228,16 +211,16 @@ pre-conditions:
     test-code: |
       ctx->concurrent_activity = MessageQueueNop;
     text: |
-      While no ${../if/delete:/name} directive is called successfully
-      on the ${/glossary/messagequeue:/term} during the time one or more
+      While no ${../if/delete:/name} directive is called successfully on the
+      ${/glossary/messagequeue:/term} during the time one or more
       ${/glossary/task:/plural} are waiting to receive messages.
   - name: Deleted
     test-code: |
       ctx->concurrent_activity = MessageQueueDelete;
     text: |
       While ${../if/delete:/name} is called successfully on the
-      ${/glossary/messagequeue:/term} while one or more
-      ${/glossary/task:/plural} are waiting to receive messages.
+      ${/glossary/messagequeue:/term} while one or more ${/glossary/task:/plural} are
+      waiting to receive messages.
   test-epilogue: null
   test-prologue: null
 - name: TaskQueue
@@ -247,21 +230,21 @@ pre-conditions:
       ctx->attribute_set = RTEMS_LOCAL | RTEMS_FIFO;
     text: |
       While the member ${../if/config:/definition[6]/default/name} of type
-      ${../if/config:/name} contains value ${../../attr/if/fifo:/name}
-      when the ${/glossary/messagequeue:/term} is constructed.
+      ${../if/config:/name} contains value ${../../attr/if/fifo:/name} when the
+      ${/glossary/messagequeue:/term} is constructed.
 
-      Note: ${../../attr/if/global:/name} is not part of the space profile
-      because no remote ${/glossary/node:/plural} are supported.
+      Note: ${../../attr/if/global:/name} is not part of the space profile because no
+      remote ${/glossary/node:/plural} are supported.
   - name: Priority
     test-code: |
       ctx->attribute_set = RTEMS_LOCAL | RTEMS_PRIORITY;
     text: |
       While the member ${../if/config:/definition[6]/default/name} of type
-      ${../if/config:/name} contains value ${../../attr/if/priority:/name}
-      when the ${/glossary/messagequeue:/term} is constructed.
+      ${../if/config:/name} contains value ${../../attr/if/priority:/name} when the
+      ${/glossary/messagequeue:/term} is constructed.
 
-      Note: ${../../attr/if/global:/name} is not part of the space profile
-      because no remote ${/glossary/node:/plural} are supported.
+      Note: ${../../attr/if/global:/name} is not part of the space profile because no
+      remote ${/glossary/node:/plural} are supported.
   test-epilogue: |
     MessageQueueSetup( ctx );
   test-prologue: null
@@ -269,17 +252,17 @@ pre-conditions:
   states:
   - name: 'No'
     test-code: |
-      ctx->tq_ctx.wait =      TQ_NO_WAIT;
+      ctx->tq_ctx.wait = TQ_NO_WAIT;
       ctx->option_set_param = RTEMS_NO_WAIT;
-      ctx->timeout_param =    1; /* 0 would be RTEMS_NO_TIMEOUT */
+      ctx->timeout_param = 1; /* 0 would be RTEMS_NO_TIMEOUT */
     text: |
       While the ${../if/receive:/params[3]/name} parameter indicates the
       ${../../option/if/no-wait:/name} option.
   - name: Timeout
     test-code: |
-      ctx->tq_ctx.wait =      TQ_WAIT_TIMED;
+      ctx->tq_ctx.wait = TQ_WAIT_TIMED;
       ctx->option_set_param = RTEMS_WAIT;
-      ctx->timeout_param =    timeout_ticks;
+      ctx->timeout_param = timeout_ticks;
     text: |
       While the ${../if/receive:/params[3]/name} parameter indicates the
       ${../../option/if/wait:/name} option, while the
@@ -287,9 +270,9 @@ pre-conditions:
       ${../../type/if/no-timeout:/name}.
   - name: Forever
     test-code: |
-      ctx->tq_ctx.wait =      TQ_WAIT_FOREVER;
+      ctx->tq_ctx.wait = TQ_WAIT_FOREVER;
       ctx->option_set_param = RTEMS_WAIT;
-      ctx->timeout_param =    RTEMS_NO_TIMEOUT;
+      ctx->timeout_param = RTEMS_NO_TIMEOUT;
     text: |
       While the ${../if/receive:/params[3]/name} parameter indicates the
       ${../../option/if/wait:/name} option, while the
@@ -318,8 +301,7 @@ pre-conditions:
       SendMsg( &( ctx->tq_ctx ) );
       ctx->check_msgq_unchanged = CheckForSeveralMessagesInQueue;
     text: |
-      While there are more than one message in the
-      ${/glossary/messagequeue:/term}.
+      While there are more than one message in the ${/glossary/messagequeue:/term}.
   test-epilogue: null
   test-prologue: null
 - name: Storage
@@ -329,19 +311,17 @@ pre-conditions:
       /* Only a requirement text. */
     text: |
       While the memory area to which a pointer is provided as member
-      ${../if/config:/definition[3]/default/name} of type
-      ${../if/config:/name} when the ${/glossary/messagequeue:/term} is
-      constructed by ${../if/construct:/name} is altered only by the
-      RTEMS operating system.
+      ${../if/config:/definition[3]/default/name} of type ${../if/config:/name} when
+      the ${/glossary/messagequeue:/term} is constructed by ${../if/construct:/name}
+      is altered only by the RTEMS operating system.
   test-epilogue: null
   test-prologue: null
 rationale: null
 requirement-type: functional
 skip-reasons:
   NoWait: |
-    The case *Deleted* can only occur when at least one
-    ${../if/receive:/name} call is waiting on an empty
-    ${/glossary/messagequeue:/term}.
+    The case *Deleted* can only occur when at least one ${../if/receive:/name} call
+    is waiting on an empty ${/glossary/messagequeue:/term}.
 test-action: |
   WorkerDoAction( ctx );
   ctx->concurrent_activity( ctx );
@@ -355,14 +335,12 @@ test-context:
   member: |
     TQContext tq_ctx
 - brief: |
-    This member specifies the attribute set of the
-    ${/glossary/messagequeue:/term}.
+    This member specifies the attribute set of the ${/glossary/messagequeue:/term}.
   description: null
   member: |
     rtems_attribute attribute_set
 - brief: |
-    This member is used as storage area for the
-    ${/glossary/messagequeue:/term}.
+    This member is used as storage area for the ${/glossary/messagequeue:/term}.
   description: null
   member: |
     RTEMS_MESSAGE_QUEUE_BUFFER( MAXIMUM_MESSAGE_SIZE )
@@ -389,38 +367,37 @@ test-context:
   member: |
     size_t receive_size
 - brief: |
-    This member specifies the ${../if/receive:/params[0]/name} parameter
-    for the action.
+    This member specifies the ${../if/receive:/params[0]/name} parameter for the
+    action.
   description: null
   member: |
     rtems_id id_param
 - brief: |
-    This member specifies the ${../if/receive:/params[1]/name} parameter
-    for the action.
+    This member specifies the ${../if/receive:/params[1]/name} parameter for the
+    action.
   description: null
   member: |
     void *buffer_param
 - brief: |
-    This member specifies the ${../if/receive:/params[2]/name} parameter
-    for the action.
+    This member specifies the ${../if/receive:/params[2]/name} parameter for the
+    action.
   description: null
   member: |
     size_t *size_param
 - brief: |
-    This member specifies the ${../if/receive:/params[3]/name} parameter
-    for the action.
+    This member specifies the ${../if/receive:/params[3]/name} parameter for the
+    action.
   description: null
   member: |
     rtems_option option_set_param
 - brief: |
-    This member specifies the ${../if/receive:/params[4]/name} parameter
-    for the action.
+    This member specifies the ${../if/receive:/params[4]/name} parameter for the
+    action.
   description: null
   member: |
     rtems_interval timeout_param
 - brief: |
-    This member contains the returned ${/glossary/statuscode:/term}
-    of the action.
+    This member contains the returned ${/glossary/statuscode:/term} of the action.
   description: null
   member: |
     rtems_status_code status
@@ -430,33 +407,32 @@ test-context:
   member: |
     uint32_t action_duration
 - brief: |
-    This member contains the ${/glossary/task:/term} identifier of the
-    main ${/glossary/task:/term}.
+    This member contains the ${/glossary/task:/term} identifier of the main
+    ${/glossary/task:/term}.
   description: null
   member: |
     rtems_id task_id
 - brief: |
-    This member contains the ${/glossary/task:/term} identifier of the
-    worker ${/glossary/task:/term}.
+    This member contains the ${/glossary/task:/term} identifier of the worker
+    ${/glossary/task:/term}.
   description: null
   member: |
     rtems_id worker_id
 - brief: |
-    This member contains a pointer to a function which is executed while
-    the worker is waiting to receive a message (`delete(), nop()`).
+    This member contains a pointer to a function which is executed while the worker
+    is waiting to receive a message (`delete(), nop()`).
   description: null
   member: |
     void (*concurrent_activity)( void *ctx_in )
 - brief: |
-    This member contains a pointer to a function which is executed
-    to check that the action has not changed the content of the
-    ${/glossary/messagequeue:/term}.
+    This member contains a pointer to a function which is executed to check that
+    the action has not changed the content of the ${/glossary/messagequeue:/term}.
   description: null
   member: |
     void (*check_msgq_unchanged)( void *ctx_in )
 test-context-support: |
   #define MAXIMUM_PENDING_MESSAGES 3
-  #define MAXIMUM_MESSAGE_SIZE 5
+  #define MAXIMUM_MESSAGE_SIZE     5
 test-description: null
 test-header: null
 test-includes:
@@ -472,18 +448,18 @@ test-prepare: |
   (void) PollAnyEvents();
 
   ctx->send_msg_counter = 0;
-  ctx->receive_size     = SIZE_MAX;
+  ctx->receive_size = SIZE_MAX;
   memset( ctx->receive_buffer, UINT8_MAX, MAXIMUM_MESSAGE_SIZE );
 test-setup:
   brief: null
   code: |
     memset( ctx, 0, sizeof( *ctx ) );
-    ctx->magic                  = magic;
-    ctx->tq_ctx.enqueue         = ReceiveMsg;
-    ctx->tq_ctx.surrender       = TQDoNothingSuccessfully;
-    ctx->tq_ctx.convert_status  = TQConvertStatusClassic;
+    ctx->magic = magic;
+    ctx->tq_ctx.enqueue = ReceiveMsg;
+    ctx->tq_ctx.surrender = TQDoNothingSuccessfully;
+    ctx->tq_ctx.convert_status = TQConvertStatusClassic;
     ctx->tq_ctx.enqueue_prepare = EnqueuePrepare;
-    ctx->tq_ctx.enqueue_done    = EnqueueDone;
+    ctx->tq_ctx.enqueue_done = EnqueueDone;
     TQInitialize( &ctx->tq_ctx );
 
     /*
@@ -499,7 +475,7 @@ test-setup:
      * any message queue is created - a run-time sanity check.
      */
     ctx->tq_ctx.thread_queue_id = RTEMS_ID_NONE;
-    ctx->task_id                = rtems_task_self();
+    ctx->task_id = rtems_task_self();
 
     /* Note: TQInitialize() will assign the "main" task priority PRIO_NORMAL */
     ctx->worker_id = CreateTask( "WORK", PRIO_HIGH );
@@ -508,9 +484,9 @@ test-setup:
 test-stop: null
 test-support: |
   typedef ${.:/test-context-type} Context;
-  static const uint32_t        magic = 0xA55CA3D1; /* an arbitrary number */
-  static const rtems_interval  timeout_ticks = 3;
-  static const rtems_event_set wake_main_task_event = RTEMS_EVENT_17;
+  static const uint32_t           magic = 0xA55CA3D1; /* an arbitrary number */
+  static const rtems_interval     timeout_ticks = 3;
+  static const rtems_event_set    wake_main_task_event = RTEMS_EVENT_17;
 
   static void DoAction( void *ctx_in )
   {
@@ -538,7 +514,7 @@ test-support: |
   static void WorkerDoAction( void *ctx_in )
   {
     rtems_status_code status;
-    Context *ctx = ctx_in;
+    Context          *ctx = ctx_in;
     T_assert_eq_u32( ctx->magic, magic ); /* Run-time type check */
     status = rtems_task_restart( ctx->worker_id, (rtems_task_argument) ctx );
     T_rsc_success( status );
@@ -546,11 +522,11 @@ test-support: |
 
   static uint32_t WaitForWorker( Context *ctx )
   {
-    uint32_t ticks_to_wait = timeout_ticks + 1;
+    uint32_t          ticks_to_wait = timeout_ticks + 1;
     rtems_status_code status;
-    rtems_event_set event_set;
+    rtems_event_set   event_set;
 
-     for ( ; ticks_to_wait > 0; --ticks_to_wait ) {
+    for ( ; ticks_to_wait > 0; --ticks_to_wait ) {
       /* Check whether the worker finished executing the action */
       status = rtems_event_receive(
         RTEMS_PENDING_EVENTS,
@@ -574,7 +550,7 @@ test-support: |
         RTEMS_NO_TIMEOUT,
         &event_set
       );
-    T_rsc_success( status );
+      T_rsc_success( status );
     }
 
     return timeout_ticks + 1 - ticks_to_wait;
@@ -618,66 +594,66 @@ test-support: |
 
   static void CheckForNoMessage(
     rtems_status_code status,
-    uint8_t *message_buffer,
-    size_t message_size
+    uint8_t          *message_buffer,
+    size_t            message_size
   )
   {
     (void) message_buffer;
     (void) message_size;
-    T_rsc( status, RTEMS_UNSATISFIED  );
+    T_rsc( status, RTEMS_UNSATISFIED );
   }
 
   static void CheckForFirstMessage(
     rtems_status_code status,
-    uint8_t *message_buffer,
-    size_t message_size
+    uint8_t          *message_buffer,
+    size_t            message_size
   )
   {
     T_rsc_success( status );
     T_eq_u32( message_size, 1 );
-    T_eq_u8( message_buffer[0], 0 );
+    T_eq_u8( message_buffer[ 0 ], 0 );
   }
 
   static void CheckForSecondMessage(
     rtems_status_code status,
-    uint8_t *message_buffer,
-    size_t message_size
+    uint8_t          *message_buffer,
+    size_t            message_size
   )
   {
     T_rsc_success( status );
     T_eq_u32( message_size, 3 );
-    T_eq_u8( message_buffer[0], 1 );
-    T_eq_u8( message_buffer[1], 1 );
-    T_eq_u8( message_buffer[2], 1 );
+    T_eq_u8( message_buffer[ 0 ], 1 );
+    T_eq_u8( message_buffer[ 1 ], 1 );
+    T_eq_u8( message_buffer[ 2 ], 1 );
   }
 
   static void CheckForThirdMessage(
     rtems_status_code status,
-    uint8_t *message_buffer,
-    size_t message_size
+    uint8_t          *message_buffer,
+    size_t            message_size
   )
   {
     T_rsc_success( status );
     T_eq_u32( message_size, 5 );
-    T_eq_u8( message_buffer[0], 2 );
-    T_eq_u8( message_buffer[1], 2 );
-    T_eq_u8( message_buffer[2], 2 );
-    T_eq_u8( message_buffer[3], 2 );
-    T_eq_u8( message_buffer[4], 2 );
+    T_eq_u8( message_buffer[ 0 ], 2 );
+    T_eq_u8( message_buffer[ 1 ], 2 );
+    T_eq_u8( message_buffer[ 2 ], 2 );
+    T_eq_u8( message_buffer[ 3 ], 2 );
+    T_eq_u8( message_buffer[ 4 ], 2 );
   }
 
   static void PopMessage(
     Context *ctx,
-    void (*check_fn)(
+    void ( *check_fn )(
       rtems_status_code status,
-      uint8_t *message_buffer,
-      size_t message_size
+      uint8_t          *message_buffer,
+      size_t            message_size
     )
   )
   {
     rtems_status_code status;
-    uint8_t message_buffer[ MAXIMUM_MESSAGE_SIZE ];
-    size_t message_size;
+    uint8_t           message_buffer[ MAXIMUM_MESSAGE_SIZE ];
+    size_t            message_size;
 
     status = rtems_message_queue_receive(
       ctx->tq_ctx.thread_queue_id,
@@ -687,7 +663,7 @@ test-support: |
       RTEMS_NO_TIMEOUT
     );
 
-   check_fn( status, message_buffer, message_size );
+    check_fn( status, message_buffer, message_size );
   }
 
   static void CheckForNoMessageInQueue( void *ctx_in )
@@ -736,10 +712,10 @@ test-support: |
 
   static Status_Control ReceiveMsg( TQContext *tqctx, TQWait wait )
   {
-    Context *ctx = ToContext( tqctx );
+    Context          *ctx = ToContext( tqctx );
     rtems_status_code status;
-    rtems_option option_set;
-    rtems_interval timeout;
+    rtems_option      option_set;
+    rtems_interval    timeout;
 
     switch ( wait ) {
       case TQ_WAIT_FOREVER:
@@ -769,9 +745,9 @@ test-support: |
 
   static void SendMsg( TQContext *tqctx )
   {
-    Context *ctx = ToContext( tqctx );
+    Context          *ctx = ToContext( tqctx );
     rtems_status_code status;
-    uint8_t msg[ MAXIMUM_MESSAGE_SIZE ];
+    uint8_t           msg[ MAXIMUM_MESSAGE_SIZE ];
 
     memset( msg, ctx->send_msg_counter, MAXIMUM_MESSAGE_SIZE );
     status = rtems_message_queue_send(
@@ -808,96 +784,86 @@ test-teardown:
     TQDestroy( &ctx->tq_ctx );
     (void) PollAnyEvents();
   description: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
-
-# ---- Ok Case ----
-
 - enabled-by: true
   post-conditions:
     Status: Ok
     Delay: None
-    Tasks: N/A
     Size: First
     Msg: First
     MsgQueue:
-      - if:
-          pre-conditions:
-            MsgQueue: One
-        then: Empty
-      - else: OneLess
+    - if:
+        pre-conditions:
+          MsgQueue: One
+      then: Empty
+    - else: OneLess
     Tasks: N/A
   pre-conditions:
     Buffer:
-      - Valid
+    - Valid
     Size:
-      - Valid
+    - Valid
     Id:
-      - Valid
+    - Valid
     DuringWait:
-      - Nop
+    - Nop
     TaskQueue: all
     Wait: all
     MsgQueue:
-      - One
-      - Several
+    - One
+    - Several
     Storage: all
-
-# ---- Empty Queue ----
-
 - enabled-by: true
   post-conditions:
     Status:
-      - if:
-          pre-conditions:
-            Wait: Forever
-        then: N/A
-      - if:
-          pre-conditions:
-            Wait: 'No'
-        then: Unsat
-      - else: Timeout
+    - if:
+        pre-conditions:
+          Wait: Forever
+      then: N/A
+    - if:
+        pre-conditions:
+          Wait: 'No'
+      then: Unsat
+    - else: Timeout
     Delay:
-      - if:
-          pre-conditions:
-            Wait: 'No'
-        then: None
-      - if:
-          pre-conditions:
-            Wait: Timeout
-        then: Ticks
-      - else: Forever
+    - if:
+        pre-conditions:
+          Wait: 'No'
+      then: None
+    - if:
+        pre-conditions:
+          Wait: Timeout
+      then: Ticks
+    - else: Forever
     Size: Nop
     Msg: Nop
     MsgQueue: Nop
-
     Tasks:
-      - if:
-          pre-conditions:
-            Wait: 'No'
-        then: N/A
-      - if:
-          pre-conditions:
-            TaskQueue: Fifo
-        then: Fifo
-      - else: Priority
+    - if:
+        pre-conditions:
+          Wait: 'No'
+      then: N/A
+    - if:
+        pre-conditions:
+          TaskQueue: Fifo
+      then: Fifo
+    - else: Priority
   pre-conditions:
     Buffer:
-      - Valid
+    - Valid
     Size:
-      - Valid
+    - Valid
     Id:
-      - Valid
+    - Valid
     DuringWait:
-      - Nop
+    - Nop
     TaskQueue: all
     Wait: all
     MsgQueue:
-      - Empty
+    - Empty
     Storage: all
-
-# ---- InvAddr: Buffer ----
-
 - enabled-by: true
   post-conditions:
     Status: InvAddr
@@ -905,15 +871,15 @@ transition-map:
     Size: Nop
     Msg: Nop
     MsgQueue:
-      - if:
-          pre-conditions:
-            DuringWait: Deleted
-        then: N/A
-      - else: Nop
+    - if:
+        pre-conditions:
+          DuringWait: Deleted
+      then: N/A
+    - else: Nop
     Tasks: N/A
   pre-conditions:
     Buffer:
-      - 'Null'
+    - 'Null'
     Size: all
     Id: all
     DuringWait: all
@@ -921,9 +887,6 @@ transition-map:
     Wait: all
     MsgQueue: all
     Storage: all
-
-# ---- InvAddr: Size ----
-
 - enabled-by: true
   post-conditions:
     Status: InvAddr
@@ -931,26 +894,23 @@ transition-map:
     Size: Nop
     Msg: Nop
     MsgQueue:
-      - if:
-          pre-conditions:
-            DuringWait: Deleted
-        then: N/A
-      - else: Nop
+    - if:
+        pre-conditions:
+          DuringWait: Deleted
+      then: N/A
+    - else: Nop
     Tasks: N/A
   pre-conditions:
     Buffer:
-      - Valid
+    - Valid
     Size:
-      - 'Null'
+    - 'Null'
     Id: all
     DuringWait: all
     TaskQueue: all
     Wait: all
     MsgQueue: all
     Storage: all
-
-# ---- InvId ----
-
 - enabled-by: true
   post-conditions:
     Status: InvId
@@ -958,27 +918,24 @@ transition-map:
     Size: Nop
     Msg: Nop
     MsgQueue:
-      - if:
-          pre-conditions:
-            DuringWait: Deleted
-        then: N/A
-      - else: Nop
+    - if:
+        pre-conditions:
+          DuringWait: Deleted
+      then: N/A
+    - else: Nop
     Tasks: N/A
   pre-conditions:
     Buffer:
-      - Valid
+    - Valid
     Size:
-      - Valid
+    - Valid
     Id:
-      - Invalid
+    - Invalid
     DuringWait: all
     TaskQueue: all
     Wait: all
     MsgQueue: all
     Storage: all
-
-# ---- Deleted ----
-
 - enabled-by: true
   post-conditions:
     Status: Deleted
@@ -989,54 +946,50 @@ transition-map:
     Tasks: N/A
   pre-conditions:
     Buffer:
-      - Valid
+    - Valid
     Size:
-      - Valid
+    - Valid
     Id:
-      - Valid
+    - Valid
     DuringWait:
-      - Deleted
+    - Deleted
     TaskQueue: all
     Wait: all
     MsgQueue: all
     Storage: all
-
-# ---- Impossible Deleted Cases ----
-
 - enabled-by: true
   post-conditions: NoWait
   pre-conditions:
     Buffer:
-      - Valid
+    - Valid
     Size:
-      - Valid
+    - Valid
     Id:
-      - Valid
+    - Valid
     DuringWait:
-      - Deleted
+    - Deleted
     TaskQueue: all
     Wait:
-      - 'No'
+    - 'No'
     MsgQueue: all
     Storage: all
-
 - enabled-by: true
   post-conditions: NoWait
   pre-conditions:
     Buffer:
-      - Valid
+    - Valid
     Size:
-      - Valid
+    - Valid
     Id:
-      - Valid
+    - Valid
     DuringWait:
-      - Deleted
+    - Deleted
     TaskQueue: all
     Wait:
-      - Timeout
-      - Forever
+    - Timeout
+    - Forever
     MsgQueue:
-      - One
-      - Several
+    - One
+    - Several
     Storage: all
 type: requirement

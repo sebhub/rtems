@@ -8,6 +8,6 @@ links:
   uid: group
 term: manager
 text: |
-  A group of related RTEMS' directives which provide access and control
-  over resources.
+  A group of related RTEMS' directives which provide access and control over
+  resources.
 type: glossary

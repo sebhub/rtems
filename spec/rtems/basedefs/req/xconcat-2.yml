@@ -7,11 +7,11 @@ links:
 - role: interface-function
   uid: ../if/xconcat
 rationale: |
-  There should be no additional character before, between or after the
-  arguments in the result.
+  There should be no additional character before, between or after the arguments
+  in the result.
 requirement-type: functional
 text: |
-  The macro ${../if/xconcat:/name} shall result in only those
-  characters which also appear in its argument values
-  after applying all possible C pre-processor substitutions to them.
+  The macro ${../if/xconcat:/name} shall result in only those characters which
+  also appear in its argument values after applying all possible C pre-processor
+  substitutions to them.
 type: requirement

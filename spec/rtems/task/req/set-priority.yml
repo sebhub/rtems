@@ -45,8 +45,8 @@ post-conditions:
     text: |
       The ${/glossary/priority-real:/term} of the task specified by the
       ${../if/set-priority:/params[0]/name} parameter shall be set to the value
-      specified by the ${../if/set-priority:/params[1]/name} parameter at some
-      point during the ${../if/set-priority:/name} call.
+      specified by the ${../if/set-priority:/params[1]/name} parameter at some point
+      during the ${../if/set-priority:/name} call.
   - name: Nop
     test-code: |
       T_eq_u32( GetPriority( ctx->worker_id ), PRIO_NORMAL );
@@ -61,20 +61,19 @@ post-conditions:
     test-code: |
       T_eq_u32( ctx->old_priority_obj, PRIO_NORMAL );
     text: |
-      The value of the object referenced by the
-      ${../if/set-priority:/params[2]/name} parameter shall be set after the
-      return of the ${../if/set-priority:/name} call to the
-      ${/glossary/priority-current:/term} of the task specified by the
-      ${../if/set-priority:/params[0]/name} parameter at some point during the
-      call and before the ${/glossary/priority-real:/term} is modified by the
-      call if it is modified by the call.
+      The value of the object referenced by the ${../if/set-priority:/params[2]/name}
+      parameter shall be set after the return of the ${../if/set-priority:/name} call
+      to the ${/glossary/priority-current:/term} of the task specified by the
+      ${../if/set-priority:/params[0]/name} parameter at some point during the call
+      and before the ${/glossary/priority-real:/term} is modified by the call if it
+      is modified by the call.
   - name: Nop
     test-code: |
       T_eq_u32( ctx->old_priority_obj, PRIO_INVALID );
     text: |
-      Objects referenced by the ${../if/set-priority:/params[2]/name}
-      parameter in past calls to ${../if/set-priority:/name} shall
-      not be accessed by the ${../if/set-priority:/name} call.
+      Objects referenced by the ${../if/set-priority:/params[2]/name} parameter in
+      past calls to ${../if/set-priority:/name} shall not be accessed by the
+      ${../if/set-priority:/name} call.
   test-epilogue: null
   test-prologue: null
 pre-conditions:
@@ -84,14 +83,14 @@ pre-conditions:
     test-code: |
       ctx->id = INVALID_ID;
     text: |
-      While the ${../if/set-priority:/params[0]/name} parameter is not
-      associated with a task.
+      While the ${../if/set-priority:/params[0]/name} parameter is not associated
+      with a task.
   - name: Task
     test-code: |
       ctx->id = ctx->worker_id;
     text: |
-      While the ${../if/set-priority:/params[0]/name} parameter is
-      associated with a task.
+      While the ${../if/set-priority:/params[0]/name} parameter is associated with a
+      task.
   test-epilogue: null
   test-prologue: null
 - name: State
@@ -100,29 +99,29 @@ pre-conditions:
     test-code: |
       ctx->started = false;
     text: |
-      While the task specified by the ${../if/set-priority:/params[0]/name}
-      parameter is dormant.
+      While the task specified by the ${../if/set-priority:/params[0]/name} parameter
+      is dormant.
   - name: Ready
     test-code: |
       ctx->started = true;
       ctx->blocked = false;
     text: |
-      While the task specified by the ${../if/set-priority:/params[0]/name}
-      parameter is ready.
+      While the task specified by the ${../if/set-priority:/params[0]/name} parameter
+      is ready.
   - name: Scheduled
     test-code: |
       ctx->started = false;
       ctx->id = rtems_task_self();
     text: |
-      While the task specified by the ${../if/set-priority:/params[0]/name}
-      parameter is scheduled.
+      While the task specified by the ${../if/set-priority:/params[0]/name} parameter
+      is scheduled.
   - name: Blocked
     test-code: |
       ctx->started = true;
       ctx->blocked = true;
     text: |
-      While the task specified by the ${../if/set-priority:/params[0]/name}
-      parameter is blocked.
+      While the task specified by the ${../if/set-priority:/params[0]/name} parameter
+      is blocked.
   test-epilogue: null
   test-prologue: null
 - name: NewPriority
@@ -131,14 +130,14 @@ pre-conditions:
     test-code: |
       ctx->new_priority = RTEMS_CURRENT_PRIORITY;
     text: |
-      While the value of the ${../if/set-priority:/params[1]/name} parameter is
-      equal to ${../if/current-priority:/name}.
+      While the value of the ${../if/set-priority:/params[1]/name} parameter is equal
+      to ${../if/current-priority:/name}.
   - name: Other
     test-code: |
       ctx->new_priority = PRIO_NORMAL;
     text: |
-      While the value of the ${../if/set-priority:/params[1]/name} parameter is
-      not equal to ${../if/current-priority:/name}.
+      While the value of the ${../if/set-priority:/params[1]/name} parameter is not
+      equal to ${../if/current-priority:/name}.
   test-epilogue: null
   test-prologue: null
 - name: TaskPriority
@@ -147,50 +146,47 @@ pre-conditions:
     test-code: |
       ctx->new_priority = PRIO_HIGH;
     text: |
-      While the value of the ${../if/set-priority:/params[1]/name} parameter is
-      a valid ${/glossary/priority-task:/term} with respect to the
+      While the value of the ${../if/set-priority:/params[1]/name} parameter is a
+      valid ${/glossary/priority-task:/term} with respect to the
       ${/glossary/scheduler-home:/term} of the task specified by the
-      ${../if/set-priority:/params[0]/name} parameter when the new priority is
-      set,
+      ${../if/set-priority:/params[0]/name} parameter when the new priority is set,
       while the value of the ${../if/set-priority:/params[1]/name} parameter is
       higher than the ${/glossary/priority-task:/term} with respect to the
       ${/glossary/scheduler-home:/term} of the task specified by the
-      ${../if/set-priority:/params[0]/name} parameter at time when the
-      scheduler evaluates the new priority.
+      ${../if/set-priority:/params[0]/name} parameter at time when the scheduler
+      evaluates the new priority.
   - name: Equal
     test-code: |
       ctx->new_priority = PRIO_NORMAL;
     text: |
-      While the value of the ${../if/set-priority:/params[1]/name} parameter is
-      a valid ${/glossary/priority-task:/term} with respect to the
+      While the value of the ${../if/set-priority:/params[1]/name} parameter is a
+      valid ${/glossary/priority-task:/term} with respect to the
       ${/glossary/scheduler-home:/term} of the task specified by the
-      ${../if/set-priority:/params[0]/name} parameter when the new priority is
-      set,
-      while the value of the ${../if/set-priority:/params[1]/name} parameter is
-      equal to the ${/glossary/priority-task:/term} with respect to the
+      ${../if/set-priority:/params[0]/name} parameter when the new priority is set,
+      while the value of the ${../if/set-priority:/params[1]/name} parameter is equal
+      to the ${/glossary/priority-task:/term} with respect to the
       ${/glossary/scheduler-home:/term} of the task specified by the
-      ${../if/set-priority:/params[0]/name} parameter at time when the
-      scheduler evaluates the new priority.
+      ${../if/set-priority:/params[0]/name} parameter at time when the scheduler
+      evaluates the new priority.
   - name: Low
     test-code: |
       ctx->new_priority = PRIO_LOW;
     text: |
-      While the value of the ${../if/set-priority:/params[1]/name} parameter is
-      a valid ${/glossary/priority-task:/term} with respect to the
+      While the value of the ${../if/set-priority:/params[1]/name} parameter is a
+      valid ${/glossary/priority-task:/term} with respect to the
       ${/glossary/scheduler-home:/term} of the task specified by the
-      ${../if/set-priority:/params[0]/name} parameter when the new priority is
-      set,
-      while the value of the ${../if/set-priority:/params[1]/name} parameter is
-      lower than the ${/glossary/priority-task:/term} with respect to the
+      ${../if/set-priority:/params[0]/name} parameter when the new priority is set,
+      while the value of the ${../if/set-priority:/params[1]/name} parameter is lower
+      than the ${/glossary/priority-task:/term} with respect to the
       ${/glossary/scheduler-home:/term} of the task specified by the
-      ${../if/set-priority:/params[0]/name} parameter at time when the
-      scheduler evaluates the new priority.
+      ${../if/set-priority:/params[0]/name} parameter at time when the scheduler
+      evaluates the new priority.
   - name: Invalid
     test-code: |
       ctx->new_priority = PRIO_INVALID;
     text: |
-      While the value of the ${../if/set-priority:/params[1]/name} parameter is
-      an invalid ${/glossary/priority-task:/term} with respect to the
+      While the value of the ${../if/set-priority:/params[1]/name} parameter is an
+      invalid ${/glossary/priority-task:/term} with respect to the
       ${/glossary/scheduler-home:/term} of the task specified by the
       ${../if/set-priority:/params[0]/name} parameter when the new priority is
       evaluated.
@@ -202,8 +198,8 @@ pre-conditions:
     test-code: |
       ctx->old_priority = &ctx->old_priority_obj;
     text: |
-      While the ${../if/set-priority:/params[2]/name} parameter references an
-      object of type ${../../type/if/priority:/name}.
+      While the ${../if/set-priority:/params[2]/name} parameter references an object
+      of type ${../../type/if/priority:/name}.
   - name: 'Null'
     test-code: |
       ctx->old_priority = NULL;
@@ -265,26 +261,25 @@ test-context:
   member: |
     rtems_task_priority old_priority_obj
 - brief: |
-    This member contains the return value of the ${../if/set-priority:/name}
-    call.
+    This member contains the return value of the ${../if/set-priority:/name} call.
   description: null
   member: |
     rtems_status_code status
 - brief: |
-    This member specifies if the ${../if/set-priority:/params[0]/name}
-    parameter value.
+    This member specifies if the ${../if/set-priority:/params[0]/name} parameter
+    value.
   description: null
   member: |
     rtems_id id
 - brief: |
-    This member specifies if the ${../if/set-priority:/params[1]/name}
-    parameter value.
+    This member specifies if the ${../if/set-priority:/params[1]/name} parameter
+    value.
   description: null
   member: |
     rtems_task_priority new_priority
 - brief: |
-    This member specifies if the ${../if/set-priority:/params[2]/name}
-    parameter value.
+    This member specifies if the ${../if/set-priority:/params[2]/name} parameter
+    value.
   description: null
   member: |
     rtems_task_priority *old_priority
@@ -322,7 +317,8 @@ test-teardown:
   code: |
     RestoreRunnerPriority();
   description: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

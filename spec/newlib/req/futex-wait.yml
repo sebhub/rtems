@@ -23,8 +23,7 @@ post-conditions:
       eno = _Futex_Wait( &ctx->futex, &ctx->state, ctx->expected_value );
       T_eq_int( eno, EAGAIN );
     text: |
-      The return status of ${../if/futex-wait:/name} shall be
-      ${/c/if/eagain:/name}.
+      The return status of ${../if/futex-wait:/name} shall be ${/c/if/eagain:/name}.
   test-epilogue: null
   test-prologue: |
     int eno;
@@ -40,8 +39,8 @@ post-conditions:
     test-code: |
       ${/score/tq/req/enqueue-fifo:/test-run}( &ctx->tq_ctx );
     text: |
-      The calling thread shall be enqueued in FIFO order on the thread queue of
-      the futex object.
+      The calling thread shall be enqueued in FIFO order on the thread queue of the
+      futex object.
   test-epilogue: null
   test-prologue: null
 pre-conditions:
@@ -51,14 +50,13 @@ pre-conditions:
     test-code: |
       ctx->expected_value = 0;
     text: |
-      While the expected futex state value is equal to the actual futex state
-      value.
+      While the expected futex state value is equal to the actual futex state value.
   - name: NotEqual
     test-code: |
       ctx->expected_value = 1;
     text: |
-      While the expected futex state value is not equal to the actual futex
-      state value.
+      While the expected futex state value is not equal to the actual futex state
+      value.
   test-epilogue: null
   test-prologue: null
 rationale: null
@@ -154,7 +152,8 @@ test-teardown:
   code: |
     TQDestroy( &ctx->tq_ctx );
   description: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

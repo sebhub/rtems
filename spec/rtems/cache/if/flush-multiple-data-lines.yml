@@ -13,8 +13,8 @@ definition:
     return: void
   variants: []
 description: |
-  Dirty data cache lines covering the area are transfered to memory.  Depending
-  on the cache implementation this may mark the lines as invalid.
+  Dirty data cache lines covering the area are transfered to memory. Depending on
+  the cache implementation this may mark the lines as invalid.
 enabled-by: true
 index-entries: []
 interface-type: function

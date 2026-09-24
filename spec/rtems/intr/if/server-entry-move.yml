@@ -47,9 +47,8 @@ params:
   dir: null
   name: entry
 - description: |
-    is the index of the destination interrupt server.  The constant
-    ${server-default:/name} may be used to specify the default interrupt
-    server.
+    is the index of the destination interrupt server. The constant
+    ${server-default:/name} may be used to specify the default interrupt server.
   dir: null
   name: server_index
 return:

@@ -1,7 +1,6 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 brief: |
-  Tells the compiler in a function definition that this function should be
-  weak.
+  Tells the compiler in a function definition that this function should be weak.
 copyrights:
 - Copyright (C) 2020 embedded brains GmbH & Co. KG
 definition:
@@ -12,7 +11,7 @@ definition:
     enabled-by:
     - defined(${/compiler/if/gnuc:/name})
 description: |
-  Use this attribute for function definitions.  Do not use it for function
+  Use this attribute for function definitions. Do not use it for function
   declarations.
 enabled-by: true
 index-entries: []

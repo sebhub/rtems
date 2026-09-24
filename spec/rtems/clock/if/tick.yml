@@ -30,8 +30,8 @@ links:
   uid: /constraint/directive-ctx-task
 name: rtems_clock_tick
 notes: |
-  The directive is a legacy interface.  It should not be called by applications
-  directly.  A ${/glossary/clock-driver:/term} may call this directive.
+  The directive is a legacy interface. It should not be called by applications
+  directly. A ${/glossary/clock-driver:/term} may call this directive.
 params: []
 return: null
 type: interface

@@ -30,9 +30,9 @@ name: rtems_cache_instruction_sync_after_code_change
 notes: |
   When code is loaded or modified, then most systems require synchronization
   instructions to update the instruction caches so that the loaded or modified
-  code is fetched.  For example, systems with separate data and instruction
-  caches or systems without instruction cache snooping.  The directives should
-  be used by run time loader for example.
+  code is fetched. For example, systems with separate data and instruction caches
+  or systems without instruction cache snooping. The directives should be used by
+  run time loader for example.
 params:
 - description: |
     is the begin address of the code area to synchronize.

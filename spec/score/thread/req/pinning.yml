@@ -8,9 +8,9 @@ links:
 non-functional-type: design
 rationale: |
   The pinning of threads to a processor is an important feature to support
-  dynamically allocated lock-free data structures.  It allows efficient and
-  safe access to processor-specific data structures.  It is used for example to
-  implement the Epoch Based Reclamation in libbsd.  The libbsd is a port of
+  dynamically allocated lock-free data structures. It allows efficient and safe
+  access to processor-specific data structures. It is used for example to
+  implement the Epoch Based Reclamation in libbsd. The libbsd is a port of
   FreeBSD kernel modules to RTEMS.
 requirement-type: non-functional
 text: |

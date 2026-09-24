@@ -8,11 +8,11 @@ definition:
   default: ${bsp-output-char-function-type:/name} ${.:/name}
   variants: []
 description: |
-  This function pointer shall never be ${/c/if/null:/name}.  It shall be
-  provided by the ${/glossary/bsp:/term} and statically initialized.  The
-  referenced function shall output exactly the character specified by the
-  parameter.  In particular, it shall not perform character translations, for
-  example `NL` to `CR` followed by `NR`.  The function shall not block.
+  This function pointer shall never be ${/c/if/null:/name}. It shall be provided
+  by the ${/glossary/bsp:/term} and statically initialized. The referenced
+  function shall output exactly the character specified by the parameter. In
+  particular, it shall not perform character translations, for example `NL` to
+  `CR` followed by `NR`. The function shall not block.
 enabled-by: true
 index-entries: []
 interface-type: variable

@@ -8,6 +8,6 @@ links:
   uid: group
 term: proxy
 text: |
-  An RTEMS control structure used to represent, on a remote node, a task
-  which must block as part of a remote operation.
+  An RTEMS control structure used to represent, on a remote node, a task which
+  must block as part of a remote operation.
 type: glossary

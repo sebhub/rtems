@@ -8,6 +8,6 @@ links:
   uid: group
 term: soft real-time system
 text: |
-  A real-time system in which a missed deadline does not compromise the
-  integrity of the system.
+  A real-time system in which a missed deadline does not compromise the integrity
+  of the system.
 type: glossary

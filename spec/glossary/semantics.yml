@@ -8,7 +8,7 @@ links:
   uid: group
 term: semantics
 text: |
-  This term refers to the meaning of text or utterances in some language.  In a
+  This term refers to the meaning of text or utterances in some language. In a
   software engineering context these will be programming, modelling or
   specification languages.
 type: glossary

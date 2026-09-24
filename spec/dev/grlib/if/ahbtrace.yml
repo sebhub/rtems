@@ -4,16 +4,6 @@ brief: |
   map.
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
-description: null
-enabled-by: true
-identifier: RTEMSDeviceGRLIBAHBTRACE
-index-entries: []
-interface-type: register-block
-links:
-- role: interface-ingroup
-  uid: group
-- role: interface-placement
-  uid: ahbtrace-header
 definition:
 - default:
     count: 1
@@ -55,64 +45,92 @@ definition:
     name: TBBM
   offset: 0x1c
   variants: []
-register-prefix: null
+description: null
+enabled-by: true
+identifier: RTEMSDeviceGRLIBAHBTRACE
+index-entries: []
+interface-type: register-block
+links:
+- role: interface-ingroup
+  uid: group
+- role: interface-placement
+  uid: ahbtrace-header
+name: ahbtrace
+notes: null
 register-block-group: AHBTRACE
 register-block-size: 32
+register-prefix: null
 registers:
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'DCNT'
+      name: DCNT
+      properties:
+      - r
+      - w
       start: 16
       width: 7
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'PF'
+      name: PF
+      properties:
+      - r
+      - w
       start: 8
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'BW'
+      name: BW
+      properties:
+      - r
       start: 6
       width: 2
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'RF'
+      name: RF
+      properties:
+      - r
+      - w
       start: 5
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'AF'
+      name: AF
+      properties:
+      - r
+      - w
       start: 4
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'FR'
+      name: FR
+      properties:
+      - r
+      - w
       start: 3
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'FW'
+      name: FW
+      properties:
+      - r
+      - w
       start: 2
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'DM'
+      name: DM
+      properties:
+      - r
       start: 1
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'EN'
+      name: EN
+      properties:
+      - r
+      - w
       start: 0
       width: 1
     variants: []
@@ -123,10 +141,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'INDEX'
+      name: INDEX
+      properties:
+      - r
+      - w
       start: 4
       width: 7
     variants: []
@@ -137,10 +157,10 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: []
-      brief: null
+    - brief: null
       description: null
-      name: 'TIMETAG'
+      name: TIMETAG
+      properties: []
       start: 0
       width: 32
     variants: []
@@ -151,16 +171,20 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'SMASK_15_0'
+      name: SMASK_15_0
+      properties:
+      - r
+      - w
       start: 16
       width: 16
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'MMASK_15_0'
+      name: MMASK_15_0
+      properties:
+      - r
+      - w
       start: 0
       width: 16
     variants: []
@@ -171,10 +195,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'BADDR_31_2'
+      name: BADDR_31_2
+      properties:
+      - r
+      - w
       start: 2
       width: 30
     variants: []
@@ -185,22 +211,28 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'BMASK_31_2'
+      name: BMASK_31_2
+      properties:
+      - r
+      - w
       start: 2
       width: 30
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'LD'
+      name: LD
+      properties:
+      - r
+      - w
       start: 1
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'ST'
+      name: ST
+      properties:
+      - r
+      - w
       start: 0
       width: 1
     variants: []
@@ -209,6 +241,4 @@ registers:
   description: null
   name: TBBM
   width: 32
-name: ahbtrace
-notes: null
 type: interface

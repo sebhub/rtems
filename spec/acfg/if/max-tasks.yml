@@ -32,15 +32,14 @@ notes: |
   ${/ref/rtems/c-user/config-unlimited-objects:/name}.
 
   The calculations for the required memory in the RTEMS Workspace for tasks
-  assume that each task has a minimum stack size and has floating point
-  support enabled.  The configuration option ${extra-task-stacks:/name} is used
-  to specify task stack requirements *above* the minimum size required.
+  assume that each task has a minimum stack size and has floating point support
+  enabled. The configuration option ${extra-task-stacks:/name} is used to specify
+  task stack requirements *above* the minimum size required.
 
-  The maximum number of POSIX threads is specified by
-  ${max-posix-threads:/name}.
+  The maximum number of POSIX threads is specified by ${max-posix-threads:/name}.
 
   A future enhancement to ${header-confdefs:/path} could be to eliminate the
-  assumption that all tasks have floating point enabled. This would require
-  the addition of a new configuration parameter to specify the number of
-  tasks which enable floating point support.
+  assumption that all tasks have floating point enabled. This would require the
+  addition of a new configuration parameter to specify the number of tasks which
+  enable floating point support.
 type: interface

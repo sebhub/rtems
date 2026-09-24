@@ -4,8 +4,8 @@ copyrights:
 - Copyright (C) 2020 embedded brains GmbH & Co. KG
 default-value: 0
 description: |
-  The value of this configuration option defines the maximum number of POSIX
-  API Shared Memory objects that can be concurrently active.
+  The value of this configuration option defines the maximum number of POSIX API
+  Shared Memory objects that can be concurrently active.
 enabled-by: true
 index-entries: []
 interface-type: appl-config-option

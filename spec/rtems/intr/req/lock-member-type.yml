@@ -2,13 +2,13 @@ SPDX-License-Identifier: CC-BY-SA-4.0
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
 enabled-by: RTEMS_SMP
+functional-type: function
 links:
 - role: interface-function
   uid: ../if/lock-member
-functional-type: function
 rationale: null
 requirement-type: functional
 text: |
-  The ${../if/lock-member:/name} macro shall expand to structure or union
-  member declaration with a type of ${../if/lock:/name}.
+  The ${../if/lock-member:/name} macro shall expand to structure or union member
+  declaration with a type of ${../if/lock:/name}.
 type: requirement

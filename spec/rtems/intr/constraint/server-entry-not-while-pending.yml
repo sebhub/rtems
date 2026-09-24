@@ -8,6 +8,6 @@ links:
 rationale: null
 text: |
   The directive shall not be called while the interrupt server entry is pending
-  on or serviced by its current interrupt server.  Calling the directive under
+  on or serviced by its current interrupt server. Calling the directive under
   these conditions is undefined behaviour.
 type: constraint

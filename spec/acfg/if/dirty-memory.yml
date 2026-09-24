@@ -18,11 +18,11 @@ links:
   uid: ../constraint/option-not-pre-qualified
 name: CONFIGURE_DIRTY_MEMORY
 notes: |
-  Dirtying memory can add significantly to system initialization time.  It may
+  Dirtying memory can add significantly to system initialization time. It may
   assist in finding code that incorrectly assumes the contents of free memory
-  areas is cleared to zero during system initialization.  In case
-  ${zero-workspace-automatically:/name} is also defined, then the
-  memory is first dirtied and then zeroed.
+  areas is cleared to zero during system initialization. In case
+  ${zero-workspace-automatically:/name} is also defined, then the memory is first
+  dirtied and then zeroed.
 
   See also ${malloc-dirty:/name}.
 type: interface

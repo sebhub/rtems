@@ -6,7 +6,7 @@ links: []
 test-actions:
 - action-brief: |
     The test action is carried out by the application configuration of the test
-    suite and the wrapped _CPU_SMP_Start_processor().
+    suite and the wrapped \_CPU_SMP_Start_processor().
   action-code: |
     /* Nothing to do */
   checks:

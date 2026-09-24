@@ -43,8 +43,7 @@ post-conditions:
       T_eq_sz( ctx->calls_after_dispatch, ctx->nested );
       T_eq_sz( ctx->calls_after_enable, ctx->nested );
     text: |
-      While the ASR processing is disabled, the ASR handler shall not be
-      called.
+      While the ASR processing is disabled, the ASR handler shall not be called.
   - name: DuringSend
     test-code: |
       ++expected_calls;
@@ -60,8 +59,8 @@ post-conditions:
       T_eq_sz( ctx->calls_after_dispatch, ctx->nested + 1 );
       T_eq_sz( ctx->calls_after_enable, ctx->nested + 1 );
     text: |
-      When the next thread dispatch of the target task of the
-      ${../if/send:/name} call takes place, the ASR handler shall be called.
+      When the next thread dispatch of the target task of the ${../if/send:/name}
+      call takes place, the ASR handler shall be called.
   - name: AfterEnable
     test-code: |
       ++expected_calls;
@@ -69,8 +68,8 @@ post-conditions:
       T_eq_sz( ctx->calls_after_dispatch, ctx->nested );
       T_eq_sz( ctx->calls_after_enable, ctx->nested + 1 );
     text: |
-      When the target task of the ${../if/send:/name} call re-enables ASR
-      processing, the ASR handler shall be called.
+      When the target task of the ${../if/send:/name} call re-enables ASR processing,
+      the ASR handler shall be called.
   test-epilogue: |
     T_eq_sz( ctx->handler_calls, expected_calls );
 
@@ -113,20 +112,20 @@ pre-conditions:
     test-code: |
       ctx->id = 0xffffffff;
     text: |
-      While the ${../if/send:/params[0]/name} parameter is not associated with
-      a task.
+      While the ${../if/send:/params[0]/name} parameter is not associated with a
+      task.
   - name: Self
     test-code: |
       ctx->id = RTEMS_SELF;
     text: |
-      While the ${../if/send:/params[0]/name} parameter is associated with
-      the calling task.
+      While the ${../if/send:/params[0]/name} parameter is associated with the
+      calling task.
   - name: Other
     test-code: |
       ctx->id = ctx->worker_id;
     text: |
-      While the ${../if/send:/params[0]/name} parameter is associated with a
-      task other than the calling task.
+      While the ${../if/send:/params[0]/name} parameter is associated with a task
+      other than the calling task.
   test-epilogue: null
   test-prologue: null
 - name: Set
@@ -301,7 +300,11 @@ test-prepare: |
   ctx->calls_after_send = 0;
   ctx->calls_after_dispatch = 0;
   ctx->calls_after_enable = 0;
-  memset( &ctx->processed_signal_sets, 0, sizeof( ctx->processed_signal_sets ) );
+  memset(
+    &ctx->processed_signal_sets,
+    0,
+    sizeof( ctx->processed_signal_sets )
+  );
   memset( &ctx->stack_pointers, 0, sizeof( ctx->stack_pointers ) );
 test-setup:
   brief: null
@@ -312,7 +315,7 @@ test-setup:
 
     ctx->worker_id = CreateTask( "WORK", PRIO_HIGH );
 
-    #if defined(RTEMS_SMP)
+    #if defined( RTEMS_SMP )
     if ( rtems_scheduler_get_processor_maximum() > 1 ) {
       rtems_status_code sc;
       rtems_id          scheduler_id;
@@ -343,7 +346,7 @@ test-support: |
 
   static void WorkerDone( const Context *ctx )
   {
-  #if defined(RTEMS_SMP)
+  #if defined( RTEMS_SMP )
     if ( rtems_scheduler_get_processor_maximum() > 1 ) {
       SendEvents( ctx->runner_id, EVENT_WORKER_DONE );
     }
@@ -356,7 +359,7 @@ test-support: |
   {
     SendEvents( ctx->worker_id, events );
 
-  #if defined(RTEMS_SMP)
+  #if defined( RTEMS_SMP )
     if ( rtems_scheduler_get_processor_maximum() > 1 ) {
       events = ReceiveAnyEvents();
       T_eq_u32( events, EVENT_WORKER_DONE );
@@ -466,7 +469,8 @@ test-teardown:
     DeleteTask( ctx->worker_id );
     RestoreRunnerPriority();
   description: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

@@ -8,6 +8,6 @@ links:
   uid: group
 term: region
 text: |
-  An RTEMS object which is used to allocate and deallocate variable size
-  blocks of memory from a dynamically specified area of memory.
+  An RTEMS object which is used to allocate and deallocate variable size blocks
+  of memory from a dynamically specified area of memory.
 type: glossary

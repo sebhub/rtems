@@ -35,9 +35,9 @@ notes: |
   See also ${server-initialize:/name} and ${server-delete:/name}.
 params:
 - description: |
-    is the pointer to an ${server-control:/name} object.  When the directive
-    call was successful, the ownership of the object was transferred from the
-    caller of the directive to the interrupt server management.
+    is the pointer to an ${server-control:/name} object. When the directive call
+    was successful, the ownership of the object was transferred from the caller of
+    the directive to the interrupt server management.
   dir: out
   name: control
 - description: |
@@ -45,15 +45,15 @@ params:
   dir: null
   name: config
 - description: |
-    is the pointer to an ${/c/if/uint32_t:/name} object.  When the directive
-    call was successful, the index of the created interrupt server will be
-    stored in this object.
+    is the pointer to an ${/c/if/uint32_t:/name} object. When the directive call
+    was successful, the index of the created interrupt server will be stored in
+    this object.
   dir: out
   name: server_index
 return:
   return: |
-    The directive uses ${../../task/if/create:/name}.  If this directive fails,
-    then its error status will be returned.
+    The directive uses ${../../task/if/create:/name}. If this directive fails, then
+    its error status will be returned.
   return-values:
   - description: |
       The requested operation was successful.

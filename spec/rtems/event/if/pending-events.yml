@@ -1,7 +1,7 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 brief: |
-  This event set constant indicates that ${receive:/name} shall return the set
-  of pending events.
+  This event set constant indicates that ${receive:/name} shall return the set of
+  pending events.
 copyrights:
 - Copyright (C) 2020 embedded brains GmbH & Co. KG
 - Copyright (C) 1988, 2008 On-Line Applications Research Corporation (OAR)

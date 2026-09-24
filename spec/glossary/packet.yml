@@ -8,6 +8,6 @@ links:
   uid: group
 term: packet
 text: |
-  A buffer which contains the messages passed between nodes in a
-  multiprocessor system.  A packet is the contents of an envelope.
+  A buffer which contains the messages passed between nodes in a multiprocessor
+  system. A packet is the contents of an envelope.
 type: glossary

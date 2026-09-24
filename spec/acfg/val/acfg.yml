@@ -5,27 +5,26 @@ enabled-by: true
 links: []
 test-actions:
 - action-brief: |
-    Check the effect of application configuration options.  In addition, this
-    test case validates the effect of ${../if/init:/name}.  The test case
-    includes ${../if/header-confdefs:/path} without defining
-    ${../if/init:/name} before the include.  If this header would define
-    configuration data structures, then linking the test suite executable would
-    result in multiple definition errors.  This header is included in the test
-    suite runner translation unit while ${../if/init:/name} is defined before
-    the include.  If this would not result in the definition of application
-    defined configuration data structures, then the checks below for
-    non-default settings would fail.
+    Check the effect of application configuration options. In addition, this test
+    case validates the effect of ${../if/init:/name}. The test case includes
+    ${../if/header-confdefs:/path} without defining ${../if/init:/name} before the
+    include. If this header would define configuration data structures, then
+    linking the test suite executable would result in multiple definition errors.
+    This header is included in the test suite runner translation unit while
+    ${../if/init:/name} is defined before the include. If this would not result in
+    the definition of application defined configuration data structures, then the
+    checks below for non-default settings would fail.
   action-code: |
     rtems_status_code sc;
     rtems_id          id;
   checks:
   - brief: |
-      Check the default value ${/acfg/if/idle-task-body:/name} where the
-      optional BSP-provided default value is enabled.
+      Check the default value ${/acfg/if/idle-task-body:/name} where the optional
+      BSP-provided default value is enabled.
     code: |
       T_eq_ptr(
         rtems_configuration_get_idle_task(),
-      #if defined(BSP_IDLE_TASK_BODY)
+      #if defined( BSP_IDLE_TASK_BODY )
         BSP_IDLE_TASK_BODY
       #else
         _CPU_Thread_Idle_body
@@ -37,8 +36,8 @@ test-actions:
     - role: validation
       uid: ../req/disable-bsp-settings
   - brief: |
-      Check the configured ${/acfg/if/init-task-arguments:/name}.  This
-      validates also the effect of ${/acfg/if/init-task-entrypoint:/name} and
+      Check the configured ${/acfg/if/init-task-arguments:/name}. This validates also
+      the effect of ${/acfg/if/init-task-entrypoint:/name} and
       ${/acfg/if/rtems-init-tasks-table:/name}.
     code: |
       T_eq_ulong( test_runner_argument, TEST_RUNNER_ARGUMENT );
@@ -66,8 +65,8 @@ test-actions:
     - role: validation
       uid: ../req/init-task-name
   - brief: |
-      Check the configured ${/acfg/if/init-task-priority:/name}.  A priority of
-      zero can only be set for system tasks.  This validates also
+      Check the configured ${/acfg/if/init-task-priority:/name}. A priority of zero
+      can only be set for system tasks. This validates also
       ${/acfg/if/init-task-attributes:/name}.
     code: |
       T_eq_u32( test_runner_initial_priority, 0 );
@@ -78,8 +77,8 @@ test-actions:
       uid: ../req/init-task-attributes
   - brief: |
       Check that the configured
-      ${/acfg/if/min-tasks-with-user-provided-storage:/name} value reduced the
-      stack space size.
+      ${/acfg/if/min-tasks-with-user-provided-storage:/name} value reduced the stack
+      space size.
     code: |
       T_eq_uptr(
         _Stack_Space_size,
@@ -139,10 +138,7 @@ test-actions:
   - brief: |
       Check the configured ${/acfg/if/max-periods:/name} value.
     code: |
-      T_eq_u32(
-        rtems_configuration_get_maximum_periods(),
-        TEST_MAXIMUM_PERIODS
-      );
+      T_eq_u32( rtems_configuration_get_maximum_periods(), TEST_MAXIMUM_PERIODS );
     links:
     - role: validation
       uid: ../req/max-periods
@@ -151,10 +147,7 @@ test-actions:
   - brief: |
       Check the default ${/acfg/if/max-ports:/name} value.
     code: |
-      T_eq_u32(
-        rtems_configuration_get_maximum_ports(),
-        0
-      );
+      T_eq_u32( rtems_configuration_get_maximum_ports(), 0 );
     links:
     - role: validation
       uid: /rtems/config/req/get-maximum-ports
@@ -163,7 +156,7 @@ test-actions:
     code: |
       T_eq_u32(
         rtems_configuration_get_maximum_processors(),
-      #if defined(RTEMS_SMP)
+      #if defined( RTEMS_SMP )
         5
       #else
         1
@@ -177,10 +170,7 @@ test-actions:
   - brief: |
       Check the default ${/acfg/if/max-regions:/name} value.
     code: |
-      T_eq_u32(
-        rtems_configuration_get_maximum_regions(),
-        0
-      );
+      T_eq_u32( rtems_configuration_get_maximum_regions(), 0 );
     links:
     - role: validation
       uid: /rtems/config/req/get-maximum-regions
@@ -199,10 +189,7 @@ test-actions:
   - brief: |
       Check the configured ${/acfg/if/max-tasks:/name} value.
     code: |
-      T_eq_u32(
-        rtems_configuration_get_maximum_tasks(),
-        TEST_MAXIMUM_TASKS
-      );
+      T_eq_u32( rtems_configuration_get_maximum_tasks(), TEST_MAXIMUM_TASKS );
     links:
     - role: validation
       uid: ../req/max-tasks
@@ -211,10 +198,7 @@ test-actions:
   - brief: |
       Check the configured ${/acfg/if/max-timers:/name} value.
     code: |
-      T_eq_u32(
-        rtems_configuration_get_maximum_timers(),
-        TEST_MAXIMUM_TIMERS
-      );
+      T_eq_u32( rtems_configuration_get_maximum_timers(), TEST_MAXIMUM_TIMERS );
     links:
     - role: validation
       uid: ../req/max-timers
@@ -260,15 +244,15 @@ test-actions:
     - role: validation
       uid: /rtems/config/req/get-nanoseconds-per-tick
   - brief: |
-      Check the configured ${/acfg/if/task-stack-allocator:/name} hook.  Using
-      the test stack allocator validates also
+      Check the configured ${/acfg/if/task-stack-allocator:/name} hook. Using the
+      test stack allocator validates also
       ${/acfg/if/init-task-construct-storage-size:/spec}, since the
       test_task_stack_allocate() allocate handler only supports
       ${/acfg/if/max-tasks:/name} minus one stacks and the validation test for
       ${/rtems/task/req/create-errors:/spec} creates for some pre-condition variants
-      all tasks until ${/rtems/status/if/too-many:/name} is returned.  In
-      addition, test_task_stack_allocate() checks that the allocation size is
-      greater than or equal to TEST_MINIMUM_STACK_SIZE which validates
+      all tasks until ${/rtems/status/if/too-many:/name} is returned. In addition,
+      test_task_stack_allocate() checks that the allocation size is greater than or
+      equal to TEST_MINIMUM_STACK_SIZE which validates
       ${/acfg/if/min-task-stack-size:/name}.
     code: |
       T_eq_ptr(

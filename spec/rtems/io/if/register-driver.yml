@@ -29,14 +29,14 @@ links:
   uid: /constraint/directive-not-pre-qualified
 name: rtems_io_register_driver
 notes: |
-  If the device major number equals zero a device major number will be
-  obtained.  The device major number of the registered driver will be returned.
+  If the device major number equals zero a device major number will be obtained.
+  The device major number of the registered driver will be returned.
 
   After a successful registration, the ${initialize:/name} directive will be
   called to initialize the device.
 params:
 - description: |
-    is the device major number.  Use a value of zero to let the system obtain a
+    is the device major number. Use a value of zero to let the system obtain a
     device major number automatically.
   dir: null
   name: major
@@ -45,9 +45,9 @@ params:
   dir: null
   name: driver_table
 - description: |
-    is the pointer to an ${device-major-number:/name} object.  When the
-    directive call is successful, the device major number of the registered
-    device will be stored in this object.
+    is the pointer to an ${device-major-number:/name} object. When the directive
+    call is successful, the device major number of the registered device will be
+    stored in this object.
   dir: out
   name: registered_major
 return:

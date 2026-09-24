@@ -4,16 +4,6 @@ brief: |
   map.
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
-description: null
-enabled-by: true
-identifier: RTEMSDeviceGRGPIO
-index-entries: []
-interface-type: register-block
-links:
-- role: interface-ingroup
-  uid: group
-- role: interface-placement
-  uid: grgpio-header
 definition:
 - default:
     count: 1
@@ -125,16 +115,29 @@ definition:
     name: LXOR:LXOR_IMASK
   offset: 0x7c
   variants: []
-register-prefix: null
+description: null
+enabled-by: true
+identifier: RTEMSDeviceGRGPIO
+index-entries: []
+interface-type: register-block
+links:
+- role: interface-ingroup
+  uid: group
+- role: interface-placement
+  uid: grgpio-header
+name: grgpio
+notes: null
 register-block-group: GRGPIO
 register-block-size: 128
+register-prefix: null
 registers:
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'DATA'
+      name: DATA
+      properties:
+      - r
       start: 0
       width: 32
     variants: []
@@ -145,10 +148,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'DATA'
+      name: DATA
+      properties:
+      - r
+      - w
       start: 0
       width: 32
     variants: []
@@ -159,10 +164,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'DIR'
+      name: DIR
+      properties:
+      - r
+      - w
       start: 0
       width: 32
     variants: []
@@ -173,10 +180,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'MASK'
+      name: MASK
+      properties:
+      - r
+      - w
       start: 0
       width: 32
     variants: []
@@ -187,10 +196,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'POL'
+      name: POL
+      properties:
+      - r
+      - w
       start: 0
       width: 32
     variants: []
@@ -201,10 +212,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'EDGE'
+      name: EDGE
+      properties:
+      - r
+      - w
       start: 0
       width: 32
     variants: []
@@ -215,10 +228,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'BYPASS'
+      name: BYPASS
+      properties:
+      - r
+      - w
       start: 0
       width: 32
     variants: []
@@ -229,34 +244,39 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'PU'
+      name: PU
+      properties:
+      - r
       start: 18
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'IER'
+      name: IER
+      properties:
+      - r
       start: 17
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'IFL'
+      name: IFL
+      properties:
+      - r
       start: 16
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'IRQGEN'
+      name: IRQGEN
+      properties:
+      - r
       start: 8
       width: 5
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'NLINES'
+      name: NLINES
+      properties:
+      - r
       start: 0
       width: 5
     variants: []
@@ -267,28 +287,36 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'IRQMAP_I_0'
+      name: IRQMAP_I_0
+      properties:
+      - r
+      - w
       start: 24
       width: 5
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'IRQMAP_I_1'
+      name: IRQMAP_I_1
+      properties:
+      - r
+      - w
       start: 16
       width: 5
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'IRQMAP_I_2'
+      name: IRQMAP_I_2
+      properties:
+      - r
+      - w
       start: 8
       width: 5
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'IRQMAP_I_3'
+      name: IRQMAP_I_3
+      properties:
+      - r
+      - w
       start: 0
       width: 5
     variants: []
@@ -299,10 +327,11 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'IMASK'
+      name: IMASK
+      properties:
+      - r
       start: 0
       width: 32
     variants: []
@@ -313,10 +342,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'IFLAG'
+      name: IFLAG
+      properties:
+      - r
+      - w1c
       start: 0
       width: 32
     variants: []
@@ -327,10 +358,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'IPEN'
+      name: IPEN
+      properties:
+      - r
+      - w
       start: 0
       width: 32
     variants: []
@@ -341,10 +374,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'PULSE'
+      name: PULSE
+      properties:
+      - r
+      - w
       start: 0
       width: 32
     variants: []
@@ -355,10 +390,11 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [w]
-      brief: null
+    - brief: null
       description: null
-      name: 'DATA'
+      name: DATA
+      properties:
+      - w
       start: 0
       width: 32
     variants: []
@@ -369,10 +405,11 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [w]
-      brief: null
+    - brief: null
       description: null
-      name: 'DATA'
+      name: DATA
+      properties:
+      - w
       start: 0
       width: 32
     variants: []
@@ -383,10 +420,11 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [w]
-      brief: null
+    - brief: null
       description: null
-      name: 'DATA'
+      name: DATA
+      properties:
+      - w
       start: 0
       width: 32
     variants: []
@@ -395,6 +433,4 @@ registers:
   description: null
   name: LXOR
   width: 32
-name: grgpio
-notes: null
 type: interface

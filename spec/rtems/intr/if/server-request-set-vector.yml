@@ -43,11 +43,11 @@ links:
 name: rtems_interrupt_server_request_set_vector
 notes: |
   By default, the interrupt vector of an interrupt server request is set to a
-  special value which is outside the range of vectors supported by the
-  interrupt controller hardware.
+  special value which is outside the range of vectors supported by the interrupt
+  controller hardware.
 
   Calls to ${server-request-submit:/name} will disable the interrupt vector of
-  the request.  After processing of the request by the interrupt server the
+  the request. After processing of the request by the interrupt server the
   interrupt vector will be enabled again.
 params:
 - description: |

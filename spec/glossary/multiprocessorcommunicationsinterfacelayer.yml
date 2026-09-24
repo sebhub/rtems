@@ -8,6 +8,6 @@ links:
   uid: group
 term: Multiprocessor Communications Interface Layer
 text: |
-  A set of user-provided routines which enable the nodes in a
-  multiprocessor system to communicate with one another.
+  A set of user-provided routines which enable the nodes in a multiprocessor
+  system to communicate with one another.
 type: glossary

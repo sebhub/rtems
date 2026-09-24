@@ -25,6 +25,6 @@ notes: |
   ${/bsp/if/acfg-initial-extension:/name} and after the entries of all other
   initial user extensions.
 
-  It is recommended that applications provide a fatal extension to customize
-  the ${/ref/rtems/c-user/terminate:/name}.
+  It is recommended that applications provide a fatal extension to customize the
+  ${/ref/rtems/c-user/terminate:/name}.
 type: interface

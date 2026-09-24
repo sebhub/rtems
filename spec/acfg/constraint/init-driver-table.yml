@@ -8,6 +8,5 @@ links:
 rationale: null
 text: |
   The value of the application configuration option shall be a list of
-  initializers for structures of type
-  ${/rtems/io/if/driver-address-table:/name}.
+  initializers for structures of type ${/rtems/io/if/driver-address-table:/name}.
 type: constraint

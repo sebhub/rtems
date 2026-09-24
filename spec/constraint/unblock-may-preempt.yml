@@ -7,6 +7,6 @@ links:
   uid: /req/usage-constraints
 rationale: null
 text: |
-  The directive may unblock a task.  This may cause the calling task to be
+  The directive may unblock a task. This may cause the calling task to be
   preempted.
 type: constraint

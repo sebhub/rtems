@@ -9,7 +9,6 @@ links:
 term: real-time
 text: |
   A term used to describe systems which are characterized by requiring
-  deterministic response times to external stimuli.  The external stimuli
-  require that the response occur at a precise time or the response is
-  incorrect.
+  deterministic response times to external stimuli. The external stimuli require
+  that the response occur at a precise time or the response is incorrect.
 type: glossary

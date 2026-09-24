@@ -9,5 +9,5 @@ links:
 term: ELF
 text: |
   This term is an acronym for
-  `Executable and Linkable Format <https://en.wikipedia.org/wiki/Executable_and_Linkable_Format>`_.
+  [Executable and Linkable Format](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format).
 type: glossary

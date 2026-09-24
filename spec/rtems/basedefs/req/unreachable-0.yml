@@ -7,13 +7,12 @@ links:
 - role: interface-function
   uid: ../if/unreachable
 rationale: |
-  The use of this macro will suppress some compiler warnings
-  and may permit some compiler optimizations.
+  The use of this macro will suppress some compiler warnings and may permit some
+  compiler optimizations.
 requirement-type: functional
 text: |
-  When the code is compiled with the GNU C compiler,
-  and the ${../if/unreachable:/name} macro is placed in a part of
-  the code which control flow can under no circumstances ever reach,
-  the macro shall inform the compiler that this place in code
-  cannot be reached.
+  When the code is compiled with the GNU C compiler, and the
+  ${../if/unreachable:/name} macro is placed in a part of the code which control
+  flow can under no circumstances ever reach, the macro shall inform the compiler
+  that this place in code cannot be reached.
 type: requirement

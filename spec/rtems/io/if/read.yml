@@ -31,7 +31,7 @@ links:
 name: rtems_io_read
 notes: |
   Read operations typically require a buffer address as part of the argument
-  parameter block.  The contents of this buffer will be replaced with data from
+  parameter block. The contents of this buffer will be replaced with data from
   the device.
 params:
 - description: |

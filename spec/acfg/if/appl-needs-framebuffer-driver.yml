@@ -17,8 +17,8 @@ links:
   uid: ../constraint/option-not-pre-qualified
 name: CONFIGURE_APPLICATION_NEEDS_FRAME_BUFFER_DRIVER
 notes: |
-  Most BSPs do not include support for a Frame Buffer Driver. This is
-  because many boards do not include the required hardware.
+  Most BSPs do not include support for a Frame Buffer Driver. This is because
+  many boards do not include the required hardware.
 
   If this option is defined and the BSP does not have this device driver, then
   the user will get a link time error for an undefined symbol.

@@ -38,28 +38,27 @@ notes: |
   The memory allocated by the directive may be released with a call to
   ${coherent-free:/name}.
 
-  By default the C Program Heap allocator is used.  In case special memory
-  areas must be used, then the ${/glossary/bsp:/term} or the application should
-  add cache coherent memory areas for the allocator via
-  ${coherent-add-area:/name}.
+  By default the C Program Heap allocator is used. In case special memory areas
+  must be used, then the ${/glossary/bsp:/term} or the application should add
+  cache coherent memory areas for the allocator via ${coherent-add-area:/name}.
 params:
 - description: |
     is the requested size in bytes of the memory area to allocate.
   dir: null
   name: size
 - description: |
-    is the requested alignment in bytes of the memory area to allocate.  If the
-    alignment parameter is not equal to zero, the allocated memory area will
-    begin at an address aligned by this value.
+    is the requested alignment in bytes of the memory area to allocate. If the
+    alignment parameter is not equal to zero, the allocated memory area will begin
+    at an address aligned by this value.
   dir: null
   name: alignment
 - description: |
-    is the requested boundary in bytes of the memory area to allocate.  If the
-    boundary parameter is not equal to zero, the allocated memory area will
-    comply with a boundary constraint.  The boundary value specifies the set of
-    addresses which are aligned by the boundary value.  The interior of the
-    allocated memory area will not contain an element of this set.  The begin
-    or end address of the area may be a member of the set.
+    is the requested boundary in bytes of the memory area to allocate. If the
+    boundary parameter is not equal to zero, the allocated memory area will comply
+    with a boundary constraint. The boundary value specifies the set of addresses
+    which are aligned by the boundary value. The interior of the allocated memory
+    area will not contain an element of this set. The begin or end address of the
+    area may be a member of the set.
   dir: null
   name: boundary
 return:

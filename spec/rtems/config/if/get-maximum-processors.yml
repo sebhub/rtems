@@ -26,16 +26,14 @@ links:
 name: rtems_configuration_get_maximum_processors
 notes: |
   The actual number of processors available to the application is returned by
-  ${../../scheduler/if/get-processor-maximum:/name} which less than or
-  equal to the configured maximum number of processors
-  (${/acfg/if/max-processors:/name}).
+  ${../../scheduler/if/get-processor-maximum:/name} which less than or equal to
+  the configured maximum number of processors (${/acfg/if/max-processors:/name}).
 
   In uniprocessor configurations, this macro is a compile time constant which
   evaluates to one.
 params: []
 return:
   return: |
-    Returns the maximum number of processors configured for this
-    application.
+    Returns the maximum number of processors configured for this application.
   return-values: []
 type: interface

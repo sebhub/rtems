@@ -21,6 +21,6 @@ links:
   uid: ../constraint/max-uint32
 name: CONFIGURE_TICKS_PER_TIMESLICE
 notes: |
-  This configuration option has no impact if the Clock Driver is not
-  configured, see ${appl-does-not-need-clock-driver:/name}.
+  This configuration option has no impact if the Clock Driver is not configured,
+  see ${appl-does-not-need-clock-driver:/name}.
 type: interface

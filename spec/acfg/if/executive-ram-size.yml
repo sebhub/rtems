@@ -27,6 +27,6 @@ links:
   uid: ../constraint/memory-size
 name: CONFIGURE_EXECUTIVE_RAM_SIZE
 notes: |
-  This is an advanced configuration option.  Use it only if you know exactly
-  what you are doing.
+  This is an advanced configuration option. Use it only if you know exactly what
+  you are doing.
 type: interface

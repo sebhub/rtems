@@ -9,8 +9,7 @@ links:
 rationale: null
 requirement-type: functional
 text: |
-  The macro ${../if/xconcat:/name} shall result
-  in the substituted argument values textually concatenated
-  in the order ${../if/xconcat:/params[0]/name} left and
-  ${../if/xconcat:/params[1]/name} right.
+  The macro ${../if/xconcat:/name} shall result in the substituted argument
+  values textually concatenated in the order ${../if/xconcat:/params[0]/name}
+  left and ${../if/xconcat:/params[1]/name} right.
 type: requirement

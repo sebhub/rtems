@@ -1,8 +1,8 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 brief: |
   Tells the compiler in a function declaration that this function has no effect
-  except the return value and that the return value depends only on the value
-  of parameters.
+  except the return value and that the return value depends only on the value of
+  parameters.
 copyrights:
 - Copyright (C) 2019 embedded brains GmbH & Co. KG
 definition:

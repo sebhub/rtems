@@ -8,6 +8,6 @@ links:
   uid: group
 term: Partition Control Block
 text: |
-  A data structure associated with each partition used by RTEMS to manage
-  that partition.
+  A data structure associated with each partition used by RTEMS to manage that
+  partition.
 type: glossary

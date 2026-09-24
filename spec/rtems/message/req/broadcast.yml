@@ -41,27 +41,24 @@ post-conditions:
     test-code: |
       T_eq_u32( ctx->count, 0 );
     text: |
-      The value of the object referenced by the
-      ${../if/broadcast:/params[3]/name} parameter shall be set to 0 after
-      the return of the ${../if/broadcast:/name} call.
+      The value of the object referenced by the ${../if/broadcast:/params[3]/name}
+      parameter shall be set to 0 after the return of the ${../if/broadcast:/name}
+      call.
   - name: Set
     test-code: |
       T_eq_u32( ctx->count, NUMBER_OF_WORKERS );
     text: |
-      The value of the object referenced by the
-      ${../if/broadcast:/params[3]/name} parameter shall be set to the number
-      of tasks unblocked (see ${../glossary/unblock:/term}) by the call
-      to directive ${../if/broadcast:/name} after the
-      return of the ${../if/broadcast:/name} call.
+      The value of the object referenced by the ${../if/broadcast:/params[3]/name}
+      parameter shall be set to the number of tasks unblocked (see
+      ${../glossary/unblock:/term}) by the call to directive ${../if/broadcast:/name}
+      after the return of the ${../if/broadcast:/name} call.
   - name: Nop
     test-code: |
       T_eq_u32( ctx->count, UINT8_MAX );
     text: |
-      The value of the object referenced by the
-      ${../if/broadcast:/params[3]/name}
-      parameter in past call to ${../if/broadcast:/name} shall not be
-      accessed by the ${../if/broadcast:/name} call
-      (see also ${../glossary/nop:/term}).
+      The value of the object referenced by the ${../if/broadcast:/params[3]/name}
+      parameter in past call to ${../if/broadcast:/name} shall not be accessed by the
+      ${../if/broadcast:/name} call (see also ${../glossary/nop:/term}).
   test-epilogue: null
   test-prologue: null
 - name: MsgQueue
@@ -70,9 +67,9 @@ post-conditions:
     test-code: |
       ctx->check_msgq_unchanged( ctx );
     text: |
-      Objects referenced by the ${../if/broadcast:/params[0]/name}
-      parameter in the past call to ${../if/broadcast:/name} shall not be
-      accessed by that call (see also ${../glossary/nop:/term}).
+      Objects referenced by the ${../if/broadcast:/params[0]/name} parameter in the
+      past call to ${../if/broadcast:/name} shall not be accessed by that call (see
+      also ${../glossary/nop:/term}).
   test-epilogue: null
   test-prologue: null
 - name: Receivers
@@ -80,30 +77,29 @@ post-conditions:
   - name: Unblocked
     test-code: |
       for ( i = 0; i < NUMBER_OF_WORKERS; ++i ) {
-        T_rsc_success( ctx->receive_status[i] );
+        T_rsc_success( ctx->receive_status[ i ] );
       }
     text: |
       The call to the ${../if/broadcast:/name} directive shall
-      ${../glossary/unblock:/term} all ${../glossary/receiver:/plural}
-      waiting for a message at the ${/glossary/messagequeue:/term}.
+      ${../glossary/unblock:/term} all ${../glossary/receiver:/plural} waiting for a
+      message at the ${/glossary/messagequeue:/term}.
 
       Note: Currently, ${../if/broadcast:/name} unblocks
-      ${../glossary/receiver:/plural} in a non-atomic way. Meaning,
-      it will not only ${../glossary/unblock:/term} those
-      ${../glossary/receiver:/plural} it finds waiting at the queue
-      when ${../if/broadcast:/name} is invoked but also any new
-      ${../glossary/receiver:/plural} which start waiting for
-      messages after ${../if/broadcast:/name} is invoked and
-      before it returns. This may lead to infinite unblocking loops.
+      ${../glossary/receiver:/plural} in a non-atomic way. Meaning, it will not only
+      ${../glossary/unblock:/term} those ${../glossary/receiver:/plural} it finds
+      waiting at the queue when ${../if/broadcast:/name} is invoked but also any new
+      ${../glossary/receiver:/plural} which start waiting for messages after
+      ${../if/broadcast:/name} is invoked and before it returns. This may lead to
+      infinite unblocking loops.
   - name: Nop
     test-code: |
       for ( i = 0; i < NUMBER_OF_WORKERS; ++i ) {
-        T_rsc( ctx->receive_status[i], RTEMS_TIMEOUT );
+        T_rsc( ctx->receive_status[ i ], RTEMS_TIMEOUT );
       }
     text: |
-      The ${../glossary/receiver:/plural} waiting for
-      a message at the ${/glossary/messagequeue:/term} shall not be affected
-      by the call to the ${../if/broadcast:/name} directive.
+      The ${../glossary/receiver:/plural} waiting for a message at the
+      ${/glossary/messagequeue:/term} shall not be affected by the call to the
+      ${../if/broadcast:/name} directive.
   test-epilogue: null
   test-prologue: |
     size_t i;
@@ -114,29 +110,27 @@ post-conditions:
       for ( i = 0; i < NUMBER_OF_WORKERS; ++i ) {
         CheckForMessage(
           ctx,
-          ctx->receive_status[i],
-          ctx->receive_buffer[i],
-          ctx->receive_size[i]
+          ctx->receive_status[ i ],
+          ctx->receive_buffer[ i ],
+          ctx->receive_size[ i ]
         );
       }
     text: |
-      The values of the objects referenced by the
-      ${../if/receive:/params[2]/name} parameter in all calls to
-      ${../if/receive:/name} which are unblocked (see
-      ${../glossary/unblock:/term}) by the ${../if/broadcast:/name}
-      call shall be set to the same value as provided by parameter
-      ${../if/broadcast:/params[2]/name} of the ${../if/broadcast:/name}
-      call after the return of the ${../if/broadcast:/name} call.
+      The values of the objects referenced by the ${../if/receive:/params[2]/name}
+      parameter in all calls to ${../if/receive:/name} which are unblocked (see
+      ${../glossary/unblock:/term}) by the ${../if/broadcast:/name} call shall be set
+      to the same value as provided by parameter ${../if/broadcast:/params[2]/name}
+      of the ${../if/broadcast:/name} call after the return of the
+      ${../if/broadcast:/name} call.
   - name: Nop
     test-code: |
       for ( i = 0; i < NUMBER_OF_WORKERS; ++i ) {
-        T_eq_sz( ctx->receive_size[i], SIZE_MAX );
+        T_eq_sz( ctx->receive_size[ i ], SIZE_MAX );
       }
     text: |
-      Objects referenced by the ${../if/receive:/params[2]/name}
-      parameter in past calls to ${../if/receive:/name} shall not be
-      accessed by the ${../if/broadcast:/name} call (see also
-      ${../glossary/nop:/term}).
+      Objects referenced by the ${../if/receive:/params[2]/name} parameter in past
+      calls to ${../if/receive:/name} shall not be accessed by the
+      ${../if/broadcast:/name} call (see also ${../glossary/nop:/term}).
   test-epilogue: null
   test-prologue: |
     size_t i;
@@ -147,33 +141,30 @@ post-conditions:
       for ( i = 0; i < NUMBER_OF_WORKERS; ++i ) {
         CheckForMessage(
           ctx,
-          ctx->receive_status[i],
-          ctx->receive_buffer[i],
-          ctx->receive_size[i]
+          ctx->receive_status[ i ],
+          ctx->receive_buffer[ i ],
+          ctx->receive_size[ i ]
         );
       }
     text: |
-      Bytes 0 till ${../if/receive:/params[2]/name} - 1 of the object
-      referenced by the ${../if/receive:/params[1]/name} parameter in all
-      calls to ${../if/receive:/name} which are unblocked (see
-      ${../glossary/unblock:/term}) by the ${../if/broadcast:/name}
-      call shall be set to the same values as bytes 0 till
-      ${../if/receive:/params[2]/name} - 1 of the object
-      referenced by parameter ${../if/broadcast:/params[1]/name} of the
-      ${../if/broadcast:/name} call after the return of the
-      ${../if/receive:/name} call.
+      Bytes 0 till ${../if/receive:/params[2]/name} - 1 of the object referenced by
+      the ${../if/receive:/params[1]/name} parameter in all calls to
+      ${../if/receive:/name} which are unblocked (see ${../glossary/unblock:/term})
+      by the ${../if/broadcast:/name} call shall be set to the same values as bytes 0
+      till ${../if/receive:/params[2]/name} - 1 of the object referenced by parameter
+      ${../if/broadcast:/params[1]/name} of the ${../if/broadcast:/name} call after
+      the return of the ${../if/receive:/name} call.
   - name: Nop
     test-code: |
       for ( w = 0; w < NUMBER_OF_WORKERS; ++w ) {
         for ( i = 0; i < MAXIMUM_MESSAGE_SIZE; ++i ) {
-          T_eq_u8( ctx->receive_buffer[w][i], UINT8_MAX );
+          T_eq_u8( ctx->receive_buffer[ w ][ i ], UINT8_MAX );
         }
       }
     text: |
-      Objects referenced by the ${../if/receive:/params[1]/name}
-      parameter in past calls to ${../if/receive:/name} shall not be
-      accessed by the ${../if/broadcast:/name} call (see also
-      ${../glossary/nop:/term}).
+      Objects referenced by the ${../if/receive:/params[1]/name} parameter in past
+      calls to ${../if/receive:/name} shall not be accessed by the
+      ${../if/broadcast:/name} call (see also ${../glossary/nop:/term}).
   test-epilogue: null
   test-prologue: |
     size_t w, i;
@@ -184,14 +175,13 @@ pre-conditions:
     test-code: |
       ctx->buffer_param = &message;
     text: |
-      While the ${../if/broadcast:/params[1]/name} parameter references a memory
-      area where the message to be sent is stored.
+      While the ${../if/broadcast:/params[1]/name} parameter references a memory area
+      where the message to be sent is stored.
   - name: 'Null'
     test-code: |
       ctx->buffer_param = NULL;
     text: |
-      While the ${../if/broadcast:/params[1]/name} parameter is
-      ${/c/if/null:/name}.
+      While the ${../if/broadcast:/params[1]/name} parameter is ${/c/if/null:/name}.
   test-epilogue: null
   test-prologue: null
 - name: Count
@@ -200,14 +190,13 @@ pre-conditions:
     test-code: |
       ctx->count_param = &ctx->count;
     text: |
-      While the ${../if/broadcast:/params[3]/name} parameter references
-      an `uint32_t` object.
+      While the ${../if/broadcast:/params[3]/name} parameter references an `uint32_t`
+      object.
   - name: 'Null'
     test-code: |
       ctx->count_param = NULL;
     text: |
-      While the ${../if/broadcast:/params[3]/name} parameter is
-      ${/c/if/null:/name}.
+      While the ${../if/broadcast:/params[3]/name} parameter is ${/c/if/null:/name}.
   test-epilogue: null
   test-prologue: null
 - name: Id
@@ -235,20 +224,20 @@ pre-conditions:
     test-code: |
       ctx->size_param = MAXIMUM_MESSAGE_SIZE / 2 + 1;
     text: |
-      While the ${../if/broadcast:/params[2]/name} parameter has a value
-      between 0 and the ${../glossary/maximummessagesize:/term}.
+      While the ${../if/broadcast:/params[2]/name} parameter has a value between 0
+      and the ${../glossary/maximummessagesize:/term}.
   - name: MaxSize
     test-code: |
       ctx->size_param = MAXIMUM_MESSAGE_SIZE;
     text: |
-      While the ${../if/broadcast:/params[2]/name} parameter has a value
-      of the ${../glossary/maximummessagesize:/term}.
+      While the ${../if/broadcast:/params[2]/name} parameter has a value of the
+      ${../glossary/maximummessagesize:/term}.
   - name: TooLarge
     test-code: |
       ctx->size_param = MAXIMUM_MESSAGE_SIZE + 1;
     text: |
-      While the ${../if/broadcast:/params[2]/name} parameter has a value
-      greater than the ${../glossary/maximummessagesize:/term}.
+      While the ${../if/broadcast:/params[2]/name} parameter has a value greater than
+      the ${../glossary/maximummessagesize:/term}.
   test-epilogue: null
   test-prologue: null
 - name: MsgQueue
@@ -274,11 +263,11 @@ pre-conditions:
     test-code: |
       size_t i;
       for ( i = 0; i < NUMBER_OF_WORKERS; ++i ) {
-        SendEvents( ctx->worker_id[i], EVENT_RECEIVE );
+        SendEvents( ctx->worker_id[ i ], EVENT_RECEIVE );
       }
     text: |
-      While one or more ${../glossary/receiver:/plural} are waiting to
-      receive a message.
+      While one or more ${../glossary/receiver:/plural} are waiting to receive a
+      message.
   - name: None
     test-code: |
       /* There is already no receiver waiting. */
@@ -293,10 +282,9 @@ pre-conditions:
       /* Only a requirement text. */
     text: |
       While the memory area to which a pointer is provided as member
-      ${../if/config:/definition[3]/default/name} of type
-      ${../if/config:/name} when the ${/glossary/messagequeue:/term} is
-      constructed by ${../if/construct:/name} is altered only by the
-      ${/glossary/rtems:/term} operating system.
+      ${../if/config:/definition[3]/default/name} of type ${../if/config:/name} when
+      the ${/glossary/messagequeue:/term} is constructed by ${../if/construct:/name}
+      is altered only by the ${/glossary/rtems:/term} operating system.
   test-epilogue: null
   test-prologue: null
 rationale: null
@@ -316,7 +304,7 @@ test-action: |
   FinalClockTick();
 test-brief: null
 test-cleanup: |
-    T_rsc_success( rtems_message_queue_delete( ctx->message_queue_id ) );
+  T_rsc_success( rtems_message_queue_delete( ctx->message_queue_id ) );
 test-context:
 - brief: |
     This member contains a valid ${/glossary/id:/term} of a
@@ -325,8 +313,7 @@ test-context:
   member: |
     rtems_id message_queue_id
 - brief: |
-    This member is used as storage area for the
-    ${/glossary/messagequeue:/term}.
+    This member is used as storage area for the ${/glossary/messagequeue:/term}.
   description: null
   member: |
     RTEMS_MESSAGE_QUEUE_BUFFER( MAXIMUM_MESSAGE_SIZE )
@@ -342,38 +329,37 @@ test-context:
   member: |
     size_t receive_size[ NUMBER_OF_WORKERS ]
 - brief: |
-    This member contains the returned ${/glossary/statuscode:/plural}
-    of the receivers.
+    This member contains the returned ${/glossary/statuscode:/plural} of the
+    receivers.
   description: null
   member: |
     rtems_status_code receive_status[ NUMBER_OF_WORKERS ]
 - brief: |
-    This member specifies the ${../if/broadcast:/params[0]/name} parameter
-    of the action.
+    This member specifies the ${../if/broadcast:/params[0]/name} parameter of the
+    action.
   description: null
   member: |
     rtems_id id_param
 - brief: |
-    This member specifies the ${../if/broadcast:/params[1]/name} parameter
-    of the action.
+    This member specifies the ${../if/broadcast:/params[1]/name} parameter of the
+    action.
   description: null
   member: |
     const void *buffer_param
 - brief: |
-    This member specifies the ${../if/broadcast:/params[2]/name} parameter
-    of the action.
+    This member specifies the ${../if/broadcast:/params[2]/name} parameter of the
+    action.
   description: null
   member: |
     size_t size_param
 - brief: |
-    This member specifies the ${../if/broadcast:/params[3]/name} parameter
-    of the action.
+    This member specifies the ${../if/broadcast:/params[3]/name} parameter of the
+    action.
   description: null
   member: |
     uint32_t *count_param
 - brief: |
-    This member contains the returned ${/glossary/statuscode:/term}
-    of the action.
+    This member contains the returned ${/glossary/statuscode:/term} of the action.
   description: null
   member: |
     rtems_status_code status
@@ -384,15 +370,14 @@ test-context:
   member: |
     uint32_t count
 - brief: |
-    This member contains the ${/glossary/task:/term} identifiers of the
-    worker ${/glossary/task:/plural}.
+    This member contains the ${/glossary/task:/term} identifiers of the worker
+    ${/glossary/task:/plural}.
   description: null
   member: |
     rtems_id worker_id[ NUMBER_OF_WORKERS ]
 - brief: |
-    This member contains a pointer to a function which is executed
-    to check that the action has not changed the content of the
-    ${/glossary/messagequeue:/term}.
+    This member contains a pointer to a function which is executed to check that
+    the action has not changed the content of the ${/glossary/messagequeue:/term}.
   description: null
   member: |
     void (*check_msgq_unchanged)( void *ctx_in )
@@ -408,28 +393,25 @@ test-local-includes:
 - tx-support.h
 test-prepare: |
   rtems_status_code status;
-  size_t i;
+  size_t            i;
 
   rtems_message_queue_config config = {
-    .name                     = rtems_build_name( 'M', 'S', 'G', 'Q' ),
+    .name = rtems_build_name( 'M', 'S', 'G', 'Q' ),
     .maximum_pending_messages = MAXIMUM_PENDING_MESSAGES,
-    .maximum_message_size     = MAXIMUM_MESSAGE_SIZE,
-    .storage_area             = ctx->storage_area,
-    .storage_size             = sizeof( ctx->storage_area ),
-    .storage_free             = NULL,
-    .attributes               = RTEMS_DEFAULT_ATTRIBUTES
+    .maximum_message_size = MAXIMUM_MESSAGE_SIZE,
+    .storage_area = ctx->storage_area,
+    .storage_size = sizeof( ctx->storage_area ),
+    .storage_free = NULL,
+    .attributes = RTEMS_DEFAULT_ATTRIBUTES
   };
 
-  status = rtems_message_queue_construct(
-    &config,
-    &ctx->message_queue_id
-  );
+  status = rtems_message_queue_construct( &config, &ctx->message_queue_id );
   T_rsc_success( status );
 
   ctx->count = UINT8_MAX;
   for ( i = 0; i < NUMBER_OF_WORKERS; ++i ) {
-      ctx->receive_size[i] = SIZE_MAX;
-      memset( ctx->receive_buffer[i], UINT8_MAX, MAXIMUM_MESSAGE_SIZE );
+    ctx->receive_size[ i ] = SIZE_MAX;
+    memset( ctx->receive_buffer[ i ], UINT8_MAX, MAXIMUM_MESSAGE_SIZE );
   }
 test-setup:
   brief: null
@@ -438,25 +420,25 @@ test-setup:
     SetSelfPriority( PRIO_NORMAL );
 
     for ( i = 0; i < NUMBER_OF_WORKERS; ++i ) {
-      ctx->worker_id[i] = CreateTask( "WORK", PRIO_HIGH );
-      StartTask( ctx->worker_id[i], WorkerTask, ctx );
+      ctx->worker_id[ i ] = CreateTask( "WORK", PRIO_HIGH );
+      StartTask( ctx->worker_id[ i ], WorkerTask, ctx );
     }
   description: null
 test-stop: null
 test-support: |
   typedef ${.:/test-context-type} Context;
-  static const rtems_interval TIMEOUT_TICKS = 1;
-  static const rtems_event_set EVENT_RECEIVE = RTEMS_EVENT_17;
-  static const uint8_t message[ MAXIMUM_MESSAGE_SIZE ] =
+  static const rtems_interval     TIMEOUT_TICKS = 1;
+  static const rtems_event_set    EVENT_RECEIVE = RTEMS_EVENT_17;
+  static const uint8_t            message[ MAXIMUM_MESSAGE_SIZE ] =
     { 13, 42, 99, 222, 101 };
   static const uint8_t queued_message[] = { 200, 201, 202 };
 
   static void Receive( Context *ctx, size_t worker_index )
   {
-    ctx->receive_status[worker_index] = rtems_message_queue_receive(
+    ctx->receive_status[ worker_index ] = rtems_message_queue_receive(
       ctx->message_queue_id,
-      ctx->receive_buffer[worker_index],
-      &ctx->receive_size[worker_index],
+      ctx->receive_buffer[ worker_index ],
+      &ctx->receive_size[ worker_index ],
       RTEMS_WAIT,
       TIMEOUT_TICKS
     );
@@ -465,8 +447,8 @@ test-support: |
   static void WorkerTask( rtems_task_argument argument )
   {
     static size_t worker_number = 0;
-    size_t worker_index = worker_number++;
-    Context *ctx = (Context *) argument;
+    size_t        worker_index = worker_number++;
+    Context      *ctx = (Context *) argument;
 
     while ( true ) {
       ReceiveAnyEvents();
@@ -475,23 +457,23 @@ test-support: |
   }
 
   static void CheckForNoMessage(
-    Context *ctx,
+    Context          *ctx,
     rtems_status_code status,
-    uint8_t *message_buffer,
-    size_t message_size
+    uint8_t          *message_buffer,
+    size_t            message_size
   )
   {
     (void) ctx;
     (void) message_buffer;
     (void) message_size;
-    T_rsc( status, RTEMS_UNSATISFIED  );
+    T_rsc( status, RTEMS_UNSATISFIED );
   }
 
   static void CheckForMessage(
-    Context *ctx,
+    Context          *ctx,
     rtems_status_code status,
-    uint8_t *message_buffer,
-    size_t message_size
+    uint8_t          *message_buffer,
+    size_t            message_size
   )
   {
     T_rsc_success( status );
@@ -500,10 +482,10 @@ test-support: |
   }
 
   static void CheckForQueuedMessage(
-    Context *ctx,
+    Context          *ctx,
     rtems_status_code status,
-    uint8_t *message_buffer,
-    size_t message_size
+    uint8_t          *message_buffer,
+    size_t            message_size
   )
   {
     (void) ctx;
@@ -514,17 +496,17 @@ test-support: |
 
   static void PopMessage(
     Context *ctx,
-    void (*check_fn)(
-      Context *ctx,
+    void ( *check_fn )(
+      Context          *ctx,
       rtems_status_code status,
-      uint8_t *message_buffer,
-      size_t message_size
+      uint8_t          *message_buffer,
+      size_t            message_size
     )
   )
   {
     rtems_status_code status;
-    uint8_t message_buffer[ MAXIMUM_MESSAGE_SIZE ];
-    size_t message_size;
+    uint8_t           message_buffer[ MAXIMUM_MESSAGE_SIZE ];
+    size_t            message_size;
 
     status = rtems_message_queue_receive(
       ctx->message_queue_id,
@@ -534,7 +516,7 @@ test-support: |
       RTEMS_NO_TIMEOUT
     );
 
-   check_fn( ctx, status, message_buffer, message_size );
+    check_fn( ctx, status, message_buffer, message_size );
   }
 
   static void CheckForNoMessageInQueue( void *ctx_in )
@@ -562,7 +544,6 @@ test-support: |
     );
     T_rsc_success( status );
   }
-
 test-target: testsuites/validation/tc-message-broadcast.c
 test-teardown:
   brief: null
@@ -570,206 +551,189 @@ test-teardown:
     size_t i;
 
     for ( i = 0; i < NUMBER_OF_WORKERS; ++i ) {
-      DeleteTask( ctx->worker_id[i] );
+      DeleteTask( ctx->worker_id[ i ] );
     }
     RestoreRunnerPriority();
   description: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
-
-# ---- Ok Case ----
-
 - enabled-by: true
   post-conditions:
     Status: Ok
     Count:
-      - if:
-          pre-conditions:
-            Receivers: Waiting
-        then: Set
-      - else: Zero
+    - if:
+        pre-conditions:
+          Receivers: Waiting
+      then: Set
+    - else: Zero
     MsgQueue: Nop
     Receivers:
-      - if:
-          pre-conditions:
-            Receivers: Waiting
-        then: Unblocked
-      - else: N/A
+    - if:
+        pre-conditions:
+          Receivers: Waiting
+      then: Unblocked
+    - else: N/A
     RecSize:
-      - if:
-          pre-conditions:
-            Receivers: Waiting
-        then: Message
-      - else: N/A
+    - if:
+        pre-conditions:
+          Receivers: Waiting
+      then: Message
+    - else: N/A
     RecBuffer:
-      - if:
-          pre-conditions:
-            Receivers: Waiting
-        then: Message
-      - else: N/A
+    - if:
+        pre-conditions:
+          Receivers: Waiting
+      then: Message
+    - else: N/A
   pre-conditions:
     SendBuffer:
-      - Valid
+    - Valid
     Count:
-      - Valid
+    - Valid
     Id:
-      - Valid
+    - Valid
     MsgSize:
-      - Zero
-      - SomeSize
-      - MaxSize
+    - Zero
+    - SomeSize
+    - MaxSize
     MsgQueue: all
     Receivers: all
     Storage: all
-
-# ---- InvAddr: SendBuffer ----
-
 - enabled-by: true
   post-conditions:
     Status: InvAddr
     Count: Nop
     MsgQueue: Nop
     Receivers:
-      - if:
-          pre-conditions:
-            Receivers: Waiting
-        then: Nop
-      - else: N/A
+    - if:
+        pre-conditions:
+          Receivers: Waiting
+      then: Nop
+    - else: N/A
     RecSize:
-      - if:
-          pre-conditions:
-            Receivers: Waiting
-        then: Nop
-      - else: N/A
+    - if:
+        pre-conditions:
+          Receivers: Waiting
+      then: Nop
+    - else: N/A
     RecBuffer:
-      - if:
-          pre-conditions:
-            Receivers: Waiting
-        then: Nop
-      - else: N/A
+    - if:
+        pre-conditions:
+          Receivers: Waiting
+      then: Nop
+    - else: N/A
   pre-conditions:
     SendBuffer:
-      - 'Null'
+    - 'Null'
     Count: all
     Id: all
     MsgSize: all
     MsgQueue: all
     Receivers: all
     Storage: all
-
-# ---- InvAddr: Count ----
-
 - enabled-by: true
   post-conditions:
     Status: InvAddr
     Count: Nop
     MsgQueue: Nop
     Receivers:
-      - if:
-          pre-conditions:
-            Receivers: Waiting
-        then: Nop
-      - else: N/A
+    - if:
+        pre-conditions:
+          Receivers: Waiting
+      then: Nop
+    - else: N/A
     RecSize:
-      - if:
-          pre-conditions:
-            Receivers: Waiting
-        then: Nop
-      - else: N/A
+    - if:
+        pre-conditions:
+          Receivers: Waiting
+      then: Nop
+    - else: N/A
     RecBuffer:
-      - if:
-          pre-conditions:
-            Receivers: Waiting
-        then: Nop
-      - else: N/A
+    - if:
+        pre-conditions:
+          Receivers: Waiting
+      then: Nop
+    - else: N/A
   pre-conditions:
     SendBuffer:
-      - Valid
+    - Valid
     Count:
-      - 'Null'
+    - 'Null'
     Id: all
     MsgSize: all
     MsgQueue: all
     Receivers: all
     Storage: all
-
-# ---- InvId ----
-
 - enabled-by: true
   post-conditions:
     Status: InvId
     Count: Nop
     MsgQueue: Nop
     Receivers:
-      - if:
-          pre-conditions:
-            Receivers: Waiting
-        then: Nop
-      - else: N/A
+    - if:
+        pre-conditions:
+          Receivers: Waiting
+      then: Nop
+    - else: N/A
     RecSize:
-      - if:
-          pre-conditions:
-            Receivers: Waiting
-        then: Nop
-      - else: N/A
+    - if:
+        pre-conditions:
+          Receivers: Waiting
+      then: Nop
+    - else: N/A
     RecBuffer:
-      - if:
-          pre-conditions:
-            Receivers: Waiting
-        then: Nop
-      - else: N/A
+    - if:
+        pre-conditions:
+          Receivers: Waiting
+      then: Nop
+    - else: N/A
   pre-conditions:
     SendBuffer:
-      - Valid
+    - Valid
     Count:
-      - Valid
+    - Valid
     Id:
-      - Invalid
+    - Invalid
     MsgSize: all
     MsgQueue: all
     Receivers: all
     Storage: all
-
-# ---- InvSize ----
-
 - enabled-by: true
   post-conditions:
     Status: InvSize
     Count: Nop
     MsgQueue: Nop
     Receivers:
-      - if:
-          pre-conditions:
-            Receivers: Waiting
-        then: Nop
-      - else: N/A
+    - if:
+        pre-conditions:
+          Receivers: Waiting
+      then: Nop
+    - else: N/A
     RecSize:
-      - if:
-          pre-conditions:
-            Receivers: Waiting
-        then: Nop
-      - else: N/A
+    - if:
+        pre-conditions:
+          Receivers: Waiting
+      then: Nop
+    - else: N/A
     RecBuffer:
-      - if:
-          pre-conditions:
-            Receivers: Waiting
-        then: Nop
-      - else: N/A
+    - if:
+        pre-conditions:
+          Receivers: Waiting
+      then: Nop
+    - else: N/A
   pre-conditions:
     SendBuffer:
-      - Valid
+    - Valid
     Count:
-      - Valid
+    - Valid
     Id:
-      - Valid
+    - Valid
     MsgSize:
-      - TooLarge
+    - TooLarge
     MsgQueue: all
     Receivers: all
     Storage: all
-
-# ---- Impossible Cases ----
-
 - enabled-by: true
   post-conditions: NoWait
   pre-conditions:
@@ -778,9 +742,8 @@ transition-map:
     Id: all
     MsgSize: all
     MsgQueue:
-      - Several
+    - Several
     Receivers:
-      - Waiting
+    - Waiting
     Storage: all
-
 type: requirement

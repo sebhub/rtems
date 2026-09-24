@@ -2,16 +2,15 @@ SPDX-License-Identifier: CC-BY-SA-4.0
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
 enabled-by: true
+functional-type: function
 links:
 - role: interface-function
   uid: ../if/get-stack-allocator-avoids-work-space
-functional-type: function
 rationale: |
   The directive may be used to check the setting of the
   ${/acfg/if/task-stack-no-workspace:/name} application configuration option.
 requirement-type: functional
 text: |
-  The ${../if/get-stack-allocator-avoids-work-space:/name} directive shall
-  return the option value configured by
-  ${/acfg/if/task-stack-no-workspace:/name}.
+  The ${../if/get-stack-allocator-avoids-work-space:/name} directive shall return
+  the option value configured by ${/acfg/if/task-stack-no-workspace:/name}.
 type: requirement

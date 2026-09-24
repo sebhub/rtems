@@ -41,16 +41,15 @@ post-conditions:
     test-code: |
       T_eq_u32( ctx->counter, 1 );
     text: |
-      The entry point of the task specified by the
-      ${../if/start:/params[0]/name} parameter shall be set to the function
-      specified by the ${../if/start:/params[1]/name} parameter before the task
-      is unblocked by the ${../if/start:/name} call.
+      The entry point of the task specified by the ${../if/start:/params[0]/name}
+      parameter shall be set to the function specified by the
+      ${../if/start:/params[1]/name} parameter before the task is unblocked by the
+      ${../if/start:/name} call.
   - name: Nop
     test-code: |
       T_eq_u32( ctx->counter, 0 );
     text: |
-      No entry point of a task shall be modified by the ${../if/start:/name}
-      call.
+      No entry point of a task shall be modified by the ${../if/start:/name} call.
   test-epilogue: null
   test-prologue: null
 - name: Argument
@@ -60,15 +59,15 @@ post-conditions:
       T_eq_u32( ctx->actual_argument, ctx->argument );
     text: |
       The entry point argument of the task specified by the
-      ${../if/start:/params[0]/name} parameter shall be set to the value
-      specified by the ${../if/start:/params[2]/name} parameter before the task
-      is unblocked by the ${../if/start:/name} call.
+      ${../if/start:/params[0]/name} parameter shall be set to the value specified by
+      the ${../if/start:/params[2]/name} parameter before the task is unblocked by
+      the ${../if/start:/name} call.
   - name: Nop
     test-code: |
       T_eq_u32( ctx->actual_argument, 0 );
     text: |
-      No entry point argument of a task shall be modified by the
-      ${../if/start:/name} call.
+      No entry point argument of a task shall be modified by the ${../if/start:/name}
+      call.
   test-epilogue: null
   test-prologue: null
 - name: Unblock
@@ -76,13 +75,10 @@ post-conditions:
   - name: 'Yes'
     test-code: |
       T_eq_sz( ctx->scheduler_log.header.recorded, 1 );
-      T_eq_int(
-        ctx->scheduler_log.events[ 0 ].operation,
-        T_SCHEDULER_UNBLOCK
-      );
+      T_eq_int( ctx->scheduler_log.events[ 0 ].operation, T_SCHEDULER_UNBLOCK );
     text: |
-      The task specified by the ${../if/start:/params[0]/name} parameter shall
-      be unblocked by the ${../if/start:/name} call.
+      The task specified by the ${../if/start:/params[0]/name} parameter shall be
+      unblocked by the ${../if/start:/name} call.
   - name: Nop
     test-code: |
       T_eq_sz( ctx->scheduler_log.header.recorded, 0 );
@@ -96,8 +92,8 @@ post-conditions:
     test-code: |
       T_eq_u32( ctx->start_extension_calls, 1 );
     text: |
-      The thread start user extensions shall be invoked by the
-      ${../if/start:/name} call.
+      The thread start user extensions shall be invoked by the ${../if/start:/name}
+      call.
   - name: Nop
     test-code: |
       T_eq_u32( ctx->start_extension_calls, 0 );
@@ -113,14 +109,13 @@ pre-conditions:
     test-code: |
       ctx->id = INVALID_ID;
     text: |
-      While the ${../if/start:/params[0]/name} parameter is not associated with
-      a task.
+      While the ${../if/start:/params[0]/name} parameter is not associated with a
+      task.
   - name: Task
     test-code: |
       ctx->id = ctx->worker_id;
     text: |
-      While the ${../if/start:/params[0]/name} parameter is associated with a
-      task.
+      While the ${../if/start:/params[0]/name} parameter is associated with a task.
   test-epilogue: null
   test-prologue: null
 - name: EntryPoint
@@ -129,14 +124,14 @@ pre-conditions:
     test-code: |
       ctx->entry_point = WorkerA;
     text: |
-      While the task entry point specified by the
-      ${../if/start:/params[1]/name} parameter is valid.
+      While the task entry point specified by the ${../if/start:/params[1]/name}
+      parameter is valid.
   - name: 'Null'
     test-code: |
       ctx->entry_point = NULL;
     text: |
-      While the task entry point specified by the
-      ${../if/start:/params[1]/name} parameter is equal to ${/c/if/null:/name}.
+      While the task entry point specified by the ${../if/start:/params[1]/name}
+      parameter is equal to ${/c/if/null:/name}.
   test-epilogue: null
   test-prologue: null
 - name: Argument
@@ -145,14 +140,14 @@ pre-conditions:
     test-code: |
       ctx->argument = (rtems_task_argument) ctx;
     text: |
-      While the entry point argument specified by the
-      ${../if/start:/params[2]/name} parameter is a pointer.
+      While the entry point argument specified by the ${../if/start:/params[2]/name}
+      parameter is a pointer.
   - name: Number
     test-code: |
       ctx->argument = UINT32_C( 0x87654321 );
     text: |
-      While the entry point argument specified by the
-      ${../if/start:/params[2]/name} parameter is a 32-bit number.
+      While the entry point argument specified by the ${../if/start:/params[2]/name}
+      parameter is a 32-bit number.
   test-epilogue: null
   test-prologue: null
 - name: Dormant
@@ -161,14 +156,14 @@ pre-conditions:
     test-code: |
       ctx->start = false;
     text: |
-      While the task specified by the ${../if/start:/params[0]/name} parameter
-      is dormant.
+      While the task specified by the ${../if/start:/params[0]/name} parameter is
+      dormant.
   - name: 'No'
     test-code: |
       ctx->start = true;
     text: |
-      While the task specified by the ${../if/start:/params[0]/name} parameter
-      is not dormant.
+      While the task specified by the ${../if/start:/params[0]/name} parameter is not
+      dormant.
   test-epilogue: null
   test-prologue: null
 - name: Suspended
@@ -177,14 +172,14 @@ pre-conditions:
     test-code: |
       ctx->suspend = true;
     text: |
-      While the task specified by the ${../if/start:/params[0]/name} parameter
-      is suspended.
+      While the task specified by the ${../if/start:/params[0]/name} parameter is
+      suspended.
   - name: 'No'
     test-code: |
       ctx->suspend = false;
     text: |
-      While the task specified by the ${../if/start:/params[0]/name} parameter
-      is not suspended.
+      While the task specified by the ${../if/start:/params[0]/name} parameter is not
+      suspended.
   test-epilogue: null
   test-prologue: null
 rationale: null
@@ -259,26 +254,22 @@ test-context:
   member: |
     bool suspend
 - brief: |
-    This member contains the return value of the ${../if/start:/name}
-    call.
+    This member contains the return value of the ${../if/start:/name} call.
   description: null
   member: |
     rtems_status_code status
 - brief: |
-    This member specifies if the ${../if/start:/params[0]/name}
-    parameter value.
+    This member specifies if the ${../if/start:/params[0]/name} parameter value.
   description: null
   member: |
     rtems_id id
 - brief: |
-    This member specifies if the ${../if/start:/params[1]/name}
-    parameter value.
+    This member specifies if the ${../if/start:/params[1]/name} parameter value.
   description: null
   member: |
     rtems_task_entry entry_point
 - brief: |
-    This member specifies if the ${../if/start:/params[2]/name}
-    parameter value.
+    This member specifies if the ${../if/start:/params[2]/name} parameter value.
   description: null
   member: |
     rtems_task_argument argument
@@ -355,7 +346,8 @@ test-teardown:
     sc = rtems_extension_delete( ctx->extension_id );
     T_rsc_success( sc );
   description: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

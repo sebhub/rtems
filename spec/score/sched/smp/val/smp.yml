@@ -17,8 +17,7 @@ test-actions:
     WaitForBusy( ctx, WORKER_A );
   checks:
   - brief: |
-      Block the sticky worker A while it uses an idle thread in the home
-      scheduler.
+      Block the sticky worker A while it uses an idle thread in the home scheduler.
     code: |
       CallWithinISR( BlockAndReuseIdle, ctx );
     links:
@@ -37,8 +36,7 @@ test-actions:
     links: []
   links: []
 - action-brief: |
-    Construct a system state in which a thread is preempted while it is
-    blocked.
+    Construct a system state in which a thread is preempted while it is blocked.
   action-code: |
     SetScheduler( ctx->worker_id[ WORKER_B ], SCHEDULER_B_ID, PRIO_NORMAL );
     SendEvents( ctx->worker_id[ WORKER_A ], EVENT_OBTAIN );
@@ -49,8 +47,8 @@ test-actions:
     WaitForBusy( ctx, WORKER_A );
   checks:
   - brief: |
-      Block worker A and preempt it before the withdraw node operations are
-      performed for worker A.
+      Block worker A and preempt it before the withdraw node operations are performed
+      for worker A.
     code: |
       T_scheduler_set_event_handler( BlockAndPreempt, ctx );
       SuspendTask( ctx->worker_id[ WORKER_A ] );
@@ -72,7 +70,7 @@ test-actions:
     links: []
   links: []
 - action-brief: |
-    Construct a system state in which a thread is rescheduled  while it is not
+    Construct a system state in which a thread is rescheduled while it is not
     scheduled on another scheduler.
   action-code: |
     SetScheduler( ctx->worker_id[ WORKER_B ], SCHEDULER_B_ID, PRIO_NORMAL );
@@ -85,8 +83,8 @@ test-actions:
     WaitForBusy( ctx, WORKER_A );
   checks:
   - brief: |
-      Reschedule worker A by the home scheduler while worker A is not scheduled
-      on another scheduler.
+      Reschedule worker A by the home scheduler while worker A is not scheduled on
+      another scheduler.
     code: |
       CallWithinISR( ReadyToScheduled, ctx );
     links:
@@ -107,16 +105,16 @@ test-actions:
     links: []
   links: []
 - action-brief: |
-    Construct a system state in which an ask for help request is cancelled
-    while it is processed on another processor.
+    Construct a system state in which an ask for help request is cancelled while it
+    is processed on another processor.
   action-code: |
     PrepareOwnerScheduled( ctx );
   checks:
   - brief: |
-      Unblock worker A.  It cannot be scheduled on its home scheduler.
-      Intercept the ask for help request.  Block the worker A.  This will
-      cancel the ask for help request.  Remove the request while the other
-      processor tries to cancel the request.
+      Unblock worker A. It cannot be scheduled on its home scheduler. Intercept the
+      ask for help request. Block the worker A. This will cancel the ask for help
+      request. Remove the request while the other processor tries to cancel the
+      request.
     code: |
       SuspendTask( ctx->worker_id[ WORKER_A ] );
       T_scheduler_set_event_handler( UnblockAskForHelp, ctx );
@@ -133,14 +131,14 @@ test-actions:
     links: []
   links: []
 - action-brief: |
-    Construct a system state in which a scheduler tries to schedule a node
-    those owner thread is already scheduled during a block operation.
+    Construct a system state in which a scheduler tries to schedule a node those
+    owner thread is already scheduled during a block operation.
   action-code: |
     PrepareOwnerScheduled( ctx );
   checks:
   - brief: |
-      Block the runner thread while the owner thread of the highest priority
-      ready node is already scheduled.
+      Block the runner thread while the owner thread of the highest priority ready
+      node is already scheduled.
     code: |
       T_scheduler_set_event_handler( BlockStopBusyC, ctx );
       CallWithinISR( Block, ctx );
@@ -154,14 +152,14 @@ test-actions:
     links: []
   links: []
 - action-brief: |
-    Construct a system state in which a scheduler tries to schedule a node
-    those owner thread is blocked during a block operation.
+    Construct a system state in which a scheduler tries to schedule a node those
+    owner thread is blocked during a block operation.
   action-code: |
     PrepareOwnerBlocked( ctx );
   checks:
   - brief: |
-      Block the runner thread while the owner thread of the highest priority
-      ready node is blocked.
+      Block the runner thread while the owner thread of the highest priority ready
+      node is blocked.
     code: |
       T_scheduler_set_event_handler( BlockSuspendA, ctx );
       CallWithinISR( Block, ctx );
@@ -175,14 +173,14 @@ test-actions:
     links: []
   links: []
 - action-brief: |
-    Construct a system state in which a scheduler tries to schedule a node
-    those owner thread is already scheduled during a set affinity operation.
+    Construct a system state in which a scheduler tries to schedule a node those
+    owner thread is already scheduled during a set affinity operation.
   action-code: |
     PrepareOwnerScheduled( ctx );
   checks:
   - brief: |
-      Set the affinity of the runner thread while the owner thread of the
-      highest priority ready node is already scheduled.
+      Set the affinity of the runner thread while the owner thread of the highest
+      priority ready node is already scheduled.
     code: |
       T_scheduler_set_event_handler( SetAffinityStopBusyC, ctx );
       SetSelfAffinityAll();
@@ -196,60 +194,60 @@ test-actions:
     links: []
   links: []
 - action-brief: |
-    Construct a system state in which a scheduler tries to schedule a node
-    those owner thread is already scheduled during a set affinity operation
-    while a sticky node is involved.
-  action-code: |
-    PrepareOwnerScheduled( ctx );
-  checks:
-  - brief: |
-      Set the affinity of the runner thread while the owner thread of the
-      highest priority ready node is already scheduled.
-    code: |
-      MakeSticky( ctx );
-      T_scheduler_set_event_handler( SetAffinityStopBusyC, ctx );
-      SetSelfAffinityAll();
-      CleanSticky( ctx );
-    links:
-    - role: validation
-      uid: ../req/ask-for-help-home
-  - brief: |
-      Clean up all used resources.
-    code: |
-      CleanupOwnerScheduled( ctx );
-    links: []
-  links: []
-- action-brief: |
-    Construct a system state in which a scheduler tries to schedule a node
-    those owner thread is blocked during a set affinity operation.
-  action-code: |
-    PrepareOwnerBlocked( ctx );
-  checks:
-  - brief: |
-      Set the affinity of the runner thread while the owner thread of the
-      highest priority ready node is blocked.
-    code: |
-      T_scheduler_set_event_handler( SetAffinitySuspendA, ctx );
-      SetSelfAffinityAll();
-    links:
-    - role: validation
-      uid: ../req/ask-for-help-helping
-  - brief: |
-      Clean up all used resources.
-    code: |
-      CleanupOwnerBlocked( ctx );
-    links: []
-  links: []
-- action-brief: |
-    Construct a system state in which a scheduler tries to schedule a node
-    those owner thread is blocked during a set affinity operation while a
+    Construct a system state in which a scheduler tries to schedule a node those
+    owner thread is already scheduled during a set affinity operation while a
     sticky node is involved.
   action-code: |
+    PrepareOwnerScheduled( ctx );
+  checks:
+  - brief: |
+      Set the affinity of the runner thread while the owner thread of the highest
+      priority ready node is already scheduled.
+    code: |
+      MakeSticky( ctx );
+      T_scheduler_set_event_handler( SetAffinityStopBusyC, ctx );
+      SetSelfAffinityAll();
+      CleanSticky( ctx );
+    links:
+    - role: validation
+      uid: ../req/ask-for-help-home
+  - brief: |
+      Clean up all used resources.
+    code: |
+      CleanupOwnerScheduled( ctx );
+    links: []
+  links: []
+- action-brief: |
+    Construct a system state in which a scheduler tries to schedule a node those
+    owner thread is blocked during a set affinity operation.
+  action-code: |
     PrepareOwnerBlocked( ctx );
   checks:
   - brief: |
-      Set the affinity of the runner thread while the owner thread of the
-      highest priority ready node is blocked.
+      Set the affinity of the runner thread while the owner thread of the highest
+      priority ready node is blocked.
+    code: |
+      T_scheduler_set_event_handler( SetAffinitySuspendA, ctx );
+      SetSelfAffinityAll();
+    links:
+    - role: validation
+      uid: ../req/ask-for-help-helping
+  - brief: |
+      Clean up all used resources.
+    code: |
+      CleanupOwnerBlocked( ctx );
+    links: []
+  links: []
+- action-brief: |
+    Construct a system state in which a scheduler tries to schedule a node those
+    owner thread is blocked during a set affinity operation while a sticky node is
+    involved.
+  action-code: |
+    PrepareOwnerBlocked( ctx );
+  checks:
+  - brief: |
+      Set the affinity of the runner thread while the owner thread of the highest
+      priority ready node is blocked.
     code: |
       MakeSticky( ctx );
       T_scheduler_set_event_handler( SetAffinitySuspendA, ctx );
@@ -265,14 +263,14 @@ test-actions:
     links: []
   links: []
 - action-brief: |
-    Construct a system state in which a scheduler tries to schedule a node
-    those owner thread is already scheduled during a set priority operation.
+    Construct a system state in which a scheduler tries to schedule a node those
+    owner thread is already scheduled during a set priority operation.
   action-code: |
     PrepareOwnerScheduled( ctx );
   checks:
   - brief: |
-      Set the priority of the runner thread while the owner thread of the
-      highest priority ready node is already scheduled.
+      Set the priority of the runner thread while the owner thread of the highest
+      priority ready node is already scheduled.
     code: |
       SetSelfPriority( PRIO_HIGH );
       T_scheduler_set_event_handler( UpdatePriorityStopBusyC, ctx );
@@ -287,15 +285,15 @@ test-actions:
     links: []
   links: []
 - action-brief: |
-    Construct a system state in which a scheduler tries to schedule a node
-    those owner thread is already scheduled during a set priority operation
-    while a sticky node is involved.
+    Construct a system state in which a scheduler tries to schedule a node those
+    owner thread is already scheduled during a set priority operation while a
+    sticky node is involved.
   action-code: |
     PrepareOwnerScheduled( ctx );
   checks:
   - brief: |
-      Set the priority of the runner thread while the owner thread of the
-      highest priority ready node is already scheduled.
+      Set the priority of the runner thread while the owner thread of the highest
+      priority ready node is already scheduled.
     code: |
       MakeSticky( ctx );
       CallWithinISR( RaiseWorkerPriorityWithIdleRunner, ctx );
@@ -310,14 +308,14 @@ test-actions:
     links: []
   links: []
 - action-brief: |
-    Construct a system state in which a scheduler tries to schedule a node
-    those owner thread is blocked during a set priority operation.
+    Construct a system state in which a scheduler tries to schedule a node those
+    owner thread is blocked during a set priority operation.
   action-code: |
     PrepareOwnerBlocked( ctx );
   checks:
   - brief: |
-      Set the priority of the runner thread while the owner thread of the
-      highest priority ready node is blocked.
+      Set the priority of the runner thread while the owner thread of the highest
+      priority ready node is blocked.
     code: |
       SetSelfPriority( PRIO_HIGH );
       T_scheduler_set_event_handler( UpdatePrioritySuspendA, ctx );
@@ -332,14 +330,14 @@ test-actions:
     links: []
   links: []
 - action-brief: |
-    Construct a system state in which a scheduler tries to schedule a node
-    those owner thread is already scheduled during a yield operation.
+    Construct a system state in which a scheduler tries to schedule a node those
+    owner thread is already scheduled during a yield operation.
   action-code: |
     PrepareOwnerScheduled( ctx );
   checks:
   - brief: |
-      Yield while the owner thread of the highest priority ready node is
-      already scheduled.
+      Yield while the owner thread of the highest priority ready node is already
+      scheduled.
     code: |
       T_scheduler_set_event_handler( YieldStopBusyC, ctx );
       Yield();
@@ -353,60 +351,58 @@ test-actions:
     links: []
   links: []
 - action-brief: |
-    Construct a system state in which a scheduler tries to schedule a node
-    those owner thread is already scheduled during a yield operation while a
-    sticky node is involved.
-  action-code: |
-    PrepareOwnerScheduled( ctx );
-  checks:
-  - brief: |
-      Yield while the owner thread of the highest priority ready node is
-      already scheduled.
-    code: |
-      MakeSticky( ctx );
-      T_scheduler_set_event_handler( YieldStopBusyC, ctx );
-      Yield();
-      CleanSticky( ctx );
-    links:
-    - role: validation
-      uid: ../req/ask-for-help-home
-  - brief: |
-      Clean up all used resources.
-    code: |
-      CleanupOwnerScheduled( ctx );
-    links: []
-  links: []
-- action-brief: |
-    Construct a system state in which a scheduler tries to schedule a node
-    those owner thread is blocked during a yield operation.
-  action-code: |
-    PrepareOwnerBlocked( ctx );
-  checks:
-  - brief: |
-      Yield while the owner thread of the highest priority ready node is
-      blocked.
-    code: |
-      T_scheduler_set_event_handler( YieldSuspendA, ctx );
-      Yield();
-    links:
-    - role: validation
-      uid: ../req/ask-for-help-helping
-  - brief: |
-      Clean up all used resources.
-    code: |
-      CleanupOwnerBlocked( ctx );
-    links: []
-  links: []
-- action-brief: |
-    Construct a system state in which a scheduler tries to schedule a node
-    those owner thread is blocked during a yield operation while a sticky node
+    Construct a system state in which a scheduler tries to schedule a node those
+    owner thread is already scheduled during a yield operation while a sticky node
     is involved.
   action-code: |
+    PrepareOwnerScheduled( ctx );
+  checks:
+  - brief: |
+      Yield while the owner thread of the highest priority ready node is already
+      scheduled.
+    code: |
+      MakeSticky( ctx );
+      T_scheduler_set_event_handler( YieldStopBusyC, ctx );
+      Yield();
+      CleanSticky( ctx );
+    links:
+    - role: validation
+      uid: ../req/ask-for-help-home
+  - brief: |
+      Clean up all used resources.
+    code: |
+      CleanupOwnerScheduled( ctx );
+    links: []
+  links: []
+- action-brief: |
+    Construct a system state in which a scheduler tries to schedule a node those
+    owner thread is blocked during a yield operation.
+  action-code: |
     PrepareOwnerBlocked( ctx );
   checks:
   - brief: |
-      Yield while the owner thread of the highest priority ready node is
-      blocked.
+      Yield while the owner thread of the highest priority ready node is blocked.
+    code: |
+      T_scheduler_set_event_handler( YieldSuspendA, ctx );
+      Yield();
+    links:
+    - role: validation
+      uid: ../req/ask-for-help-helping
+  - brief: |
+      Clean up all used resources.
+    code: |
+      CleanupOwnerBlocked( ctx );
+    links: []
+  links: []
+- action-brief: |
+    Construct a system state in which a scheduler tries to schedule a node those
+    owner thread is blocked during a yield operation while a sticky node is
+    involved.
+  action-code: |
+    PrepareOwnerBlocked( ctx );
+  checks:
+  - brief: |
+      Yield while the owner thread of the highest priority ready node is blocked.
     code: |
       MakeSticky( ctx );
       T_scheduler_set_event_handler( YieldSuspendA, ctx );
@@ -422,9 +418,9 @@ test-actions:
     links: []
   links: []
 - action-brief: |
-    Create three worker threads and a mutex.  Use the mutex and the worker to
-    check that a not scheduled thread does not get removed from the set of
-    ready threads of a scheduler when a help request is reconsidered.
+    Create three worker threads and a mutex. Use the mutex and the worker to check
+    that a not scheduled thread does not get removed from the set of ready threads
+    of a scheduler when a help request is reconsidered.
   action-code: |
     Thread_Control *worker_b;
 
@@ -446,19 +442,18 @@ test-actions:
       _ISR_lock_ISR_enable( &ctx->lock_context );
     links: []
   - brief: |
-      Give worker C a lower priority than worker B.  Worker B will try to
-      finish the thread dispatch by doing a post-switch cleanup.  The
-      post-switch cleanup cannot progress since the runner owns the thread
-      state lock.  Wait until the other processor waits on the thread state
-      lock of worker B.
+      Give worker C a lower priority than worker B. Worker B will try to finish the
+      thread dispatch by doing a post-switch cleanup. The post-switch cleanup cannot
+      progress since the runner owns the thread state lock. Wait until the other
+      processor waits on the thread state lock of worker B.
     code: |
       SetPriority( ctx->worker_id[ WORKER_C ], PRIO_LOW );
       TicketLockWaitForOthers( &worker_b->Join_queue.Queue.Lock, 1 );
     links: []
   - brief: |
-      Give worker C a higher priority than worker B.  Let worker B do its
-      post-switch cleanup which will carry out the reconsider help requests for
-      a not scheduled thread.
+      Give worker C a higher priority than worker B. Let worker B do its post-switch
+      cleanup which will carry out the reconsider help requests for a not scheduled
+      thread.
     code: |
       ctx->counter = 0;
       T_scheduler_set_event_handler( ReleaseThreadLockB, ctx );

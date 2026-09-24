@@ -37,12 +37,11 @@ links:
   uid: /constraint/object-allocator
 name: rtems_region_extend
 notes: |
-  There are no alignment requirements for the memory area.  The memory area
-  must be big enough to contain some maintenance blocks.  It must not overlap
-  parts of the current heap memory areas.  Disconnected memory areas added to
-  the heap will lead to used blocks which cover the gaps.  Extending with an
-  inappropriate memory area will corrupt the heap resulting in undefined
-  behaviour.
+  There are no alignment requirements for the memory area. The memory area must
+  be big enough to contain some maintenance blocks. It must not overlap parts of
+  the current heap memory areas. Disconnected memory areas added to the heap will
+  lead to used blocks which cover the gaps. Extending with an inappropriate
+  memory area will corrupt the heap resulting in undefined behaviour.
 params:
 - description: |
     is the region identifier.
@@ -70,7 +69,7 @@ return:
       ${.:/params[0]/name}.
     value: ${../../status/if/invalid-id:/name}
   - description: |
-      The memory area specified by ${.:/params[1]/name} and
-      ${.:/params[2]/name} was insufficient to extend the heap.
+      The memory area specified by ${.:/params[1]/name} and ${.:/params[2]/name} was
+      insufficient to extend the heap.
     value: ${../../status/if/invalid-address:/name}
 type: interface

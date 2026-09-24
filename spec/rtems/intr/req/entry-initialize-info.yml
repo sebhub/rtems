@@ -2,15 +2,15 @@ SPDX-License-Identifier: CC-BY-SA-4.0
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
 enabled-by: true
+functional-type: function
 links:
 - role: interface-function
   uid: ../if/entry-initialize
-functional-type: function
 rationale: null
 requirement-type: functional
 text: |
-  When the ${../if/entry-initialize:/name} directive is called, the `info`
-  member of the object referenced by the
-  ${../if/entry-initialize:/params[0]/name} parameter shall be set to the value
-  of the ${../if/entry-initialize:/params[2]/name}.
+  When the ${../if/entry-initialize:/name} directive is called, the `info` member
+  of the object referenced by the ${../if/entry-initialize:/params[0]/name}
+  parameter shall be set to the value of the
+  ${../if/entry-initialize:/params[2]/name}.
 type: requirement

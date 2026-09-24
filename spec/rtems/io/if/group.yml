@@ -1,8 +1,7 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 brief: |
-  The Input/Output (I/O) Manager provides a well-defined mechanism for
-  accessing device drivers and a structured methodology for organizing device
-  drivers.
+  The Input/Output (I/O) Manager provides a well-defined mechanism for accessing
+  device drivers and a structured methodology for organizing device drivers.
 copyrights:
 - Copyright (C) 2020 embedded brains GmbH & Co. KG
 - Copyright (C) 1988, 2008 On-Line Applications Research Corporation (OAR)

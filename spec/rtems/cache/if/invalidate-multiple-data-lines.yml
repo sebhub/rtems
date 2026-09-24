@@ -13,8 +13,8 @@ definition:
     return: void
   variants: []
 description: |
-  The cache lines covering the area are marked as invalid.  A later read
-  access in the area will load the data from memory.
+  The cache lines covering the area are marked as invalid. A later read access in
+  the area will load the data from memory.
 enabled-by: true
 index-entries: []
 interface-type: function
@@ -29,8 +29,8 @@ links:
   uid: /constraint/directive-no-preempt
 name: rtems_cache_invalidate_multiple_data_lines
 notes: |
-  In case the area is not aligned on cache line boundaries, then this
-  operation may destroy unrelated data.
+  In case the area is not aligned on cache line boundaries, then this operation
+  may destroy unrelated data.
 
   On some systems, the cache lines may be flushed before they are invalidated.
 params:

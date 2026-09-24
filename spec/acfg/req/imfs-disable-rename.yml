@@ -11,6 +11,6 @@ links:
 rationale: null
 requirement-type: functional
 text: |
-  The application configuration option shall disable the support to rename
-  files in the root IMFS (no support for ${/c/if/rename:/name}).
+  The application configuration option shall disable the support to rename files
+  in the root IMFS (no support for ${/c/if/rename:/name}).
 type: requirement

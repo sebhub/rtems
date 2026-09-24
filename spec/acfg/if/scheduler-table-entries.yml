@@ -25,8 +25,8 @@ links:
 name: CONFIGURE_SCHEDULER_TABLE_ENTRIES
 notes: |
   Schedulers registered in the scheduler table by this configuration option are
-  available to the application.  The scheduler table entry index defines the
-  index of the scheduler.
+  available to the application. The scheduler table entry index defines the index
+  of the scheduler.
 
   This is an advanced configuration option, see
   ${/ref/rtems/c-user/config-scheduler-clustered:/name}.

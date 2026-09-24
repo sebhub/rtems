@@ -4,16 +4,6 @@ brief: |
   map.
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
-description: null
-enabled-by: true
-identifier: RTEMSDeviceGRLIBIRQAMPTimestamp
-index-entries: []
-interface-type: register-block
-links:
-- role: interface-ingroup
-  uid: irqamp
-- role: interface-placement
-  uid: irqamp-header
 definition:
 - default:
     count: 1
@@ -35,16 +25,29 @@ definition:
     name: ITSTMPAC
   offset: 0xc
   variants: []
-register-prefix: IRQAMP
+description: null
+enabled-by: true
+identifier: RTEMSDeviceGRLIBIRQAMPTimestamp
+index-entries: []
+interface-type: register-block
+links:
+- role: interface-ingroup
+  uid: irqamp
+- role: interface-placement
+  uid: irqamp-header
+name: irqamp_timestamp
+notes: null
 register-block-group: IRQ(A)MP Timestamp
 register-block-size: 16
+register-prefix: IRQAMP
 registers:
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'TCNT'
+      name: TCNT
+      properties:
+      - r
       start: 0
       width: 32
     variants: []
@@ -55,34 +58,43 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'TSTAMP'
+      name: TSTAMP
+      properties:
+      - r
       start: 27
       width: 5
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'S1'
+      name: S1
+      properties:
+      - r
+      - w1c
       start: 26
       width: 1
-    - properties: [r, w1c]
-      brief: null
+    - brief: null
       description: null
-      name: 'S2'
+      name: S2
+      properties:
+      - r
+      - w1c
       start: 25
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'KS'
+      name: KS
+      properties:
+      - r
+      - w
       start: 5
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'TSISEL'
+      name: TSISEL
+      properties:
+      - r
+      - w
       start: 0
       width: 5
     variants: []
@@ -93,10 +105,11 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'TASSERTION'
+      name: TASSERTION
+      properties:
+      - r
       start: 0
       width: 32
     variants: []
@@ -107,10 +120,11 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'TACKNOWLEDGE'
+      name: TACKNOWLEDGE
+      properties:
+      - r
       start: 0
       width: 32
     variants: []
@@ -119,6 +133,4 @@ registers:
   description: null
   name: ITSTMPAC
   width: 32
-name: irqamp_timestamp
-notes: null
 type: interface

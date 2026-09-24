@@ -13,189 +13,188 @@ post-conditions:
     test-code: |
       T_eq_str( ctx->result, "RTEMS_ALREADY_SUSPENDED" );
     text: |
-      The return value of ${../if/text:/name} shall reference a string which is
-      equal to "RTEMS_ALREADY_SUSPENDED".
+      The return value of ${../if/text:/name} shall reference a string which is equal
+      to "RTEMS_ALREADY_SUSPENDED".
   - name: CalledFromIsr
     test-code: |
       T_eq_str( ctx->result, "RTEMS_CALLED_FROM_ISR" );
     text: |
-      The return value of ${../if/text:/name} shall reference a string which is
-      equal to "RTEMS_CALLED_FROM_ISR".
+      The return value of ${../if/text:/name} shall reference a string which is equal
+      to "RTEMS_CALLED_FROM_ISR".
   - name: IllegalOnRemoteObject
-    test-code: |
-      T_eq_str( ctx->result, "RTEMS_ILLEGAL_ON_REMOTE_OBJECT" );
+    test-code: |2+
+
     text: |
-      The return value of ${../if/text:/name} shall reference a string which is
-      equal to "RTEMS_ILLEGAL_ON_REMOTE_OBJECT".
-    test-code: |
+      The return value of ${../if/text:/name} shall reference a string which is equal
+      to "RTEMS_ILLEGAL_ON_REMOTE_OBJECT".
   - name: IllegalOnSelf
     test-code: |
       T_eq_str( ctx->result, "RTEMS_ILLEGAL_ON_SELF" );
     text: |
-      The return value of ${../if/text:/name} shall reference a string which is
-      equal to "RTEMS_ILLEGAL_ON_SELF".
+      The return value of ${../if/text:/name} shall reference a string which is equal
+      to "RTEMS_ILLEGAL_ON_SELF".
   - name: IncorrectState
     test-code: |
       T_eq_str( ctx->result, "RTEMS_INCORRECT_STATE" );
     text: |
-      The return value of ${../if/text:/name} shall reference a string which is
-      equal to "RTEMS_INCORRECT_STATE".
+      The return value of ${../if/text:/name} shall reference a string which is equal
+      to "RTEMS_INCORRECT_STATE".
   - name: InternalError
     test-code: |
       T_eq_str( ctx->result, "RTEMS_INTERNAL_ERROR" );
     text: |
-      The return value of ${../if/text:/name} shall reference a string which is
-      equal to "RTEMS_INTERNAL_ERROR".
+      The return value of ${../if/text:/name} shall reference a string which is equal
+      to "RTEMS_INTERNAL_ERROR".
   - name: Interrupted
     test-code: |
       T_eq_str( ctx->result, "RTEMS_INTERRUPTED" );
     text: |
-      The return value of ${../if/text:/name} shall reference a string which is
-      equal to "RTEMS_INTERRUPTED".
+      The return value of ${../if/text:/name} shall reference a string which is equal
+      to "RTEMS_INTERRUPTED".
   - name: InvalidAddress
     test-code: |
       T_eq_str( ctx->result, "RTEMS_INVALID_ADDRESS" );
     text: |
-      The return value of ${../if/text:/name} shall reference a string which is
-      equal to "RTEMS_INVALID_ADDRESS".
+      The return value of ${../if/text:/name} shall reference a string which is equal
+      to "RTEMS_INVALID_ADDRESS".
   - name: InvalidClock
     test-code: |
       T_eq_str( ctx->result, "RTEMS_INVALID_CLOCK" );
     text: |
-      The return value of ${../if/text:/name} shall reference a string which is
-      equal to "RTEMS_INVALID_CLOCK".
+      The return value of ${../if/text:/name} shall reference a string which is equal
+      to "RTEMS_INVALID_CLOCK".
   - name: InvalidId
     test-code: |
       T_eq_str( ctx->result, "RTEMS_INVALID_ID" );
     text: |
-      The return value of ${../if/text:/name} shall reference a string which is
-      equal to "RTEMS_INVALID_ID".
+      The return value of ${../if/text:/name} shall reference a string which is equal
+      to "RTEMS_INVALID_ID".
   - name: InvalidName
     test-code: |
       T_eq_str( ctx->result, "RTEMS_INVALID_NAME" );
     text: |
-      The return value of ${../if/text:/name} shall reference a string which is
-      equal to "RTEMS_INVALID_NAME".
+      The return value of ${../if/text:/name} shall reference a string which is equal
+      to "RTEMS_INVALID_NAME".
   - name: InvalidNode
     test-code: |
       T_eq_str( ctx->result, "RTEMS_INVALID_NODE" );
     text: |
-      The return value of ${../if/text:/name} shall reference a string which is
-      equal to "RTEMS_INVALID_NODE".
+      The return value of ${../if/text:/name} shall reference a string which is equal
+      to "RTEMS_INVALID_NODE".
   - name: InvalidNumber
     test-code: |
       T_eq_str( ctx->result, "RTEMS_INVALID_NUMBER" );
     text: |
-      The return value of ${../if/text:/name} shall reference a string which is
-      equal to "RTEMS_INVALID_NUMBER".
+      The return value of ${../if/text:/name} shall reference a string which is equal
+      to "RTEMS_INVALID_NUMBER".
   - name: InvalidPriority
     test-code: |
       T_eq_str( ctx->result, "RTEMS_INVALID_PRIORITY" );
     text: |
-      The return value of ${../if/text:/name} shall reference a string which is
-      equal to "RTEMS_INVALID_PRIORITY".
+      The return value of ${../if/text:/name} shall reference a string which is equal
+      to "RTEMS_INVALID_PRIORITY".
   - name: InvalidSize
     test-code: |
       T_eq_str( ctx->result, "RTEMS_INVALID_SIZE" );
     text: |
-      The return value of ${../if/text:/name} shall reference a string which is
-      equal to "RTEMS_INVALID_SIZE".
+      The return value of ${../if/text:/name} shall reference a string which is equal
+      to "RTEMS_INVALID_SIZE".
   - name: IoError
     test-code: |
       T_eq_str( ctx->result, "RTEMS_IO_ERROR" );
     text: |
-      The return value of ${../if/text:/name} shall reference a string which is
-      equal to "RTEMS_IO_ERROR".
+      The return value of ${../if/text:/name} shall reference a string which is equal
+      to "RTEMS_IO_ERROR".
   - name: MpNotConfigured
     test-code: |
       T_eq_str( ctx->result, "RTEMS_MP_NOT_CONFIGURED" );
     text: |
-      The return value of ${../if/text:/name} shall reference a string which is
-      equal to "RTEMS_MP_NOT_CONFIGURED".
+      The return value of ${../if/text:/name} shall reference a string which is equal
+      to "RTEMS_MP_NOT_CONFIGURED".
   - name: NoMemory
     test-code: |
       T_eq_str( ctx->result, "RTEMS_NO_MEMORY" );
     text: |
-      The return value of ${../if/text:/name} shall reference a string which is
-      equal to "RTEMS_NO_MEMORY".
+      The return value of ${../if/text:/name} shall reference a string which is equal
+      to "RTEMS_NO_MEMORY".
   - name: NotConfigured
     test-code: |
       T_eq_str( ctx->result, "RTEMS_NOT_CONFIGURED" );
     text: |
-      The return value of ${../if/text:/name} shall reference a string which is
-      equal to "RTEMS_NOT_CONFIGURED".
+      The return value of ${../if/text:/name} shall reference a string which is equal
+      to "RTEMS_NOT_CONFIGURED".
   - name: NotDefined
     test-code: |
       T_eq_str( ctx->result, "RTEMS_NOT_DEFINED" );
     text: |
-      The return value of ${../if/text:/name} shall reference a string which is
-      equal to "RTEMS_NOT_DEFINED".
+      The return value of ${../if/text:/name} shall reference a string which is equal
+      to "RTEMS_NOT_DEFINED".
   - name: NotImplemented
     test-code: |
       T_eq_str( ctx->result, "RTEMS_NOT_IMPLEMENTED" );
     text: |
-      The return value of ${../if/text:/name} shall reference a string which is
-      equal to "RTEMS_NOT_IMPLEMENTED".
+      The return value of ${../if/text:/name} shall reference a string which is equal
+      to "RTEMS_NOT_IMPLEMENTED".
   - name: NotOwnerOfResource
     test-code: |
       T_eq_str( ctx->result, "RTEMS_NOT_OWNER_OF_RESOURCE" );
     text: |
-      The return value of ${../if/text:/name} shall reference a string which is
-      equal to "RTEMS_NOT_OWNER_OF_RESOURCE".
+      The return value of ${../if/text:/name} shall reference a string which is equal
+      to "RTEMS_NOT_OWNER_OF_RESOURCE".
   - name: ObjectWasDeleted
     test-code: |
       T_eq_str( ctx->result, "RTEMS_OBJECT_WAS_DELETED" );
     text: |
-      The return value of ${../if/text:/name} shall reference a string which is
-      equal to "RTEMS_OBJECT_WAS_DELETED".
+      The return value of ${../if/text:/name} shall reference a string which is equal
+      to "RTEMS_OBJECT_WAS_DELETED".
   - name: ProxyBlocking
     test-code: |
       T_eq_str( ctx->result, "RTEMS_PROXY_BLOCKING" );
     text: |
-      The return value of ${../if/text:/name} shall reference a string which is
-      equal to "RTEMS_PROXY_BLOCKING".
+      The return value of ${../if/text:/name} shall reference a string which is equal
+      to "RTEMS_PROXY_BLOCKING".
   - name: ResourceInUse
     test-code: |
       T_eq_str( ctx->result, "RTEMS_RESOURCE_IN_USE" );
     text: |
-      The return value of ${../if/text:/name} shall reference a string which is
-      equal to "RTEMS_RESOURCE_IN_USE".
+      The return value of ${../if/text:/name} shall reference a string which is equal
+      to "RTEMS_RESOURCE_IN_USE".
   - name: Successful
     test-code: |
       T_eq_str( ctx->result, "RTEMS_SUCCESSFUL" );
     text: |
-      The return value of ${../if/text:/name} shall reference a string which is
-      equal to "RTEMS_SUCCESSFUL".
+      The return value of ${../if/text:/name} shall reference a string which is equal
+      to "RTEMS_SUCCESSFUL".
   - name: TaskExitted
     test-code: |
       T_eq_str( ctx->result, "RTEMS_TASK_EXITTED" );
     text: |
-      The return value of ${../if/text:/name} shall reference a string which is
-      equal to "RTEMS_TASK_EXITTED".
+      The return value of ${../if/text:/name} shall reference a string which is equal
+      to "RTEMS_TASK_EXITTED".
   - name: Timeout
     test-code: |
       T_eq_str( ctx->result, "RTEMS_TIMEOUT" );
     text: |
-      The return value of ${../if/text:/name} shall reference a string which is
-      equal to "RTEMS_TIMEOUT".
+      The return value of ${../if/text:/name} shall reference a string which is equal
+      to "RTEMS_TIMEOUT".
   - name: TooMany
     test-code: |
       T_eq_str( ctx->result, "RTEMS_TOO_MANY" );
     text: |
-      The return value of ${../if/text:/name} shall reference a string which is
-      equal to "RTEMS_TOO_MANY".
+      The return value of ${../if/text:/name} shall reference a string which is equal
+      to "RTEMS_TOO_MANY".
   - name: Unsatisfied
     test-code: |
       T_eq_str( ctx->result, "RTEMS_UNSATISFIED" );
     text: |
-      The return value of ${../if/text:/name} shall reference a string which is
-      equal to "RTEMS_UNSATISFIED".
+      The return value of ${../if/text:/name} shall reference a string which is equal
+      to "RTEMS_UNSATISFIED".
   - name: NotAStatusCode
     test-code: |
       T_eq_str( ctx->result, "?" );
     text: |
-      The return value of ${../if/text:/name} shall reference a string which is
-      equal to "?".
+      The return value of ${../if/text:/name} shall reference a string which is equal
+      to "?".
   test-epilogue: null
   test-prologue: null
 pre-conditions:
@@ -214,12 +213,11 @@ pre-conditions:
       While the ${../if/text:/params[0]/name} parameter value is equal to
       ${../if/called-from-isr:/name}.
   - name: IllegalOnRemoteObject
-    test-code: |
-      ctx->code = RTEMS_ILLEGAL_ON_REMOTE_OBJECT;
+    test-code: |2+
+
     text: |
       While the ${../if/text:/params[0]/name} parameter value is equal to
       ${../if/illegal-on-remote-object:/name}.
-    test-code: |
   - name: IllegalOnSelf
     test-code: |
       ctx->code = RTEMS_ILLEGAL_ON_SELF;
@@ -386,8 +384,8 @@ pre-conditions:
     test-code: |
       ctx->code = (rtems_status_code) 123;
     text: |
-      While the ${../if/text:/params[0]/name} parameter is not equal to an
-      enumerator of ${../if/code:/name}.
+      While the ${../if/text:/params[0]/name} parameter is not equal to an enumerator
+      of ${../if/code:/name}.
   test-epilogue: null
   test-prologue: null
 rationale: null
@@ -420,7 +418,8 @@ test-stop: null
 test-support: null
 test-target: testsuites/validation/tc-status-text.c
 test-teardown: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

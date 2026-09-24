@@ -6,7 +6,7 @@ copyrights:
 - Copyright (C) 2020 embedded brains GmbH & Co. KG
 - Copyright (C) 1988, 2008 On-Line Applications Research Corporation (OAR)
 description: |
-  RTEMS must be configured for an application.  This configuration encompasses a
+  RTEMS must be configured for an application. This configuration encompasses a
   variety of information including the length of each clock tick, the maximum
   number of each information RTEMS object that can be created, the application
   initialization tasks, the task scheduling algorithm to be used, and the device
@@ -21,7 +21,7 @@ description: |
   generation of system configuration. It is based on the idea of setting macros
   which define configuration parameters of interest to the application and
   defaulting or calculating all others. This variety of macros can automatically
-  produce all of the configuration data required for an RTEMS application.  The
+  produce all of the configuration data required for an RTEMS application. The
   term `confdefs` is shorthand for a *Configuration Defaults*.
 
   As a general rule, application developers only specify values for the

@@ -15,11 +15,11 @@ definition:
   variants: []
 description: |
   This directive resets the task specified by ${.:/params[0]/name} to begin
-  execution at its original entry point.  The task's priority and execution
-  mode are set to the original creation values.  If the task is currently
-  blocked, RTEMS automatically makes the task ready.  A task can be restarted
-  from any state, except the dormant state.  The task's entry point argument is
-  contained in ${.:/params[1]/name}.
+  execution at its original entry point. The task's priority and execution mode
+  are set to the original creation values. If the task is currently blocked,
+  RTEMS automatically makes the task ready. A task can be restarted from any
+  state, except the dormant state. The task's entry point argument is contained
+  in ${.:/params[1]/name}.
 enabled-by: true
 index-entries:
 - restarting a task
@@ -41,22 +41,22 @@ links:
   uid: /constraint/unblock-may-preempt
 name: rtems_task_restart
 notes: |
-  The type of the entry point argument is an unsigned integer type.  However,
-  the integer type has the property that any valid pointer to `void` can be
-  converted to this type and then converted back to a pointer to `void`.  The
-  result will compare equal to the original pointer.  The type can represent at
-  least 32 bits.  Some applications use the entry point argument as an index
-  into a parameter table to get task-specific parameters.
+  The type of the entry point argument is an unsigned integer type. However, the
+  integer type has the property that any valid pointer to `void` can be converted
+  to this type and then converted back to a pointer to `void`. The result will
+  compare equal to the original pointer. The type can represent at least 32 bits.
+  Some applications use the entry point argument as an index into a parameter
+  table to get task-specific parameters.
 
   A new entry point argument may be used to distinguish between the initial
   ${start:/name} of the task and any ensuing calls to ${restart:/name} of the
-  task.  This can be beneficial in deleting a task.  Instead of deleting a task
+  task. This can be beneficial in deleting a task. Instead of deleting a task
   using the ${delete:/name} directive, a task can delete another task by
-  restarting that task, and allowing that task to release resources back to
-  RTEMS and then delete itself.
+  restarting that task, and allowing that task to release resources back to RTEMS
+  and then delete itself.
 params:
 - description: |
-    is the task identifier.  The constant ${self-define:/name} may be used to
+    is the task identifier. The constant ${self-define:/name} may be used to
     specify the calling task.
   dir: null
   name: id

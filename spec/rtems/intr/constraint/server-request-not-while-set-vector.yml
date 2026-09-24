@@ -9,5 +9,5 @@ rationale: null
 text: |
   The directive shall not be called concurrently with
   ${../if/server-request-set-vector:/name} with the same interrupt server
-  request.  Calling the directive under this condition is undefined behaviour.
+  request. Calling the directive under this condition is undefined behaviour.
 type: constraint

@@ -11,6 +11,6 @@ links:
 rationale: null
 requirement-type: functional
 text: |
-  The application configuration option shall disable the system initialization
-  of filesystems.
+  The application configuration option shall disable the system initialization of
+  filesystems.
 type: requirement

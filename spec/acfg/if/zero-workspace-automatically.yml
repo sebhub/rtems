@@ -23,7 +23,7 @@ links:
 name: CONFIGURE_ZERO_WORKSPACE_AUTOMATICALLY
 notes: |
   Zeroing memory can add significantly to the system initialization time. It is
-  not necessary for RTEMS but is often assumed by support libraries.  In case
-  ${dirty-memory:/name} is also defined, then the memory is first
-  dirtied and then zeroed.
+  not necessary for RTEMS but is often assumed by support libraries. In case
+  ${dirty-memory:/name} is also defined, then the memory is first dirtied and
+  then zeroed.
 type: interface

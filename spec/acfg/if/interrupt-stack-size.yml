@@ -29,19 +29,18 @@ links:
 name: CONFIGURE_INTERRUPT_STACK_SIZE
 notes: |
   There is one interrupt stack available for each configured processor
-  (${max-processors:/name}).  The interrupt stack areas are
-  statically allocated in a special linker section (`.rtemsstack.interrupt`).
-  The placement of this linker section is BSP-specific.
+  (${max-processors:/name}). The interrupt stack areas are statically allocated
+  in a special linker section (`.rtemsstack.interrupt`). The placement of this
+  linker section is BSP-specific.
 
-  Some BSPs use the interrupt stack as the initialization stack which is used
-  to perform the sequential system initialization before the multithreading
-  is started.
+  Some BSPs use the interrupt stack as the initialization stack which is used to
+  perform the sequential system initialization before the multithreading is
+  started.
 
   The interrupt stacks are covered by the stack checker, see
-  ${stack-checker-enabled:/name}.  However, using a too small interrupt stack
-  size may still result in undefined behaviour.
+  ${stack-checker-enabled:/name}. However, using a too small interrupt stack size
+  may still result in undefined behaviour.
 
-  In releases before RTEMS 5.1 the default value was
-  ${min-task-stack-size:/name} instead of
-  ${/score/cpu/if/stack-minimum-size:/name}.
+  In releases before RTEMS 5.1 the default value was ${min-task-stack-size:/name}
+  instead of ${/score/cpu/if/stack-minimum-size:/name}.
 type: interface

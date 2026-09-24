@@ -1,7 +1,7 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 brief: |
-  Obfuscates the variable so that the compiler cannot perform optimizations
-  based on the variable value.
+  Obfuscates the variable so that the compiler cannot perform optimizations based
+  on the variable value.
 copyrights:
 - Copyright (C) 2016, 2018 embedded brains GmbH & Co. KG
 definition:

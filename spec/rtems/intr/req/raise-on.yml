@@ -66,14 +66,14 @@ pre-conditions:
     test-code: |
       ctx->valid_vector = true;
     text: |
-      While the ${../if/raise-on:/params[0]/name} parameter is
-      associated with an interrupt vector.
+      While the ${../if/raise-on:/params[0]/name} parameter is associated with an
+      interrupt vector.
   - name: Invalid
     test-code: |
       ctx->valid_vector = false;
     text: |
-      While the ${../if/raise-on:/params[0]/name} parameter is
-      not associated with an interrupt vector.
+      While the ${../if/raise-on:/params[0]/name} parameter is not associated with an
+      interrupt vector.
   test-epilogue: null
   test-prologue: null
 - name: CPU
@@ -82,24 +82,22 @@ pre-conditions:
     test-code: |
       ctx->cpu_index = 0;
     text: |
-      While the ${../if/raise-on:/params[1]/name} parameter is associated with
-      a configured processor,
-      while the processor specified by ${../if/raise-on:/params[1]/name} is not
-      online.
+      While the ${../if/raise-on:/params[1]/name} parameter is associated with a
+      configured processor, while the processor specified by
+      ${../if/raise-on:/params[1]/name} is not online.
   - name: NotOnline
     test-code: |
       ctx->cpu_index = 4;
     text: |
-      While the ${../if/raise-on:/params[1]/name} parameter is associated with
-      a configured processor,
-      while the processor specified by ${../if/raise-on:/params[1]/name} is not
-      online.
+      While the ${../if/raise-on:/params[1]/name} parameter is associated with a
+      configured processor, while the processor specified by
+      ${../if/raise-on:/params[1]/name} is not online.
   - name: NotConf
     test-code: |
       ctx->cpu_index = 5;
     text: |
-      While the ${../if/raise-on:/params[1]/name} parameter is not associated
-      with a configured processor.
+      While the ${../if/raise-on:/params[1]/name} parameter is not associated with a
+      configured processor.
   test-epilogue: null
   test-prologue: null
 - name: CanRaiseOn
@@ -121,16 +119,15 @@ pre-conditions:
        */
     text: |
       While the interrupt vector associated with the
-      ${../if/raise-on:/params[0]/name} parameter cannot be raised on a
-      processor.
+      ${../if/raise-on:/params[0]/name} parameter cannot be raised on a processor.
   test-epilogue: null
   test-prologue: null
 rationale: null
 requirement-type: functional
 skip-reasons:
   OnlyOneCPU: |
-    Where the system is build with SMP support disabled, the system has exactly
-    one processor and its processor is always online.
+    Where the system is build with SMP support disabled, the system has exactly one
+    processor and its processor is always online.
 test-action: |
   if ( ctx->valid_vector && ctx->cpu_index == 0 ) {
     for (
@@ -187,8 +184,8 @@ test-context:
   member: |
     rtems_vector_number some_vector
 - brief: |
-    If this member is true, then the ${../if/raise-on:/params[0]/name}
-    parameter shall be valid.
+    If this member is true, then the ${../if/raise-on:/params[0]/name} parameter
+    shall be valid.
   description: null
   member: |
     bool valid_vector
@@ -198,8 +195,7 @@ test-context:
   member: |
     uint32_t cpu_index
 - brief: |
-    This member contains the return value of the ${../if/raise-on:/name}
-    call.
+    This member contains the return value of the ${../if/raise-on:/name} call.
   description: null
   member: |
     rtems_status_code status
@@ -341,7 +337,7 @@ test-support: |
       );
       T_rsc_success( sc );
 
-      if ( !IsPending( ctx) && ( attr->can_enable || IsEnabled( ctx ) ) ) {
+      if ( !IsPending( ctx ) && ( attr->can_enable || IsEnabled( ctx ) ) ) {
         Disable( ctx );
         RaiseOn( ctx );
 
@@ -379,7 +375,8 @@ test-support: |
   }
 test-target: testsuites/validation/tc-intr-raise-on.c
 test-teardown: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

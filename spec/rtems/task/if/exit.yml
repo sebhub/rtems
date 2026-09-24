@@ -30,8 +30,8 @@ links:
   uid: /constraint/fatal-bad-thread-dispatch-disable-level
 name: rtems_task_exit
 notes: |
-  The directive is an optimized variant of the following code sequences, see
-  also ${delete:/name}:
+  The directive is an optimized variant of the following code sequences, see also
+  ${delete:/name}:
 
   ```c
   #include <pthread.h>

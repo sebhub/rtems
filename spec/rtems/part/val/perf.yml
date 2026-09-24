@@ -19,8 +19,8 @@ test-context:
   member: |
     rtems_id part_one
 - brief: |
-    This member provides a partition with exactly ${.:/params/buffer-count}
-    free buffers.
+    This member provides a partition with exactly ${.:/params/buffer-count} free
+    buffers.
   description: null
   member: |
     rtems_id part_many

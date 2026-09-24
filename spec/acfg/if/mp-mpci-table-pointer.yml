@@ -21,9 +21,8 @@ links:
 name: CONFIGURE_MP_MPCI_TABLE_POINTER
 notes: |
   RTEMS provides a Shared Memory MPCI Device Driver which can be used on any
-  Multiprocessor System assuming the BSP provides the proper set of
-  supporting methods.
+  Multiprocessor System assuming the BSP provides the proper set of supporting
+  methods.
 
-  This configuration option is only evaluated if
-  ${mp-appl:/name} is defined.
+  This configuration option is only evaluated if ${mp-appl:/name} is defined.
 type: interface

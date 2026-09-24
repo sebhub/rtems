@@ -34,7 +34,7 @@ test-cleanup:
   description: null
 test-prepare:
   brief: |
-    Create a manual release barrier.  Create and start a worker task.
+    Create a manual release barrier. Create and start a worker task.
   code: |
     rtems_status_code sc;
 
@@ -68,6 +68,6 @@ text: |
   While the execution environment is ${.:/environment}, while the barrier is a
   manual release barrier, while the measurement sample is the runtime of exactly
   one successful call to ${../if/release:/name} which does not preempt the
-  caller, when exactly ${../val/perf:/params/sample-count} samples are
-  collected, the ${.:/limit-kind} shall be ${.:/limit-condition}.
+  caller, when exactly ${../val/perf:/params/sample-count} samples are collected,
+  the ${.:/limit-kind} shall be ${.:/limit-condition}.
 type: requirement

@@ -10,8 +10,8 @@ links:
 non-functional-type: performance-runtime
 params: {}
 rationale: |
-  The runtime measurement of a function which does nothing and just returns
-  gives an estimate of the measurement overhead.
+  The runtime measurement of a function which does nothing and just returns gives
+  an estimate of the measurement overhead.
 requirement-type: non-functional
 test-body:
   brief: |
@@ -31,6 +31,6 @@ test-teardown:
 text: |
   While the execution environment is ${.:/environment}, while the measurement
   sample is a function which just returns and does nothing else, when exactly
-  ${../val/perf:/params/sample-count} samples are collected, the
-  ${.:/limit-kind} shall be ${.:/limit-condition}.
+  ${../val/perf:/params/sample-count} samples are collected, the ${.:/limit-kind}
+  shall be ${.:/limit-condition}.
 type: requirement

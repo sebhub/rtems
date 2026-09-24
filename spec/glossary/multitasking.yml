@@ -8,7 +8,6 @@ links:
   uid: group
 term: multitasking
 text: |
-  The alternation of execution amongst a group of processes on a single
-  CPU.  A scheduling algorithm is used to determine which process executes
-  at which time.
+  The alternation of execution amongst a group of processes on a single CPU. A
+  scheduling algorithm is used to determine which process executes at which time.
 type: glossary

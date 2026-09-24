@@ -8,7 +8,7 @@ links:
   uid: group
 term: object-oriented
 text: |
-  A term used to describe systems with common mechanisms for utilizing a
-  variety of entities.  Object-oriented systems shield the application from
-  implementation details.
+  A term used to describe systems with common mechanisms for utilizing a variety
+  of entities. Object-oriented systems shield the application from implementation
+  details.
 type: glossary

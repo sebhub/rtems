@@ -16,8 +16,7 @@ post-conditions:
       T_rsc_success( ctx->status );
     text: |
       The return status of the called directive (${../if/flush:/name} or
-      ${../if/get-number-pending:/name}) shall be
-      ${../../status/if/successful:/name}
+      ${../if/get-number-pending:/name}) shall be ${../../status/if/successful:/name}
   - name: InvId
     test-code: |
       T_rsc( ctx->status, RTEMS_INVALID_ID );
@@ -40,36 +39,32 @@ post-conditions:
     test-code: |
       T_eq_u32( ctx->count, 0 );
     text: |
-      The value of the object referenced by the
-      ${../if/flush:/params[1]/name} parameter shall be 0 after
-      the return of the ${../if/flush:/name} or
+      The value of the object referenced by the ${../if/flush:/params[1]/name}
+      parameter shall be 0 after the return of the ${../if/flush:/name} or
       ${../if/get-number-pending:/name} call.
   - name: Set
     test-code: |
       T_eq_u32( ctx->count, NUMBER_OF_PENDING_MESSAGES );
     text: |
-      The ${../if/get-number-pending:/name} directive shall set
-      the value of the object referenced by the
-      ${../if/get-number-pending:/params[1]/name} parameter to the number
-      of messages present in the ${/glossary/messagequeue:/term}
-      at a point in time during the single execution of the
+      The ${../if/get-number-pending:/name} directive shall set the value of the
+      object referenced by the ${../if/get-number-pending:/params[1]/name} parameter
+      to the number of messages present in the ${/glossary/messagequeue:/term} at a
+      point in time during the single execution of the
       ${../if/get-number-pending:/name} directive.
 
-      The ${../if/flush:/name} directive shall set
-      the value of the object referenced by the
-      ${../if/flush:/params[1]/name} parameter to the number
-      of messages it removed from the ${/glossary/messagequeue:/term}
-      during the single execution of the ${../if/flush:/name} directive.
+      The ${../if/flush:/name} directive shall set the value of the object referenced
+      by the ${../if/flush:/params[1]/name} parameter to the number of messages it
+      removed from the ${/glossary/messagequeue:/term} during the single execution of
+      the ${../if/flush:/name} directive.
   - name: Nop
     test-code: |
       T_eq_u32( ctx->count, UINT8_MAX );
     text: |
-      The value of the object referenced by the
-      ${../if/flush:/params[1]/name} parameter in past call
-      to ${../if/flush:/name} or ${../if/get-number-pending:/name}
-      shall not be accessed by the ${../if/flush:/name} or
-      ${../if/get-number-pending:/name} call
-      (see also ${../glossary/nop:/term}).
+      The value of the object referenced by the ${../if/flush:/params[1]/name}
+      parameter in past call to ${../if/flush:/name} or
+      ${../if/get-number-pending:/name} shall not be accessed by the
+      ${../if/flush:/name} or ${../if/get-number-pending:/name} call (see also
+      ${../glossary/nop:/term}).
   test-epilogue: null
   test-prologue: null
 - name: MsgQueue
@@ -78,15 +73,14 @@ post-conditions:
     test-code: |
       PopMessage( ctx, CheckForNoMessage );
     text: |
-      The ${/glossary/messagequeue:/term} shall contain no messages
-      after the last call to ${../if/flush:/params[0]/name}.
+      The ${/glossary/messagequeue:/term} shall contain no messages after the last
+      call to ${../if/flush:/params[0]/name}.
   - name: Nop
     test-code: |
       ctx->check_msgq_unchanged( ctx );
     text: |
-      Objects referenced by the ${../if/flush:/params[0]/name}
-      parameter in the past call to ${../if/flush:/name} or
-      ${../if/get-number-pending:/name} shall not be
+      Objects referenced by the ${../if/flush:/params[0]/name} parameter in the past
+      call to ${../if/flush:/name} or ${../if/get-number-pending:/name} shall not be
       changed by that call (see also ${../glossary/nop:/term}).
   test-epilogue: null
   test-prologue: null
@@ -96,13 +90,12 @@ post-conditions:
     test-code: |
       size_t i;
       for ( i = 0; i < NUMBER_OF_WORKERS; ++i ) {
-        T_rsc( ctx->receive_status[i], RTEMS_TIMEOUT );
+        T_rsc( ctx->receive_status[ i ], RTEMS_TIMEOUT );
       }
     text: |
-      The ${../glossary/receiver:/plural} waiting for
-      a message at the ${/glossary/messagequeue:/term} shall not be affected
-      by the call to the ${../if/flush:/name} or
-      ${../if/get-number-pending:/name} directive.
+      The ${../glossary/receiver:/plural} waiting for a message at the
+      ${/glossary/messagequeue:/term} shall not be affected by the call to the
+      ${../if/flush:/name} or ${../if/get-number-pending:/name} directive.
   test-epilogue: null
   test-prologue: null
 pre-conditions:
@@ -112,14 +105,13 @@ pre-conditions:
     test-code: |
       ctx->count_param = &ctx->count;
     text: |
-      While the ${../if/flush:/params[1]/name} parameter references
-      an `uint32_t` object.
+      While the ${../if/flush:/params[1]/name} parameter references an `uint32_t`
+      object.
   - name: 'Null'
     test-code: |
       ctx->count_param = NULL;
     text: |
-      While the ${../if/flush:/params[1]/name} parameter is
-      ${/c/if/null:/name}.
+      While the ${../if/flush:/params[1]/name} parameter is ${/c/if/null:/name}.
   test-epilogue: null
   test-prologue: null
 - name: Id
@@ -161,11 +153,11 @@ pre-conditions:
     test-code: |
       size_t i;
       for ( i = 0; i < NUMBER_OF_WORKERS; ++i ) {
-        SendEvents( ctx->worker_id[i], EVENT_RECEIVE );
+        SendEvents( ctx->worker_id[ i ], EVENT_RECEIVE );
       }
     text: |
-      While one or more ${../glossary/receiver:/plural} are waiting to
-      receive a message.
+      While one or more ${../glossary/receiver:/plural} are waiting to receive a
+      message.
   - name: None
     test-code: |
       /* There is already no receiver waiting. */
@@ -194,10 +186,9 @@ pre-conditions:
       /* Only a requirement text. */
     text: |
       While the memory area to which a pointer is provided as member
-      ${../if/config:/definition[3]/default/name} of type
-      ${../if/config:/name} when the ${/glossary/messagequeue:/term} is
-      constructed by ${../if/construct:/name} is altered only by the
-      ${/glossary/rtems:/term} operating system.
+      ${../if/config:/definition[3]/default/name} of type ${../if/config:/name} when
+      the ${/glossary/messagequeue:/term} is constructed by ${../if/construct:/name}
+      is altered only by the ${/glossary/rtems:/term} operating system.
   test-epilogue: null
   test-prologue: null
 rationale: null
@@ -224,15 +215,14 @@ test-context:
   member: |
     rtems_id message_queue_id
 - brief: |
-    This member is used as storage area for the
-    ${/glossary/messagequeue:/term}.
+    This member is used as storage area for the ${/glossary/messagequeue:/term}.
   description: null
   member: |
     RTEMS_MESSAGE_QUEUE_BUFFER( MAXIMUM_MESSAGE_SIZE )
       storage_area[ MAXIMUM_PENDING_MESSAGES ]
 - brief: |
-    This member contains the returned ${/glossary/statuscode:/plural}
-    of the receivers.
+    This member contains the returned ${/glossary/statuscode:/plural} of the
+    receivers.
   description: null
   member: |
     rtems_status_code receive_status[ NUMBER_OF_WORKERS ]
@@ -242,20 +232,19 @@ test-context:
     This is either ${../if/flush:/name} or ${../if/get-number-pending:/name}.
   member: rtems_status_code (*action)( rtems_id id, uint32_t *count )
 - brief: |
-    This member specifies the ${../if/flush:/params[0]/name} parameter
-    of the action.
+    This member specifies the ${../if/flush:/params[0]/name} parameter of the
+    action.
   description: null
   member: |
     rtems_id id_param
 - brief: |
-    This member specifies the ${../if/flush:/params[1]/name} parameter
-    of the action.
+    This member specifies the ${../if/flush:/params[1]/name} parameter of the
+    action.
   description: null
   member: |
     uint32_t *count_param
 - brief: |
-    This member contains the returned ${/glossary/statuscode:/term}
-    of the action.
+    This member contains the returned ${/glossary/statuscode:/term} of the action.
   description: null
   member: |
     rtems_status_code status
@@ -266,15 +255,14 @@ test-context:
   member: |
     uint32_t count
 - brief: |
-    This member contains the ${/glossary/task:/term} identifiers of the
-    worker ${/glossary/task:/plural}.
+    This member contains the ${/glossary/task:/term} identifiers of the worker
+    ${/glossary/task:/plural}.
   description: null
   member: |
     rtems_id worker_id[ NUMBER_OF_WORKERS ]
 - brief: |
-    This member contains a pointer to a function which is executed
-    to check that the action has not changed the content of the
-    ${/glossary/messagequeue:/term}.
+    This member contains a pointer to a function which is executed to check that
+    the action has not changed the content of the ${/glossary/messagequeue:/term}.
   description: null
   member: |
     void (*check_msgq_unchanged)( void *ctx_in )
@@ -292,19 +280,16 @@ test-prepare: |
   rtems_status_code status;
 
   rtems_message_queue_config config = {
-    .name                     = rtems_build_name( 'M', 'S', 'G', 'Q' ),
+    .name = rtems_build_name( 'M', 'S', 'G', 'Q' ),
     .maximum_pending_messages = MAXIMUM_PENDING_MESSAGES,
-    .maximum_message_size     = MAXIMUM_MESSAGE_SIZE,
-    .storage_area             = ctx->storage_area,
-    .storage_size             = sizeof( ctx->storage_area ),
-    .storage_free             = NULL,
-    .attributes               = RTEMS_DEFAULT_ATTRIBUTES
+    .maximum_message_size = MAXIMUM_MESSAGE_SIZE,
+    .storage_area = ctx->storage_area,
+    .storage_size = sizeof( ctx->storage_area ),
+    .storage_free = NULL,
+    .attributes = RTEMS_DEFAULT_ATTRIBUTES
   };
 
-  status = rtems_message_queue_construct(
-    &config,
-    &ctx->message_queue_id
-  );
+  status = rtems_message_queue_construct( &config, &ctx->message_queue_id );
   T_rsc_success( status );
 
   ctx->count = UINT8_MAX;
@@ -315,24 +300,24 @@ test-setup:
     SetSelfPriority( PRIO_NORMAL );
 
     for ( i = 0; i < NUMBER_OF_WORKERS; ++i ) {
-      ctx->worker_id[i] = CreateTask( "WORK", PRIO_HIGH );
-      StartTask( ctx->worker_id[i], WorkerTask, ctx );
+      ctx->worker_id[ i ] = CreateTask( "WORK", PRIO_HIGH );
+      StartTask( ctx->worker_id[ i ], WorkerTask, ctx );
     }
   description: null
 test-stop: null
 test-support: |
   typedef ${.:/test-context-type} Context;
-  static const uint32_t NUMBER_OF_PENDING_MESSAGES = 2;
-  static const rtems_interval TIMEOUT_TICKS = 1;
-  static const rtems_event_set EVENT_RECEIVE = RTEMS_EVENT_17;
-  static const uint8_t queued_message[] = { 200, 201, 202 };
+  static const uint32_t           NUMBER_OF_PENDING_MESSAGES = 2;
+  static const rtems_interval     TIMEOUT_TICKS = 1;
+  static const rtems_event_set    EVENT_RECEIVE = RTEMS_EVENT_17;
+  static const uint8_t            queued_message[] = { 200, 201, 202 };
 
   static void Receive( Context *ctx, size_t worker_index )
   {
-    size_t size;
+    size_t  size;
     uint8_t buffer[ MAXIMUM_MESSAGE_SIZE ];
 
-    ctx->receive_status[worker_index] = rtems_message_queue_receive(
+    ctx->receive_status[ worker_index ] = rtems_message_queue_receive(
       ctx->message_queue_id,
       buffer,
       &size,
@@ -344,8 +329,8 @@ test-support: |
   static void WorkerTask( rtems_task_argument argument )
   {
     static size_t worker_number = 0;
-    size_t worker_index = worker_number++;
-    Context *ctx = (Context *) argument;
+    size_t        worker_index = worker_number++;
+    Context      *ctx = (Context *) argument;
 
     while ( true ) {
       ReceiveAnyEvents();
@@ -354,23 +339,23 @@ test-support: |
   }
 
   static void CheckForNoMessage(
-    Context *ctx,
+    Context          *ctx,
     rtems_status_code status,
-    uint8_t *message_buffer,
-    size_t message_size
+    uint8_t          *message_buffer,
+    size_t            message_size
   )
   {
     (void) ctx;
     (void) message_buffer;
     (void) message_size;
-    T_rsc( status, RTEMS_UNSATISFIED  );
+    T_rsc( status, RTEMS_UNSATISFIED );
   }
 
   static void CheckForQueuedMessage(
-    Context *ctx,
+    Context          *ctx,
     rtems_status_code status,
-    uint8_t *message_buffer,
-    size_t message_size
+    uint8_t          *message_buffer,
+    size_t            message_size
   )
   {
     (void) ctx;
@@ -381,17 +366,17 @@ test-support: |
 
   static void PopMessage(
     Context *ctx,
-    void (*check_fn)(
-      Context *ctx,
+    void ( *check_fn )(
+      Context          *ctx,
       rtems_status_code status,
-      uint8_t *message_buffer,
-      size_t message_size
+      uint8_t          *message_buffer,
+      size_t            message_size
     )
   )
   {
     rtems_status_code status;
-    uint8_t message_buffer[ MAXIMUM_MESSAGE_SIZE ];
-    size_t message_size;
+    uint8_t           message_buffer[ MAXIMUM_MESSAGE_SIZE ];
+    size_t            message_size;
 
     status = rtems_message_queue_receive(
       ctx->message_queue_id,
@@ -401,7 +386,7 @@ test-support: |
       RTEMS_NO_TIMEOUT
     );
 
-   check_fn( ctx, status, message_buffer, message_size );
+    check_fn( ctx, status, message_buffer, message_size );
   }
 
   static void CheckForNoMessageInQueue( void *ctx_in )
@@ -438,11 +423,12 @@ test-teardown:
     size_t i;
 
     for ( i = 0; i < NUMBER_OF_WORKERS; ++i ) {
-      DeleteTask( ctx->worker_id[i] );
+      DeleteTask( ctx->worker_id[ i ] );
     }
     RestoreRunnerPriority();
   description: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

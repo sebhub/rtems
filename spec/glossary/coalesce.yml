@@ -8,6 +8,6 @@ links:
   uid: group
 term: coalesce
 text: |
-  The process of merging adjacent holes into a single larger hole.
-  Sometimes this process is referred to as garbage collection.
+  The process of merging adjacent holes into a single larger hole. Sometimes this
+  process is referred to as garbage collection.
 type: glossary

@@ -8,6 +8,5 @@ links:
 rationale: null
 text: |
   When the directive operates on a remote object, the directive sends a message
-  to the remote node and waits for a reply.  This will preempt the calling
-  task.
+  to the remote node and waits for a reply. This will preempt the calling task.
 type: constraint

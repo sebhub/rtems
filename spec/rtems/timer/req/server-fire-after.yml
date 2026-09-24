@@ -47,8 +47,8 @@ post-conditions:
     test-code: |
       T_eq_int( class, TIMER_DORMANT );
     text: |
-      The timer shall have never been ${../glossary/scheduled:/term}.
-      See also ${../glossary/none:/term}.
+      The timer shall have never been ${../glossary/scheduled:/term}. See also
+      ${../glossary/none:/term}.
   - name: Interrupt
     test-code: |
       T_eq_int( class & TIMER_CLASS_BIT_ON_TASK, 0 );
@@ -65,12 +65,11 @@ post-conditions:
     text: |
       Objects referenced by the parameters in the past call to
       ${../if/server-fire-after:/name} shall not be accessed by the
-      ${../if/server-fire-after:/name} call.
-      See also ${../glossary/nop:/term}.
+      ${../if/server-fire-after:/name} call. See also ${../glossary/nop:/term}.
   test-epilogue: null
   test-prologue: |
-      Timer_Classes class;
-      class = GetTimerClass( ctx->timer_id );
+    Timer_Classes class;
+    class = GetTimerClass( ctx->timer_id );
 - name: Clock
   states:
   - name: None
@@ -85,10 +84,7 @@ post-conditions:
       The timer shall use the ${../glossary/ticksbasedclock:/term}.
   - name: Realtime
     test-code: |
-      T_eq_int(
-        class & TIMER_CLASS_BIT_TIME_OF_DAY,
-        TIMER_CLASS_BIT_TIME_OF_DAY
-      );
+      T_eq_int( class & TIMER_CLASS_BIT_TIME_OF_DAY, TIMER_CLASS_BIT_TIME_OF_DAY );
     text: |
       The timer shall use the ${../glossary/realtimeclock:/term}.
   - name: Nop
@@ -100,8 +96,8 @@ post-conditions:
       ${../if/server-fire-after:/name} call.
   test-epilogue: null
   test-prologue: |
-      Timer_Classes class;
-      class = GetTimerClass( ctx->timer_id );
+    Timer_Classes class;
+    class = GetTimerClass( ctx->timer_id );
 - name: State
   states:
   - name: Scheduled
@@ -126,11 +122,11 @@ post-conditions:
     test-code: |
       T_eq_int( ctx->ticks_till_fire, ctx->ticks_param );
     text: |
-      The ${../glossary/timerserviceroutine:/term} shall be invoked the
-      number of ticks (see ${/glossary/tick:/term}), which are provided by
-      the ${../if/server-fire-after:/params[1]/name} parameter
-      in the past call to ${../if/server-fire-after:/name}, after a point in time
-      during the execution of the ${../if/server-fire-after:/name} call.
+      The ${../glossary/timerserviceroutine:/term} shall be invoked the number of
+      ticks (see ${/glossary/tick:/term}), which are provided by the
+      ${../if/server-fire-after:/params[1]/name} parameter in the past call to
+      ${../if/server-fire-after:/name}, after a point in time during the execution of
+      the ${../if/server-fire-after:/name} call.
   - name: Nop
     test-code: |
       /*
@@ -142,8 +138,8 @@ post-conditions:
         ctx->pre_scheduling_data.interval
       );
     text: |
-      If and when the ${../glossary/timerserviceroutine:/term} will be invoked
-      shall not be changed by the past call to ${../if/server-fire-after:/name}.
+      If and when the ${../glossary/timerserviceroutine:/term} will be invoked shall
+      not be changed by the past call to ${../if/server-fire-after:/name}.
   test-epilogue: null
   test-prologue: null
 - name: Routine
@@ -154,9 +150,9 @@ post-conditions:
     text: |
       The function reference used to invoke the
       ${../glossary/timerserviceroutine:/term} when the timer will
-      ${../glossary/fire:/term} shall be the one provided by
-      the ${../if/server-fire-after:/params[2]/name} parameter
-      in the past call to ${../if/server-fire-after:/name}.
+      ${../glossary/fire:/term} shall be the one provided by the
+      ${../if/server-fire-after:/params[2]/name} parameter in the past call to
+      ${../if/server-fire-after:/name}.
   - name: Nop
     test-code: |
       T_eq_ptr(
@@ -165,8 +161,8 @@ post-conditions:
       );
     text: |
       The function reference used for any invocation of the
-      ${../glossary/timerserviceroutine:/term} shall not be changed
-      by the past call to ${../if/server-fire-after:/name}.
+      ${../glossary/timerserviceroutine:/term} shall not be changed by the past call
+      to ${../if/server-fire-after:/name}.
   test-epilogue: null
   test-prologue: null
 - name: UserData
@@ -177,9 +173,9 @@ post-conditions:
     text: |
       The user data argument for invoking the
       ${../glossary/timerserviceroutine:/term} when the timer will
-      ${../glossary/fire:/term} shall be the one provided by
-      the ${../if/server-fire-after:/params[3]/name} parameter
-      in the past call to ${../if/server-fire-after:/name}.
+      ${../glossary/fire:/term} shall be the one provided by the
+      ${../if/server-fire-after:/params[3]/name} parameter in the past call to
+      ${../if/server-fire-after:/name}.
   - name: Nop
     test-code: |
       T_eq_ptr(
@@ -188,8 +184,8 @@ post-conditions:
       );
     text: |
       The user data argument used for any invocation of the
-      ${../glossary/timerserviceroutine:/term} shall not be changed
-      by the past call to ${../if/server-fire-after:/name}.
+      ${../glossary/timerserviceroutine:/term} shall not be changed by the past call
+      to ${../if/server-fire-after:/name}.
   test-epilogue: null
   test-prologue: null
 pre-conditions:
@@ -205,8 +201,8 @@ pre-conditions:
       );
       T_rsc_success( status );
     text: |
-      While the Timer Server task has been successfully initialized
-      by a call to ${../if/initiate-server:/name}.
+      While the Timer Server task has been successfully initialized by a call to
+      ${../if/initiate-server:/name}.
   - name: NotInit
     test-code: |
       DeleteTimerServer();
@@ -266,8 +262,8 @@ pre-conditions:
       ctx->pre_cond_contex = PRE_NONE;
     text: |
       While the ${../glossary/timerserviceroutine:/term} has never been
-      ${../glossary/scheduled:/term} since creation of the timer.
-      See also ${../glossary/none:/term}.
+      ${../glossary/scheduled:/term} since creation of the timer. See also
+      ${../glossary/none:/term}.
   - name: Interrupt
     test-code: |
       ctx->pre_cond_contex = PRE_INTERRUPT;
@@ -286,8 +282,8 @@ pre-conditions:
     test-code: |
       T_eq_int( ctx->pre_cond_contex, PRE_NONE );
     text: |
-      While the timer has never been ${../glossary/scheduled:/term}
-      since creation of the timer.
+      While the timer has never been ${../glossary/scheduled:/term} since creation of
+      the timer.
   - name: Ticks
     test-code: |
       rtems_status_code status;
@@ -309,9 +305,8 @@ pre-conditions:
       }
       T_rsc_success( status );
     text: |
-      While the ${../glossary/clock:/term} used to determine when the timer
-      will ${../glossary/fire:/term} is the
-      ${../glossary/ticksbasedclock:/term}.
+      While the ${../glossary/clock:/term} used to determine when the timer will
+      ${../glossary/fire:/term} is the ${../glossary/ticksbasedclock:/term}.
   - name: Realtime
     test-code: |
       rtems_status_code status;
@@ -333,8 +328,8 @@ pre-conditions:
       }
       T_rsc_success( status );
     text: |
-      While the ${../glossary/clock:/term} used to determine when the timer
-      will ${../glossary/fire:/term} is the ${../glossary/realtimeclock:/term}.
+      While the ${../glossary/clock:/term} used to determine when the timer will
+      ${../glossary/fire:/term} is the ${../glossary/realtimeclock:/term}.
   test-epilogue: null
   test-prologue: null
 - name: State
@@ -342,15 +337,11 @@ pre-conditions:
   - name: Inactive
     test-code: |
       TriggerTimer( ctx );
-      T_eq_int(
-        ctx->invocations,
-        ( ctx->pre_cond_contex == PRE_NONE ) ? 0 : 1
-      );
+      T_eq_int( ctx->invocations, ( ctx->pre_cond_contex == PRE_NONE ) ? 0 : 1 );
       ctx->invocations = 0;
       ctx->pre_state = TIMER_INACTIVE;
     text: |
-      While the timer is in ${../glossary/inactive:/term}
-      ${../glossary/state:/term}.
+      While the timer is in ${../glossary/inactive:/term} ${../glossary/state:/term}.
   - name: Scheduled
     test-code: |
       /* The timer was already scheduled in the "Clock" pre-conditions. */
@@ -385,20 +376,19 @@ pre-conditions:
       T_eq_int( ctx->invocations, 0 );
       ctx->pre_state = TIMER_PENDING;
     text: |
-      While the timer is in ${../glossary/pending:/term}
-      ${../glossary/state:/term}.
+      While the timer is in ${../glossary/pending:/term} ${../glossary/state:/term}.
   test-epilogue: null
   test-prologue: null
 rationale: null
 requirement-type: functional
 skip-reasons:
-  NotExist: |
-    The pre-condition combination of ${../glossary/context:/term},
-    ${../glossary/clock:/term} and ${../glossary/state:/term} cannot be
-    produced and does therefore not exist.
   NoServer: |
     If the server task is not initialized, the timer cannot be in
     ${../glossary/servercontext:/term}.
+  NotExist: |
+    The pre-condition combination of ${../glossary/context:/term},
+    ${../glossary/clock:/term} and ${../glossary/state:/term} cannot be produced
+    and does therefore not exist.
 test-action: |
   GetTimerSchedulingData( ctx->timer_id, &ctx->pre_scheduling_data );
   ctx->pre_class = GetTimerClass( ctx->timer_id );
@@ -426,8 +416,8 @@ test-context:
 - brief: |
     This member contains a valid id of a second timer.
   description: |
-    This timer is used reach branch coverage in an if-statement which only
-    serves performance optimization.
+    This timer is used reach branch coverage in an if-statement which only serves
+    performance optimization.
   member: |
     rtems_id timer_cover_id
 - brief: |
@@ -449,23 +439,22 @@ test-context:
   member: |
     rtems_timer_service_routine_entry routine_param
 - brief: |
-    This member contains the returned ${/glossary/statuscode:/term}
-    of the action.
+    This member contains the returned ${/glossary/statuscode:/term} of the action.
   description: null
   member: |
     rtems_status_code status
 - brief: |
-    This member contains a counter for invocations of
-    the ${../glossary/timerserviceroutine:/term}.
+    This member contains a counter for invocations of the
+    ${../glossary/timerserviceroutine:/term}.
   description: null
   member: |
     int invocations
 - brief: |
-    Function TriggerTimer() is used to figure out how many
-    ticks (see ${/glossary/tick:/term}) are needed till the
-    ${../glossary/timerserviceroutine:/term} gets executed.
-    This member contains the number of ticks needed to
-    ${../glossary/fire:/term} the ${../glossary/timerserviceroutine:/term}.
+    Function TriggerTimer() is used to figure out how many ticks (see
+    ${/glossary/tick:/term}) are needed till the
+    ${../glossary/timerserviceroutine:/term} gets executed. This member contains
+    the number of ticks needed to ${../glossary/fire:/term} the
+    ${../glossary/timerserviceroutine:/term}.
   description: null
   member: |
     Scheduling_Ticks ticks_till_fire
@@ -485,48 +474,48 @@ test-context:
     PreConditionContext pre_cond_contex
 - brief: |
     This member stores internal ${../glossary/clock:/term} and
-    ${../glossary/context:/term} settings of the timer before
-    the execution of the test action.
+    ${../glossary/context:/term} settings of the timer before the execution of the
+    test action.
   description: null
   member: |
     Timer_Classes pre_class
 - brief: |
-    This member stores the ${../glossary/state:/term} of the timer before
-    the execution of the test action.
+    This member stores the ${../glossary/state:/term} of the timer before the
+    execution of the test action.
   description: null
   member: |
     Timer_States pre_state
 - brief: |
-    This member stores the ${../glossary/state:/term} of the timer after
-    the execution of the test action.
+    This member stores the ${../glossary/state:/term} of the timer after the
+    execution of the test action.
   description: null
   member: |
     Timer_States post_state
 - brief: |
-    This member stores the scheduling data of the timer before
-    the execution of the test action.
+    This member stores the scheduling data of the timer before the execution of the
+    test action.
   description: null
   member: |
     Timer_Scheduling_Data pre_scheduling_data
 - brief: |
-    This member stores the scheduling data of the timer after
-    the execution of the test action.
+    This member stores the scheduling data of the timer after the execution of the
+    test action.
   description: null
   member: |
     Timer_Scheduling_Data post_scheduling_data
 test-context-support: |
   typedef enum {
-    PRE_NONE      = 0,
+    PRE_NONE = 0,
     PRE_INTERRUPT = 1,
-    PRE_SERVER    = 2
+    PRE_SERVER = 2
   } PreConditionContext;
 
   typedef enum {
-    SCHEDULE_NONE       = 0,
-    SCHEDULE_VERY_SOON  = 1,
-    SCHEDULE_SOON       = 2,
-    SCHEDULE_LATER      = 3,
-    SCHEDULE_MAX        = 5
+    SCHEDULE_NONE = 0,
+    SCHEDULE_VERY_SOON = 1,
+    SCHEDULE_SOON = 2,
+    SCHEDULE_LATER = 3,
+    SCHEDULE_MAX = 5
   } Scheduling_Ticks;
 test-description: null
 test-header: null
@@ -548,18 +537,20 @@ test-prepare: |
   );
   T_rsc_success( status );
 
-  ctx->invocations               = 0;
-  ctx->ticks_till_fire           = SCHEDULE_NONE;
-  ctx->routine_user_data         = NULL;
+  ctx->invocations = 0;
+  ctx->ticks_till_fire = SCHEDULE_NONE;
+  ctx->routine_user_data = NULL;
   T_rsc_success( rtems_clock_set( &tod_now ) );
 test-setup: null
 test-stop: null
 test-support: |
-  static const rtems_time_of_day tod_now      = { 2000, 1, 1, 0, 0, 0, 0 };
+  static const rtems_time_of_day tod_now = { 2000, 1, 1, 0, 0, 0, 0 };
   static const rtems_time_of_day tod_schedule = { 2000, 1, 1, 1, 0, 0, 0 };
-  static const rtems_time_of_day tod_fire     = { 2000, 1, 2, 0, 0, 0, 0 };
+  static const rtems_time_of_day tod_fire = { 2000, 1, 2, 0, 0, 0, 0 };
 
-  static Scheduling_Ticks TriggerTimer( const RtemsTimerReqServerFireAfter_Context *ctx )
+  static Scheduling_Ticks TriggerTimer(
+    const RtemsTimerReqServerFireAfter_Context *ctx
+  )
   {
     int ticks_fired = SCHEDULE_NONE;
     int invocations_old = ctx->invocations;
@@ -579,10 +570,7 @@ test-support: |
     return ticks_fired;
   }
 
-  static void TimerServiceRoutine(
-    rtems_id timer_id,
-    void *user_data
-  )
+  static void TimerServiceRoutine( rtems_id timer_id, void *user_data )
   {
     (void) timer_id;
 
@@ -597,7 +585,7 @@ test-support: |
    */
   static void TimerServiceRoutineCover(
     rtems_id timer_cover_id,
-    void *user_data
+    void    *user_data
   )
   {
     (void) timer_cover_id;
@@ -605,12 +593,13 @@ test-support: |
   }
 test-target: testsuites/validation/tc-timer-server-fire-after.c
 test-teardown:
-  brief: Make sure the ${../glossary/realtimeclock:/term} is not set
-    after this test.
+  brief: |
+    Make sure the ${../glossary/realtimeclock:/term} is not set after this test.
   code: |
     UnsetClock();
   description: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

@@ -9,11 +9,9 @@ links:
 rationale: null
 requirement-type: functional
 text: |
-  When the code is compiled with the GNU C compiler,
-  and the produced target file format is ELF or a.out,
-  and the ${../if/weak:/name} macro is part of a function definition
-  at global scope or variable definition at global scope,
-  and there is no other symbol at global scope with the same name as the
-  one of the above mentioned function or variable,
-  the macro shall have no observable effect.
+  When the code is compiled with the GNU C compiler, and the produced target file
+  format is ELF or a.out, and the ${../if/weak:/name} macro is part of a function
+  definition at global scope or variable definition at global scope, and there is
+  no other symbol at global scope with the same name as the one of the above
+  mentioned function or variable, the macro shall have no observable effect.
 type: requirement

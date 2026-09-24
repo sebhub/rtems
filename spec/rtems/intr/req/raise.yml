@@ -54,14 +54,14 @@ pre-conditions:
     test-code: |
       ctx->valid_vector = true;
     text: |
-      While the ${../if/raise:/params[0]/name} parameter is
-      associated with an interrupt vector.
+      While the ${../if/raise:/params[0]/name} parameter is associated with an
+      interrupt vector.
   - name: Invalid
     test-code: |
       ctx->valid_vector = false;
     text: |
-      While the ${../if/raise:/params[0]/name} parameter is
-      not associated with an interrupt vector.
+      While the ${../if/raise:/params[0]/name} parameter is not associated with an
+      interrupt vector.
   test-epilogue: null
   test-prologue: null
 - name: CanRaise
@@ -73,8 +73,8 @@ pre-conditions:
        * see CheckRaise().
        */
     text: |
-      While the interrupt vector associated with the
-      ${../if/raise:/params[0]/name} parameter can be raised.
+      While the interrupt vector associated with the ${../if/raise:/params[0]/name}
+      parameter can be raised.
   - name: 'No'
     test-code: |
       /*
@@ -82,8 +82,8 @@ pre-conditions:
        * see CheckRaise().
        */
     text: |
-      While the interrupt vector associated with the
-      ${../if/raise:/params[0]/name} parameter cannot be raised.
+      While the interrupt vector associated with the ${../if/raise:/params[0]/name}
+      parameter cannot be raised.
   test-epilogue: null
   test-prologue: null
 rationale: null
@@ -135,14 +135,13 @@ test-context:
   member: |
     rtems_vector_number vector
 - brief: |
-    If this member is true, then the ${../if/raise:/params[0]/name}
-    parameter shall be valid.
+    If this member is true, then the ${../if/raise:/params[0]/name} parameter shall
+    be valid.
   description: null
   member: |
     bool valid_vector
 - brief: |
-    This member contains the return value of the ${../if/raise:/name}
-    call.
+    This member contains the return value of the ${../if/raise:/name} call.
   description: null
   member: |
     rtems_status_code status
@@ -280,7 +279,7 @@ test-support: |
       );
       T_rsc_success( sc );
 
-      if ( !IsPending( ctx) && ( attr->can_enable || IsEnabled( ctx ) ) ) {
+      if ( !IsPending( ctx ) && ( attr->can_enable || IsEnabled( ctx ) ) ) {
         Disable( ctx );
         Raise( ctx );
 
@@ -318,7 +317,8 @@ test-support: |
   }
 test-target: testsuites/validation/tc-intr-raise.c
 test-teardown: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

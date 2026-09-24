@@ -8,7 +8,6 @@ links:
   uid: group
 term: big endian
 text: |
-  A data representation scheme in which the bytes composing a numeric value
-  are arranged such that the most significant byte is at the lowest
-  address.
+  A data representation scheme in which the bytes composing a numeric value are
+  arranged such that the most significant byte is at the lowest address.
 type: glossary

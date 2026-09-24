@@ -2,13 +2,13 @@ SPDX-License-Identifier: CC-BY-SA-4.0
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
 enabled-by: true
+functional-type: function
 links:
 - role: interface-function
   uid: ../if/pending-events
-functional-type: function
 rationale: null
 requirement-type: functional
 text: |
-  The ${../if/pending-events:/name} constant shall be a constant expression
-  which evaluates to a value of zero.
+  The ${../if/pending-events:/name} constant shall be a constant expression which
+  evaluates to a value of zero.
 type: requirement

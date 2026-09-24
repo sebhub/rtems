@@ -13,8 +13,8 @@ definition:
     return: void
   variants: []
 description: |
-  This directive disables maskable interrupts on the current processor and
-  stores the previous interrupt level in ${.:/params[0]/name}.
+  This directive disables maskable interrupts on the current processor and stores
+  the previous interrupt level in ${.:/params[0]/name}.
 enabled-by: true
 index-entries: []
 interface-type: macro

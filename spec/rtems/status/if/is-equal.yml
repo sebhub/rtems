@@ -26,15 +26,17 @@ links:
 name: rtems_are_statuses_equal
 notes: null
 params:
-- description: is the left hand side status code.
+- description: |
+    is the left hand side status code.
   dir: null
   name: left_status_code
-- description: is the right hand side status code.
+- description: |
+    is the right hand side status code.
   dir: null
   name: right_status_code
 return:
   return: |
-    Returns true, if the left hand side status code is equal to the right hand
-    side status code, otherwise false.
+    Returns true, if the left hand side status code is equal to the right hand side
+    status code, otherwise false.
   return-values: []
 type: interface

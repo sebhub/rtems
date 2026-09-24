@@ -13,8 +13,8 @@ definition:
     return: void
   variants: []
 description: |
-  This directive processes fatal errors.  The fatal source is set to
-  ${/score/interr/if/source-exit:/name}.  The fatal code is set to the value of
+  This directive processes fatal errors. The fatal source is set to
+  ${/score/interr/if/source-exit:/name}. The fatal code is set to the value of
   the ${.:/params[0]/name} parameter.
 enabled-by: true
 index-entries:

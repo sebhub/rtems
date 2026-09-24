@@ -32,7 +32,7 @@ params:
   name: _options
 return:
   return: |
-    Returns true, if the interrupt handler unique option ${unique:/name} is
-    set, otherwise false.
+    Returns true, if the interrupt handler unique option ${unique:/name} is set,
+    otherwise false.
   return-values: []
 type: interface

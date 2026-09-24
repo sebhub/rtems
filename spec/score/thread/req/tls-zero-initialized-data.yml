@@ -2,13 +2,13 @@ SPDX-License-Identifier: CC-BY-SA-4.0
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
 enabled-by: true
+functional-type: function
 links:
 - role: requirement-refinement
   uid: ../if/group
-functional-type: function
 rationale: null
 requirement-type: functional
 text: |
-  While the thread entry execution begins, the storage space of zero
-  initialized thread-local storage objects shall be cleared to zero.
+  While the thread entry execution begins, the storage space of zero initialized
+  thread-local storage objects shall be cleared to zero.
 type: requirement

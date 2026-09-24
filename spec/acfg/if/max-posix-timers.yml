@@ -4,8 +4,8 @@ copyrights:
 - Copyright (C) 1988, 2022 On-Line Applications Research Corporation (OAR)
 default-value: 0
 description: |
-  The value of this configuration option defines the maximum number of POSIX
-  API Timers that can be concurrently active.
+  The value of this configuration option defines the maximum number of POSIX API
+  Timers that can be concurrently active.
 enabled-by: true
 index-entries: []
 interface-type: appl-config-option

@@ -4,8 +4,8 @@ copyrights:
 - Copyright (C) 1988, 2008 On-Line Applications Research Corporation (OAR)
 default-value: ${/rtems/task/if/minimum-stack-size:/name}
 description: |
-  The value of this configuration option defines the task stack size of the
-  Block Device Cache tasks in bytes.
+  The value of this configuration option defines the task stack size of the Block
+  Device Cache tasks in bytes.
 enabled-by: true
 index-entries: []
 interface-type: appl-config-option

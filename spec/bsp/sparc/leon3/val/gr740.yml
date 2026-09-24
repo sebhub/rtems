@@ -45,8 +45,8 @@ test-actions:
       uid: ../req/l2c-err-comp
   links: []
 test-brief: |
-  This test case collection provides validation test cases for the
-  ``sparc/gr740`` ${/glossary/bsp:/term}.
+  This test case collection provides validation test cases for the `sparc/gr740`
+  ${/glossary/bsp:/term}.
 test-context: []
 test-context-support: null
 test-description: null

@@ -29,7 +29,8 @@ links:
 name: rtems_resource_is_unlimited
 notes: null
 params:
-- description: is the resource number.
+- description: |
+    is the resource number.
   dir: null
   name: _resource
 return:

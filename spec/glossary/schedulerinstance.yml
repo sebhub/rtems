@@ -10,9 +10,9 @@ links:
   uid: /ref/rtems/c-user/config-scheduler-clustered
 term: scheduler instance
 text: |
-  A scheduler instance is a scheduling algorithm with a corresponding
-  context to store its internal state.  Each processor in the system is
-  owned by at most one scheduler instance.  The processor to scheduler
-  instance assignment is determined at application configuration time.  See
+  A scheduler instance is a scheduling algorithm with a corresponding context to
+  store its internal state. Each processor in the system is owned by at most one
+  scheduler instance. The processor to scheduler instance assignment is
+  determined at application configuration time. See
   ${/ref/rtems/c-user/config-scheduler-clustered:/name}
 type: glossary

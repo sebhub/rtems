@@ -71,10 +71,9 @@ test-actions:
     options |= RTEMS_NO_WAIT;
   checks:
   - brief: |
-      Check that the count of set bits in the calculated value is equal to the
-      count of non-default option constants.  Since each non-default option
-      constant is a power of two, this proves that each constant has a unique
-      value.
+      Check that the count of set bits in the calculated value is equal to the count
+      of non-default option constants. Since each non-default option constant is a
+      power of two, this proves that each constant has a unique value.
     code: |
       T_step_eq_int( ${.:/step}, PopCount( options ), 2 );
     links:

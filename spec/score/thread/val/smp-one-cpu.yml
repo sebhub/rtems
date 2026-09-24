@@ -5,8 +5,8 @@ enabled-by: RTEMS_SMP
 links: []
 test-actions:
 - action-brief: |
-    Create one worker thread to validate the thread pinning on only one
-    processor using a uniprocessor scheduler.
+    Create one worker thread to validate the thread pinning on only one processor
+    using a uniprocessor scheduler.
   action-code: |
     Per_CPU_Control *cpu_self;
     Thread_Control  *executing;
@@ -19,8 +19,7 @@ test-actions:
     StartTask( ctx->worker_id, WorkerTask, ctx );
   checks:
   - brief: |
-      Pin the runner thread.  Preempt the runner thread.  Unpin the runner
-      thread.
+      Pin the runner thread. Preempt the runner thread. Unpin the runner thread.
     code: |
       _Thread_Pin( executing );
 
@@ -42,8 +41,8 @@ test-actions:
     links: []
   links: []
 test-brief: |
-  Tests SMP-specific thread behaviour using only one processor and a
-  uniprocessor scheduler.
+  Tests SMP-specific thread behaviour using only one processor and a uniprocessor
+  scheduler.
 test-context:
 - brief: |
     This member contains the worker thread identifier.

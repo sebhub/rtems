@@ -11,6 +11,5 @@ links:
 rationale: null
 requirement-type: functional
 text: |
-  The application configuration option shall define the number of device
-  drivers.
+  The application configuration option shall define the number of device drivers.
 type: requirement

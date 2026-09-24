@@ -13,8 +13,8 @@ definition:
     return: void
   variants: []
 description: |
-  This directive restores the interrupt level specified by
-  ${.:/params[0]/name} on the current processor.
+  This directive restores the interrupt level specified by ${.:/params[0]/name}
+  on the current processor.
 enabled-by:
   not: RTEMS_SMP
 index-entries:
@@ -38,16 +38,16 @@ links:
   uid: ../constraint/no-smp
 name: rtems_interrupt_enable
 notes: |
-  The ${.:/params[0]/name} parameter value must be obtained by a previous
-  call to ${disable:/name} or ${flash:/name}.  Using an otherwise obtained
-  value is undefined behaviour.
+  The ${.:/params[0]/name} parameter value must be obtained by a previous call to
+  ${disable:/name} or ${flash:/name}. Using an otherwise obtained value is
+  undefined behaviour.
 
   This directive is unsuitable to enable particular interrupt sources, for
   example in an interrupt controller.
 params:
 - description: |
-    is the previous interrupt level to restore.  The value must be obtained by
-    a previous call to ${disable:/name} or ${flash:/name}.
+    is the previous interrupt level to restore. The value must be obtained by a
+    previous call to ${disable:/name} or ${flash:/name}.
   dir: in
   name: _isr_cookie
 return: null

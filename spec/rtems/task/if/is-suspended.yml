@@ -35,7 +35,7 @@ name: rtems_task_is_suspended
 notes: null
 params:
 - description: |
-    is the task identifier.  The constant ${self-define:/name} may be used to
+    is the task identifier. The constant ${self-define:/name} may be used to
     specify the calling task.
   dir: null
   name: id

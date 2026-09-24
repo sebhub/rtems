@@ -39,45 +39,44 @@ post-conditions:
   states:
   - name: Set
     test-code: |
-      #if defined(RTEMS_SMP)
-      T_eq_sz( ctx->scheduler_log.header.recorded, 1 );
-      T_eq_int(
-        ctx->scheduler_log.events[ 0 ].operation,
-        T_SCHEDULER_SET_AFFINITY
-      );
-      T_eq_int(
-        ctx->scheduler_log.events[ 0 ].set_affinity.status,
-        STATUS_SUCCESSFUL
-      );
-      #else
-      T_eq_sz( ctx->scheduler_log.header.recorded, 0 );
-      #endif
-    text: |
-      The affinity set of the task specified by the
-      ${../if/set-affinity:/params[0]/name} parameter shall be set with respect
-      to the ${/glossary/scheduler-home:/term} of the task at some point during
-      the ${../if/set-affinity:/name} call.
-  - name: Nop
-    test-code: |
-      #if defined(RTEMS_SMP)
-      if ( ctx->scheduler_log.header.recorded == 1 ) {
+      #if defined( RTEMS_SMP )
+        T_eq_sz( ctx->scheduler_log.header.recorded, 1 );
         T_eq_int(
           ctx->scheduler_log.events[ 0 ].operation,
           T_SCHEDULER_SET_AFFINITY
         );
         T_eq_int(
           ctx->scheduler_log.events[ 0 ].set_affinity.status,
-          STATUS_INVALID_NUMBER
+          STATUS_SUCCESSFUL
         );
-      } else {
-        T_eq_sz( ctx->scheduler_log.header.recorded, 0 );
-      }
       #else
-      T_eq_sz( ctx->scheduler_log.header.recorded, 0 );
+        T_eq_sz( ctx->scheduler_log.header.recorded, 0 );
       #endif
     text: |
-      No task affinity shall be modified by the ${../if/set-affinity:/name}
-      call.
+      The affinity set of the task specified by the
+      ${../if/set-affinity:/params[0]/name} parameter shall be set with respect to
+      the ${/glossary/scheduler-home:/term} of the task at some point during the
+      ${../if/set-affinity:/name} call.
+  - name: Nop
+    test-code: |
+      #if defined( RTEMS_SMP )
+        if ( ctx->scheduler_log.header.recorded == 1 ) {
+          T_eq_int(
+            ctx->scheduler_log.events[ 0 ].operation,
+            T_SCHEDULER_SET_AFFINITY
+          );
+          T_eq_int(
+            ctx->scheduler_log.events[ 0 ].set_affinity.status,
+            STATUS_INVALID_NUMBER
+          );
+        } else {
+          T_eq_sz( ctx->scheduler_log.header.recorded, 0 );
+        }
+      #else
+        T_eq_sz( ctx->scheduler_log.header.recorded, 0 );
+      #endif
+    text: |
+      No task affinity shall be modified by the ${../if/set-affinity:/name} call.
   test-epilogue: null
   test-prologue: null
 pre-conditions:
@@ -87,14 +86,14 @@ pre-conditions:
     test-code: |
       ctx->id = INVALID_ID;
     text: |
-      While the ${../if/set-affinity:/params[0]/name} parameter is not
-      associated with a task.
+      While the ${../if/set-affinity:/params[0]/name} parameter is not associated
+      with a task.
   - name: Task
     test-code: |
       ctx->id = RTEMS_SELF;
     text: |
-      While the ${../if/set-affinity:/params[0]/name} parameter is
-      associated with a task.
+      While the ${../if/set-affinity:/params[0]/name} parameter is associated with a
+      task.
   test-epilogue: null
   test-prologue: null
 - name: CPUSetSize
@@ -103,24 +102,24 @@ pre-conditions:
     test-code: |
       ctx->cpusetsize = SIZE_MAX;
     text: |
-      While the ${../if/set-affinity:/params[1]/name} parameter is not an
-      integral multiple of the size of long.
+      While the ${../if/set-affinity:/params[1]/name} parameter is not an integral
+      multiple of the size of long.
   - name: Normal
     test-code: |
       ctx->cpusetsize = sizeof( ctx->cpuset_obj[ 0 ] );
     text: |
       While the ${../if/set-affinity:/params[1]/name} parameter is an integral
-      multiple of the size of long,
-      while the ${../if/set-affinity:/params[1]/name} parameter is less than or
-      equal to the maximum processor set size storable in the system.
+      multiple of the size of long, while the ${../if/set-affinity:/params[1]/name}
+      parameter is less than or equal to the maximum processor set size storable in
+      the system.
   - name: Huge
     test-code: |
       ctx->cpusetsize = sizeof( ctx->cpuset_obj );
     text: |
       While the ${../if/set-affinity:/params[1]/name} parameter is an integral
-      multiple of the size of long,
-      while the ${../if/set-affinity:/params[1]/name} parameter is greater than
-      the maximum processor set size storable in the system.
+      multiple of the size of long, while the ${../if/set-affinity:/params[1]/name}
+      parameter is greater than the maximum processor set size storable in the
+      system.
   test-epilogue: null
   test-prologue: null
 - name: CPUSetOnline
@@ -130,10 +129,9 @@ pre-conditions:
       /* Already prepared */
     text: |
       While the intersection of the processor set specified by the
-      ${../if/set-affinity:/params[1]/name} and
-      ${../if/set-affinity:/params[2]/name} parameters and the set of online
-      processors represents an affinity set supported by the
-      ${/glossary/scheduler-home:/term} of the task specified by the
+      ${../if/set-affinity:/params[1]/name} and ${../if/set-affinity:/params[2]/name}
+      parameters and the set of online processors represents an affinity set
+      supported by the ${/glossary/scheduler-home:/term} of the task specified by the
       ${../if/set-affinity:/params[0]/name} parameter at some point during the
       ${../if/set-affinity:/name} call.
   - name: Unsupported
@@ -141,10 +139,9 @@ pre-conditions:
       CPU_CLR( 0, &ctx->cpuset_obj[ 0 ] );
     text: |
       While the intersection of the processor set specified by the
-      ${../if/set-affinity:/params[1]/name} and
-      ${../if/set-affinity:/params[2]/name} parameters and the set of online
-      processors represents an affinity set not supported by the
-      ${/glossary/scheduler-home:/term} of the task specified by the
+      ${../if/set-affinity:/params[1]/name} and ${../if/set-affinity:/params[2]/name}
+      parameters and the set of online processors represents an affinity set not
+      supported by the ${/glossary/scheduler-home:/term} of the task specified by the
       ${../if/set-affinity:/params[0]/name} parameter at some point during the
       ${../if/set-affinity:/name} call.
   test-epilogue: null
@@ -155,18 +152,15 @@ pre-conditions:
     test-code: |
       /* Already prepared */
     text: |
-      While the processor set specified by the
-      ${../if/set-affinity:/params[1]/name} and
-      ${../if/set-affinity:/params[2]/name} parameters contains at least one
-      processor which is not storable in a processor set supported by the
-      system.
+      While the processor set specified by the ${../if/set-affinity:/params[1]/name}
+      and ${../if/set-affinity:/params[2]/name} parameters contains at least one
+      processor which is not storable in a processor set supported by the system.
   - name: Zero
     test-code: |
       CPU_ZERO( &ctx->cpuset_obj[ 1 ] );
     text: |
-      While the processor set specified by the
-      ${../if/set-affinity:/params[1]/name} and
-      ${../if/set-affinity:/params[2]/name} parameters contains no processor
+      While the processor set specified by the ${../if/set-affinity:/params[1]/name}
+      and ${../if/set-affinity:/params[2]/name} parameters contains no processor
       which is not storable in a processor set supported by the system.
   test-epilogue: null
   test-prologue: null
@@ -176,8 +170,8 @@ pre-conditions:
     test-code: |
       ctx->cpuset = &ctx->cpuset_obj[ 0 ];
     text: |
-      While the ${../if/set-affinity:/params[2]/name} parameter references an
-      object of type ${/c/if/cpu_set_t:/name}.
+      While the ${../if/set-affinity:/params[2]/name} parameter references an object
+      of type ${/c/if/cpu_set_t:/name}.
   - name: 'Null'
     test-code: |
       ctx->cpuset = NULL;
@@ -218,26 +212,25 @@ test-context:
   member: |
     cpu_set_t cpuset_obj[ 2 ]
 - brief: |
-    This member contains the return value of the ${../if/set-affinity:/name}
-    call.
+    This member contains the return value of the ${../if/set-affinity:/name} call.
   description: null
   member: |
     rtems_status_code status
 - brief: |
-    This member specifies if the ${../if/set-affinity:/params[0]/name}
-    parameter value.
+    This member specifies if the ${../if/set-affinity:/params[0]/name} parameter
+    value.
   description: null
   member: |
     rtems_id id
 - brief: |
-    This member specifies if the ${../if/set-affinity:/params[1]/name}
-    parameter value.
+    This member specifies if the ${../if/set-affinity:/params[1]/name} parameter
+    value.
   description: null
   member: |
     size_t cpusetsize
 - brief: |
-    This member specifies if the ${../if/set-affinity:/params[2]/name}
-    parameter value.
+    This member specifies if the ${../if/set-affinity:/params[2]/name} parameter
+    value.
   description: null
   member: |
     cpu_set_t *cpuset
@@ -256,7 +249,8 @@ test-stop: null
 test-support: null
 test-target: testsuites/validation/tc-task-set-affinity.c
 test-teardown: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

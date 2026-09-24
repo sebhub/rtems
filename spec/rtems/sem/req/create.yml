@@ -82,14 +82,14 @@ post-conditions:
       T_ne_u32( ctx->id_value, INVALID_ID );
     text: |
       The value of the object referenced by the ${../if/create:/params[4]/name}
-      parameter shall be set to the object identifier of the created semaphore
-      after the return of the ${../if/create:/name} call.
+      parameter shall be set to the object identifier of the created semaphore after
+      the return of the ${../if/create:/name} call.
   - name: Nop
     test-code: |
       T_eq_u32( ctx->id_value, INVALID_ID );
     text: |
-      Objects referenced by the ${../if/create:/params[4]/name} parameter in
-      past calls to ${../if/create:/name} shall not be accessed by the
+      Objects referenced by the ${../if/create:/params[4]/name} parameter in past
+      calls to ${../if/create:/name} shall not be accessed by the
       ${../if/create:/name} call.
   test-epilogue: null
   test-prologue: null
@@ -99,8 +99,8 @@ post-conditions:
     test-code: |
       T_eq_int( ctx->variant, SEMAPHORE_VARIANT_COUNTING );
     text: |
-      The semaphore created by the ${../if/create:/name} call shall be a
-      counting semaphore.
+      The semaphore created by the ${../if/create:/name} call shall be a counting
+      semaphore.
   - name: Bin
     test-code: |
       T_eq_int( ctx->variant, SEMAPHORE_VARIANT_MUTEX_NO_PROTOCOL );
@@ -127,10 +127,10 @@ post-conditions:
       binary semaphore.
   - name: MrsP
     test-code: |
-      #if defined(RTEMS_SMP)
-      T_eq_int( ctx->variant, SEMAPHORE_VARIANT_MRSP );
+      #if defined( RTEMS_SMP )
+        T_eq_int( ctx->variant, SEMAPHORE_VARIANT_MRSP );
       #else
-      T_true( false );
+        T_true( false );
       #endif
     text: |
       The semaphore created by the ${../if/create:/name} call shall be a binary
@@ -143,14 +143,14 @@ post-conditions:
     test-code: |
       T_eq_int( ctx->discipline, SEMAPHORE_DISCIPLINE_FIFO );
     text: |
-      The semaphore created by the ${../if/create:/name} call shall use the
-      FIFO task wait queue discipline.
+      The semaphore created by the ${../if/create:/name} call shall use the FIFO task
+      wait queue discipline.
   - name: Prio
     test-code: |
       T_eq_int( ctx->discipline, SEMAPHORE_DISCIPLINE_PRIORITY );
     text: |
-      The semaphore created by the ${../if/create:/name} call shall use the
-      priority task wait queue discipline.
+      The semaphore created by the ${../if/create:/name} call shall use the priority
+      task wait queue discipline.
   test-epilogue: null
   test-prologue: null
 - name: Count
@@ -159,9 +159,8 @@ post-conditions:
     test-code: |
       T_eq_u32( ctx->sem_count, ctx->count );
     text: |
-      The semaphore created by the ${../if/create:/name} call shall have an
-      initial count equal to the value of the ${../if/create:/params[1]/name}
-      parameter.
+      The semaphore created by the ${../if/create:/name} call shall have an initial
+      count equal to the value of the ${../if/create:/params[1]/name} parameter.
   test-epilogue: null
   test-prologue: null
 - name: Owner
@@ -170,14 +169,14 @@ post-conditions:
     test-code: |
       T_eq_ptr( ctx->owner, ctx->executing );
     text: |
-      The semaphore created by the ${../if/create:/name} call shall be
-      initially owned by the calling task.
+      The semaphore created by the ${../if/create:/name} call shall be initially
+      owned by the calling task.
   - name: 'No'
     test-code: |
       T_null( ctx->owner );
     text: |
-      The semaphore created by the ${../if/create:/name} call shall not
-      initially have an owner.
+      The semaphore created by the ${../if/create:/name} call shall not initially
+      have an owner.
   test-epilogue: null
   test-prologue: null
 - name: Prio
@@ -186,14 +185,14 @@ post-conditions:
     test-code: |
       T_eq_u32( GetSelfPriority(), ctx->priority_ceiling );
     text: |
-      The current priority of the task which called ${../if/create:/name} shall
-      be equal to the value of the ${../if/create:/params[3]/name} parameter.
+      The current priority of the task which called ${../if/create:/name} shall be
+      equal to the value of the ${../if/create:/params[3]/name} parameter.
   - name: Nop
     test-code: |
       T_eq_u32( GetSelfPriority(), 1 );
     text: |
-      The current priority of the task which called ${../if/create:/name} shall
-      not be modified by the ${../if/create:/name} call.
+      The current priority of the task which called ${../if/create:/name} shall not
+      be modified by the ${../if/create:/name} call.
   test-epilogue: null
   test-prologue: null
 pre-conditions:
@@ -217,14 +216,13 @@ pre-conditions:
     test-code: |
       ctx->id = &ctx->id_value;
     text: |
-      While the ${../if/create:/params[4]/name} parameter references an object
-      of type ${../../type/if/id:/name}.
+      While the ${../if/create:/params[4]/name} parameter references an object of
+      type ${../../type/if/id:/name}.
   - name: 'Null'
     test-code: |
       ctx->id = NULL;
     text: |
-      While the ${../if/create:/params[4]/name} parameter is
-      ${/c/if/null:/name}.
+      While the ${../if/create:/params[4]/name} parameter is ${/c/if/null:/name}.
   test-epilogue: null
   test-prologue: null
 - name: Count
@@ -258,8 +256,8 @@ pre-conditions:
     test-code: |
       /* Use default */
     text: |
-      While the ${../if/create:/params[2]/name} parameter does not specify the
-      binary semaphore class.
+      While the ${../if/create:/params[2]/name} parameter does not specify the binary
+      semaphore class.
   test-epilogue: null
   test-prologue: null
 - name: Simple
@@ -268,14 +266,14 @@ pre-conditions:
     test-code: |
       ctx->attribute_set |= RTEMS_SIMPLE_BINARY_SEMAPHORE;
     text: |
-      While the ${../if/create:/params[2]/name} parameter specifies the simple
-      binary semaphore class.
+      While the ${../if/create:/params[2]/name} parameter specifies the simple binary
+      semaphore class.
   - name: 'No'
     test-code: |
       /* Use default */
     text: |
-      While the ${../if/create:/params[2]/name} parameter does not specify the
-      simple binary semaphore class.
+      While the ${../if/create:/params[2]/name} parameter does not specify the simple
+      binary semaphore class.
   test-epilogue: null
   test-prologue: null
 - name: Inherit
@@ -316,14 +314,14 @@ pre-conditions:
     test-code: |
       ctx->attribute_set |= RTEMS_MULTIPROCESSOR_RESOURCE_SHARING;
     text: |
-      While the ${../if/create:/params[2]/name} parameter specifies the MrsP
-      locking protocol.
+      While the ${../if/create:/params[2]/name} parameter specifies the MrsP locking
+      protocol.
   - name: 'No'
     test-code: |
       ctx->attribute_set |= RTEMS_NO_MULTIPROCESSOR_RESOURCE_SHARING;
     text: |
-      While the ${../if/create:/params[2]/name} parameter does not specify the
-      MrsP locking protocol.
+      While the ${../if/create:/params[2]/name} parameter does not specify the MrsP
+      locking protocol.
   test-epilogue: null
   test-prologue: null
 - name: Disc
@@ -339,8 +337,8 @@ pre-conditions:
     test-code: |
       ctx->attribute_set |= RTEMS_PRIORITY;
     text: |
-      While the ${../if/create:/params[2]/name} parameter specifies the priority
-      task wait queue discipline.
+      While the ${../if/create:/params[2]/name} parameter specifies the priority task
+      wait queue discipline.
   test-epilogue: null
   test-prologue: null
 - name: Prio
@@ -349,25 +347,23 @@ pre-conditions:
     test-code: |
       ctx->priority_ceiling = 0;
     text: |
-      While the ${../if/create:/params[3]/name} parameter is a valid task
-      priority less than or equal to the current priority of the calling task
-      with respect to the scheduler of the calling task at some point during
-      the directive call.
+      While the ${../if/create:/params[3]/name} parameter is a valid task priority
+      less than or equal to the current priority of the calling task with respect to
+      the scheduler of the calling task at some point during the directive call.
   - name: GtCur
     test-code: |
       ctx->priority_ceiling = 2;
     text: |
-      While the ${../if/create:/params[3]/name} parameter is a valid task
-      priority greater than the current priority of the calling task with
-      respect to the scheduler of the calling task at some point during the
-      directive call.
+      While the ${../if/create:/params[3]/name} parameter is a valid task priority
+      greater than the current priority of the calling task with respect to the
+      scheduler of the calling task at some point during the directive call.
   - name: Invalid
     test-code: |
       ctx->priority_ceiling = UINT32_MAX;
     text: |
       The ${../if/create:/params[3]/name} parameter shall not be a valid task
-      priority with respect to the scheduler of the calling task at some point
-      during the directive call.
+      priority with respect to the scheduler of the calling task at some point during
+      the directive call.
   test-epilogue: null
   test-prologue: null
 - name: Free
@@ -530,14 +526,15 @@ test-support: |
       ctx->discipline = _Semaphore_Get_discipline( flags );
     } else {
       ctx->sem_count = 123;
-      ctx->owner = (void *)(uintptr_t) 1;
+      ctx->owner = (void *) (uintptr_t) 1;
       ctx->variant = INT_MAX;
       ctx->discipline = INT_MAX;
     }
   }
 test-target: testsuites/validation/tc-sem-create.c
 test-teardown: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

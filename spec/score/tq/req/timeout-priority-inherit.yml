@@ -53,14 +53,14 @@ post-conditions:
     test-code: |
       T_eq_u32( ctx->owner_priority_after, ctx->owner_priority );
     text: |
-      The priority of the owner with respect to the scheduler shall not change
-      by the timeout operation.
+      The priority of the owner with respect to the scheduler shall not change by the
+      timeout operation.
   - name: Lower
     test-code: |
       T_eq_u32( ctx->owner_priority_after, ctx->owner_priority + 1 );
     text: |
-      The priority of the owner with respect to the scheduler shall be lowered
-      to the next highest priority.
+      The priority of the owner with respect to the scheduler shall be lowered to the
+      next highest priority.
   - name: Drop
     test-code: |
       T_eq_u32( ctx->owner_priority_after, PRIO_INVALID );
@@ -74,22 +74,20 @@ post-conditions:
     test-code: |
       T_eq_u32( ctx->owner_owner_priority_after, ctx->owner_owner_priority );
     text: |
-      The priority of the owner of the thread queue on which the owner is
-      enqueued with respect to the scheduler shall not change by the timeout
-      operation.
+      The priority of the owner of the thread queue on which the owner is enqueued
+      with respect to the scheduler shall not change by the timeout operation.
   - name: Lower
     test-code: |
       T_eq_u32( ctx->owner_owner_priority_after, ctx->owner_owner_priority + 1 );
     text: |
-      The priority of the owner of the thread queue on which the owner is
-      enqueued with respect to the scheduler shall be lowered to the next
-      highest priority.
+      The priority of the owner of the thread queue on which the owner is enqueued
+      with respect to the scheduler shall be lowered to the next highest priority.
   - name: Drop
     test-code: |
       T_eq_u32( ctx->owner_owner_priority_after, PRIO_INVALID );
     text: |
-      The owner of the thread queue on which the owner is enqueued shall not
-      have a priority with respect to the scheduler.
+      The owner of the thread queue on which the owner is enqueued shall not have a
+      priority with respect to the scheduler.
   test-epilogue: null
   test-prologue: null
 pre-conditions:
@@ -129,24 +127,23 @@ pre-conditions:
     test-code: |
       ctx->queue_node = TQ_NODE_ONLY;
     text: |
-      While the priority node of the thread is the only priority node in the
-      priority queue associated with the scheduler of the thread queue.
+      While the priority node of the thread is the only priority node in the priority
+      queue associated with the scheduler of the thread queue.
   - name: Vital
     test-code: |
       ctx->queue_node = TQ_NODE_VITAL;
     text: |
-      While the priority node of the thread is not the only priority node in
-      the priority queue associated with the scheduler of the thread queue,
-      while the priority node of the thread is the highest priority node in the
-      priority queue.
+      While the priority node of the thread is not the only priority node in the
+      priority queue associated with the scheduler of the thread queue, while the
+      priority node of the thread is the highest priority node in the priority queue.
   - name: Dispensable
     test-code: |
       ctx->queue_node = TQ_NODE_DISPENSABLE;
     text: |
-      While the priority node of the thread is not the only priority node in
-      the priority queue associated with the scheduler of the thread queue,
-      while the priority node of the thread is not the highest priority node in
-      the priority queue.
+      While the priority node of the thread is not the only priority node in the
+      priority queue associated with the scheduler of the thread queue, while the
+      priority node of the thread is not the highest priority node in the priority
+      queue.
   test-epilogue: null
   test-prologue: null
 - name: OwnerPriority
@@ -162,17 +159,15 @@ pre-conditions:
       ctx->owner_node = TQ_NODE_VITAL;
     text: |
       While the priority node of the thread queue is not the only priority node
-      associated with the scheduler available to the owner,
-      while the priority node of the thread queue is the highest priority node
-      available to the owner.
+      associated with the scheduler available to the owner, while the priority node
+      of the thread queue is the highest priority node available to the owner.
   - name: Dispensable
     test-code: |
       ctx->owner_node = TQ_NODE_DISPENSABLE;
     text: |
       While the priority node of the thread queue is not the only priority node
-      associated with the scheduler available to the owner,
-      while the priority node of the thread queue is not the highest priority
-      node available to the owner.
+      associated with the scheduler available to the owner, while the priority node
+      of the thread queue is not the highest priority node available to the owner.
   test-epilogue: null
   test-prologue: null
 - name: OwnerState
@@ -195,15 +190,15 @@ pre-conditions:
       ctx->owner_obtain = TQ_EVENT_MUTEX_NO_PROTOCOL_OBTAIN;
       ctx->owner_release = TQ_EVENT_MUTEX_NO_PROTOCOL_RELEASE;
     text: |
-      While the owner of the thread queue is enqueued on a thread queue in
-      priority order.
+      While the owner of the thread queue is enqueued on a thread queue in priority
+      order.
   - name: PriorityInherit
     test-code: |
       ctx->owner_obtain = TQ_EVENT_MUTEX_C_OBTAIN;
       ctx->owner_release = TQ_EVENT_MUTEX_C_RELEASE;
     text: |
-      While the owner of the thread queue is enqueued on a thread queue in
-      priority order with priority inheritance.
+      While the owner of the thread queue is enqueued on a thread queue in priority
+      order with priority inheritance.
   test-epilogue: null
   test-prologue: null
 - name: OwnerQueue
@@ -212,27 +207,25 @@ pre-conditions:
     test-code: |
       ctx->owner_queue_node = TQ_NODE_ONLY;
     text: |
-      While the priority node of the owner is the only priority node in the
-      priority queue associated with the scheduler of the thread queue on which
-      the owner is enqueued.
+      While the priority node of the owner is the only priority node in the priority
+      queue associated with the scheduler of the thread queue on which the owner is
+      enqueued.
   - name: Vital
     test-code: |
       ctx->owner_queue_node = TQ_NODE_VITAL;
     text: |
       While the priority node of the owner is not the only priority node in the
-      priority queue associated with the scheduler of the thread queue on which
-      the owner is enqueued,
-      while the priority node of the owner is the highest priority node in the
-      priority queue.
+      priority queue associated with the scheduler of the thread queue on which the
+      owner is enqueued, while the priority node of the owner is the highest priority
+      node in the priority queue.
   - name: Dispensable
     test-code: |
       ctx->owner_queue_node = TQ_NODE_DISPENSABLE;
     text: |
       While the priority node of the owner is not the only priority node in the
-      priority queue associated with the scheduler of the thread queue on which
-      the owner is enqueued,
-      while the priority node of the owner is not the highest priority node in
-      the priority queue.
+      priority queue associated with the scheduler of the thread queue on which the
+      owner is enqueued, while the priority node of the owner is not the highest
+      priority node in the priority queue.
   test-epilogue: null
   test-prologue: null
 - name: OwnerOwnerPriority
@@ -241,32 +234,27 @@ pre-conditions:
     test-code: |
       ctx->owner_owner_node = TQ_NODE_ONLY;
     text: |
-      While the priority node of the thread queue on which the owner is
-      enqueued is the only priority node associated with the scheduler
-      available to the owner of the thread queue on which the owner is
-      enqueued.
+      While the priority node of the thread queue on which the owner is enqueued is
+      the only priority node associated with the scheduler available to the owner of
+      the thread queue on which the owner is enqueued.
   - name: Vital
     test-code: |
       ctx->owner_owner_node = TQ_NODE_VITAL;
     text: |
-      While the priority node of the thread queue on which the owner is
-      enqueued is not the only priority node associated with the scheduler
-      available to the owner of the thread queue on which the owner is
-      enqueued,
-      while the priority node of the thread queue on which the owner is
-      enqueued is the highest priority node available to the owner of the
-      thread queue on which the owner is enqueued.
+      While the priority node of the thread queue on which the owner is enqueued is
+      not the only priority node associated with the scheduler available to the owner
+      of the thread queue on which the owner is enqueued, while the priority node of
+      the thread queue on which the owner is enqueued is the highest priority node
+      available to the owner of the thread queue on which the owner is enqueued.
   - name: Dispensable
     test-code: |
       ctx->owner_owner_node = TQ_NODE_DISPENSABLE;
     text: |
-      While the priority node of the thread queue on which the owner is
-      enqueued is not the only priority node associated with the scheduler
-      available to the owner of the thread queue on which the owner is
-      enqueued,
-      while the priority node of the thread queue is on which the owner is
-      enqueued not the highest priority node available to the owner of the
-      thread queue on which the owner is enqueued.
+      While the priority node of the thread queue on which the owner is enqueued is
+      not the only priority node associated with the scheduler available to the owner
+      of the thread queue on which the owner is enqueued, while the priority node of
+      the thread queue is on which the owner is enqueued not the highest priority
+      node available to the owner of the thread queue on which the owner is enqueued.
   test-epilogue: null
   test-prologue: null
 - name: WaitState
@@ -291,17 +279,17 @@ pre-conditions:
 rationale: null
 requirement-type: functional
 skip-reasons:
-  ReadyAgainNeedsSurrender: |
-    For the ready again wait state, the owner must surrender the thread queue
-    to the thread.
-  OnlyOneCPU: |
-    Where the system was built with SMP support disabled, exactly one scheduler
-    is present in an application using exactly one processor.
-  HomeHasRealPriority: |
-    There is always at least the ${/glossary/priority-real:/term} available
-    for the ${/glossary/scheduler-home:/term}.
   DispensableStopsVital: |
     Vital priority nodes cannot be after a dispensable priority node.
+  HomeHasRealPriority: |
+    There is always at least the ${/glossary/priority-real:/term} available for the
+    ${/glossary/scheduler-home:/term}.
+  OnlyOneCPU: |
+    Where the system was built with SMP support disabled, exactly one scheduler is
+    present in an application using exactly one processor.
+  ReadyAgainNeedsSurrender: |
+    For the ready again wait state, the owner must surrender the thread queue to
+    the thread.
 test-action: |
   rtems_task_priority priority;
 
@@ -465,8 +453,8 @@ test-context:
   member: |
     rtems_event_set owner_obtain
 - brief: |
-    This member specifies which mutex release event shall be used to unblock
-    the thread queue owner.
+    This member specifies which mutex release event shall be used to unblock the
+    thread queue owner.
   description: null
   member: |
     rtems_event_set owner_release
@@ -476,8 +464,8 @@ test-context:
   member: |
     TQNodeKind owner_queue_node
 - brief: |
-    This member specifies the kind of the priority node of the owner of the
-    thread queue on which the owner of the thread queue is blocked.
+    This member specifies the kind of the priority node of the owner of the thread
+    queue on which the owner of the thread queue is blocked.
   description: null
   member: |
     TQNodeKind owner_owner_node
@@ -508,20 +496,19 @@ test-context:
   member: |
     rtems_task_priority owner_queue_priority
 - brief: |
-    This member contains the priority of the owner of the thread queue on which
-    the owner is enqueued.
+    This member contains the priority of the owner of the thread queue on which the
+    owner is enqueued.
   description: null
   member: |
     rtems_task_priority owner_owner_priority
 - brief: |
-    This member contains the priority after the timeout or surrender of the
-    owner of the thread queue on which the owner is enqueued.
+    This member contains the priority after the timeout or surrender of the owner
+    of the thread queue on which the owner is enqueued.
   description: null
   member: |
     rtems_task_priority owner_owner_priority_after
 - brief: |
-    If this member is true, then the queue helper shall surrender the thread
-    queue.
+    If this member is true, then the queue helper shall surrender the thread queue.
   description: null
   member: |
     bool queue_helper_surrender
@@ -531,14 +518,14 @@ test-context:
   member: |
     bool owner_helper_release
 - brief: |
-    If this member is true, then the owner queue helper shall release the mutex
-    on which the owner is blocked.
+    If this member is true, then the owner queue helper shall release the mutex on
+    which the owner is blocked.
   description: null
   member: |
     bool owner_queue_helper_release
 - brief: |
-    If this member is true, then helper of the owner of the mutex which the
-    owner blocked shall release mutex B.
+    If this member is true, then helper of the owner of the mutex which the owner
+    blocked shall release mutex B.
   description: null
   member: |
     bool owner_owner_helper_release
@@ -635,8 +622,7 @@ test-support: |
     ctx = arg;
 
     if (
-      when == T_SCHEDULER_BEFORE &&
-      event->operation == T_SCHEDULER_BLOCK &&
+      when == T_SCHEDULER_BEFORE && event->operation == T_SCHEDULER_BLOCK &&
       event->thread == ctx->tq_ctx->worker_tcb[ THREAD ]
     ) {
       T_scheduler_set_event_handler( NULL, NULL );
@@ -651,9 +637,7 @@ test-support: |
 
     ctx = arg;
     TQSchedulerRecordStart( ctx->tq_ctx );
-    _Thread_Timeout(
-      &ctx->tq_ctx->worker_tcb[ THREAD ]->Timer.Watchdog
-    );
+    _Thread_Timeout( &ctx->tq_ctx->worker_tcb[ THREAD ]->Timer.Watchdog );
     TQSchedulerRecordStop( ctx->tq_ctx );
   }
 
@@ -668,14 +652,13 @@ test-support: |
     ctx = arg;
 
     if (
-      when == T_SCHEDULER_BEFORE &&
-      event->operation == T_SCHEDULER_UNBLOCK &&
+      when == T_SCHEDULER_BEFORE && event->operation == T_SCHEDULER_UNBLOCK &&
       event->thread == ctx->tq_ctx->worker_tcb[ THREAD ]
     ) {
       T_scheduler_set_event_handler( NULL, NULL );
 
       if ( ctx->scheduler_id == SCHEDULER_B_ID ) {
-  #if defined(RTEMS_SMP)
+  #if defined( RTEMS_SMP )
         _SMP_Unicast_action( 1, ThreadTimeout, ctx );
   #else
         T_unreachable();
@@ -770,12 +753,7 @@ test-support: |
       case TQ_NODE_DISPENSABLE:
         ctx->queue_helper_surrender = true;
         --priority;
-        TQSetScheduler(
-          ctx->tq_ctx,
-          QUEUE_HELPER,
-          ctx->scheduler_id,
-          priority
-        );
+        TQSetScheduler( ctx->tq_ctx, QUEUE_HELPER, ctx->scheduler_id, priority );
         TQSendAndWaitForExecutionStop(
           ctx->tq_ctx,
           QUEUE_HELPER,
@@ -982,8 +960,8 @@ transition-map:
     OwnerPriority:
     - if:
       - pre-conditions:
-          Queue: Only
           OwnerPriority: Only
+          Queue: Only
       - pre-conditions:
           OwnerPriority: Only
           WaitState: ReadyAgain
@@ -992,8 +970,8 @@ transition-map:
       - pre-conditions:
           OwnerPriority: Vital
       - pre-conditions:
-          Queue: Vital
           OwnerPriority: Only
+          Queue: Vital
       then: Lower
     - else: Nop
     OwnerOwnerPriority: N/A
@@ -1025,8 +1003,8 @@ transition-map:
     OwnerPriority:
     - if:
       - pre-conditions:
-          Queue: Only
           OwnerPriority: Only
+          Queue: Only
       - pre-conditions:
           OwnerPriority: Only
           WaitState: ReadyAgain
@@ -1035,8 +1013,8 @@ transition-map:
       - pre-conditions:
           OwnerPriority: Vital
       - pre-conditions:
-          Queue: Vital
           OwnerPriority: Only
+          Queue: Vital
       then: Lower
     - else: Nop
     OwnerOwnerPriority: N/A
@@ -1067,8 +1045,8 @@ transition-map:
     OwnerPriority:
     - if:
       - pre-conditions:
-          Queue: Only
           OwnerPriority: Only
+          Queue: Only
       - pre-conditions:
           OwnerPriority: Only
           WaitState: ReadyAgain
@@ -1077,8 +1055,8 @@ transition-map:
       - pre-conditions:
           OwnerPriority: Vital
       - pre-conditions:
-          Queue: Vital
           OwnerPriority: Only
+          Queue: Vital
       then: Lower
     - else: Nop
     OwnerOwnerPriority:
@@ -1087,8 +1065,8 @@ transition-map:
         - post-conditions:
             OwnerPriority: Drop
         - pre-conditions:
-            OwnerQueue: Only
             OwnerOwnerPriority: Only
+            OwnerQueue: Only
       then: Drop
     - if:
         and:
@@ -1100,10 +1078,10 @@ transition-map:
           - pre-conditions:
               OwnerOwnerPriority: Vital
           - pre-conditions:
+              OwnerOwnerPriority: Only
               OwnerQueue:
               - Only
               - Vital
-              OwnerOwnerPriority: Only
       then: Lower
     - else: Nop
   pre-conditions:

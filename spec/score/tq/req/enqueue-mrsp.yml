@@ -15,8 +15,8 @@ post-conditions:
       T_eq_u32( 1, TQGetCounter( ctx->tq_ctx ) );
     text: |
       A priority queue associated with the scheduler which contains exactly the
-      enqueueing thread shall be created as the first priority queue of the
-      thread queue.
+      enqueueing thread shall be created as the first priority queue of the thread
+      queue.
   - name: InitialLast
     test-code: |
       if ( CanDoFullValidation() ) {
@@ -29,8 +29,8 @@ post-conditions:
       }
     text: |
       A priority queue associated with the scheduler which contains exactly the
-      enqueueing thread shall be created as the last priority queue of the
-      thread queue.
+      enqueueing thread shall be created as the last priority queue of the thread
+      queue.
   - name: Second
     test-code: |
       if ( CanDoFullValidation() ) {
@@ -42,8 +42,8 @@ post-conditions:
         T_eq_u32( 1, TQGetCounter( ctx->tq_ctx ) );
       }
     text: |
-      The enqueueing thread shall be enqueued in the priority queue associated
-      with the scheduler.
+      The enqueueing thread shall be enqueued in the priority queue associated with
+      the scheduler.
   - name: SecondFirst
     test-code: |
       if ( CanDoFullValidation() ) {
@@ -56,8 +56,8 @@ post-conditions:
         T_eq_u32( 1, TQGetCounter( ctx->tq_ctx ) );
       }
     text: |
-      The enqueueing thread shall be enqueued in the priority queue associated
-      with the scheduler.
+      The enqueueing thread shall be enqueued in the priority queue associated with
+      the scheduler.
 
       The position of the priority queue in the thread queue shall not change.
   - name: SecondLast
@@ -72,8 +72,8 @@ post-conditions:
         T_eq_u32( 1, TQGetCounter( ctx->tq_ctx ) );
       }
     text: |
-      The enqueueing thread shall be enqueued in the priority queue associated
-      with the scheduler.
+      The enqueueing thread shall be enqueued in the priority queue associated with
+      the scheduler.
 
       The position of the priority queue in the thread queue shall not change.
   test-epilogue: null
@@ -112,17 +112,17 @@ pre-conditions:
       ctx->priority = PRIO_VERY_HIGH;
     text: |
       While a priority queue of the thread queue associated with an eligible
-      scheduler of the enqueueing thread is non-empty,
-      while the highest priority of the priority queue is equal to the priority
-      of the enqueueing thread with respect to the eligible scheduler.
+      scheduler of the enqueueing thread is non-empty, while the highest priority of
+      the priority queue is equal to the priority of the enqueueing thread with
+      respect to the eligible scheduler.
   - name: Low
     test-code: |
       ctx->priority = PRIO_HIGH;
     text: |
       While a priority queue of the thread queue associated with an eligible
-      scheduler of the enqueueing thread is non-empty,
-      while the highest priority of the priority queue is lower than the
-      priority of the enqueueing thread with respect to the eligible scheduler.
+      scheduler of the enqueueing thread is non-empty, while the highest priority of
+      the priority queue is lower than the priority of the enqueueing thread with
+      respect to the eligible scheduler.
   test-epilogue: null
   test-prologue: null
 - name: QueueIneligible
@@ -132,8 +132,8 @@ pre-conditions:
       ctx->other_before = false;
       ctx->other_after = false;
     text: |
-      While no priority queue of the thread queue exists which is not
-      associated with an eligible scheduler of the enqueueing thread.
+      While no priority queue of the thread queue exists which is not associated with
+      an eligible scheduler of the enqueueing thread.
   - name: Only
     test-code: |
       ctx->other_before = true;
@@ -146,29 +146,29 @@ pre-conditions:
       ctx->other_before = true;
       ctx->other_after = false;
     text: |
-      While a priority queue of the thread queue exists which is not
-      associated with an eligible scheduler of the enqueueing thread, while
-      this priority queue is positioned before all priority queues which are
-      associated with eligible schedulers of the enqueueing thread.
+      While a priority queue of the thread queue exists which is not associated with
+      an eligible scheduler of the enqueueing thread, while this priority queue is
+      positioned before all priority queues which are associated with eligible
+      schedulers of the enqueueing thread.
   - name: After
     test-code: |
       ctx->other_before = false;
       ctx->other_after = true;
     text: |
-      While a priority queue of the thread queue exists which is not associated
-      with an eligible scheduler of the enqueueing thread, while this priority
-      queue is positioned after all priority queues which are associated with
-      eligible schedulers of the enqueueing thread.
+      While a priority queue of the thread queue exists which is not associated with
+      an eligible scheduler of the enqueueing thread, while this priority queue is
+      positioned after all priority queues which are associated with eligible
+      schedulers of the enqueueing thread.
   test-epilogue: null
   test-prologue: null
 rationale: null
 requirement-type: functional
 skip-reasons:
   Invalid: |
-    These variants are invalid due to two independent reasons.  Firstly, a
-    priority queue must be present to have another priority queue positioned
-    before or after the priority queue.  Secondly, if only one priority queue
-    shall be present, then on other priority queue can exist.
+    These variants are invalid due to two independent reasons. Firstly, a priority
+    queue must be present to have another priority queue positioned before or after
+    the priority queue. Secondly, if only one priority queue shall be present, then
+    on other priority queue can exist.
 test-action: |
   Status_Control status;
 
@@ -256,9 +256,9 @@ test-brief: null
 test-cleanup: null
 test-context:
 - brief: |
-    This this member is true, then the enqueueing thread shall have at least
-    one helping scheduler which is an ineligible scheduler for the already
-    enqueued threads.
+    This this member is true, then the enqueueing thread shall have at least one
+    helping scheduler which is an ineligible scheduler for the already enqueued
+    threads.
   description: null
   member: |
     bool helping
@@ -269,18 +269,16 @@ test-context:
   member: |
     rtems_task_priority priority
 - brief: |
-    If this member is true, then a thread those eligible schedulers are
-    ineligible scheduler to the enqueueing task should be enqueued before a
-    thread with an eligible scheduler equal to an eligible scheduler of the
-    enqueueing thread.
+    If this member is true, then a thread those eligible schedulers are ineligible
+    scheduler to the enqueueing task should be enqueued before a thread with an
+    eligible scheduler equal to an eligible scheduler of the enqueueing thread.
   description: null
   member: |
     size_t other_before
 - brief: |
-    If this member is true, then a thread those eligible schedulers are
-    ineligible scheduler to the enqueueing task should be enqueued after a
-    thread with an eligible scheduler equal to an eligible scheduler of the
-    enqueueing thread.
+    If this member is true, then a thread those eligible schedulers are ineligible
+    scheduler to the enqueueing task should be enqueued after a thread with an
+    eligible scheduler equal to an eligible scheduler of the enqueueing thread.
   description: null
   member: |
     size_t other_after
@@ -314,12 +312,7 @@ test-setup:
 
     TQSetScheduler( ctx->tq_ctx, TQ_BLOCKER_A, SCHEDULER_B_ID, PRIO_LOW );
     TQSetScheduler( ctx->tq_ctx, TQ_BLOCKER_B, SCHEDULER_B_ID, PRIO_LOW );
-    TQSetScheduler(
-      ctx->tq_ctx,
-      TQ_BLOCKER_D,
-      SCHEDULER_A_ID,
-      PRIO_ULTRA_HIGH
-    );
+    TQSetScheduler( ctx->tq_ctx, TQ_BLOCKER_D, SCHEDULER_A_ID, PRIO_ULTRA_HIGH );
   description: null
 test-stop: null
 test-support: |

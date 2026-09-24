@@ -17,20 +17,20 @@ links:
   uid: ../constraint/option-not-pre-qualified
 name: CONFIGURE_APPLICATION_NEEDS_CONSOLE_DRIVER
 notes: |
-  The Console Driver is responsible for providing the {file}`/dev/console`
-  device file.  This device is used to initialize the standard input, output,
-  and error file descriptors.
+  The Console Driver is responsible for providing the {file}`/dev/console` device
+  file. This device is used to initialize the standard input, output, and error
+  file descriptors.
 
-  BSPs should be constructed in a manner that allows ${/rtems/io/if/printk:/name} to work
-  properly without the need for the Console Driver to be configured.
+  BSPs should be constructed in a manner that allows ${/rtems/io/if/printk:/name}
+  to work properly without the need for the Console Driver to be configured.
 
   The
 
-  * `CONFIGURE_APPLICATION_NEEDS_CONSOLE_DRIVER`,
+  - `CONFIGURE_APPLICATION_NEEDS_CONSOLE_DRIVER`,
 
-  * ${appl-needs-simple-console-driver:/name}, and
+  - ${appl-needs-simple-console-driver:/name}, and
 
-  * ${appl-needs-simple-task-console-driver:/name}
+  - ${appl-needs-simple-task-console-driver:/name}
 
   configuration options are mutually exclusive.
 type: interface

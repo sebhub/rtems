@@ -12,7 +12,7 @@ definition:
   variants: []
 description: |
   Iterates through the system initialization linker set and invokes the
-  registered handlers.  The final step is to start multitasking.
+  registered handlers. The final step is to start multitasking.
 enabled-by: true
 index-entries:
 - initialize RTEMS

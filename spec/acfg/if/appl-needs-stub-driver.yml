@@ -17,6 +17,6 @@ links:
   uid: ../constraint/option-not-pre-qualified
 name: CONFIGURE_APPLICATION_NEEDS_STUB_DRIVER
 notes: |
-  This device driver simply provides entry points that return successful and
-  is primarily a test fixture. It is supported by all BSPs.
+  This device driver simply provides entry points that return successful and is
+  primarily a test fixture. It is supported by all BSPs.
 type: interface

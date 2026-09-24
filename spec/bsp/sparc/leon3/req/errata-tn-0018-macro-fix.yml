@@ -2,14 +2,13 @@ SPDX-License-Identifier: CC-BY-SA-4.0
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
 enabled-by: sparc/gr712rc
+functional-type: function
 links:
 - role: requirement-refinement
   uid: errata-tn-0018-macros
-functional-type: function
 rationale: null
 requirement-type: functional
 text: |
-  The `TN0018_FIX` macro shall provide an instruction sequence for
-  *Workaround #1* to be placed immediatly before a `jumpl` followed by
-  `rett` pair.
+  The `TN0018_FIX` macro shall provide an instruction sequence for *Workaround
+  #1* to be placed immediatly before a `jumpl` followed by `rett` pair.
 type: requirement

@@ -10,32 +10,32 @@ test-actions:
     /* Nothing to do */
   checks:
   - brief: |
-      Check that the initial value of the zero initialized thread-local
-      object has the expected value.
+      Check that the initial value of the zero initialized thread-local object has
+      the expected value.
     code: |
       T_step_eq_int( ${.:/step}, tls_object_0, 0 );
     links:
     - role: validation
       uid: ../req/tls-zero-initialized-data
   - brief: |
-      Check that the alignment of the zero initialized thread-local
-      object has the expected value.
+      Check that the alignment of the zero initialized thread-local object has the
+      expected value.
     code: |
       T_step_eq_uptr( ${.:/step}, ( (uintptr_t) &tls_object_0 ) % 256, 0 );
     links:
     - role: validation
       uid: ../req/tls-big-alignment
   - brief: |
-      Check that the initial value of the non-zero initialized thread-local
-      object has the expected value.
+      Check that the initial value of the non-zero initialized thread-local object
+      has the expected value.
     code: |
       T_step_eq_int( ${.:/step}, tls_object_1, 123 );
     links:
     - role: validation
       uid: ../req/tls-initialized-data
   - brief: |
-      Check that the alignment of the non-zero initialized thread-local object
-      has the expected value.
+      Check that the alignment of the non-zero initialized thread-local object has
+      the expected value.
     code: |
       T_step_eq_uptr( ${.:/step}, ( (uintptr_t) &tls_object_1 ) % 256, 0 );
     links:

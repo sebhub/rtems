@@ -8,7 +8,7 @@ links:
   uid: group
 term: local
 text: |
-  An object which was created with the LOCAL attribute and is accessible
-  only on the node it was created and resides upon.  In a single processor
-  configuration, all objects are local.
+  An object which was created with the LOCAL attribute and is accessible only on
+  the node it was created and resides upon. In a single processor configuration,
+  all objects are local.
 type: glossary

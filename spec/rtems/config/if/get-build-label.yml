@@ -12,7 +12,7 @@ definition:
   variants: []
 description: |
   The build label is a user-provided string defined by the build configuration
-  through the `RTEMS_BUILD_LABEL` build option.  The format of the string is
+  through the `RTEMS_BUILD_LABEL` build option. The format of the string is
   completely user-defined.
 enabled-by: true
 index-entries: []
@@ -31,9 +31,9 @@ links:
 name: rtems_get_build_label
 notes: |
   The build label can be used to distinguish test suite results obtained from
-  different build configurations.  A use case is to record test results with
-  performance data to track performance regressions.  For this a database of
-  performance limits is required.  The build label and the target hash obtained
+  different build configurations. A use case is to record test results with
+  performance data to track performance regressions. For this a database of
+  performance limits is required. The build label and the target hash obtained
   from ${get-target-hash:/name} can be used as a key to obtain performance
   limits.
 params: []

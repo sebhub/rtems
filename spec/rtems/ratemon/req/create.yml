@@ -64,14 +64,14 @@ post-conditions:
       T_ne_u32( ctx->id_value, INVALID_ID );
     text: |
       The value of the object referenced by the ${../if/create:/params[1]/name}
-      parameter shall be set to the object identifier of the created period
-      after the return of the ${../if/create:/name} call.
+      parameter shall be set to the object identifier of the created period after the
+      return of the ${../if/create:/name} call.
   - name: Nop
     test-code: |
       T_eq_u32( ctx->id_value, INVALID_ID );
     text: |
-      Objects referenced by the ${../if/create:/params[1]/name} parameter in
-      past calls to ${../if/create:/name} shall not be accessed by the
+      Objects referenced by the ${../if/create:/params[1]/name} parameter in past
+      calls to ${../if/create:/name} shall not be accessed by the
       ${../if/create:/name} call.
   test-epilogue: null
   test-prologue: null
@@ -96,8 +96,8 @@ pre-conditions:
     test-code: |
       ctx->id = &ctx->id_value;
     text: |
-      While the ${../if/create:/params[1]/name} parameter references an object of type
-      ${../../type/if/id:/name}.
+      While the ${../if/create:/params[1]/name} parameter references an object of
+      type ${../../type/if/id:/name}.
   - name: 'Null'
     test-code: |
       ctx->id = NULL;
@@ -187,7 +187,8 @@ test-support: |
   }
 test-target: testsuites/validation/tc-ratemon-create.c
 test-teardown: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

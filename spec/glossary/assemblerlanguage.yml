@@ -9,7 +9,7 @@ links:
 term: assembler language
 text: |
   The assembler language is a programming language which can be translated very
-  easily into machine code and data.  For this project assembler languages are
-  restricted to languages accepted by the ${gnu:/term} assembler
-  program for the target architectures.
+  easily into machine code and data. For this project assembler languages are
+  restricted to languages accepted by the ${gnu:/term} assembler program for the
+  target architectures.
 type: glossary

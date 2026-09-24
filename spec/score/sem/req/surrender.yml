@@ -164,8 +164,7 @@ test-context:
   member: |
     uint32_t count_after
 - brief: |
-    If this member is true, then there shall be threads blocked on the
-    semaphore.
+    If this member is true, then there shall be threads blocked on the semaphore.
   description: null
   member: |
     bool blocked

@@ -51,14 +51,13 @@ pre-conditions:
     test-code: |
       ctx->id = 0;
     text: |
-      While the ${../if/delete:/params[0]/name} parameter is not associated
-      with a timer.
+      While the ${../if/delete:/params[0]/name} parameter is not associated with a
+      timer.
   - name: Timer
     test-code: |
       ctx->id = ctx->timer_id;
     text: |
-      While the ${../if/delete:/params[0]/name} parameter is associated with
-      a timer.
+      While the ${../if/delete:/params[0]/name} parameter is associated with a timer.
   test-epilogue: null
   test-prologue: null
 rationale: null
@@ -114,7 +113,8 @@ test-teardown:
       T_rsc_success( sc );
     }
   description: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

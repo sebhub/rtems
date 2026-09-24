@@ -11,6 +11,6 @@ links:
 rationale: null
 requirement-type: functional
 text: |
-  The application configuration option shall define the thread stack size of
-  the POSIX API initialization thread.
+  The application configuration option shall define the thread stack size of the
+  POSIX API initialization thread.
 type: requirement

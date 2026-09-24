@@ -30,7 +30,7 @@ links:
   uid: /constraint/request-response
 name: rtems_cpu_usage_top_with_plugin
 notes: |
-  The directive starts a task to do the reporting.  The ${/c/if/getchar:/name}
+  The directive starts a task to do the reporting. The ${/c/if/getchar:/name}
   function is used to get commands from the user.
 params:
 - description: |

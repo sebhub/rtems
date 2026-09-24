@@ -22,7 +22,7 @@ links:
   uid: ../constraint/max-uint32
 name: CONFIGURE_BDBUF_MAX_READ_AHEAD_BLOCKS
 notes: |
-  A value of 0 disables the read-ahead task (default).  The read-ahead task
-  will issue speculative read transfers if a sequential access pattern is
-  detected.  This can improve the performance on some systems.
+  A value of 0 disables the read-ahead task (default). The read-ahead task will
+  issue speculative read transfers if a sequential access pattern is detected.
+  This can improve the performance on some systems.
 type: interface

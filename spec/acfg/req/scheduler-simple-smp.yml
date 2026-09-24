@@ -14,6 +14,6 @@ rationale: null
 requirement-type: functional
 text: |
   The application configuration option shall make the
-  ${/ref/rtems/c-user/scheduler-smp-priority-simple:/name} algorithm available to the
-  application.
+  ${/ref/rtems/c-user/scheduler-smp-priority-simple:/name} algorithm available to
+  the application.
 type: requirement

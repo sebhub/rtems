@@ -18,35 +18,35 @@ definition:
 description: |
   One of the following mutually exclusive options
 
-  * ${unique:/name},
+  - ${unique:/name},
 
-  * ${shared:/name}, and
+  - ${shared:/name}, and
 
-  * ${replace:/name}
+  - ${replace:/name}
 
   shall be set in the ${.:/params[2]/name} parameter.
 
   The handler routine will be called with the argument specified by
-  ${.:/params[4]/name} when dispatched.  The order in which shared
-  interrupt handlers are dispatched for one vector is defined by the
-  installation order.  The first installed handler is dispatched first.
+  ${.:/params[4]/name} when dispatched. The order in which shared interrupt
+  handlers are dispatched for one vector is defined by the installation order.
+  The first installed handler is dispatched first.
 
-  If the option ${unique:/name} is set, then it will be ensured that the
-  handler will be the only one for the interrupt vector.
+  If the option ${unique:/name} is set, then it will be ensured that the handler
+  will be the only one for the interrupt vector.
 
   If the option ${shared:/name} is set, then multiple handler may be installed
   for the interrupt vector.
 
   If the option ${replace:/name} is set, then the handler specified by
-  ${.:/params[3]/name} will replace the first handler with the same argument
-  for the interrupt vector if it exists, otherwise an error status will be
-  returned.  A second handler with the same argument for the interrupt vector
-  will remain unchanged.  The new handler will inherit the unique or shared
-  options from the replaced handler.
+  ${.:/params[3]/name} will replace the first handler with the same argument for
+  the interrupt vector if it exists, otherwise an error status will be returned.
+  A second handler with the same argument for the interrupt vector will remain
+  unchanged. The new handler will inherit the unique or shared options from the
+  replaced handler.
 
-  An informative description may be provided in ${.:/params[1]/name}.  It may
-  be used for system debugging and diagnostic tools.  The referenced string has
-  to be persistent as long as the handler is installed.
+  An informative description may be provided in ${.:/params[1]/name}. It may be
+  used for system debugging and diagnostic tools. The referenced string has to be
+  persistent as long as the handler is installed.
 enabled-by: true
 index-entries: []
 interface-type: function
@@ -106,24 +106,24 @@ return:
       The directive was called from within interrupt context.
     value: ${../../status/if/called-from-isr:/name}
   - description: |
-      There was not enough memory available to allocate data structures to
-      install the handler.
+      There was not enough memory available to allocate data structures to install
+      the handler.
     value: ${../../status/if/no-memory:/name}
   - description: |
-      The ${unique:/name} option was set in ${.:/params[2]/name} and the
-      interrupt vector was already occupied by a handler.
+      The ${unique:/name} option was set in ${.:/params[2]/name} and the interrupt
+      vector was already occupied by a handler.
     value: ${../../status/if/resource-in-use:/name}
   - description: |
-      The ${shared:/name} option was set in ${.:/params[2]/name} and the
-      interrupt vector was already occupied by a unique handler.
+      The ${shared:/name} option was set in ${.:/params[2]/name} and the interrupt
+      vector was already occupied by a unique handler.
     value: ${../../status/if/resource-in-use:/name}
   - description: |
-      The handler specified by ${.:/params[3]/name} was already installed for
-      the interrupt vector specified by ${.:/params[0]/name} with an argument
-      equal to the argument specified by ${.:/params[4]/name}.
+      The handler specified by ${.:/params[3]/name} was already installed for the
+      interrupt vector specified by ${.:/params[0]/name} with an argument equal to
+      the argument specified by ${.:/params[4]/name}.
     value: ${../../status/if/too-many:/name}
   - description: |
-      The ${replace:/name} option was set in ${.:/params[2]/name} and no
-      handler to replace was installed.
+      The ${replace:/name} option was set in ${.:/params[2]/name} and no handler to
+      replace was installed.
     value: ${../../status/if/unsatisfied:/name}
 type: interface

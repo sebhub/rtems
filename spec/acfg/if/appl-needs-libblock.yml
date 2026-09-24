@@ -18,6 +18,6 @@ links:
 name: CONFIGURE_APPLICATION_NEEDS_LIBBLOCK
 notes: |
   Each option of the Block Device Cache (bdbuf) configuration can be explicitly
-  set by the user with the configuration options below.  The Block Device Cache
-  is used for example by the RFS and DOSFS filesystems.
+  set by the user with the configuration options below. The Block Device Cache is
+  used for example by the RFS and DOSFS filesystems.
 type: interface

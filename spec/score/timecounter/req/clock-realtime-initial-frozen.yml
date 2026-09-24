@@ -2,13 +2,13 @@ SPDX-License-Identifier: CC-BY-SA-4.0
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
 enabled-by: true
+functional-type: function
 links:
 - role: requirement-refinement
   uid: clock-realtime
-functional-type: function
 rationale: null
 requirement-type: functional
 text: |
-  While no timecounter is installed, the ${/glossary/clock-realtime:/term}
-  shall remain at the initial value.
+  While no timecounter is installed, the ${/glossary/clock-realtime:/term} shall
+  remain at the initial value.
 type: requirement

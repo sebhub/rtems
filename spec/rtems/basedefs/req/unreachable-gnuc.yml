@@ -3,10 +3,10 @@ copyrights:
 - Copyright (C) 2022 embedded brains GmbH & Co. KG
 enabled-by:
   not: RTEMS_DEBUG
+functional-type: function
 links:
 - role: requirement-refinement
   uid: unreachable-0
-functional-type: function
 rationale: null
 requirement-type: functional
 text: |

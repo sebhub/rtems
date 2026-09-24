@@ -15,6 +15,7 @@ areas:
         - 0
         line: 343
         md5: b3bd97e376e4af302b3611cff9a25d83
+      functions: []
       lines:
       - line: 250
         md5: 3c19daa985dda9e83d2974df84fb7c21
@@ -42,7 +43,6 @@ areas:
         md5: ca32f86356a360338a90c14e0d371800
       - line: 352
         md5: 815bb68ad1ba91043d06d4fcaf04beca
-      functions: []
 copyrights:
 - Copyright (C) 2026 embedded brains GmbH & Co. KG
 enabled-by: RTEMS_SMP
@@ -56,7 +56,7 @@ text: |
 
   While the validation tests of pre-qualified ${/glossary/rtems:/term} do not
   reach this code, the randomized test in
-  :file:`testsuites/smptests/smpmutex02/init.c` of the RTEMS test suites
+  \:file:`testsuites/smptests/smpmutex02/init.c` of the RTEMS test suites
   sporadically executes these lines and branches.
 type: verification
 verification-type: code-coverage-gap

@@ -33,8 +33,8 @@ links:
   uid: ../constraint/no-floating-point
 name: rtems_printk_printer
 notes: |
-  The directive may be used to print debug and test information.  It uses
-  ${putc:/name} to output the characters.  This directive performs a character
+  The directive may be used to print debug and test information. It uses
+  ${putc:/name} to output the characters. This directive performs a character
   translation from `NL` to `CR` followed by `NR`.
 
   If the kernel character output device is concurrently accessed, then
@@ -54,7 +54,6 @@ params:
   name: ap
 return:
   return: |
-    Returns the number of characters output to the kernel character output
-    device.
+    Returns the number of characters output to the kernel character output device.
   return-values: []
 type: interface

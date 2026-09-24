@@ -8,7 +8,9 @@ definition:
   default:
     attributes: null
     body: |
-      return (${/c/if/int32_t:/name}) ( ${.:/params[0]/name} - ${/score/watchdog/if/ticks-since-boot:/name} ) > 0;
+      return (${/c/if/int32_t:/name}) ( ${.:/params[0]/name} -
+                                        ${/score/watchdog/if/ticks-since-boot:/name} ) >
+             0;
     params:
     - ${../../type/if/interval:/name} ${.:/params[0]/name}
     return: ${/c/if/bool:/name}
@@ -57,7 +59,7 @@ params:
   name: ticks
 return:
   return: |
-    Returns true, if current ${/glossary/clock-tick:/term} counter indicates a
-    time before the time in ticks, otherwise returns false.
+    Returns true, if current ${/glossary/clock-tick:/term} counter indicates a time
+    before the time in ticks, otherwise returns false.
   return-values: []
 type: interface

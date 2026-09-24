@@ -2,18 +2,17 @@ SPDX-License-Identifier: CC-BY-SA-4.0
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
 enabled-by: true
+functional-type: function
 links:
 - role: interface-function
   uid: ../if/no-priority
-functional-type: function
 rationale: |
-  Some directives with a task priority parameter ignore the priority value
-  under specific circumstances, for example ${../if/set-priority:/name} may be
-  used to get the current priority.  This constant may be used as a dummy task
-  priority value to document that the priority parameter is unused.
+  Some directives with a task priority parameter ignore the priority value under
+  specific circumstances, for example ${../if/set-priority:/name} may be used to
+  get the current priority. This constant may be used as a dummy task priority
+  value to document that the priority parameter is unused.
 requirement-type: functional
 text: |
-  The ${../if/no-priority:/name} constant shall expand to a constant
-  expression which evaluates to the value of
-  ${../if/current-priority:/name}.
+  The ${../if/no-priority:/name} constant shall expand to a constant expression
+  which evaluates to the value of ${../if/current-priority:/name}.
 type: requirement

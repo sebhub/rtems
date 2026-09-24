@@ -14,19 +14,19 @@ definition:
     return: ${../../status/if/code:/name}
   variants: []
 description: |
-  This directive sends the event set, ${.:/params[1]/name}, to the target
-  task identified by ${.:/params[0]/name}.  Based upon the state of the
-  target task, one of the following situations applies:
+  This directive sends the event set, ${.:/params[1]/name}, to the target task
+  identified by ${.:/params[0]/name}. Based upon the state of the target task,
+  one of the following situations applies:
 
-  * The target task is blocked waiting for events, then
+  - The target task is blocked waiting for events, then
 
-    * if the waiting task's input event condition is satisfied, then the task
-      is made ready for execution, or
+    - if the waiting task's input event condition is satisfied, then the task is
+      made ready for execution, or
 
-    * otherwise, the event set is posted but left pending and the task remains
+    - otherwise, the event set is posted but left pending and the task remains
       blocked.
 
-  * The target task is not waiting for events, then the event set is posted and
+  - The target task is not waiting for events, then the event set is posted and
     left pending.
 enabled-by: true
 index-entries: []
@@ -52,11 +52,11 @@ notes: |
   in the event set being sent to the calling task.
 
   The event set to send shall be built by a *bitwise or* of the desired events.
-  The set of valid events is ${event-00:/name} through ${event-31:/name}.  If
-  an event is not explicitly specified in the set, then it is not present.
+  The set of valid events is ${event-00:/name} through ${event-31:/name}. If an
+  event is not explicitly specified in the set, then it is not present.
 
-  Identical events sent to a task are not queued.  In other words, the second,
-  and subsequent, posting of an event to a task before it can perform an
+  Identical events sent to a task are not queued. In other words, the second, and
+  subsequent, posting of an event to a task before it can perform an
   ${receive:/name} has no effect.
 
   The calling task will be preempted if it has preemption enabled and a higher
@@ -66,10 +66,12 @@ notes: |
   will generate a request telling the remote node to send the event set to the
   appropriate task.
 params:
-- description: is the identifier of the target task to receive the event set.
+- description: |
+    is the identifier of the target task to receive the event set.
   dir: null
   name: id
-- description: is the event set to send.
+- description: |
+    is the event set to send.
   dir: null
   name: event_in
 return:

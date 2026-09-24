@@ -35,7 +35,7 @@ links:
 name: rtems_interrupt_is_pending
 notes: |
   Interrupts may be made pending by calling the ${raise:/name} or
-  ${raise-on:/name} directives or due to external signals or messages.  The
+  ${raise-on:/name} directives or due to external signals or messages. The
   pending state may be cleared by ${clear:/name}.
 params:
 - description: |
@@ -43,12 +43,12 @@ params:
   dir: null
   name: vector
 - description: |
-    is the pointer to a `bool` object.  When the directive call is
-    successful, the pending status of the interrupt associated with the
-    interrupt vector specified by ${.:/params[0]/name} will be stored in this
-    object.  When the interrupt was pending for the processor executing the
-    directive call at some time point during the call, the object value will be
-    set to ${/c/if/true:/name}, otherwise to ${/c/if/false:/name}.
+    is the pointer to a `bool` object. When the directive call is successful, the
+    pending status of the interrupt associated with the interrupt vector specified
+    by ${.:/params[0]/name} will be stored in this object. When the interrupt was
+    pending for the processor executing the directive call at some time point
+    during the call, the object value will be set to ${/c/if/true:/name}, otherwise
+    to ${/c/if/false:/name}.
   dir: out
   name: pending
 return:

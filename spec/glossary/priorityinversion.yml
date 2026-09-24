@@ -9,7 +9,7 @@ links:
 term: priority inversion
 text: |
   A form of indefinite postponement which occurs when a high priority tasks
-  requests access to shared resource currently allocated to low priority
-  task.  The high priority task must block until the low priority task
-  releases the resource.
+  requests access to shared resource currently allocated to low priority task.
+  The high priority task must block until the low priority task releases the
+  resource.
 type: glossary

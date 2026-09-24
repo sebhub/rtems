@@ -2,6 +2,7 @@ SPDX-License-Identifier: CC-BY-SA-4.0
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
 enabled-by: true
+functional-type: function
 links:
 - role: requirement-refinement
   uid: sys-lock-mutex-recursive-acquire
@@ -11,7 +12,6 @@ links:
   uid: sys-lock-mutex-recursive-release
 - role: requirement-refinement
   uid: sys-lock-mutex-recursive-try-acquire
-functional-type: function
 rationale: null
 requirement-type: functional
 text: |

@@ -7,7 +7,6 @@ links:
   uid: /req/usage-constraints
 rationale: null
 text: |
-  The number of extension sets available to the application is configured
-  through the ${/acfg/if/max-user-extensions:/name} application configuration
-  option.
+  The number of extension sets available to the application is configured through
+  the ${/acfg/if/max-user-extensions:/name} application configuration option.
 type: constraint

@@ -24,7 +24,7 @@ links:
   uid: ../constraint/stack-space
 name: CONFIGURE_EXTRA_TASK_STACKS
 notes: |
-  This parameter is very important.  If the application creates tasks with
-  stacks larger then the minimum, then that memory is **not** accounted for by
+  This parameter is very important. If the application creates tasks with stacks
+  larger then the minimum, then that memory is **not** accounted for by
   ${header-confdefs:/path}.
 type: interface

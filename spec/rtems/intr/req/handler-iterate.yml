@@ -49,16 +49,16 @@ post-conditions:
     text: |
       For each interrupt entry installed at the interrupt vector specified by
       ${../if/handler-iterate:/params[0]/name} the visitor routine specified by
-      ${../if/handler-iterate:/params[1]/name} shall be called with the
-      argument specified by ${../if/handler-iterate:/params[2]/name}, the entry
-      information, the entry install options, the entry handler routine, and
-      the entry handler argument.
+      ${../if/handler-iterate:/params[1]/name} shall be called with the argument
+      specified by ${../if/handler-iterate:/params[2]/name}, the entry information,
+      the entry install options, the entry handler routine, and the entry handler
+      argument.
   - name: Nop
     test-code: |
       T_eq_u32( ctx->visited_entries, 0 );
     text: |
-      The visitor routine specified by ${../if/handler-iterate:/params[1]/name}
-      shall not be called.
+      The visitor routine specified by ${../if/handler-iterate:/params[1]/name} shall
+      not be called.
   test-epilogue: null
   test-prologue: null
 pre-conditions:
@@ -68,14 +68,14 @@ pre-conditions:
     test-code: |
       ctx->vector = ctx->test_vector;
     text: |
-      While the ${../if/handler-iterate:/params[0]/name} parameter is
-      associated with an interrupt vector.
+      While the ${../if/handler-iterate:/params[0]/name} parameter is associated with
+      an interrupt vector.
   - name: Invalid
     test-code: |
       ctx->vector = BSP_INTERRUPT_VECTOR_COUNT;
     text: |
-      While the ${../if/handler-iterate:/params[0]/name} parameter is
-      not associated with an interrupt vector.
+      While the ${../if/handler-iterate:/params[0]/name} parameter is not associated
+      with an interrupt vector.
   test-epilogue: null
   test-prologue: null
 - name: Routine
@@ -115,8 +115,7 @@ pre-conditions:
     test-code: |
       ctx->isr = true;
     text: |
-      While ${../if/handler-iterate:/name} is called from within interrupt
-      context.
+      While ${../if/handler-iterate:/name} is called from within interrupt context.
   - name: 'No'
     test-code: |
       ctx->isr = false;
@@ -148,8 +147,8 @@ test-context:
   member: |
     rtems_vector_number test_vector
 - brief: |
-    If this member is true, then the testable interrupt vector was enabled at
-    the test case begin.
+    If this member is true, then the testable interrupt vector was enabled at the
+    test case begin.
   description: null
   member: |
     bool test_vector_was_enabled
@@ -175,14 +174,14 @@ test-context:
   member: |
     rtems_interrupt_entry entry
 - brief: |
-    This member specifies if the ${../if/handler-iterate:/params[0]/name}
-    parameter value.
+    This member specifies if the ${../if/handler-iterate:/params[0]/name} parameter
+    value.
   description: null
   member: |
     rtems_vector_number vector
 - brief: |
-    This member specifies if the ${../if/handler-iterate:/params[1]/name}
-    parameter value.
+    This member specifies if the ${../if/handler-iterate:/params[1]/name} parameter
+    value.
   description: null
   member: |
     rtems_interrupt_per_handler_routine routine
@@ -297,17 +296,15 @@ test-teardown:
   code: |
     rtems_status_code sc;
 
-    sc = rtems_interrupt_entry_remove(
-      ctx->test_vector,
-      &ctx->entry
-    );
+    sc = rtems_interrupt_entry_remove( ctx->test_vector, &ctx->entry );
     T_rsc_success( sc );
 
     if ( ctx->test_vector_was_enabled ) {
       (void) rtems_interrupt_vector_enable( ctx->test_vector );
     }
   description: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

@@ -16,12 +16,12 @@ definition:
   variants: []
 description: |
   This directive sends the message ${.:/params[1]/name} of ${.:/params[2]/name}
-  bytes in length to the queue specified by ${.:/params[0]/name}.  If a task is
+  bytes in length to the queue specified by ${.:/params[0]/name}. If a task is
   waiting at the queue, then the message is copied to the waiting task's buffer
   and the task is unblocked. If no tasks are waiting at the queue, then the
   message is copied to a message buffer which is obtained from this message
-  queue's message buffer pool.  The message buffer is then placed at the rear
-  of the queue.
+  queue's message buffer pool. The message buffer is then placed at the rear of
+  the queue.
 enabled-by: true
 index-entries:
 - send message to a queue
@@ -73,7 +73,7 @@ return:
       defined by ${create:/name} or ${construct:/name}.
     value: ${../../status/if/invalid-size:/name}
   - description: |
-      The maximum number of pending messages supported by the queue as defined
-      by ${create:/name} or ${construct:/name} has been reached.
+      The maximum number of pending messages supported by the queue as defined by
+      ${create:/name} or ${construct:/name} has been reached.
     value: ${../../status/if/too-many:/name}
 type: interface

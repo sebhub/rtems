@@ -4,16 +4,6 @@ brief: |
   map.
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
-description: null
-enabled-by: true
-identifier: RTEMSBSPsGR740IOPLL
-index-entries: []
-interface-type: register-block
-links:
-- role: interface-ingroup
-  uid: group
-- role: interface-placement
-  uid: gr740-iopll-header
 definition:
 - default:
     count: 1
@@ -60,16 +50,30 @@ definition:
     name: LOCKDOWN
   offset: 0x20
   variants: []
-register-prefix: null
+description: null
+enabled-by: true
+identifier: RTEMSBSPsGR740IOPLL
+index-entries: []
+interface-type: register-block
+links:
+- role: interface-ingroup
+  uid: group
+- role: interface-placement
+  uid: gr740-iopll-header
+name: gr740_iopll
+notes: null
 register-block-group: GR740 I/0 and PLL Configuration
 register-block-size: 36
+register-prefix: null
 registers:
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'FTMEN'
+      name: FTMEN
+      properties:
+      - r
+      - w
       start: 0
       width: 22
     variants: []
@@ -80,10 +84,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'ALTEN'
+      name: ALTEN
+      properties:
+      - r
+      - w
       start: 0
       width: 22
     variants: []
@@ -94,22 +100,28 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'SMEM'
+      name: SMEM
+      properties:
+      - r
+      - w
       start: 17
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'DMEM'
+      name: DMEM
+      properties:
+      - r
+      - w
       start: 16
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'SPWOE'
+      name: SPWOE
+      properties:
+      - r
+      - w
       start: 0
       width: 8
     variants: []
@@ -120,28 +132,36 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'SWTAG'
+      name: SWTAG
+      properties:
+      - r
+      - w
       start: 27
       width: 2
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'SPWPLLCFG'
+      name: SPWPLLCFG
+      properties:
+      - r
+      - w
       start: 18
       width: 9
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'MEMPLLCFG'
+      name: MEMPLLCFG
+      properties:
+      - r
+      - w
       start: 9
       width: 9
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'SYSPLLCFG'
+      name: SYSPLLCFG
+      properties:
+      - r
+      - w
       start: 0
       width: 9
     variants: []
@@ -152,10 +172,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'RECONF'
+      name: RECONF
+      properties:
+      - r
+      - w
       start: 0
       width: 3
     variants: []
@@ -166,28 +188,32 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'SWTAG'
+      name: SWTAG
+      properties:
+      - r
       start: 27
       width: 2
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'SPWPLLCFG'
+      name: SPWPLLCFG
+      properties:
+      - r
       start: 18
       width: 9
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'MEMPLLCFG'
+      name: MEMPLLCFG
+      properties:
+      - r
       start: 9
       width: 9
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'SYSPLLCFG'
+      name: SYSPLLCFG
+      properties:
+      - r
       start: 0
       width: 9
     variants: []
@@ -198,64 +224,84 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'S9'
+      name: S9
+      properties:
+      - r
+      - w
       start: 18
       width: 2
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'S8'
+      name: S8
+      properties:
+      - r
+      - w
       start: 16
       width: 2
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'S7'
+      name: S7
+      properties:
+      - r
+      - w
       start: 14
       width: 2
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'S6'
+      name: S6
+      properties:
+      - r
+      - w
       start: 12
       width: 2
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'S5'
+      name: S5
+      properties:
+      - r
+      - w
       start: 10
       width: 2
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'S4'
+      name: S4
+      properties:
+      - r
+      - w
       start: 8
       width: 2
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'S3'
+      name: S3
+      properties:
+      - r
+      - w
       start: 6
       width: 2
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'S2'
+      name: S2
+      properties:
+      - r
+      - w
       start: 4
       width: 2
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'S1'
+      name: S1
+      properties:
+      - r
+      - w
       start: 2
       width: 2
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'S0'
+      name: S0
+      properties:
+      - r
+      - w
       start: 0
       width: 2
     variants: []
@@ -266,64 +312,84 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'S19'
+      name: S19
+      properties:
+      - r
+      - w
       start: 18
       width: 2
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'S18'
+      name: S18
+      properties:
+      - r
+      - w
       start: 16
       width: 2
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'S17'
+      name: S17
+      properties:
+      - r
+      - w
       start: 14
       width: 2
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'S16'
+      name: S16
+      properties:
+      - r
+      - w
       start: 12
       width: 2
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'S15'
+      name: S15
+      properties:
+      - r
+      - w
       start: 10
       width: 2
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'S14'
+      name: S14
+      properties:
+      - r
+      - w
       start: 8
       width: 2
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'S13'
+      name: S13
+      properties:
+      - r
+      - w
       start: 6
       width: 2
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'S12'
+      name: S12
+      properties:
+      - r
+      - w
       start: 4
       width: 2
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'S11'
+      name: S11
+      properties:
+      - r
+      - w
       start: 2
       width: 2
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'S10'
+      name: S10
+      properties:
+      - r
+      - w
       start: 0
       width: 2
     variants: []
@@ -334,16 +400,20 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'PERMANENT'
+      name: PERMANENT
+      properties:
+      - r
+      - w
       start: 16
       width: 8
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'REVOCABLE'
+      name: REVOCABLE
+      properties:
+      - r
+      - w
       start: 0
       width: 8
     variants: []
@@ -352,6 +422,4 @@ registers:
   description: null
   name: LOCKDOWN
   width: 32
-name: gr740_iopll
-notes: null
 type: interface

@@ -1,7 +1,7 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 brief: |
-  Gets the maximal cache line size in bytes of all caches (data, instruction,
-  or unified).
+  Gets the maximal cache line size in bytes of all caches (data, instruction, or
+  unified).
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
 - Copyright (C) 2016 Pavel Pisa
@@ -30,8 +30,8 @@ notes: null
 params: []
 return:
   return: |
-    Returns the maximal cache line size in bytes of all caches (data,
-    instruction, or unified).
+    Returns the maximal cache line size in bytes of all caches (data, instruction,
+    or unified).
   return-values:
   - description: |
       There is no cache present.

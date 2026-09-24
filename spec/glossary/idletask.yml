@@ -8,6 +8,6 @@ links:
   uid: group
 term: IDLE task
 text: |
-  A special low priority task which assumes control of the CPU when no
-  other task is able to execute.
+  A special low priority task which assumes control of the CPU when no other task
+  is able to execute.
 type: glossary

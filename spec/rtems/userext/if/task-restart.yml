@@ -26,9 +26,9 @@ notes: |
   The task restart extensions are invoked in
   ${/glossary/extension-forward-order:/term}.
 
-  The task restart extensions are invoked in the context of the restarted
-  thread right before the execution context is reloaded.  The thread stack
-  reflects the previous execution context.
+  The task restart extensions are invoked in the context of the restarted thread
+  right before the execution context is reloaded. The thread stack reflects the
+  previous execution context.
 
   Thread restart and delete requests issued by restart extensions lead to
   recursion.
@@ -38,7 +38,7 @@ params:
   dir: null
   name: executing
 - description: |
-    is the ${/glossary/tcb:/term} of the executing thread.  Yes, the executing
+    is the ${/glossary/tcb:/term} of the executing thread. Yes, the executing
     thread.
   dir: null
   name: restarted

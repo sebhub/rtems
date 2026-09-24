@@ -8,6 +8,6 @@ links:
 rationale: null
 text: |
   When a local semaphore is accessed and the request can be immediately
-  satisfied, the directive may be called from within device driver
-  initialization context.
+  satisfied, the directive may be called from within device driver initialization
+  context.
 type: constraint

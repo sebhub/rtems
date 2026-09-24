@@ -1,7 +1,7 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 brief: |
-  Gets the resource number of ${/rtems/userext/if/group:/name} objects
-  configured for this application.
+  Gets the resource number of ${/rtems/userext/if/group:/name} objects configured
+  for this application.
 copyrights:
 - Copyright (C) 2020 embedded brains GmbH & Co. KG
 definition:
@@ -27,8 +27,8 @@ links:
 name: rtems_configuration_get_maximum_extensions
 notes: |
   The resource number is defined by the ${/acfg/if/max-user-extensions:/name}
-  application configuration option.  See also ${resource-is-unlimited:/name}
-  and ${resource-maximum-per-allocation:/name}.
+  application configuration option. See also ${resource-is-unlimited:/name} and
+  ${resource-maximum-per-allocation:/name}.
 params: []
 return:
   return: |

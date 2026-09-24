@@ -51,9 +51,9 @@ links:
 name: rtems_interrupt_server_entry
 notes: |
   This structure shall be treated as an opaque data type from the
-  ${/glossary/api:/term} point of view.  Members shall not be accessed
-  directly.  An entry is initialized by ${server-entry-initialize:/name} and
-  destroyed by ${server-entry-destroy:/name}.  Interrupt server actions can be
-  prepended to the entry by ${server-action-prepend:/name}.  The entry is
-  submitted to be serviced by ${server-entry-submit:/name}.
+  ${/glossary/api:/term} point of view. Members shall not be accessed directly.
+  An entry is initialized by ${server-entry-initialize:/name} and destroyed by
+  ${server-entry-destroy:/name}. Interrupt server actions can be prepended to the
+  entry by ${server-action-prepend:/name}. The entry is submitted to be serviced
+  by ${server-entry-submit:/name}.
 type: interface

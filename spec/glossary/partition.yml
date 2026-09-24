@@ -10,9 +10,8 @@ term: partition
 text: |
   This term has two definitions:
 
-  1. A partition is an RTEMS object which is used to allocate and
-     deallocate fixed size blocks of memory from an dynamically specified
-     area of memory.
+  1. A partition is an RTEMS object which is used to allocate and deallocate
+     fixed size blocks of memory from an dynamically specified area of memory.
 
   2. A ${cluster:/term} with a cardinality of one is a partition.
 type: glossary

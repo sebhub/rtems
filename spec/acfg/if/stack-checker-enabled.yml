@@ -17,8 +17,8 @@ links:
   uid: ../constraint/option-not-pre-qualified
 name: CONFIGURE_STACK_CHECKER_ENABLED
 notes: |
-  The stack checker performs run-time stack bounds checking.  This increases
-  the time required to create tasks as well as adding overhead to each context
+  The stack checker performs run-time stack bounds checking. This increases the
+  time required to create tasks as well as adding overhead to each context
   switch.
 
   In 4.9 and older, this configuration option was named `STACK_CHECKER_ON`.

@@ -52,7 +52,7 @@ params:
   name: index
 return:
   return: |
-    Returns the object identifier built from the API, class, MPCI node, and
-    index components.
+    Returns the object identifier built from the API, class, MPCI node, and index
+    components.
   return-values: []
 type: interface

@@ -5,13 +5,13 @@ enabled-by:
   not:
   - sparc/gr712rc
   - sparc/gr740
+functional-type: function
 links:
 - role: interface-function
   uid: ../if/get-maximal-line-size
-functional-type: function
 rationale: null
 requirement-type: functional
 text: |
-  Where the ${/glossary/target:/term} has no data cache and no instruction
-  cache, the ${../if/get-maximal-line-size:/name} directive shall return zero.
+  Where the ${/glossary/target:/term} has no data cache and no instruction cache,
+  the ${../if/get-maximal-line-size:/name} directive shall return zero.
 type: requirement

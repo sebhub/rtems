@@ -19,10 +19,10 @@ links:
 name: rtems_interrupt_lock
 notes: |
   Lock objects are only needed in some RTEMS build configurations, for example
-  where the SMP support is enabled.  The ${lock-needs-object:/name} constant
-  can be used to determine whether a lock object is needed or not.  This may
-  help to reduce the memory demands of an application.  All lock operations do
-  not use the lock object parameter if lock objects are not needed.
+  where the SMP support is enabled. The ${lock-needs-object:/name} constant can
+  be used to determine whether a lock object is needed or not. This may help to
+  reduce the memory demands of an application. All lock operations do not use the
+  lock object parameter if lock objects are not needed.
 
   ```c
   #include <rtems.h>

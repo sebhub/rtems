@@ -38,9 +38,8 @@ test-teardown:
     return tic == toc;
   description: null
 text: |
-  While the execution environment is ${.:/environment}, while a message queue
-  is empty, while the measurement sample is the runtime of exactly one
-  unsatisfied call to ${../if/send:/name}, when exactly
-  ${../val/perf:/params/sample-count} samples are collected, the
-  ${.:/limit-kind} shall be ${.:/limit-condition}.
+  While the execution environment is ${.:/environment}, while a message queue is
+  empty, while the measurement sample is the runtime of exactly one unsatisfied
+  call to ${../if/send:/name}, when exactly ${../val/perf:/params/sample-count}
+  samples are collected, the ${.:/limit-kind} shall be ${.:/limit-condition}.
 type: requirement

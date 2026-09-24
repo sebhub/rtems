@@ -8,6 +8,6 @@ links:
   uid: group
 term: ineligible scheduler
 text: |
-  An ineligible scheduler of a ${task:/term} is a ${scheduler:/term} which is
-  not an ${scheduler-eligible:/term}.
+  An ineligible scheduler of a ${task:/term} is a ${scheduler:/term} which is not
+  an ${scheduler-eligible:/term}.
 type: glossary

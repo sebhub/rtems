@@ -33,10 +33,12 @@ links:
 name: rtems_event_system_send
 notes: null
 params:
-- description: is the identifier of the target task to receive the event set.
+- description: |
+    is the identifier of the target task to receive the event set.
   dir: null
   name: id
-- description: is the event set to send.
+- description: |
+    is the event set to send.
   dir: null
   name: event_in
 return: null

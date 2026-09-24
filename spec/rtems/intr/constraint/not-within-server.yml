@@ -8,6 +8,6 @@ links:
 rationale: null
 text: |
   The directive shall not be called from within the context of an interrupt
-  server.  Calling the directive from within the context of an interrupt server
-  is undefined behaviour.
+  server. Calling the directive from within the context of an interrupt server is
+  undefined behaviour.
 type: constraint

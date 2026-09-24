@@ -1,7 +1,7 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 brief: |
-  Gets the resource number of ${/rtems/ratemon/if/group:/name} objects
-  configured for this application.
+  Gets the resource number of ${/rtems/ratemon/if/group:/name} objects configured
+  for this application.
 copyrights:
 - Copyright (C) 2020 embedded brains GmbH & Co. KG
 definition:
@@ -26,9 +26,9 @@ links:
   uid: /constraint/directive-no-preempt
 name: rtems_configuration_get_maximum_periods
 notes: |
-  The resource number is defined by the ${/acfg/if/max-periods:/name}
-  application configuration option.  See also ${resource-is-unlimited:/name}
-  and ${resource-maximum-per-allocation:/name}.
+  The resource number is defined by the ${/acfg/if/max-periods:/name} application
+  configuration option. See also ${resource-is-unlimited:/name} and
+  ${resource-maximum-per-allocation:/name}.
 params: []
 return:
   return: |

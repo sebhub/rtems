@@ -8,7 +8,7 @@ links:
   uid: group
 term: embedded
 text: |
-  An application that is delivered as a hidden part of a larger system.
-  For example, the software in a fuel-injection control system is an
-  embedded application found in many late-model automobiles.
+  An application that is delivered as a hidden part of a larger system. For
+  example, the software in a fuel-injection control system is an embedded
+  application found in many late-model automobiles.
 type: glossary

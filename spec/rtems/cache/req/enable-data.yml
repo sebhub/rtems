@@ -2,14 +2,14 @@ SPDX-License-Identifier: CC-BY-SA-4.0
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
 enabled-by: true
+functional-type: function
 links:
 - role: interface-function
   uid: ../if/enable-data
-functional-type: function
 rationale: null
 requirement-type: functional
 text: |
-  Where the ${/glossary/target:/term} has a data cache, where the data cache
-  can be enabled, when the ${../if/enable-data:/name} directive is called,
-  the data cache shall be enabled.
+  Where the ${/glossary/target:/term} has a data cache, where the data cache can
+  be enabled, when the ${../if/enable-data:/name} directive is called, the data
+  cache shall be enabled.
 type: requirement

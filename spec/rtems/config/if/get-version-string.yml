@@ -27,7 +27,7 @@ links:
   uid: /constraint/directive-no-preempt
 name: rtems_get_version_string
 notes: |
-  The version string has no particular format.  Parsing the string may break
+  The version string has no particular format. Parsing the string may break
   across RTEMS releases.
 params: []
 return:

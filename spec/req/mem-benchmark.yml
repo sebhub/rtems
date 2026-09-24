@@ -9,6 +9,6 @@ non-functional-type: quality
 rationale: null
 requirement-type: non-functional
 text: |
-  The system shall provide benchmark programs to show the static memory usage
-  of ${/glossary/feature:/plural}.
+  The system shall provide benchmark programs to show the static memory usage of
+  ${/glossary/feature:/plural}.
 type: requirement

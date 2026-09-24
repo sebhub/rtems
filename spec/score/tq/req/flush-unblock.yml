@@ -2,13 +2,13 @@ SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
 enabled-by: true
+functional-type: function
 links:
 - role: requirement-refinement
   uid: ../if/group
-functional-type: function
 rationale: null
 requirement-type: functional
 text: |
-  While the extracted thread is in the blocked wait state, the thread queue
-  flush operation shall unblock the thread.
+  While the extracted thread is in the blocked wait state, the thread queue flush
+  operation shall unblock the thread.
 type: requirement

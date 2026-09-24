@@ -4,16 +4,6 @@ brief: |
   map.
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
-description: null
-enabled-by: true
-identifier: RTEMSDeviceGRLIBAPBUART
-index-entries: []
-interface-type: register-block
-links:
-- role: interface-ingroup
-  uid: group
-- role: interface-placement
-  uid: apbuart-header
 definition:
 - default:
     count: 1
@@ -40,16 +30,30 @@ definition:
     name: FIFO
   offset: 0x10
   variants: []
-register-prefix: null
+description: null
+enabled-by: true
+identifier: RTEMSDeviceGRLIBAPBUART
+index-entries: []
+interface-type: register-block
+links:
+- role: interface-ingroup
+  uid: group
+- role: interface-placement
+  uid: apbuart-header
+name: apbuart
+notes: null
 register-block-group: APBUART
 register-block-size: 20
+register-prefix: null
 registers:
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'DATA'
+      name: DATA
+      properties:
+      - r
+      - w
       start: 0
       width: 8
     variants: []
@@ -60,82 +64,99 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'RCNT'
+      name: RCNT
+      properties:
+      - r
       start: 26
       width: 6
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'TCNT'
+      name: TCNT
+      properties:
+      - r
       start: 20
       width: 6
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'RF'
+      name: RF
+      properties:
+      - r
       start: 10
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'TF'
+      name: TF
+      properties:
+      - r
       start: 9
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'RH'
+      name: RH
+      properties:
+      - r
       start: 8
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'TH'
+      name: TH
+      properties:
+      - r
       start: 7
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'FE'
+      name: FE
+      properties:
+      - r
+      - w
       start: 6
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'PE'
+      name: PE
+      properties:
+      - r
+      - w
       start: 5
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'OV'
+      name: OV
+      properties:
+      - r
+      - w
       start: 4
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'BR'
+      name: BR
+      properties:
+      - r
+      - w
       start: 3
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'TE'
+      name: TE
+      properties:
+      - r
       start: 2
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'TS'
+      name: TS
+      properties:
+      - r
       start: 1
       width: 1
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'DR'
+      name: DR
+      properties:
+      - r
       start: 0
       width: 1
     variants: []
@@ -146,100 +167,131 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r]
-      brief: null
+    - brief: null
       description: null
-      name: 'FA'
+      name: FA
+      properties:
+      - r
       start: 31
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'SI'
+      name: SI
+      properties:
+      - r
+      - w
       start: 14
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'DI'
+      name: DI
+      properties:
+      - r
+      - w
       start: 13
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'BI'
+      name: BI
+      properties:
+      - r
+      - w
       start: 12
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'DB'
+      name: DB
+      properties:
+      - r
+      - w
       start: 11
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'RF'
+      name: RF
+      properties:
+      - r
+      - w
       start: 10
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'TF'
+      name: TF
+      properties:
+      - r
+      - w
       start: 9
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'EC'
+      name: EC
+      properties:
+      - r
+      - w
       start: 8
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'LB'
+      name: LB
+      properties:
+      - r
+      - w
       start: 7
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'FL'
+      name: FL
+      properties:
+      - r
+      - w
       start: 6
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'PE'
+      name: PE
+      properties:
+      - r
+      - w
       start: 5
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'PS'
+      name: PS
+      properties:
+      - r
+      - w
       start: 4
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'TI'
+      name: TI
+      properties:
+      - r
+      - w
       start: 3
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'RI'
+      name: RI
+      properties:
+      - r
+      - w
       start: 2
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'TE'
+      name: TE
+      properties:
+      - r
+      - w
       start: 1
       width: 1
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'RE'
+      name: RE
+      properties:
+      - r
+      - w
       start: 0
       width: 1
     variants: []
@@ -250,10 +302,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'SCALER_RELOAD_VALUE'
+      name: SCALER_RELOAD_VALUE
+      properties:
+      - r
+      - w
       start: 0
       width: 20
     variants: []
@@ -264,10 +318,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'DATA'
+      name: DATA
+      properties:
+      - r
+      - w
       start: 0
       width: 8
     variants: []
@@ -276,6 +332,4 @@ registers:
   description: null
   name: FIFO
   width: 32
-name: apbuart
-notes: null
 type: interface

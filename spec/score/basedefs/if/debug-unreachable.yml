@@ -28,13 +28,16 @@ links:
 name: _Debug_Unreachable
 notes: null
 params:
-- description: is the file name.
+- description: |
+    is the file name.
   dir: null
   name: file
-- description: is the line of the file.
+- description: |
+    is the line of the file.
   dir: null
   name: line
-- description: is the function name.
+- description: |
+    is the function name.
   dir: null
   name: func
 return: null

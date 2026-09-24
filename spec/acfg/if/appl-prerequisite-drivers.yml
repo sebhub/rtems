@@ -5,8 +5,8 @@ copyrights:
 default-value: |
   The default value is the empty list.
 description: |
-  The value of this configuration option is used to initialize the Device
-  Driver Table.
+  The value of this configuration option is used to initialize the Device Driver
+  Table.
 enabled-by: true
 index-entries: []
 interface-type: appl-config-option
@@ -25,6 +25,6 @@ notes: |
   ${/bsp/if/acfg-prerequisite-drivers:/name} and before all other device driver
   configuration options.
 
-  See ${appl-extra-drivers:/name} for an alternative placement
-  of application device driver initializers.
+  See ${appl-extra-drivers:/name} for an alternative placement of application
+  device driver initializers.
 type: interface

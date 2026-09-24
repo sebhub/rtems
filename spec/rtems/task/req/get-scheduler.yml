@@ -36,18 +36,17 @@ post-conditions:
       T_eq_u32( ctx->scheduler_id_obj, 0x0f010001 );
     text: |
       The value of the object referenced by the
-      ${../if/get-scheduler:/params[1]/name} parameter shall be set to the
-      object identifier of the ${/glossary/scheduler-home:/term} of the task
-      specified by the ${../if/get-scheduler:/params[0]/name} parameter at some
-      point during the call after the return of the
-      ${../if/get-scheduler:/name} call.
+      ${../if/get-scheduler:/params[1]/name} parameter shall be set to the object
+      identifier of the ${/glossary/scheduler-home:/term} of the task specified by
+      the ${../if/get-scheduler:/params[0]/name} parameter at some point during the
+      call after the return of the ${../if/get-scheduler:/name} call.
   - name: Nop
     test-code: |
       T_eq_u32( ctx->scheduler_id_obj, INVALID_ID );
     text: |
-      Objects referenced by the ${../if/get-scheduler:/params[1]/name}
-      parameter in past calls to ${../if/get-scheduler:/name} shall
-      not be accessed by the ${../if/get-scheduler:/name} call.
+      Objects referenced by the ${../if/get-scheduler:/params[1]/name} parameter in
+      past calls to ${../if/get-scheduler:/name} shall not be accessed by the
+      ${../if/get-scheduler:/name} call.
   test-epilogue: null
   test-prologue: null
 pre-conditions:
@@ -57,14 +56,14 @@ pre-conditions:
     test-code: |
       ctx->id = INVALID_ID;
     text: |
-      While the ${../if/get-scheduler:/params[0]/name} parameter is not
-      associated with a task.
+      While the ${../if/get-scheduler:/params[0]/name} parameter is not associated
+      with a task.
   - name: Task
     test-code: |
       ctx->id = RTEMS_SELF;
     text: |
-      While the ${../if/get-scheduler:/params[0]/name} parameter is
-      associated with a task.
+      While the ${../if/get-scheduler:/params[0]/name} parameter is associated with a
+      task.
   test-epilogue: null
   test-prologue: null
 - name: SchedulerID
@@ -73,8 +72,8 @@ pre-conditions:
     test-code: |
       ctx->scheduler_id = &ctx->scheduler_id_obj;
     text: |
-      While the ${../if/get-scheduler:/params[1]/name} parameter references an
-      object of type ${../../type/if/id:/name}.
+      While the ${../if/get-scheduler:/params[1]/name} parameter references an object
+      of type ${../../type/if/id:/name}.
   - name: 'Null'
     test-code: |
       ctx->scheduler_id = NULL;
@@ -98,20 +97,19 @@ test-context:
   member: |
     rtems_id scheduler_id_obj
 - brief: |
-    This member contains the return value of the ${../if/get-scheduler:/name}
-    call.
+    This member contains the return value of the ${../if/get-scheduler:/name} call.
   description: null
   member: |
     rtems_status_code status
 - brief: |
-    This member specifies if the ${../if/get-scheduler:/params[0]/name}
-    parameter value.
+    This member specifies if the ${../if/get-scheduler:/params[0]/name} parameter
+    value.
   description: null
   member: |
     rtems_id id
 - brief: |
-    This member specifies if the ${../if/get-scheduler:/params[1]/name}
-    parameter value.
+    This member specifies if the ${../if/get-scheduler:/params[1]/name} parameter
+    value.
   description: null
   member: |
     rtems_id *scheduler_id
@@ -129,7 +127,8 @@ test-stop: null
 test-support: null
 test-target: testsuites/validation/tc-task-get-scheduler.c
 test-teardown: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

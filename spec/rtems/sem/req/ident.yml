@@ -9,6 +9,6 @@ links:
 rationale: null
 requirement-type: functional
 text: |
-  The ${../if/ident:/name} directive shall identify an Classic API
-  semaphore class object by its name as specified by ${../../req/ident:/spec}.
+  The ${../if/ident:/name} directive shall identify an Classic API semaphore
+  class object by its name as specified by ${../../req/ident:/spec}.
 type: requirement

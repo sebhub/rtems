@@ -22,9 +22,8 @@ links:
   uid: ../constraint/max-uint32
 name: CONFIGURE_MP_MAXIMUM_GLOBAL_OBJECTS
 notes: |
-  This value corresponds to the total number of objects which can be created
-  with the ${/rtems/attr/if/global:/name} attribute.
+  This value corresponds to the total number of objects which can be created with
+  the ${/rtems/attr/if/global:/name} attribute.
 
-  This configuration option is only evaluated if
-  ${mp-appl:/name} is defined.
+  This configuration option is only evaluated if ${mp-appl:/name} is defined.
 type: interface

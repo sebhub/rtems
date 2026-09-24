@@ -1,7 +1,7 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 brief: |
-  Instructs the compiler in a type definition to place members of a structure
-  or union so that the memory required is minimized.
+  Instructs the compiler in a type definition to place members of a structure or
+  union so that the memory required is minimized.
 copyrights:
 - Copyright (C) 2020 embedded brains GmbH & Co. KG
 definition:

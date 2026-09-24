@@ -43,6 +43,5 @@ links:
 name: rtems_interrupt_server_action
 notes: |
   This structure shall be treated as an opaque data type from the
-  ${/glossary/api:/term} point of view.  Members shall not be accessed
-  directly.
+  ${/glossary/api:/term} point of view. Members shall not be accessed directly.
 type: interface

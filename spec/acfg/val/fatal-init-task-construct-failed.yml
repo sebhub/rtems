@@ -5,8 +5,8 @@ enabled-by: true
 links: []
 test-actions:
 - action-brief: |
-    The test action is carried out by configuring an invalid task priority used
-    to construct the initialization task.
+    The test action is carried out by configuring an invalid task priority used to
+    construct the initialization task.
   action-code: |
     /* Nothing to do */
   checks:
@@ -29,8 +29,8 @@ test-actions:
     - role: validation
       uid: ../req/fatal-init-task-construct-failed
   - brief: |
-      Check that the ${../if/init-task-priority:/name} application
-      configuration option resulted in the expected system setting.
+      Check that the ${../if/init-task-priority:/name} application configuration
+      option resulted in the expected system setting.
     code: |
       T_step_eq_u32(
         ${.:/step},

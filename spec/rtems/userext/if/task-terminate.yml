@@ -28,15 +28,15 @@ notes: |
 
   The task terminate extensions are invoked in the context of the terminating
   thread right before the thread dispatch to the heir thread should take place.
-  The thread stack reflects the previous execution context.  The POSIX cleanup
-  and key destructors execute in this context.
+  The thread stack reflects the previous execution context. The POSIX cleanup and
+  key destructors execute in this context.
 
   Thread restart and delete requests issued by terminate extensions lead to
   recursion.
 params:
 - description: |
-    is the ${/glossary/tcb:/term} of the executing thread.  This is the
-    terminating thread.
+    is the ${/glossary/tcb:/term} of the executing thread. This is the terminating
+    thread.
   dir: null
   name: executing
 return: null

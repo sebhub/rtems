@@ -9,10 +9,9 @@ links:
 rationale: null
 requirement-type: functional
 text: |
-  When the code is compiled with the GNU C compiler,
-  and the ${../if/deprecated:/name} macro is used as last part of a
-  function declaration or type declaration or variable declaration or
-  variable definition,
-  the macro shall cause the compiler to issue a warning message when it
-  encounters a use of the function, type or variable.
+  When the code is compiled with the GNU C compiler, and the
+  ${../if/deprecated:/name} macro is used as last part of a function declaration
+  or type declaration or variable declaration or variable definition, the macro
+  shall cause the compiler to issue a warning message when it encounters a use of
+  the function, type or variable.
 type: requirement

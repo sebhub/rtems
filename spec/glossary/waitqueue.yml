@@ -8,7 +8,6 @@ links:
   uid: group
 term: wait queue
 text: |
-  The list of tasks blocked pending the release of a particular resource.
-  Message queues, regions, and semaphores have a wait queue associated with
-  them.
+  The list of tasks blocked pending the release of a particular resource. Message
+  queues, regions, and semaphores have a wait queue associated with them.
 type: glossary

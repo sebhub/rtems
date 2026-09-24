@@ -20,11 +20,7 @@ test-actions:
   - brief: |
       Check that the expected fatal code is present.
     code: |
-      T_step_eq_ulong(
-        ${.:/step},
-        ctx->code,
-        LEON3_FATAL_CLOCK_INITIALIZATION
-      );
+      T_step_eq_ulong( ${.:/step}, ctx->code, LEON3_FATAL_CLOCK_INITIALIZATION );
     links:
     - role: validation
       uid: ../req/fatal-clock-initialization

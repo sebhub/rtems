@@ -79,48 +79,47 @@ pre-conditions:
     test-code: |
       ctx->valid_id = false;
     text: |
-      While the ${../if/delete:/params[0]/name} parameter is not associated
-      with a semaphore.
+      While the ${../if/delete:/params[0]/name} parameter is not associated with a
+      semaphore.
   - name: Counting
     test-code: |
       ctx->attribute_set |= RTEMS_COUNTING_SEMAPHORE;
       ctx->obtain_status = RTEMS_OBJECT_WAS_DELETED;
     text: |
-    text: |
-      While the ${../if/delete:/params[0]/name} parameter is associated with
-      a counting semaphore.
+      While the ${../if/delete:/params[0]/name} parameter is associated with a
+      counting semaphore.
   - name: Simple
     test-code: |
       ctx->attribute_set |= RTEMS_SIMPLE_BINARY_SEMAPHORE;
       ctx->obtain_status = RTEMS_OBJECT_WAS_DELETED;
     text: |
-      While the ${../if/delete:/params[0]/name} parameter is associated with
-      a simple binary semaphore.
+      While the ${../if/delete:/params[0]/name} parameter is associated with a simple
+      binary semaphore.
   - name: Binary
     test-code: |
       ctx->attribute_set |= RTEMS_BINARY_SEMAPHORE;
     text: |
-      While the ${../if/delete:/params[0]/name} parameter is associated with
-      a binary semaphore.
+      While the ${../if/delete:/params[0]/name} parameter is associated with a binary
+      semaphore.
   - name: PrioCeiling
     test-code: |
       ctx->attribute_set |= RTEMS_BINARY_SEMAPHORE | RTEMS_PRIORITY_CEILING;
     text: |
-      While the ${../if/delete:/params[0]/name} parameter is associated with
-      a priority ceiling semaphore.
+      While the ${../if/delete:/params[0]/name} parameter is associated with a
+      priority ceiling semaphore.
   - name: PrioInherit
     test-code: |
       ctx->attribute_set |= RTEMS_BINARY_SEMAPHORE | RTEMS_INHERIT_PRIORITY;
     text: |
-      While the ${../if/delete:/params[0]/name} parameter is associated with
-      a priority inheritance semaphore.
+      While the ${../if/delete:/params[0]/name} parameter is associated with a
+      priority inheritance semaphore.
   - name: MrsP
     test-code: |
       ctx->attribute_set |= RTEMS_BINARY_SEMAPHORE |
-        RTEMS_MULTIPROCESSOR_RESOURCE_SHARING;
+                            RTEMS_MULTIPROCESSOR_RESOURCE_SHARING;
     text: |
-      While the ${../if/delete:/params[0]/name} parameter is associated with
-      a MrsP semaphore.
+      While the ${../if/delete:/params[0]/name} parameter is associated with a MrsP
+      semaphore.
   test-epilogue: null
   test-prologue: null
 - name: Discipline
@@ -163,8 +162,8 @@ rationale: null
 requirement-type: functional
 skip-reasons:
   NeedsPriorityDiscipline: |
-    Binary semaphores with a locking protocol are required to use the priority
-    task wait queue discipline.
+    Binary semaphores with a locking protocol are required to use the priority task
+    wait queue discipline.
 test-action: |
   rtems_status_code sc;
 
@@ -247,8 +246,8 @@ test-context:
   member: |
     bool valid_id
 - brief: |
-    If this member is true, then tasks shall be blocked on the semaphore,
-    otherwise no tasks shall be blocked on the semaphore.
+    If this member is true, then tasks shall be blocked on the semaphore, otherwise
+    no tasks shall be blocked on the semaphore.
   description: null
   member: |
     bool blocked
@@ -361,7 +360,8 @@ test-teardown:
 
     RestoreRunnerPriority();
   description: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

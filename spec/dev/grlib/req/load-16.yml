@@ -2,14 +2,13 @@ SPDX-License-Identifier: CC-BY-SA-4.0
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
 enabled-by: true
+functional-type: function
 links:
 - role: interface-function
   uid: ../if/load-16
-functional-type: function
 rationale: null
 requirement-type: functional
 text: |
-  The ${../if/load-16:/name} directive shall load an unsigned 16-bit value
-  from the address specified by ${../if/load-16:/params[0]/name} and
-  return it.
+  The ${../if/load-16:/name} directive shall load an unsigned 16-bit value from
+  the address specified by ${../if/load-16:/params[0]/name} and return it.
 type: requirement

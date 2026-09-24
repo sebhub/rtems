@@ -2,13 +2,13 @@ SPDX-License-Identifier: CC-BY-SA-4.0
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
 enabled-by: true
+functional-type: function
 links:
 - role: interface-function
   uid: ../if/iterate
-functional-type: function
 rationale: null
 requirement-type: functional
 text: |
-  When ${../if/iterate:/name} is called, the calling task shall obtain the
-  object allocator lock and then start an iteration over all tasks.
+  When ${../if/iterate:/name} is called, the calling task shall obtain the object
+  allocator lock and then start an iteration over all tasks.
 type: requirement

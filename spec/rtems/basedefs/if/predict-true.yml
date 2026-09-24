@@ -38,7 +38,7 @@ params:
   name: _exp
 return:
   return: |
-    Returns the value of the integral expression and tells the compiler that
-    the predicted value is true (1).
+    Returns the value of the integral expression and tells the compiler that the
+    predicted value is true (1).
   return-values: []
 type: interface

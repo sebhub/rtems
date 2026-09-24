@@ -61,7 +61,8 @@ test-actions:
       T_step_eq_u32( ${.:/step}, RTEMS_EVENT_ANY & ( RTEMS_EVENT_ANY - 1 ), 0 );
     links: []
   links: []
-test-brief: Tests the Event Manager API.
+test-brief: |
+  Tests the Event Manager API.
 test-context: []
 test-context-support: null
 test-description: null

@@ -1,6 +1,6 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 brief: |
-  Concatenates _x and _y without expanding.
+  Concatenates \_x and \_y without expanding.
 copyrights:
 - Copyright (C) 2015 embedded brains GmbH & Co. KG
 definition:
@@ -32,6 +32,6 @@ params:
   name: _y
 return:
   return: |
-    Returns the concatenation of the tokens _x and _y.
+    Returns the concatenation of the tokens \_x and \_y.
   return-values: []
 type: interface

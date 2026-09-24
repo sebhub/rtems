@@ -8,7 +8,6 @@ links:
   uid: group
 term: bit-mapped
 text: |
-  A data encoding scheme in which each bit in a variable is used to
-  represent something different.  This makes for compact data
-  representation.
+  A data encoding scheme in which each bit in a variable is used to represent
+  something different. This makes for compact data representation.
 type: glossary

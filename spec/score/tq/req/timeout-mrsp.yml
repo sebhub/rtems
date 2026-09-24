@@ -49,12 +49,7 @@ pre-conditions:
     test-code: |
       ctx->other_scheduler = false;
 
-      TQSetScheduler(
-        ctx->tq_ctx,
-        TQ_BLOCKER_A,
-        SCHEDULER_A_ID,
-        PRIO_LOW
-      );
+      TQSetScheduler( ctx->tq_ctx, TQ_BLOCKER_A, SCHEDULER_A_ID, PRIO_LOW );
       RemoveProcessor( SCHEDULER_B_ID, 1 );
       AddProcessor( SCHEDULER_A_ID, 1 );
       ctx->restore_scheduler = true;
@@ -65,15 +60,10 @@ pre-conditions:
     test-code: |
       ctx->other_scheduler = true;
 
-      TQSetScheduler(
-        ctx->tq_ctx,
-        TQ_BLOCKER_A,
-        SCHEDULER_B_ID,
-        PRIO_NORMAL
-      );
+      TQSetScheduler( ctx->tq_ctx, TQ_BLOCKER_A, SCHEDULER_B_ID, PRIO_NORMAL );
     text: |
-      While the ${/glossary/scheduler-home:/term} of the thread is not equal to
-      the ${/glossary/scheduler-home:/term} of the thread queue owner.
+      While the ${/glossary/scheduler-home:/term} of the thread is not equal to the
+      ${/glossary/scheduler-home:/term} of the thread queue owner.
   test-epilogue: null
   test-prologue: null
 - name: WaitState
@@ -83,11 +73,7 @@ pre-conditions:
       Per_CPU_Control *cpu;
 
       TQEnqueuePrepare( ctx->tq_ctx );
-      TQSendAndWaitForIntendToBlock(
-        ctx->tq_ctx,
-        TQ_BLOCKER_A,
-        TQ_EVENT_ENQUEUE
-      );
+      TQSendAndWaitForIntendToBlock( ctx->tq_ctx, TQ_BLOCKER_A, TQ_EVENT_ENQUEUE );
       cpu = _Thread_Get_CPU( ctx->tq_ctx->worker_tcb[ TQ_BLOCKER_A ] );
 
       /*
@@ -103,8 +89,7 @@ pre-conditions:
       WaitForExecutionStop( ctx->tq_ctx->worker_id[ TQ_BLOCKER_A ] );
       TQEnqueueDone( ctx->tq_ctx );
     text: |
-      While the thread of the timeout operation is in the intend to block wait
-      state.
+      While the thread of the timeout operation is in the intend to block wait state.
   - name: ReadyAgain
     test-code: |
       TQEnqueuePrepare( ctx->tq_ctx );
@@ -118,8 +103,7 @@ pre-conditions:
       TQEnqueueDone( ctx->tq_ctx );
       WaitForExecutionStop( ctx->tq_ctx->worker_id[ TQ_BLOCKER_A ] );
     text: |
-      While the thread of the timeout operation is in the ready again wait
-      state.
+      While the thread of the timeout operation is in the ready again wait state.
   test-epilogue: null
   test-prologue: null
 rationale: null

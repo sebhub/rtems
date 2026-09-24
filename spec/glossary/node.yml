@@ -8,6 +8,5 @@ links:
   uid: group
 term: node
 text: |
-  A term used to reference a processor running RTEMS in a multiprocessor
-  system.
+  A term used to reference a processor running RTEMS in a multiprocessor system.
 type: glossary

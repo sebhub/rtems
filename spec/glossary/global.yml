@@ -8,6 +8,6 @@ links:
   uid: group
 term: global
 text: |
-  An object that has been created with the GLOBAL attribute and exported to
-  all nodes in a multiprocessor system.
+  An object that has been created with the GLOBAL attribute and exported to all
+  nodes in a multiprocessor system.
 type: glossary

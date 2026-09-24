@@ -11,6 +11,6 @@ links:
 rationale: null
 requirement-type: functional
 text: |
-  The application configuration option shall disable the support to remove
-  files in the root IMFS (no support for ${/c/if/rmnod:/name}).
+  The application configuration option shall disable the support to remove files
+  in the root IMFS (no support for ${/c/if/rmnod:/name}).
 type: requirement

@@ -8,7 +8,6 @@ links:
   uid: group
 term: signal
 text: |
-  An RTEMS provided mechanism to communicate asynchronously with a task.
-  Upon reception of a signal, the ASR of the receiving task will be
-  invoked.
+  An RTEMS provided mechanism to communicate asynchronously with a task. Upon
+  reception of a signal, the ASR of the receiving task will be invoked.
 type: glossary

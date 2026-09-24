@@ -5,8 +5,8 @@ enabled-by: true
 links: []
 test-actions:
 - action-brief: |
-    Use the ${../if/get-ticks-since-boot-macro:/name} directive before and
-    after exactly one clock tick.
+    Use the ${../if/get-ticks-since-boot-macro:/name} directive before and after
+    exactly one clock tick.
   action-code: |
     rtems_interval result_0;
     rtems_interval result_1;
@@ -24,8 +24,8 @@ test-actions:
       uid: ../req/get-ticks-since-boot-macro
   links: []
 - action-brief: |
-    Use the ${../if/get-ticks-since-boot:/name} directive before and after
-    exactly one clock tick.
+    Use the ${../if/get-ticks-since-boot:/name} directive before and after exactly
+    one clock tick.
   action-code: |
     rtems_interval result_0;
     rtems_interval result_1;
@@ -52,8 +52,8 @@ test-actions:
     result = rtems_clock_get_ticks_per_second();
   checks:
   - brief: |
-      Check that ${../if/get-ticks-per-second:/name} actually returns
-      1us / CONFIGURE_MICROSECONDS_PER_TICK.
+      Check that ${../if/get-ticks-per-second:/name} actually returns 1us /
+      CONFIGURE_MICROSECONDS_PER_TICK.
     code: |
       T_step_eq_u32( ${.:/step}, result, 1000000UL / TEST_MICROSECONDS_PER_TICK );
     links:
@@ -70,8 +70,8 @@ test-actions:
     result = rtems_clock_get_ticks_per_second();
   checks:
   - brief: |
-      Check that ${../if/get-ticks-per-second:/name} actually returns
-      1us / CONFIGURE_MICROSECONDS_PER_TICK.
+      Check that ${../if/get-ticks-per-second:/name} actually returns 1us /
+      CONFIGURE_MICROSECONDS_PER_TICK.
     code: |
       T_step_eq_u32( ${.:/step}, result, 1000000UL / TEST_MICROSECONDS_PER_TICK );
     links:

@@ -64,14 +64,14 @@ post-conditions:
       T_ne_u32( ctx->id_value, INVALID_ID );
     text: |
       The value of the object referenced by the ${../if/create:/params[1]/name}
-      parameter shall be set to the object identifier of the created timer
-      after the return of the ${../if/create:/name} call.
+      parameter shall be set to the object identifier of the created timer after the
+      return of the ${../if/create:/name} call.
   - name: Nop
     test-code: |
       T_eq_u32( ctx->id_value, INVALID_ID );
     text: |
-      Objects referenced by the ${../if/create:/params[1]/name} parameter in
-      past calls to ${../if/create:/name} shall not be accessed by the
+      Objects referenced by the ${../if/create:/params[1]/name} parameter in past
+      calls to ${../if/create:/name} shall not be accessed by the
       ${../if/create:/name} call.
   test-epilogue: null
   test-prologue: null
@@ -96,14 +96,13 @@ pre-conditions:
     test-code: |
       ctx->id = &ctx->id_value;
     text: |
-      While the ${../if/create:/params[1]/name} parameter references an object
-      of type ${../../type/if/id:/name}.
+      While the ${../if/create:/params[1]/name} parameter references an object of
+      type ${../../type/if/id:/name}.
   - name: 'Null'
     test-code: |
       ctx->id = NULL;
     text: |
-      While the ${../if/create:/params[1]/name} parameter is
-      ${/c/if/null:/name}.
+      While the ${../if/create:/params[1]/name} parameter is ${/c/if/null:/name}.
   test-epilogue: null
   test-prologue: null
 - name: Free
@@ -139,14 +138,13 @@ test-cleanup: |
   T_surrender_objects( &ctx->seized_objects, rtems_timer_delete );
 test-context:
 - brief: |
-    This member is used by the T_seize_objects() and T_surrender_objects()
-    support functions.
+    This member is used by the T_seize_objects() and T_surrender_objects() support
+    functions.
   description: null
   member: |
     void *seized_objects
 - brief: |
-    This member may contain the object identifier returned by
-    rtems_timer_create().
+    This member may contain the object identifier returned by rtems_timer_create().
   description: null
   member: |
     rtems_id id_value
@@ -194,7 +192,8 @@ test-support: |
   }
 test-target: testsuites/validation/tc-timer-create.c
 test-teardown: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

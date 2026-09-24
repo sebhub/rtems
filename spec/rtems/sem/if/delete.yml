@@ -38,19 +38,19 @@ links:
 name: rtems_semaphore_delete
 notes: |
   Binary semaphores with an owner cannot be deleted.
-  
-  When a semaphore is deleted, all tasks blocked waiting to obtain the
-  semaphore will be readied and returned a status code which indicates that the
-  semaphore was deleted.
+
+  When a semaphore is deleted, all tasks blocked waiting to obtain the semaphore
+  will be readied and returned a status code which indicates that the semaphore
+  was deleted.
 
   The ${/glossary/smcb:/term} for the deleted semaphore is reclaimed by RTEMS.
 
   When a global semaphore is deleted, the semaphore identifier must be
-  transmitted to every node in the system for deletion from the local copy of
-  the global object table.
+  transmitted to every node in the system for deletion from the local copy of the
+  global object table.
 
-  The semaphore must reside on the local node, even if the semaphore was
-  created with the ${../../attr/if/global:/name} attribute.
+  The semaphore must reside on the local node, even if the semaphore was created
+  with the ${../../attr/if/global:/name} attribute.
 
   Proxies, used to represent remote tasks, are reclaimed when the semaphore is
   deleted.

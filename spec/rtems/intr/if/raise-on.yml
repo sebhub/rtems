@@ -53,12 +53,12 @@ return:
       ${.:/params[0]/name}.
     value: ${../../status/if/invalid-id:/name}
   - description: |
-      The processor specified by ${.:/params[1]/name} was not configured to be
-      used by the application.
+      The processor specified by ${.:/params[1]/name} was not configured to be used
+      by the application.
     value: ${../../status/if/not-configured:/name}
   - description: |
-      The processor specified by ${.:/params[1]/name} was configured to be used
-      by the application, however, it was not online.
+      The processor specified by ${.:/params[1]/name} was configured to be used by
+      the application, however, it was not online.
     value: ${../../status/if/incorrect-state:/name}
   - description: |
       The request to raise the interrupt vector has not been satisfied.

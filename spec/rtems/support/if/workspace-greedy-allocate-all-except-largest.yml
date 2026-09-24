@@ -14,9 +14,9 @@ definition:
     return: void *
   variants: []
 description: |
-  Afterwards the heap has at most one allocatable block.  This block is the
-  largest free block if it exists.  The allocatable size of this block is
-  stored in ${.:/params[0]/name}.  All other blocks are used.
+  Afterwards the heap has at most one allocatable block. This block is the
+  largest free block if it exists. The allocatable size of this block is stored
+  in ${.:/params[0]/name}. All other blocks are used.
 enabled-by: true
 index-entries: []
 interface-type: function
@@ -43,7 +43,7 @@ params:
   name: allocatable_size
 return:
   return: |
-    The returned pointer value may be used to free the greedy allocation by
-    calling ${workspace-greedy-free:/name}.
+    The returned pointer value may be used to free the greedy allocation by calling
+    ${workspace-greedy-free:/name}.
   return-values: []
 type: interface

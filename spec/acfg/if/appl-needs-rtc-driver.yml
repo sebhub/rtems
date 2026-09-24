@@ -20,6 +20,6 @@ notes: |
   Most BSPs do not include support for a real-time clock (RTC). This is because
   many boards do not include the required hardware.
 
-  If this is defined and the BSP does not have this device driver, then the
-  user will get a link time error for an undefined symbol.
+  If this is defined and the BSP does not have this device driver, then the user
+  will get a link time error for an undefined symbol.
 type: interface

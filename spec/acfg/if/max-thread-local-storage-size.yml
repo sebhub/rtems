@@ -4,10 +4,10 @@ copyrights:
 - Copyright (C) 2020 embedded brains GmbH & Co. KG
 default-value: 0
 description: |
-  If the value of this configuration option is greater than zero, then it
-  defines the maximum thread-local storage size, otherwise the thread-local
-  storage size is defined by the linker depending on the thread-local storage
-  objects used by the application in the statically-linked executable.
+  If the value of this configuration option is greater than zero, then it defines
+  the maximum thread-local storage size, otherwise the thread-local storage size
+  is defined by the linker depending on the thread-local storage objects used by
+  the application in the statically-linked executable.
 enabled-by: true
 index-entries: []
 interface-type: appl-config-option
@@ -27,17 +27,17 @@ notes: |
   This configuration option can be used to reserve space for the dynamic linking
   of modules with thread-local storage objects.
 
-  If the thread-local storage size defined by the thread-local storage
-  objects used by the application in the statically-linked executable is greater
-  than a non-zero value of this configuration option, then a fatal error will
-  occur during system initialization.
+  If the thread-local storage size defined by the thread-local storage objects
+  used by the application in the statically-linked executable is greater than a
+  non-zero value of this configuration option, then a fatal error will occur
+  during system initialization.
 
   Use ${/rtems/basedefs/if/align-up:/name} and
   ${/rtems/task/if/storage-alignment:/name} to adjust the size to meet the
   minimum alignment requirement of a thread-local storage area.
 
   The actual thread-local storage size is determined when the application
-  executable is linked.  The `rtems-exeinfo` command line tool included in
-  the RTEMS Tools can be used to obtain the thread-local storage size and
-  alignment of an application executable.
+  executable is linked. The `rtems-exeinfo` command line tool included in the
+  RTEMS Tools can be used to obtain the thread-local storage size and alignment
+  of an application executable.
 type: interface

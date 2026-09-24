@@ -5,7 +5,7 @@ enabled-by: true
 links: []
 test-actions:
 - action-brief: |
-    Create a worker thread.  Generate some CPU usage.
+    Create a worker thread. Generate some CPU usage.
   action-code: |
     rtems_id          id;
     Thread_Control   *self;
@@ -17,7 +17,10 @@ test-actions:
 
     idle_tasks = 0;
 
-    for ( cpu_index = 0; cpu_index < rtems_scheduler_get_processor_maximum(); ++cpu_index ) {
+    for (
+      cpu_index = 0; cpu_index < rtems_scheduler_get_processor_maximum();
+      ++cpu_index
+    ) {
       rtems_status_code sc;
       rtems_id          unused;
 
@@ -38,8 +41,8 @@ test-actions:
     Yield();
   checks:
   - brief: |
-      Check that we have a non-zero CPU usage.  Reset the CPU usage.  Check
-      that it was cleared to zero.
+      Check that we have a non-zero CPU usage. Reset the CPU usage. Check that it was
+      cleared to zero.
     code: |
       TimecounterTick();
 

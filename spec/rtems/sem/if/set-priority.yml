@@ -17,22 +17,22 @@ definition:
   variants: []
 description: |
   This directive sets the priority of the semaphore specified by
-  ${.:/params[0]/name}.  The priority corresponds to the scheduler specified by
+  ${.:/params[0]/name}. The priority corresponds to the scheduler specified by
   ${.:/params[1]/name}.
 
-  The special priority value ${../../task/if/current-priority:/name} can be
-  used to get the current priority without changing it.
+  The special priority value ${../../task/if/current-priority:/name} can be used
+  to get the current priority without changing it.
 
   The availability and use of a priority depends on the class and locking
   protocol of the semaphore:
 
-  * For local, binary semaphores using the MrsP locking protocol, the ceiling
+  - For local, binary semaphores using the MrsP locking protocol, the ceiling
     priority for each scheduler can be set by this directive.
 
-  * For local, binary semaphores using the priority ceiling protocol, the
-    ceiling priority can be set by this directive.
+  - For local, binary semaphores using the priority ceiling protocol, the ceiling
+    priority can be set by this directive.
 
-  * For other semaphore classes and locking protocols, setting a priority is
+  - For other semaphore classes and locking protocols, setting a priority is
     undefined behaviour.
 enabled-by: true
 index-entries:
@@ -158,9 +158,9 @@ params:
   dir: null
   name: new_priority
 - description: |
-    is the pointer to an ${../../type/if/priority:/name} object.  When the
-    directive call is successful, the old priority of the semaphore
-    corresponding to the specified scheduler will be stored in this object.
+    is the pointer to an ${../../type/if/priority:/name} object. When the directive
+    call is successful, the old priority of the semaphore corresponding to the
+    specified scheduler will be stored in this object.
   dir: out
   name: old_priority
 return:

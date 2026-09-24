@@ -7,6 +7,6 @@ links:
   uid: /req/usage-constraints
 rationale: null
 text: |
-  The value of the application configuration option shall be less than or
-  equal to ${/c/if/uintptr_max:/name}.
+  The value of the application configuration option shall be less than or equal
+  to ${/c/if/uintptr_max:/name}.
 type: constraint

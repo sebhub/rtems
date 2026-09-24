@@ -5,9 +5,9 @@ enabled-by: true
 links: []
 test-actions:
 - action-brief: |
-    The test action is carried out by providing a thread-local storage object
-    of sufficient size with respect to the application configuration of the
-    test suite.
+    The test action is carried out by providing a thread-local storage object of
+    sufficient size with respect to the application configuration of the test
+    suite.
   action-code: |
     if ( shall_not_load_the_value ) {
       uint8_t value;
@@ -26,17 +26,13 @@ test-actions:
   - brief: |
       Check that the expected fatal code is present.
     code: |
-      T_step_eq_ulong(
-        ${.:/step},
-        ctx->code,
-        INTERNAL_ERROR_TOO_LARGE_TLS_SIZE
-      );
+      T_step_eq_ulong( ${.:/step}, ctx->code, INTERNAL_ERROR_TOO_LARGE_TLS_SIZE );
     links:
     - role: validation
       uid: ../req/fatal-too-large-tls-size
   - brief: |
-      Check that the ${/acfg/if/max-thread-local-storage-size:/name}
-      application configuration option resulted in the expected system setting.
+      Check that the ${/acfg/if/max-thread-local-storage-size:/name} application
+      configuration option resulted in the expected system setting.
     code: |
       T_step_eq_sz(
         ${.:/step},

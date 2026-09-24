@@ -9,9 +9,9 @@ links:
 term: Futex
 text: |
   This term is an abbreviation for
-  `Fast User-Space Locking <https://man7.org/linux/man-pages/man2/futex.2.html>`_.
-  The futex support in RTEMS is provided for the barriers of the
-  ${openmp:/term} library provided by ${gcc:/term}.  It could be used to
-  implement high performance ${smp:/term} synchronization primitives which
-  offer random-fairness.
+  [Fast User-Space Locking](https://man7.org/linux/man-pages/man2/futex.2.html).
+  The futex support in RTEMS is provided for the barriers of the ${openmp:/term}
+  library provided by ${gcc:/term}. It could be used to implement high
+  performance ${smp:/term} synchronization primitives which offer
+  random-fairness.
 type: glossary

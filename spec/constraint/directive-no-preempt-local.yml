@@ -7,6 +7,6 @@ links:
   uid: /req/usage-constraints
 rationale: null
 text: |
-  When the directive operates on a local object, the directive will not cause
-  the calling task to be preempted.
+  When the directive operates on a local object, the directive will not cause the
+  calling task to be preempted.
 type: constraint

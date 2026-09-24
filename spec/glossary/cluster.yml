@@ -9,7 +9,7 @@ links:
 term: cluster
 text: |
   We have clustered scheduling in case the set of processors of a system is
-  partitioned into non-empty pairwise disjoint subsets.  These subsets are
-  called clusters.  Clusters with a cardinality of one are partitions.
-  Each cluster is owned by exactly one scheduler instance.
+  partitioned into non-empty pairwise disjoint subsets. These subsets are called
+  clusters. Clusters with a cardinality of one are partitions. Each cluster is
+  owned by exactly one scheduler instance.
 type: glossary

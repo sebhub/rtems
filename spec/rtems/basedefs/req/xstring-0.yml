@@ -7,13 +7,12 @@ links:
 - role: interface-function
   uid: ../if/xstring
 rationale: |
-  The exact rules on how this string is build are defined by the C
-  standard and are too complex to be repeated in this requirement.
+  The exact rules on how this string is build are defined by the C standard and
+  are too complex to be repeated in this requirement.
 requirement-type: functional
 text: |
-  The macro ${../if/xstring:/name} shall apply all possible C
-  pre-processor substitutions to its argument values before
-  the result of this substitution is converted to a
-  a string formed by the C pre-processor `#` operator and
-  the macro results in this string.
+  The macro ${../if/xstring:/name} shall apply all possible C pre-processor
+  substitutions to its argument values before the result of this substitution is
+  converted to a a string formed by the C pre-processor `#` operator and the
+  macro results in this string.
 type: requirement

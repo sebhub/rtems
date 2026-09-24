@@ -1,7 +1,6 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 brief: |
-  Gets the number of milliseconds per clock tick configured for this
-  application.
+  Gets the number of milliseconds per clock tick configured for this application.
 copyrights:
 - Copyright (C) 2020 embedded brains GmbH & Co. KG
 definition:
@@ -26,8 +25,8 @@ links:
   uid: /constraint/directive-no-preempt
 name: rtems_configuration_get_milliseconds_per_tick
 notes: |
-  The number of milliseconds per ${/glossary/clock-tick:/term} is defined by
-  the ${/acfg/if/microseconds-per-tick:/name} application configuration option.
+  The number of milliseconds per ${/glossary/clock-tick:/term} is defined by the
+  ${/acfg/if/microseconds-per-tick:/name} application configuration option.
 params: []
 return:
   return: |

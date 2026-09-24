@@ -17,8 +17,8 @@ links:
   uid: group
 name: rtems_fatal_source
 notes: |
-  The system termination code may provide additional information depending on
-  the system termination source, see ${fatal-code:/name}.
+  The system termination code may provide additional information depending on the
+  system termination source, see ${fatal-code:/name}.
 params: []
 return: null
 type: interface

@@ -13,8 +13,8 @@ definition:
     return: ${../../status/if/code:/name}
   variants: []
 description: |
-  This directive adds the processor specified by the ${.:/params[1]/name} to
-  the scheduler specified by ${.:/params[0]/name}.
+  This directive adds the processor specified by the ${.:/params[1]/name} to the
+  scheduler specified by ${.:/params[0]/name}.
 enabled-by: true
 index-entries: []
 interface-type: function
@@ -54,8 +54,8 @@ return:
       The processor was not configured to be used by the application.
     value: ${../../status/if/not-configured:/name}
   - description: |
-      The processor was configured to be used by the application, however, it
-      was not online.
+      The processor was configured to be used by the application, however, it was not
+      online.
     value: ${../../status/if/incorrect-state:/name}
   - description: |
       The processor was already assigned to a scheduler.

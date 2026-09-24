@@ -28,8 +28,8 @@ name: rtems_cache_get_data_cache_size
 notes: null
 params:
 - description: |
-    is the requested data cache level.  The cache level zero specifies the
-    entire data cache.
+    is the requested data cache level. The cache level zero specifies the entire
+    data cache.
   dir: null
   name: level
 return:

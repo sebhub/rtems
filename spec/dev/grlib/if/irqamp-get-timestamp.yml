@@ -8,7 +8,7 @@ definition:
     attributes: null
     body: |
       ${irqamp-timestamp:/name} *timestamp_regs;
-      uint32_t itstmpc;
+      uint32_t                   itstmpc;
 
       timestamp_regs = &${.:/params[0]/name}->itstmp[ 0 ];
       itstmpc = ${load-32:/name}( &timestamp_regs->itstmpc );

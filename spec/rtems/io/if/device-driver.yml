@@ -18,9 +18,8 @@ links:
   uid: group
 name: rtems_device_driver
 notes: |
-  Device driver entries return an ${../../status/if/code:/name} status code.
-  This type definition helps to document device driver entries in the source
-  code.
+  Device driver entries return an ${../../status/if/code:/name} status code. This
+  type definition helps to document device driver entries in the source code.
 params: []
 return: null
 type: interface

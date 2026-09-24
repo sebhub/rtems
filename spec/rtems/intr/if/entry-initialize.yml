@@ -33,8 +33,8 @@ links:
   uid: /constraint/directive-no-preempt
 name: rtems_interrupt_entry_initialize
 notes: |
-  Alternatively, ${entry-initializer:/name} may be used to statically
-  initialize an interrupt entry.
+  Alternatively, ${entry-initializer:/name} may be used to statically initialize
+  an interrupt entry.
 params:
 - description: |
     is the interrupt entry to initialize.

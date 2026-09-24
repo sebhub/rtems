@@ -4,16 +4,6 @@ brief: |
   map.
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
-description: null
-enabled-by: true
-identifier: RTEMSDeviceGRCLKGATE
-index-entries: []
-interface-type: register-block
-links:
-- role: interface-ingroup
-  uid: group
-- role: interface-placement
-  uid: grclkgate-header
 definition:
 - default:
     count: 1
@@ -35,16 +25,30 @@ definition:
     name: OVERRIDE
   offset: 0xc
   variants: []
-register-prefix: null
+description: null
+enabled-by: true
+identifier: RTEMSDeviceGRCLKGATE
+index-entries: []
+interface-type: register-block
+links:
+- role: interface-ingroup
+  uid: group
+- role: interface-placement
+  uid: grclkgate-header
+name: grclkgate
+notes: null
 register-block-group: GRCLKGATE
 register-block-size: 16
+register-prefix: null
 registers:
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'UNLOCK'
+      name: UNLOCK
+      properties:
+      - r
+      - w
       start: 0
       width: 32
     variants: []
@@ -55,10 +59,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'ENABLE'
+      name: ENABLE
+      properties:
+      - r
+      - w
       start: 0
       width: 32
     variants: []
@@ -69,10 +75,12 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'RESET'
+      name: RESET
+      properties:
+      - r
+      - w
       start: 0
       width: 32
     variants: []
@@ -83,16 +91,20 @@ registers:
   width: 32
 - bits:
   - default:
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'FOVERRIDE'
+      name: FOVERRIDE
+      properties:
+      - r
+      - w
       start: 16
       width: 4
-    - properties: [r, w]
-      brief: null
+    - brief: null
       description: null
-      name: 'OVERRIDE'
+      name: OVERRIDE
+      properties:
+      - r
+      - w
       start: 0
       width: 4
     variants: []
@@ -101,6 +113,4 @@ registers:
   description: null
   name: OVERRIDE
   width: 32
-name: grclkgate
-notes: null
 type: interface

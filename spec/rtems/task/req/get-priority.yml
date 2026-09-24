@@ -41,19 +41,18 @@ post-conditions:
     test-code: |
       T_eq_u32( ctx->priority_obj, PRIO_DEFAULT );
     text: |
-      The value of the object referenced by the
-      ${../if/get-priority:/params[1]/name} parameter shall be set to the
-      object identifier of the ${/glossary/scheduler-home:/term} of the task
-      specified by the ${../if/get-priority:/params[0]/name} parameter at some
-      point during the call after the return of the
-      ${../if/get-priority:/name} call.
+      The value of the object referenced by the ${../if/get-priority:/params[1]/name}
+      parameter shall be set to the object identifier of the
+      ${/glossary/scheduler-home:/term} of the task specified by the
+      ${../if/get-priority:/params[0]/name} parameter at some point during the call
+      after the return of the ${../if/get-priority:/name} call.
   - name: Nop
     test-code: |
       T_eq_u32( ctx->priority_obj, PRIO_INVALID );
     text: |
-      Objects referenced by the ${../if/get-priority:/params[1]/name}
-      parameter in past calls to ${../if/get-priority:/name} shall
-      not be accessed by the ${../if/get-priority:/name} call.
+      Objects referenced by the ${../if/get-priority:/params[1]/name} parameter in
+      past calls to ${../if/get-priority:/name} shall not be accessed by the
+      ${../if/get-priority:/name} call.
   test-epilogue: null
   test-prologue: null
 pre-conditions:
@@ -63,14 +62,14 @@ pre-conditions:
     test-code: |
       ctx->task_id = INVALID_ID;
     text: |
-      While the ${../if/get-priority:/params[0]/name} parameter is not
-      associated with a task.
+      While the ${../if/get-priority:/params[0]/name} parameter is not associated
+      with a task.
   - name: Task
     test-code: |
       ctx->task_id = RTEMS_SELF;
     text: |
-      While the ${../if/get-priority:/params[0]/name} parameter is
-      associated with a task.
+      While the ${../if/get-priority:/params[0]/name} parameter is associated with a
+      task.
   test-epilogue: null
   test-prologue: null
 - name: SchedulerId
@@ -79,14 +78,14 @@ pre-conditions:
     test-code: |
       ctx->scheduler_id = INVALID_ID;
     text: |
-      While the ${../if/get-priority:/params[1]/name} parameter is not
-      associated with a scheduler.
+      While the ${../if/get-priority:/params[1]/name} parameter is not associated
+      with a scheduler.
   - name: Scheduler
     test-code: |
       ctx->scheduler_id = ctx->scheduler_a_id;
     text: |
-      While the ${../if/get-priority:/params[1]/name} parameter is associated
-      with a scheduler.
+      While the ${../if/get-priority:/params[1]/name} parameter is associated with a
+      scheduler.
   test-epilogue: null
   test-prologue: null
 - name: Scheduler
@@ -95,15 +94,15 @@ pre-conditions:
     test-code: |
       ctx->scheduler_id = ctx->scheduler_a_id;
     text: |
-      While the ${../if/get-priority:/params[1]/name} parameter is associated
-      with an ${/glossary/scheduler-eligible:/term} of the task specified by
+      While the ${../if/get-priority:/params[1]/name} parameter is associated with an
+      ${/glossary/scheduler-eligible:/term} of the task specified by
       ${../if/get-priority:/params[0]/name}.
   - name: Ineligible
     test-code: |
       ctx->scheduler_id = ctx->scheduler_b_id;
     text: |
-      While the ${../if/get-priority:/params[1]/name} parameter is associated
-      with an ${/glossary/scheduler-ineligible:/term} of the task specified by
+      While the ${../if/get-priority:/params[1]/name} parameter is associated with an
+      ${/glossary/scheduler-ineligible:/term} of the task specified by
       ${../if/get-priority:/params[0]/name}.
   test-epilogue: null
   test-prologue: null
@@ -113,8 +112,8 @@ pre-conditions:
     test-code: |
       ctx->priority = &ctx->priority_obj;
     text: |
-      While the ${../if/get-priority:/params[2]/name} parameter references an
-      object of type ${../../type/if/priority:/name}.
+      While the ${../if/get-priority:/params[2]/name} parameter references an object
+      of type ${../../type/if/priority:/name}.
   - name: 'Null'
     test-code: |
       ctx->priority = NULL;
@@ -127,8 +126,8 @@ rationale: null
 requirement-type: functional
 skip-reasons:
   NoOtherScheduler: |
-    Where the system was built with SMP support disabled, exactly one scheduler
-    is present in an application.
+    Where the system was built with SMP support disabled, exactly one scheduler is
+    present in an application.
 test-action: |
   ctx->status = rtems_task_get_priority(
     ctx->task_id,
@@ -155,26 +154,25 @@ test-context:
   member: |
     rtems_task_priority priority_obj
 - brief: |
-    This member contains the return value of the ${../if/get-priority:/name}
-    call.
+    This member contains the return value of the ${../if/get-priority:/name} call.
   description: null
   member: |
     rtems_status_code status
 - brief: |
-    This member specifies if the ${../if/get-priority:/params[0]/name}
-    parameter value.
+    This member specifies if the ${../if/get-priority:/params[0]/name} parameter
+    value.
   description: null
   member: |
     rtems_id task_id
 - brief: |
-    This member specifies if the ${../if/get-priority:/params[1]/name}
-    parameter value.
+    This member specifies if the ${../if/get-priority:/params[1]/name} parameter
+    value.
   description: null
   member: |
     rtems_id scheduler_id
 - brief: |
-    This member specifies if the ${../if/get-priority:/params[2]/name}
-    parameter value.
+    This member specifies if the ${../if/get-priority:/params[2]/name} parameter
+    value.
   description: null
   member: |
     rtems_id *priority
@@ -193,17 +191,11 @@ test-setup:
   code: |
     rtems_status_code sc;
 
-    sc = rtems_scheduler_ident(
-      TEST_SCHEDULER_A_NAME,
-      &ctx->scheduler_a_id
-    );
+    sc = rtems_scheduler_ident( TEST_SCHEDULER_A_NAME, &ctx->scheduler_a_id );
     T_rsc_success( sc );
 
-    #if defined(RTEMS_SMP)
-    sc = rtems_scheduler_ident(
-      TEST_SCHEDULER_B_NAME,
-      &ctx->scheduler_b_id
-    );
+    #if defined( RTEMS_SMP )
+    sc = rtems_scheduler_ident( TEST_SCHEDULER_B_NAME, &ctx->scheduler_b_id );
     T_rsc_success( sc );
     #endif
   description: null
@@ -211,7 +203,8 @@ test-stop: null
 test-support: null
 test-target: testsuites/validation/tc-task-get-priority.c
 test-teardown: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

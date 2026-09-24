@@ -33,8 +33,8 @@ post-conditions:
       T_eq_ptr( ctx->id, &ctx->id_value );
       T_eq_u32( ctx->id_value, 0xffffffff );
     text: |
-      The value of the object identifier referenced by the id parameter shall
-      be the value before the action.
+      The value of the object identifier referenced by the id parameter shall be the
+      value before the action.
   - name: 'Null'
     test-code: |
       T_null( ctx->id )
@@ -45,11 +45,11 @@ post-conditions:
       T_eq_ptr( ctx->id, &ctx->id_value );
       T_eq_u32( ctx->id_value, ctx->id_local_object );
     text: |
-      The value of the object identifier referenced by the id parameter shall
-      be the identifier of a local object of the specified class with a name
-      equal to the name parameter.  If more than one local object of the
-      specified class with such a name exists, then it shall be the identifier
-      of the object with the lowest object index.
+      The value of the object identifier referenced by the id parameter shall be the
+      identifier of a local object of the specified class with a name equal to the
+      name parameter. If more than one local object of the specified class with such
+      a name exists, then it shall be the identifier of the object with the lowest
+      object index.
   test-epilogue: null
   test-prologue: null
 pre-conditions:
@@ -59,14 +59,14 @@ pre-conditions:
     test-code: |
       ctx->name = 1;
     text: |
-      While the `name` parameter is not associated with an active object of
-      the specified class .
+      While the `name` parameter is not associated with an active object of the
+      specified class .
   - name: Valid
     test-code: |
       ctx->name = ctx->name_local_object;
     text: |
-      While the `name` parameter is associated with an active object of the
-      specified class .
+      While the `name` parameter is associated with an active object of the specified
+      class .
   test-epilogue: null
   test-prologue: null
 - name: Id
@@ -76,8 +76,7 @@ pre-conditions:
       ctx->id_value = 0xffffffff;
       ctx->id = &ctx->id_value;
     text: |
-      While the `id` parameter references an object of type
-      ${../type/if/id:/name}.
+      While the `id` parameter references an object of type ${../type/if/id:/name}.
   - name: 'Null'
     test-code: |
       ctx->id = NULL;
@@ -144,28 +143,28 @@ text: |
 transition-map:
 - enabled-by: true
   post-conditions:
-    Id: 'Null'
     Status: InvAddr
+    Id: 'Null'
   pre-conditions:
+    Name: all
     Id:
     - 'Null'
-    Name: all
 - enabled-by: true
   post-conditions:
-    Id: Nop
     Status: InvName
+    Id: Nop
   pre-conditions:
-    Id:
-    - Valid
     Name:
     - Invalid
-- enabled-by: true
-  post-conditions:
-    Id: Id
-    Status: Ok
-  pre-conditions:
     Id:
     - Valid
+- enabled-by: true
+  post-conditions:
+    Status: Ok
+    Id: Id
+  pre-conditions:
     Name:
+    - Valid
+    Id:
     - Valid
 type: requirement

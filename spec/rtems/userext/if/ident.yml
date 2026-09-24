@@ -30,25 +30,25 @@ links:
   uid: /constraint/directive-no-preempt
 name: rtems_extension_ident
 notes: |
-  If the extension set name is not unique, then the extension set identifier
-  will match the first extension set with that name in the search order.
-  However, this extension set identifier is not guaranteed to correspond to the
-  desired extension set.
+  If the extension set name is not unique, then the extension set identifier will
+  match the first extension set with that name in the search order. However, this
+  extension set identifier is not guaranteed to correspond to the desired
+  extension set.
 
-  The objects are searched from lowest to the highest index.  Only the local
-  node is searched.
+  The objects are searched from lowest to the highest index. Only the local node
+  is searched.
 
-  The extension set identifier is used with other extension related directives
-  to access the extension set.
+  The extension set identifier is used with other extension related directives to
+  access the extension set.
 params:
 - description: |
     is the object name to look up.
   dir: null
   name: name
 - description: |
-    is the pointer to an ${../../type/if/id:/name} object.  When the directive
-    call is successful, the object identifier of an object with the specified
-    name will be stored in this object.
+    is the pointer to an ${../../type/if/id:/name} object. When the directive call
+    is successful, the object identifier of an object with the specified name will
+    be stored in this object.
   dir: out
   name: id
 return:

@@ -48,7 +48,7 @@ params:
   name: _node
 return:
   return: |
-    Returns the object identifier with the lowest index built from the API,
-    class, and MPCI node components.
+    Returns the object identifier with the lowest index built from the API, class,
+    and MPCI node components.
   return-values: []
 type: interface

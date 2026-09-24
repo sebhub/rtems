@@ -18,8 +18,8 @@ test-actions:
       SetSelfScheduler( SCHEDULER_B_ID, 1 );
     links: []
   - brief: |
-      Create a task.  Check that the home scheduler of the created task is
-      scheduler B.
+      Create a task. Check that the home scheduler of the created task is scheduler
+      B.
     code: |
       sc = rtems_task_create(
         OBJECT_NAME,
@@ -37,8 +37,8 @@ test-actions:
     - role: validation
       uid: ../req/create-home-scheduler
   - brief: |
-      Construct a task.  Check that the home scheduler of the constructed task
-      is scheduler B.
+      Construct a task. Check that the home scheduler of the constructed task is
+      scheduler B.
     code: |
       sc = rtems_task_construct( &DefaultTaskConfig, &id );
       T_step_rsc_success( ${.:/step}, sc );

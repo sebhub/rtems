@@ -5,15 +5,15 @@ enabled-by:
   and:
   - RTEMS_SMP
   - bsps/sparc/leon3
+functional-type: function
 links:
 - role: interface-function
   uid: /bsp/if/fatal-extension
-functional-type: function
 rationale: null
 requirement-type: functional
 text: |
-  While the fatal source is not ${/score/interr/if/source-smp:/name} or the
-  fatal code is not ${/score/smp/if/fatal-shutdown-response:/name}, when the
-  shutdown request was issued, the ${/bsp/if/fatal-extension:/name} directive
-  shall halt the processor.
+  While the fatal source is not ${/score/interr/if/source-smp:/name} or the fatal
+  code is not ${/score/smp/if/fatal-shutdown-response:/name}, when the shutdown
+  request was issued, the ${/bsp/if/fatal-extension:/name} directive shall halt
+  the processor.
 type: requirement

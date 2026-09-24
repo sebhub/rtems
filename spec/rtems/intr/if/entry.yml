@@ -51,9 +51,9 @@ links:
 name: rtems_interrupt_entry
 notes: |
   This structure shall be treated as an opaque data type from the
-  ${/glossary/api:/term} point of view.  Members shall not be accessed
-  directly.  An entry may be initialized by ${entry-initializer:/name} or
-  ${entry-initialize:/name}.  It may be installed for an interrupt vector with
+  ${/glossary/api:/term} point of view. Members shall not be accessed directly.
+  An entry may be initialized by ${entry-initializer:/name} or
+  ${entry-initialize:/name}. It may be installed for an interrupt vector with
   ${entry-install:/name} and removed from an interrupt vector by
   ${entry-remove:/name}.
 type: interface

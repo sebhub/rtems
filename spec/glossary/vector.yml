@@ -8,6 +8,6 @@ links:
   uid: group
 term: vector
 text: |
-  Memory pointers used by the processor to fetch the address of routines
-  which will handle various exceptions and interrupts.
+  Memory pointers used by the processor to fetch the address of routines which
+  will handle various exceptions and interrupts.
 type: glossary

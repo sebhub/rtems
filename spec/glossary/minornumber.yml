@@ -8,6 +8,6 @@ links:
   uid: group
 term: minor number
 text: |
-  A numeric value passed to a device driver, the exact usage of which is
-  driver dependent.
+  A numeric value passed to a device driver, the exact usage of which is driver
+  dependent.
 type: glossary

@@ -17,37 +17,37 @@ links:
   uid: ../constraint/option-not-pre-qualified
 name: CONFIGURE_USE_DEVFS_AS_BASE_FILESYSTEM
 notes: |
-  In case this configuration option is defined, then the following
-  configuration options will be defined as well
+  In case this configuration option is defined, then the following configuration
+  options will be defined as well
 
-  * ${imfs-disable-chmod:/name},
+  - ${imfs-disable-chmod:/name},
 
-  * ${imfs-disable-chown:/name},
+  - ${imfs-disable-chown:/name},
 
-  * ${imfs-disable-link:/name},
+  - ${imfs-disable-link:/name},
 
-  * ${imfs-disable-mknod-file:/name},
+  - ${imfs-disable-mknod-file:/name},
 
-  * ${imfs-disable-mount:/name},
+  - ${imfs-disable-mount:/name},
 
-  * ${imfs-disable-readdir:/name},
+  - ${imfs-disable-readdir:/name},
 
-  * ${imfs-disable-readlink:/name},
+  - ${imfs-disable-readlink:/name},
 
-  * ${imfs-disable-rename:/name},
+  - ${imfs-disable-rename:/name},
 
-  * ${imfs-disable-rmnod:/name},
+  - ${imfs-disable-rmnod:/name},
 
-  * ${imfs-disable-symlink:/name},
+  - ${imfs-disable-symlink:/name},
 
-  * ${imfs-disable-utime:/name}, and
+  - ${imfs-disable-utime:/name}, and
 
-  * ${imfs-disable-unmount:/name}.
+  - ${imfs-disable-unmount:/name}.
 
-  In addition, a simplified path evaluation is enabled.  It allows only a look
-  up of absolute paths.
+  In addition, a simplified path evaluation is enabled. It allows only a look up
+  of absolute paths.
 
-  This configuration of the IMFS is basically a device-only filesystem.  It is
-  comparable in functionality to the pseudo-filesystem name space provided
-  before RTEMS release 4.5.0.
+  This configuration of the IMFS is basically a device-only filesystem. It is
+  comparable in functionality to the pseudo-filesystem name space provided before
+  RTEMS release 4.5.0.
 type: interface

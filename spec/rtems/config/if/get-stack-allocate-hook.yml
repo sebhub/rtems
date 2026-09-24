@@ -30,7 +30,6 @@ notes: |
 params: []
 return:
   return: |
-    Returns the task stack allocator allocate hook configured for this
-    application.
+    Returns the task stack allocator allocate hook configured for this application.
   return-values: []
 type: interface

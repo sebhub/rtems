@@ -13,10 +13,10 @@ definition:
     return: ${../../status/if/code:/name}
   variants: []
 description: |
-  This directive deletes the message queue specified by ${.:/params[0]/name}.
-  As a result of this directive, all tasks blocked waiting to receive a message
-  from this queue will be readied and returned a status code which indicates
-  that the message queue was deleted.
+  This directive deletes the message queue specified by ${.:/params[0]/name}. As
+  a result of this directive, all tasks blocked waiting to receive a message from
+  this queue will be readied and returned a status code which indicates that the
+  message queue was deleted.
 enabled-by: true
 index-entries:
 - delete a message queue
@@ -41,18 +41,17 @@ links:
 name: rtems_message_queue_delete
 notes: |
   When the message queue is deleted, any messages in the queue are returned to
-  the free message buffer pool.  Any information stored in those messages is
-  lost.  The message buffers allocated for the message queue are reclaimed.
+  the free message buffer pool. Any information stored in those messages is lost.
+  The message buffers allocated for the message queue are reclaimed.
 
-  The ${/glossary/qcb:/term} for the deleted message queue is reclaimed by
-  RTEMS.
+  The ${/glossary/qcb:/term} for the deleted message queue is reclaimed by RTEMS.
 
   When a global message queue is deleted, the message queue identifier must be
-  transmitted to every node in the system for deletion from the local copy of
-  the global object table.
+  transmitted to every node in the system for deletion from the local copy of the
+  global object table.
 
-  The message queue must reside on the local node, even if the message queue
-  was created with the ${../../attr/if/global:/name} attribute.
+  The message queue must reside on the local node, even if the message queue was
+  created with the ${../../attr/if/global:/name} attribute.
 
   Proxies, used to represent remote tasks, are reclaimed when the message queue
   is deleted.

@@ -51,28 +51,24 @@ pre-conditions:
     test-code: |
       /* Already set by prologue */
     text: |
-      While the ${../if/delete:/params[0]/name} parameter is not associated
-      with an extension set.
+      While the ${../if/delete:/params[0]/name} parameter is not associated with an
+      extension set.
   - name: ExtTdSw
     test-code: |
       valid_id = true;
       ctx->table.thread_switch = ThreadSwitch;
     text: |
-      While the ${../if/delete:/params[0]/name} parameter is associated with
-      an extension set with a thread switch extension.
+      While the ${../if/delete:/params[0]/name} parameter is associated with an
+      extension set with a thread switch extension.
   - name: ExtNoTdSw
     test-code: |
       valid_id = true;
       ctx->table.thread_switch = NULL;
     text: |
-      While the ${../if/delete:/params[0]/name} parameter is associated with
-      an extension set without a thread switch extension.
+      While the ${../if/delete:/params[0]/name} parameter is associated with an
+      extension set without a thread switch extension.
   test-epilogue: |
-    sc = rtems_extension_create(
-      NAME,
-      &ctx->table,
-      &ctx->extension_id
-    );
+    sc = rtems_extension_create( NAME, &ctx->table, &ctx->extension_id );
     T_rsc_success( sc );
 
     if ( valid_id ) {
@@ -132,14 +128,15 @@ test-stop: null
 test-support: |
   #define NAME rtems_build_name( 'T', 'E', 'S', 'T' )
 
-  static void ThreadSwitch( rtems_tcb *executing,  rtems_tcb *heir)
+  static void ThreadSwitch( rtems_tcb *executing, rtems_tcb *heir )
   {
     (void) executing;
     (void) heir;
   }
 test-target: testsuites/validation/tc-userext-delete.c
 test-teardown: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

@@ -18,7 +18,7 @@ post-conditions:
       T_eq_u32( ctx->id_value, rtems_task_self() );
     text: |
       The return status of ${../if/ident:/name} shall be
-      ${../../status/if/successful:/name}.  The value of the object identifier
+      ${../../status/if/successful:/name}. The value of the object identifier
       referenced by the ${../if/ident:/params[0]/name} parameter shall be the
       identifier of the executing thread.
   - name: Skip
@@ -37,19 +37,17 @@ pre-conditions:
       ctx->id = &ctx->id_value;
     text: |
       While the ${../if/ident:/params[0]/name} parameter is equal to
-      ${../../object/if/who-am-i:/name},
-      while ${../if/ident:/params[2]/name} parameter is not equal to
-      ${/c/if/null:/name}.
+      ${../../object/if/who-am-i:/name}, while ${../if/ident:/params[2]/name}
+      parameter is not equal to ${/c/if/null:/name}.
   - name: NotWhoAmI
     test-code: |
       ctx->id = NULL;
       /* Preparation performed by ${../../req/ident:/test-run}() */
     text: |
       While the ${../if/ident:/params[0]/name} is not equal to
-      ${../../object/if/who-am-i:/name} or ${../if/ident:/params[2]/name}
-      parameter is equal to ${/c/if/null:/name},
-      the behaviour of ${../if/ident:/name} shall be specified by
-      ${../../req/ident:/spec}.
+      ${../../object/if/who-am-i:/name} or ${../if/ident:/params[2]/name} parameter
+      is equal to ${/c/if/null:/name}, the behaviour of ${../if/ident:/name} shall be
+      specified by ${../../req/ident:/spec}.
   test-epilogue: null
   test-prologue: null
 rationale: null
@@ -93,10 +91,7 @@ test-setup:
   code: |
     rtems_status_code sc;
 
-    sc = rtems_task_construct(
-      &DefaultTaskConfig,
-      &ctx->id_local_object
-    );
+    sc = rtems_task_construct( &DefaultTaskConfig, &ctx->id_local_object );
     T_assert_rsc_success( sc );
   description: null
 test-stop: null
@@ -120,7 +115,8 @@ test-teardown:
       T_rsc_success( sc );
     }
   description: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

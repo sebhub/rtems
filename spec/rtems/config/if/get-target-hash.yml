@@ -12,7 +12,7 @@ definition:
   variants: []
 description: |
   The target hash is calculated from BSP-specific values which characterize a
-  target system.  The target hash is encoded as a base64url string.  The target
+  target system. The target hash is encoded as a base64url string. The target
   hash algorithm is unspecified.
 enabled-by: true
 index-entries: []
@@ -30,12 +30,12 @@ links:
   uid: /constraint/directive-no-preempt
 name: rtems_get_target_hash
 notes: |
-  For example, the device tree, settings of the memory controller, processor
-  and bus frequencies, a serial number of a chip may be used to calculate the
-  target hash.
+  For example, the device tree, settings of the memory controller, processor and
+  bus frequencies, a serial number of a chip may be used to calculate the target
+  hash.
 
   The target hash can be used to distinguish test suite results obtained from
-  different target systems.  See also ${get-build-label:/name}.
+  different target systems. See also ${get-build-label:/name}.
 params: []
 return:
   return: |

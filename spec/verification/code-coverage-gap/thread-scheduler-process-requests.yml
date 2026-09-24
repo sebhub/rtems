@@ -7,16 +7,16 @@ areas:
         - 0
         line: 120
         md5: 5533d3efc247d95d84a8218d1e0f71f8
-      lines: []
       functions: []
+      lines: []
 copyrights:
 - Copyright (C) 2026 embedded brains GmbH & Co. KG
 enabled-by: RTEMS_SMP
 links: []
 text: |
-  In order to cover this branch at least three schedulers are required, one
-  home scheduler and two helping schedulers. For three schedulers, at least
-  three processors are required.  See ${/rtems/sem/req/release:/spec} and
+  In order to cover this branch at least three schedulers are required, one home
+  scheduler and two helping schedulers. For three schedulers, at least three
+  processors are required. See ${/rtems/sem/req/release:/spec} and
   ${/rtems/sem/req/timeout:/spec}.
 type: verification
 verification-type: code-coverage-gap

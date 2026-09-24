@@ -14,8 +14,8 @@ definition:
   variants: []
 description: |
   This directive removes the task specified by ${.:/params[0]/name} from the
-  suspended state.  If the task is in the ready state after the suspension is
-  removed, then it will be scheduled to run.  If the task is still in a blocked
+  suspended state. If the task is in the ready state after the suspension is
+  removed, then it will be scheduled to run. If the task is still in a blocked
   state after the suspension is removed, then it will remain in that blocked
   state.
 enabled-by: true

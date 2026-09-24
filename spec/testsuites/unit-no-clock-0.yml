@@ -6,9 +6,9 @@ links:
 - role: requirement-refinement
   uid: unit
 test-brief: |
-  This general purpose unit test suite provides enough resources to run
-  basic tests without a ${/glossary/clock-driver:/term} for all specified
-  managers and functions.
+  This general purpose unit test suite provides enough resources to run basic
+  tests without a ${/glossary/clock-driver:/term} for all specified managers and
+  functions.
 test-code: |
   const char rtems_test_name[] = "${.:/test-suite-name}";
 

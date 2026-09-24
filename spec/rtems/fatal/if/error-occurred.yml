@@ -13,8 +13,8 @@ definition:
     return: void
   variants: []
 description: |
-  This directive processes fatal errors.  The fatal source is set to
-  ${/score/interr/if/internal-error-rtems-api:/name}.  The fatal code is set to
+  This directive processes fatal errors. The fatal source is set to
+  ${/score/interr/if/internal-error-rtems-api:/name}. The fatal code is set to
   the value of the ${.:/params[0]/name} parameter.
 enabled-by: true
 index-entries: []
@@ -38,9 +38,9 @@ links:
   uid: /constraint/terminate
 name: rtems_fatal_error_occurred
 notes: |
-  This directive is deprecated and should not be used in new code.  It is
-  recommended to not use this directive since error locations cannot be
-  uniquely identified.  A recommended alternative directive is ${fatal:/name}.
+  This directive is deprecated and should not be used in new code. It is
+  recommended to not use this directive since error locations cannot be uniquely
+  identified. A recommended alternative directive is ${fatal:/name}.
 params:
 - description: |
     is the fatal code.

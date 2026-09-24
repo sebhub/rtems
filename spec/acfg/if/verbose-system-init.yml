@@ -3,8 +3,8 @@ appl-config-option-type: feature-enable
 copyrights:
 - Copyright (C) 1988, 2008 On-Line Applications Research Corporation (OAR)
 description: |
-  In case this configuration option is defined, then the system initialization
-  is verbose.
+  In case this configuration option is defined, then the system initialization is
+  verbose.
 enabled-by: true
 index-entries: []
 interface-type: appl-config-option
@@ -17,6 +17,6 @@ links:
   uid: ../constraint/option-not-pre-qualified
 name: CONFIGURE_VERBOSE_SYSTEM_INITIALIZATION
 notes: |
-  You may use this feature to debug system initialization issues.  The
+  You may use this feature to debug system initialization issues. The
   ${/rtems/io/if/printk:/name} function is used to print the information.
 type: interface

@@ -32,19 +32,18 @@ post-conditions:
       T_ge_long( ctx->uptime_value.tv_nsec, 0L );
       T_lt_long( ctx->uptime_value.tv_nsec, 1000000000L );
     text: |
-      The value of the object referenced by the
-      ${../if/get-uptime:/params[0]/name} parameter shall be set to
-      seconds and nanoseconds elapsed since a point in time during
-      the system initialization and a point in time during the
-      call of ${../if/get-uptime:/name} using ${/glossary/clock-monotonic:/term}
-      as result of the ${../if/get-uptime:/name} call.
+      The value of the object referenced by the ${../if/get-uptime:/params[0]/name}
+      parameter shall be set to seconds and nanoseconds elapsed since a point in time
+      during the system initialization and a point in time during the call of
+      ${../if/get-uptime:/name} using ${/glossary/clock-monotonic:/term} as result of
+      the ${../if/get-uptime:/name} call.
   - name: Unchanged
     test-code: |
       T_null( ctx->uptime );
     text: |
-      Objects referenced by the ${../if/get-uptime:/params[0]/name} parameter
-      in calls to ${../if/get-uptime:/name} shall not be modified by
-      the ${../if/get-uptime:/name} call.
+      Objects referenced by the ${../if/get-uptime:/params[0]/name} parameter in
+      calls to ${../if/get-uptime:/name} shall not be modified by the
+      ${../if/get-uptime:/name} call.
   test-epilogue: null
   test-prologue: null
 pre-conditions:
@@ -54,21 +53,20 @@ pre-conditions:
     test-code: |
       ctx->uptime = &ctx->uptime_value;
     text: |
-      While the ${../if/get-uptime:/params[0]/name} parameter references an
-      object of type ${/c/if/timespec:/name}.
+      While the ${../if/get-uptime:/params[0]/name} parameter references an object of
+      type ${/c/if/timespec:/name}.
   - name: 'Null'
     test-code: |
       ctx->uptime = NULL;
     text: |
-      While the ${../if/get-uptime:/params[0]/name} parameter is
-      ${/c/if/null:/name}.
+      While the ${../if/get-uptime:/params[0]/name} parameter is ${/c/if/null:/name}.
   test-epilogue: null
   test-prologue: null
 rationale: null
 requirement-type: functional
 skip-reasons: {}
 test-action: |
-    ctx->status = rtems_clock_get_uptime( ctx->uptime );
+  ctx->status = rtems_clock_get_uptime( ctx->uptime );
 test-brief: null
 test-cleanup: null
 test-context:
@@ -91,14 +89,15 @@ test-prepare: null
 test-setup:
   brief: null
   code: |
-    ctx->uptime_value.tv_sec  = -1;
+    ctx->uptime_value.tv_sec = -1;
     ctx->uptime_value.tv_nsec = -1;
   description: null
 test-stop: null
 test-support: null
 test-target: testsuites/validation/tc-clock-get-uptime.c
 test-teardown: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:
@@ -106,12 +105,12 @@ transition-map:
     Uptime: Unchanged
   pre-conditions:
     Uptime:
-      - 'Null'
+    - 'Null'
 - enabled-by: true
   post-conditions:
     Status: Ok
     Uptime: Set
   pre-conditions:
     Uptime:
-      - Valid
+    - Valid
 type: requirement

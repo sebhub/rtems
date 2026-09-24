@@ -218,10 +218,9 @@ test-actions:
     attributes |= RTEMS_SYSTEM_TASK;
   checks:
   - brief: |
-      Check that the count of set bits in the calculated value is equal to the
-      count of non-default attribute constants.  Since each non-default
-      attribute constant is a power of two, this proves that each constant has
-      a unique value.
+      Check that the count of set bits in the calculated value is equal to the count
+      of non-default attribute constants. Since each non-default attribute constant
+      is a power of two, this proves that each constant has a unique value.
     code: |
       T_step_eq_int( ${.:/step}, PopCount( attributes ), 10 );
     links:
@@ -254,8 +253,7 @@ test-actions:
     /* No action */
   checks:
   - brief: |
-      Check ${../if/default:/name} equals
-      ${../if/fifo:/name} | ${../if/local:/name}.
+      Check ${../if/default:/name} equals ${../if/fifo:/name} | ${../if/local:/name}.
     code: |
       T_step_eq_int(
         ${.:/step},

@@ -53,7 +53,7 @@ post-conditions:
       ${../../status/if/called-from-isr:/name}.
   - name: InUse
     test-code: |
-      T_rsc( ctx->status, RTEMS_RESOURCE_IN_USE  );
+      T_rsc( ctx->status, RTEMS_RESOURCE_IN_USE );
     text: |
       The return status of ${../if/entry-install:/name} shall be
       ${../../status/if/resource-in-use:/name}.
@@ -80,8 +80,8 @@ post-conditions:
     test-code: |
       T_true( ctx->enabled_after || ctx->handler_counter > 3 );
     text: |
-      The interrupt vector specified by ${../if/entry-install:/params[0]/name}
-      shall be enabled.
+      The interrupt vector specified by ${../if/entry-install:/params[0]/name} shall
+      be enabled.
   - name: Maybe
     test-code: |
       /*
@@ -92,8 +92,8 @@ post-conditions:
        */
       T_true( ctx->enabled_after || ctx->handler_counter > 3 );
     text: |
-      The interrupt vector specified by ${../if/entry-remove:/params[0]/name}
-      may be enabled.
+      The interrupt vector specified by ${../if/entry-remove:/params[0]/name} may be
+      enabled.
   - name: 'No'
     test-code: |
       /*
@@ -104,8 +104,8 @@ post-conditions:
        */
       T_true( ctx->enabled_after || ctx->handler_counter > 3 );
     text: |
-      The interrupt vector specified by ${../if/entry-remove:/params[0]/name}
-      shall not be enabled.
+      The interrupt vector specified by ${../if/entry-remove:/params[0]/name} shall
+      not be enabled.
   test-epilogue: null
   test-prologue: null
 - name: Installed
@@ -120,8 +120,8 @@ post-conditions:
         T_eq_u32( ctx->visited_entries, 0 );
       }
     text: |
-      The entry referenced by ${../if/entry-install:/params[2]/name} shall not
-      be installed at the interrupt vector specified by
+      The entry referenced by ${../if/entry-install:/params[2]/name} shall not be
+      installed at the interrupt vector specified by
       ${../if/entry-install:/params[0]/name}.
   - name: Last
     test-code: |
@@ -172,14 +172,14 @@ pre-conditions:
     test-code: |
       ctx->vector = ctx->test_vector;
     text: |
-      While the ${../if/entry-install:/params[0]/name} parameter is
-      associated with an interrupt vector.
+      While the ${../if/entry-install:/params[0]/name} parameter is associated with
+      an interrupt vector.
   - name: Invalid
     test-code: |
       ctx->vector = BSP_INTERRUPT_VECTOR_COUNT;
     text: |
-      While the ${../if/entry-install:/params[0]/name} parameter is
-      not associated with an interrupt vector.
+      While the ${../if/entry-install:/params[0]/name} parameter is not associated
+      with an interrupt vector.
   test-epilogue: null
   test-prologue: null
 - name: Options
@@ -188,14 +188,14 @@ pre-conditions:
     test-code: |
       ctx->options = RTEMS_INTERRUPT_UNIQUE;
     text: |
-      While the ${../if/entry-install:/params[1]/name} indicates that an unique
-      entry shall be installed.
+      While the ${../if/entry-install:/params[1]/name} indicates that an unique entry
+      shall be installed.
   - name: Shared
     test-code: |
       ctx->options = RTEMS_INTERRUPT_SHARED;
     text: |
-      While the ${../if/entry-install:/params[1]/name} indicates that a shared
-      entry shall be installed.
+      While the ${../if/entry-install:/params[1]/name} indicates that a shared entry
+      shall be installed.
   - name: Replace
     test-code: |
       ctx->options = RTEMS_INTERRUPT_REPLACE;
@@ -210,8 +210,8 @@ pre-conditions:
     test-code: |
       ctx->entry = &ctx->entry_obj;
     text: |
-      While the ${../if/entry-install:/params[2]/name} parameter references an
-      object of type ${../if/entry:/name}.
+      While the ${../if/entry-install:/params[2]/name} parameter references an object
+      of type ${../if/entry:/name}.
   - name: 'Null'
     test-code: |
       ctx->entry = NULL;
@@ -267,14 +267,12 @@ pre-conditions:
     test-code: |
       ctx->isr = true;
     text: |
-      While ${../if/entry-install:/name} is called from within interrupt
-      context.
+      While ${../if/entry-install:/name} is called from within interrupt context.
   - name: 'No'
     test-code: |
       ctx->isr = false;
     text: |
-      While ${../if/entry-install:/name} is not called from within interrupt
-      context.
+      While ${../if/entry-install:/name} is not called from within interrupt context.
   test-epilogue: null
   test-prologue: null
 - name: CanEnable
@@ -317,62 +315,59 @@ pre-conditions:
     test-code: |
       Install( ctx, RTEMS_INTERRUPT_UNIQUE, EntryRoutine, &entry_arg );
     text: |
-      While a unique entry is installed at the interrupt vector specified by
-      the ${../if/entry-install:/params[0]/name} parameter.
+      While a unique entry is installed at the interrupt vector specified by the
+      ${../if/entry-install:/params[0]/name} parameter.
   - name: Other
     test-code: |
       Install( ctx, RTEMS_INTERRUPT_SHARED, OtherRoutine, &other_arg );
       InstallThird( ctx );
     text: |
       While at least one non-unique entry is installed at the interrupt vector
-      specified by the ${../if/entry-install:/params[0]/name} parameter,
-      while all entries installed at the interrupt vector specified by the
-      ${../if/entry-install:/params[0]/name} parameter have a handler routine
-      which is not equal to the handler routine of the object referenced by the
-      ${../if/entry-install:/params[2]/name} parameter,
-      while all entries installed at the interrupt vector specified by the
-      ${../if/entry-install:/params[0]/name} parameter have a handler argument
-      which is not equal to the handler argument of the object referenced by
-      the ${../if/entry-install:/params[2]/name} parameter.
+      specified by the ${../if/entry-install:/params[0]/name} parameter, while all
+      entries installed at the interrupt vector specified by the
+      ${../if/entry-install:/params[0]/name} parameter have a handler routine which
+      is not equal to the handler routine of the object referenced by the
+      ${../if/entry-install:/params[2]/name} parameter, while all entries installed
+      at the interrupt vector specified by the ${../if/entry-install:/params[0]/name}
+      parameter have a handler argument which is not equal to the handler argument of
+      the object referenced by the ${../if/entry-install:/params[2]/name} parameter.
   - name: EqRoutine
     test-code: |
       Install( ctx, RTEMS_INTERRUPT_SHARED, EntryRoutine, &other_arg );
     text: |
       While at least one non-unique entry is installed at the interrupt vector
-      specified by the ${../if/entry-install:/params[0]/name} parameter,
-      while at least one entry installed at the interrupt vector specified by
-      the ${../if/entry-install:/params[0]/name} parameter has a handler
-      routine which is equal to the handler routine of the object referenced by
-      the ${../if/entry-install:/params[2]/name} parameter,
-      while all entries installed at the interrupt vector specified by the
-      ${../if/entry-install:/params[0]/name} parameter have a handler argument
-      which is not equal to the handler argument of the object referenced by
-      the ${../if/entry-install:/params[2]/name} parameter.
+      specified by the ${../if/entry-install:/params[0]/name} parameter, while at
+      least one entry installed at the interrupt vector specified by the
+      ${../if/entry-install:/params[0]/name} parameter has a handler routine which is
+      equal to the handler routine of the object referenced by the
+      ${../if/entry-install:/params[2]/name} parameter, while all entries installed
+      at the interrupt vector specified by the ${../if/entry-install:/params[0]/name}
+      parameter have a handler argument which is not equal to the handler argument of
+      the object referenced by the ${../if/entry-install:/params[2]/name} parameter.
   - name: EqArg
     test-code: |
       Install( ctx, RTEMS_INTERRUPT_SHARED, OtherRoutine, &other_arg );
     text: |
       While at least one non-unique entry is installed at the interrupt vector
-      specified by the ${../if/entry-install:/params[0]/name} parameter,
-      while all entries installed at the interrupt vector specified by the
-      ${../if/entry-install:/params[0]/name} parameter have a handler routine
-      which is not equal to the handler routine of the object referenced by the
-      ${../if/entry-install:/params[2]/name} parameter,
-      while at least one entry installed at the interrupt vector specified by
-      the ${../if/entry-install:/params[0]/name} parameter has a handler
-      argument which is equal to the handler argument of the object referenced
-      by the ${../if/entry-install:/params[2]/name} parameter.
+      specified by the ${../if/entry-install:/params[0]/name} parameter, while all
+      entries installed at the interrupt vector specified by the
+      ${../if/entry-install:/params[0]/name} parameter have a handler routine which
+      is not equal to the handler routine of the object referenced by the
+      ${../if/entry-install:/params[2]/name} parameter, while at least one entry
+      installed at the interrupt vector specified by the
+      ${../if/entry-install:/params[0]/name} parameter has a handler argument which
+      is equal to the handler argument of the object referenced by the
+      ${../if/entry-install:/params[2]/name} parameter.
   - name: Match
     test-code: |
       Install( ctx, RTEMS_INTERRUPT_SHARED, EntryRoutine, &entry_arg );
     text: |
-      While at least one non-unique entry with a handler routine which is equal
-      to the handler routine of the object referenced by the
-      ${../if/entry-install:/params[2]/name} parameter and with a handler
-      argument which is equal to the handler argument of the object referenced
-      by the ${../if/entry-install:/params[2]/name} parameter is installed at
-      the interrupt vector specified by the
-      ${../if/entry-install:/params[0]/name} parameter.
+      While at least one non-unique entry with a handler routine which is equal to
+      the handler routine of the object referenced by the
+      ${../if/entry-install:/params[2]/name} parameter and with a handler argument
+      which is equal to the handler argument of the object referenced by the
+      ${../if/entry-install:/params[2]/name} parameter is installed at the interrupt
+      vector specified by the ${../if/entry-install:/params[0]/name} parameter.
   test-epilogue: null
   test-prologue: null
 rationale: null
@@ -424,8 +419,8 @@ test-context:
   member: |
     rtems_vector_number test_vector
 - brief: |
-    If this member is true, then the testable interrupt vector was enabled at
-    the test case begin.
+    If this member is true, then the testable interrupt vector was enabled at the
+    test case begin.
   description: null
   member: |
     bool test_vector_was_enabled
@@ -440,20 +435,20 @@ test-context:
   member: |
     bool initialized
 - brief: |
-    If this member is true, then ${../if/entry-install:/name} shall be called
-    from within interrupt context.
+    If this member is true, then ${../if/entry-install:/name} shall be called from
+    within interrupt context.
   description: null
   member: |
     bool isr
 - brief: |
-    This member contains the enabled status before the
-    ${../if/entry-install:/name} call.
+    This member contains the enabled status before the ${../if/entry-install:/name}
+    call.
   description: null
   member: |
     bool enabled_before
 - brief: |
-    This member contains the enabled status after the
-    ${../if/entry-install:/name} call.
+    This member contains the enabled status after the ${../if/entry-install:/name}
+    call.
   description: null
   member: |
     bool enabled_after
@@ -483,8 +478,8 @@ test-context:
   member: |
     bool third_installed
 - brief: |
-    This member provides the options used to install the other
-    ${../if/entry:/name} object.
+    This member provides the options used to install the other ${../if/entry:/name}
+    object.
   description: null
   member: |
     rtems_option other_options
@@ -494,26 +489,25 @@ test-context:
   member: |
     rtems_interrupt_entry entry_obj
 - brief: |
-    This member specifies if the ${../if/entry-install:/params[0]/name}
-    parameter value.
+    This member specifies if the ${../if/entry-install:/params[0]/name} parameter
+    value.
   description: null
   member: |
     rtems_vector_number vector
 - brief: |
-    This member specifies if the ${../if/entry-install:/params[1]/name}
-    parameter value.
+    This member specifies if the ${../if/entry-install:/params[1]/name} parameter
+    value.
   description: null
   member: |
     rtems_option options
 - brief: |
-    This member specifies if the ${../if/entry-install:/params[2]/name}
-    parameter value.
+    This member specifies if the ${../if/entry-install:/params[2]/name} parameter
+    value.
   description: null
   member: |
     rtems_interrupt_entry *entry
 - brief: |
-    This member contains the return value of the ${../if/entry-install:/name}
-    call.
+    This member contains the return value of the ${../if/entry-install:/name} call.
   description: null
   member: |
     rtems_status_code status
@@ -538,10 +532,8 @@ test-prepare: |
 test-setup:
   brief: null
   code: |
-    rtems_interrupt_attributes required = {
-      .can_raise = true
-    };
-    rtems_status_code sc;
+    rtems_interrupt_attributes required = { .can_raise = true };
+    rtems_status_code          sc;
 
     ctx->initialized_during_setup = bsp_interrupt_is_initialized();
     ctx->test_vector = GetTestableInterruptVector( &required );
@@ -758,7 +750,8 @@ test-teardown:
       (void) rtems_interrupt_vector_enable( ctx->test_vector );
     }
   description: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

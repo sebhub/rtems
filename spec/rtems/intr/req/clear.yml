@@ -36,9 +36,8 @@ post-conditions:
       /* Validation is done by CheckClear() for each interrupt vector */
     text: |
       The pending state of the interrupt associated with the interrupt vector
-      specified by ${../if/clear:/params[0]/name} shall be cleared for the
-      processor executing the ${../if/clear:/name} call at some time point
-      during the call.
+      specified by ${../if/clear:/params[0]/name} shall be cleared for the processor
+      executing the ${../if/clear:/name} call at some time point during the call.
   - name: 'No'
     test-code: |
       /* Validation is done by CheckClear() for each interrupt vector */
@@ -55,14 +54,14 @@ pre-conditions:
     test-code: |
       ctx->valid_vector = true;
     text: |
-      While the ${../if/clear:/params[0]/name} parameter is
-      associated with an interrupt vector.
+      While the ${../if/clear:/params[0]/name} parameter is associated with an
+      interrupt vector.
   - name: Invalid
     test-code: |
       ctx->valid_vector = false;
     text: |
-      While the ${../if/clear:/params[0]/name} parameter is
-      not associated with an interrupt vector.
+      While the ${../if/clear:/params[0]/name} parameter is not associated with an
+      interrupt vector.
   test-epilogue: null
   test-prologue: null
 - name: CanClear
@@ -74,8 +73,8 @@ pre-conditions:
        * see CheckClear().
        */
     text: |
-      While the interrupt vector associated with the
-      ${../if/clear:/params[0]/name} parameter can be cleard.
+      While the interrupt vector associated with the ${../if/clear:/params[0]/name}
+      parameter can be cleard.
   - name: 'No'
     test-code: |
       /*
@@ -83,8 +82,8 @@ pre-conditions:
        * see CheckClear().
        */
     text: |
-      While the interrupt vector associated with the
-      ${../if/clear:/params[0]/name} parameter cannot be cleard.
+      While the interrupt vector associated with the ${../if/clear:/params[0]/name}
+      parameter cannot be cleard.
   test-epilogue: null
   test-prologue: null
 rationale: null
@@ -136,14 +135,13 @@ test-context:
   member: |
     rtems_vector_number vector
 - brief: |
-    If this member is true, then the ${../if/clear:/params[0]/name}
-    parameter shall be valid.
+    If this member is true, then the ${../if/clear:/params[0]/name} parameter shall
+    be valid.
   description: null
   member: |
     bool valid_vector
 - brief: |
-    This member contains the return value of the ${../if/clear:/name}
-    call.
+    This member contains the return value of the ${../if/clear:/name} call.
   description: null
   member: |
     rtems_status_code status
@@ -289,7 +287,7 @@ test-support: |
 
       Clear( ctx );
 
-      if ( !IsPending( ctx) && ( attr->can_enable || IsEnabled( ctx ) ) ) {
+      if ( !IsPending( ctx ) && ( attr->can_enable || IsEnabled( ctx ) ) ) {
         T_false( IsPending( ctx ) );
         Clear( ctx );
         T_false( IsPending( ctx ) );
@@ -327,7 +325,8 @@ test-support: |
   }
 test-target: testsuites/validation/tc-intr-clear.c
 test-teardown: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

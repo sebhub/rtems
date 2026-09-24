@@ -8,6 +8,6 @@ links:
   uid: group
 term: refinement
 text: |
-  A *refinement* is a relationship between a specification and its
-  implementation as code.
+  A *refinement* is a relationship between a specification and its implementation
+  as code.
 type: glossary

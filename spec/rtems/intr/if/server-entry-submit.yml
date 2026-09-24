@@ -12,10 +12,9 @@ definition:
     return: void
   variants: []
 description: |
-  The directive appends the entry to the pending entries of the interrupt
-  server.  The interrupt server is notified that a new entry is pending.  Once
-  the interrupt server is scheduled it services the actions of all pending
-  entries.
+  The directive appends the entry to the pending entries of the interrupt server.
+  The interrupt server is notified that a new entry is pending. Once the
+  interrupt server is scheduled it services the actions of all pending entries.
 enabled-by: true
 index-entries: []
 interface-type: function
@@ -42,8 +41,8 @@ links:
   uid: ../constraint/server-entry-not-while-move
 name: rtems_interrupt_server_entry_submit
 notes: |
-  This directive may be used to do a two-step interrupt processing.  The first
-  step is done from within interrupt context by a call to this directive.  The
+  This directive may be used to do a two-step interrupt processing. The first
+  step is done from within interrupt context by a call to this directive. The
   second step is then done from within the context of the interrupt server.
 
   No error checking is performed by the directive.

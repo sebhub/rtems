@@ -25,6 +25,5 @@ links:
   uid: ../constraint/mpci-receive-server-stack
 name: CONFIGURE_EXTRA_MPCI_RECEIVE_SERVER_STACK
 notes: |
-  This configuration option is only evaluated if
-  ${mp-appl:/name} is defined.
+  This configuration option is only evaluated if ${mp-appl:/name} is defined.
 type: interface

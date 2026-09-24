@@ -8,8 +8,7 @@ links:
   uid: group
 term: blocked task
 text: |
-  The task state entered by a task which has been previously started and
-  cannot continue execution until the reason for waiting has been
-  satisfied.  Blocked tasks are not an element of the set of ready tasks of
-  a scheduler instance.
+  The task state entered by a task which has been previously started and cannot
+  continue execution until the reason for waiting has been satisfied. Blocked
+  tasks are not an element of the set of ready tasks of a scheduler instance.
 type: glossary

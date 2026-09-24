@@ -8,6 +8,6 @@ links:
   uid: group
 term: task migration
 text: |
-  Task migration happens in case a task stops execution on one processor
-  and resumes execution on another processor.
+  Task migration happens in case a task stops execution on one processor and
+  resumes execution on another processor.
 type: glossary

@@ -8,6 +8,6 @@ links:
   uid: group
 term: awakened
 text: |
-  A term used to describe a task that has been unblocked and may be
-  scheduled to the CPU.
+  A term used to describe a task that has been unblocked and may be scheduled to
+  the CPU.
 type: glossary

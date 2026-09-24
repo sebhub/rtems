@@ -1,7 +1,7 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 brief: |
-  Gets the task stack allocator allocate hook used to allocate the stack of
-  each ${/glossary/idletask:/term} configured for this application.
+  Gets the task stack allocator allocate hook used to allocate the stack of each
+  ${/glossary/idletask:/term} configured for this application.
 copyrights:
 - Copyright (C) 2021 On-Line Applications Research Corporation (OAR)
 definition:
@@ -32,7 +32,7 @@ notes: |
 params: []
 return:
   return: |
-    Returns the task stack allocator allocate hook used to allocate the stack
-    of each ${/glossary/idletask:/term} configured for this application.
+    Returns the task stack allocator allocate hook used to allocate the stack of
+    each ${/glossary/idletask:/term} configured for this application.
   return-values: []
 type: interface

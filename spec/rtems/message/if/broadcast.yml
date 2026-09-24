@@ -18,10 +18,10 @@ definition:
 description: |
   This directive causes all tasks that are waiting at the queue specified by
   ${.:/params[0]/name} to be unblocked and sent the message contained in
-  ${.:/params[1]/name}.  Before a task is unblocked, the message
-  ${.:/params[1]/name} of ${.:/params[2]/name} bytes in length is copied to
-  that task's message buffer.  The number of tasks that were unblocked is
-  returned in ${.:/params[3]/name}.
+  ${.:/params[1]/name}. Before a task is unblocked, the message
+  ${.:/params[1]/name} of ${.:/params[2]/name} bytes in length is copied to that
+  task's message buffer. The number of tasks that were unblocked is returned in
+  ${.:/params[3]/name}.
 enabled-by: true
 index-entries:
 - broadcast message to a queue
@@ -41,15 +41,14 @@ links:
   uid: /constraint/directive-remote
 name: rtems_message_queue_broadcast
 notes: |
-  The execution time of this directive is directly related to the number of
-  tasks waiting on the message queue, although it is more efficient than the
-  equivalent number of invocations of ${send:/name}.
+  The execution time of this directive is directly related to the number of tasks
+  waiting on the message queue, although it is more efficient than the equivalent
+  number of invocations of ${send:/name}.
 
-  This directive unblocks receivers in a non-atomic way.  Meaning, it will not
-  only unblock those receivers it finds waiting at the queue when
-  it is invoked but also any new receivers which start waiting for messages
-  after it is invoked and before it returns.  This may lead to infinite
-  unblocking loops.
+  This directive unblocks receivers in a non-atomic way. Meaning, it will not
+  only unblock those receivers it finds waiting at the queue when it is invoked
+  but also any new receivers which start waiting for messages after it is invoked
+  and before it returns. This may lead to infinite unblocking loops.
 params:
 - description: |
     is the queue identifier.
@@ -64,9 +63,8 @@ params:
   dir: null
   name: size
 - description: |
-    is the pointer to an ${/c/if/uint32_t:/name} object.  When the directive
-    call is successful, the number of unblocked tasks will be stored in this
-    object.
+    is the pointer to an ${/c/if/uint32_t:/name} object. When the directive call is
+    successful, the number of unblocked tasks will be stored in this object.
   dir: out
   name: count
 return:

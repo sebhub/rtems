@@ -2,12 +2,12 @@ SPDX-License-Identifier: CC-BY-SA-4.0
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
 enabled-by: bsps/sparc/leon3
+functional-type: function
 links:
 - role: requirement-refinement
   uid: /req/fatal-error
 - role: requirement-refinement
   uid: ../if/group
-functional-type: function
 rationale: null
 requirement-type: functional
 text: |

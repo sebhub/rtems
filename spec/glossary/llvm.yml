@@ -8,8 +8,7 @@ links:
   uid: group
 term: LLVM
 text: |
-  This term is an acronym for
-  `Low Level Virtual Machine <https://www.llvm.org>`__.
-  The LLVM Project is a collection of modular and reusable compiler and
-  toolchain technologies.
+  This term is an acronym for [Low Level Virtual Machine](https://www.llvm.org).
+  The LLVM Project is a collection of modular and reusable compiler and toolchain
+  technologies.
 type: glossary

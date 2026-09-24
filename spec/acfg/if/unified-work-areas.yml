@@ -6,8 +6,8 @@ default: |
   If this configuration option is undefined, then there will be separate memory
   pools for the RTEMS Workspace and C Program Heap.
 description: |
-  In case this configuration option is defined, then the RTEMS Workspace and
-  the C Program Heap will be one pool of memory.
+  In case this configuration option is defined, then the RTEMS Workspace and the
+  C Program Heap will be one pool of memory.
 enabled-by: true
 index-entries:
 - unified work areas
@@ -28,11 +28,11 @@ name: CONFIGURE_UNIFIED_WORK_AREAS
 notes: |
   Having separate pools does have some advantages in the event a task blows a
   stack or writes outside its memory area. However, in low memory systems the
-  overhead of the two pools plus the potential for unused memory in either
-  pool is very undesirable.
+  overhead of the two pools plus the potential for unused memory in either pool
+  is very undesirable.
 
   In high memory environments, this is desirable when you want to use the
-  ${/ref/rtems/c-user/config-unlimited-objects:/name} option.  You will be able to create objects
-  until you run out of all available memory rather then just until you run out
-  of RTEMS Workspace.
+  ${/ref/rtems/c-user/config-unlimited-objects:/name} option. You will be able to
+  create objects until you run out of all available memory rather then just until
+  you run out of RTEMS Workspace.
 type: interface

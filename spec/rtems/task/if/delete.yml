@@ -38,46 +38,43 @@ links:
   uid: /constraint/obj-unlimited-free
 name: rtems_task_delete
 notes: |
-  The task deletion is done in several steps.  Firstly, the task is marked as
-  terminating.  While the task life of the terminating task is protected, it
+  The task deletion is done in several steps. Firstly, the task is marked as
+  terminating. While the task life of the terminating task is protected, it
   executes normally until it disables the task life protection or it deletes
-  itself.  A terminating task will eventually stop its normal execution and
-  start its termination procedure.  The procedure executes in the context of
-  the terminating task.  The task termination procedure involves the
-  destruction of POSIX key values and running the task termination user
-  extensions.  Once complete the execution of the task is stopped and
-  task-specific resources are reclaimed by the system, such as the stack
-  memory, any allocated delay or timeout timers, the ${/glossary/tcb:/term},
-  and, if the task is ${../../attr/if/floating-point:/name}, its floating point
-  context area.  RTEMS explicitly does not reclaim the following resources:
-  region segments, partition buffers, semaphores, timers, or rate monotonic
-  periods.
+  itself. A terminating task will eventually stop its normal execution and start
+  its termination procedure. The procedure executes in the context of the
+  terminating task. The task termination procedure involves the destruction of
+  POSIX key values and running the task termination user extensions. Once
+  complete the execution of the task is stopped and task-specific resources are
+  reclaimed by the system, such as the stack memory, any allocated delay or
+  timeout timers, the ${/glossary/tcb:/term}, and, if the task is
+  ${../../attr/if/floating-point:/name}, its floating point context area. RTEMS
+  explicitly does not reclaim the following resources: region segments, partition
+  buffers, semaphores, timers, or rate monotonic periods.
 
   A task is responsible for releasing its resources back to RTEMS before
-  deletion.  To insure proper deallocation of resources, a task should not be
-  deleted unless it is unable to execute or does not hold any RTEMS resources.
-  If a task holds RTEMS resources, the task should be allowed to deallocate its
-  resources before deletion.  A task can be directed to release its resources
-  and delete itself by restarting it with a special argument or by sending it a
+  deletion. To insure proper deallocation of resources, a task should not be
+  deleted unless it is unable to execute or does not hold any RTEMS resources. If
+  a task holds RTEMS resources, the task should be allowed to deallocate its
+  resources before deletion. A task can be directed to release its resources and
+  delete itself by restarting it with a special argument or by sending it a
   message, an event, or a signal.
 
-  Deletion of the calling task (${self-define:/name}) will force RTEMS to
-  select another task to execute.
+  Deletion of the calling task (${self-define:/name}) will force RTEMS to select
+  another task to execute.
 
   When a task deletes another task, the calling task waits until the task
-  termination procedure of the task being deleted has completed.  The
-  terminating task inherits the ${/glossary/priority-eligible:/plural} of the
-  calling task.
+  termination procedure of the task being deleted has completed. The terminating
+  task inherits the ${/glossary/priority-eligible:/plural} of the calling task.
 
-  When a global task is deleted, the task identifier must be transmitted to
-  every node in the system for deletion from the local copy of the global
-  object table.
+  When a global task is deleted, the task identifier must be transmitted to every
+  node in the system for deletion from the local copy of the global object table.
 
   The task must reside on the local node, even if the task was created with the
   ${../../attr/if/global:/name} attribute.
 params:
 - description: |
-    is the task identifier.  The constant ${self-define:/name} may be used to
+    is the task identifier. The constant ${self-define:/name} may be used to
     specify the calling task.
   dir: null
   name: id

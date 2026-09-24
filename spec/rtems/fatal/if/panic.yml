@@ -16,10 +16,10 @@ definition:
   variants: []
 description: |
   This directive prints a message via ${../../io/if/printk:/name} specified by
-  the ${.:/params[0]/name} parameter and optional parameters and then invokes
-  the fatal error handler.  The fatal source is set to
-  ${/score/interr/if/source-panic:/name}.  The fatal code is set to the value
-  of the ${.:/params[0]/name} parameter value.
+  the ${.:/params[0]/name} parameter and optional parameters and then invokes the
+  fatal error handler. The fatal source is set to
+  ${/score/interr/if/source-panic:/name}. The fatal code is set to the value of
+  the ${.:/params[0]/name} parameter value.
 enabled-by: true
 index-entries:
 - panic

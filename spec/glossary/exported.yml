@@ -8,6 +8,6 @@ links:
   uid: group
 term: exported
 text: |
-  An object known by all nodes in a multiprocessor system.  An object
-  created with the GLOBAL attribute will be exported.
+  An object known by all nodes in a multiprocessor system. An object created with
+  the GLOBAL attribute will be exported.
 type: glossary

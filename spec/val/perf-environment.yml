@@ -13,7 +13,7 @@ links:
   uid: /req/perf-runtime-environment-load-steps
 method: by-review-of-design
 text: |
-  The execution environments are set up by the RTEMS Test Framework.  For each
+  The execution environments are set up by the RTEMS Test Framework. For each
   runtime performance requirement test code for all execution environments is
   generated.
 type: validation

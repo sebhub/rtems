@@ -5,9 +5,9 @@ enabled-by: RTEMS_SMP
 links: []
 test-actions:
 - action-brief: |
-    The test action was carried by the system initialization.  If we execute
-    this test case, then the failed start of an optional processor did not
-    abort the system initialization.
+    The test action was carried by the system initialization. If we execute this
+    test case, then the failed start of an optional processor did not abort the
+    system initialization.
   action-code: |
     /* Nothing to do */
   checks:

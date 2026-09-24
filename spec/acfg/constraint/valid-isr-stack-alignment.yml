@@ -7,6 +7,6 @@ links:
   uid: /req/usage-constraints
 rationale: null
 text: |
-  The value of the application configuration option shall be aligned according
-  to ${/score/cpu/if/interrupt-stack-alignment:/name}.
+  The value of the application configuration option shall be aligned according to
+  ${/score/cpu/if/interrupt-stack-alignment:/name}.
 type: constraint

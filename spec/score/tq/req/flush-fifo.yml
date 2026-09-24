@@ -36,9 +36,8 @@ post-conditions:
       T_lt_sz( extracted_threads, ctx->tq_ctx->how_many );
     text: |
       The enqueued threads which precede in ${/glossary/fifo:/term} order the
-      enqueued thread for which the flush filter returned ${/c/if/null:/name}
-      shall be extracted from the thread queue in ${/glossary/fifo:/term}
-      order.
+      enqueued thread for which the flush filter returned ${/c/if/null:/name} shall
+      be extracted from the thread queue in ${/glossary/fifo:/term} order.
   test-epilogue: null
   test-prologue: |
     size_t   i;
@@ -82,14 +81,13 @@ pre-conditions:
     test-code: |
       ctx->stop = true;
     text: |
-      While the flush filter returns ${/c/if/null:/name} for an enqueued
-      thread.
+      While the flush filter returns ${/c/if/null:/name} for an enqueued thread.
   - name: 'No'
     test-code: |
       ctx->stop = false;
     text: |
-      While the flush filter does not return ${/c/if/null:/name} for an
-      enqueued thread.
+      While the flush filter does not return ${/c/if/null:/name} for an enqueued
+      thread.
   test-epilogue: null
   test-prologue: null
 - name: WaitState
@@ -98,14 +96,14 @@ pre-conditions:
     test-code: |
       ctx->intend_to_block = false;
     text: |
-      While the least recently enqueued thread on the thread queue is in the
-      blocked wait state.
+      While the least recently enqueued thread on the thread queue is in the blocked
+      wait state.
   - name: IntendToBlock
     test-code: |
       ctx->intend_to_block = true;
     text: |
-      While the least recently enqueued thread on the thread queue is in the
-      intend to block wait state.
+      While the least recently enqueued thread on the thread queue is in the intend
+      to block wait state.
   test-epilogue: null
   test-prologue: null
 rationale: null
@@ -144,14 +142,13 @@ test-brief: null
 test-cleanup: null
 test-context:
 - brief: |
-    If this member is true, then the flush filter shall return
-    ${/c/if/null:/name}.
+    If this member is true, then the flush filter shall return ${/c/if/null:/name}.
   description: null
   member: |
     bool stop
 - brief: |
-    If this member is true, then the least recently enqueued thread shall be in
-    the intend to block wait state.
+    If this member is true, then the least recently enqueued thread shall be in the
+    intend to block wait state.
   description: null
   member: |
     bool intend_to_block
@@ -239,10 +236,7 @@ test-support: |
 
     ctx = arg;
 
-    if (
-      when == T_SCHEDULER_BEFORE &&
-      event->operation == T_SCHEDULER_BLOCK
-    ) {
+    if ( when == T_SCHEDULER_BEFORE && event->operation == T_SCHEDULER_BLOCK ) {
       T_scheduler_set_event_handler( NULL, NULL );
       ctx->request.handler = InterruptFlush;
       CallWithinISRSubmit( &ctx->request );

@@ -54,8 +54,8 @@ post-conditions:
        * vector.
        */
     text: |
-      The interrupt vector specified by ${../if/vector-enable:/params[0]/name}
-      shall be enabled.
+      The interrupt vector specified by ${../if/vector-enable:/params[0]/name} shall
+      be enabled.
   - name: Maybe
     test-code: |
       /*
@@ -63,8 +63,8 @@ post-conditions:
        * vector.
        */
     text: |
-      The interrupt vector specified by ${../if/vector-enable:/params[0]/name}
-      may be enabled.
+      The interrupt vector specified by ${../if/vector-enable:/params[0]/name} may be
+      enabled.
   test-epilogue: null
   test-prologue: null
 pre-conditions:
@@ -74,14 +74,14 @@ pre-conditions:
     test-code: |
       ctx->valid_vector = true;
     text: |
-      While the ${../if/vector-enable:/params[0]/name} parameter is
-      associated with an interrupt vector.
+      While the ${../if/vector-enable:/params[0]/name} parameter is associated with
+      an interrupt vector.
   - name: Invalid
     test-code: |
       ctx->valid_vector = false;
     text: |
-      While the ${../if/vector-enable:/params[0]/name} parameter is
-      not associated with an interrupt vector.
+      While the ${../if/vector-enable:/params[0]/name} parameter is not associated
+      with an interrupt vector.
   test-epilogue: null
   test-prologue: null
 - name: IsEnabled
@@ -187,8 +187,8 @@ test-context:
   member: |
     bool valid_vector
 - brief: |
-    This member may contain the return value of the
-    ${../if/vector-enable:/name} call.
+    This member may contain the return value of the ${../if/vector-enable:/name}
+    call.
   description: null
   member: |
     rtems_status_code status
@@ -284,8 +284,8 @@ test-support: |
       cpu_set_t affinity_old;
       cpu_set_t affinity_new;
 
-      CPU_ZERO(&affinity_old);
-      CPU_ZERO(&affinity_new);
+      CPU_ZERO( &affinity_old );
+      CPU_ZERO( &affinity_new );
       T_true( IsEnabled( ctx ) );
 
       if ( attr->can_get_affinity ) {
@@ -375,7 +375,8 @@ test-support: |
   }
 test-target: testsuites/validation/tc-intr-vector-enable.c
 test-teardown: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

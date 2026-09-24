@@ -8,6 +8,6 @@ links:
   uid: group
 term: interrupt
 text: |
-  A hardware facility that causes the CPU to suspend execution, save its
-  status, and transfer control to a specific location.
+  A hardware facility that causes the CPU to suspend execution, save its status,
+  and transfer control to a specific location.
 type: glossary

@@ -18,17 +18,17 @@ links:
   uid: group-devdrv
 name: CONFIGURE_APPLICATION_DOES_NOT_NEED_CLOCK_DRIVER
 notes: |
-  This configuration parameter is intended to prevent the common user error
-  of using the Hello World example as the baseline for an application and
-  leaving out a clock tick source.
+  This configuration parameter is intended to prevent the common user error of
+  using the Hello World example as the baseline for an application and leaving
+  out a clock tick source.
 
   The application shall define exactly one of the following configuration options
 
-  * ${appl-needs-clock-driver:/name},
+  - ${appl-needs-clock-driver:/name},
 
-  * `CONFIGURE_APPLICATION_DOES_NOT_NEED_CLOCK_DRIVER`, or
+  - `CONFIGURE_APPLICATION_DOES_NOT_NEED_CLOCK_DRIVER`, or
 
-  * ${appl-needs-timer-driver:/name},
+  - ${appl-needs-timer-driver:/name},
 
   otherwise a compile time error in the configuration file will occur.
 type: interface

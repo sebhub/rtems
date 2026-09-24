@@ -11,13 +11,13 @@ links:
 method: by-inspection
 text: |
   Defining ${../if/appl-disable-filesystem:/name} is mandatory for applications
-  using only the pre-qualified feature set.  The reason is to get linker errors
-  in case such applications are linked if they depend on the files system
-  support.  Thus no validation test case can be used.  Inspection of the
-  referenced ${/glossary/sourcecode:/term} file showed that several data
-  structures are initialized with references to functions which are not in the
-  pre-qualified feature set, if ${../if/appl-disable-filesystem:/name} is not
-  defined.  For the pre-qualified only build of RTEMS, this would lead to an
-  unresolved reference linker error.  This shows that the
-  ${../req/appl-disable-filesystem:/spec} requirement is implemented as specified.
+  using only the pre-qualified feature set. The reason is to get linker errors in
+  case such applications are linked if they depend on the files system support.
+  Thus no validation test case can be used. Inspection of the referenced
+  ${/glossary/sourcecode:/term} file showed that several data structures are
+  initialized with references to functions which are not in the pre-qualified
+  feature set, if ${../if/appl-disable-filesystem:/name} is not defined. For the
+  pre-qualified only build of RTEMS, this would lead to an unresolved reference
+  linker error. This shows that the ${../req/appl-disable-filesystem:/spec}
+  requirement is implemented as specified.
 type: validation

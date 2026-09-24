@@ -42,6 +42,7 @@ params:
   name: _target
 return:
   return: |
-    Returns the type of a pointer reference of the specified level to the specified type.
+    Returns the type of a pointer reference of the specified level to the specified
+    type.
   return-values: []
 type: interface

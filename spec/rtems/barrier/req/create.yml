@@ -72,8 +72,8 @@ post-conditions:
       ++ctx->release_expected;
       T_eq_u32( ctx->release_done, ctx->release_expected );
     text: |
-      The class of the barrier created by the ${../if/create:/name} call shall
-      be manual release.
+      The class of the barrier created by the ${../if/create:/name} call shall be
+      manual release.
   - name: Auto
     test-code: |
       sc = rtems_barrier_wait( ctx->id_value, RTEMS_NO_TIMEOUT );
@@ -81,8 +81,8 @@ post-conditions:
 
       T_eq_u32( ctx->release_done, ctx->release_expected );
     text: |
-      The class of the barrier created by the ${../if/create:/name} call shall
-      be automatic release.
+      The class of the barrier created by the ${../if/create:/name} call shall be
+      automatic release.
   test-epilogue: null
   test-prologue: |
     rtems_status_code sc;
@@ -94,14 +94,14 @@ post-conditions:
       T_ne_u32( ctx->id_value, INVALID_ID );
     text: |
       The value of the object referenced by the ${../if/create:/params[3]/name}
-      parameter shall be set to the object identifier of the created barrier
-      after the return of the ${../if/create:/name} call.
+      parameter shall be set to the object identifier of the created barrier after
+      the return of the ${../if/create:/name} call.
   - name: Nop
     test-code: |
       T_eq_u32( ctx->id_value, INVALID_ID );
     text: |
-      Objects referenced by the ${../if/create:/params[3]/name} parameter in
-      past calls to ${../if/create:/name} shall not be accessed by the
+      Objects referenced by the ${../if/create:/params[3]/name} parameter in past
+      calls to ${../if/create:/name} shall not be accessed by the
       ${../if/create:/name} call.
   test-epilogue: null
   test-prologue: null
@@ -126,14 +126,13 @@ pre-conditions:
     test-code: |
       ctx->id = &ctx->id_value;
     text: |
-      While the ${../if/create:/params[3]/name} parameter references an object
-      of type ${../../type/if/id:/name}.
+      While the ${../if/create:/params[3]/name} parameter references an object of
+      type ${../../type/if/id:/name}.
   - name: 'Null'
     test-code: |
       ctx->id = NULL;
     text: |
-      While the ${../if/create:/params[3]/name} parameter is
-      ${/c/if/null:/name}.
+      While the ${../if/create:/params[3]/name} parameter is ${/c/if/null:/name}.
   test-epilogue: null
   test-prologue: null
 - name: Class
@@ -154,8 +153,8 @@ pre-conditions:
     test-code: |
       ctx->attribute_set |= RTEMS_BARRIER_AUTOMATIC_RELEASE;
     text: |
-      While the ${../if/create:/params[1]/name} parameter specifies the
-      automatic release class.
+      While the ${../if/create:/params[1]/name} parameter specifies the automatic
+      release class.
   test-epilogue: null
   test-prologue: null
 - name: MaxWait
@@ -308,7 +307,8 @@ test-teardown:
   code: |
     DeleteTask( ctx->worker_id );
   description: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

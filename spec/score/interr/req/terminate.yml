@@ -2,12 +2,12 @@ SPDX-License-Identifier: CC-BY-SA-4.0
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
 enabled-by: true
+functional-type: function
 links:
 - role: requirement-refinement
   uid: /req/fatal-error
 - role: interface-function
   uid: ../if/terminate
-functional-type: function
 rationale: null
 requirement-type: functional
 text: |

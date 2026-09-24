@@ -10,8 +10,8 @@ default-value: |
   ${/bsp/if/acfg-idle-task-stack-size:/name}, otherwise the default value is
   defined by the ${min-task-stack-size:/name} configuration option.
 description: |
-  The value of this configuration option defines the task stack size for an
-  IDLE task.
+  The value of this configuration option defines the task stack size for an IDLE
+  task.
 enabled-by: true
 index-entries: []
 interface-type: appl-config-option

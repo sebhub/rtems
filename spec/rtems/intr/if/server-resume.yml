@@ -33,9 +33,8 @@ notes: |
   Interrupt server may be suspended by ${server-suspend:/name}.
 params:
 - description: |
-    is the index of the interrupt server to resume.  The constant
-    ${server-default:/name} may be used to specify the default interrupt
-    server.
+    is the index of the interrupt server to resume. The constant
+    ${server-default:/name} may be used to specify the default interrupt server.
   dir: null
   name: server_index
 return:

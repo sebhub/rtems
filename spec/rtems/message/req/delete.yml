@@ -66,14 +66,14 @@ pre-conditions:
     test-code: |
       ctx->id = 0;
     text: |
-      While the ${../if/delete:/params[0]/name} parameter is not associated
-      with a message queue.
+      While the ${../if/delete:/params[0]/name} parameter is not associated with a
+      message queue.
   - name: MsgQueue
     test-code: |
       ctx->id = ctx->message_queue_id;
     text: |
-      While the ${../if/delete:/params[0]/name} parameter is associated with
-      a message queue.
+      While the ${../if/delete:/params[0]/name} parameter is associated with a
+      message queue.
   test-epilogue: null
   test-prologue: null
 rationale: null
@@ -150,8 +150,9 @@ test-support: |
 
   typedef ${.:/test-context-type} Context;
 
-  static RTEMS_MESSAGE_QUEUE_BUFFER( MAX_MESSAGE_SIZE )
-    buffers[ MAX_PENDING_MESSAGES ];
+  static RTEMS_MESSAGE_QUEUE_BUFFER(
+    MAX_MESSAGE_SIZE
+  ) buffers[ MAX_PENDING_MESSAGES ];
 
   static void Worker( rtems_task_argument arg )
   {
@@ -203,7 +204,8 @@ test-teardown:
     DeleteTask( ctx->worker_id );
     RestoreRunnerPriority();
   description: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:

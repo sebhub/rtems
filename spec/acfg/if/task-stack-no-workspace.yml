@@ -3,8 +3,8 @@ appl-config-option-type: feature-enable
 copyrights:
 - Copyright (C) 2020 embedded brains GmbH & Co. KG
 description: |
-  In case this configuration option is defined, then the system is informed
-  that the task stack allocator does not use the RTEMS Workspace.
+  In case this configuration option is defined, then the system is informed that
+  the task stack allocator does not use the RTEMS Workspace.
 enabled-by: true
 index-entries: []
 interface-type: appl-config-option

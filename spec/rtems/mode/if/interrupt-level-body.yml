@@ -28,7 +28,8 @@ name: rtems_interrupt_level_body
 notes: |
   This function is used by bindings from languages other than C and C++.
 params:
-- description: is the interrupt level to map.
+- description: |
+    is the interrupt level to map.
   dir: null
   name: level
 return:

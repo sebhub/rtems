@@ -8,7 +8,7 @@ links:
 rationale: null
 text: |
   The application configuration option is not included in the pre-qualified
-  feature set of RTEMS.  Applications which are restricted to only use
-  interfaces of the pre-qualified feature set of RTEMS shall not use the
-  application configuration option.
+  feature set of RTEMS. Applications which are restricted to only use interfaces
+  of the pre-qualified feature set of RTEMS shall not use the application
+  configuration option.
 type: constraint

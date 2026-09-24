@@ -9,8 +9,8 @@ links:
   uid: ../req/send
 test-actions:
 - action-brief: |
-    Run the event send and receive tests for the application event set defined
-    by ${../req/send-receive:/spec}.
+    Run the event send and receive tests for the application event set defined by
+    ${../req/send-receive:/spec}.
   action-code: |
     ${../req/send-receive:/test-run}(
       EventSend,

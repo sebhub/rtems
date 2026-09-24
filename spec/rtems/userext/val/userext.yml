@@ -5,8 +5,8 @@ enabled-by: true
 links: []
 test-actions:
 - action-brief: |
-    Create five dynamic extensions.  Switch to a started thread.  Delete three
-    dynamic extension during the thread begin invocation.  Clean up the used
+    Create five dynamic extensions. Switch to a started thread. Delete three
+    dynamic extension during the thread begin invocation. Clean up the used
     resources.
   action-code: |
     rtems_tcb *executing;
@@ -21,8 +21,8 @@ test-actions:
     KillZombies();
   checks:
   - brief: |
-      Check that the thread switch extensions were invoked in the right order
-      before the thread begin extensions.
+      Check that the thread switch extensions were invoked in the right order before
+      the thread begin extensions.
     code: |
       CheckForward( THREAD_SWITCH, 1, 1, executing, thread );
     links:
@@ -48,8 +48,8 @@ test-actions:
       CheckReverse( THREAD_TERMINATE, 0, 0, NULL, NULL );
     links: []
   - brief: |
-      Check that the thread begin extension of the extension set deleted
-      before its turn in the invocation was not invoked.
+      Check that the thread begin extension of the extension set deleted before its
+      turn in the invocation was not invoked.
     code: |
       CheckDeletedNotInvoked( THREAD_BEGIN );
     links:
@@ -57,9 +57,8 @@ test-actions:
       uid: ../req/thread-begin-iterate-remove
   links: []
 - action-brief: |
-    Create five dynamic extensions.  Create a thread.  Delete three dynamic
-    extension during the thread create invocation.  Clean up the used
-    resources.
+    Create five dynamic extensions. Create a thread. Delete three dynamic extension
+    during the thread create invocation. Clean up the used resources.
   action-code: |
     rtems_tcb *executing;
     rtems_tcb *thread;
@@ -82,8 +81,8 @@ test-actions:
     - role: validation
       uid: ../req/thread-create-order
   - brief: |
-      Check that the thread create extensions were invoked under protection of
-      the allocator mutex.
+      Check that the thread create extensions were invoked under protection of the
+      allocator mutex.
     code: |
       T_eq_u32( thread_create_allocator_owner_count, 6 );
     links:
@@ -101,8 +100,8 @@ test-actions:
       CheckReverse( THREAD_TERMINATE, 0, 0, NULL, NULL );
     links: []
   - brief: |
-      Check that the thread create extension of the extension set deleted
-      before its turn in the invocation was not invoked.
+      Check that the thread create extension of the extension set deleted before its
+      turn in the invocation was not invoked.
     code: |
       CheckDeletedNotInvoked( THREAD_CREATE );
     links:
@@ -110,9 +109,8 @@ test-actions:
       uid: ../req/thread-create-iterate-remove
   links: []
 - action-brief: |
-    Create five dynamic extensions.  Delete a thread.  Delete three dynamic
-    extension during the thread delete invocation.  Clean up the used
-    resources.
+    Create five dynamic extensions. Delete a thread. Delete three dynamic extension
+    during the thread delete invocation. Clean up the used resources.
   action-code: |
     rtems_tcb *executing;
     rtems_tcb *thread;
@@ -135,8 +133,8 @@ test-actions:
     - role: validation
       uid: ../req/thread-delete-order
   - brief: |
-      Check that the thread delete extensions were invoked under protection of
-      the allocator mutex.
+      Check that the thread delete extensions were invoked under protection of the
+      allocator mutex.
     code: |
       T_eq_u32( thread_delete_allocator_owner_count, 6 );
     links:
@@ -154,8 +152,8 @@ test-actions:
       CheckReverse( THREAD_TERMINATE, 0, 0, NULL, NULL );
     links: []
   - brief: |
-      Check that the thread delete extension of the extension set deleted
-      before its turn in the invocation was not invoked.
+      Check that the thread delete extension of the extension set deleted before its
+      turn in the invocation was not invoked.
     code: |
       CheckDeletedNotInvoked( THREAD_DELETE );
     links:
@@ -163,8 +161,8 @@ test-actions:
       uid: ../req/thread-delete-iterate-remove
   links: []
 - action-brief: |
-    Create five dynamic extensions.  Return from a thread entry.  Delete three
-    dynamic extension during the thread exitted invocation.  Clean up the used
+    Create five dynamic extensions. Return from a thread entry. Delete three
+    dynamic extension during the thread exitted invocation. Clean up the used
     resources.
   action-code: |
     rtems_tcb *thread;
@@ -198,8 +196,8 @@ test-actions:
       CheckReverse( THREAD_TERMINATE, 0, 0, NULL, NULL );
     links: []
   - brief: |
-      Check that the thread exitted extension of the extension set deleted
-      before its turn in the invocation was not invoked.
+      Check that the thread exitted extension of the extension set deleted before its
+      turn in the invocation was not invoked.
     code: |
       CheckDeletedNotInvoked( THREAD_EXITTED );
     links:
@@ -207,9 +205,8 @@ test-actions:
       uid: ../req/thread-exitted-iterate-remove
   links: []
 - action-brief: |
-    Create five dynamic extensions.  Restart a thread.  Delete three
-    dynamic extension during the thread restart invocation.  Clean up the used
-    resources.
+    Create five dynamic extensions. Restart a thread. Delete three dynamic
+    extension during the thread restart invocation. Clean up the used resources.
   action-code: |
     rtems_tcb *thread;
     rtems_id   id;
@@ -240,8 +237,8 @@ test-actions:
       CheckForward( THREAD_TERMINATE, 0, 0, NULL, NULL );
     links: []
   - brief: |
-      Check that the thread restart extension of the extension set deleted
-      before its turn in the invocation was not invoked.
+      Check that the thread restart extension of the extension set deleted before its
+      turn in the invocation was not invoked.
     code: |
       CheckDeletedNotInvoked( THREAD_RESTART );
     links:
@@ -249,8 +246,8 @@ test-actions:
       uid: ../req/thread-restart-iterate-remove
   links: []
 - action-brief: |
-    Create five dynamic extensions.  Start a thread.  Delete three dynamic
-    extension during the thread start invocation.  Clean up the used resources.
+    Create five dynamic extensions. Start a thread. Delete three dynamic extension
+    during the thread start invocation. Clean up the used resources.
   action-code: |
     rtems_tcb *executing;
     rtems_tcb *thread;
@@ -285,8 +282,8 @@ test-actions:
       CheckForward( THREAD_TERMINATE, 0, 0, NULL, NULL );
     links: []
   - brief: |
-      Check that the thread start extension of the extension set deleted
-      before its turn in the invocation was not invoked.
+      Check that the thread start extension of the extension set deleted before its
+      turn in the invocation was not invoked.
     code: |
       CheckDeletedNotInvoked( THREAD_START );
     links:
@@ -294,9 +291,8 @@ test-actions:
       uid: ../req/thread-start-iterate-remove
   links: []
 - action-brief: |
-    Create five dynamic extensions.  Terminate a thread.  Delete three dynamic
-    extension during the thread terminate invocation.  Clean up the used
-    resources.
+    Create five dynamic extensions. Terminate a thread. Delete three dynamic
+    extension during the thread terminate invocation. Clean up the used resources.
   action-code: |
     rtems_tcb *thread;
     rtems_id   id;
@@ -307,8 +303,7 @@ test-actions:
     KillZombies();
   checks:
   - brief: |
-      Check that the thread terminate extensions were invoked in the right
-      order.
+      Check that the thread terminate extensions were invoked in the right order.
     code: |
       CheckReverse( THREAD_TERMINATE, 1, 1, thread, NULL );
     links:
@@ -328,8 +323,8 @@ test-actions:
       CheckForward( THREAD_SWITCH, 0, 0, NULL, NULL );
     links: []
   - brief: |
-      Check that the thread terminate extension of the extension set deleted
-      before its turn in the invocation was not invoked.
+      Check that the thread terminate extension of the extension set deleted before
+      its turn in the invocation was not invoked.
     code: |
       CheckDeletedNotInvoked( THREAD_TERMINATE );
     links:
@@ -337,9 +332,9 @@ test-actions:
       uid: ../req/thread-terminate-iterate-remove
   links: []
 - action-brief: |
-    Create five dynamic extensions.  Let an idle thread return from its entry.
-    Delete three dynamic extension during the thread exitted invocation.  Clean
-    up the used resources.
+    Create five dynamic extensions. Let an idle thread return from its entry.
+    Delete three dynamic extension during the thread exitted invocation. Clean up
+    the used resources.
   action-code: |
     rtems_tcb *thread;
     rtems_id   id;
@@ -373,8 +368,8 @@ test-actions:
       CheckReverse( THREAD_TERMINATE, 0, 0, NULL, NULL );
     links: []
   - brief: |
-      Check that the thread exitted extension of the extension set deleted
-      before its turn in the invocation was not invoked.
+      Check that the thread exitted extension of the extension set deleted before its
+      turn in the invocation was not invoked.
     code: |
       CheckDeletedNotInvoked( THREAD_EXITTED );
     links:

@@ -2,17 +2,17 @@ SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
 enabled-by: true
+functional-type: function
 links:
 - role: requirement-refinement
   uid: init
-functional-type: function
 rationale: null
 requirement-type: functional
 text: |
   Where ${/bsp/if/acfg-prerequisite-drivers:/name} is defined by the
   ${/glossary/bsp:/term}, while ${../if/disable-bsp-settings:/name} is not
-  defined by the application, when the application configuration is
-  initialized, the device driver entry points defined by
+  defined by the application, when the application configuration is initialized,
+  the device driver entry points defined by
   ${/bsp/if/acfg-prerequisite-drivers:/name} shall be registered in the
   ${/glossary/devicedrivertable:/term}.
 type: requirement

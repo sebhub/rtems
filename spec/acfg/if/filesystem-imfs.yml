@@ -18,7 +18,7 @@ links:
   uid: ../constraint/option-not-pre-qualified
 name: CONFIGURE_FILESYSTEM_IMFS
 notes: |
-  Applications will rarely need this configuration option.  This configuration
-  option is intended for test programs.  You do not need to define this
+  Applications will rarely need this configuration option. This configuration
+  option is intended for test programs. You do not need to define this
   configuration option for the base filesystem (also known as root filesystem).
 type: interface

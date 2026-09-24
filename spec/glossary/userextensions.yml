@@ -10,8 +10,8 @@ links:
 term: user extensions
 text: |
   User extensions are software routines provided by the application to enhance
-  the functionality of RTEMS.  An active user extension is either in the
-  ${initial-extension-sets:/term} or the ${dynamic-extension-sets:/term}.  User
+  the functionality of RTEMS. An active user extension is either in the
+  ${initial-extension-sets:/term} or the ${dynamic-extension-sets:/term}. User
   extensions are invoked in ${extension-forward-order:/term} or
   ${extension-reverse-order:/term}.
 type: glossary

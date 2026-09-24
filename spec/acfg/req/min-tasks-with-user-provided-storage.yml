@@ -11,6 +11,6 @@ links:
 rationale: null
 requirement-type: functional
 text: |
-  The application configuration option shall define the minimum count of
-  Classic API Tasks which are constructed by ${/rtems/task/if/construct:/name}.
+  The application configuration option shall define the minimum count of Classic
+  API Tasks which are constructed by ${/rtems/task/if/construct:/name}.
 type: requirement

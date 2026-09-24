@@ -14,9 +14,8 @@ links:
 - role: verification-member
   uid: default
 text: |
-  This test intentionally prints out no test-specific information.  The purpose
-  of this test is to show that a reduced application configuration runs
-  properly to the multitasking state and then through the system termination
-  process.
+  This test intentionally prints out no test-specific information. The purpose of
+  this test is to show that a reduced application configuration runs properly to
+  the multitasking state and then through the system termination process.
 type: verification
 verification-type: test-failure

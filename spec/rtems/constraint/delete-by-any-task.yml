@@ -7,6 +7,6 @@ links:
   uid: /req/usage-constraints
 rationale: null
 text: |
-  The calling task does not have to be the task that created the object.  Any
+  The calling task does not have to be the task that created the object. Any
   local task that knows the object identifier can delete the object.
 type: constraint

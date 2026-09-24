@@ -9,7 +9,7 @@ links:
 rationale: null
 requirement-type: functional
 text: |
-  The ${../if/semaphore-class:/name} constant shall be equal to the bitwise or
-  of ${../if/binary-semaphore:/name}, ${../if/counting-semaphore:/name}, and
+  The ${../if/semaphore-class:/name} constant shall be equal to the bitwise or of
+  ${../if/binary-semaphore:/name}, ${../if/counting-semaphore:/name}, and
   ${../if/simple-binary-semaphore:/name}.
 type: requirement

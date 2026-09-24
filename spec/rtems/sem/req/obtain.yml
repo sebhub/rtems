@@ -108,14 +108,14 @@ post-conditions:
       is allowed, and a priority ceiling is used.
   - name: MrsPMtxSeizeTry
     test-code: |
-      #if defined(RTEMS_SMP)
-      ctx->tq_mtx_ctx.base.enqueue_variant = TQ_ENQUEUE_STICKY;
-      ctx->tq_mtx_ctx.protocol = TQ_MTX_MRSP;
-      ctx->tq_mtx_ctx.recursive = TQ_MTX_RECURSIVE_DEADLOCK;
-      ctx->tq_mtx_ctx.priority_ceiling = PRIO_VERY_HIGH;
-      ${/score/mtx/req/seize-try:/test-run}( &ctx->tq_mtx_ctx );
+      #if defined( RTEMS_SMP )
+        ctx->tq_mtx_ctx.base.enqueue_variant = TQ_ENQUEUE_STICKY;
+        ctx->tq_mtx_ctx.protocol = TQ_MTX_MRSP;
+        ctx->tq_mtx_ctx.recursive = TQ_MTX_RECURSIVE_DEADLOCK;
+        ctx->tq_mtx_ctx.priority_ceiling = PRIO_VERY_HIGH;
+        ${/score/mtx/req/seize-try:/test-run}( &ctx->tq_mtx_ctx );
       #else
-      T_unreachable();
+        T_unreachable();
       #endif
     text: |
       The calling task shall try to seize the mutex as specified by
@@ -123,14 +123,14 @@ post-conditions:
       returns an error status, and a priority ceiling is used.
   - name: MrsPMtxSeizeWait
     test-code: |
-      #if defined(RTEMS_SMP)
-      ctx->tq_mtx_ctx.base.enqueue_variant = TQ_ENQUEUE_STICKY;
-      ctx->tq_mtx_ctx.protocol = TQ_MTX_MRSP;
-      ctx->tq_mtx_ctx.recursive = TQ_MTX_RECURSIVE_DEADLOCK;
-      ctx->tq_mtx_ctx.priority_ceiling = PRIO_VERY_HIGH;
-      ${/score/mtx/req/seize-wait:/test-run}( &ctx->tq_mtx_ctx );
+      #if defined( RTEMS_SMP )
+        ctx->tq_mtx_ctx.base.enqueue_variant = TQ_ENQUEUE_STICKY;
+        ctx->tq_mtx_ctx.protocol = TQ_MTX_MRSP;
+        ctx->tq_mtx_ctx.recursive = TQ_MTX_RECURSIVE_DEADLOCK;
+        ctx->tq_mtx_ctx.priority_ceiling = PRIO_VERY_HIGH;
+        ${/score/mtx/req/seize-wait:/test-run}( &ctx->tq_mtx_ctx );
       #else
-      T_unreachable();
+        T_unreachable();
       #endif
     text: |
       The calling task shall wait to seize the mutex as specified by
@@ -170,7 +170,7 @@ pre-conditions:
   - name: MrsP
     test-code: |
       ctx->attribute_set |= RTEMS_BINARY_SEMAPHORE |
-        RTEMS_MULTIPROCESSOR_RESOURCE_SHARING;
+                            RTEMS_MULTIPROCESSOR_RESOURCE_SHARING;
     text: |
       While the semaphore object is a MrsP semaphore.
   test-epilogue: null
@@ -197,14 +197,14 @@ pre-conditions:
     test-code: |
       /* Nothing to prepare */
     text: |
-      While the ${../if/obtain:/params[0]/name} parameter is associated with
-      the semaphore.
+      While the ${../if/obtain:/params[0]/name} parameter is associated with the
+      semaphore.
   - name: Invalid
     test-code: |
       /* Nothing to prepare */
     text: |
-      While the ${../if/obtain:/params[0]/name} parameter is not associated
-      with a semaphore.
+      While the ${../if/obtain:/params[0]/name} parameter is not associated with a
+      semaphore.
   test-epilogue: null
   test-prologue: null
 - name: Wait
@@ -220,25 +220,23 @@ pre-conditions:
       ctx->tq_ctx.wait = TQ_WAIT_TIMED;
     text: |
       While the ${../if/obtain:/params[1]/name} parameter indicates the
-      ${../../option/if/wait:/name} option, while the
-      ${../if/obtain:/params[2]/name} parameter is not equal to
-      ${../../type/if/no-timeout:/name}.
+      ${../../option/if/wait:/name} option, while the ${../if/obtain:/params[2]/name}
+      parameter is not equal to ${../../type/if/no-timeout:/name}.
   - name: Forever
     test-code: |
       ctx->tq_ctx.wait = TQ_WAIT_FOREVER;
     text: |
       While the ${../if/obtain:/params[1]/name} parameter indicates the
-      ${../../option/if/wait:/name} option, while the
-      ${../if/obtain:/params[2]/name} parameter is equal to
-      ${../../type/if/no-timeout:/name}.
+      ${../../option/if/wait:/name} option, while the ${../if/obtain:/params[2]/name}
+      parameter is equal to ${../../type/if/no-timeout:/name}.
   test-epilogue: null
   test-prologue: null
 rationale: null
 requirement-type: functional
 skip-reasons:
   NeedsPriorityDiscipline: |
-    Binary semaphores with a locking protocol are required to use the priority
-    task wait queue discipline.
+    Binary semaphores with a locking protocol are required to use the priority task
+    wait queue discipline.
 test-action: |
   rtems_status_code sc;
 
@@ -265,9 +263,8 @@ test-action: |
   }
   #endif
 test-brief: null
-test-cleanup:
+test-cleanup: |
   rtems_status_code sc;
-
   sc = rtems_semaphore_delete( ctx->tq_ctx.thread_queue_id );
   T_rsc_success( sc );
 test-context:
@@ -324,7 +321,8 @@ test-teardown:
   code: |
     TQDestroy( &ctx->tq_ctx );
   description: null
-text: ${.:text-template}
+text: |
+  ${.:text-template}
 transition-map:
 - enabled-by: true
   post-conditions:
