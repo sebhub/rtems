@@ -1,0 +1,20 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This group contains the kernel character input and output implementation.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+description: null
+enabled-by: true
+identifier: RTEMSImplKernelCharIO
+index-entries: []
+interface-type: group
+links:
+- role: interface-placement
+  uid: ../if/header-3
+- role: interface-ingroup
+  uid: /req/impl
+name: Kernel Character Input and Output
+text: |
+  The ${.:/name} shall be a component containing the implementation of the
+  ${../if/group-3:/name}.
+type: interface
