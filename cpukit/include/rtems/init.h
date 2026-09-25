@@ -102,7 +102,7 @@ RTEMS_NO_RETURN void rtems_initialize_executive( void );
  *
  * This directive processes fatal errors. The fatal source is set to
  * RTEMS_FATAL_SOURCE_EXIT. The fatal code is set to the value of the
- * ``fatal_code`` parameter.
+ * `fatal_code` parameter.
  *
  * @par Constraints
  * @parblock

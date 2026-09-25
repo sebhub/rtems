@@ -78,28 +78,27 @@ extern "C" {
  *   processed by the handler. See rtems_task_mode().
  *
  * This directive establishes an asynchronous signal routine (ASR) for the
- * calling task. The ``asr_handler`` parameter specifies the entry point of the
+ * calling task. The `asr_handler` parameter specifies the entry point of the
  * ASR. A task may have at most one handler installed at a time. The most
- * recently installed handler is used. When ``asr_handler`` is NULL, the ASR
- * for the calling task is invalidated and all pending signals are cleared. Any
- * signals sent to a task with an invalid ASR are discarded. The ``mode_set``
+ * recently installed handler is used. When `asr_handler` is NULL, the ASR for
+ * the calling task is invalidated and all pending signals are cleared. Any
+ * signals sent to a task with an invalid ASR are discarded. The `mode_set`
  * parameter specifies the execution mode for the ASR. This execution mode
  * supersedes the task's execution mode while the ASR is executing.
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
  *
- * @retval ::RTEMS_NOT_IMPLEMENTED The #RTEMS_NO_PREEMPT was set in
- *   ``mode_set`` and the system configuration had no implementation for this
- *   mode.
+ * @retval ::RTEMS_NOT_IMPLEMENTED The #RTEMS_NO_PREEMPT was set in `mode_set`
+ *   and the system configuration had no implementation for this mode.
  *
  * @retval ::RTEMS_NOT_IMPLEMENTED The RTEMS_INTERRUPT_LEVEL() was set to a
- *   positive level in ``mode_set`` and the system configuration had no
+ *   positive level in `mode_set` and the system configuration had no
  *   implementation for this mode.
  *
  * @par Notes
  * @parblock
  * It is strongly recommended to disable ASR processing during ASR processing
- * by setting #RTEMS_NO_ASR in ``mode_set``, otherwise a recursion may happen
+ * by setting #RTEMS_NO_ASR in `mode_set`, otherwise a recursion may happen
  * during ASR processing. Uncontrolled recursion may lead to stack overflows.
  *
  * Using the same mutex (in particular a recursive mutex) in normal task
@@ -135,8 +134,8 @@ rtems_status_code rtems_signal_catch(
  *
  * @param signal_set is the signal set to send.
  *
- * This directive sends the signal set, ``signal_set``, to the target task
- * identified by ``id``.
+ * This directive sends the signal set, `signal_set`, to the target task
+ * identified by `id`.
  *
  * If a caller sends a signal set to a task with an invalid ASR, then an error
  * code is returned to the caller. If a caller sends a signal set to a task
@@ -148,10 +147,10 @@ rtems_status_code rtems_signal_catch(
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
  *
- * @retval ::RTEMS_INVALID_NUMBER The ``signal_set`` parameter was 0.
+ * @retval ::RTEMS_INVALID_NUMBER The `signal_set` parameter was 0.
  *
  * @retval ::RTEMS_INVALID_ID There was no task associated with the identifier
- *   specified by ``id``.
+ *   specified by `id`.
  *
  * @retval ::RTEMS_NOT_DEFINED The target task had no valid ASR installed.
  *

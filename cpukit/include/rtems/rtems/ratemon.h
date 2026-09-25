@@ -85,8 +85,7 @@ typedef enum {
 
   /**
    * @brief This status indicates the period is on the watchdog chain, and
-   *   running. The owner may be executing or blocked waiting on another
-   *   object.
+   *   running. The owner may be executing or blocked waiting on another object.
    */
   RATE_MONOTONIC_ACTIVE,
 
@@ -224,13 +223,13 @@ struct rtems_printer;
  *   this object.
  *
  * This directive creates a period which resides on the local node. The period
- * has the user-defined object name specified in ``name`` The assigned object
- * identifier is returned in ``id``. This identifier is used to access the
- * period with other rate monotonic related directives.
+ * has the user-defined object name specified in `name` The assigned object
+ * identifier is returned in `id`. This identifier is used to access the period
+ * with other rate monotonic related directives.
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
  *
- * @retval ::RTEMS_INVALID_NAME The ``name`` parameter was invalid.
+ * @retval ::RTEMS_INVALID_NAME The `name` parameter was invalid.
  *
  * @retval ::RTEMS_TOO_MANY There was no inactive object available to create a
  *   period. The number of periods available to the application is configured
@@ -282,13 +281,13 @@ rtems_status_code rtems_rate_monotonic_create( rtems_name name, rtems_id *id );
  *   name will be stored in this object.
  *
  * This directive obtains a period identifier associated with the period name
- * specified in ``name``.
+ * specified in `name`.
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
  *
- * @retval ::RTEMS_INVALID_ADDRESS The ``id`` parameter was NULL.
+ * @retval ::RTEMS_INVALID_ADDRESS The `id` parameter was NULL.
  *
- * @retval ::RTEMS_INVALID_NAME The ``name`` parameter was 0.
+ * @retval ::RTEMS_INVALID_NAME The `name` parameter was 0.
  *
  * @retval ::RTEMS_INVALID_NAME There was no object with the specified name on
  *   the local node.
@@ -326,14 +325,14 @@ rtems_status_code rtems_rate_monotonic_ident( rtems_name name, rtems_id *id );
  *
  * @param id is the rate monotonic period identifier.
  *
- * This directive cancels the rate monotonic period specified by ``id``. This
+ * This directive cancels the rate monotonic period specified by `id`. This
  * period may be reinitiated by the next invocation of
  * rtems_rate_monotonic_period().
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
  *
  * @retval ::RTEMS_INVALID_ID There was no rate monotonic period associated
- *   with the identifier specified by ``id``.
+ *   with the identifier specified by `id`.
  *
  * @retval ::RTEMS_NOT_OWNER_OF_RESOURCE The rate monotonic period was not
  *   created by the calling task.
@@ -361,13 +360,13 @@ rtems_status_code rtems_rate_monotonic_cancel( rtems_id id );
  *
  * @param id is the period identifier.
  *
- * This directive deletes the period specified by ``id``. If the period is
+ * This directive deletes the period specified by `id`. If the period is
  * running, it is automatically canceled.
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
  *
  * @retval ::RTEMS_INVALID_ID There was no period associated with the
- *   identifier specified by ``id``.
+ *   identifier specified by `id`.
  *
  * @par Notes
  * The PCB for the deleted period is reclaimed by RTEMS.
@@ -406,9 +405,9 @@ rtems_status_code rtems_rate_monotonic_delete( rtems_id id );
  * @param length is the period length in clock ticks or #RTEMS_PERIOD_STATUS to
  *   get the period status.
  *
- * This directive initiates the rate monotonic period specified by ``id``  with
- * a length of period ticks specified by ``length``. If the period is running,
- * then the calling task will block for the remainder of the period before
+ * This directive initiates the rate monotonic period specified by `id` with a
+ * length of period ticks specified by `length`. If the period is running, then
+ * the calling task will block for the remainder of the period before
  * reinitiating the period with the specified period length. If the period was
  * not running (either expired or never initiated), the period is immediately
  * initiated and the directive returns immediately. If the period has expired,
@@ -424,13 +423,13 @@ rtems_status_code rtems_rate_monotonic_delete( rtems_id id );
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
  *
  * @retval ::RTEMS_INVALID_ID There was no rate monotonic period associated
- *   with the identifier specified by ``id``.
+ *   with the identifier specified by `id`.
  *
  * @retval ::RTEMS_NOT_OWNER_OF_RESOURCE The rate monotonic period was not
  *   created by the calling task.
  *
  * @retval ::RTEMS_NOT_DEFINED The rate monotonic period has never been
- *   initiated (only possible when the ``length`` parameter was equal to
+ *   initiated (only possible when the `length` parameter was equal to
  *   #RTEMS_PERIOD_STATUS).
  *
  * @retval ::RTEMS_TIMEOUT The rate monotonic period has expired.
@@ -468,8 +467,8 @@ rtems_status_code rtems_rate_monotonic_period(
  *   will be stored in this object.
  *
  * This directive returns the detailed status of the rate monotonic period
- * specified by ``id``. The detailed status of the period will be returned in
- * the members of the period status object referenced by ``status``:
+ * specified by `id`. The detailed status of the period will be returned in the
+ * members of the period status object referenced by `status`:
  *
  * - The `owner` member is set to the identifier of the owner task of the
  *   period.
@@ -491,9 +490,9 @@ rtems_status_code rtems_rate_monotonic_period(
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
  *
  * @retval ::RTEMS_INVALID_ID There was no rate monotonic period associated
- *   with the identifier specified by ``id``.
+ *   with the identifier specified by `id`.
  *
- * @retval ::RTEMS_INVALID_ADDRESS The ``status`` parameter was NULL.
+ * @retval ::RTEMS_INVALID_ADDRESS The `status` parameter was NULL.
  *
  * @par Constraints
  * @parblock
@@ -525,8 +524,8 @@ rtems_status_code rtems_rate_monotonic_get_status(
  *   successful, the period statistics will be stored in this object.
  *
  * This directive returns the statistics of the rate monotonic period specified
- * by ``id``. The statistics of the period will be returned in the members of
- * the period statistics object referenced by ``status``:
+ * by `id`. The statistics of the period will be returned in the members of the
+ * period statistics object referenced by `status`:
  *
  * - The `count` member is set to the number of periods executed.
  *
@@ -553,9 +552,9 @@ rtems_status_code rtems_rate_monotonic_get_status(
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
  *
  * @retval ::RTEMS_INVALID_ID There was no rate monotonic period associated
- *   with the identifier specified by ``id``.
+ *   with the identifier specified by `id`.
  *
- * @retval ::RTEMS_INVALID_ADDRESS The ``status`` parameter was NULL.
+ * @retval ::RTEMS_INVALID_ADDRESS The `status` parameter was NULL.
  *
  * @par Constraints
  * @parblock
@@ -583,12 +582,12 @@ rtems_status_code rtems_rate_monotonic_get_statistics(
  * @param id is the rate monotonic period identifier.
  *
  * This directive resets the statistics of the rate monotonic period specified
- * by ``id``.
+ * by `id`.
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
  *
  * @retval ::RTEMS_INVALID_ID There was no rate monotonic period associated
- *   with the identifier specified by ``id``.
+ *   with the identifier specified by `id`.
  *
  * @par Constraints
  * @parblock
@@ -657,7 +656,7 @@ void rtems_rate_monotonic_report_statistics( void );
  * @param printer is the printer plugin to output the report.
  *
  * This directive prints a report on all active periods which have executed at
- * least one period using the printer plugin specified by ``printer``.
+ * least one period using the printer plugin specified by `printer`.
  *
  * @par Constraints
  * @parblock

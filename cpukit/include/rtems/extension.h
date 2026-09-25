@@ -74,12 +74,12 @@ extern "C" {
  *
  * @param id is the extension set identifier.
  *
- * This directive deletes the extension set specified by ``id``.
+ * This directive deletes the extension set specified by `id`.
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
  *
  * @retval ::RTEMS_INVALID_ID There was no extension set associated with the
- *   identifier specified by ``id``.
+ *   identifier specified by `id`.
  *
  * @par Notes
  * The ESCB for the deleted extension set is reclaimed by RTEMS.
@@ -176,13 +176,13 @@ typedef Internal_errors_Source rtems_fatal_source;
  *   name will be stored in this object.
  *
  * This directive obtains an extension set identifier associated with the
- * extension set name specified in ``name``.
+ * extension set name specified in `name`.
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
  *
- * @retval ::RTEMS_INVALID_ADDRESS The ``id`` parameter was NULL.
+ * @retval ::RTEMS_INVALID_ADDRESS The `id` parameter was NULL.
  *
- * @retval ::RTEMS_INVALID_NAME The ``name`` parameter was 0.
+ * @retval ::RTEMS_INVALID_NAME The `name` parameter was 0.
  *
  * @retval ::RTEMS_INVALID_NAME There was no object with the specified name on
  *   the local node.
@@ -242,20 +242,20 @@ typedef User_extensions_Table rtems_extensions_table;
  *   stored in this object.
  *
  * This directive creates an extension set which resides on the local node. The
- * extension set has the user-defined object name specified in ``name``. The
- * assigned object identifier is returned in ``id``. This identifier is used to
+ * extension set has the user-defined object name specified in `name`. The
+ * assigned object identifier is returned in `id`. This identifier is used to
  * access the extension set with other extension set related directives.
  *
  * The extension set is initialized using the extension table specified in
- * ``extension_table``.
+ * `extension_table`.
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
  *
- * @retval ::RTEMS_INVALID_NAME The ``name`` parameter was invalid.
+ * @retval ::RTEMS_INVALID_NAME The `name` parameter was invalid.
  *
- * @retval ::RTEMS_INVALID_ADDRESS The ``extension_table`` parameter was NULL.
+ * @retval ::RTEMS_INVALID_ADDRESS The `extension_table` parameter was NULL.
  *
- * @retval ::RTEMS_INVALID_ADDRESS The ``id`` parameter was NULL.
+ * @retval ::RTEMS_INVALID_ADDRESS The `id` parameter was NULL.
  *
  * @retval ::RTEMS_TOO_MANY There was no inactive object available to create an
  *   extension set. The number of extension sets available to the application
@@ -560,16 +560,16 @@ typedef User_extensions_thread_start_extension rtems_task_start_extension;
  *
  * Where the system was built with SMP support disabled, the task switch
  * extensions are invoked before the context switch from the currently
- * executing thread to the heir thread. The ``executing`` is a pointer to the
- * TCB of the currently executing thread. The ``heir`` is a pointer to the TCB
- * of the heir thread. The context switch initiated through the multitasking
- * start is not covered by the task switch extensions.
+ * executing thread to the heir thread. The `executing` is a pointer to the TCB
+ * of the currently executing thread. The `heir` is a pointer to the TCB of the
+ * heir thread. The context switch initiated through the multitasking start is
+ * not covered by the task switch extensions.
  *
  * Where the system was built with SMP support enabled, the task switch
  * extensions are invoked after the context switch to the heir thread. The
- * ``executing`` is a pointer to the TCB of the previously executing thread.
- * Despite the name, this is not the currently executing thread. The ``heir``
- * is a pointer to the TCB of the newly executing thread. This is the currently
+ * `executing` is a pointer to the TCB of the previously executing thread.
+ * Despite the name, this is not the currently executing thread. The `heir` is
+ * a pointer to the TCB of the newly executing thread. This is the currently
  * executing thread. The context switches initiated through the multitasking
  * start are covered by the task switch extensions. The reason for the
  * differences to uniprocessor configurations is that the context switch may

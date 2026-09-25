@@ -85,16 +85,15 @@ struct bintime;
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
  *
- * @retval ::RTEMS_INVALID_ADDRESS The ``time_of_day`` parameter was NULL.
+ * @retval ::RTEMS_INVALID_ADDRESS The `time_of_day` parameter was NULL.
  *
- * @retval ::RTEMS_INVALID_CLOCK The time of day specified by ``time_of_day``
- *   was invalid.
+ * @retval ::RTEMS_INVALID_CLOCK The time of day specified by `time_of_day` was
+ *   invalid.
  *
  * @par Notes
  * @parblock
- * The date, time, and ticks specified by ``time_of_day`` are all
- * range-checked, and an error is returned if any one is out of its valid
- * range.
+ * The date, time, and ticks specified by `time_of_day` are all range-checked,
+ * and an error is returned if any one is out of its valid range.
  *
  * RTEMS can represent time points of the CLOCK_REALTIME clock in nanoseconds
  * ranging from 1988-01-01T00:00:00.000000000Z to
@@ -161,7 +160,7 @@ rtems_status_code rtems_clock_set( const rtems_time_of_day *time_of_day );
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
  *
- * @retval ::RTEMS_INVALID_ADDRESS The ``time_of_day`` parameter was NULL.
+ * @retval ::RTEMS_INVALID_ADDRESS The `time_of_day` parameter was NULL.
  *
  * @retval ::RTEMS_NOT_DEFINED The CLOCK_REALTIME was not set. It can be set
  *   with rtems_clock_set().
@@ -194,7 +193,7 @@ rtems_status_code rtems_clock_get_tod( rtems_time_of_day *time_of_day );
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
  *
- * @retval ::RTEMS_INVALID_ADDRESS The ``time_of_day`` parameter was NULL.
+ * @retval ::RTEMS_INVALID_ADDRESS The `time_of_day` parameter was NULL.
  *
  * @retval ::RTEMS_NOT_DEFINED The CLOCK_REALTIME was not set. It can be set
  *   with rtems_clock_set().
@@ -814,7 +813,7 @@ void rtems_clock_get_boot_time_timeval( struct timeval *boot_time );
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
  *
- * @retval ::RTEMS_INVALID_ADDRESS The ``seconds_since_rtems_epoch`` parameter
+ * @retval ::RTEMS_INVALID_ADDRESS The `seconds_since_rtems_epoch` parameter
  *   was NULL.
  *
  * @retval ::RTEMS_NOT_DEFINED The CLOCK_REALTIME was not set. It can be set
@@ -910,7 +909,7 @@ rtems_interval rtems_clock_get_ticks_since_boot( void );
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
  *
- * @retval ::RTEMS_INVALID_ADDRESS The ``uptime`` parameter was NULL.
+ * @retval ::RTEMS_INVALID_ADDRESS The `uptime` parameter was NULL.
  *
  * @par Constraints
  * @parblock
@@ -1012,7 +1011,7 @@ uint64_t rtems_clock_get_uptime_nanoseconds( void );
  *
  * @param delta is the delta value in clock ticks.
  *
- * @return Returns a clock tick counter value which is at least ``delta`` clock
+ * @return Returns a clock tick counter value which is at least `delta` clock
  *   ticks in the future.
  *
  * @par Constraints
@@ -1041,8 +1040,8 @@ static inline rtems_interval rtems_clock_tick_later( rtems_interval delta )
  *
  * @param delta_in_usec is the delta value in microseconds.
  *
- * @return Returns a clock tick counter value which is at least
- *   ``delta_in_usec`` microseconds in the future.
+ * @return Returns a clock tick counter value which is at least `delta_in_usec`
+ *   microseconds in the future.
  *
  * @par Constraints
  * @parblock

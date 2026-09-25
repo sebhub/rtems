@@ -741,7 +741,7 @@
  * The maximum number of POSIX threads is specified by @ref
  * CONFIGURE_MAXIMUM_POSIX_THREADS.
  *
- * A future enhancement to ``<rtems/confdefs.h>`` could be to eliminate the
+ * A future enhancement to `<rtems/confdefs.h>` could be to eliminate the
  * assumption that all tasks have floating point enabled. This would require
  * the addition of a new configuration parameter to specify the number of tasks
  * which enable floating point support.
@@ -939,7 +939,7 @@
  * If this configuration option is specified, then
  *
  * - a task storage area of the specified size is statically allocated by
- *   ``<rtems/confdefs.h>`` for the Classic API initialization task,
+ *   `<rtems/confdefs.h>` for the Classic API initialization task,
  *
  * - the Classic API initialization task is constructed by
  *   rtems_task_construct() instead of using rtems_task_create(),
@@ -2684,7 +2684,7 @@
  *
  * @par Default Value
  * If this configuration option is undefined, then the RTEMS Workspace and task
- * stack space size is calculated by ``<rtems/confdefs.h>`` based on the values
+ * stack space size is calculated by `<rtems/confdefs.h>` based on the values
  * configuration options.
  *
  * @par Constraints
@@ -2717,7 +2717,7 @@
  *
  * The value of this configuration option defines the number of bytes the
  * applications wishes to add to the task stack requirements calculated by
- * ``<rtems/confdefs.h>``.
+ * `<rtems/confdefs.h>`.
  *
  * @par Default Value
  * The default value is 0.
@@ -2738,7 +2738,7 @@
  * @par Notes
  * This parameter is very important. If the application creates tasks with
  * stacks larger then the minimum, then that memory is **not** accounted for by
- * ``<rtems/confdefs.h>``.
+ * `<rtems/confdefs.h>`.
  */
 #define CONFIGURE_EXTRA_TASK_STACKS
 
@@ -2749,16 +2749,15 @@
  *
  * @anchor CONFIGURE_INIT
  *
- * While this configuration option is defined, when the ``<rtems/confdefs.h>``
- * is included, the system settings defined by present application
- * configuration options are statically allocated and initialized. All user
- * provided application configuration options defined before the include of
- * ``<rtems/confdefs.h>`` are evaluated. They define the actual system
- * settings.
+ * While this configuration option is defined, when the `<rtems/confdefs.h>` is
+ * included, the system settings defined by present application configuration
+ * options are statically allocated and initialized. All user provided
+ * application configuration options defined before the include of
+ * `<rtems/confdefs.h>` are evaluated. They define the actual system settings.
  *
  * @par Default Configuration
  * There is no default configuration associated with this configuration option.
- * If ``<rtems/confdefs.h>`` is included and this configuration option is not
+ * If `<rtems/confdefs.h>` is included and this configuration option is not
  * defined, then only white space is included.
  */
 #define CONFIGURE_INIT
@@ -3046,7 +3045,7 @@
  *
  * The value of this configuration option defines the number of kilobytes the
  * application wishes to add to the RTEMS Workspace size calculated by
- * ``<rtems/confdefs.h>``.
+ * `<rtems/confdefs.h>`.
  *
  * @par Default Value
  * The default value is 0.
@@ -3070,7 +3069,7 @@
  *
  * @par Notes
  * This configuration option should only be used when it is suspected that a
- * bug in ``<rtems/confdefs.h>`` has resulted in an underestimation. Typically
+ * bug in `<rtems/confdefs.h>` has resulted in an underestimation. Typically
  * the memory allocation will be too low when an application does not account
  * for all message queue buffers or task stacks, see @ref
  * CONFIGURE_MESSAGE_BUFFER_MEMORY.
@@ -3589,7 +3588,7 @@
  * @anchor CONFIGURE_IDLE_TASK_STORAGE_SIZE
  *
  * If this configuration option is specified, then the task storage areas for
- * the IDLE tasks are statically allocated by ``<rtems/confdefs.h>``. The value
+ * the IDLE tasks are statically allocated by `<rtems/confdefs.h>`. The value
  * of this configuration option defines the size in bytes of the task storage
  * area of each IDLE task in the system.
  *
@@ -3623,7 +3622,7 @@
  * fatal code during system initialization.
  *
  * The value of this configuration option is passed to
- * RTEMS_TASK_STORAGE_SIZE() by ``<rtems/confdefs.h>`` to determine the actual
+ * RTEMS_TASK_STORAGE_SIZE() by `<rtems/confdefs.h>` to determine the actual
  * size of the statically allocated area to take architecture-specific
  * overheads into account.
  *

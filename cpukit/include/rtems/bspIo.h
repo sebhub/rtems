@@ -116,10 +116,10 @@ extern BSP_output_char_function_type BSP_output_char;
  *
  * @param c is the character to output.
  *
- * The directive outputs the character specified by ``c`` to the kernel
- * character output device using the polled character output implementation
- * provided by #BSP_output_char. The directive performs a character translation
- * from `NL` to `CR` followed by `NR`.
+ * The directive outputs the character specified by `c` to the kernel character
+ * output device using the polled character output implementation provided by
+ * #BSP_output_char. The directive performs a character translation from `NL`
+ * to `CR` followed by `NR`.
  *
  * If the kernel character output device is concurrently accessed, then
  * interleaved output may occur.

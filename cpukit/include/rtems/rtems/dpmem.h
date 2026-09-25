@@ -84,20 +84,20 @@ extern "C" {
  *   this object.
  *
  * This directive creates a port which resides on the local node. The port has
- * the user-defined object name specified in ``name``. The assigned object
- * identifier is returned in ``id``. This identifier is used to access the port
+ * the user-defined object name specified in `name`. The assigned object
+ * identifier is returned in `id`. This identifier is used to access the port
  * with other dual-ported memory port related directives.
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
  *
- * @retval ::RTEMS_INVALID_NAME The ``name`` parameter was invalid.
+ * @retval ::RTEMS_INVALID_NAME The `name` parameter was invalid.
  *
- * @retval ::RTEMS_INVALID_ADDRESS The ``id`` parameter was NULL.
+ * @retval ::RTEMS_INVALID_ADDRESS The `id` parameter was NULL.
  *
- * @retval ::RTEMS_INVALID_ADDRESS The ``internal_start`` parameter was not
+ * @retval ::RTEMS_INVALID_ADDRESS The `internal_start` parameter was not
  *   properly aligned.
  *
- * @retval ::RTEMS_INVALID_ADDRESS The ``external_start`` parameter was not
+ * @retval ::RTEMS_INVALID_ADDRESS The `external_start` parameter was not
  *   properly aligned.
  *
  * @retval ::RTEMS_TOO_MANY There was no inactive object available to create a
@@ -106,8 +106,8 @@ extern "C" {
  *
  * @par Notes
  * @parblock
- * The ``internal_start`` and ``external_start`` parameters must be on a
- * boundary defined by the target processor architecture.
+ * The `internal_start` and `external_start` parameters must be on a boundary
+ * defined by the target processor architecture.
  *
  * For control and maintenance of the port, RTEMS allocates a DPCB from the
  * local DPCB free pool and initializes it.
@@ -155,13 +155,13 @@ rtems_status_code rtems_port_create(
  *   name will be stored in this object.
  *
  * This directive obtains a port identifier associated with the port name
- * specified in ``name``.
+ * specified in `name`.
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
  *
- * @retval ::RTEMS_INVALID_ADDRESS The ``id`` parameter was NULL.
+ * @retval ::RTEMS_INVALID_ADDRESS The `id` parameter was NULL.
  *
- * @retval ::RTEMS_INVALID_NAME The ``name`` parameter was 0.
+ * @retval ::RTEMS_INVALID_NAME The `name` parameter was 0.
  *
  * @retval ::RTEMS_INVALID_NAME There was no object with the specified name on
  *   the local node.
@@ -199,12 +199,12 @@ rtems_status_code rtems_port_ident( rtems_name name, rtems_id *id );
  *
  * @param id is the port identifier.
  *
- * This directive deletes the port specified by ``id``.
+ * This directive deletes the port specified by `id`.
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
  *
  * @retval ::RTEMS_INVALID_ID There was no port associated with the identifier
- *   specified by ``id``.
+ *   specified by `id`.
  *
  * @par Notes
  * The DPCB for the deleted port is reclaimed by RTEMS.
@@ -252,9 +252,9 @@ rtems_status_code rtems_port_delete( rtems_id id );
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
  *
- * @retval ::RTEMS_INVALID_NAME The ``id`` parameter was invalid.
+ * @retval ::RTEMS_INVALID_NAME The `id` parameter was invalid.
  *
- * @retval ::RTEMS_INVALID_ADDRESS The ``internal`` parameter was NULL.
+ * @retval ::RTEMS_INVALID_ADDRESS The `internal` parameter was NULL.
  *
  * @par Constraints
  * @parblock
@@ -299,9 +299,9 @@ rtems_status_code rtems_port_external_to_internal(
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
  *
- * @retval ::RTEMS_INVALID_NAME The ``id`` parameter was invalid.
+ * @retval ::RTEMS_INVALID_NAME The `id` parameter was invalid.
  *
- * @retval ::RTEMS_INVALID_ADDRESS The ``external`` parameter was NULL.
+ * @retval ::RTEMS_INVALID_ADDRESS The `external` parameter was NULL.
  *
  * @par Constraints
  * @parblock

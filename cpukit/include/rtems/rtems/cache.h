@@ -248,8 +248,8 @@ void rtems_cache_unfreeze_instruction( void );
  *
  * @param size is the size in bytes of the memory area to flush.
  *
- * Dirty data cache lines covering the area are transfered to memory.
- * Depending on the cache implementation this may mark the lines as invalid.
+ * Dirty data cache lines covering the area are transfered to memory. Depending
+ * on the cache implementation this may mark the lines as invalid.
  *
  * @par Constraints
  * @parblock

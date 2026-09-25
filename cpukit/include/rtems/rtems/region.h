@@ -82,16 +82,16 @@ extern "C" {
  *   this object.
  *
  * This directive obtains the size in bytes of the segment specified by
- * ``segment`` of the region specified by ``id`` in ``size``.
+ * `segment` of the region specified by `id` in `size`.
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
  *
- * @retval ::RTEMS_INVALID_ADDRESS The ``segment`` parameter was NULL.
+ * @retval ::RTEMS_INVALID_ADDRESS The `segment` parameter was NULL.
  *
- * @retval ::RTEMS_INVALID_ADDRESS The ``size`` parameter was NULL.
+ * @retval ::RTEMS_INVALID_ADDRESS The `size` parameter was NULL.
  *
  * @retval ::RTEMS_INVALID_ID There was no region associated with the
- *   identifier specified by ``id``.
+ *   identifier specified by `id`.
  *
  * @retval ::RTEMS_INVALID_ADDRESS The segment was not within the region.
  *
@@ -143,20 +143,20 @@ rtems_status_code rtems_region_get_segment_size(
  *   this object.
  *
  * This directive creates a region which resides on the local node. The region
- * has the user-defined object name specified in ``name``. The assigned object
- * identifier is returned in ``id``. This identifier is used to access the
- * region with other region related directives.
+ * has the user-defined object name specified in `name`. The assigned object
+ * identifier is returned in `id`. This identifier is used to access the region
+ * with other region related directives.
  *
  * The region manages the **contiguous memory area** which starts at
- * ``starting_address`` and is ``length`` bytes long. The memory area shall be
+ * `starting_address` and is `length` bytes long. The memory area shall be
  * large enough to contain some internal region administration data.
  *
  * The **starting address** and **length of segments** allocated from the
- * region will be an integral multiple of ``page_size``. The specified page
- * size will be aligned to an implementation-dependent minimum alignment if
+ * region will be an integral multiple of `page_size`. The specified page size
+ * will be aligned to an implementation-dependent minimum alignment if
  * necessary.
  *
- * The **attribute set** specified in ``attribute_set`` is built through a
+ * The **attribute set** specified in `attribute_set` is built through a
  * *bitwise or* of the attribute constants described below. Not all
  * combinations of attributes are allowed. Some attributes are mutually
  * exclusive. If mutually exclusive attributes are combined, the behaviour is
@@ -175,21 +175,21 @@ rtems_status_code rtems_region_get_segment_size(
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
  *
- * @retval ::RTEMS_INVALID_NAME The ``name`` parameter was invalid.
+ * @retval ::RTEMS_INVALID_NAME The `name` parameter was invalid.
  *
- * @retval ::RTEMS_INVALID_ADDRESS The ``id`` parameter was NULL.
+ * @retval ::RTEMS_INVALID_ADDRESS The `id` parameter was NULL.
  *
- * @retval ::RTEMS_INVALID_ADDRESS The ``starting_address`` parameter was NULL.
+ * @retval ::RTEMS_INVALID_ADDRESS The `starting_address` parameter was NULL.
  *
  * @retval ::RTEMS_TOO_MANY There was no inactive object available to create a
  *   region. The number of regions available to the application is configured
  *   through the @ref CONFIGURE_MAXIMUM_REGIONS application configuration
  *   option.
  *
- * @retval ::RTEMS_INVALID_SIZE The ``page_size`` parameter was invalid.
+ * @retval ::RTEMS_INVALID_SIZE The `page_size` parameter was invalid.
  *
- * @retval ::RTEMS_INVALID_SIZE The memory area specified in
- *   ``starting_address`` and ``length`` was too small.
+ * @retval ::RTEMS_INVALID_SIZE The memory area specified in `starting_address`
+ *   and `length` was too small.
  *
  * @par Notes
  * For control and maintenance of the region, RTEMS allocates a RNCB from the
@@ -238,13 +238,13 @@ rtems_status_code rtems_region_create(
  *   name will be stored in this object.
  *
  * This directive obtains a region identifier associated with the region name
- * specified in ``name``.
+ * specified in `name`.
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
  *
- * @retval ::RTEMS_INVALID_ADDRESS The ``id`` parameter was NULL.
+ * @retval ::RTEMS_INVALID_ADDRESS The `id` parameter was NULL.
  *
- * @retval ::RTEMS_INVALID_NAME The ``name`` parameter was 0.
+ * @retval ::RTEMS_INVALID_NAME The `name` parameter was 0.
  *
  * @retval ::RTEMS_INVALID_NAME There was no object with the specified name on
  *   the local node.
@@ -282,12 +282,12 @@ rtems_status_code rtems_region_ident( rtems_name name, rtems_id *id );
  *
  * @param id is the region identifier.
  *
- * This directive deletes the region specified by ``id``.
+ * This directive deletes the region specified by `id`.
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
  *
  * @retval ::RTEMS_INVALID_ID There was no region associated with the
- *   identifier specified by ``id``.
+ *   identifier specified by `id`.
  *
  * @retval ::RTEMS_RESOURCE_IN_USE There were segments of the region still in
  *   use.
@@ -335,18 +335,18 @@ rtems_status_code rtems_region_delete( rtems_id id );
  * @param length is the length in bytes of the memory area to extend the
  *   region.
  *
- * This directive adds the memory area which starts at ``starting_address`` for
- * ``length`` bytes to the region specified by ``id``.
+ * This directive adds the memory area which starts at `starting_address` for
+ * `length` bytes to the region specified by `id`.
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
  *
- * @retval ::RTEMS_INVALID_ADDRESS The ``starting_address`` parameter was NULL.
+ * @retval ::RTEMS_INVALID_ADDRESS The `starting_address` parameter was NULL.
  *
  * @retval ::RTEMS_INVALID_ID There was no region associated with the
- *   identifier specified by ``id``.
+ *   identifier specified by `id`.
  *
  * @retval ::RTEMS_INVALID_ADDRESS The memory area specified by
- *   ``starting_address`` and ``length`` was insufficient to extend the heap.
+ *   `starting_address` and `length` was insufficient to extend the heap.
  *
  * @par Notes
  * There are no alignment requirements for the memory area. The memory area
@@ -395,31 +395,31 @@ rtems_status_code rtems_region_extend(
  *   directive call is successful, the begin address of the allocated segment
  *   will be stored in this object.
  *
- * This directive gets a segment from the region specified by ``id``.
+ * This directive gets a segment from the region specified by `id`.
  *
- * The **option set** specified in ``option_set`` is built through a *bitwise
- * or* of the option constants described below. Not all combinations of options
- * are allowed. Some options are mutually exclusive. If mutually exclusive
- * options are combined, the behaviour is undefined. Options not mentioned
- * below are not evaluated by this directive and have no effect. Default
- * options can be selected by using the #RTEMS_DEFAULT_OPTIONS constant.
+ * The **option set** specified in `option_set` is built through a *bitwise or*
+ * of the option constants described below. Not all combinations of options are
+ * allowed. Some options are mutually exclusive. If mutually exclusive options
+ * are combined, the behaviour is undefined. Options not mentioned below are
+ * not evaluated by this directive and have no effect. Default options can be
+ * selected by using the #RTEMS_DEFAULT_OPTIONS constant.
  *
  * The calling task can **wait** or **try to get** a segment from the region
  * according to the mutually exclusive #RTEMS_WAIT and #RTEMS_NO_WAIT options.
  *
  * - **Waiting to get** a segment from the region is the default and can be
- *   emphasized through the use of the #RTEMS_WAIT option. The ``timeout``
+ *   emphasized through the use of the #RTEMS_WAIT option. The `timeout`
  *   parameter defines how long the calling task is willing to wait. Use
  *   #RTEMS_NO_TIMEOUT to wait potentially forever, otherwise set a timeout
  *   interval in clock ticks.
  *
  * - **Trying to get** a segment from the region is selected by the
- *   #RTEMS_NO_WAIT option. If this option is defined, then the ``timeout``
+ *   #RTEMS_NO_WAIT option. If this option is defined, then the `timeout`
  *   parameter is ignored. When a segment from the region cannot be immediately
  *   allocated, then the ::RTEMS_UNSATISFIED status is returned.
  *
  * With either #RTEMS_WAIT or #RTEMS_NO_WAIT if there is a segment of the
- * requested size is available, then it is returned in ``segment`` and this
+ * requested size is available, then it is returned in `segment` and this
  * directive returns immediately with the ::RTEMS_SUCCESSFUL status code.
  *
  * If the calling task chooses to return immediately and the region has no
@@ -434,14 +434,14 @@ rtems_status_code rtems_region_extend(
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
  *
- * @retval ::RTEMS_INVALID_ADDRESS The ``segment`` parameter was NULL.
+ * @retval ::RTEMS_INVALID_ADDRESS The `segment` parameter was NULL.
  *
- * @retval ::RTEMS_INVALID_SIZE The ``size`` parameter was zero.
+ * @retval ::RTEMS_INVALID_SIZE The `size` parameter was zero.
  *
  * @retval ::RTEMS_INVALID_ID There was no region associated with the
- *   identifier specified by ``id``.
+ *   identifier specified by `id`.
  *
- * @retval ::RTEMS_INVALID_SIZE The ``size`` parameter exceeded the maximum
+ * @retval ::RTEMS_INVALID_SIZE The `size` parameter exceeded the maximum
  *   segment size which is possible for the region.
  *
  * @retval ::RTEMS_UNSATISFIED The region had no segment of the requested size
@@ -492,17 +492,17 @@ rtems_status_code rtems_region_get_segment(
  *
  * @param segment is the begin address of the segment to return.
  *
- * This directive returns the segment specified by ``segment`` to the region
- * specified by ``id``. The returned segment is merged with its neighbors to
- * form the largest possible segment. The first task on the wait queue is
- * examined to determine if its segment request can now be satisfied. If so, it
- * is given a segment and unblocked. This process is repeated until the first
- * task's segment request cannot be satisfied.
+ * This directive returns the segment specified by `segment` to the region
+ * specified by `id`. The returned segment is merged with its neighbors to form
+ * the largest possible segment. The first task on the wait queue is examined
+ * to determine if its segment request can now be satisfied. If so, it is given
+ * a segment and unblocked. This process is repeated until the first task's
+ * segment request cannot be satisfied.
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
  *
  * @retval ::RTEMS_INVALID_ID There was no region associated with the
- *   identifier specified by ``id``.
+ *   identifier specified by `id`.
  *
  * @retval ::RTEMS_INVALID_ADDRESS The segment was not within the region.
  *
@@ -552,17 +552,17 @@ rtems_status_code rtems_region_return_segment( rtems_id id, void *segment );
  *   directive call is successful, the old size of the segment will be stored
  *   in this object.
  *
- * This directive is used to increase or decrease the size of the ``segment``
- * of the region specified by ``id``. When increasing the size of a segment, it
- * is possible that there is no memory available contiguous to the segment. In
+ * This directive is used to increase or decrease the size of the `segment` of
+ * the region specified by `id`. When increasing the size of a segment, it is
+ * possible that there is no memory available contiguous to the segment. In
  * this case, the request is unsatisfied.
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
  *
- * @retval ::RTEMS_INVALID_ADDRESS The ``old_size`` parameter was NULL.
+ * @retval ::RTEMS_INVALID_ADDRESS The `old_size` parameter was NULL.
  *
  * @retval ::RTEMS_INVALID_ID There was no region associated with the
- *   identifier specified by ``id``.
+ *   identifier specified by `id`.
  *
  * @retval ::RTEMS_INVALID_ADDRESS The segment was not within the region.
  *
@@ -603,21 +603,20 @@ rtems_status_code rtems_region_resize_segment(
  *
  * @param id is the region identifier.
  *
- * @param[out] the_info is the pointer to a Heap_Information_block object.
- *   When the directive call is successful, the information of the region will
- *   be stored in this object.
+ * @param[out] the_info is the pointer to a Heap_Information_block object. When
+ *   the directive call is successful, the information of the region will be
+ *   stored in this object.
  *
  * This directive is used to obtain information about the used and free memory
- * in the region specified by ``id``. This is a snapshot at the time of the
- * call. The information will be returned in the structure pointed to by
- * ``the_info``.
+ * in the region specified by `id`. This is a snapshot at the time of the call.
+ * The information will be returned in the structure pointed to by `the_info`.
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
  *
- * @retval ::RTEMS_INVALID_ADDRESS The ``the_info`` parameter was NULL.
+ * @retval ::RTEMS_INVALID_ADDRESS The `the_info` parameter was NULL.
  *
  * @retval ::RTEMS_INVALID_ID There was no region associated with the
- *   identifier specified by ``id``.
+ *   identifier specified by `id`.
  *
  * @par Notes
  * @parblock
@@ -658,20 +657,20 @@ rtems_status_code rtems_region_get_information(
  *
  * @param id is the region identifier.
  *
- * @param[out] the_info is the pointer to a Heap_Information_block object.
- *   When the directive call is successful, the free information of the region
- *   will be stored in this object.
+ * @param[out] the_info is the pointer to a Heap_Information_block object. When
+ *   the directive call is successful, the free information of the region will
+ *   be stored in this object.
  *
  * This directive is used to obtain information about the free memory in the
- * region specified by ``id``. This is a snapshot at the time of the call. The
- * information will be returned in the structure pointed to by ``the_info``.
+ * region specified by `id`. This is a snapshot at the time of the call. The
+ * information will be returned in the structure pointed to by `the_info`.
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
  *
- * @retval ::RTEMS_INVALID_ADDRESS The ``the_info`` parameter was NULL.
+ * @retval ::RTEMS_INVALID_ADDRESS The `the_info` parameter was NULL.
  *
  * @retval ::RTEMS_INVALID_ID There was no region associated with the
- *   identifier specified by ``id``.
+ *   identifier specified by `id`.
  *
  * @par Notes
  * @parblock

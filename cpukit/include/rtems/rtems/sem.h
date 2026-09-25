@@ -90,10 +90,10 @@ extern "C" {
  *   in this object.
  *
  * This directive creates a semaphore which resides on the local node. The
- * semaphore has the user-defined object name specified in ``name`` and the
- * initial count specified in ``count``. The assigned object identifier is
- * returned in ``id``. This identifier is used to access the semaphore with
- * other semaphore related directives.
+ * semaphore has the user-defined object name specified in `name` and the
+ * initial count specified in `count`. The assigned object identifier is
+ * returned in `id`. This identifier is used to access the semaphore with other
+ * semaphore related directives.
  *
  * The **attribute set** specified in ``attribute_set`` is built through a
  * *bitwise or* of the attribute constants described below. Not all
@@ -168,26 +168,26 @@ extern "C" {
  *
  * - The **priority ceiling locking protocol** is selected by the
  *   #RTEMS_PRIORITY_CEILING attribute. For this locking protocol a priority
- *   ceiling shall be specified in ``priority_ceiling``.
+ *   ceiling shall be specified in `priority_ceiling`.
  *
  * - The **MrsP locking protocol** is selected by the
  *   #RTEMS_MULTIPROCESSOR_RESOURCE_SHARING attribute in SMP configurations,
  *   otherwise this attribute selects the **priority ceiling locking
  *   protocol**. For these locking protocols a priority ceiling shall be
- *   specified in ``priority_ceiling``. This priority is used to set the
- *   priority ceiling for all schedulers. This can be changed later with the
+ *   specified in `priority_ceiling`. This priority is used to set the priority
+ *   ceiling for all schedulers. This can be changed later with the
  *   rtems_semaphore_set_priority() directive using the returned object
  *   identifier.
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
  *
- * @retval ::RTEMS_INVALID_NAME The ``name`` parameter was invalid.
+ * @retval ::RTEMS_INVALID_NAME The `name` parameter was invalid.
  *
- * @retval ::RTEMS_INVALID_ADDRESS The ``id`` parameter was NULL.
+ * @retval ::RTEMS_INVALID_ADDRESS The `id` parameter was NULL.
  *
- * @retval ::RTEMS_INVALID_NUMBER The ``count`` parameter was invalid.
+ * @retval ::RTEMS_INVALID_NUMBER The `count` parameter was invalid.
  *
- * @retval ::RTEMS_NOT_DEFINED The ``attribute_set`` parameter was invalid.
+ * @retval ::RTEMS_NOT_DEFINED The `attribute_set` parameter was invalid.
  *
  * @retval ::RTEMS_TOO_MANY There was no inactive object available to create a
  *   semaphore. The number of semaphores available to the application is
@@ -199,7 +199,7 @@ extern "C" {
  *   of global objects available to the application is configured through the
  *   @ref CONFIGURE_MP_MAXIMUM_GLOBAL_OBJECTS application configuration option.
  *
- * @retval ::RTEMS_INVALID_PRIORITY The ``priority_ceiling`` parameter was
+ * @retval ::RTEMS_INVALID_PRIORITY The `priority_ceiling` parameter was
  *   invalid.
  *
  * @par Notes
@@ -267,9 +267,9 @@ rtems_status_code rtems_semaphore_create(
  *   name will be stored in this object.
  *
  * This directive obtains a semaphore identifier associated with the semaphore
- * name specified in ``name``.
+ * name specified in `name`.
  *
- * The node to search is specified in ``node``. It shall be
+ * The node to search is specified in `node`. It shall be
  *
  * - a valid node number,
  *
@@ -282,9 +282,9 @@ rtems_status_code rtems_semaphore_create(
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
  *
- * @retval ::RTEMS_INVALID_ADDRESS The ``id`` parameter was NULL.
+ * @retval ::RTEMS_INVALID_ADDRESS The `id` parameter was NULL.
  *
- * @retval ::RTEMS_INVALID_NAME The ``name`` parameter was 0.
+ * @retval ::RTEMS_INVALID_NAME The `name` parameter was 0.
  *
  * @retval ::RTEMS_INVALID_NAME There was no object with the specified name on
  *   the specified nodes.
@@ -299,7 +299,7 @@ rtems_status_code rtems_semaphore_create(
  * semaphore identifier is not guaranteed to correspond to the desired
  * semaphore.
  *
- * The objects are searched from lowest to the highest index. If ``node`` is
+ * The objects are searched from lowest to the highest index. If `node` is
  * #RTEMS_SEARCH_ALL_NODES, all nodes are searched with the local node being
  * searched first. All other nodes are searched from lowest to the highest node
  * number.
@@ -338,12 +338,12 @@ rtems_status_code rtems_semaphore_ident(
  *
  * @param id is the semaphore identifier.
  *
- * This directive deletes the semaphore specified by ``id``.
+ * This directive deletes the semaphore specified by `id`.
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
  *
  * @retval ::RTEMS_INVALID_ID There was no semaphore associated with the
- *   identifier specified by ``id``.
+ *   identifier specified by `id`.
  *
  * @retval ::RTEMS_ILLEGAL_ON_REMOTE_OBJECT The semaphore resided on a remote
  *   node.
@@ -409,7 +409,7 @@ rtems_status_code rtems_semaphore_delete( rtems_id id );
  * @param timeout is the timeout in clock ticks if the #RTEMS_WAIT option is
  *   set. Use #RTEMS_NO_TIMEOUT to wait potentially forever.
  *
- * This directive obtains the semaphore specified by ``id``.
+ * This directive obtains the semaphore specified by `id`.
  *
  * The **option set** specified in ``option_set`` is built through a *bitwise
  * or* of the option constants described below. Not all combinations of options
@@ -422,13 +422,12 @@ rtems_status_code rtems_semaphore_delete( rtems_id id );
  * to the mutually exclusive #RTEMS_WAIT and #RTEMS_NO_WAIT options.
  *
  * - **Waiting to obtain** the semaphore is the default and can be emphasized
- *   through the use of the #RTEMS_WAIT option. The ``timeout`` parameter
- *   defines how long the calling task is willing to wait. Use
- *   #RTEMS_NO_TIMEOUT to wait potentially forever, otherwise set a timeout
- *   interval in clock ticks.
+ *   through the use of the #RTEMS_WAIT option. The `timeout` parameter defines
+ *   how long the calling task is willing to wait. Use #RTEMS_NO_TIMEOUT to
+ *   wait potentially forever, otherwise set a timeout interval in clock ticks.
  *
  * - **Trying to obtain** the semaphore is selected by the #RTEMS_NO_WAIT
- *   option. If this option is defined, then the ``timeout`` parameter is
+ *   option. If this option is defined, then the `timeout` parameter is
  *   ignored. When the semaphore cannot be immediately obtained, then the
  *   ::RTEMS_UNSATISFIED status is returned.
  *
@@ -455,7 +454,7 @@ rtems_status_code rtems_semaphore_delete( rtems_id id );
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
  *
  * @retval ::RTEMS_INVALID_ID There was no semaphore associated with the
- *   identifier specified by ``id``.
+ *   identifier specified by `id`.
  *
  * @retval ::RTEMS_NOT_DEFINED The semaphore uses a priority ceiling and there
  *   was no priority ceiling defined for the home scheduler of the calling
@@ -551,8 +550,8 @@ rtems_status_code rtems_semaphore_obtain(
  *
  * @param id is the semaphore identifier.
  *
- * This directive releases the semaphore specified by ``id``. If the
- * semaphore's wait queue is not empty, then
+ * This directive releases the semaphore specified by `id`. If the semaphore's
+ * wait queue is not empty, then
  *
  * - the first task on the wait queue is removed and unblocked, the semaphore's
  *   count is not changed, otherwise
@@ -563,7 +562,7 @@ rtems_status_code rtems_semaphore_obtain(
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
  *
  * @retval ::RTEMS_INVALID_ID There was no semaphore associated with the
- *   identifier specified by ``id``.
+ *   identifier specified by `id`.
  *
  * @retval ::RTEMS_NOT_OWNER_OF_RESOURCE The calling task was not the owner of
  *   the semaphore.
@@ -624,7 +623,7 @@ rtems_status_code rtems_semaphore_release( rtems_id id );
  * @param id is the semaphore identifier.
  *
  * This directive unblocks all tasks waiting on the semaphore specified by
- * ``id``. The semaphore's count is not changed by this directive. Tasks which
+ * `id`. The semaphore's count is not changed by this directive. Tasks which
  * are unblocked as the result of this directive will return from the
  * rtems_semaphore_obtain() directive with a status code of ::RTEMS_UNSATISFIED
  * to indicate that the semaphore was not obtained.
@@ -632,7 +631,7 @@ rtems_status_code rtems_semaphore_release( rtems_id id );
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
  *
  * @retval ::RTEMS_INVALID_ID There was no semaphore associated with the
- *   identifier specified by ``id``.
+ *   identifier specified by `id`.
  *
  * @retval ::RTEMS_ILLEGAL_ON_REMOTE_OBJECT The semaphore resided on a remote
  *   node.
@@ -731,8 +730,8 @@ rtems_status_code rtems_semaphore_flush( rtems_id id );
  *   corresponding to the specified scheduler will be stored in this object.
  *
  * This directive sets the priority of the semaphore specified by
- * ``semaphore_id``. The priority corresponds to the scheduler specified by
- * ``scheduler_id``.
+ * `semaphore_id`. The priority corresponds to the scheduler specified by
+ * `scheduler_id`.
  *
  * The special priority value #RTEMS_CURRENT_PRIORITY can be used to get the
  * current priority without changing it.
@@ -751,18 +750,18 @@ rtems_status_code rtems_semaphore_flush( rtems_id id );
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
  *
- * @retval ::RTEMS_INVALID_ADDRESS The ``old_priority`` parameter was NULL.
+ * @retval ::RTEMS_INVALID_ADDRESS The `old_priority` parameter was NULL.
  *
  * @retval ::RTEMS_INVALID_ID There was no scheduler associated with the
- *   identifier specified by ``scheduler_id``.
+ *   identifier specified by `scheduler_id`.
  *
  * @retval ::RTEMS_INVALID_ID There was no semaphore associated with the
- *   identifier specified by ``semaphore_id``.
+ *   identifier specified by `semaphore_id`.
  *
  * @retval ::RTEMS_ILLEGAL_ON_REMOTE_OBJECT The semaphore resided on a remote
  *   node.
  *
- * @retval ::RTEMS_INVALID_PRIORITY The ``new_priority`` parameter was invalid.
+ * @retval ::RTEMS_INVALID_PRIORITY The `new_priority` parameter was invalid.
  *
  * @retval ::RTEMS_NOT_DEFINED Setting a priority for the class or locking
  *   protocol of the semaphore is undefined behaviour.

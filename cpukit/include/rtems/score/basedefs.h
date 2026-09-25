@@ -258,13 +258,13 @@ extern "C" {
 /**
  * @ingroup RTEMSAPIBaseDefs
  *
- * @brief Concatenates _x and _y without expanding.
+ * @brief Concatenates \_x and \_y without expanding.
  *
  * @param _x is the left hand side token of the concatenation.
  *
  * @param _y is the right hand side token of the concatenation.
  *
- * @return Returns the concatenation of the tokens _x and _y.
+ * @return Returns the concatenation of the tokens \_x and \_y.
  */
 #define RTEMS_CONCAT( _x, _y ) _x##_y
 
@@ -452,7 +452,7 @@ extern "C" {
 /**
  * @ingroup RTEMSAPIBaseDefs
  *
- * @brief Concatenates expansion of _x and expansion of _y.
+ * @brief Concatenates expansion of \_x and expansion of \_y.
  *
  * @param _x is expanded first and then used as the left hand side token of the
  *   concatenation.
@@ -460,7 +460,7 @@ extern "C" {
  * @param _y is expanded first and then used as the right hand side token of
  *   the concatenation.
  *
- * @return Returns the concatenation of the expansions of tokens _x and _y.
+ * @return Returns the concatenation of the expansions of tokens \_x and \_y.
  */
 #define RTEMS_XCONCAT( _x, _y ) RTEMS_CONCAT( _x, _y )
 
