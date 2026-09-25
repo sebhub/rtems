@@ -1,0 +1,85 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+attribute-actions: []
+attributes:
+  directory: $${.:/component/documentation-directory}/test-report
+  directory-state-type: sphinx
+  document-accepted-licenses: []
+  document-base-path: /
+  document-components:
+  - action: copy-and-substitute
+    add-to-index: false
+    file: source/index.rst
+  document-contributors: []
+  document-copyrights:
+  - Copyright (C) 2026 embedded brains GmbH & Co. KG
+  document-html-footer: ''
+  document-html-help-base-name: TR
+  document-key: test-report
+  document-latex-footer-right: ''
+  document-latex-geometry: ''
+  document-latex-header-left: ''
+  document-latex-sphinxsetup: ''
+  document-latex-theme: manual
+  document-license: CC-BY-SA-4.0
+  document-releases: []
+  document-title: Test Report
+  document-toctree-maxdepth: 4
+  document-type: test-report
+  enabled-by: true
+  files: []
+  hash: null
+  license-info: []
+  links:
+  - hash: null
+    name: component
+    role: input
+    uid: component
+  - hash: null
+    name: test-aggregation
+    role: input
+    uid: aggregate-test-results
+  - hash: null
+    name: images
+    role: input
+    uid: perf-images
+  - hash: null
+    name: source
+    role: input
+    uid: /pkg/source/doc-test-report
+  - expected: $${/pkg/component:/gcc-reported-version}
+    hash: null
+    key: compiler-version
+    name: test-property
+    property-name: GCC Version
+    role: input
+    type: default
+    uid: /pkg/component
+  - expected: $${/pkg/source/rtems:/commit}
+    hash: null
+    key: rtems-commit
+    name: test-property
+    property-name: RTEMS Git Commit
+    role: input
+    type: rtems-version
+    uid: /pkg/source/rtems
+  - name: build
+    role: output
+    uid: build-test-report
+  - hash: null
+    name: test-report
+    role: input-to
+    uid: /pkg/deployment/doc-package-summary
+  output-html: null
+  output-pdf: null
+  pkg-type: directory-state
+  type: pkg
+  unexpected-test-failures: {}
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+links:
+- role: add-package-template
+  uid: component
+pkg-type: template
+template-type: inline-item
+type: pkg

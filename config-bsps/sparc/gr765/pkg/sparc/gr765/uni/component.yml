@@ -6,6 +6,7 @@ copyrights:
 - Copyright (C) 2026 embedded brains GmbH & Co. KG
 enabled-by: true
 enabled-set:
+- RTEMS_QUAL
 - target/simulator
 enabled-set-actions: []
 enabled-set-feedback-mapping: {}
