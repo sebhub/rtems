@@ -82,6 +82,10 @@ return:
       The maximum message size in the configuration was zero.
     value: ${../../status/if/invalid-size:/name}
   - description: |
+      In multiprocessing configurations, the maximum message size in the
+      configuration exceeded the maximum message size supported by the MPCI.
+    value: ${../../status/if/invalid-size:/name}
+  - description: |
       There was no inactive message queue object available to construct a message
       queue.
     value: ${../../status/if/too-many:/name}

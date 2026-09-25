@@ -141,7 +141,11 @@ return:
       The ${.:/params[1]/name} parameter was invalid.
     value: ${../../status/if/invalid-number:/name}
   - description: |
-      The ${.:/params[2]/name} parameter was invalid.
+      The ${.:/params[2]/name} parameter was zero.
+    value: ${../../status/if/invalid-size:/name}
+  - description: |
+      In multiprocessing configurations, the ${.:/params[2]/name} exceeded the
+      maximum message size supported by the MPCI.
     value: ${../../status/if/invalid-size:/name}
   - description: |
       There was no inactive object available to create a message queue. The number of
@@ -154,6 +158,11 @@ return:
       available to the application is configured through the
       ${/acfg/if/mp-max-global-objects:/name} application configuration option.
     value: ${../../status/if/too-many:/name}
+  - description: |
+      The ${.:/params[2]/name} parameter was too big and resulted in integer
+      overflows in calculations carried out to determine the size of the message
+      buffer area.
+    value: ${../../status/if/invalid-size:/name}
   - description: |
       The product of ${.:/params[1]/name} and ${.:/params[2]/name} is greater than
       the maximum storage size.
