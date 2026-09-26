@@ -47,6 +47,9 @@ files = [
 [[ignore."cpukit/include/machine"]]
 files = ["cpukit/include/machine/*.h"]
 
+[[ignore."cpukit/libc"]]
+files = ["cpukit/libc/*"]
+
 [[ignore."cpukit/libcrypt"]]
 files = ["cpukit/libcrypt/*.c"]
 
