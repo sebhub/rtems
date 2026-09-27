@@ -1,6 +1,6 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 copyrights:
-- Copyright (C) 2021 embedded brains GmbH & Co. KG
+- Copyright (C) 2021, 2026 embedded brains GmbH & Co. KG
 enabled-by: true
 functional-type: action
 links:
@@ -11,20 +11,19 @@ post-conditions:
   states:
   - name: Ok
     test-code: |
-      T_rsc_success( ctx->set_tod_status );
-      T_rsc_success( ctx->get_tod_status );
+      T_rsc_success( ctx->status );
     text: |
       The return status of ${../if/get-tod:/name} shall be
-      ${../../status/if/successful:/name}
+      ${../../status/if/successful:/name}.
   - name: InvAddr
     test-code: |
-      T_rsc( ctx->get_tod_status, RTEMS_INVALID_ADDRESS );
+      T_rsc( ctx->status, RTEMS_INVALID_ADDRESS );
     text: |
       The return status of ${../if/get-tod:/name} shall be
       ${../../status/if/invalid-address:/name}.
   - name: NotDef
     test-code: |
-      T_rsc( ctx->get_tod_status, RTEMS_NOT_DEFINED );
+      T_rsc( ctx->status, RTEMS_NOT_DEFINED );
     text: |
       The return status of ${../if/get-tod:/name} shall be
       ${../../status/if/not-defined:/name}.
@@ -34,155 +33,413 @@ post-conditions:
   states:
   - name: TimeOfDay
     test-code: |
-      T_eq_ptr( ctx->get_tod_ref, &ctx->get_tod_value );
-      T_eq_u32( ctx->get_tod_value.year, ctx->set_tod_value.year );
-      T_eq_u32( ctx->get_tod_value.month, ctx->set_tod_value.month );
-      T_eq_u32( ctx->get_tod_value.day, ctx->set_tod_value.day );
-      T_eq_u32( ctx->get_tod_value.hour, ctx->set_tod_value.hour );
-      T_eq_u32( ctx->get_tod_value.minute, ctx->set_tod_value.minute );
-      T_eq_u32( ctx->get_tod_value.second, ctx->set_tod_value.second );
-      /* rtems_clock_set() or rtems_clock_get_tod() cause an error of 1 tick */
-      T_ge_u32( ctx->get_tod_value.ticks + 1, ctx->set_tod_value.ticks );
-      T_le_u32( ctx->get_tod_value.ticks, ctx->set_tod_value.ticks );
+      T_eq_u32( ctx->tod.year, ctx->expected.year );
+      T_eq_u32( ctx->tod.month, ctx->expected.month );
+      T_eq_u32( ctx->tod.day, ctx->expected.day );
+      T_eq_u32( ctx->tod.hour, ctx->expected.hour );
+      T_eq_u32( ctx->tod.minute, ctx->expected.minute );
+      T_eq_u32( ctx->tod.second, ctx->expected.second );
+      T_eq_u32( ctx->tod.ticks, ctx->expected.ticks );
     text: |
-      The value of the object referenced by the ${../if/get-tod:/params[0]/name}
-      parameter shall be set to the value of the ${/glossary/clock-realtime:/term} at
-      a point in time during the call to ${../if/get-tod:/name}.
+      The object referenced by the ${../if/get-tod:/params[0]/name} parameter shall
+      be set to the time of day of the ${/glossary/clock-realtime:/term} at a point
+      in time during the ${../if/get-tod:/name} call.
   - name: Unchanged
     test-code: |
-      T_eq_u32( ctx->get_tod_value.year, 1 );
-      T_eq_u32( ctx->get_tod_value.month, 1 );
-      T_eq_u32( ctx->get_tod_value.day, 1 );
-      T_eq_u32( ctx->get_tod_value.hour, 1 );
-      T_eq_u32( ctx->get_tod_value.minute, 1 );
-      T_eq_u32( ctx->get_tod_value.second, 1 );
-      T_eq_u32( ctx->get_tod_value.ticks, 1 );
+      T_eq_u32( ctx->tod.year, 1 );
+      T_eq_u32( ctx->tod.month, 1 );
+      T_eq_u32( ctx->tod.day, 1 );
+      T_eq_u32( ctx->tod.hour, 1 );
+      T_eq_u32( ctx->tod.minute, 1 );
+      T_eq_u32( ctx->tod.second, 1 );
+      T_eq_u32( ctx->tod.ticks, 1 );
     text: |
-      Object referenced by the ${../if/get-tod:/params[0]/name} parameter in past
-      call to ${../if/get-tod:/name} shall not be modified by the
-      ${../if/get-tod:/name} call.
+      The object referenced by the ${../if/get-tod:/params[0]/name} parameter shall
+      not be modified by the ${../if/get-tod:/name} call.
   test-epilogue: null
   test-prologue: null
 pre-conditions:
-- name: ToD
+- name: Set
   states:
-  - name: Arbitrary
+  - name: 'Yes'
     test-code: |
-      ctx->set_tod_value = (rtems_time_of_day) {
-        2023,
-        12,
-        27,
-        6,
-        7,
-        8,
-        rtems_clock_get_ticks_per_second() / 4
-      };
+      ctx->set = true;
     text: |
-      While the ${/glossary/clock-realtime:/term} indicates an arbitrary valid date
-      and time between 1988-01-01T00:00:00.000000000Z and
-      2514-05-30T01:53:03.999999999Z.
+      While the ${/glossary/clock-realtime:/term} was set at least once.
+  - name: 'No'
+    test-code: |
+      ctx->set = false;
+    text: |
+      While the ${/glossary/clock-realtime:/term} was never set.
+  test-epilogue: null
+  test-prologue: null
+- name: Year
+  states:
+  - name: Earliest
+    test-code: |
+      ctx->year = YEAR_EARLIEST;
+    text: |
+      While the year of the ${/glossary/clock-realtime:/term} is 1988.
+  - name: Valid
+    test-code: |
+      ctx->year = YEAR_VALID;
+    text: |
+      While the year of the ${/glossary/clock-realtime:/term} is greater than 1988
+      and less than 2514.
+  - name: Latest
+    test-code: |
+      ctx->year = YEAR_LATEST;
+    text: |
+      While the year of the ${/glossary/clock-realtime:/term} is 2514, while the
+      ${/glossary/clock-realtime:/term} is before the ${/glossary/clock-tick:/term}
+      which ends at its latest time point.
+  - name: End
+    test-code: |
+      ctx->year = YEAR_END;
+    text: |
+      While the ${/glossary/clock-realtime:/term} is in the
+      ${/glossary/clock-tick:/term} which ends at its latest time point.
+  test-epilogue: null
+  test-prologue: null
+- name: LeapYear
+  states:
+  - name: Common
+    test-code: |
+      ctx->leap_year = LEAP_YEAR_COMMON;
+    text: |
+      While the year of the ${/glossary/clock-realtime:/term} is not divisible by
+      four.
   - name: Leap4
     test-code: |
-      ctx->set_tod_value = (rtems_time_of_day) { 2096, 2, 29, 0, 0, 0, 0 };
+      ctx->leap_year = LEAP_YEAR_4;
     text: |
-      While the ${/glossary/clock-realtime:/term} indicates a date for a leap year
-      with the value of 29th of February.
+      While the year of the ${/glossary/clock-realtime:/term} is divisible by four
+      and not divisible by 100.
+  - name: Century
+    test-code: |
+      ctx->leap_year = LEAP_YEAR_CENTURY;
+    text: |
+      While the year of the ${/glossary/clock-realtime:/term} is divisible by 100 and
+      not divisible by 400.
   - name: Leap400
     test-code: |
-      ctx->set_tod_value = (rtems_time_of_day) { 2000, 2, 29, 0, 0, 0, 0 };
+      ctx->leap_year = LEAP_YEAR_400;
     text: |
-      While the ${/glossary/clock-realtime:/term} indicates a date for a leap year
-      with the value of 29th of February.
-  - name: Youngest
+      While the year of the ${/glossary/clock-realtime:/term} is divisible by 400.
+  test-epilogue: null
+  test-prologue: null
+- name: Month
+  states:
+  - name: January
     test-code: |
-      ctx->set_tod_value = (rtems_time_of_day) { 1988, 1, 1, 0, 0, 0, 0 };
+      ctx->month = 1;
     text: |
-      While the ${/glossary/clock-realtime:/term} indicates the youngest date and
-      time accepted (1988-01-01T00:00:00.000000000Z).
-  - name: Oldest
+      While the month of the ${/glossary/clock-realtime:/term} is January.
+  - name: February
     test-code: |
-      ctx->set_tod_value = (rtems_time_of_day) {
-        2099,
-        12,
-        31,
-        23,
-        59,
-        59,
-        rtems_clock_get_ticks_per_second() - 1
-      };
+      ctx->month = 2;
     text: |
-      While the ${/glossary/clock-realtime:/term} indicates the oldest date and time
-      accepted (2099-12-31T23:59:59.999999999Z).
-  - name: NotSet
+      While the month of the ${/glossary/clock-realtime:/term} is February.
+  - name: Between
     test-code: |
-      ctx->isDef = false;
+      ctx->month = 4;
     text: |
-      While the ${/glossary/clock-realtime:/term} has not been set before.
+      While the month of the ${/glossary/clock-realtime:/term} is after February and
+      before December.
+  - name: December
+    test-code: |
+      ctx->month = 12;
+    text: |
+      While the month of the ${/glossary/clock-realtime:/term} is December.
+  test-epilogue: null
+  test-prologue: null
+- name: Day
+  states:
+  - name: First
+    test-code: |
+      ctx->day = DAY_FIRST;
+    text: |
+      While the day of the ${/glossary/clock-realtime:/term} is the first day of the
+      month.
+  - name: Between
+    test-code: |
+      ctx->day = DAY_BETWEEN;
+    text: |
+      While the day of the ${/glossary/clock-realtime:/term} is after the first day
+      and before the last day of the month.
+  - name: Last
+    test-code: |
+      ctx->day = DAY_LAST;
+    text: |
+      While the day of the ${/glossary/clock-realtime:/term} is the last day of the
+      month.
+  test-epilogue: null
+  test-prologue: null
+- name: DayPart
+  states:
+  - name: Begin
+    test-code: |
+      ctx->day_part = DAY_PART_BEGIN;
+    text: |
+      While the ${/glossary/clock-realtime:/term} is in the first
+      ${/glossary/clock-tick:/term} of a day.
+  - name: Between
+    test-code: |
+      ctx->day_part = DAY_PART_BETWEEN;
+    text: |
+      While the ${/glossary/clock-realtime:/term} is after the first
+      ${/glossary/clock-tick:/term} and before the last ${/glossary/clock-tick:/term}
+      of a day.
+  - name: End
+    test-code: |
+      ctx->day_part = DAY_PART_END;
+    text: |
+      While the ${/glossary/clock-realtime:/term} is in the last
+      ${/glossary/clock-tick:/term} of a day.
   test-epilogue: null
   test-prologue: null
 - name: Param
   states:
   - name: Valid
     test-code: |
-      ctx->get_tod_ref = &ctx->get_tod_value;
+      ctx->tod_ref = &ctx->tod;
     text: |
       While the ${../if/get-tod:/params[0]/name} parameter references an object of
       type ${../../type/if/time-of-day:/name}.
   - name: 'Null'
     test-code: |
-      ctx->get_tod_ref = NULL;
+      ctx->tod_ref = NULL;
     text: |
-      While the ${../if/get-tod:/params[0]/name} parameter is ${/c/if/null:/name}.
+      While the ${../if/get-tod:/params[0]/name} parameter is equal to
+      ${/c/if/null:/name}.
   test-epilogue: null
   test-prologue: null
-rationale: null
+rationale: |
+  Dimension Set covers the state of the ${/glossary/clock-realtime:/term}, 2
+  states. Dimension Year covers the year, 4 states. Dimension LeapYear covers the
+  class of the year, 4 states. Dimension Month covers the month, 4 states.
+  Dimension Day covers the day of the month, 3 states. Dimension DayPart covers
+  the time of the day, 3 states. Dimension Param covers the parameter
+  time_of_day, 2 states.
+
+  The documentation of rtems_clock_set() gives the range of the
+  ${/glossary/clock-realtime:/term} from 1988-01-01T00:00:00.000000000Z to
+  2514-05-30T01:53:03.999999999Z. The state End arranges the start of the clock
+  tick which ends at this latest time point. It fixes every other pre-condition,
+  so the item skips their other combinations. The year 2514 ends early, so the
+  item skips December of 2514. Some years fix the leap year class, so the item
+  skips the other classes of these years.
+
+  The test sets the ${/glossary/clock-realtime:/term} with
+  \_Timecounter_Set_clock() to the seconds which DaysFromCivil() derives. This
+  avoids the conversion of rtems_clock_set() and its latest year 2400, so the
+  conversion of the directive is checked against an independent algorithm. The
+  state Between of the month arranges April. The state End of the day part
+  arranges the start of the last clock tick of the day. The check allows the
+  progress of the clock during the call.
 requirement-type: functional
-skip-reasons: {}
+skip-reasons:
+  AfterRange: |
+    The time of the state is after the latest time point of the
+    ${/glossary/clock-realtime:/term}.
+  FixedTime: |
+    The latest time point fixes the other pre-conditions.
+  YearClass: |
+    The year of the state is a year of another class.
 test-action: |
-  if ( ctx->isDef ) {
-    ctx->set_tod_status = rtems_clock_set( &ctx->set_tod_value );
-    ctx->get_tod_status = rtems_clock_get_tod( ctx->get_tod_ref );
+  if ( ctx->set ) {
+    SetClock( ctx );
   } else {
     UnsetClock();
-    ctx->get_tod_status = rtems_clock_get_tod( ctx->get_tod_ref );
   }
+
+  ctx->status = rtems_clock_get_tod( ctx->tod_ref );
 test-brief: null
 test-cleanup: |
+  ISR_lock_Context lock_context;
+  Status_Control   status;
+
+  _Objects_Allocator_lock();
+  _TOD_Acquire( &lock_context );
+  status = _TOD_Set( &ts_earliest, &lock_context );
+  _Objects_Allocator_unlock();
+  T_eq_int( status, STATUS_SUCCESSFUL );
   UnsetClock();
 test-context:
-- brief: null
+- brief: |
+    This member is true, if the realtime clock shall be set.
   description: null
-  member: rtems_status_code set_tod_status
-- brief: null
+  member: |
+    bool set
+- brief: |
+    This member specifies the year state.
   description: null
-  member: rtems_time_of_day set_tod_value
-- brief: null
+  member: |
+    Year year
+- brief: |
+    This member specifies the class of the year.
   description: null
-  member: rtems_time_of_day *get_tod_ref
-- brief: null
+  member: |
+    LeapYear leap_year
+- brief: |
+    This member specifies the month.
   description: null
-  member: rtems_time_of_day get_tod_value
-- brief: null
+  member: |
+    uint32_t month
+- brief: |
+    This member specifies the day state.
   description: null
-  member: rtems_status_code get_tod_status
-- brief: null
+  member: |
+    Day day
+- brief: |
+    This member specifies the day part state.
   description: null
-  member: bool isDef
-test-context-support: null
+  member: |
+    DayPart day_part
+- brief: |
+    This member contains the expected time of day.
+  description: null
+  member: |
+    rtems_time_of_day expected
+- brief: |
+    This member provides the object referenced by the
+    ${../if/get-tod:/params[0]/name} parameter.
+  description: null
+  member: |
+    rtems_time_of_day tod
+- brief: |
+    This member specifies the ${../if/get-tod:/params[0]/name} parameter value.
+  description: null
+  member: |
+    rtems_time_of_day *tod_ref
+- brief: |
+    This member contains the return status of the ${../if/get-tod:/name} call.
+  description: null
+  member: |
+    rtems_status_code status
+test-context-support: |
+  typedef enum { YEAR_EARLIEST, YEAR_VALID, YEAR_LATEST, YEAR_END } Year;
+
+  typedef enum {
+    LEAP_YEAR_COMMON,
+    LEAP_YEAR_4,
+    LEAP_YEAR_CENTURY,
+    LEAP_YEAR_400
+  } LeapYear;
+
+  typedef enum { DAY_FIRST, DAY_BETWEEN, DAY_LAST } Day;
+
+  typedef enum { DAY_PART_BEGIN, DAY_PART_BETWEEN, DAY_PART_END } DayPart;
 test-description: null
 test-header: null
 test-includes:
 - rtems.h
+- sys/timetc.h
+- rtems/score/objectimpl.h
+- rtems/score/todimpl.h
 test-local-includes:
 - tx-support.h
 test-prepare: |
-  ctx->get_tod_value = (rtems_time_of_day) { 1, 1, 1, 1, 1, 1, 1 };
-  ctx->get_tod_ref = &ctx->get_tod_value;
-  ctx->set_tod_value = (rtems_time_of_day) { 2023, 4, 5, 6, 7, 8, 0 };
-  ctx->isDef = true;
+  ctx->tod = (rtems_time_of_day) { 1, 1, 1, 1, 1, 1, 1 };
 test-setup: null
 test-stop: null
-test-support: null
+test-support: |
+  typedef ${.:/test-context-type} Context;
+
+  static const struct timespec ts_earliest = { .tv_sec = 567993600 };
+
+  /* A zero marks a class which the year does not have. */
+  static const uint32_t years[ 4 ][ 4 ] = {
+    { 0, 1988, 0, 0 },
+    { 2023, 2096, 2100, 2000 },
+    { 2514, 0, 0, 0 },
+    { 2514, 0, 0, 0 }
+  };
+
+  static uint32_t GetLastDayOfMonth( uint32_t year, uint32_t month )
+  {
+    if ( month == 12 ) {
+      return 31;
+    }
+
+    return (uint32_t) ( DaysFromCivil( year, month + 1, 1 ) -
+                        DaysFromCivil( year, month, 1 ) );
+  }
+
+  static void SetClock( Context *ctx )
+  {
+    rtems_time_of_day *tod;
+    struct timespec    ts;
+    struct bintime     bt;
+    ISR_lock_Context   lock_context;
+    Status_Control     status;
+    long               nanoseconds;
+
+    tod = &ctx->expected;
+    tod->year = years[ ctx->year ][ ctx->leap_year ];
+
+    if ( ctx->year == YEAR_END ) {
+      tod->month = 5;
+      tod->day = 30;
+      tod->hour = 1;
+      tod->minute = 53;
+      tod->second = 3;
+      nanoseconds = 1000000000 - rtems_configuration_get_nanoseconds_per_tick();
+    } else {
+      tod->month = ctx->month;
+
+      switch ( ctx->day ) {
+        case DAY_FIRST:
+          tod->day = 1;
+          break;
+        case DAY_BETWEEN:
+          tod->day = 15;
+          break;
+        default:
+          tod->day = GetLastDayOfMonth( tod->year, tod->month );
+          break;
+      }
+
+      switch ( ctx->day_part ) {
+        case DAY_PART_BEGIN:
+          tod->hour = 0;
+          tod->minute = 0;
+          tod->second = 0;
+          nanoseconds = 0;
+          break;
+        case DAY_PART_BETWEEN:
+          tod->hour = 12;
+          tod->minute = 30;
+          tod->second = 30;
+          nanoseconds = 500000000;
+          break;
+        default:
+          tod->hour = 23;
+          tod->minute = 59;
+          tod->second = 59;
+          nanoseconds = 1000000000 -
+                        rtems_configuration_get_nanoseconds_per_tick();
+          break;
+      }
+    }
+
+    tod->ticks = (uint32_t) ( nanoseconds /
+                              rtems_configuration_get_nanoseconds_per_tick() );
+    ts.tv_sec = (time_t) ( DaysFromCivil( tod->year, tod->month, tod->day ) *
+                             86400 +
+                           tod->hour * 3600 + tod->minute * 60 + tod->second );
+    ts.tv_nsec = nanoseconds;
+
+    _Objects_Allocator_lock();
+    _TOD_Acquire( &lock_context );
+    status = _TOD_Set( &ts_earliest, &lock_context );
+    _Objects_Allocator_unlock();
+    T_eq_int( status, STATUS_SUCCESSFUL );
+
+    timespec2bintime( &ts, &bt );
+    _TOD_Acquire( &lock_context );
+    _Timecounter_Set_clock( &bt, &lock_context );
+  }
 test-target: testsuites/validation/tc-clock-get-tod.c
 test-teardown: null
 text: |
@@ -193,12 +450,15 @@ transition-map:
     Status: Ok
     Value: TimeOfDay
   pre-conditions:
-    ToD:
-    - Arbitrary
+    Set:
+    - 'Yes'
+    Year: &id001
+    - Earliest
+    LeapYear: &id002
     - Leap4
-    - Leap400
-    - Youngest
-    - Oldest
+    Month: all
+    Day: all
+    DayPart: all
     Param:
     - Valid
 - enabled-by: true
@@ -206,13 +466,12 @@ transition-map:
     Status: InvAddr
     Value: Unchanged
   pre-conditions:
-    ToD:
-    - Arbitrary
-    - Leap4
-    - Leap400
-    - Youngest
-    - Oldest
-    - NotSet
+    Set: all
+    Year: *id001
+    LeapYear: *id002
+    Month: all
+    Day: all
+    DayPart: all
     Param:
     - 'Null'
 - enabled-by: true
@@ -220,8 +479,237 @@ transition-map:
     Status: NotDef
     Value: Unchanged
   pre-conditions:
-    ToD:
-    - NotSet
+    Set:
+    - 'No'
+    Year: *id001
+    LeapYear: *id002
+    Month: all
+    Day: all
+    DayPart: all
     Param:
     - Valid
+- enabled-by: true
+  post-conditions:
+    Status: Ok
+    Value: TimeOfDay
+  pre-conditions:
+    Set:
+    - 'Yes'
+    Year: &id003
+    - Valid
+    LeapYear: all
+    Month: all
+    Day: all
+    DayPart: all
+    Param:
+    - Valid
+- enabled-by: true
+  post-conditions:
+    Status: InvAddr
+    Value: Unchanged
+  pre-conditions:
+    Set: all
+    Year: *id003
+    LeapYear: all
+    Month: all
+    Day: all
+    DayPart: all
+    Param:
+    - 'Null'
+- enabled-by: true
+  post-conditions:
+    Status: NotDef
+    Value: Unchanged
+  pre-conditions:
+    Set:
+    - 'No'
+    Year: *id003
+    LeapYear: all
+    Month: all
+    Day: all
+    DayPart: all
+    Param:
+    - Valid
+- enabled-by: true
+  post-conditions:
+    Status: Ok
+    Value: TimeOfDay
+  pre-conditions:
+    Set:
+    - 'Yes'
+    Year: &id004
+    - Latest
+    LeapYear: &id005
+    - Common
+    Month: &id006
+    - January
+    - February
+    - Between
+    Day: all
+    DayPart: all
+    Param:
+    - Valid
+- enabled-by: true
+  post-conditions:
+    Status: InvAddr
+    Value: Unchanged
+  pre-conditions:
+    Set: all
+    Year: *id004
+    LeapYear: *id005
+    Month: *id006
+    Day: all
+    DayPart: all
+    Param:
+    - 'Null'
+- enabled-by: true
+  post-conditions:
+    Status: NotDef
+    Value: Unchanged
+  pre-conditions:
+    Set:
+    - 'No'
+    Year: *id004
+    LeapYear: *id005
+    Month: *id006
+    Day: all
+    DayPart: all
+    Param:
+    - Valid
+- enabled-by: true
+  post-conditions:
+    Status: Ok
+    Value: TimeOfDay
+  pre-conditions:
+    Set:
+    - 'Yes'
+    Year:
+    - End
+    LeapYear: &id007
+    - Common
+    Month: &id008
+    - Between
+    Day: &id009
+    - Between
+    DayPart: &id010
+    - Between
+    Param:
+    - Valid
+- enabled-by: true
+  post-conditions:
+    Status: InvAddr
+    Value: Unchanged
+  pre-conditions:
+    Set: all
+    Year:
+    - End
+    LeapYear: *id007
+    Month: *id008
+    Day: *id009
+    DayPart: *id010
+    Param:
+    - 'Null'
+- enabled-by: true
+  post-conditions:
+    Status: NotDef
+    Value: Unchanged
+  pre-conditions:
+    Set:
+    - 'No'
+    Year:
+    - End
+    LeapYear: *id007
+    Month: *id008
+    Day: *id009
+    DayPart: *id010
+    Param:
+    - Valid
+- enabled-by: true
+  post-conditions: AfterRange
+  pre-conditions:
+    Set: all
+    Year:
+    - Latest
+    LeapYear:
+    - Common
+    Month:
+    - December
+    Day: all
+    DayPart: all
+    Param: all
+- enabled-by: true
+  post-conditions: YearClass
+  pre-conditions:
+    Set: all
+    Year:
+    - Earliest
+    LeapYear:
+    - Common
+    - Century
+    - Leap400
+    Month: all
+    Day: all
+    DayPart: all
+    Param: all
+- enabled-by: true
+  post-conditions: YearClass
+  pre-conditions:
+    Set: all
+    Year:
+    - Latest
+    - End
+    LeapYear:
+    - Leap4
+    - Century
+    - Leap400
+    Month: all
+    Day: all
+    DayPart: all
+    Param: all
+- enabled-by: true
+  post-conditions: FixedTime
+  pre-conditions:
+    Set: all
+    Year:
+    - End
+    LeapYear:
+    - Common
+    Month:
+    - January
+    - February
+    - December
+    Day: all
+    DayPart: all
+    Param: all
+- enabled-by: true
+  post-conditions: FixedTime
+  pre-conditions:
+    Set: all
+    Year:
+    - End
+    LeapYear:
+    - Common
+    Month:
+    - Between
+    Day:
+    - First
+    - Last
+    DayPart: all
+    Param: all
+- enabled-by: true
+  post-conditions: FixedTime
+  pre-conditions:
+    Set: all
+    Year:
+    - End
+    LeapYear:
+    - Common
+    Month:
+    - Between
+    Day:
+    - Between
+    DayPart:
+    - Begin
+    - End
+    Param: all
 type: requirement
