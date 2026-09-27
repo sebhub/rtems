@@ -1,0 +1,537 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by:
+  or:
+  - sparc/gr712rc
+  - sparc/gr740
+  - sparc/gr765
+functional-type: action
+links:
+- role: interface-function
+  uid: ../if/ext-irq-init
+- role: reference
+  uid: /ref/soc/gaisler/gr740/gr740-um-ds-2-10/irqmap
+- role: reference
+  uid: /ref/soc/gaisler/gr765/gr765-dsum-0-11/irqmap
+post-conditions:
+- name: ProcessorMask
+  states:
+  - name: Zero
+    test-code: |
+      T_eq_u32( ctx->regs.pimask[ LEON3_Cpu_Index ], 0 );
+    text: |
+      The processor interrupt mask of the boot processor shall be zero.
+  test-epilogue: null
+  test-prologue: null
+- name: ProcessorForce
+  states:
+  - name: Zero
+    test-code: |
+      T_eq_u32( ctx->regs.piforce[ LEON3_Cpu_Index ], 0 );
+    text: |
+      The processor interrupt force register of the boot processor shall be zero.
+  test-epilogue: null
+  test-prologue: null
+- name: InterruptClear
+  states:
+  - name: All
+    test-code: |
+      T_eq_u32( ctx->regs.iclear, 0xffffffff );
+    text: |
+      The function shall write all ones to the interrupt clear register.
+  test-epilogue: null
+  test-prologue: null
+- name: OtherRegisters
+  states:
+  - name: Nop
+    test-code: |
+      CheckOtherRegisters( ctx );
+    text: |
+      The registers of the IRQ(A)MP other than the processor interrupt mask and the
+      processor interrupt force register of the boot processor and the interrupt
+      clear register shall not be modified by the function call.
+  test-epilogue: null
+  test-prologue: null
+- name: InRangeEntries
+  states:
+  - name: Field
+    test-code: |
+      CheckInRangeEntries( ctx );
+    text: |
+      The ${../glossary/interrupt-map-entry:/term} of the
+      ${../glossary/interrupt-map-copy:/term} of each ${../glossary/bus-line:/term}
+      whose ${../glossary/interrupt-map-entry:/term} selects a
+      ${../glossary/controller-line:/term} shall be set to that
+      ${../glossary/interrupt-map-entry:/term}, except for the
+      ${../glossary/bus-line:/term} of the inter-processor interrupt.
+  test-epilogue: null
+  test-prologue: null
+- name: OutOfRangeEntries
+  states:
+  - name: Masked
+    test-code: |
+      CheckOutOfRangeEntries( ctx );
+    text: |
+      The ${../glossary/interrupt-map-entry:/term} of the
+      ${../glossary/interrupt-map-copy:/term} of each ${../glossary/bus-line:/term}
+      whose ${../glossary/interrupt-map-entry:/term} selects no
+      ${../glossary/controller-line:/term} shall be set to that
+      ${../glossary/interrupt-map-entry:/term} masked by the count of
+      ${../glossary/controller-line:/plural} minus one, except for the
+      ${../glossary/bus-line:/term} of the inter-processor interrupt.
+  test-epilogue: null
+  test-prologue: null
+- name: IpiEntry
+  states:
+  - name: IpiLine
+    test-code: |
+      #if LEON3_IRQMAP_BUS_LINE_COUNT != 0
+        T_eq_u32( LEON3_IrqCtrl_Mapping[ 0 ], LEON3_IPI_CONTROLLER_LINE );
+      #endif
+    text: |
+      The ${../glossary/interrupt-map-entry:/term} of the
+      ${../glossary/interrupt-map-copy:/term} of the first
+      ${../glossary/bus-line:/term} shall be set to the
+      ${../glossary/controller-line:/term} defined by the BSP option
+      LEON3_IPI_CONTROLLER_LINE.
+  test-epilogue: null
+  test-prologue: null
+pre-conditions:
+- name: InterruptMap
+  states:
+  - name: 'Yes'
+    test-code: |
+      #if LEON3_IRQMAP_BUS_LINE_COUNT == 0
+        ${.:skip}
+      #endif
+    text: |
+      Where the BSP uses the ${../glossary/interrupt-map:/term}.
+  - name: 'No'
+    test-code: |
+      #if LEON3_IRQMAP_BUS_LINE_COUNT != 0
+        ${.:skip}
+      #endif
+    text: |
+      Where the BSP does not use the ${../glossary/interrupt-map:/term}.
+  test-epilogue: null
+  test-prologue: null
+- name: ExtendedInterrupt
+  states:
+  - name: Fixed
+    test-code: |
+      #if !defined( LEON3_IRQAMP_EXTENDED_INTERRUPT )
+        ${.:skip}
+      #endif
+    text: |
+      Where the BSP configuration fixes the extended
+      ${../glossary/controller-line:/term}.
+  - name: Detected
+    test-code: |
+      #if defined( LEON3_IRQAMP_EXTENDED_INTERRUPT )
+        ${.:skip}
+      #endif
+    text: |
+      Where the BSP determines the extended ${../glossary/controller-line:/term} at
+      run time.
+  test-epilogue: null
+  test-prologue: null
+- name: Ipi
+  states:
+  - name: 'Yes'
+    test-code: |
+      #if !defined( RTEMS_SMP ) && !defined( RTEMS_MULTIPROCESSING )
+        ${.:skip}
+      #endif
+    text: |
+      Where the system is configured with SMP or multiprocessing support.
+  - name: 'No'
+    test-code: |
+      #if defined( RTEMS_SMP ) || defined( RTEMS_MULTIPROCESSING )
+        ${.:skip}
+      #endif
+    text: |
+      Where the system is configured without SMP and multiprocessing support.
+  test-epilogue: null
+  test-prologue: null
+- name: MapFields
+  states:
+  - name: None
+    test-code: |
+      ctx->map_fields = MAP_FIELDS_NONE;
+    text: |
+      While the ${../glossary/interrupt-map-entry:/term} of no
+      ${../glossary/bus-line:/term} selects a ${../glossary/controller-line:/term}.
+  - name: Some
+    test-code: |
+      ctx->map_fields = MAP_FIELDS_SOME;
+    text: |
+      While the ${../glossary/interrupt-map-entry:/term} of some but not all
+      ${../glossary/bus-line:/plural} selects a ${../glossary/controller-line:/term}.
+  - name: All
+    test-code: |
+      ctx->map_fields = MAP_FIELDS_ALL;
+    text: |
+      While the ${../glossary/interrupt-map-entry:/term} of each
+      ${../glossary/bus-line:/term} selects a ${../glossary/controller-line:/term}.
+  test-epilogue: null
+  test-prologue: null
+- name: ProcessorMask
+  states:
+  - name: None
+    test-code: |
+      ctx->mask_before = 0;
+    text: |
+      While the processor interrupt mask of the boot processor enables no
+      ${../glossary/controller-line:/term}.
+  - name: Some
+    test-code: |
+      ctx->mask_before = 0x5554;
+    text: |
+      While the processor interrupt mask of the boot processor enables some but not
+      all ${../glossary/controller-line:/plural}.
+  - name: All
+    test-code: |
+      ctx->mask_before = 0xfffe;
+    text: |
+      While the processor interrupt mask of the boot processor enables all
+      ${../glossary/controller-line:/plural}.
+  test-epilogue: null
+  test-prologue: null
+- name: ProcessorForce
+  states:
+  - name: None
+    test-code: |
+      ctx->force_before = 0;
+    text: |
+      While the processor interrupt force register of the boot processor forces no
+      ${../glossary/controller-line:/term}.
+  - name: Some
+    test-code: |
+      ctx->force_before = 0xaaa8;
+    text: |
+      While the processor interrupt force register of the boot processor forces some
+      but not all ${../glossary/controller-line:/plural}.
+  - name: All
+    test-code: |
+      ctx->force_before = 0xfffe;
+    text: |
+      While the processor interrupt force register of the boot processor forces all
+      ${../glossary/controller-line:/plural}.
+  test-epilogue: null
+  test-prologue: null
+rationale: |
+  Dimension InterruptMap covers the use of the interrupt map by the BSP, 2
+  states. The GR740 and the GR765 have the interrupt map, and the GR712RC has
+  none. Dimension ExtendedInterrupt covers how the BSP gets the extended
+  controller line, 2 states. The configurations of the GR712RC, the GR740 and the
+  GR765 fix the controller line, so no qualified BSP builds the state Detected.
+  Dimension Ipi covers whether the configuration has an inter-processor
+  interrupt, 2 states.
+
+  Dimension MapFields covers the fields of the interrupt map as a group of one
+  meaning, 3 states. A field of the
+  ${/ref/soc/gaisler/gr740/gr740-um-ds-2-10/irqmap:/name}, and of the
+  ${/ref/soc/gaisler/gr765/gr765-dsum-0-11/irqmap:/name}, holds eight bits. The
+  values 0 to 31 select a controller line. A value of 32 to 255 is a hardware
+  fault, and the BSP masks it to keep the dispatch table index defined. Each
+  state arranges a distinct value in each field. The fields which select a
+  controller line hold the first and the last controller line. The fields which
+  select none hold 32, 255 and values between. A field which the function reads
+  from a wrong position then yields a wrong entry.
+
+  In SMP and multiprocessing configurations, the BSP maps bus line 0 to the
+  controller line of the inter-processor interrupt in the copy. No peripheral
+  drives bus line 0, see the GR765 datasheet, Table 5. The GR765 keeps the
+  controller lines 13 and 14 free after reset, see the GR765 datasheet, section
+  14.2.3.
+
+  Dimension ProcessorMask covers the processor interrupt mask of the boot
+  processor before the call, 3 states. Its bits 1 to 15 enable the standard
+  controller lines as a group of one meaning. Dimension ProcessorForce covers the
+  processor interrupt force register of the boot processor before the call in the
+  same way, 3 states.
+
+  The interrupt clear register is write to clear, so no pre-condition covers it.
+  The register block in memory keeps the value which the function writes, and the
+  background content differs from all ones.
+
+  The test passes a register block in memory, so the call changes no register of
+  the interrupt controller. The test restores the interrupt map copy in the
+  cleanup.
+requirement-type: functional
+skip-reasons:
+  ExtendedInterruptDetected: |
+    No qualified BSP determines the extended controller line at run time.
+test-action: |
+  SaveMapCopy( ctx );
+  PrepareRegisters( ctx );
+  ctx->regs_before = ctx->regs;
+  leon3_ext_irq_init( &ctx->regs );
+test-brief: null
+test-cleanup: |
+  RestoreMapCopy( ctx );
+test-context:
+- brief: |
+    This member provides the register block in memory which the test passes to the
+    function.
+  description: null
+  member: |
+    irqamp regs
+- brief: |
+    This member contains the register block before the call.
+  description: null
+  member: |
+    irqamp regs_before
+- brief: |
+    This member specifies which map fields select a controller line.
+  description: null
+  member: |
+    MapFields map_fields
+- brief: |
+    This member specifies the processor interrupt mask of the boot processor before
+    the call.
+  description: null
+  member: |
+    uint32_t mask_before
+- brief: |
+    This member specifies the processor interrupt force register of the boot
+    processor before the call.
+  description: null
+  member: |
+    uint32_t force_before
+- brief: |
+    This member contains the interrupt map copy before the call.
+  description: null
+  member: |
+    uint8_t mapping_saved[ BUS_LINE_COUNT ]
+test-context-support: |
+  #if LEON3_IRQMAP_BUS_LINE_COUNT != 0
+  #define BUS_LINE_COUNT LEON3_IRQMAP_BUS_LINE_COUNT
+  #else
+  #define BUS_LINE_COUNT 32
+  #endif
+
+  /* ${/ref/soc/gaisler/gr740/gr740-um-ds-2-10/irqmap:/name} */
+  #define CONTROLLER_LINE_COUNT 32
+
+  typedef enum { MAP_FIELDS_NONE, MAP_FIELDS_SOME, MAP_FIELDS_ALL } MapFields;
+test-description: null
+test-header: null
+test-includes:
+- rtems.h
+- string.h
+- bsp/irqimpl.h
+- bsp/leon3.h
+test-local-includes: []
+test-prepare: null
+test-setup: null
+test-stop: null
+test-support: |
+  typedef ${.:/test-context-type} Context;
+
+  #if defined( RTEMS_SMP ) || defined( RTEMS_MULTIPROCESSING )
+  #define FIRST_CHECKED_BUS_LINE 1
+  #else
+  #define FIRST_CHECKED_BUS_LINE 0
+  #endif
+
+  static uint32_t GetNoLineField( uint32_t bus_line )
+  {
+    if ( bus_line == 0 ) {
+      return CONTROLLER_LINE_COUNT;
+    }
+
+    if ( bus_line == BUS_LINE_COUNT - 1 ) {
+      return 255;
+    }
+
+    return CONTROLLER_LINE_COUNT + ( 7 * bus_line ) % 224;
+  }
+
+  static uint32_t GetField( const Context *ctx, uint32_t bus_line )
+  {
+    if ( ctx->map_fields == MAP_FIELDS_NONE ) {
+      return GetNoLineField( bus_line );
+    }
+
+    if ( ctx->map_fields == MAP_FIELDS_SOME && ( bus_line % 2 ) != 0 ) {
+      return GetNoLineField( bus_line );
+    }
+
+    return ( CONTROLLER_LINE_COUNT - 1 - bus_line ) % CONTROLLER_LINE_COUNT;
+  }
+
+  static void PrepareRegisters( Context *ctx )
+  {
+    uint32_t *words;
+    size_t    i;
+
+    words = (uint32_t *) &ctx->regs;
+
+    for ( i = 0; i < sizeof( ctx->regs ) / sizeof( *words ); ++i ) {
+      words[ i ] = 0x5a5a0000 + (uint32_t) i;
+    }
+
+    for ( i = 0; i < BUS_LINE_COUNT / 4; ++i ) {
+      ctx->regs.irqmap[ i ] = ( GetField( ctx, 4 * i ) << 24 ) |
+                              ( GetField( ctx, 4 * i + 1 ) << 16 ) |
+                              ( GetField( ctx, 4 * i + 2 ) << 8 ) |
+                              GetField( ctx, 4 * i + 3 );
+    }
+
+    ctx->regs.pimask[ LEON3_Cpu_Index ] = ctx->mask_before;
+    ctx->regs.piforce[ LEON3_Cpu_Index ] = ctx->force_before;
+
+  #if LEON3_IRQMAP_BUS_LINE_COUNT != 0
+    for ( i = 0; i < BUS_LINE_COUNT; ++i ) {
+      LEON3_IrqCtrl_Mapping[ i ] = 0x55;
+    }
+  #endif
+  }
+
+  static void CheckOtherRegisters( const Context *ctx )
+  {
+    irqamp after;
+
+    after = ctx->regs;
+    after.pimask[ LEON3_Cpu_Index ] = ctx->regs_before.pimask[ LEON3_Cpu_Index ];
+    after.piforce[ LEON3_Cpu_Index ] = ctx->regs_before
+                                         .piforce[ LEON3_Cpu_Index ];
+    after.iclear = ctx->regs_before.iclear;
+    T_eq_mem( &after, &ctx->regs_before, sizeof( after ) );
+  }
+
+  static void SaveMapCopy( Context *ctx )
+  {
+  #if LEON3_IRQMAP_BUS_LINE_COUNT != 0
+    memcpy(
+      ctx->mapping_saved,
+      LEON3_IrqCtrl_Mapping,
+      sizeof( ctx->mapping_saved )
+    );
+  #else
+    (void) ctx;
+  #endif
+  }
+
+  static void RestoreMapCopy( const Context *ctx )
+  {
+  #if LEON3_IRQMAP_BUS_LINE_COUNT != 0
+    memcpy(
+      LEON3_IrqCtrl_Mapping,
+      ctx->mapping_saved,
+      sizeof( ctx->mapping_saved )
+    );
+  #else
+    (void) ctx;
+  #endif
+  }
+
+  static void CheckInRangeEntries( const Context *ctx )
+  {
+  #if LEON3_IRQMAP_BUS_LINE_COUNT != 0
+    uint32_t i;
+
+    for ( i = FIRST_CHECKED_BUS_LINE; i < BUS_LINE_COUNT; ++i ) {
+      uint32_t field;
+
+      field = GetField( ctx, i );
+
+      if ( field < CONTROLLER_LINE_COUNT ) {
+        T_eq_u32( LEON3_IrqCtrl_Mapping[ i ], field );
+      }
+    }
+  #else
+    (void) ctx;
+  #endif
+  }
+
+  static void CheckOutOfRangeEntries( const Context *ctx )
+  {
+  #if LEON3_IRQMAP_BUS_LINE_COUNT != 0
+    uint32_t i;
+
+    for ( i = FIRST_CHECKED_BUS_LINE; i < BUS_LINE_COUNT; ++i ) {
+      uint32_t field;
+
+      field = GetField( ctx, i );
+
+      if ( field >= CONTROLLER_LINE_COUNT ) {
+        T_eq_u32(
+          LEON3_IrqCtrl_Mapping[ i ],
+          field & ( CONTROLLER_LINE_COUNT - 1 )
+        );
+      }
+    }
+  #else
+    (void) ctx;
+  #endif
+  }
+test-target: testsuites/validation/bsps/tc-sparc-leon3-ext-irq-init.c
+test-teardown: null
+text: |
+  ${.:text-template}
+transition-map:
+- enabled-by: true
+  post-conditions:
+    ProcessorMask: Zero
+    ProcessorForce: Zero
+    InterruptClear: All
+    OtherRegisters: Nop
+    InRangeEntries:
+    - if:
+        pre-conditions:
+          MapFields: None
+      then: N/A
+    - else: Field
+    OutOfRangeEntries:
+    - if:
+        pre-conditions:
+          MapFields: All
+      then: N/A
+    - else: Masked
+    IpiEntry:
+    - if:
+        pre-conditions:
+          Ipi: 'Yes'
+      then: IpiLine
+    - else: N/A
+  pre-conditions:
+    InterruptMap:
+    - 'Yes'
+    ExtendedInterrupt:
+    - Fixed
+    Ipi: all
+    MapFields: all
+    ProcessorMask: all
+    ProcessorForce: all
+- enabled-by: true
+  post-conditions:
+    ProcessorMask: Zero
+    ProcessorForce: Zero
+    InterruptClear: All
+    OtherRegisters: Nop
+    InRangeEntries: N/A
+    OutOfRangeEntries: N/A
+    IpiEntry: N/A
+  pre-conditions:
+    InterruptMap:
+    - 'No'
+    ExtendedInterrupt:
+    - Fixed
+    Ipi: all
+    MapFields: N/A
+    ProcessorMask: all
+    ProcessorForce: all
+- enabled-by: true
+  post-conditions: ExtendedInterruptDetected
+  pre-conditions:
+    InterruptMap: all
+    ExtendedInterrupt:
+    - Detected
+    Ipi: all
+    MapFields: all
+    ProcessorMask: all
+    ProcessorForce: all
+type: requirement
