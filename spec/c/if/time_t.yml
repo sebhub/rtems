@@ -6,8 +6,8 @@ index-entries: []
 interface-type: unspecified-typedef
 links:
 - role: interface-placement
-  uid: time
+  uid: /c/time/if/header
 - role: interface-ingroup
-  uid: group
+  uid: /c/time/if/group
 name: time_t
 type: interface

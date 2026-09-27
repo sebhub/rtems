@@ -19,13 +19,13 @@ post-conditions:
       T_eq_int( ctx->status, ENOTSUP );
     text: |
       The return value of ${../if/clock-nanosleep:/name} shall be equal to
-      ${../if/enotsup:/name}.
+      ${../../if/enotsup:/name}.
   - name: EINVAL
     test-code: |
       T_eq_int( ctx->status, EINVAL );
     text: |
       The return value of ${../if/clock-nanosleep:/name} shall be equal to
-      ${../if/einval:/name}.
+      ${../../if/einval:/name}.
   test-epilogue: null
   test-prologue: null
 - name: Timer
@@ -171,12 +171,12 @@ pre-conditions:
       ctx->rqtp = &ctx->rqtp_obj;
     text: |
       While the `rqtp` parameter references an object of type
-      ${../if/timespec:/name}.
+      ${../../if/timespec:/name}.
   - name: 'Null'
     test-code: |
       ctx->rqtp = NULL;
     text: |
-      While the `rqtp` parameter is equal to ${../if/null:/name}.
+      While the `rqtp` parameter is equal to ${../../if/null:/name}.
   test-epilogue: null
   test-prologue: null
 - name: RQTpNSec
@@ -236,12 +236,12 @@ pre-conditions:
       ctx->rmtp = &ctx->rmtp_obj;
     text: |
       While the `rmtp` parameter references an object of type
-      ${../if/timespec:/name}.
+      ${../../if/timespec:/name}.
   - name: 'Null'
     test-code: |
       ctx->rmtp = NULL;
     text: |
-      While the `rmtp` parameter is equal to ${../if/null:/name}.
+      While the `rmtp` parameter is equal to ${../../if/null:/name}.
   test-epilogue: null
   test-prologue: null
 rationale: null

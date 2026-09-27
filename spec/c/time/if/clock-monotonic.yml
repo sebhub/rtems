@@ -6,11 +6,11 @@ index-entries: []
 interface-type: unspecified-define
 links:
 - role: interface-placement
-  uid: time
+  uid: header
 - role: interface-ingroup
   uid: group
 - path: basedefs/time.h.html
   role: reference
   uid: /ref/std/posix-2024
-name: CLOCK_REALTIME
+name: CLOCK_MONOTONIC
 type: interface
