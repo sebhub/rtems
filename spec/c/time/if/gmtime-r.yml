@@ -1,0 +1,51 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Convert the time referenced by ${.:/params[0]/name} into a broken-down time
+  expressed as ${/glossary/utc:/term} and store it in the object referenced by
+  ${.:/params[1]/name}.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+  default:
+    attributes: null
+    body: null
+    params:
+    - const ${/c/if/time_t:/name} *${.:/params[0]/name}
+    - ${/c/time/if/tm:/name} *${.:/params[1]/name}
+    return: struct ${/c/time/if/tm:/name} *
+  variants: []
+description: null
+enabled-by: true
+index-entries: []
+interface-type: function
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+- description: |
+    The broken-down time cannot be represented.
+  role: errno
+  uid: /c/errno/if/eoverflow
+- role: reference
+  uid: /ref/std/posix-2024/gmtime-r
+name: gmtime_r
+notes: |
+  See ${/ref/std/posix-2024/gmtime-r:/name}.
+params:
+- description: |
+    is the pointer to the time object.
+  dir: in
+  name: timer
+- description: |
+    is the pointer to the tm object to store the result.
+  dir: out
+  name: result
+return:
+  return: |
+    Returns the value of ${.:/params[1]/name}, if the call converted the time.
+  return-values:
+  - description: |
+      The broken-down time cannot be represented.
+    value: ${/c/if/null:/name}
+type: interface

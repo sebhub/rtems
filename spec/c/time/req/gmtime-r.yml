@@ -1,0 +1,984 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: action
+links:
+- role: interface-function
+  uid: ../if/gmtime-r
+- role: reference
+  uid: /ref/std/posix-2024/gmtime-r
+- role: reference
+  uid: /ref/std/posix-2024/seconds-since-the-epoch
+post-conditions:
+- name: Return
+  states:
+  - name: Result
+    test-code: |
+      T_eq_ptr( ctx->result, &ctx->tm );
+    text: |
+      The ${/glossary/returnvalue:/term} of ${../if/gmtime-r:/name} shall be the
+      value of the ${../if/gmtime-r:/params[1]/name} parameter.
+  - name: 'Null'
+    test-code: |
+      T_null( ctx->result );
+    text: |
+      The ${/glossary/returnvalue:/term} of ${../if/gmtime-r:/name} shall be
+      ${/c/if/null:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: Errno
+  states:
+  - name: Eoverflow
+    test-code: |
+      T_eq_int( ctx->errno_value, EOVERFLOW );
+    text: |
+      The value of ${/c/errno/if/errno:/name} shall be
+      ${/c/errno/if/eoverflow:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: Second
+  states:
+  - name: Set
+    test-code: |
+      T_eq_int( ctx->tm.tm_sec, ctx->second );
+    text: |
+      The value of the member ${../if/tm:/definition[0]/default/name} of the object
+      referenced by the ${../if/gmtime-r:/params[1]/name} parameter shall be the
+      second of the minute of the time referenced by the
+      ${../if/gmtime-r:/params[0]/name} parameter.
+  test-epilogue: null
+  test-prologue: null
+- name: Minute
+  states:
+  - name: Set
+    test-code: |
+      T_eq_int( ctx->tm.tm_min, ctx->minute );
+    text: |
+      The value of the member ${../if/tm:/definition[1]/default/name} of the object
+      referenced by the ${../if/gmtime-r:/params[1]/name} parameter shall be the
+      minute of the hour of the time referenced by the
+      ${../if/gmtime-r:/params[0]/name} parameter.
+  test-epilogue: null
+  test-prologue: null
+- name: Hour
+  states:
+  - name: Set
+    test-code: |
+      T_eq_int( ctx->tm.tm_hour, ctx->hour );
+    text: |
+      The value of the member ${../if/tm:/definition[2]/default/name} of the object
+      referenced by the ${../if/gmtime-r:/params[1]/name} parameter shall be the hour
+      of the day of the time referenced by the ${../if/gmtime-r:/params[0]/name}
+      parameter.
+  test-epilogue: null
+  test-prologue: null
+- name: MonthDay
+  states:
+  - name: Set
+    test-code: |
+      T_eq_int( ctx->tm.tm_mday, (int) ctx->day );
+    text: |
+      The value of the member ${../if/tm:/definition[3]/default/name} of the object
+      referenced by the ${../if/gmtime-r:/params[1]/name} parameter shall be the day
+      of the month of the time referenced by the ${../if/gmtime-r:/params[0]/name}
+      parameter in the ${/glossary/prolepticgregoriancalendar:/term}.
+  test-epilogue: null
+  test-prologue: null
+- name: Month
+  states:
+  - name: Set
+    test-code: |
+      T_eq_int( ctx->tm.tm_mon, (int) ctx->month - 1 );
+    text: |
+      The value of the member ${../if/tm:/definition[4]/default/name} of the object
+      referenced by the ${../if/gmtime-r:/params[1]/name} parameter shall be the
+      number of months since January of the time referenced by the
+      ${../if/gmtime-r:/params[0]/name} parameter in the
+      ${/glossary/prolepticgregoriancalendar:/term}.
+  test-epilogue: null
+  test-prologue: null
+- name: Year
+  states:
+  - name: Set
+    test-code: |
+      T_eq_i64( (int64_t) ctx->tm.tm_year, ctx->year - 1900 );
+    text: |
+      The value of the member ${../if/tm:/definition[5]/default/name} of the object
+      referenced by the ${../if/gmtime-r:/params[1]/name} parameter shall be the year
+      of the time referenced by the ${../if/gmtime-r:/params[0]/name} parameter in
+      the ${/glossary/prolepticgregoriancalendar:/term} minus 1900.
+  test-epilogue: null
+  test-prologue: null
+- name: WeekDay
+  states:
+  - name: Set
+    test-code: |
+      T_eq_int( ctx->tm.tm_wday, GetWeekDay( ctx->days ) );
+    text: |
+      The value of the member ${../if/tm:/definition[6]/default/name} of the object
+      referenced by the ${../if/gmtime-r:/params[1]/name} parameter shall be the
+      number of days since Sunday of the time referenced by the
+      ${../if/gmtime-r:/params[0]/name} parameter.
+  test-epilogue: null
+  test-prologue: null
+- name: YearDay
+  states:
+  - name: Set
+    test-code: |
+      T_eq_i64(
+        (int64_t) ctx->tm.tm_yday,
+        ctx->days - DaysFromCivil( ctx->year, 1, 1 )
+      );
+    text: |
+      The value of the member ${../if/tm:/definition[7]/default/name} of the object
+      referenced by the ${../if/gmtime-r:/params[1]/name} parameter shall be the
+      number of days since January 1 of the time referenced by the
+      ${../if/gmtime-r:/params[0]/name} parameter in the
+      ${/glossary/prolepticgregoriancalendar:/term}.
+  test-epilogue: null
+  test-prologue: null
+- name: Dst
+  states:
+  - name: Set
+    test-code: |
+      T_eq_int( ctx->tm.tm_isdst, 0 );
+    text: |
+      The value of the member ${../if/tm:/definition[8]/default/name} of the object
+      referenced by the ${../if/gmtime-r:/params[1]/name} parameter shall be zero.
+  test-epilogue: null
+  test-prologue: null
+- name: GmtOff
+  states:
+  - name: Set
+    test-code: |
+      T_eq_long( ctx->tm.tm_gmtoff, 0 );
+    text: |
+      The value of the member ${../if/tm:/definition[9]/default/name} of the object
+      referenced by the ${../if/gmtime-r:/params[1]/name} parameter shall be zero.
+  test-epilogue: null
+  test-prologue: null
+- name: Zone
+  states:
+  - name: Set
+    test-code: |
+      T_assert_not_null( ctx->tm.tm_zone );
+      T_eq_str( ctx->tm.tm_zone, "UTC" );
+    text: |
+      The member ${../if/tm:/definition[10]/default/name} of the object referenced by
+      the ${../if/gmtime-r:/params[1]/name} parameter shall reference the string UTC.
+  test-epilogue: null
+  test-prologue: null
+pre-conditions:
+- name: Year
+  states:
+  - name: Least
+    test-code: |
+      ctx->year_state = YEAR_LEAST;
+    text: |
+      While the time referenced by the ${../if/gmtime-r:/params[0]/name} parameter is
+      the least value of type ${/c/if/time_t:/name}.
+  - name: Underflow
+    test-code: |
+      ctx->year_state = YEAR_UNDERFLOW;
+    text: |
+      While the year of the time referenced by the ${../if/gmtime-r:/params[0]/name}
+      parameter in the ${/glossary/prolepticgregoriancalendar:/term} is before the
+      first year which the member ${../if/tm:/definition[5]/default/name} can
+      represent, while the time is greater than the least value of type
+      ${/c/if/time_t:/name}.
+  - name: First
+    test-code: |
+      ctx->year_state = YEAR_FIRST;
+    text: |
+      While the year of the time referenced by the ${../if/gmtime-r:/params[0]/name}
+      parameter in the ${/glossary/prolepticgregoriancalendar:/term} is the first
+      year which the member ${../if/tm:/definition[5]/default/name} can represent.
+  - name: BeforeEpoch
+    test-code: |
+      ctx->year_state = YEAR_BEFORE_EPOCH;
+    text: |
+      While the year of the time referenced by the ${../if/gmtime-r:/params[0]/name}
+      parameter in the ${/glossary/prolepticgregoriancalendar:/term} is after the
+      first year which the member ${../if/tm:/definition[5]/default/name} can
+      represent and before the year of the ${/glossary/unix-epoch:/term}.
+  - name: AfterEpoch
+    test-code: |
+      ctx->year_state = YEAR_AFTER_EPOCH;
+    text: |
+      While the year of the time referenced by the ${../if/gmtime-r:/params[0]/name}
+      parameter in the ${/glossary/prolepticgregoriancalendar:/term} is at or after
+      the year of the ${/glossary/unix-epoch:/term} and before the last year which
+      the member ${../if/tm:/definition[5]/default/name} can represent.
+  - name: Last
+    test-code: |
+      ctx->year_state = YEAR_LAST;
+    text: |
+      While the year of the time referenced by the ${../if/gmtime-r:/params[0]/name}
+      parameter in the ${/glossary/prolepticgregoriancalendar:/term} is the last year
+      which the member ${../if/tm:/definition[5]/default/name} can represent.
+  - name: Overflow
+    test-code: |
+      ctx->year_state = YEAR_OVERFLOW;
+    text: |
+      While the year of the time referenced by the ${../if/gmtime-r:/params[0]/name}
+      parameter in the ${/glossary/prolepticgregoriancalendar:/term} is after the
+      last year which the member ${../if/tm:/definition[5]/default/name} can
+      represent, while the time is less than the greatest value of type
+      ${/c/if/time_t:/name}.
+  - name: Greatest
+    test-code: |
+      ctx->year_state = YEAR_GREATEST;
+    text: |
+      While the time referenced by the ${../if/gmtime-r:/params[0]/name} parameter is
+      the greatest value of type ${/c/if/time_t:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: LeapYear
+  states:
+  - name: Common
+    test-code: |
+      ctx->leap_year = LEAP_YEAR_COMMON;
+    text: |
+      While the year of the time referenced by the ${../if/gmtime-r:/params[0]/name}
+      parameter is not divisible by four.
+  - name: Leap4
+    test-code: |
+      ctx->leap_year = LEAP_YEAR_4;
+    text: |
+      While the year of the time referenced by the ${../if/gmtime-r:/params[0]/name}
+      parameter is divisible by four and not divisible by 100.
+  - name: Century
+    test-code: |
+      ctx->leap_year = LEAP_YEAR_CENTURY;
+    text: |
+      While the year of the time referenced by the ${../if/gmtime-r:/params[0]/name}
+      parameter is divisible by 100 and not divisible by 400.
+  - name: Leap400
+    test-code: |
+      ctx->leap_year = LEAP_YEAR_400;
+    text: |
+      While the year of the time referenced by the ${../if/gmtime-r:/params[0]/name}
+      parameter is divisible by 400.
+  test-epilogue: null
+  test-prologue: null
+- name: Month
+  states:
+  - name: January
+    test-code: |
+      ctx->month = 1;
+    text: |
+      While the month of the time referenced by the ${../if/gmtime-r:/params[0]/name}
+      parameter is January.
+  - name: February
+    test-code: |
+      ctx->month = 2;
+    text: |
+      While the month of the time referenced by the ${../if/gmtime-r:/params[0]/name}
+      parameter is February.
+  - name: Between
+    test-code: |
+      ctx->month = 6;
+    text: |
+      While the month of the time referenced by the ${../if/gmtime-r:/params[0]/name}
+      parameter is after February and before December.
+  - name: December
+    test-code: |
+      ctx->month = 12;
+    text: |
+      While the month of the time referenced by the ${../if/gmtime-r:/params[0]/name}
+      parameter is December.
+  test-epilogue: null
+  test-prologue: null
+- name: MonthDay
+  states:
+  - name: First
+    test-code: |
+      ctx->day_state = DAY_FIRST;
+    text: |
+      While the day of the month of the time referenced by the
+      ${../if/gmtime-r:/params[0]/name} parameter is the first day of the month.
+  - name: Between
+    test-code: |
+      ctx->day_state = DAY_BETWEEN;
+    text: |
+      While the day of the month of the time referenced by the
+      ${../if/gmtime-r:/params[0]/name} parameter is after the first day and before
+      the last day of the month.
+  - name: Last
+    test-code: |
+      ctx->day_state = DAY_LAST;
+    text: |
+      While the day of the month of the time referenced by the
+      ${../if/gmtime-r:/params[0]/name} parameter is the last day of the month.
+  test-epilogue: null
+  test-prologue: null
+- name: Hour
+  states:
+  - name: First
+    test-code: |
+      ctx->hour = 0;
+    text: |
+      While the hour of the time referenced by the ${../if/gmtime-r:/params[0]/name}
+      parameter is zero.
+  - name: Between
+    test-code: |
+      ctx->hour = 11;
+    text: |
+      While the hour of the time referenced by the ${../if/gmtime-r:/params[0]/name}
+      parameter is after zero and before 23.
+  - name: Last
+    test-code: |
+      ctx->hour = 23;
+    text: |
+      While the hour of the time referenced by the ${../if/gmtime-r:/params[0]/name}
+      parameter is 23.
+  test-epilogue: null
+  test-prologue: null
+- name: Minute
+  states:
+  - name: First
+    test-code: |
+      ctx->minute = 0;
+    text: |
+      While the minute of the time referenced by the
+      ${../if/gmtime-r:/params[0]/name} parameter is zero.
+  - name: Between
+    test-code: |
+      ctx->minute = 29;
+    text: |
+      While the minute of the time referenced by the
+      ${../if/gmtime-r:/params[0]/name} parameter is after zero and before 59.
+  - name: Last
+    test-code: |
+      ctx->minute = 59;
+    text: |
+      While the minute of the time referenced by the
+      ${../if/gmtime-r:/params[0]/name} parameter is 59.
+  test-epilogue: null
+  test-prologue: null
+- name: Second
+  states:
+  - name: First
+    test-code: |
+      ctx->second = 0;
+    text: |
+      While the second of the time referenced by the
+      ${../if/gmtime-r:/params[0]/name} parameter is zero.
+  - name: Between
+    test-code: |
+      ctx->second = 29;
+    text: |
+      While the second of the time referenced by the
+      ${../if/gmtime-r:/params[0]/name} parameter is after zero and before 59.
+  - name: Last
+    test-code: |
+      ctx->second = 59;
+    text: |
+      While the second of the time referenced by the
+      ${../if/gmtime-r:/params[0]/name} parameter is 59.
+  test-epilogue: null
+  test-prologue: null
+rationale: |
+  Dimension Year covers the year of the time in the proleptic Gregorian calendar,
+  8 states. The member tm_year of type int represents the years from INT_MIN plus
+  1900 to INT_MAX plus 1900. POSIX specifies the error EOVERFLOW for a result
+  which the structure cannot represent.
+
+  Dimension LeapYear covers the leap year rule of the proleptic Gregorian
+  calendar, 4 states. The expression of POSIX for the seconds since the Epoch
+  divides the year by four, 100 and 400.
+
+  Dimension Month covers the month of the year, 4 states. The length of February
+  depends on the leap year rule. January and December are the first and the last
+  month.
+
+  Dimension MonthDay covers the day of the month, 3 states.
+
+  Dimension Hour covers the hour of the day, 3 states. Dimension Minute covers
+  the minute of the hour, 3 states. Dimension Second covers the second of the
+  minute, 3 states. POSIX accounts for each day by exactly 86400 seconds, so the
+  second of the minute never reaches 60.
+
+  The date fixes the day of the week and the day of the year, so no dimension
+  arranges them. UTC has no daylight saving time.
+
+  POSIX leaves the relationship undefined for a negative time and for a year
+  before 1970. This item extends the relationship by the proleptic Gregorian
+  calendar.
+
+  POSIX specifies no value of errno after a successful call. POSIX leaves the
+  content of the object referenced by the result parameter unspecified after an
+  error.
+
+  The least and the greatest value of type time_t fix every other pre-condition.
+  The item skips the other combinations of these values.
+
+  The first and the last year which the member tm_year can represent fix the leap
+  year class. The item skips the other classes of these years.
+
+  The test code derives the expected values with the independent algorithm of
+  DaysFromCivil().
+requirement-type: functional
+skip-reasons:
+  FixedClass: |
+    The year fixes the leap year class.
+  FixedTime: |
+    The time fixes the other pre-conditions.
+test-action: |
+  ctx->year = years[ ctx->year_state ][ ctx->leap_year ];
+
+  switch ( ctx->day_state ) {
+    case DAY_FIRST:
+      ctx->day = 1;
+      break;
+    case DAY_BETWEEN:
+      ctx->day = 15;
+      break;
+    default:
+      ctx->day = GetLastDayOfMonth( ctx->year, ctx->month );
+      break;
+  }
+
+  ctx->days = DaysFromCivil( ctx->year, ctx->month, ctx->day );
+
+  if ( ctx->year_state == YEAR_LEAST ) {
+    ctx->timer = (time_t) INT64_MIN;
+  } else if ( ctx->year_state == YEAR_GREATEST ) {
+    ctx->timer = (time_t) INT64_MAX;
+  } else {
+    ctx->timer = (time_t) ctx->days * 86400 + ctx->hour * 3600 +
+                 ctx->minute * 60 + ctx->second;
+  }
+  memset( &ctx->tm, 0xff, sizeof( ctx->tm ) );
+  ctx->tm.tm_zone = NULL;
+  errno = 0;
+  ctx->result = gmtime_r( &ctx->timer, &ctx->tm );
+  ctx->errno_value = errno;
+test-brief: null
+test-cleanup: null
+test-context:
+- brief: |
+    This member specifies the year state.
+  description: null
+  member: |
+    YearState year_state
+- brief: |
+    This member specifies the leap year class.
+  description: null
+  member: |
+    LeapYear leap_year
+- brief: |
+    This member specifies the day of the month state.
+  description: null
+  member: |
+    DayState day_state
+- brief: |
+    This member contains the year.
+  description: null
+  member: |
+    int64_t year
+- brief: |
+    This member contains the month with values from 1 to 12.
+  description: null
+  member: |
+    unsigned int month
+- brief: |
+    This member contains the day of the month.
+  description: null
+  member: |
+    int64_t day
+- brief: |
+    This member contains the hour.
+  description: null
+  member: |
+    int hour
+- brief: |
+    This member contains the minute.
+  description: null
+  member: |
+    int minute
+- brief: |
+    This member contains the second.
+  description: null
+  member: |
+    int second
+- brief: |
+    This member contains the days since the Epoch.
+  description: null
+  member: |
+    int64_t days
+- brief: |
+    This member contains the time to convert.
+  description: null
+  member: |
+    time_t timer
+- brief: |
+    This member contains the broken-down time.
+  description: null
+  member: |
+    struct tm tm
+- brief: |
+    This member contains the return value of the function call.
+  description: null
+  member: |
+    struct tm *result
+- brief: |
+    This member contains the value of errno after the function call.
+  description: null
+  member: |
+    int errno_value
+test-context-support: |
+  typedef enum {
+    YEAR_LEAST,
+    YEAR_UNDERFLOW,
+    YEAR_FIRST,
+    YEAR_BEFORE_EPOCH,
+    YEAR_AFTER_EPOCH,
+    YEAR_LAST,
+    YEAR_OVERFLOW,
+    YEAR_GREATEST
+  } YearState;
+
+  typedef enum {
+    LEAP_YEAR_COMMON,
+    LEAP_YEAR_4,
+    LEAP_YEAR_CENTURY,
+    LEAP_YEAR_400
+  } LeapYear;
+
+  typedef enum { DAY_FIRST, DAY_BETWEEN, DAY_LAST } DayState;
+test-description: null
+test-header: null
+test-includes:
+- errno.h
+- stdint.h
+- string.h
+- time.h
+test-local-includes:
+- tx-support.h
+test-prepare: null
+test-setup: null
+test-stop: null
+test-support: |
+  /*
+   * The member tm_year of type int represents the years from INT_MIN + 1900 to
+   * INT_MAX + 1900.  A zero marks a class which the year does not have.
+   */
+  static const int64_t years[ 8 ][ 4 ] = {
+    { -292277022657, 0, 0, 0 },
+    { -2147481749, -2147481752, -2147481800, -2147482000 },
+    { 0, -2147481748, 0, 0 },
+    { -1, -4, -100, -400 },
+    { 1970, 2024, 2100, 2000 },
+    { 2147485547, 0, 0, 0 },
+    { 2147485549, 2147485548, 2147485700, 2147485600 },
+    { 0, 292277026596, 0, 0 }
+  };
+
+  static int64_t GetLastDayOfMonth( int64_t year, unsigned int month )
+  {
+    if ( month == 12 ) {
+      return 31;
+    }
+
+    return DaysFromCivil( year, month + 1, 1 ) - DaysFromCivil( year, month, 1 );
+  }
+
+  static int GetWeekDay( int64_t days )
+  {
+    int64_t weekday;
+
+    /* The Epoch is a Thursday */
+    weekday = ( days + 4 ) % 7;
+
+    if ( weekday < 0 ) {
+      weekday += 7;
+    }
+
+    return (int) weekday;
+  }
+test-target: testsuites/validation/tc-gmtime-r.c
+test-teardown: null
+text: |
+  ${.:text-template}
+transition-map:
+- enabled-by: true
+  post-conditions:
+    Return: 'Null'
+    Errno: Eoverflow
+    Second: N/A
+    Minute: N/A
+    Hour: N/A
+    MonthDay: N/A
+    Month: N/A
+    Year: N/A
+    WeekDay: N/A
+    YearDay: N/A
+    Dst: N/A
+    GmtOff: N/A
+    Zone: N/A
+  pre-conditions:
+    Year:
+    - Least
+    LeapYear:
+    - Common
+    Month:
+    - January
+    MonthDay:
+    - Between
+    Hour:
+    - Between
+    Minute:
+    - Between
+    Second:
+    - Between
+- enabled-by: true
+  post-conditions:
+    Return: 'Null'
+    Errno: Eoverflow
+    Second: N/A
+    Minute: N/A
+    Hour: N/A
+    MonthDay: N/A
+    Month: N/A
+    Year: N/A
+    WeekDay: N/A
+    YearDay: N/A
+    Dst: N/A
+    GmtOff: N/A
+    Zone: N/A
+  pre-conditions:
+    Year:
+    - Greatest
+    LeapYear:
+    - Leap4
+    Month:
+    - December
+    MonthDay:
+    - Between
+    Hour:
+    - Between
+    Minute:
+    - Between
+    Second:
+    - Between
+- enabled-by: true
+  post-conditions:
+    Return: 'Null'
+    Errno: Eoverflow
+    Second: N/A
+    Minute: N/A
+    Hour: N/A
+    MonthDay: N/A
+    Month: N/A
+    Year: N/A
+    WeekDay: N/A
+    YearDay: N/A
+    Dst: N/A
+    GmtOff: N/A
+    Zone: N/A
+  pre-conditions:
+    Year:
+    - Underflow
+    - Overflow
+    LeapYear: all
+    Month: all
+    MonthDay: all
+    Hour: all
+    Minute: all
+    Second: all
+- enabled-by: true
+  post-conditions: FixedClass
+  pre-conditions:
+    Year:
+    - First
+    LeapYear:
+    - Common
+    - Century
+    - Leap400
+    Month: all
+    MonthDay: all
+    Hour: all
+    Minute: all
+    Second: all
+- enabled-by: true
+  post-conditions: FixedClass
+  pre-conditions:
+    Year:
+    - Last
+    LeapYear:
+    - Leap4
+    - Century
+    - Leap400
+    Month: all
+    MonthDay: all
+    Hour: all
+    Minute: all
+    Second: all
+- enabled-by: true
+  post-conditions:
+    Return: Result
+    Errno: N/A
+    Second: Set
+    Minute: Set
+    Hour: Set
+    MonthDay: Set
+    Month: Set
+    Year: Set
+    WeekDay: Set
+    YearDay: Set
+    Dst: Set
+    GmtOff: Set
+    Zone: Set
+  pre-conditions:
+    Year:
+    - First
+    LeapYear:
+    - Leap4
+    Month: all
+    MonthDay: all
+    Hour: all
+    Minute: all
+    Second: all
+- enabled-by: true
+  post-conditions:
+    Return: Result
+    Errno: N/A
+    Second: Set
+    Minute: Set
+    Hour: Set
+    MonthDay: Set
+    Month: Set
+    Year: Set
+    WeekDay: Set
+    YearDay: Set
+    Dst: Set
+    GmtOff: Set
+    Zone: Set
+  pre-conditions:
+    Year:
+    - Last
+    LeapYear:
+    - Common
+    Month: all
+    MonthDay: all
+    Hour: all
+    Minute: all
+    Second: all
+- enabled-by: true
+  post-conditions:
+    Return: Result
+    Errno: N/A
+    Second: Set
+    Minute: Set
+    Hour: Set
+    MonthDay: Set
+    Month: Set
+    Year: Set
+    WeekDay: Set
+    YearDay: Set
+    Dst: Set
+    GmtOff: Set
+    Zone: Set
+  pre-conditions:
+    Year:
+    - BeforeEpoch
+    - AfterEpoch
+    LeapYear: all
+    Month: all
+    MonthDay: all
+    Hour: all
+    Minute: all
+    Second: all
+- enabled-by: true
+  post-conditions: FixedTime
+  pre-conditions:
+    Year:
+    - Least
+    LeapYear:
+    - Leap4
+    - Century
+    - Leap400
+    Month: all
+    MonthDay: all
+    Hour: all
+    Minute: all
+    Second: all
+- enabled-by: true
+  post-conditions: FixedTime
+  pre-conditions:
+    Year:
+    - Least
+    LeapYear:
+    - Common
+    Month:
+    - February
+    - Between
+    - December
+    MonthDay: all
+    Hour: all
+    Minute: all
+    Second: all
+- enabled-by: true
+  post-conditions: FixedTime
+  pre-conditions:
+    Year:
+    - Least
+    LeapYear:
+    - Common
+    Month:
+    - January
+    MonthDay:
+    - First
+    - Last
+    Hour: all
+    Minute: all
+    Second: all
+- enabled-by: true
+  post-conditions: FixedTime
+  pre-conditions:
+    Year:
+    - Least
+    LeapYear:
+    - Common
+    Month:
+    - January
+    MonthDay:
+    - Between
+    Hour:
+    - First
+    - Last
+    Minute: all
+    Second: all
+- enabled-by: true
+  post-conditions: FixedTime
+  pre-conditions:
+    Year:
+    - Least
+    LeapYear:
+    - Common
+    Month:
+    - January
+    MonthDay:
+    - Between
+    Hour:
+    - Between
+    Minute:
+    - First
+    - Last
+    Second: all
+- enabled-by: true
+  post-conditions: FixedTime
+  pre-conditions:
+    Year:
+    - Least
+    LeapYear:
+    - Common
+    Month:
+    - January
+    MonthDay:
+    - Between
+    Hour:
+    - Between
+    Minute:
+    - Between
+    Second:
+    - First
+    - Last
+- enabled-by: true
+  post-conditions: FixedTime
+  pre-conditions:
+    Year:
+    - Greatest
+    LeapYear:
+    - Common
+    - Century
+    - Leap400
+    Month: all
+    MonthDay: all
+    Hour: all
+    Minute: all
+    Second: all
+- enabled-by: true
+  post-conditions: FixedTime
+  pre-conditions:
+    Year:
+    - Greatest
+    LeapYear:
+    - Leap4
+    Month:
+    - January
+    - February
+    - Between
+    MonthDay: all
+    Hour: all
+    Minute: all
+    Second: all
+- enabled-by: true
+  post-conditions: FixedTime
+  pre-conditions:
+    Year:
+    - Greatest
+    LeapYear:
+    - Leap4
+    Month:
+    - December
+    MonthDay:
+    - First
+    - Last
+    Hour: all
+    Minute: all
+    Second: all
+- enabled-by: true
+  post-conditions: FixedTime
+  pre-conditions:
+    Year:
+    - Greatest
+    LeapYear:
+    - Leap4
+    Month:
+    - December
+    MonthDay:
+    - Between
+    Hour:
+    - First
+    - Last
+    Minute: all
+    Second: all
+- enabled-by: true
+  post-conditions: FixedTime
+  pre-conditions:
+    Year:
+    - Greatest
+    LeapYear:
+    - Leap4
+    Month:
+    - December
+    MonthDay:
+    - Between
+    Hour:
+    - Between
+    Minute:
+    - First
+    - Last
+    Second: all
+- enabled-by: true
+  post-conditions: FixedTime
+  pre-conditions:
+    Year:
+    - Greatest
+    LeapYear:
+    - Leap4
+    Month:
+    - December
+    MonthDay:
+    - Between
+    Hour:
+    - Between
+    Minute:
+    - Between
+    Second:
+    - First
+    - Last
+type: requirement
