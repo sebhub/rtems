@@ -83,4 +83,8 @@ return:
   - description: |
       The time of day specified by ${.:/params[0]/name} was invalid.
     value: ${../../status/if/invalid-clock:/name}
+  - description: |
+      A time of day hook reported a failure. The directive did not set the
+      ${/glossary/clock-realtime:/term}.
+    value: ${../../status/if/unsatisfied:/name}
 type: interface
