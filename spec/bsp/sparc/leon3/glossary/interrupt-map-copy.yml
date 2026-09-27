@@ -1,0 +1,14 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+term: interrupt map copy
+text: |
+  The interrupt map copy is the copy of the ${interrupt-map:/term} which the BSP
+  reads during the initialization of the interrupt support. It holds one
+  ${interrupt-map-entry:/term} for each ${bus-line:/term}.
+type: glossary

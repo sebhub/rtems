@@ -1,0 +1,10 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+links:
+- role: reference-location
+  uid: ../gr765-dsum-0-11
+location: 14.3.20
+name: GR765 datasheet, section 14.3.20
+type: reference-location

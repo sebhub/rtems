@@ -1,0 +1,14 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+term: interrupt map
+text: |
+  The interrupt map is the set of the interrupt map registers of the IRQ(A)MP
+  interrupt controller. It holds one ${interrupt-map-entry:/term} for each
+  ${bus-line:/term}.
+type: glossary

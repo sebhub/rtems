@@ -1,0 +1,438 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: bsps/sparc/leon3
+functional-type: action
+links:
+- role: interface-function
+  uid: ../if/irqmap-get
+- role: reference
+  uid: /ref/soc/gaisler/gr740/gr740-um-ds-2-10/irqmap
+- role: reference
+  uid: /ref/soc/gaisler/gr765/gr765-dsum-0-11/irqmap
+post-conditions:
+- name: Status
+  states:
+  - name: Ok
+    test-code: |
+      T_rsc_success( ctx->status );
+    text: |
+      The return status of ${../if/irqmap-get:/name} shall be
+      ${/rtems/status/if/successful:/name}.
+  - name: InvAddr
+    test-code: |
+      T_rsc( ctx->status, RTEMS_INVALID_ADDRESS );
+    text: |
+      The return status of ${../if/irqmap-get:/name} shall be
+      ${/rtems/status/if/invalid-address:/name}.
+  - name: InvNum
+    test-code: |
+      T_rsc( ctx->status, RTEMS_INVALID_NUMBER );
+    text: |
+      The return status of ${../if/irqmap-get:/name} shall be
+      ${/rtems/status/if/invalid-number:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: ControllerLine
+  states:
+  - name: Entry
+    test-code: |
+      T_eq_u32( ctx->controller_line, ctx->entry );
+    text: |
+      The object referenced by the `controller_line` parameter shall be set to the
+      ${../glossary/interrupt-map-entry:/term} of the ${../glossary/bus-line:/term}
+      specified by the `bus_line` parameter.
+  - name: BusLine
+    test-code: |
+      T_eq_u32( ctx->controller_line, ctx->bus_line );
+    text: |
+      The object referenced by the `controller_line` parameter shall be set to the
+      number of the ${../glossary/bus-line:/term} specified by the `bus_line`
+      parameter.
+  - name: Invalid
+    test-code: |
+      T_eq_u32( ctx->controller_line, UINT32_MAX );
+    text: |
+      The object referenced by the `controller_line` parameter shall be set to
+      ${/c/if/uint32_max:/name}.
+  - name: Nop
+    test-code: |
+      T_eq_u32( ctx->controller_line, CONTROLLER_LINE_INITIAL );
+    text: |
+      The object referenced by the `controller_line` parameter shall not be modified
+      by the function call.
+  test-epilogue: null
+  test-prologue: null
+- name: Map
+  states:
+  - name: Nop
+    test-code: |
+      #if LEON3_IRQMAP_BUS_LINE_COUNT != 0
+        T_eq_mem(
+          LEON3_IrqCtrl_Mapping,
+          ctx->mapping_before,
+          sizeof( ctx->mapping_before )
+        );
+      #else
+        (void) ctx;
+      #endif
+    text: |
+      The ${../glossary/interrupt-map-copy:/term} shall not be modified by the
+      function call.
+  test-epilogue: null
+  test-prologue: null
+- name: MapRegisters
+  states:
+  - name: Nop
+    test-code: |
+      #if LEON3_IRQMAP_BUS_LINE_COUNT != 0
+        CheckMapRegisters( ctx );
+      #else
+        (void) ctx;
+      #endif
+    text: |
+      The registers of the ${../glossary/interrupt-map:/term} shall not be modified
+      by the function call.
+  test-epilogue: null
+  test-prologue: null
+pre-conditions:
+- name: InterruptMap
+  states:
+  - name: 'Yes'
+    test-code: |
+      #if LEON3_IRQMAP_BUS_LINE_COUNT == 0
+        ${.:skip}
+      #endif
+    text: |
+      Where the BSP uses the ${../glossary/interrupt-map:/term}.
+  - name: 'No'
+    test-code: |
+      #if LEON3_IRQMAP_BUS_LINE_COUNT != 0
+        ${.:skip}
+      #endif
+    text: |
+      Where the BSP uses no ${../glossary/interrupt-map:/term}.
+  test-epilogue: null
+  test-prologue: null
+- name: ControllerLine
+  states:
+  - name: Valid
+    test-code: |
+      ctx->controller_line_pointer = &ctx->controller_line;
+    text: |
+      While the `controller_line` parameter references an object of type
+      ${/rtems/intr/if/vector-number:/name}.
+  - name: 'Null'
+    test-code: |
+      ctx->controller_line_pointer = NULL;
+    text: |
+      While the `controller_line` parameter is equal to ${/c/if/null:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: BusLine
+  states:
+  - name: First
+    test-code: |
+      ctx->bus_line = 0;
+    text: |
+      While the `bus_line` parameter is the first ${../glossary/bus-line:/term}.
+  - name: Between
+    test-code: |
+      ctx->bus_line = BUS_LINE_BETWEEN;
+    text: |
+      While the `bus_line` parameter is greater than the first and less than the last
+      ${../glossary/bus-line:/term}.
+  - name: Last
+    test-code: |
+      ctx->bus_line = BUS_LINE_COUNT - 1;
+    text: |
+      While the `bus_line` parameter is the last ${../glossary/bus-line:/term}.
+  - name: Invalid
+    test-code: |
+      ctx->bus_line = BUS_LINE_COUNT;
+    text: |
+      While the `bus_line` parameter is greater than the last
+      ${../glossary/bus-line:/term}.
+  test-epilogue: null
+  test-prologue: null
+- name: MapEntry
+  states:
+  - name: First
+    test-code: |
+      ctx->entry = 0;
+    text: |
+      While the ${../glossary/interrupt-map-entry:/term} of the
+      ${../glossary/bus-line:/term} is the first
+      ${../glossary/controller-line:/term}.
+  - name: Between
+    test-code: |
+      ctx->entry = CONTROLLER_LINE_COUNT / 2 + 1;
+    text: |
+      While the ${../glossary/interrupt-map-entry:/term} of the
+      ${../glossary/bus-line:/term} is greater than the first and less than the last
+      ${../glossary/controller-line:/term}.
+  - name: Last
+    test-code: |
+      ctx->entry = CONTROLLER_LINE_COUNT - 1;
+    text: |
+      While the ${../glossary/interrupt-map-entry:/term} of the
+      ${../glossary/bus-line:/term} is the last ${../glossary/controller-line:/term}.
+  - name: Other
+    test-code: |
+      ctx->entry = CONTROLLER_LINE_COUNT;
+    text: |
+      While the ${../glossary/interrupt-map-entry:/term} of the
+      ${../glossary/bus-line:/term} is greater than the last
+      ${../glossary/controller-line:/term}.
+  test-epilogue: null
+  test-prologue: null
+rationale: |
+  Dimension InterruptMap covers whether the BSP uses the interrupt map, 2 states.
+  Without the interrupt map, the documentation of the function maps a bus line to
+  the controller line of the same number.
+
+  Dimension ControllerLine covers the pointer parameter controller_line, 2
+  states.
+
+  Dimension BusLine covers the parameter bus_line, 4 states. The interrupt map of
+  the ${/ref/soc/gaisler/gr740/gr740-um-ds-2-10/irqmap:/name}, holds 32 bus
+  lines. The interrupt map of the
+  ${/ref/soc/gaisler/gr765/gr765-dsum-0-11/irqmap:/name}, holds 64 bus lines. The
+  BSP option LEON3_IRQMAP_BUS_LINE_COUNT states the count of the BSP. Without the
+  interrupt map, the count is the count of controller lines. The first, a middle
+  and the last bus line are valid, and every greater value is invalid.
+
+  Dimension MapEntry covers the entry of the bus line in the interrupt map copy
+  of the BSP, 4 states. An entry selects one of the 32 controller lines. The
+  state Other stands for any content outside that domain.
+
+  The test arranges the entry in the interrupt map copy and restores it in the
+  cleanup. The map entry is not applicable for an invalid bus line, since the map
+  holds no entry for it.
+
+  The state Between uses the bus line of TM27_IRQMAP_BUS_LINE, which no driver
+  uses. The state First uses bus line 0. In SMP and multiprocessing
+  configurations, bus line 0 carries the inter-processor interrupt. The test
+  sends no inter-processor interrupt while it changes the entry. The BSP reads
+  the interrupt map copy only to install and to remove an interrupt handler and
+  to send an inter-processor interrupt.
+requirement-type: functional
+skip-reasons: {}
+test-action: |
+  #if LEON3_IRQMAP_BUS_LINE_COUNT != 0
+  if ( ctx->bus_line < BUS_LINE_COUNT ) {
+    ctx->entry_before = LEON3_IrqCtrl_Mapping[ ctx->bus_line ];
+    LEON3_IrqCtrl_Mapping[ ctx->bus_line ] = (uint8_t) ctx->entry;
+  }
+
+  memcpy( ctx->mapping_before, LEON3_IrqCtrl_Mapping, sizeof( ctx->mapping_before ) );
+  SaveMapRegisters( ctx );
+  #endif
+
+  ctx->controller_line = CONTROLLER_LINE_INITIAL;
+  ctx->status = leon3_irqmap_get(
+    ctx->bus_line,
+    ctx->controller_line_pointer
+  );
+test-brief: null
+test-cleanup: |
+  #if LEON3_IRQMAP_BUS_LINE_COUNT != 0
+    if ( ctx->bus_line < BUS_LINE_COUNT ) {
+      LEON3_IrqCtrl_Mapping[ ctx->bus_line ] = ctx->entry_before;
+    }
+  #else
+    (void) ctx;
+  #endif
+test-context:
+- brief: |
+    This member specifies the `bus_line` parameter value.
+  description: null
+  member: |
+    rtems_vector_number bus_line
+- brief: |
+    This member specifies the `controller_line` parameter value.
+  description: null
+  member: |
+    rtems_vector_number *controller_line_pointer
+- brief: |
+    This member specifies the map entry of the bus line.
+  description: null
+  member: |
+    rtems_vector_number entry
+- brief: |
+    This member contains the map entry before the arrangement.
+  description: null
+  member: |
+    uint8_t entry_before
+- brief: |
+    This member contains the interrupt map copy of the BSP before the call.
+  description: null
+  member: |
+    uint8_t mapping_before[ BUS_LINE_COUNT ]
+- brief: |
+    This member contains the interrupt map registers before the call.
+  description: null
+  member: |
+    uint32_t map_registers_before[ BUS_LINE_COUNT / 4 ]
+- brief: |
+    This member contains the object referenced by the `controller_line` parameter.
+  description: null
+  member: |
+    rtems_vector_number controller_line
+- brief: |
+    This member contains the return value of the directive call.
+  description: null
+  member: |
+    rtems_status_code status
+test-context-support: |
+  #define _RTEMS_TMTEST27
+  #include <tm27.h>
+
+  /*
+   * The IRQ(A)MP provides 32 controller lines, see the
+   * ${/ref/soc/gaisler/gr740/gr740-um-ds-2-10/irqmap:/name}, and the
+   * ${/ref/soc/gaisler/gr765/gr765-dsum-0-11/irqmap:/name}.
+   */
+  #define CONTROLLER_LINE_COUNT 32
+
+  #if LEON3_IRQMAP_BUS_LINE_COUNT != 0
+  #define BUS_LINE_COUNT   LEON3_IRQMAP_BUS_LINE_COUNT
+  #define BUS_LINE_BETWEEN TM27_IRQMAP_BUS_LINE
+  #else
+  /* Without the interrupt map, a bus line is a controller line. */
+  #define BUS_LINE_COUNT   CONTROLLER_LINE_COUNT
+  #define BUS_LINE_BETWEEN ( CONTROLLER_LINE_COUNT / 2 )
+  #endif
+test-description: null
+test-header: null
+test-includes:
+- rtems.h
+- string.h
+- bsp/irq.h
+- bsp/irqimpl.h
+- grlib/io.h
+test-local-includes: []
+test-prepare: null
+test-setup: null
+test-stop: null
+test-support: |
+  typedef ${.:/test-context-type} Context;
+
+  #define CONTROLLER_LINE_INITIAL 0x5a5a5a5a
+
+  #if LEON3_IRQMAP_BUS_LINE_COUNT != 0
+  static void SaveMapRegisters( Context *ctx )
+  {
+    size_t i;
+
+    for ( i = 0; i < RTEMS_ARRAY_SIZE( ctx->map_registers_before ); ++i ) {
+      ctx->map_registers_before[ i ] = grlib_load_32(
+        &LEON3_IrqCtrl_Regs->irqmap[ i ]
+      );
+    }
+  }
+
+  static void CheckMapRegisters( const Context *ctx )
+  {
+    size_t i;
+
+    for ( i = 0; i < RTEMS_ARRAY_SIZE( ctx->map_registers_before ); ++i ) {
+      T_eq_u32(
+        grlib_load_32( &LEON3_IrqCtrl_Regs->irqmap[ i ] ),
+        ctx->map_registers_before[ i ]
+      );
+    }
+  }
+  #endif
+test-target: testsuites/validation/bsps/tc-sparc-leon3-irqmap-get.c
+test-teardown: null
+text: |
+  ${.:text-template}
+transition-map:
+- enabled-by: true
+  post-conditions:
+    Status: InvAddr
+    ControllerLine: Nop
+    Map: Nop
+    MapRegisters: Nop
+  pre-conditions:
+    InterruptMap:
+    - 'Yes'
+    ControllerLine:
+    - 'Null'
+    BusLine: all
+    MapEntry: N/A
+- enabled-by: true
+  post-conditions:
+    Status: Ok
+    ControllerLine: Entry
+    Map: Nop
+    MapRegisters: Nop
+  pre-conditions:
+    InterruptMap:
+    - 'Yes'
+    ControllerLine:
+    - Valid
+    BusLine:
+    - First
+    - Between
+    - Last
+    MapEntry: all
+- enabled-by: true
+  post-conditions:
+    Status: InvNum
+    ControllerLine: Invalid
+    Map: Nop
+    MapRegisters: Nop
+  pre-conditions:
+    InterruptMap:
+    - 'Yes'
+    ControllerLine:
+    - Valid
+    BusLine:
+    - Invalid
+    MapEntry: N/A
+- enabled-by: true
+  post-conditions:
+    Status: InvAddr
+    ControllerLine: Nop
+    Map: N/A
+    MapRegisters: N/A
+  pre-conditions:
+    InterruptMap:
+    - 'No'
+    ControllerLine:
+    - 'Null'
+    BusLine: all
+    MapEntry: N/A
+- enabled-by: true
+  post-conditions:
+    Status: Ok
+    ControllerLine: BusLine
+    Map: N/A
+    MapRegisters: N/A
+  pre-conditions:
+    InterruptMap:
+    - 'No'
+    ControllerLine:
+    - Valid
+    BusLine:
+    - First
+    - Between
+    - Last
+    MapEntry: N/A
+- enabled-by: true
+  post-conditions:
+    Status: InvNum
+    ControllerLine: Invalid
+    Map: N/A
+    MapRegisters: N/A
+  pre-conditions:
+    InterruptMap:
+    - 'No'
+    ControllerLine:
+    - Valid
+    BusLine:
+    - Invalid
+    MapEntry: N/A
+type: requirement
