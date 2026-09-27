@@ -46,7 +46,7 @@ notes: |
   2514-05-30T01:53:03.999999999Z.  The future uptime of the system shall be
   in this range, otherwise the system behaviour is undefined.  Due to
   implementation constraints, the latest time of day which this directive and
-  the POSIX ${/c/if/clock-settime:/name} accept is
+  the POSIX ${/c/time/if/clock-settime:/name} accept is
   2400-12-31T23:59:59.999999999Z.
 
   The specified time is based on the configured ${/glossary/clock-tick:/term}

@@ -3,14 +3,14 @@ copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
 enabled-by: true
 index-entries: []
-interface-type: unspecified-function
+interface-type: unspecified-define
 links:
 - role: interface-placement
-  uid: time
+  uid: header
 - role: interface-ingroup
   uid: group
-- path: functions/clock_nanosleep.html
+- path: basedefs/time.h.html
   role: reference
   uid: /ref/std/posix-2024
-name: clock_nanosleep
+name: TIMER_ABSTIME
 type: interface
