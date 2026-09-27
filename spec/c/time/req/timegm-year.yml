@@ -1,0 +1,604 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: action
+links:
+- role: interface-function
+  uid: ../if/timegm
+- role: reference
+  uid: /ref/std/c23/errno-h
+- role: reference
+  uid: /ref/std/c23/timegm
+- role: reference
+  uid: /ref/std/cppreference-c/timegm
+- role: reference
+  uid: /ref/std/posix-2024/seconds-since-the-epoch
+post-conditions:
+- name: Return
+  states:
+  - name: Time
+    test-code: |
+      T_eq_i64( (int64_t) ctx->result, (int64_t) ctx->time );
+    text: |
+      The ${/glossary/returnvalue:/term} of ${../if/timegm:/name} shall be the
+      seconds since the ${/glossary/unix-epoch:/term} of the time which the members
+      of the object referenced by the ${../if/timegm:/params[0]/name} parameter
+      specify in the ${/glossary/prolepticgregoriancalendar:/term}.
+  - name: Error
+    test-code: |
+      T_eq_i64( (int64_t) ctx->result, -1 );
+    text: |
+      The ${/glossary/returnvalue:/term} of ${../if/timegm:/name} shall be minus one.
+  test-epilogue: null
+  test-prologue: null
+- name: Errno
+  states:
+  - name: Eoverflow
+    test-code: |
+      T_eq_int( ctx->errno_value, EOVERFLOW );
+    text: |
+      The value of ${/c/errno/if/errno:/name} shall be
+      ${/c/errno/if/eoverflow:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: Second
+  states:
+  - name: Set
+    test-code: |
+      T_eq_int( ctx->tm.tm_sec, ctx->expected.tm_sec );
+    text: |
+      The value of the member ${../if/tm:/definition[0]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter shall be the second
+      of the minute of the returned time.
+  test-epilogue: null
+  test-prologue: null
+- name: Minute
+  states:
+  - name: Set
+    test-code: |
+      T_eq_int( ctx->tm.tm_min, ctx->expected.tm_min );
+    text: |
+      The value of the member ${../if/tm:/definition[1]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter shall be the minute
+      of the hour of the returned time.
+  test-epilogue: null
+  test-prologue: null
+- name: Hour
+  states:
+  - name: Set
+    test-code: |
+      T_eq_int( ctx->tm.tm_hour, ctx->expected.tm_hour );
+    text: |
+      The value of the member ${../if/tm:/definition[2]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter shall be the hour
+      of the day of the returned time.
+  test-epilogue: null
+  test-prologue: null
+- name: MonthDay
+  states:
+  - name: Set
+    test-code: |
+      T_eq_int( ctx->tm.tm_mday, ctx->expected.tm_mday );
+    text: |
+      The value of the member ${../if/tm:/definition[3]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter shall be the day of
+      the month of the returned time in the
+      ${/glossary/prolepticgregoriancalendar:/term}.
+  test-epilogue: null
+  test-prologue: null
+- name: Month
+  states:
+  - name: Set
+    test-code: |
+      T_eq_int( ctx->tm.tm_mon, ctx->expected.tm_mon );
+    text: |
+      The value of the member ${../if/tm:/definition[4]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter shall be the number
+      of months since January of the returned time in the
+      ${/glossary/prolepticgregoriancalendar:/term}.
+  test-epilogue: null
+  test-prologue: null
+- name: Year
+  states:
+  - name: Set
+    test-code: |
+      T_eq_int( ctx->tm.tm_year, ctx->expected.tm_year );
+    text: |
+      The value of the member ${../if/tm:/definition[5]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter shall be the year
+      of the returned time in the ${/glossary/prolepticgregoriancalendar:/term} minus
+      1900\.
+  test-epilogue: null
+  test-prologue: null
+- name: WeekDay
+  states:
+  - name: Set
+    test-code: |
+      T_eq_int( ctx->tm.tm_wday, ctx->expected.tm_wday );
+    text: |
+      The value of the member ${../if/tm:/definition[6]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter shall be the number
+      of days since Sunday of the returned time.
+  - name: Nop
+    test-code: |
+      T_eq_int( ctx->tm.tm_wday, WDAY_SENTINEL );
+    text: |
+      The value of the member ${../if/tm:/definition[6]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter shall not be
+      modified by the function call.
+  test-epilogue: null
+  test-prologue: null
+- name: YearDay
+  states:
+  - name: Set
+    test-code: |
+      T_eq_int( ctx->tm.tm_yday, ctx->expected.tm_yday );
+    text: |
+      The value of the member ${../if/tm:/definition[7]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter shall be the number
+      of days since January 1 of the returned time in the
+      ${/glossary/prolepticgregoriancalendar:/term}.
+  test-epilogue: null
+  test-prologue: null
+- name: Dst
+  states:
+  - name: Set
+    test-code: |
+      T_eq_int( ctx->tm.tm_isdst, 0 );
+    text: |
+      The value of the member ${../if/tm:/definition[8]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter shall be zero.
+  test-epilogue: null
+  test-prologue: null
+- name: GmtOff
+  states:
+  - name: Set
+    test-code: |
+      T_eq_long( ctx->tm.tm_gmtoff, 0 );
+    text: |
+      The value of the member ${../if/tm:/definition[9]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter shall be zero.
+  test-epilogue: null
+  test-prologue: null
+- name: Zone
+  states:
+  - name: Set
+    test-code: |
+      T_assert_not_null( ctx->tm.tm_zone );
+      T_eq_str( ctx->tm.tm_zone, "UTC" );
+    text: |
+      The member ${../if/tm:/definition[10]/default/name} of the object referenced by
+      the ${../if/timegm:/params[0]/name} parameter shall reference the string UTC.
+  test-epilogue: null
+  test-prologue: null
+pre-conditions:
+- name: Year
+  states:
+  - name: Min
+    test-code: |
+      ctx->year_state = YEAR_MIN;
+    text: |
+      While the member ${../if/tm:/definition[5]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter is the least value
+      of type int.
+  - name: BeforeEpoch
+    test-code: |
+      ctx->year_state = YEAR_BEFORE_EPOCH;
+    text: |
+      While the member ${../if/tm:/definition[5]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter is greater than the
+      least value of type int and less than the year of the
+      ${/glossary/unix-epoch:/term} minus 1900.
+  - name: AfterEpoch
+    test-code: |
+      ctx->year_state = YEAR_AFTER_EPOCH;
+    text: |
+      While the member ${../if/tm:/definition[5]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter is greater than or
+      equal to the year of the ${/glossary/unix-epoch:/term} minus 1900 and less than
+      the greatest value of type int.
+  - name: Max
+    test-code: |
+      ctx->year_state = YEAR_MAX;
+    text: |
+      While the member ${../if/tm:/definition[5]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter is the greatest
+      value of type int.
+  test-epilogue: null
+  test-prologue: null
+- name: LeapYear
+  states:
+  - name: Common
+    test-code: |
+      ctx->leap_year = LEAP_YEAR_COMMON;
+    text: |
+      While the year which the member ${../if/tm:/definition[5]/default/name} of the
+      object referenced by the ${../if/timegm:/params[0]/name} parameter specifies is
+      not divisible by four.
+  - name: Leap4
+    test-code: |
+      ctx->leap_year = LEAP_YEAR_4;
+    text: |
+      While the year which the member ${../if/tm:/definition[5]/default/name} of the
+      object referenced by the ${../if/timegm:/params[0]/name} parameter specifies is
+      divisible by four and not divisible by 100.
+  - name: Century
+    test-code: |
+      ctx->leap_year = LEAP_YEAR_CENTURY;
+    text: |
+      While the year which the member ${../if/tm:/definition[5]/default/name} of the
+      object referenced by the ${../if/timegm:/params[0]/name} parameter specifies is
+      divisible by 100 and not divisible by 400.
+  - name: Leap400
+    test-code: |
+      ctx->leap_year = LEAP_YEAR_400;
+    text: |
+      While the year which the member ${../if/tm:/definition[5]/default/name} of the
+      object referenced by the ${../if/timegm:/params[0]/name} parameter specifies is
+      divisible by 400.
+  test-epilogue: null
+  test-prologue: null
+- name: Carry
+  states:
+  - name: Back
+    test-code: |
+      ctx->carry = CARRY_BACK;
+    text: |
+      While the normalization of the members of the object referenced by the
+      ${../if/timegm:/params[0]/name} parameter moves the year back by one year.
+  - name: None
+    test-code: |
+      ctx->carry = CARRY_NONE;
+    text: |
+      While the normalization of the members of the object referenced by the
+      ${../if/timegm:/params[0]/name} parameter keeps the year.
+  - name: Forward
+    test-code: |
+      ctx->carry = CARRY_FORWARD;
+    text: |
+      While the normalization of the members of the object referenced by the
+      ${../if/timegm:/params[0]/name} parameter moves the year forward by one year.
+  test-epilogue: null
+  test-prologue: null
+- name: Dst
+  states:
+  - name: Negative
+    test-code: |
+      ctx->dst = DST_NEGATIVE;
+    text: |
+      While the member ${../if/tm:/definition[8]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter is less than zero.
+  - name: Zero
+    test-code: |
+      ctx->dst = DST_ZERO;
+    text: |
+      While the member ${../if/tm:/definition[8]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter is zero.
+  - name: Positive
+    test-code: |
+      ctx->dst = DST_POSITIVE;
+    text: |
+      While the member ${../if/tm:/definition[8]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter is greater than
+      zero.
+  test-epilogue: null
+  test-prologue: null
+rationale: |
+  Dimension Year covers the member tm_year, 4 states. The first state is the
+  least value of type int and the last state is the greatest value. The year of
+  the Unix epoch separates the two states between.
+
+  Dimension LeapYear covers the leap year rule of the proleptic Gregorian
+  calendar, 4 states.
+
+  Dimension Carry covers the move of the year by the normalization, 3 states. The
+  test moves the year with the member tm_mon. The item ${timegm:/spec} drives
+  each member to the least and the greatest value of type int.
+
+  Dimension Dst covers the member tm_isdst, 3 states. C23 does not restrict the
+  original value of the member. UTC has no daylight saving time.
+
+  C23 returns minus one where an int cannot represent the year of the result. It
+  also returns minus one where a time_t cannot represent the time. A time_t has
+  64 bits, so the members of type int always specify a time which a time_t
+  represents. C23 does not change the member tm_wday in this case. C23 leaves the
+  other members unspecified. The description of the function in C23 documents no
+  use of errno, so ${/ref/std/c23/errno-h:/name} allows the function to set
+  errno. The item requires EOVERFLOW, which POSIX requires of mktime() and
+  gmtime_r().
+
+  The least and the greatest value of the member tm_year fix the leap year class.
+  The item skips the other classes of these years.
+requirement-type: functional
+skip-reasons:
+  FixedClass: |
+    The year fixes the leap year class.
+test-action: |
+  ctx->tm.tm_year = years[ ctx->year_state ][ ctx->leap_year ];
+  ctx->tm.tm_mon = months[ ctx->carry ];
+  ctx->tm.tm_mday = 15;
+  ctx->tm.tm_hour = 12;
+  ctx->tm.tm_min = 30;
+  ctx->tm.tm_sec = 30;
+  ctx->tm.tm_wday = WDAY_SENTINEL;
+  ctx->tm.tm_yday = -1;
+  ctx->tm.tm_isdst = dst[ ctx->dst ];
+  ctx->tm.tm_gmtoff = -1;
+  ctx->tm.tm_zone = NULL;
+  GetExpected( ctx );
+  errno = 0;
+  ctx->result = timegm( &ctx->tm );
+  ctx->errno_value = errno;
+test-brief: null
+test-cleanup: null
+test-context:
+- brief: |
+    This member contains the value of errno after the function call.
+  description: null
+  member: |
+    int errno_value
+- brief: |
+    This member specifies the state of the member tm_year.
+  description: null
+  member: |
+    YearState year_state
+- brief: |
+    This member specifies the move of the year.
+  description: null
+  member: |
+    Carry carry
+- brief: |
+    This member specifies the state of the member tm_isdst.
+  description: null
+  member: |
+    Dst dst
+- brief: |
+    This member specifies the leap year class.
+  description: null
+  member: |
+    LeapYear leap_year
+- brief: |
+    This member contains the broken-down time of the function call.
+  description: null
+  member: |
+    struct tm tm
+- brief: |
+    This member contains the broken-down time which the call shall produce.
+  description: null
+  member: |
+    struct tm expected
+- brief: |
+    This member contains the time which the call shall return.
+  description: null
+  member: |
+    time_t time
+- brief: |
+    This member contains the return value of the function call.
+  description: null
+  member: |
+    time_t result
+test-context-support: |
+  typedef enum {
+    YEAR_MIN,
+    YEAR_BEFORE_EPOCH,
+    YEAR_AFTER_EPOCH,
+    YEAR_MAX
+  } YearState;
+
+  typedef enum { CARRY_BACK, CARRY_NONE, CARRY_FORWARD } Carry;
+
+  typedef enum { DST_NEGATIVE, DST_ZERO, DST_POSITIVE } Dst;
+
+  typedef enum {
+    LEAP_YEAR_COMMON,
+    LEAP_YEAR_4,
+    LEAP_YEAR_CENTURY,
+    LEAP_YEAR_400
+  } LeapYear;
+test-description: null
+test-header: null
+test-includes:
+- errno.h
+- limits.h
+- string.h
+- time.h
+test-local-includes:
+- tx-support.h
+test-prepare: null
+test-setup: null
+test-stop: null
+test-support: |
+  typedef ${.:/test-context-type} Context;
+
+  #define WDAY_SENTINEL 7
+
+  /* A zero marks a class which the year does not have. */
+  static const int years[ 4 ][ 4 ] = {
+    { 0, INT_MIN, 0, 0 },
+    { 69, 68, 0, -300 },
+    { 123, 124, 200, 100 },
+    { INT_MAX, 0, 0, 0 }
+  };
+
+  static const int months[ 3 ] = { -1, 5, 12 };
+
+  static const int dst[ 3 ] = { -1, 0, 1 };
+
+  static int64_t FloorDivide( int64_t a, int64_t b )
+  {
+    int64_t q;
+
+    q = a / b;
+
+    if ( ( a % b ) != 0 && ( ( a < 0 ) != ( b < 0 ) ) ) {
+      --q;
+    }
+
+    return q;
+  }
+
+  /*
+   * The expected time counts each member in its unit from the first day of the
+   * month which the members tm_year and tm_mon specify.
+   */
+  static void GetExpected( Context *ctx )
+  {
+    int64_t months;
+    int64_t year;
+    int64_t month;
+    int64_t days;
+
+    months = (int64_t) ctx->tm.tm_year * 12 + ctx->tm.tm_mon;
+    year = FloorDivide( months, 12 ) + 1900;
+    month = months - FloorDivide( months, 12 ) * 12 + 1;
+    days = DaysFromCivil( year, (unsigned int) month, 1 ) + ctx->tm.tm_mday - 1;
+    ctx->time = (time_t) ( days * 86400 + (int64_t) ctx->tm.tm_hour * 3600 +
+                           (int64_t) ctx->tm.tm_min * 60 + ctx->tm.tm_sec );
+    memset( &ctx->expected, 0, sizeof( ctx->expected ) );
+    (void) gmtime_r( &ctx->time, &ctx->expected );
+  }
+test-target: testsuites/validation/tc-timegm-year.c
+test-teardown: null
+text: |
+  ${.:text-template}
+transition-map:
+- enabled-by: true
+  post-conditions:
+    Return: Error
+    Errno: Eoverflow
+    Second: N/A
+    Minute: N/A
+    Hour: N/A
+    MonthDay: N/A
+    Month: N/A
+    Year: N/A
+    WeekDay: Nop
+    YearDay: N/A
+    Dst: N/A
+    GmtOff: N/A
+    Zone: N/A
+  pre-conditions:
+    Year:
+    - Min
+    LeapYear:
+    - Leap4
+    Carry:
+    - Back
+    Dst: all
+- enabled-by: true
+  post-conditions:
+    Return: Error
+    Errno: Eoverflow
+    Second: N/A
+    Minute: N/A
+    Hour: N/A
+    MonthDay: N/A
+    Month: N/A
+    Year: N/A
+    WeekDay: Nop
+    YearDay: N/A
+    Dst: N/A
+    GmtOff: N/A
+    Zone: N/A
+  pre-conditions:
+    Year:
+    - Max
+    LeapYear:
+    - Common
+    Carry:
+    - Forward
+    Dst: all
+- enabled-by: true
+  post-conditions:
+    Return: Time
+    Errno: N/A
+    Second: Set
+    Minute: Set
+    Hour: Set
+    MonthDay: Set
+    Month: Set
+    Year: Set
+    WeekDay: Set
+    YearDay: Set
+    Dst: Set
+    GmtOff: Set
+    Zone: Set
+  pre-conditions:
+    Year:
+    - Min
+    LeapYear:
+    - Leap4
+    Carry:
+    - None
+    - Forward
+    Dst: all
+- enabled-by: true
+  post-conditions:
+    Return: Time
+    Errno: N/A
+    Second: Set
+    Minute: Set
+    Hour: Set
+    MonthDay: Set
+    Month: Set
+    Year: Set
+    WeekDay: Set
+    YearDay: Set
+    Dst: Set
+    GmtOff: Set
+    Zone: Set
+  pre-conditions:
+    Year:
+    - Max
+    LeapYear:
+    - Common
+    Carry:
+    - Back
+    - None
+    Dst: all
+- enabled-by: true
+  post-conditions:
+    Return: Time
+    Errno: N/A
+    Second: Set
+    Minute: Set
+    Hour: Set
+    MonthDay: Set
+    Month: Set
+    Year: Set
+    WeekDay: Set
+    YearDay: Set
+    Dst: Set
+    GmtOff: Set
+    Zone: Set
+  pre-conditions:
+    Year:
+    - BeforeEpoch
+    - AfterEpoch
+    LeapYear: all
+    Carry: all
+    Dst: all
+- enabled-by: true
+  post-conditions: FixedClass
+  pre-conditions:
+    Year:
+    - Min
+    LeapYear:
+    - Common
+    - Century
+    - Leap400
+    Carry: all
+    Dst: all
+- enabled-by: true
+  post-conditions: FixedClass
+  pre-conditions:
+    Year:
+    - Max
+    LeapYear:
+    - Leap4
+    - Century
+    - Leap400
+    Carry: all
+    Dst: all
+type: requirement

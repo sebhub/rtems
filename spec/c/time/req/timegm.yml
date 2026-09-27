@@ -1,0 +1,690 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: action
+links:
+- role: interface-function
+  uid: ../if/timegm
+- role: reference
+  uid: /ref/std/c23/timegm
+- role: reference
+  uid: /ref/std/cppreference-c/timegm
+- role: reference
+  uid: /ref/std/posix-2024/seconds-since-the-epoch
+post-conditions:
+- name: Return
+  states:
+  - name: Time
+    test-code: |
+      T_eq_i64( (int64_t) ctx->result, (int64_t) ctx->time );
+    text: |
+      The ${/glossary/returnvalue:/term} of ${../if/timegm:/name} shall be the
+      seconds since the ${/glossary/unix-epoch:/term} of the time which the members
+      of the object referenced by the ${../if/timegm:/params[0]/name} parameter
+      specify in the ${/glossary/prolepticgregoriancalendar:/term}.
+  test-epilogue: null
+  test-prologue: null
+- name: Second
+  states:
+  - name: Set
+    test-code: |
+      T_eq_int( ctx->tm.tm_sec, ctx->expected.tm_sec );
+    text: |
+      The value of the member ${../if/tm:/definition[0]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter shall be the second
+      of the minute of the returned time.
+  test-epilogue: null
+  test-prologue: null
+- name: Minute
+  states:
+  - name: Set
+    test-code: |
+      T_eq_int( ctx->tm.tm_min, ctx->expected.tm_min );
+    text: |
+      The value of the member ${../if/tm:/definition[1]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter shall be the minute
+      of the hour of the returned time.
+  test-epilogue: null
+  test-prologue: null
+- name: Hour
+  states:
+  - name: Set
+    test-code: |
+      T_eq_int( ctx->tm.tm_hour, ctx->expected.tm_hour );
+    text: |
+      The value of the member ${../if/tm:/definition[2]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter shall be the hour
+      of the day of the returned time.
+  test-epilogue: null
+  test-prologue: null
+- name: MonthDay
+  states:
+  - name: Set
+    test-code: |
+      T_eq_int( ctx->tm.tm_mday, ctx->expected.tm_mday );
+    text: |
+      The value of the member ${../if/tm:/definition[3]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter shall be the day of
+      the month of the returned time in the
+      ${/glossary/prolepticgregoriancalendar:/term}.
+  test-epilogue: null
+  test-prologue: null
+- name: Month
+  states:
+  - name: Set
+    test-code: |
+      T_eq_int( ctx->tm.tm_mon, ctx->expected.tm_mon );
+    text: |
+      The value of the member ${../if/tm:/definition[4]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter shall be the number
+      of months since January of the returned time in the
+      ${/glossary/prolepticgregoriancalendar:/term}.
+  test-epilogue: null
+  test-prologue: null
+- name: Year
+  states:
+  - name: Set
+    test-code: |
+      T_eq_int( ctx->tm.tm_year, ctx->expected.tm_year );
+    text: |
+      The value of the member ${../if/tm:/definition[5]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter shall be the year
+      of the returned time in the ${/glossary/prolepticgregoriancalendar:/term} minus
+      1900\.
+  test-epilogue: null
+  test-prologue: null
+- name: WeekDay
+  states:
+  - name: Set
+    test-code: |
+      T_eq_int( ctx->tm.tm_wday, ctx->expected.tm_wday );
+    text: |
+      The value of the member ${../if/tm:/definition[6]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter shall be the number
+      of days since Sunday of the returned time.
+  test-epilogue: null
+  test-prologue: null
+- name: YearDay
+  states:
+  - name: Set
+    test-code: |
+      T_eq_int( ctx->tm.tm_yday, ctx->expected.tm_yday );
+    text: |
+      The value of the member ${../if/tm:/definition[7]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter shall be the number
+      of days since January 1 of the returned time in the
+      ${/glossary/prolepticgregoriancalendar:/term}.
+  test-epilogue: null
+  test-prologue: null
+- name: Dst
+  states:
+  - name: Set
+    test-code: |
+      T_eq_int( ctx->tm.tm_isdst, 0 );
+    text: |
+      The value of the member ${../if/tm:/definition[8]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter shall be zero.
+  test-epilogue: null
+  test-prologue: null
+- name: GmtOff
+  states:
+  - name: Set
+    test-code: |
+      T_eq_long( ctx->tm.tm_gmtoff, 0 );
+    text: |
+      The value of the member ${../if/tm:/definition[9]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter shall be zero.
+  test-epilogue: null
+  test-prologue: null
+- name: Zone
+  states:
+  - name: Set
+    test-code: |
+      T_assert_not_null( ctx->tm.tm_zone );
+      T_eq_str( ctx->tm.tm_zone, "UTC" );
+    text: |
+      The member ${../if/tm:/definition[10]/default/name} of the object referenced by
+      the ${../if/timegm:/params[0]/name} parameter shall reference the string UTC.
+  test-epilogue: null
+  test-prologue: null
+pre-conditions:
+- name: Second
+  states:
+  - name: Min
+    test-code: |
+      ctx->second = STATE_MIN;
+    text: |
+      While the member ${../if/tm:/definition[0]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter is the least value
+      of type int.
+  - name: Negative
+    test-code: |
+      ctx->second = STATE_NEGATIVE;
+    text: |
+      While the member ${../if/tm:/definition[0]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter is greater than the
+      least value of type int and less than zero.
+  - name: First
+    test-code: |
+      ctx->second = STATE_FIRST;
+    text: |
+      While the member ${../if/tm:/definition[0]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter is zero.
+  - name: Between
+    test-code: |
+      ctx->second = STATE_BETWEEN;
+    text: |
+      While the member ${../if/tm:/definition[0]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter is greater than
+      zero and less than 59.
+  - name: Last
+    test-code: |
+      ctx->second = STATE_LAST;
+    text: |
+      While the member ${../if/tm:/definition[0]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter is 59.
+  - name: Above
+    test-code: |
+      ctx->second = STATE_ABOVE;
+    text: |
+      While the member ${../if/tm:/definition[0]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter is greater than 59
+      and less than the greatest value of type int.
+  - name: Max
+    test-code: |
+      ctx->second = STATE_MAX;
+    text: |
+      While the member ${../if/tm:/definition[0]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter is the greatest
+      value of type int.
+  test-epilogue: null
+  test-prologue: null
+- name: Minute
+  states:
+  - name: Min
+    test-code: |
+      ctx->minute = STATE_MIN;
+    text: |
+      While the member ${../if/tm:/definition[1]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter is the least value
+      of type int.
+  - name: Negative
+    test-code: |
+      ctx->minute = STATE_NEGATIVE;
+    text: |
+      While the member ${../if/tm:/definition[1]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter is greater than the
+      least value of type int and less than zero.
+  - name: First
+    test-code: |
+      ctx->minute = STATE_FIRST;
+    text: |
+      While the member ${../if/tm:/definition[1]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter is zero.
+  - name: Between
+    test-code: |
+      ctx->minute = STATE_BETWEEN;
+    text: |
+      While the member ${../if/tm:/definition[1]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter is greater than
+      zero and less than 59.
+  - name: Last
+    test-code: |
+      ctx->minute = STATE_LAST;
+    text: |
+      While the member ${../if/tm:/definition[1]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter is 59.
+  - name: Above
+    test-code: |
+      ctx->minute = STATE_ABOVE;
+    text: |
+      While the member ${../if/tm:/definition[1]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter is greater than 59
+      and less than the greatest value of type int.
+  - name: Max
+    test-code: |
+      ctx->minute = STATE_MAX;
+    text: |
+      While the member ${../if/tm:/definition[1]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter is the greatest
+      value of type int.
+  test-epilogue: null
+  test-prologue: null
+- name: Hour
+  states:
+  - name: Min
+    test-code: |
+      ctx->hour = STATE_MIN;
+    text: |
+      While the member ${../if/tm:/definition[2]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter is the least value
+      of type int.
+  - name: Negative
+    test-code: |
+      ctx->hour = STATE_NEGATIVE;
+    text: |
+      While the member ${../if/tm:/definition[2]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter is greater than the
+      least value of type int and less than zero.
+  - name: First
+    test-code: |
+      ctx->hour = STATE_FIRST;
+    text: |
+      While the member ${../if/tm:/definition[2]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter is zero.
+  - name: Between
+    test-code: |
+      ctx->hour = STATE_BETWEEN;
+    text: |
+      While the member ${../if/tm:/definition[2]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter is greater than
+      zero and less than 23.
+  - name: Last
+    test-code: |
+      ctx->hour = STATE_LAST;
+    text: |
+      While the member ${../if/tm:/definition[2]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter is 23.
+  - name: Above
+    test-code: |
+      ctx->hour = STATE_ABOVE;
+    text: |
+      While the member ${../if/tm:/definition[2]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter is greater than 23
+      and less than the greatest value of type int.
+  - name: Max
+    test-code: |
+      ctx->hour = STATE_MAX;
+    text: |
+      While the member ${../if/tm:/definition[2]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter is the greatest
+      value of type int.
+  test-epilogue: null
+  test-prologue: null
+- name: MonthDay
+  states:
+  - name: Min
+    test-code: |
+      ctx->month_day = STATE_MIN;
+    text: |
+      While the member ${../if/tm:/definition[3]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter is the least value
+      of type int.
+  - name: Negative
+    test-code: |
+      ctx->month_day = STATE_NEGATIVE;
+    text: |
+      While the member ${../if/tm:/definition[3]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter is greater than the
+      least value of type int and less than one.
+  - name: First
+    test-code: |
+      ctx->month_day = STATE_FIRST;
+    text: |
+      While the member ${../if/tm:/definition[3]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter is one.
+  - name: Between
+    test-code: |
+      ctx->month_day = STATE_BETWEEN;
+    text: |
+      While the member ${../if/tm:/definition[3]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter is greater than one
+      and less than the last day of the month.
+  - name: Last
+    test-code: |
+      ctx->month_day = STATE_LAST;
+    text: |
+      While the member ${../if/tm:/definition[3]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter is the last day of
+      the month.
+  - name: Above
+    test-code: |
+      ctx->month_day = STATE_ABOVE;
+    text: |
+      While the member ${../if/tm:/definition[3]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter is greater than the
+      last day of the month and less than the greatest value of type int.
+  - name: Max
+    test-code: |
+      ctx->month_day = STATE_MAX;
+    text: |
+      While the member ${../if/tm:/definition[3]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter is the greatest
+      value of type int.
+  test-epilogue: null
+  test-prologue: null
+- name: Month
+  states:
+  - name: Min
+    test-code: |
+      ctx->month = STATE_MIN;
+    text: |
+      While the member ${../if/tm:/definition[4]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter is the least value
+      of type int.
+  - name: Negative
+    test-code: |
+      ctx->month = STATE_NEGATIVE;
+    text: |
+      While the member ${../if/tm:/definition[4]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter is greater than the
+      least value of type int and less than zero.
+  - name: First
+    test-code: |
+      ctx->month = STATE_FIRST;
+    text: |
+      While the member ${../if/tm:/definition[4]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter is zero.
+  - name: Between
+    test-code: |
+      ctx->month = STATE_BETWEEN;
+    text: |
+      While the member ${../if/tm:/definition[4]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter is greater than
+      zero and less than eleven.
+  - name: Last
+    test-code: |
+      ctx->month = STATE_LAST;
+    text: |
+      While the member ${../if/tm:/definition[4]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter is eleven.
+  - name: Above
+    test-code: |
+      ctx->month = STATE_ABOVE;
+    text: |
+      While the member ${../if/tm:/definition[4]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter is greater than
+      eleven and less than the greatest value of type int.
+  - name: Max
+    test-code: |
+      ctx->month = STATE_MAX;
+    text: |
+      While the member ${../if/tm:/definition[4]/default/name} of the object
+      referenced by the ${../if/timegm:/params[0]/name} parameter is the greatest
+      value of type int.
+  test-epilogue: null
+  test-prologue: null
+- name: LeapYear
+  states:
+  - name: Common
+    test-code: |
+      ctx->leap_year = LEAP_YEAR_COMMON;
+    text: |
+      While the year which the member ${../if/tm:/definition[5]/default/name} of the
+      object referenced by the ${../if/timegm:/params[0]/name} parameter specifies is
+      not divisible by four.
+  - name: Leap4
+    test-code: |
+      ctx->leap_year = LEAP_YEAR_4;
+    text: |
+      While the year which the member ${../if/tm:/definition[5]/default/name} of the
+      object referenced by the ${../if/timegm:/params[0]/name} parameter specifies is
+      divisible by four and not divisible by 100.
+  - name: Century
+    test-code: |
+      ctx->leap_year = LEAP_YEAR_CENTURY;
+    text: |
+      While the year which the member ${../if/tm:/definition[5]/default/name} of the
+      object referenced by the ${../if/timegm:/params[0]/name} parameter specifies is
+      divisible by 100 and not divisible by 400.
+  - name: Leap400
+    test-code: |
+      ctx->leap_year = LEAP_YEAR_400;
+    text: |
+      While the year which the member ${../if/tm:/definition[5]/default/name} of the
+      object referenced by the ${../if/timegm:/params[0]/name} parameter specifies is
+      divisible by 400.
+  test-epilogue: null
+  test-prologue: null
+rationale: |
+  Dimension Second covers the member tm_sec, 7 states. Dimension Minute covers
+  the member tm_min, 7 states. Dimension Hour covers the member tm_hour, 7
+  states. Dimension MonthDay covers the member tm_mday, 7 states. Dimension Month
+  covers the member tm_mon, 7 states. Each member dimension partitions the values
+  of type int. Two states hold the least and the greatest value. Three states
+  hold the first value, the values between and the last value of the normal
+  range. Two states hold the values below and above the normal range. C23 does
+  not restrict the original values of these members to the normal ranges.
+
+  Dimension LeapYear covers the leap year rule of the proleptic Gregorian
+  calendar, 4 states.
+
+  The normal range of the member tm_mday ends with the last day of the month
+  which the members tm_year and tm_mon specify. POSIX accounts for each day by
+  exactly 86400 seconds, so the normal range of the member tm_sec ends with 59.
+
+  The item ${timegm-year:/spec} states the range of the year. This item uses
+  years in the middle of that range, so no variant exceeds it.
+
+  C23 ignores the original values of the members tm_wday and tm_yday. The test
+  sets them to values outside of their normal ranges. The test sets the member
+  tm_isdst to zero. UTC has no daylight saving time.
+
+  The test code derives the expected time with the independent algorithm of
+  DaysFromCivil() and the expected members with gmtime_r().
+requirement-type: functional
+skip-reasons: {}
+test-action: |
+  ctx->tm.tm_year = (int) ( years[ ctx->leap_year ] - 1900 );
+  ctx->tm.tm_mon = GetValue( ctx->month, 0, 11, 1, 13 );
+  Normalize( ctx );
+  ctx->tm.tm_mday = GetValue(
+    ctx->month_day,
+    1,
+    (int) ctx->last_day,
+    15,
+    (int) ctx->last_day + 40
+  );
+  ctx->tm.tm_hour = GetValue( ctx->hour, 0, 23, 12, 25 );
+  ctx->tm.tm_min = GetValue( ctx->minute, 0, 59, 30, 61 );
+  ctx->tm.tm_sec = GetValue( ctx->second, 0, 59, 30, 61 );
+  ctx->tm.tm_wday = WDAY_SENTINEL;
+  ctx->tm.tm_yday = -1;
+  ctx->tm.tm_isdst = 0;
+  ctx->tm.tm_gmtoff = -1;
+  ctx->tm.tm_zone = NULL;
+  GetExpected( ctx );
+  ctx->result = timegm( &ctx->tm );
+test-brief: null
+test-cleanup: null
+test-context:
+- brief: |
+    This member specifies the state of the member tm_sec.
+  description: null
+  member: |
+    MemberState second
+- brief: |
+    This member specifies the state of the member tm_min.
+  description: null
+  member: |
+    MemberState minute
+- brief: |
+    This member specifies the state of the member tm_hour.
+  description: null
+  member: |
+    MemberState hour
+- brief: |
+    This member specifies the state of the member tm_mday.
+  description: null
+  member: |
+    MemberState month_day
+- brief: |
+    This member specifies the state of the member tm_mon.
+  description: null
+  member: |
+    MemberState month
+- brief: |
+    This member contains the last day of the month which tm_year and tm_mon
+    specify.
+  description: null
+  member: |
+    int64_t last_day
+- brief: |
+    This member specifies the leap year class.
+  description: null
+  member: |
+    LeapYear leap_year
+- brief: |
+    This member contains the broken-down time of the function call.
+  description: null
+  member: |
+    struct tm tm
+- brief: |
+    This member contains the broken-down time which the call shall produce.
+  description: null
+  member: |
+    struct tm expected
+- brief: |
+    This member contains the time which the call shall return.
+  description: null
+  member: |
+    time_t time
+- brief: |
+    This member contains the return value of the function call.
+  description: null
+  member: |
+    time_t result
+test-context-support: |
+  typedef enum {
+    STATE_MIN,
+    STATE_NEGATIVE,
+    STATE_FIRST,
+    STATE_BETWEEN,
+    STATE_LAST,
+    STATE_ABOVE,
+    STATE_MAX
+  } MemberState;
+
+  typedef enum {
+    LEAP_YEAR_COMMON,
+    LEAP_YEAR_4,
+    LEAP_YEAR_CENTURY,
+    LEAP_YEAR_400
+  } LeapYear;
+test-description: null
+test-header: null
+test-includes:
+- limits.h
+- string.h
+- time.h
+test-local-includes:
+- tx-support.h
+test-prepare: null
+test-setup: null
+test-stop: null
+test-support: |
+  typedef ${.:/test-context-type} Context;
+
+  #define WDAY_SENTINEL 7
+
+  static const int64_t years[ 4 ] = { 2023, 2024, 2100, 2000 };
+
+  static int GetValue(
+    MemberState state,
+    int         first,
+    int         last,
+    int         between,
+    int         above
+  )
+  {
+    switch ( state ) {
+      case STATE_MIN:
+        return INT_MIN;
+      case STATE_NEGATIVE:
+        return first - 40;
+      case STATE_FIRST:
+        return first;
+      case STATE_BETWEEN:
+        return between;
+      case STATE_LAST:
+        return last;
+      case STATE_ABOVE:
+        return above;
+      default:
+        return INT_MAX;
+    }
+  }
+
+  static int64_t FloorDivide( int64_t a, int64_t b )
+  {
+    int64_t q;
+
+    q = a / b;
+
+    if ( ( a % b ) != 0 && ( ( a < 0 ) != ( b < 0 ) ) ) {
+      --q;
+    }
+
+    return q;
+  }
+
+  /*
+   * The expected time counts each member in its unit from the first day of the
+   * month which the members tm_year and tm_mon specify.
+   */
+  static void GetExpected( Context *ctx )
+  {
+    int64_t months;
+    int64_t year;
+    int64_t month;
+    int64_t days;
+
+    months = (int64_t) ctx->tm.tm_year * 12 + ctx->tm.tm_mon;
+    year = FloorDivide( months, 12 ) + 1900;
+    month = months - FloorDivide( months, 12 ) * 12 + 1;
+    days = DaysFromCivil( year, (unsigned int) month, 1 ) + ctx->tm.tm_mday - 1;
+    ctx->time = (time_t) ( days * 86400 + (int64_t) ctx->tm.tm_hour * 3600 +
+                           (int64_t) ctx->tm.tm_min * 60 + ctx->tm.tm_sec );
+    memset( &ctx->expected, 0, sizeof( ctx->expected ) );
+    (void) gmtime_r( &ctx->time, &ctx->expected );
+  }
+
+  static int64_t GetLastDayOfMonth( int64_t year, int64_t month )
+  {
+    if ( month == 12 ) {
+      return 31;
+    }
+
+    return DaysFromCivil( year, (unsigned int) month + 1, 1 ) -
+           DaysFromCivil( year, (unsigned int) month, 1 );
+  }
+
+  static void Normalize( Context *ctx )
+  {
+    int64_t months;
+    int64_t year;
+    int64_t month;
+
+    months = (int64_t) ctx->tm.tm_year * 12 + ctx->tm.tm_mon;
+    year = FloorDivide( months, 12 ) + 1900;
+    month = months - FloorDivide( months, 12 ) * 12 + 1;
+    ctx->last_day = GetLastDayOfMonth( year, month );
+  }
+test-target: testsuites/validation/tc-timegm.c
+test-teardown: null
+text: |
+  ${.:text-template}
+transition-map:
+- enabled-by: true
+  post-conditions:
+    Return: Time
+    Second: Set
+    Minute: Set
+    Hour: Set
+    MonthDay: Set
+    Month: Set
+    Year: Set
+    WeekDay: Set
+    YearDay: Set
+    Dst: Set
+    GmtOff: Set
+    Zone: Set
+  pre-conditions:
+    Second: all
+    Minute: all
+    Hour: all
+    MonthDay: all
+    Month: all
+    LeapYear: all
+type: requirement
