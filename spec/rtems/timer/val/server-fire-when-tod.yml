@@ -1,0 +1,118 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+links: []
+test-actions:
+- action-brief: |
+    Validate the time of day of ${../if/server-fire-when:/name}.
+  action-code: |
+    rtems_status_code sc;
+  checks:
+  - brief: |
+      Validate the date.
+    code: |
+      ${/score/tod/req/convert-date:/test-run}( CallServerFireWhen, ctx );
+    links:
+    - role: validation
+      uid: ../req/server-fire-when-tod-date
+  - brief: |
+      Validate the time of the day.
+    code: |
+      ${/score/tod/req/convert-time:/test-run}( CallServerFireWhen, ctx, true );
+    links:
+    - role: validation
+      uid: ../req/server-fire-when-tod-time
+  - brief: |
+      Restore a valid time of day.
+    code: |
+      sc = rtems_clock_set( &tod_earliest );
+      T_rsc_success( sc );
+    links: []
+  links: []
+test-brief: |
+  Tests the validation and the conversion of the time of day by
+  ${../if/server-fire-when:/name}.
+test-context:
+- brief: |
+    This member contains the identifier of the timer.
+  description: null
+  member: |
+    rtems_id timer_id
+test-context-support: null
+test-description: null
+test-header: null
+test-includes:
+- rtems.h
+- rtems/score/watchdogimpl.h
+test-local-includes:
+- tx-support.h
+- tr-tod-convert-date.h
+- tr-tod-convert-time.h
+test-setup:
+  brief: null
+  code: |
+    rtems_status_code sc;
+
+    sc = rtems_timer_initiate_server(
+      RTEMS_TIMER_SERVER_DEFAULT_PRIORITY,
+      RTEMS_MINIMUM_STACK_SIZE,
+      RTEMS_DEFAULT_ATTRIBUTES
+    );
+    T_rsc_success( sc );
+
+    sc = rtems_timer_create( OBJECT_NAME, &ctx->timer_id );
+    T_rsc_success( sc );
+  description: null
+test-stop: null
+test-support: |
+  typedef ${.:/test-context-type} Context;
+
+  static const rtems_time_of_day tod_earliest = { 1988, 1, 1, 0, 0, 0, 0 };
+
+  static void TimerServiceRoutine( rtems_id timer_id, void *arg )
+  {
+    (void) timer_id;
+    (void) arg;
+  }
+
+  static bool CallServerFireWhen(
+    void                    *arg,
+    const rtems_time_of_day *time_of_day,
+    int64_t                 *seconds
+  )
+  {
+    Context              *ctx;
+    rtems_status_code     sc;
+    Timer_Scheduling_Data data;
+
+    ctx = arg;
+    T_quiet_rsc_success( rtems_clock_set( &tod_earliest ) );
+    sc = rtems_timer_server_fire_when(
+      ctx->timer_id,
+      time_of_day,
+      TimerServiceRoutine,
+      ctx
+    );
+
+    if ( sc != RTEMS_SUCCESSFUL ) {
+      T_quiet_rsc( sc, RTEMS_INVALID_CLOCK );
+      return false;
+    }
+
+    GetTimerSchedulingData( ctx->timer_id, &data );
+    *seconds = (int64_t) ( data.expire >> WATCHDOG_BITS_FOR_1E9_NANOSECONDS );
+    T_quiet_rsc_success( rtems_timer_cancel( ctx->timer_id ) );
+    return true;
+  }
+test-target: testsuites/validation/tc-timer-server-fire-when-tod.c
+test-teardown:
+  brief: null
+  code: |
+    rtems_status_code sc;
+
+    sc = rtems_timer_delete( ctx->timer_id );
+    T_rsc_success( sc );
+    DeleteTimerServer();
+  description: null
+type: test-case

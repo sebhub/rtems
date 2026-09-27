@@ -1,6 +1,6 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 copyrights:
-- Copyright (C) 2021 embedded brains GmbH & Co. KG
+- Copyright (C) 2021, 2026 embedded brains GmbH & Co. KG
 enabled-by: true
 functional-type: action
 links:
@@ -53,8 +53,7 @@ post-conditions:
     test-code: |
       T_eq_int( class, TIMER_DORMANT );
     text: |
-      The timer shall have never been ${../glossary/scheduled:/term}. See also
-      ${../glossary/none:/term}.
+      The timer shall be in no ${../glossary/context:/term}.
   - name: Interrupt
     test-code: |
       T_eq_int( class & TIMER_CLASS_BIT_ON_TASK, 0 );
@@ -69,9 +68,8 @@ post-conditions:
     test-code: |
       T_eq_int( class, ctx->pre_class );
     text: |
-      Objects referenced by parameters in the past call to
-      ${../if/server-fire-when:/name} shall not be accessed by the
-      ${../if/server-fire-when:/name} call. See also ${../glossary/nop:/term}.
+      The ${../glossary/context:/term} of the timer shall not be modified by the
+      ${../if/server-fire-when:/name} call.
   test-epilogue: null
   test-prologue: |
     Timer_Classes class;
@@ -82,7 +80,7 @@ post-conditions:
     test-code: |
       T_eq_int( class, TIMER_DORMANT );
     text: |
-      The timer shall have never been ${../glossary/scheduled:/term}.
+      The timer shall use no ${../glossary/clock:/term}.
   - name: Ticks
     test-code: |
       T_eq_int( class & TIMER_CLASS_BIT_TIME_OF_DAY, 0 );
@@ -97,8 +95,7 @@ post-conditions:
     test-code: |
       T_eq_int( class, ctx->pre_class );
     text: |
-      Objects referenced by parameters in the past call to
-      ${../if/server-fire-when:/name} shall not be accessed by the
+      The ${../glossary/clock:/term} of the timer shall not be modified by the
       ${../if/server-fire-when:/name} call.
   test-epilogue: null
   test-prologue: |
@@ -117,12 +114,11 @@ post-conditions:
     test-code: |
       T_eq_int( ctx->post_state, ctx->pre_state );
     text: |
-      Objects referenced by parameters in the past call to
-      ${../if/server-fire-when:/name} shall not be accessed by the
+      The ${../glossary/state:/term} of the timer shall not be modified by the
       ${../if/server-fire-when:/name} call.
   test-epilogue: null
   test-prologue: null
-- name: WallTime
+- name: Expire
   states:
   - name: Param
     test-code: |
@@ -132,10 +128,8 @@ post-conditions:
         sizeof( ctx->tod_till_fire )
       );
     text: |
-      The ${../glossary/timerserviceroutine:/term} shall be invoked at the wall time
-      (see ${../glossary/realtimeclock:/term}) (ignoring ticks), which was provided
-      by the ${../if/server-fire-when:/params[1]/name} parameter in the past call to
-      ${../if/server-fire-when:/name}.
+      The timer shall fire at the second of the time of day referenced by the
+      ${../if/server-fire-when:/params[1]/name} parameter.
   - name: Nop
     test-code: |
       /*
@@ -147,8 +141,8 @@ post-conditions:
         ctx->pre_scheduling_data.interval
       );
     text: |
-      If and when the ${../glossary/timerserviceroutine:/term} will be invoked shall
-      not be changed by the past call to ${../if/server-fire-when:/name}.
+      The time point at which the timer fires shall not be modified by the
+      ${../if/server-fire-when:/name} call.
   test-epilogue: null
   test-prologue: null
 - name: Routine
@@ -157,11 +151,9 @@ post-conditions:
     test-code: |
       T_eq_int( ctx->invocations, 1 );
     text: |
-      The function reference used to invoke the
-      ${../glossary/timerserviceroutine:/term} when the timer will
-      ${../glossary/fire:/term} shall be the one provided by the
-      ${../if/server-fire-when:/params[2]/name} parameter in the past call to
-      ${../if/server-fire-when:/name}.
+      The timer shall invoke the function referenced by the
+      ${../if/server-fire-when:/params[2]/name} parameter as its
+      ${../glossary/timerserviceroutine:/term}.
   - name: Nop
     test-code: |
       T_eq_ptr(
@@ -169,9 +161,8 @@ post-conditions:
         ctx->pre_scheduling_data.routine
       );
     text: |
-      The function reference used for any invocation of the
-      ${../glossary/timerserviceroutine:/term} shall not be changed by the past call
-      to ${../if/server-fire-when:/name}.
+      The ${../glossary/timerserviceroutine:/term} of the timer shall not be modified
+      by the ${../if/server-fire-when:/name} call.
   test-epilogue: null
   test-prologue: null
 - name: UserData
@@ -180,11 +171,8 @@ post-conditions:
     test-code: |
       T_eq_ptr( ctx->routine_user_data, ctx );
     text: |
-      The user data argument for invoking the
-      ${../glossary/timerserviceroutine:/term} when the timer will
-      ${../glossary/fire:/term} shall be the one provided by the
-      ${../if/server-fire-when:/params[3]/name} parameter in the past call to
-      ${../if/server-fire-when:/name}.
+      The timer shall pass the value of the ${../if/server-fire-when:/params[3]/name}
+      parameter to its ${../glossary/timerserviceroutine:/term}.
   - name: Nop
     test-code: |
       T_eq_ptr(
@@ -192,15 +180,14 @@ post-conditions:
         ctx->pre_scheduling_data.user_data
       );
     text: |
-      The user data argument used for any invocation of the
-      ${../glossary/timerserviceroutine:/term} shall not be changed by the past call
-      to ${../if/server-fire-when:/name}.
+      The user data of the ${../glossary/timerserviceroutine:/term} of the timer
+      shall not be modified by the ${../if/server-fire-when:/name} call.
   test-epilogue: null
   test-prologue: null
 pre-conditions:
-- name: Server
+- name: ServerInit
   states:
-  - name: Init
+  - name: 'Yes'
     test-code: |
       rtems_status_code status;
       status = rtems_timer_initiate_server(
@@ -210,27 +197,27 @@ pre-conditions:
       );
       T_rsc_success( status );
     text: |
-      While the Timer Server task has been successfully initialized by a call to
+      While the Timer Server task was initiated by a call to
       ${../if/initiate-server:/name}.
-  - name: NotInit
+  - name: 'No'
     test-code: |
       DeleteTimerServer();
     text: |
-      While the Timer Server task has not been initialized and does not exist.
+      While the Timer Server task was not initiated.
   test-epilogue: null
   test-prologue: null
-- name: RtClock
+- name: TODSet
   states:
-  - name: Set
+  - name: 'Yes'
     test-code: |
       ctx->pre_cond_tod = &tod_now;
     text: |
-      While the ${../glossary/realtimeclock:/term} is set to a valid time-of-day.
-  - name: Unset
+      While the ${/glossary/clock-realtime:/term} was set at least once.
+  - name: 'No'
     test-code: |
       ctx->pre_cond_tod = NULL;
     text: |
-      While the ${../glossary/realtimeclock:/term} has never been set.
+      While the ${/glossary/clock-realtime:/term} was never set.
   test-epilogue: null
   test-prologue: null
 - name: Routine
@@ -246,49 +233,70 @@ pre-conditions:
       ctx->routine_param = NULL;
     text: |
       While the ${../if/server-fire-when:/params[2]/name} parameter is
-      ${/c/if/null:/name}..
+      ${/c/if/null:/name}.
   test-epilogue: null
   test-prologue: null
-- name: WallTime
+- name: ToD
   states:
-  - name: Valid
-    test-code: |
-      ctx->wall_time_param = &tod_schedule;
-    text: |
-      While the ${../if/server-fire-when:/params[1]/name} parameter references a time
-      at least one second in the future but not later than the last second of the
-      year 2105. (Times after 2105 are invalid.)
-  - name: Invalid
-    test-code: |
-      ctx->wall_time_param = &tod_invalid;
-    text: |
-      While the ${../if/server-fire-when:/params[1]/name} parameter is invalid.
-  - name: Past
-    test-code: |
-      ctx->wall_time_param = &tod_past;
-    text: |
-      While the ${../if/server-fire-when:/params[1]/name} parameter references a time
-      in the current second or in the past but not earlier than 1988. (Times before
-      1988 are invalid.)
   - name: 'Null'
     test-code: |
       ctx->wall_time_param = NULL;
     text: |
-      While the ${../if/server-fire-when:/params[1]/name} parameter is 0.
+      While the ${../if/server-fire-when:/params[1]/name} parameter is equal to
+      ${/c/if/null:/name}.
+  - name: Invalid
+    test-code: |
+      ctx->wall_time_param = &tod_invalid;
+    text: |
+      While the ${../if/server-fire-when:/params[1]/name} parameter references an
+      object of type ${../../type/if/time-of-day:/name}, while the object holds an
+      invalid time of day.
+  - name: Past
+    test-code: |
+      ctx->wall_time_param = &tod_past;
+    text: |
+      While the ${../if/server-fire-when:/params[1]/name} parameter references an
+      object of type ${../../type/if/time-of-day:/name}, while the object holds a
+      valid time of day before the current second of the
+      ${/glossary/clock-realtime:/term}.
+  - name: Now
+    test-code: |
+      ctx->wall_time_param = &tod_now_ticks;
+    text: |
+      While the ${../if/server-fire-when:/params[1]/name} parameter references an
+      object of type ${../../type/if/time-of-day:/name}, while the object holds a
+      valid time of day in the current second of the
+      ${/glossary/clock-realtime:/term}.
+  - name: Future
+    test-code: |
+      ctx->wall_time_param = &tod_schedule;
+    text: |
+      While the ${../if/server-fire-when:/params[1]/name} parameter references an
+      object of type ${../../type/if/time-of-day:/name}, while the object holds a
+      valid time of day after the current second of the
+      ${/glossary/clock-realtime:/term}.
   test-epilogue: null
   test-prologue: null
 - name: Id
   states:
-  - name: Valid
+  - name: Timer
     test-code: |
       ctx->id_param = ctx->timer_id;
     text: |
-      While the ${../if/server-fire-when:/params[0]/name} parameter is valid.
-  - name: Invalid
+      While the ${../if/server-fire-when:/params[0]/name} parameter is associated
+      with the timer.
+  - name: NoObj
     test-code: |
       ctx->id_param = RTEMS_ID_NONE;
     text: |
-      While the ${../if/server-fire-when:/params[0]/name} parameter is invalid.
+      While the ${../if/server-fire-when:/params[0]/name} parameter is not associated
+      with an object.
+  - name: OtherClass
+    test-code: |
+      ctx->id_param = rtems_task_self();
+    text: |
+      While the ${../if/server-fire-when:/params[0]/name} parameter is associated
+      with an object of a class other than the timer class.
   test-epilogue: null
   test-prologue: null
 - name: Context
@@ -341,8 +349,8 @@ pre-conditions:
       }
       T_rsc_success( status );
     text: |
-      While the ${../glossary/clock:/term} used to determine when the timer will
-      ${../glossary/fire:/term} is the ${../glossary/ticksbasedclock:/term}.
+      While the ${../glossary/clock:/term} of the timer is the
+      ${../glossary/ticksbasedclock:/term}.
   - name: Realtime
     test-code: |
       rtems_status_code status;
@@ -365,8 +373,8 @@ pre-conditions:
       }
       T_rsc_success( status );
     text: |
-      While the ${../glossary/clock:/term} used to determine when the timer will
-      ${../glossary/fire:/term} is the ${../glossary/realtimeclock:/term}.
+      While the ${../glossary/clock:/term} of the timer is the
+      ${../glossary/realtimeclock:/term}.
   test-epilogue: null
   test-prologue: null
 - name: State
@@ -396,7 +404,21 @@ pre-conditions:
       While the timer is in ${../glossary/pending:/term} ${../glossary/state:/term}.
   test-epilogue: null
   test-prologue: null
-rationale: null
+rationale: |
+  Dimension ServerInit covers whether the Timer Server was initiated, 2 states.
+  Dimension TODSet covers whether the ${/glossary/clock-realtime:/term} was set
+  at least once, 2 states. Dimension Id covers the parameter id, 3 states.
+  Dimension Context covers the context of the timer, 3 states. Dimension Clock
+  covers the clock of the timer, 3 states. Dimension State covers the state of
+  the timer, 3 states.
+
+  The states Past, Now and Future relate a valid time of day to the current
+  second of the ${/glossary/clock-realtime:/term}. The state Now holds ticks,
+  which the comparison ignores. The state Invalid arranges an invalid month.
+
+  The items ${server-fire-when-tod-date:/spec} and
+  ${server-fire-when-tod-time:/spec} state the validation and the conversion of
+  the time of day in detail.
 requirement-type: functional
 skip-reasons:
   ClockNotSet: |
@@ -545,6 +567,7 @@ test-description: null
 test-header: null
 test-includes:
 - rtems.h
+- rtems/score/watchdogimpl.h
 test-local-includes:
 - tx-support.h
 test-prepare: |
@@ -562,8 +585,11 @@ test-stop: null
 test-support: |
   static const rtems_time_of_day tod_now = { 2000, 1, 1, 0, 0, 0, 0 };
   static const rtems_time_of_day tod_schedule = { 2000, 1, 1, 5, 0, 0, 0 };
-  static const rtems_time_of_day tod_invalid = { 1985, 1, 1, 0, 0, 0, 0 };
-  static const rtems_time_of_day tod_past = { 1999, 12, 31, 23, 59, 59, 1 };
+  static const rtems_time_of_day tod_past = { 1999, 12, 31, 23, 59, 59, 0 };
+
+  static const rtems_time_of_day tod_now_ticks = { 2000, 1, 1, 0, 0, 0, 50 };
+
+  static const rtems_time_of_day tod_invalid = { 2000, 13, 1, 0, 0, 0, 0 };
 
   static void TriggerTimer(
     const RtemsTimerReqServerFireWhen_Context *ctx,
@@ -613,20 +639,20 @@ transition-map:
     Context: Server
     Clock: Realtime
     State: Scheduled
-    WallTime: Param
+    Expire: Param
     Routine: Param
     UserData: Param
   pre-conditions:
-    Server:
-    - Init
-    RtClock:
-    - Set
+    ServerInit:
+    - 'Yes'
+    TODSet:
+    - 'Yes'
     Routine:
     - Valid
-    WallTime:
-    - Valid
+    ToD:
+    - Future
     Id:
-    - Valid
+    - Timer
     Context:
     - None
     Clock:
@@ -639,20 +665,20 @@ transition-map:
     Context: Server
     Clock: Realtime
     State: Scheduled
-    WallTime: Param
+    Expire: Param
     Routine: Param
     UserData: Param
   pre-conditions:
-    Server:
-    - Init
-    RtClock:
-    - Set
+    ServerInit:
+    - 'Yes'
+    TODSet:
+    - 'Yes'
     Routine:
     - Valid
-    WallTime:
-    - Valid
+    ToD:
+    - Future
     Id:
-    - Valid
+    - Timer
     Context:
     - Server
     Clock:
@@ -665,20 +691,20 @@ transition-map:
     Context: Server
     Clock: Realtime
     State: Scheduled
-    WallTime: Param
+    Expire: Param
     Routine: Param
     UserData: Param
   pre-conditions:
-    Server:
-    - Init
-    RtClock:
-    - Set
+    ServerInit:
+    - 'Yes'
+    TODSet:
+    - 'Yes'
     Routine:
     - Valid
-    WallTime:
-    - Valid
+    ToD:
+    - Future
     Id:
-    - Valid
+    - Timer
     Context:
     - Interrupt
     Clock:
@@ -690,10 +716,10 @@ transition-map:
 - enabled-by: true
   post-conditions: NotExist
   pre-conditions:
-    Server: all
-    RtClock: all
+    ServerInit: all
+    TODSet: all
     Routine: all
-    WallTime: all
+    ToD: all
     Id: all
     Context:
     - None
@@ -705,10 +731,10 @@ transition-map:
 - enabled-by: true
   post-conditions: NotExist
   pre-conditions:
-    Server: all
-    RtClock: all
+    ServerInit: all
+    TODSet: all
     Routine: all
-    WallTime: all
+    ToD: all
     Id: all
     Context:
     - None
@@ -719,10 +745,10 @@ transition-map:
 - enabled-by: true
   post-conditions: NotExist
   pre-conditions:
-    Server: all
-    RtClock: all
+    ServerInit: all
+    TODSet: all
     Routine: all
-    WallTime: all
+    ToD: all
     Id: all
     Context:
     - Interrupt
@@ -733,11 +759,11 @@ transition-map:
 - enabled-by: true
   post-conditions: NotExist
   pre-conditions:
-    Server: all
-    RtClock:
-    - Set
+    ServerInit: all
+    TODSet:
+    - 'Yes'
     Routine: all
-    WallTime: all
+    ToD: all
     Id: all
     Context:
     - Interrupt
@@ -749,11 +775,11 @@ transition-map:
 - enabled-by: true
   post-conditions: NotExist
   pre-conditions:
-    Server: all
-    RtClock:
-    - Unset
+    ServerInit: all
+    TODSet:
+    - 'No'
     Routine: all
-    WallTime: all
+    ToD: all
     Id: all
     Context:
     - Interrupt
@@ -764,11 +790,11 @@ transition-map:
 - enabled-by: true
   post-conditions: NoServer
   pre-conditions:
-    Server:
-    - NotInit
-    RtClock: all
+    ServerInit:
+    - 'No'
+    TODSet: all
     Routine: all
-    WallTime: all
+    ToD: all
     Id: all
     Context:
     - Server
@@ -779,12 +805,12 @@ transition-map:
 - enabled-by: true
   post-conditions: ClockNotSet
   pre-conditions:
-    Server:
-    - Init
-    RtClock:
-    - Unset
+    ServerInit:
+    - 'Yes'
+    TODSet:
+    - 'No'
     Routine: all
-    WallTime: all
+    ToD: all
     Id: all
     Context:
     - Interrupt
@@ -795,12 +821,12 @@ transition-map:
 - enabled-by: true
   post-conditions: ClockNotSet
   pre-conditions:
-    Server:
-    - NotInit
-    RtClock:
-    - Unset
+    ServerInit:
+    - 'No'
+    TODSet:
+    - 'No'
     Routine: all
-    WallTime: all
+    ToD: all
     Id: all
     Context:
     - Interrupt
@@ -813,16 +839,16 @@ transition-map:
     Context: Nop
     Clock: Nop
     State: Nop
-    WallTime: Nop
+    Expire: Nop
     Routine: Nop
     UserData: Nop
   pre-conditions:
-    Server:
-    - Init
-    RtClock:
-    - Unset
+    ServerInit:
+    - 'Yes'
+    TODSet:
+    - 'No'
     Routine: all
-    WallTime: all
+    ToD: all
     Id: all
     Context:
     - None
@@ -836,16 +862,16 @@ transition-map:
     Context: Nop
     Clock: Nop
     State: Nop
-    WallTime: Nop
+    Expire: Nop
     Routine: Nop
     UserData: Nop
   pre-conditions:
-    Server:
-    - Init
-    RtClock:
-    - Unset
+    ServerInit:
+    - 'Yes'
+    TODSet:
+    - 'No'
     Routine: all
-    WallTime: all
+    ToD: all
     Id: all
     Context:
     - Server
@@ -858,16 +884,16 @@ transition-map:
     Context: Nop
     Clock: Nop
     State: Nop
-    WallTime: Nop
+    Expire: Nop
     Routine: Nop
     UserData: Nop
   pre-conditions:
-    Server:
-    - Init
-    RtClock:
-    - Unset
+    ServerInit:
+    - 'Yes'
+    TODSet:
+    - 'No'
     Routine: all
-    WallTime: all
+    ToD: all
     Id: all
     Context:
     - Interrupt
@@ -882,20 +908,21 @@ transition-map:
     Context: Nop
     Clock: Nop
     State: Nop
-    WallTime: Nop
+    Expire: Nop
     Routine: Nop
     UserData: Nop
   pre-conditions:
-    Server:
-    - Init
-    RtClock:
-    - Set
+    ServerInit:
+    - 'Yes'
+    TODSet:
+    - 'Yes'
     Routine:
     - Valid
-    WallTime:
-    - Valid
+    ToD:
+    - Future
     Id:
-    - Invalid
+    - NoObj
+    - OtherClass
     Context:
     - None
     Clock:
@@ -908,20 +935,21 @@ transition-map:
     Context: Nop
     Clock: Nop
     State: Nop
-    WallTime: Nop
+    Expire: Nop
     Routine: Nop
     UserData: Nop
   pre-conditions:
-    Server:
-    - Init
-    RtClock:
-    - Set
+    ServerInit:
+    - 'Yes'
+    TODSet:
+    - 'Yes'
     Routine:
     - Valid
-    WallTime:
-    - Valid
+    ToD:
+    - Future
     Id:
-    - Invalid
+    - NoObj
+    - OtherClass
     Context:
     - Server
     Clock:
@@ -934,20 +962,21 @@ transition-map:
     Context: Nop
     Clock: Nop
     State: Nop
-    WallTime: Nop
+    Expire: Nop
     Routine: Nop
     UserData: Nop
   pre-conditions:
-    Server:
-    - Init
-    RtClock:
-    - Set
+    ServerInit:
+    - 'Yes'
+    TODSet:
+    - 'Yes'
     Routine:
     - Valid
-    WallTime:
-    - Valid
+    ToD:
+    - Future
     Id:
-    - Invalid
+    - NoObj
+    - OtherClass
     Context:
     - Interrupt
     Clock:
@@ -962,20 +991,21 @@ transition-map:
     Context: Nop
     Clock: Nop
     State: Nop
-    WallTime: Nop
+    Expire: Nop
     Routine: Nop
     UserData: Nop
   pre-conditions:
-    Server:
-    - Init
-    RtClock:
-    - Set
+    ServerInit:
+    - 'Yes'
+    TODSet:
+    - 'Yes'
     Routine:
     - 'Null'
-    WallTime:
-    - Valid
+    ToD:
+    - Future
     - Invalid
     - Past
+    - Now
     Id: all
     Context:
     - None
@@ -989,20 +1019,21 @@ transition-map:
     Context: Nop
     Clock: Nop
     State: Nop
-    WallTime: Nop
+    Expire: Nop
     Routine: Nop
     UserData: Nop
   pre-conditions:
-    Server:
-    - Init
-    RtClock:
-    - Set
+    ServerInit:
+    - 'Yes'
+    TODSet:
+    - 'Yes'
     Routine:
     - 'Null'
-    WallTime:
-    - Valid
+    ToD:
+    - Future
     - Invalid
     - Past
+    - Now
     Id: all
     Context:
     - Server
@@ -1016,20 +1047,21 @@ transition-map:
     Context: Nop
     Clock: Nop
     State: Nop
-    WallTime: Nop
+    Expire: Nop
     Routine: Nop
     UserData: Nop
   pre-conditions:
-    Server:
-    - Init
-    RtClock:
-    - Set
+    ServerInit:
+    - 'Yes'
+    TODSet:
+    - 'Yes'
     Routine:
     - 'Null'
-    WallTime:
-    - Valid
+    ToD:
+    - Future
     - Invalid
     - Past
+    - Now
     Id: all
     Context:
     - Interrupt
@@ -1045,19 +1077,20 @@ transition-map:
     Context: Nop
     Clock: Nop
     State: Nop
-    WallTime: Nop
+    Expire: Nop
     Routine: Nop
     UserData: Nop
   pre-conditions:
-    Server:
-    - Init
-    RtClock:
-    - Set
+    ServerInit:
+    - 'Yes'
+    TODSet:
+    - 'Yes'
     Routine:
     - Valid
-    WallTime:
+    ToD:
     - Invalid
     - Past
+    - Now
     Id: all
     Context:
     - None
@@ -1071,19 +1104,20 @@ transition-map:
     Context: Nop
     Clock: Nop
     State: Nop
-    WallTime: Nop
+    Expire: Nop
     Routine: Nop
     UserData: Nop
   pre-conditions:
-    Server:
-    - Init
-    RtClock:
-    - Set
+    ServerInit:
+    - 'Yes'
+    TODSet:
+    - 'Yes'
     Routine:
     - Valid
-    WallTime:
+    ToD:
     - Invalid
     - Past
+    - Now
     Id: all
     Context:
     - Server
@@ -1097,19 +1131,20 @@ transition-map:
     Context: Nop
     Clock: Nop
     State: Nop
-    WallTime: Nop
+    Expire: Nop
     Routine: Nop
     UserData: Nop
   pre-conditions:
-    Server:
-    - Init
-    RtClock:
-    - Set
+    ServerInit:
+    - 'Yes'
+    TODSet:
+    - 'Yes'
     Routine:
     - Valid
-    WallTime:
+    ToD:
     - Invalid
     - Past
+    - Now
     Id: all
     Context:
     - Interrupt
@@ -1125,16 +1160,16 @@ transition-map:
     Context: Nop
     Clock: Nop
     State: Nop
-    WallTime: Nop
+    Expire: Nop
     Routine: Nop
     UserData: Nop
   pre-conditions:
-    Server:
-    - Init
-    RtClock:
-    - Set
+    ServerInit:
+    - 'Yes'
+    TODSet:
+    - 'Yes'
     Routine: all
-    WallTime:
+    ToD:
     - 'Null'
     Id: all
     Context:
@@ -1149,16 +1184,16 @@ transition-map:
     Context: Nop
     Clock: Nop
     State: Nop
-    WallTime: Nop
+    Expire: Nop
     Routine: Nop
     UserData: Nop
   pre-conditions:
-    Server:
-    - Init
-    RtClock:
-    - Set
+    ServerInit:
+    - 'Yes'
+    TODSet:
+    - 'Yes'
     Routine: all
-    WallTime:
+    ToD:
     - 'Null'
     Id: all
     Context:
@@ -1173,16 +1208,16 @@ transition-map:
     Context: Nop
     Clock: Nop
     State: Nop
-    WallTime: Nop
+    Expire: Nop
     Routine: Nop
     UserData: Nop
   pre-conditions:
-    Server:
-    - Init
-    RtClock:
-    - Set
+    ServerInit:
+    - 'Yes'
+    TODSet:
+    - 'Yes'
     Routine: all
-    WallTime:
+    ToD:
     - 'Null'
     Id: all
     Context:
@@ -1199,15 +1234,15 @@ transition-map:
     Context: Nop
     Clock: Nop
     State: Nop
-    WallTime: Nop
+    Expire: Nop
     Routine: Nop
     UserData: Nop
   pre-conditions:
-    Server:
-    - NotInit
-    RtClock: all
+    ServerInit:
+    - 'No'
+    TODSet: all
     Routine: all
-    WallTime: all
+    ToD: all
     Id: all
     Context:
     - None
@@ -1221,16 +1256,16 @@ transition-map:
     Context: Nop
     Clock: Nop
     State: Nop
-    WallTime: Nop
+    Expire: Nop
     Routine: Nop
     UserData: Nop
   pre-conditions:
-    Server:
-    - NotInit
-    RtClock:
-    - Set
+    ServerInit:
+    - 'No'
+    TODSet:
+    - 'Yes'
     Routine: all
-    WallTime: all
+    ToD: all
     Id: all
     Context:
     - Interrupt
@@ -1246,16 +1281,16 @@ transition-map:
     Context: Nop
     Clock: Nop
     State: Nop
-    WallTime: Nop
+    Expire: Nop
     Routine: Nop
     UserData: Nop
   pre-conditions:
-    Server:
-    - NotInit
-    RtClock:
-    - Unset
+    ServerInit:
+    - 'No'
+    TODSet:
+    - 'No'
     Routine: all
-    WallTime: all
+    ToD: all
     Id: all
     Context:
     - Interrupt
