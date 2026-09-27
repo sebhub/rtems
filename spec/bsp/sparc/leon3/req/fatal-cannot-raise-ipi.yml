@@ -1,0 +1,96 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by:
+  and:
+  - RTEMS_SMP
+  - bsps/sparc/leon3
+functional-type: fatal-error
+links:
+- role: requirement-refinement
+  uid: /testsuites/validation
+- role: requirement-refinement
+  uid: /req/fatal-error
+- role: requirement-refinement
+  uid: ../if/group
+- role: interface-function
+  uid: /score/interr/if/source-bsp
+- role: interface-function
+  uid: /bsp/if/fatal-leon3-cannot-raise-ipi
+rationale: |
+  The constant ${../if/mp-irq:/name} selects the ${../glossary/bus-line:/term} of
+  the inter-processor interrupt. Where the BSP uses the
+  ${../glossary/interrupt-map:/term}, the
+  ${../glossary/interrupt-map-entry:/term} of this ${../glossary/bus-line:/term}
+  in the ${../glossary/interrupt-map-copy:/term} selects the
+  ${../glossary/controller-line:/term}. A ${../glossary/bus-line:/term} which
+  maps to an extended ${../glossary/controller-line:/term} is a valid interrupt
+  vector which cannot be raised on a processor.
+requirement-type: functional
+test-brief: |
+  This validation test suite contains a test case which triggers a fatal error
+  during system initialization.
+test-case-code: |
+  T_eq_int( source, RTEMS_FATAL_SOURCE_BSP );
+  T_eq_ulong( code, LEON3_FATAL_CANNOT_RAISE_IPI );
+test-description: |
+  Where the BSP uses the interrupt map, the test defines the inter-processor
+  interrupt bus line by the bus line of TM27_IRQMAP_BUS_LINE. A system
+  initialization handler runs before the BSP reads the interrupt map. It maps the
+  bus line to the first extended controller line. Where the BSP uses no interrupt
+  map, the test defines the inter-processor interrupt bus line as the first
+  extended controller line. An extended controller line cannot be raised on a
+  processor.
+test-includes:
+- rtems/sysinit.h
+- bsp.h
+- bsp/fatal.h
+- bsp/irq.h
+- bsp/irqimpl.h
+- grlib/io.h
+test-local-includes: []
+test-support: |
+  #define _RTEMS_TMTEST27
+  #include <tm27.h>
+
+  #if LEON3_IRQMAP_BUS_LINE_COUNT != 0
+  /*
+   * The test selects a bus line which no driver uses for the
+   * inter-processor interrupt.  The BSP defines the constant weakly.
+   */
+  const unsigned char LEON3_mp_irq = TM27_IRQMAP_BUS_LINE;
+
+  static void MapInterProcessorInterrupt( void )
+  {
+    uint32_t *reg;
+    uint32_t  shift;
+    uint32_t  value;
+
+    reg = &LEON3_IrqCtrl_Regs->irqmap[ LEON3_mp_irq / 4 ];
+    shift = 24 - 8 * ( LEON3_mp_irq % 4 );
+    value = grlib_load_32( reg );
+    value &= ~( UINT32_C( 0xff ) << shift );
+    value |= (uint32_t) ( BSP_INTERRUPT_VECTOR_MAX_STD + 1 ) << shift;
+    grlib_store_32( reg, value );
+  }
+
+  RTEMS_SYSINIT_ITEM(
+    MapInterProcessorInterrupt,
+    RTEMS_SYSINIT_BSP_EARLY,
+    RTEMS_SYSINIT_ORDER_LAST
+  );
+  #else
+  /* The BSP defines the constant weakly. */
+  const unsigned char LEON3_mp_irq = BSP_INTERRUPT_VECTOR_MAX_STD + 1;
+  #endif
+
+  #define CONFIGURE_APPLICATION_DOES_NOT_NEED_CLOCK_DRIVER
+
+  #define CONFIGURE_IDLE_TASK_STORAGE_SIZE RTEMS_MINIMUM_STACK_SIZE
+test-target: testsuites/validation/bsps/ts-fatal-sparc-leon3-cannot-raise-ipi.c
+text: |
+  If the interrupt vector of the inter-processor interrupt is a valid interrupt
+  vector which cannot be raised on a processor, then the system shall terminate
+  with the ${/score/interr/if/source-bsp:/name} fatal source and the
+  ${/bsp/if/fatal-leon3-cannot-raise-ipi:/name} fatal code.
+type: requirement
