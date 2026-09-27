@@ -1,0 +1,125 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+links: []
+test-actions:
+- action-brief: |
+    Validate the time of day of ${../if/wake-when:/name}.
+  action-code: |
+    rtems_status_code sc;
+  checks:
+  - brief: |
+      Validate the date.
+    code: |
+      ${/score/tod/req/convert-date:/test-run}( CallWakeWhen, ctx );
+    links:
+    - role: validation
+      uid: ../req/wake-when-tod-date
+  - brief: |
+      Validate the time of the day.
+    code: |
+      ${/score/tod/req/convert-time:/test-run}( CallWakeWhen, ctx, false );
+    links:
+    - role: validation
+      uid: ../req/wake-when-tod-time
+  - brief: |
+      Restore a valid time of day.
+    code: |
+      sc = rtems_clock_set( &tod_restore );
+      T_rsc_success( sc );
+    links: []
+  links: []
+test-brief: |
+  Tests the validation and the conversion of the time of day by
+  ${../if/wake-when:/name}.
+test-context:
+- brief: |
+    This member contains the identifier of the worker.
+  description: null
+  member: |
+    rtems_id worker_id
+- brief: |
+    This member references the time of day of the call.
+  description: null
+  member: |
+    const rtems_time_of_day *tod
+- brief: |
+    This member contains the return status of the call.
+  description: null
+  member: |
+    rtems_status_code status
+test-context-support: null
+test-description: null
+test-header: null
+test-includes:
+- rtems.h
+test-local-includes:
+- tx-support.h
+- tr-tod-convert-date.h
+- tr-tod-convert-time.h
+test-setup:
+  brief: null
+  code: |
+    SetSelfPriority( PRIO_NORMAL );
+    ctx->worker_id = CreateTask( "WORK", PRIO_HIGH );
+    StartTask( ctx->worker_id, Worker, ctx );
+  description: null
+test-stop: null
+test-support: |
+  typedef ${.:/test-context-type} Context;
+
+  static const rtems_time_of_day tod_restore = { 1988, 1, 1, 0, 0, 0, 0 };
+
+  static void Worker( rtems_task_argument arg )
+  {
+    Context *ctx;
+
+    ctx = (Context *) arg;
+
+    while ( true ) {
+      SuspendSelf();
+      ctx->status = rtems_task_wake_when( ctx->tod );
+    }
+  }
+
+  static bool CallWakeWhen(
+    void                    *arg,
+    const rtems_time_of_day *time_of_day,
+    int64_t                 *seconds
+  )
+  {
+    Context          *ctx;
+    rtems_status_code sc;
+    TaskTimerInfo     info;
+
+    ctx = arg;
+    sc = rtems_clock_set( &tod_restore );
+    T_quiet_rsc_success( sc );
+
+    ctx->tod = time_of_day;
+    ctx->status = RTEMS_NOT_IMPLEMENTED;
+    ResumeTask( ctx->worker_id );
+    GetTaskTimerInfo( ctx->worker_id, &info );
+
+    if ( info.state == TASK_TIMER_REALTIME ) {
+      *seconds = info.expire_timespec.tv_sec;
+    }
+
+    FinalClockTick();
+
+    if ( ctx->status != RTEMS_SUCCESSFUL ) {
+      T_quiet_rsc( ctx->status, RTEMS_INVALID_CLOCK );
+      return false;
+    }
+
+    return true;
+  }
+test-target: testsuites/validation/tc-task-wake-when-tod.c
+test-teardown:
+  brief: null
+  code: |
+    DeleteTask( ctx->worker_id );
+    RestoreRunnerPriority();
+  description: null
+type: test-case

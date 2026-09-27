@@ -1,6 +1,6 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 copyrights:
-- Copyright (C) 2021 embedded brains GmbH & Co. KG
+- Copyright (C) 2021, 2026 embedded brains GmbH & Co. KG
 enabled-by: true
 functional-type: action
 links:
@@ -54,7 +54,10 @@ post-conditions:
   states:
   - name: Absolute
     test-code: |
-      T_eq_i64( ctx->timer_info.expire_timespec.tv_sec, 1262304000 );
+      T_eq_i64(
+        ctx->timer_info.expire_timespec.tv_sec,
+        GetSeconds( &ctx->tod_obj )
+      );
       T_eq_long( ctx->timer_info.expire_timespec.tv_nsec, 0 );
     text: |
       The timer of the calling task shall expire at the time point specified by the
@@ -97,46 +100,59 @@ pre-conditions:
   test-prologue: |
     rtems_status_code sc;
     rtems_time_of_day tod;
-- name: TOD
+- name: ToD
   states:
-  - name: Valid
-    test-code: |
-      ctx->tod = &ctx->tod_obj;
-    text: |
-      While the ${../if/wake-when:/params[0]/name} parameter references an object of
-      type ${../../type/if/time-of-day:/name}.
   - name: 'Null'
     test-code: |
       ctx->tod = NULL;
     text: |
       While the ${../if/wake-when:/params[0]/name} parameter is equal to
       ${/c/if/null:/name}.
-  test-epilogue: null
-  test-prologue: null
-- name: TODObj
-  states:
-  - name: Future
-    test-code: |
-      SetTOD( &ctx->tod_obj, 2010 );
-    text: |
-      While the object referenced by the ${../if/wake-when:/params[0]/name} parameter
-      specifies a valid time of day in the future.
-  - name: PastOrNow
-    test-code: |
-      SetTOD( &ctx->tod_obj, 1990 );
-    text: |
-      While the object referenced by the ${../if/wake-when:/params[0]/name} parameter
-      specifies a valid time of day in the past or at the time of the
-      ${../if/wake-when:/name} call.
   - name: Invalid
     test-code: |
-      memset( &ctx->tod_obj, 0xff, sizeof( ctx->tod_obj ) );
+      ctx->tod = &ctx->tod_obj;
+      SetTOD( &ctx->tod_obj, 2010 );
+      ctx->tod_obj.month = 13;
     text: |
-      While the object referenced by the ${../if/wake-when:/params[0]/name} parameter
-      specifies an invalid time of day.
+      While the ${../if/wake-when:/params[0]/name} parameter references an object of
+      type ${../../type/if/time-of-day:/name}, while the object holds an invalid time
+      of day.
+  - name: Past
+    test-code: |
+      ctx->tod = &ctx->tod_obj;
+      SetTOD( &ctx->tod_obj, 1990 );
+    text: |
+      While the ${../if/wake-when:/params[0]/name} parameter references an object of
+      type ${../../type/if/time-of-day:/name}, while the object holds a valid time of
+      day before the current second of the ${/glossary/clock-realtime:/term}.
+  - name: Now
+    test-code: |
+      ctx->tod = &ctx->tod_obj;
+      SetTOD( &ctx->tod_obj, 2000 );
+    text: |
+      While the ${../if/wake-when:/params[0]/name} parameter references an object of
+      type ${../../type/if/time-of-day:/name}, while the object holds a valid time of
+      day in the current second of the ${/glossary/clock-realtime:/term}.
+  - name: Future
+    test-code: |
+      ctx->tod = &ctx->tod_obj;
+      SetTOD( &ctx->tod_obj, 2010 );
+    text: |
+      While the ${../if/wake-when:/params[0]/name} parameter references an object of
+      type ${../../type/if/time-of-day:/name}, while the object holds a valid time of
+      day after the current second of the ${/glossary/clock-realtime:/term}.
   test-epilogue: null
   test-prologue: null
-rationale: null
+rationale: |
+  Dimension TODSet covers whether the ${/glossary/clock-realtime:/term} was set
+  at least once, 2 states. Dimension ToD covers the parameter tod, 5 states.
+
+  The timing granularity of the directive is a second. The states Past, Now and
+  Future therefore relate a valid time of day to the current second of the
+  ${/glossary/clock-realtime:/term}. The state Invalid arranges an invalid month.
+
+  The items ${wake-when-tod-date:/spec} and ${wake-when-tod-time:/spec} state the
+  validation and the conversion of the time of day in detail.
 requirement-type: functional
 skip-reasons: {}
 test-action: |
@@ -215,6 +231,12 @@ test-support: |
     tod->day = 1;
   }
 
+  static int64_t GetSeconds( const rtems_time_of_day *tod )
+  {
+    return DaysFromCivil( tod->year, tod->month, tod->day ) * 86400 +
+           tod->hour * 3600 + tod->minute * 60 + tod->second;
+  }
+
   static void Worker( rtems_task_argument arg )
   {
     Context *ctx;
@@ -248,19 +270,6 @@ text: |
 transition-map:
 - enabled-by: true
   post-conditions:
-    Status: Ok
-    Timer: Realtime
-    Expire: Absolute
-    Scheduler: Block
-  pre-conditions:
-    TODSet:
-    - 'Yes'
-    TOD:
-    - Valid
-    TODObj:
-    - Future
-- enabled-by: true
-  post-conditions:
     Status: NotDef
     Timer: Inactive
     Expire: N/A
@@ -268,21 +277,7 @@ transition-map:
   pre-conditions:
     TODSet:
     - 'No'
-    TOD:
-    - Valid
-    TODObj: all
-- enabled-by: true
-  post-conditions:
-    Status: NotDef
-    Timer: Inactive
-    Expire: N/A
-    Scheduler: Nop
-  pre-conditions:
-    TODSet:
-    - 'No'
-    TOD:
-    - 'Null'
-    TODObj: N/A
+    ToD: all
 - enabled-by: true
   post-conditions:
     Status: InvAddr
@@ -292,9 +287,8 @@ transition-map:
   pre-conditions:
     TODSet:
     - 'Yes'
-    TOD:
+    ToD:
     - 'Null'
-    TODObj: N/A
 - enabled-by: true
   post-conditions:
     Status: InvClock
@@ -304,9 +298,19 @@ transition-map:
   pre-conditions:
     TODSet:
     - 'Yes'
-    TOD:
-    - Valid
-    TODObj:
-    - PastOrNow
+    ToD:
     - Invalid
+    - Past
+    - Now
+- enabled-by: true
+  post-conditions:
+    Status: Ok
+    Timer: Realtime
+    Expire: Absolute
+    Scheduler: Block
+  pre-conditions:
+    TODSet:
+    - 'Yes'
+    ToD:
+    - Future
 type: requirement
