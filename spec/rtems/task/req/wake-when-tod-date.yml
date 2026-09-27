@@ -1,0 +1,19 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: function
+links:
+- role: interface-function
+  uid: ../if/wake-when
+- role: function-implementation
+  uid: /score/tod/req/convert-date
+rationale: |
+  The item ${wake-when:/spec} states the return status of the directive for a
+  valid and an invalid time of day.
+requirement-type: functional
+text: |
+  The ${../if/wake-when:/name} directive shall validate and convert the date of
+  the time of day referenced by the ${../if/wake-when:/params[0]/name} parameter
+  as specified by ${/score/tod/req/convert-date:/spec}.
+type: requirement
