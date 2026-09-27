@@ -1,0 +1,52 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by:
+  or:
+  - sparc/gr740
+  - sparc/gr765
+links: []
+test-actions:
+- action-brief: |
+    Set the interrupt map entry of a bus line which no driver uses in the interrupt
+    map copy to zero. Check whether the interrupt vector of the bus line is
+    enabled. Restore the interrupt map entry.
+  action-code: |
+    rtems_status_code sc;
+    uint8_t           entry;
+    bool              enabled;
+
+    entry = LEON3_IrqCtrl_Mapping[ TM27_IRQMAP_BUS_LINE ];
+    LEON3_IrqCtrl_Mapping[ TM27_IRQMAP_BUS_LINE ] = 0;
+    enabled = true;
+    sc = rtems_interrupt_vector_is_enabled( TM27_IRQMAP_BUS_LINE, &enabled );
+    LEON3_IrqCtrl_Mapping[ TM27_IRQMAP_BUS_LINE ] = entry;
+  checks:
+  - brief: |
+      Check that the number of the bus line is associated with no interrupt vector.
+    code: |
+      T_rsc( sc, RTEMS_INVALID_ID );
+    links:
+    - role: validation
+      uid: ../req/irqmap-invalid-vector
+  links: []
+test-brief: |
+  Tests the handling of an interrupt map entry of zero in the interrupt map copy.
+test-context: []
+test-context-support: null
+test-description: |
+  No driver uses the bus line of TM27_IRQMAP_BUS_LINE, so the test can change its
+  interrupt map entry for the time of the check.
+test-header: null
+test-includes:
+- rtems.h
+- bsp/irq.h
+test-local-includes: []
+test-setup: null
+test-stop: null
+test-support: |
+  #define _RTEMS_TMTEST27
+  #include <tm27.h>
+test-target: testsuites/validation/bsps/tc-sparc-leon3-irqmap.c
+test-teardown: null
+type: test-case

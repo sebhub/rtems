@@ -1,0 +1,25 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by:
+  or:
+  - sparc/gr740
+  - sparc/gr765
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: ../if/group
+rationale: |
+  An ${../glossary/interrupt-map-entry:/term} of zero selects no
+  ${../glossary/controller-line:/term}, see GR740 User's Manual, sections 21.2.9
+  and 21.3.19. ${ext-irq-init:/spec} masks each entry by the count of
+  ${../glossary/controller-line:/plural}, so a zero entry of the
+  ${../glossary/interrupt-map-copy:/term} also stands for a field value which is
+  a multiple of 32. Such a value is a hardware fault.
+requirement-type: functional
+text: |
+  While the ${../glossary/interrupt-map-entry:/term} of a
+  ${../glossary/bus-line:/term} in the ${../glossary/interrupt-map-copy:/term} is
+  zero, the number of the ${../glossary/bus-line:/term} shall be associated with
+  no interrupt vector.
+type: requirement
