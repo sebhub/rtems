@@ -14,5 +14,5 @@ text: |
   While the timeout parameter specifies a valid absolute
   ${/glossary/clock-realtime:/term} time point, while no thread signals the
   condition variable before the specified time point, the directive shall return
-  with a status code of ${/c/if/etimedout:/name}.
+  with a status code of ${/c/errno/if/etimedout:/name}.
 type: requirement

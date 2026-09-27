@@ -23,7 +23,8 @@ post-conditions:
       eno = _Futex_Wait( &ctx->futex, &ctx->state, ctx->expected_value );
       T_eq_int( eno, EAGAIN );
     text: |
-      The return status of ${../if/futex-wait:/name} shall be ${/c/if/eagain:/name}.
+      The return status of ${../if/futex-wait:/name} shall be
+      ${/c/errno/if/eagain:/name}.
   test-epilogue: null
   test-prologue: |
     int eno;

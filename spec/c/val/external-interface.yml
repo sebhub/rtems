@@ -18,19 +18,19 @@ links:
 - role: validation
   uid: /c/if/cpu_set_t
 - role: validation
-  uid: /c/if/eagain
+  uid: /c/errno/if/eagain
 - role: validation
-  uid: /c/if/ebusy
+  uid: /c/errno/if/ebusy
 - role: validation
-  uid: /c/if/einval
+  uid: /c/errno/if/einval
 - role: validation
-  uid: /c/if/enomem
+  uid: /c/errno/if/enomem
 - role: validation
-  uid: /c/if/enotsup
+  uid: /c/errno/if/enotsup
 - role: validation
-  uid: /c/if/errno
+  uid: /c/errno/if/errno
 - role: validation
-  uid: /c/if/etimedout
+  uid: /c/errno/if/etimedout
 - role: validation
   uid: /c/if/false
 - role: validation

@@ -1,16 +1,13 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
-brief: |
-  This is a standard C library header file.
 copyrights:
-- Copyright (C) 2020 embedded brains GmbH & Co. KG
+- Copyright (C) 2021 embedded brains GmbH & Co. KG
 enabled-by: true
 index-entries: []
-interface-type: header-file
+interface-type: unspecified-define
 links:
 - role: interface-placement
-  uid: domain
+  uid: header
 - role: interface-ingroup
   uid: group
-path: errno.h
-prefix: ''
+name: EINVAL
 type: interface
