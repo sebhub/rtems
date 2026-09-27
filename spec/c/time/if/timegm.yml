@@ -1,0 +1,46 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Convert the broken-down time expressed as ${/glossary/utc:/term} in the object
+  referenced by ${.:/params[0]/name} into a time since the Epoch and normalize
+  the object.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+  default:
+    attributes: null
+    body: null
+    params:
+    - struct ${/c/time/if/tm:/name} *${.:/params[0]/name}
+    return: ${/c/if/time_t:/name}
+  variants: []
+description: null
+enabled-by: true
+index-entries: []
+interface-type: function
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+- role: reference
+  uid: /ref/std/c23/timegm
+- role: reference
+  uid: /ref/std/cppreference-c/timegm
+name: timegm
+notes: |
+  See ${/ref/std/c23/timegm:/name} and ${/ref/std/cppreference-c/timegm:/name}.
+params:
+- description: |
+    is the pointer to the broken-down time.
+  dir: inout
+  name: timeptr
+return:
+  return: |
+    Returns the time since the Epoch of the broken-down time, if the call converted
+    it.
+  return-values:
+  - description: |
+      The time since the Epoch or the year of the broken-down time cannot be
+      represented.
+    value: (${/c/if/time_t:/name}) -1
+type: interface
