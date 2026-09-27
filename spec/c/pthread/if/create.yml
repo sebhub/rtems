@@ -6,13 +6,13 @@ index-entries: []
 interface-type: unspecified-function
 links:
 - role: interface-placement
-  uid: pthread
+  uid: header
 - role: interface-ingroup
   uid: group
 - role: constraint
   uid: /constraint/directive-not-pre-qualified
-- path: man3/pthread_setname_np.3.html
+- path: functions/pthread_create.html
   role: reference
-  uid: /ref/man/linux
-name: pthread_setname_np
+  uid: /ref/std/posix-2024
+name: pthread_create
 type: interface
