@@ -1,0 +1,21 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: RTEMS_SMP
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: group
+rationale: |
+  The notes of ${/rtems/task/if/get-priority:/name} document this value for an
+  ${/glossary/edf:/term} ${/glossary/scheduler:/term}. The item states it for the
+  SMP variant of the scheduler.
+requirement-type: functional
+text: |
+  While a ${/glossary/task:/term} has a ${/rtems/ratemon/glossary/job:/term}
+  ${/rtems/ratemon/glossary/deadline:/term} as its
+  ${/glossary/priority-current:/term} with respect to an ${/glossary/edf:/term}
+  SMP ${/glossary/scheduler:/term}, when the ${/glossary/priority-current:/term}
+  of the task with respect to the scheduler is queried by
+  ${/rtems/task/if/get-priority:/name}, the returned priority shall be zero.
+type: requirement
