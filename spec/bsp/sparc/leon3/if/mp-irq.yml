@@ -1,0 +1,32 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This constant selects the ${../glossary/bus-line:/term} of the inter-processor
+  interrupt and of the shared memory driver.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+  default: const unsigned char ${.:/name}
+  variants: []
+description: |
+  The ${/glossary/bsp:/term} provides a weak definition of the constant with the
+  value of the BSP option LEON3_IPI_BUS_LINE. An application may define the
+  constant to override this default. Where the BSP uses the
+  ${../glossary/interrupt-map:/term}, the default is bus line 0. The BSP maps it
+  to the ${../glossary/controller-line:/term} defined by the BSP option
+  LEON3_IPI_CONTROLLER_LINE.
+enabled-by:
+  and:
+  - bsps/sparc/leon3
+  - or:
+    - RTEMS_SMP
+    - RTEMS_MULTIPROCESSING
+index-entries: []
+interface-type: variable
+links:
+- role: interface-placement
+  uid: /bsp/if/bsp-header
+- role: interface-ingroup
+  uid: /bsp/if/group-interrupt
+name: LEON3_mp_irq
+notes: null
+type: interface
