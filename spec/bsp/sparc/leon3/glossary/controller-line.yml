@@ -1,0 +1,15 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+term: controller line
+text: |
+  A controller line is an interrupt line of the IRQ(A)MP interrupt controller. An
+  asserted controller line sets its bit in the pending register of the
+  controller. The controller lines 1 to 15 are the standard controller lines. The
+  controller lines 16 to 31 are the extended controller lines.
+type: glossary

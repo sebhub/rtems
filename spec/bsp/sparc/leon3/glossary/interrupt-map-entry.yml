@@ -1,0 +1,13 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+term: interrupt map entry
+text: |
+  An interrupt map entry is the field of the ${interrupt-map:/term} which selects
+  the ${controller-line:/term} of one ${bus-line:/term}.
+type: glossary

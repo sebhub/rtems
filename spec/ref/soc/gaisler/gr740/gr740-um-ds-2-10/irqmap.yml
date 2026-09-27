@@ -1,0 +1,10 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+links:
+- role: reference-location
+  uid: ../gr740-um-ds-2-10
+location: 21.3.19
+name: GR740 User's Manual, section 21.3.19
+type: reference-location
