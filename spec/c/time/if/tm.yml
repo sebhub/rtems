@@ -1,0 +1,110 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This structure holds a broken-down time.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+- default:
+    brief: |
+      This member contains the seconds after the minute with values from 0 to 60.
+    definition: int ${.:name}
+    description: null
+    kind: member
+    name: tm_sec
+  variants: []
+- default:
+    brief: |
+      This member contains the minutes after the hour with values from 0 to 59.
+    definition: int ${.:name}
+    description: null
+    kind: member
+    name: tm_min
+  variants: []
+- default:
+    brief: |
+      This member contains the hours since midnight with values from 0 to 23.
+    definition: int ${.:name}
+    description: null
+    kind: member
+    name: tm_hour
+  variants: []
+- default:
+    brief: |
+      This member contains the day of the month with values from 1 to 31.
+    definition: int ${.:name}
+    description: null
+    kind: member
+    name: tm_mday
+  variants: []
+- default:
+    brief: |
+      This member contains the months since January with values from 0 to 11.
+    definition: int ${.:name}
+    description: null
+    kind: member
+    name: tm_mon
+  variants: []
+- default:
+    brief: |
+      This member contains the years since 1900.
+    definition: int ${.:name}
+    description: null
+    kind: member
+    name: tm_year
+  variants: []
+- default:
+    brief: |
+      This member contains the days since Sunday with values from 0 to 6.
+    definition: int ${.:name}
+    description: null
+    kind: member
+    name: tm_wday
+  variants: []
+- default:
+    brief: |
+      This member contains the days since January 1 with values from 0 to 365.
+    definition: int ${.:name}
+    description: null
+    kind: member
+    name: tm_yday
+  variants: []
+- default:
+    brief: |
+      This member contains the daylight saving time flag.
+    definition: int ${.:name}
+    description: null
+    kind: member
+    name: tm_isdst
+  variants: []
+- default:
+    brief: |
+      This member contains the offset of the time zone east of UTC in seconds.
+    definition: long ${.:name}
+    description: null
+    kind: member
+    name: tm_gmtoff
+  variants: []
+- default:
+    brief: |
+      This member references the abbreviation of the time zone.
+    definition: const char *${.:name}
+    description: null
+    kind: member
+    name: tm_zone
+  variants: []
+definition-kind: struct-only
+description: null
+enabled-by: true
+index-entries: []
+interface-type: struct
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+- role: reference
+  uid: /ref/std/posix-2024/time-h
+name: tm
+notes: |
+  See ${/ref/std/posix-2024/time-h:/name}.
+type: interface
