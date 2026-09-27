@@ -1,6 +1,6 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 copyrights:
-- Copyright (C) 2021 embedded brains GmbH & Co. KG
+- Copyright (C) 2021, 2026 embedded brains GmbH & Co. KG
 enabled-by: true
 functional-type: action
 links:
@@ -14,58 +14,40 @@ post-conditions:
       T_rsc_success( ctx->status );
     text: |
       The return status of ${../if/set:/name} shall be
-      ${../../status/if/successful:/name}
+      ${../../status/if/successful:/name}.
   - name: InvAddr
     test-code: |
       T_rsc( ctx->status, RTEMS_INVALID_ADDRESS );
     text: |
       The return status of ${../if/set:/name} shall be
       ${../../status/if/invalid-address:/name}.
-  - name: InvClk
+  - name: InvClock
     test-code: |
       T_rsc( ctx->status, RTEMS_INVALID_CLOCK );
     text: |
       The return status of ${../if/set:/name} shall be
       ${../../status/if/invalid-clock:/name}.
-  - name: Hook
+  - name: Unsatisfied
     test-code: |
       T_rsc( ctx->status, RTEMS_UNSATISFIED );
     text: |
-      The return status of ${../if/set:/name} shall be derived from the status
-      returned by the TOD hook.
+      The return status of ${../if/set:/name} shall be
+      ${../../status/if/unsatisfied:/name}.
   test-epilogue: null
   test-prologue: null
 - name: Clock
   states:
   - name: Set
     test-code: |
-      T_eq_ptr( ctx->target_tod, &ctx->target_tod_value );
-      T_rsc_success( ctx->get_tod_after_status );
-      T_eq_u32( ctx->tod_after.year, ctx->target_tod_value.year );
-      T_eq_u32( ctx->tod_after.month, ctx->target_tod_value.month );
-      T_eq_u32( ctx->tod_after.day, ctx->target_tod_value.day );
-      T_eq_u32( ctx->tod_after.hour, ctx->target_tod_value.hour );
-      T_eq_u32( ctx->tod_after.minute, ctx->target_tod_value.minute );
-      T_eq_u32( ctx->tod_after.second, ctx->target_tod_value.second );
-      /* rtems_clock_set() or rtems_clock_get_tod() cause an error of 1 tick */
-      T_ge_u32( ctx->tod_after.ticks + 1, ctx->target_tod_value.ticks );
-      T_le_u32( ctx->tod_after.ticks, ctx->target_tod_value.ticks );
+      CheckClockSet( ctx );
     text: |
-      The ${/glossary/clock-realtime:/term} shall be set to the values of the object
-      referenced by the ${../if/set:/params[0]/name} parameter during the
-      ${../if/set:/name} call.
+      The ${/glossary/clock-realtime:/term} shall be set to the time of day
+      referenced by the ${../if/set:/params[0]/name} parameter.
   - name: Nop
     test-code: |
-      T_rsc_success( ctx->get_tod_before_status );
-      T_eq_u32( ctx->tod_after.year, ctx->tod_before.year );
-      T_eq_u32( ctx->tod_after.month, ctx->tod_before.month );
-      T_eq_u32( ctx->tod_after.day, ctx->tod_before.day );
-      T_eq_u32( ctx->tod_after.hour, ctx->tod_before.hour );
-      T_eq_u32( ctx->tod_after.minute, ctx->tod_before.minute );
-      T_eq_u32( ctx->tod_after.second, ctx->tod_before.second );
-      T_eq_u32( ctx->tod_after.ticks, ctx->tod_before.ticks );
+      CheckClockNop( ctx );
     text: |
-      The state of the ${/glossary/clock-realtime:/term} shall not be changed by the
+      The ${/glossary/clock-realtime:/term} shall not be changed by the
       ${../if/set:/name} call.
   test-epilogue: null
   test-prologue: null
@@ -74,27 +56,44 @@ post-conditions:
   - name: Triggered
     test-code: |
       T_eq_int( ctx->timer_routine_counter, 1 );
-      T_eq_u32( ctx->timer_routine_tod.year, 1989 );
-      T_eq_u32( ctx->timer_routine_tod.month, 1 );
-      T_eq_u32( ctx->timer_routine_tod.day, 1 );
-      T_eq_u32( ctx->timer_routine_tod.minute, 0 );
-      T_eq_u32( ctx->timer_routine_tod.second, 0 );
-      T_eq_u32( ctx->timer_routine_tod.ticks, 0 );
+      T_eq_i64( ctx->timer_routine_seconds, ctx->expected_seconds );
     text: |
       The timer routine shall be executed once after the
-      ${/glossary/clock-realtime:/term} has been set and before the execution of the
-      ${../if/set:/name} call terminates.
+      ${/glossary/clock-realtime:/term} is set and before the ${../if/set:/name} call
+      returns.
   - name: Nop
     test-code: |
       T_eq_int( ctx->timer_routine_counter, 0 );
     text: |
-      The the timer routine shall not be invoked during the ${../if/set:/name} call.
+      The timer routine shall not be executed during the ${../if/set:/name} call.
+  test-epilogue: null
+  test-prologue: null
+- name: HookCall
+  states:
+  - name: Once
+    test-code: |
+      T_eq_int( ctx->hook_calls, 1 );
+      T_eq_int( ctx->hook_action, TOD_ACTION_SET_CLOCK );
+      T_eq_i64( ctx->hook_tod.tv_sec, ctx->expected_seconds );
+      T_eq_long(
+        ctx->hook_tod.tv_nsec,
+        (long) ( ctx->target_tod_value.ticks *
+                 rtems_configuration_get_nanoseconds_per_tick() )
+      );
+    text: |
+      The TOD hook shall be called once with the action to set the clock and the time
+      of day referenced by the ${../if/set:/params[0]/name} parameter.
+  - name: Nop
+    test-code: |
+      T_eq_int( ctx->hook_calls, 0 );
+    text: |
+      The TOD hook shall not be called by the ${../if/set:/name} call.
   test-epilogue: null
   test-prologue: null
 pre-conditions:
-- name: ToD
+- name: Timer
   states:
-  - name: Valid
+  - name: None
     test-code: |
       ctx->target_tod_value = (rtems_time_of_day) {
         2021,
@@ -106,161 +105,31 @@ pre-conditions:
         rtems_clock_get_ticks_per_second() / 2
       };
     text: |
-      While the ${../if/set:/params[0]/name} parameter references an arbitrary valid
-      date and time between 1988-01-01T00:00:00.000000000Z and
-      2105-12-31T23:59:59.999999999Z.
-  - name: ValidLeap4
-    test-code: |
-      ctx->target_tod_value = (rtems_time_of_day) { 2096, 2, 29, 0, 0, 0, 0 };
-    text: |
-      While the ${../if/set:/params[0]/name} parameter references a date for a leap
-      year with the value of 29th of February.
-  - name: ValidLeap400
-    test-code: |
-      ctx->target_tod_value = (rtems_time_of_day) { 2000, 2, 29, 0, 0, 0, 0 };
-    text: |
-      While the ${../if/set:/params[0]/name} parameter references a date for a leap
-      year with the value of 29th of February.
-  - name: Youngest
-    test-code: |
-      ctx->target_tod_value = (rtems_time_of_day) { 1988, 1, 1, 0, 0, 0, 0 };
-    text: |
-      While the ${../if/set:/params[0]/name} parameter references the youngest date
-      and time accepted (1988-01-01T00:00:00.000000000Z).
-  - name: Oldest
-    test-code: |
-      ctx->target_tod_value = (rtems_time_of_day) {
-        2400,
-        12,
-        31,
-        23,
-        59,
-        59,
-        rtems_clock_get_ticks_per_second() - 1
-      };
-    text: |
-      While the ${../if/set:/params[0]/name} parameter references the oldest date and
-      time accepted (2400-12-31T23:59:59.999999999Z).
-  - name: TooJung
-    test-code: |
-      ctx->target_tod_value = (rtems_time_of_day) {
-        1987,
-        12,
-        31,
-        23,
-        59,
-        59,
-        rtems_clock_get_ticks_per_second() - 1
-      };
-    text: |
-      While the ${../if/set:/params[0]/name} parameter references a valid date and
-      time younger than 1988-01-01T00:00:00.000000000Z.
-  - name: TooOld
-    test-code: |
-      ctx->target_tod_value = (rtems_time_of_day) { 2401, 1, 1, 0, 0, 0, 0 };
-    text: |
-      While the ${../if/set:/params[0]/name} parameter references a valid date and
-      time older than 2400-12-31T23:59:59.999999999Z.
-  - name: InvMonth0
-    test-code: |
-      ctx->target_tod_value = (rtems_time_of_day) { 2021, 0, 11, 11, 10, 59, 1 };
-    text: |
-      While the ${../if/set:/params[0]/name} parameter is invalid because the value
-      of the month is 0.
-  - name: InvMonth
-    test-code: |
-      ctx->target_tod_value = (rtems_time_of_day) { 2021, 13, 11, 11, 10, 59, 1 };
-    text: |
-      While the ${../if/set:/params[0]/name} parameter is invalid because the value
-      of the month is larger than 12.
-  - name: InvDay0
-    test-code: |
-      ctx->target_tod_value = (rtems_time_of_day) { 2021, 3, 0, 11, 10, 59, 1 };
-    text: |
-      While the ${../if/set:/params[0]/name} parameter is invalid because the value
-      of the day is 0.
-  - name: InvDay
-    test-code: |
-      ctx->target_tod_value = (rtems_time_of_day) { 2021, 2, 29, 11, 10, 59, 1 };
-    text: |
-      While the ${../if/set:/params[0]/name} parameter is invalid because the value
-      of the day is larger than the days of the month.
-  - name: InvHour
-    test-code: |
-      ctx->target_tod_value = (rtems_time_of_day) { 2021, 3, 11, 24, 10, 59, 1 };
-    text: |
-      While the ${../if/set:/params[0]/name} parameter is invalid because the value
-      of the hour is larger than 23.
-  - name: InvMinute
-    test-code: |
-      ctx->target_tod_value = (rtems_time_of_day) { 2021, 3, 11, 11, 60, 59, 1 };
-    text: |
-      While the ${../if/set:/params[0]/name} parameter is invalid because the value
-      of the minute is larger than 59.
-  - name: InvSecond
-    test-code: |
-      ctx->target_tod_value = (rtems_time_of_day) { 2021, 3, 11, 11, 10, 60, 1 };
-    text: |
-      While the ${../if/set:/params[0]/name} parameter is invalid because the value
-      of the second is larger than 59.
-  - name: InvTicks
-    test-code: |
-      ctx->target_tod_value = (rtems_time_of_day) {
-        2021,
-        3,
-        11,
-        11,
-        10,
-        60,
-        rtems_clock_get_ticks_per_second()
-      };
-    text: |
-      While the ${../if/set:/params[0]/name} parameter is invalid because the value
-      of the ticks are larger or equal to the ticks per second.
-  - name: InvLeap4
-    test-code: |
-      ctx->target_tod_value = (rtems_time_of_day) { 2104, 2, 30, 0, 0, 0, 0 };
-    text: |
-      While the ${../if/set:/params[0]/name} parameter is invalid because the value
-      30th of February does not exist in a leap year.
-  - name: InvLeap100
-    test-code: |
-      ctx->target_tod_value = (rtems_time_of_day) { 2100, 2, 29, 0, 0, 0, 0 };
-    text: |
-      While the ${../if/set:/params[0]/name} parameter is invalid because the value
-      29th of February does not exist in a non-leap year.
-  - name: InvLeap400
-    test-code: |
-      ctx->target_tod_value = (rtems_time_of_day) { 2000, 2, 30, 0, 0, 0, 0 };
-    text: |
-      While the ${../if/set:/params[0]/name} parameter is invalid because the value
-      30th of February does not exist in a leap year.
-  - name: AtTimer
-    test-code: |
-      ctx->target_tod_value = (rtems_time_of_day) { 1989, 1, 1, 0, 0, 0, 0 };
-      _TOD_prepare_timer( ctx );
-    text: |
-      While the ${../if/set:/params[0]/name} parameter references the same point in
-      time when a timer should fire.
-  - name: BeforeTimer
+      While no timer of the ${/glossary/clock-realtime:/term} is scheduled.
+  - name: Future
     test-code: |
       ctx->target_tod_value = (rtems_time_of_day) { 1988, 12, 31, 23, 59, 59, 0 };
-      _TOD_prepare_timer( ctx );
+      PrepareTimer( ctx );
     text: |
-      While the ${../if/set:/params[0]/name} parameter references a point in time
-      before a timer should fire.
-  - name: AfterTimer
+      While exactly one timer of the ${/glossary/clock-realtime:/term} is scheduled
+      to fire at a time point after the time of day which the
+      ${../if/set:/params[0]/name} parameter specifies.
+  - name: Now
+    test-code: |
+      ctx->target_tod_value = (rtems_time_of_day) { 1989, 1, 1, 0, 0, 0, 0 };
+      PrepareTimer( ctx );
+    text: |
+      While exactly one timer of the ${/glossary/clock-realtime:/term} is scheduled
+      to fire at the time of day which the ${../if/set:/params[0]/name} parameter
+      specifies.
+  - name: Past
     test-code: |
       ctx->target_tod_value = (rtems_time_of_day) { 1989, 1, 1, 1, 0, 0, 0 };
-      _TOD_prepare_timer( ctx );
+      PrepareTimer( ctx );
     text: |
-      While the ${../if/set:/params[0]/name} parameter references a point in time
-      after a timer should fire.
-  - name: 'Null'
-    test-code: |
-      ctx->target_tod = NULL;
-    text: |
-      WHile the ${../if/set:/params[0]/name} parameter is ${/c/if/null:/name}.
+      While exactly one timer of the ${/glossary/clock-realtime:/term} is scheduled
+      to fire at a time point before the time of day which the
+      ${../if/set:/params[0]/name} parameter specifies.
   test-epilogue: null
   test-prologue: null
 - name: Hook
@@ -270,25 +139,67 @@ pre-conditions:
       ctx->register_hook = false;
     text: |
       While no TOD hook is registered.
-  - name: Ok
+  - name: Success
     test-code: |
       ctx->register_hook = true;
       ctx->hook_status = STATUS_SUCCESSFUL;
     text: |
-      While all TOD hooks invoked by the ${../if/set:/name} call return a status code
-      equal to ${/score/status/if/successful:/name}.
-  - name: NotOk
+      While exactly one TOD hook is registered, while the hook returns a
+      ${/glossary/statuscode:/term} equal to ${/score/status/if/successful:/name}.
+  - name: Failure
     test-code: |
       ctx->register_hook = true;
       ctx->hook_status = STATUS_UNAVAILABLE;
     text: |
-      While at least one TOD hook invoked by the ${../if/set:/name} call returns a
-      status code not equal to ${/score/status/if/successful:/name}.
+      While exactly one TOD hook is registered, while the hook returns a
+      ${/glossary/statuscode:/term} equal to ${/score/status/if/unavailable:/name}.
   test-epilogue: null
   test-prologue: null
-rationale: null
+- name: ToD
+  states:
+  - name: Valid
+    test-code: |
+      ctx->target_tod = &ctx->target_tod_value;
+    text: |
+      While the ${../if/set:/params[0]/name} parameter references an object of type
+      ${../../type/if/time-of-day:/name}, while the object holds a valid time of day.
+  - name: Invalid
+    test-code: |
+      ctx->target_tod = &ctx->target_tod_value;
+      ctx->target_tod_value.month = 13;
+    text: |
+      While the ${../if/set:/params[0]/name} parameter references an object of type
+      ${../../type/if/time-of-day:/name}, while the object holds an invalid time of
+      day.
+  - name: 'Null'
+    test-code: |
+      ctx->target_tod = NULL;
+    text: |
+      While the ${../if/set:/params[0]/name} parameter is equal to
+      ${/c/if/null:/name}.
+  test-epilogue: null
+  test-prologue: null
+rationale: |
+  Dimension Timer covers the timers of the realtime clock relative to the new
+  time of day, 4 states. Dimension Hook covers the TOD hooks and their status, 3
+  states. Dimension ToD covers the parameter tod, 3 states.
+
+  The dimensions Timer and Hook hold at most one timer and at most one TOD hook.
+  The watchdog items state the order in which several timers fire.
+
+  The Timer states relate a timer to the time of day of the parameter. A null
+  pointer and an invalid time of day specify no time of day, so the item skips
+  the Timer states which need one. The state Invalid arranges an invalid month.
+
+  The items ${set-tod-date:/spec} and ${set-tod-time:/spec} state the validation
+  and the conversion of the time of day in detail.
+
+  The check of the ${/glossary/clock-realtime:/term} accepts a progress of less
+  than one ${/glossary/clock-tick:/term} during the call.
 requirement-type: functional
-skip-reasons: {}
+skip-reasons:
+  NoTime: |
+    The parameter specifies no time of day.
 test-action: |
   TOD_Hook hook = {
     .handler = TODHook
@@ -298,9 +209,10 @@ test-action: |
     _TOD_Hook_Register( &hook );
   }
 
-  ctx->get_tod_before_status = rtems_clock_get_tod( &ctx->tod_before );
+  ctx->expected_seconds = GetSeconds( &ctx->target_tod_value );
+  rtems_clock_get_realtime( &ctx->realtime_before );
   ctx->status = rtems_clock_set( ctx->target_tod );
-  ctx->get_tod_after_status = rtems_clock_get_tod( &ctx->tod_after );
+  rtems_clock_get_realtime( &ctx->realtime_after );
 
   if ( ctx->register_hook ) {
     _TOD_Hook_Unregister( &hook );
@@ -308,87 +220,156 @@ test-action: |
 test-brief: null
 test-cleanup: null
 test-context:
-- brief: null
+- brief: |
+    This member contains the return status of the ${../if/set:/name} call.
   description: null
-  member: rtems_status_code status
-- brief: null
+  member: |
+    rtems_status_code status
+- brief: |
+    This member is true, if a TOD hook shall be registered.
   description: null
-  member: bool register_hook
-- brief: null
+  member: |
+    bool register_hook
+- brief: |
+    This member specifies the status which the TOD hook returns.
   description: null
-  member: Status_Control hook_status
-- brief: null
+  member: |
+    Status_Control hook_status
+- brief: |
+    This member specifies the ${../if/set:/params[0]/name} parameter value.
   description: null
-  member: rtems_time_of_day *target_tod
-- brief: null
+  member: |
+    rtems_time_of_day *target_tod
+- brief: |
+    This member provides the object referenced by the ${../if/set:/params[0]/name}
+    parameter.
   description: null
-  member: rtems_time_of_day target_tod_value
-- brief: null
+  member: |
+    rtems_time_of_day target_tod_value
+- brief: |
+    This member contains the expected seconds since the Epoch of the time of day.
   description: null
-  member: rtems_time_of_day tod_before
-- brief: null
+  member: |
+    int64_t expected_seconds
+- brief: |
+    This member contains the ${/glossary/clock-realtime:/term} before the
+    ${../if/set:/name} call.
   description: null
-  member: rtems_status_code get_tod_before_status
-- brief: null
+  member: |
+    struct timespec realtime_before
+- brief: |
+    This member contains the ${/glossary/clock-realtime:/term} after the
+    ${../if/set:/name} call.
   description: null
-  member: rtems_time_of_day tod_after
-- brief: null
+  member: |
+    struct timespec realtime_after
+- brief: |
+    This member contains the identifier of the timer.
   description: null
-  member: rtems_status_code get_tod_after_status
-- brief: null
+  member: |
+    rtems_id timer_id
+- brief: |
+    This member counts the executions of the timer routine.
   description: null
-  member: rtems_id timer_id
-- brief: null
+  member: |
+    int timer_routine_counter
+- brief: |
+    This member contains the seconds of the ${/glossary/clock-realtime:/term} which
+    the timer routine observed.
   description: null
-  member: int timer_routine_counter
-- brief: null
+  member: |
+    int64_t timer_routine_seconds
+- brief: |
+    This member counts the calls of the TOD hook.
   description: null
-  member: rtems_time_of_day timer_routine_tod
+  member: |
+    int hook_calls
+- brief: |
+    This member contains the action of the last TOD hook call.
+  description: null
+  member: |
+    TOD_Action hook_action
+- brief: |
+    This member contains the time of day of the last TOD hook call.
+  description: null
+  member: |
+    struct timespec hook_tod
 test-context-support: null
 test-description: null
 test-header: null
 test-includes:
 - rtems.h
 - rtems/score/todimpl.h
-test-local-includes: []
+test-local-includes:
+- tx-support.h
 test-prepare: |
   rtems_status_code status;
 
   status = rtems_timer_cancel( ctx->timer_id );
   T_rsc_success( status );
   ctx->timer_routine_counter = 0;
-  ctx->timer_routine_tod = (rtems_time_of_day) { 0, 0, 0, 0, 0, 0, 0 };
+  ctx->timer_routine_seconds = 0;
+  ctx->hook_calls = 0;
 test-setup:
   brief: null
   code: |
     rtems_status_code status;
-    rtems_name        timer_name = rtems_build_name( 'T', 'M', 'R', '0' );
+
     ctx->timer_id = RTEMS_ID_NONE;
-
-    ctx->target_tod = &ctx->target_tod_value;
-
-    status = rtems_timer_create( timer_name, &ctx->timer_id );
+    status = rtems_timer_create( OBJECT_NAME, &ctx->timer_id );
     T_rsc_success( status );
   description: null
 test-stop: null
 test-support: |
   typedef ${.:/test-context-type} Context;
 
-  static rtems_timer_service_routine _TOD_timer_routine(
-    rtems_id timer_id,
-    void    *user_data
-  )
+  static int64_t GetSeconds( const rtems_time_of_day *tod )
   {
-    (void) timer_id;
-
-    Context          *ctx = user_data;
-    rtems_status_code status;
-    ++ctx->timer_routine_counter;
-    status = rtems_clock_get_tod( &ctx->timer_routine_tod );
-    T_rsc_success( status );
+    return DaysFromCivil( tod->year, tod->month, tod->day ) * 86400 +
+           tod->hour * 3600 + tod->minute * 60 + tod->second;
   }
 
-  static void _TOD_prepare_timer( Context *ctx )
+  static int64_t GetNanoseconds( const struct timespec *ts )
+  {
+    return (int64_t) ts->tv_sec * 1000000000 + ts->tv_nsec;
+  }
+
+  static void CheckClockSet( const Context *ctx )
+  {
+    int64_t expected;
+    int64_t progress;
+
+    expected = ctx->expected_seconds * 1000000000 +
+               (int64_t) ctx->target_tod_value.ticks *
+                 rtems_configuration_get_nanoseconds_per_tick();
+    progress = GetNanoseconds( &ctx->realtime_after ) - expected;
+    T_ge_i64( progress, 0 );
+    T_lt_i64( progress, rtems_configuration_get_nanoseconds_per_tick() );
+  }
+
+  static void CheckClockNop( const Context *ctx )
+  {
+    int64_t progress;
+
+    progress = GetNanoseconds( &ctx->realtime_after ) -
+               GetNanoseconds( &ctx->realtime_before );
+    T_ge_i64( progress, 0 );
+    T_lt_i64( progress, rtems_configuration_get_nanoseconds_per_tick() );
+  }
+
+  static void TimerRoutine( rtems_id timer_id, void *user_data )
+  {
+    Context        *ctx;
+    struct timespec now;
+
+    (void) timer_id;
+    ctx = user_data;
+    ++ctx->timer_routine_counter;
+    rtems_clock_get_realtime( &now );
+    ctx->timer_routine_seconds = now.tv_sec;
+  }
+
+  static void PrepareTimer( Context *ctx )
   {
     rtems_status_code status;
     rtems_time_of_day tod = { 1988, 1, 1, 0, 0, 0, 0 };
@@ -397,12 +378,7 @@ test-support: |
     T_rsc_success( status );
 
     tod.year = 1989;
-    status = rtems_timer_fire_when(
-      ctx->timer_id,
-      &tod,
-      _TOD_timer_routine,
-      ctx
-    );
+    status = rtems_timer_fire_when( ctx->timer_id, &tod, TimerRoutine, ctx );
     T_rsc_success( status );
   }
 
@@ -411,8 +387,9 @@ test-support: |
     Context *ctx;
 
     ctx = T_fixture_context();
-    T_eq_int( action, TOD_ACTION_SET_CLOCK );
-    T_not_null( tod );
+    ++ctx->hook_calls;
+    ctx->hook_action = action;
+    ctx->hook_tod = *tod;
 
     return ctx->hook_status;
   }
@@ -422,7 +399,7 @@ test-teardown:
   code: |
     rtems_status_code status;
 
-    if ( RTEMS_ID_NONE != ctx->timer_id ) {
+    if ( ctx->timer_id != RTEMS_ID_NONE ) {
       status = rtems_timer_delete( ctx->timer_id );
       T_rsc_success( status );
     }
@@ -432,77 +409,87 @@ text: |
 transition-map:
 - enabled-by: true
   post-conditions:
-    Status: Ok
-    Clock: Set
-    Timer: Nop
-  pre-conditions:
-    ToD:
-    - Valid
-    - Youngest
-    - Oldest
-    - ValidLeap4
-    - ValidLeap400
-    - BeforeTimer
-    Hook:
-    - None
-    - Ok
-- enabled-by: true
-  post-conditions:
-    Status: Ok
-    Clock: Set
-    Timer: Triggered
-  pre-conditions:
-    ToD:
-    - AtTimer
-    - AfterTimer
-    Hook:
-    - None
-    - Ok
-- enabled-by: true
-  post-conditions:
     Status: InvAddr
     Clock: Nop
     Timer: Nop
+    HookCall:
+    - if:
+        pre-conditions:
+          Hook:
+          - None
+      then: N/A
+    - else: Nop
   pre-conditions:
+    Timer:
+    - None
+    Hook: all
     ToD:
     - 'Null'
-    Hook: all
 - enabled-by: true
   post-conditions:
-    Status: InvClk
+    Status: InvClock
     Clock: Nop
     Timer: Nop
+    HookCall:
+    - if:
+        pre-conditions:
+          Hook:
+          - None
+      then: N/A
+    - else: Nop
   pre-conditions:
-    ToD:
-    - TooJung
-    - TooOld
-    - InvMonth0
-    - InvMonth
-    - InvDay0
-    - InvDay
-    - InvHour
-    - InvMinute
-    - InvSecond
-    - InvTicks
-    - InvLeap4
-    - InvLeap100
-    - InvLeap400
+    Timer:
+    - None
     Hook: all
+    ToD:
+    - Invalid
+- enabled-by: true
+  post-conditions: NoTime
+  pre-conditions:
+    Timer:
+    - Future
+    - Now
+    - Past
+    Hook: all
+    ToD:
+    - 'Null'
+    - Invalid
 - enabled-by: true
   post-conditions:
-    Status: Hook
+    Status: Unsatisfied
     Clock: Nop
     Timer: Nop
+    HookCall: Once
   pre-conditions:
-    ToD:
-    - AtTimer
-    - AfterTimer
-    - Valid
-    - Youngest
-    - Oldest
-    - ValidLeap4
-    - ValidLeap400
-    - BeforeTimer
+    Timer: all
     Hook:
-    - NotOk
+    - Failure
+    ToD:
+    - Valid
+- enabled-by: true
+  post-conditions:
+    Status: Ok
+    Clock: Set
+    Timer:
+    - if:
+        pre-conditions:
+          Timer:
+          - Now
+          - Past
+      then: Triggered
+    - else: Nop
+    HookCall:
+    - if:
+        pre-conditions:
+          Hook:
+          - None
+      then: N/A
+    - else: Once
+  pre-conditions:
+    Timer: all
+    Hook:
+    - None
+    - Success
+    ToD:
+    - Valid
 type: requirement
