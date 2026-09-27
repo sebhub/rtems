@@ -74,7 +74,8 @@ return:
       The ${.:/params[1]/name} parameter was ${/c/if/null:/name}.
     value: ${../../status/if/invalid-address:/name}
   - description: |
-      The time of day was invalid.
+      The time of day referenced by ${.:/params[1]/name} was invalid, or it was not
+      after the current second of the ${/glossary/clock-realtime:/term}.
     value: ${../../status/if/invalid-clock:/name}
   - description: |
       There was no timer associated with the identifier specified by
