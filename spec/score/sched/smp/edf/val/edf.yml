@@ -1,6 +1,6 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 copyrights:
-- Copyright (C) 2021, 2024 embedded brains GmbH & Co. KG
+- Copyright (C) 2021, 2026 embedded brains GmbH & Co. KG
 enabled-by: RTEMS_SMP
 links: []
 test-actions:
@@ -39,6 +39,39 @@ test-actions:
   links:
   - role: validation
     uid: ../req/set-affinity-unsupported-subset
+- action-brief: |
+    Start a rate monotonic period for the executing task. The period releases a job
+    with a deadline. Get the current priority of the task with respect to the EDF
+    SMP scheduler.
+  action-code: |
+    rtems_status_code   sc;
+    rtems_id            period_id;
+    rtems_task_priority priority;
+
+    sc = rtems_rate_monotonic_create( OBJECT_NAME, &period_id );
+    T_rsc_success( sc );
+
+    sc = rtems_rate_monotonic_period( period_id, 2 );
+    T_rsc_success( sc );
+
+    priority = PRIO_INVALID;
+    sc = rtems_task_get_priority( RTEMS_SELF, SCHEDULER_A_ID, &priority );
+  checks:
+  - brief: |
+      Check that the current priority of the task is zero.
+    code: |
+      T_rsc_success( sc );
+      T_eq_u32( priority, 0 );
+    links:
+    - role: validation
+      uid: ../req/deadline-priority
+  - brief: |
+      Delete the period.
+    code: |
+      sc = rtems_rate_monotonic_delete( period_id );
+      T_rsc_success( sc );
+    links: []
+  links: []
 test-brief: |
   Tests for operations of the EDF SMP scheduler.
 test-context: []

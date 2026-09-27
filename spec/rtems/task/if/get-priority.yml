@@ -2,7 +2,7 @@ SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 brief: |
   Gets the current priority of the task with respect to the scheduler.
 copyrights:
-- Copyright (C) 2021 embedded brains GmbH & Co. KG
+- Copyright (C) 2021, 2026 embedded brains GmbH & Co. KG
 - Copyright (C) 1988, 2017 On-Line Applications Research Corporation (OAR)
 definition:
   default:
@@ -42,6 +42,9 @@ notes: |
   The current priority reflects temporary priority adjustments due to locking
   protocols, the rate-monotonic period objects on some schedulers such as EDF,
   and the POSIX sporadic server.
+
+  While a task has a job deadline as its current priority with respect to an
+  EDF scheduler, the directive returns zero for this scheduler.
 params:
 - description: |
     is the task identifier. The constant ${self-define:/name} may be used to
