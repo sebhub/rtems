@@ -6,7 +6,7 @@ index-entries: []
 interface-type: unspecified-define
 links:
 - role: interface-placement
-  uid: errno-header
+  uid: header
 - role: interface-ingroup
   uid: group
 name: EBUSY
