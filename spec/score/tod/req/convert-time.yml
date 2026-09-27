@@ -1,0 +1,428 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: action
+links:
+- role: requirement-refinement
+  uid: ../if/group
+post-conditions:
+- name: Result
+  states:
+  - name: Accept
+    test-code: |
+      T_true( ctx->accepted );
+    text: |
+      The directive call shall accept the time of day referenced by the `time_of_day`
+      parameter.
+  - name: Reject
+    test-code: |
+      T_false( ctx->accepted );
+    text: |
+      The directive call shall reject the time of day referenced by the `time_of_day`
+      parameter.
+  test-epilogue: null
+  test-prologue: null
+- name: Effect
+  states:
+  - name: Seconds
+    test-code: |
+      T_eq_i64( ctx->seconds, ctx->expected );
+    text: |
+      The directive call shall use the seconds since the
+      ${/glossary/unix-epoch:/term} of the date and the time of the object referenced
+      by the `time_of_day` parameter.
+  - name: Nop
+    test-code: |
+      T_eq_i64( ctx->seconds, TOD_NO_EFFECT );
+    text: |
+      The directive call shall have no effect.
+  test-epilogue: null
+  test-prologue: null
+pre-conditions:
+- name: TicksValidation
+  states:
+  - name: Enabled
+    test-code: |
+      if ( !ctx->ticks_validation ) {
+        ${.:skip}
+      }
+    text: |
+      Where the directive validates the ticks of the time of day.
+  - name: Disabled
+    test-code: |
+      if ( ctx->ticks_validation ) {
+        ${.:skip}
+      }
+    text: |
+      Where the directive ignores the ticks of the time of day.
+  test-epilogue: null
+  test-prologue: null
+- name: Hour
+  states:
+  - name: First
+    test-code: |
+      ctx->hour = STATE_FIRST;
+    text: |
+      While the hour of the object referenced by the `time_of_day` parameter is zero.
+  - name: Between
+    test-code: |
+      ctx->hour = STATE_BETWEEN;
+    text: |
+      While the hour of the object referenced by the `time_of_day` parameter is
+      greater than zero and less than 23.
+  - name: Last
+    test-code: |
+      ctx->hour = STATE_LAST;
+    text: |
+      While the hour of the object referenced by the `time_of_day` parameter is 23.
+  - name: Above
+    test-code: |
+      ctx->hour = STATE_ABOVE;
+    text: |
+      While the hour of the object referenced by the `time_of_day` parameter is
+      greater than 23 and less than the greatest value of type uint32_t.
+  - name: Max
+    test-code: |
+      ctx->hour = STATE_MAX;
+    text: |
+      While the hour of the object referenced by the `time_of_day` parameter is the
+      greatest value of type uint32_t.
+  test-epilogue: null
+  test-prologue: null
+- name: Minute
+  states:
+  - name: First
+    test-code: |
+      ctx->minute = STATE_FIRST;
+    text: |
+      While the minute of the object referenced by the `time_of_day` parameter is
+      zero.
+  - name: Between
+    test-code: |
+      ctx->minute = STATE_BETWEEN;
+    text: |
+      While the minute of the object referenced by the `time_of_day` parameter is
+      greater than zero and less than 59.
+  - name: Last
+    test-code: |
+      ctx->minute = STATE_LAST;
+    text: |
+      While the minute of the object referenced by the `time_of_day` parameter is 59.
+  - name: Above
+    test-code: |
+      ctx->minute = STATE_ABOVE;
+    text: |
+      While the minute of the object referenced by the `time_of_day` parameter is
+      greater than 59 and less than the greatest value of type uint32_t.
+  - name: Max
+    test-code: |
+      ctx->minute = STATE_MAX;
+    text: |
+      While the minute of the object referenced by the `time_of_day` parameter is the
+      greatest value of type uint32_t.
+  test-epilogue: null
+  test-prologue: null
+- name: Second
+  states:
+  - name: First
+    test-code: |
+      ctx->second = STATE_FIRST;
+    text: |
+      While the second of the object referenced by the `time_of_day` parameter is
+      zero.
+  - name: Between
+    test-code: |
+      ctx->second = STATE_BETWEEN;
+    text: |
+      While the second of the object referenced by the `time_of_day` parameter is
+      greater than zero and less than 59.
+  - name: Last
+    test-code: |
+      ctx->second = STATE_LAST;
+    text: |
+      While the second of the object referenced by the `time_of_day` parameter is 59.
+  - name: Above
+    test-code: |
+      ctx->second = STATE_ABOVE;
+    text: |
+      While the second of the object referenced by the `time_of_day` parameter is
+      greater than 59 and less than the greatest value of type uint32_t.
+  - name: Max
+    test-code: |
+      ctx->second = STATE_MAX;
+    text: |
+      While the second of the object referenced by the `time_of_day` parameter is the
+      greatest value of type uint32_t.
+  test-epilogue: null
+  test-prologue: null
+- name: Ticks
+  states:
+  - name: First
+    test-code: |
+      ctx->ticks = STATE_FIRST;
+    text: |
+      While the ticks of the object referenced by the `time_of_day` parameter are
+      zero.
+  - name: Between
+    test-code: |
+      ctx->ticks = STATE_BETWEEN;
+    text: |
+      While the ticks of the object referenced by the `time_of_day` parameter are
+      greater than zero and less than the
+      ${/rtems/clock/if/get-ticks-per-second:/name} value minus one.
+  - name: Last
+    test-code: |
+      ctx->ticks = STATE_LAST;
+    text: |
+      While the ticks of the object referenced by the `time_of_day` parameter are the
+      ${/rtems/clock/if/get-ticks-per-second:/name} value minus one.
+  - name: Above
+    test-code: |
+      ctx->ticks = STATE_ABOVE;
+    text: |
+      While the ticks of the object referenced by the `time_of_day` parameter are
+      greater than the ${/rtems/clock/if/get-ticks-per-second:/name} value minus one
+      and less than the greatest value of type uint32_t.
+  - name: Max
+    test-code: |
+      ctx->ticks = STATE_MAX;
+    text: |
+      While the ticks of the object referenced by the `time_of_day` parameter are the
+      greatest value of type uint32_t.
+  test-epilogue: null
+  test-prologue: null
+rationale: |
+  Dimension TicksValidation covers the validation of the ticks by the directive,
+  2 states. Dimension Hour covers the member hour, 5 states. Dimension Minute
+  covers the member minute, 5 states. Dimension Second covers the member second,
+  5 states. Dimension Ticks covers the member ticks, 5 states. The documentation
+  of rtems_time_of_day gives the valid ranges.
+
+  Each dimension partitions the values of type uint32_t. The least value is the
+  first valid value. The other states hold the values between, the last valid
+  value, the invalid values below the greatest value, and the greatest value. The
+  ticks per second of the test configuration are greater than two.
+
+  The item ${convert-date:/spec} states the date. This item arranges a valid
+  date. The expected seconds derive from DaysFromCivil(), which implements an
+  algorithm independent of RTEMS and of the C library.
+requirement-type: functional
+skip-reasons: {}
+test-action: |
+  ctx->tod.year = 2023;
+  ctx->tod.month = 6;
+  ctx->tod.day = 15;
+  ctx->tod.hour = GetValue( ctx->hour, 23 );
+  ctx->tod.minute = GetValue( ctx->minute, 59 );
+  ctx->tod.second = GetValue( ctx->second, 59 );
+  ctx->tod.ticks = GetValue(
+    ctx->ticks,
+    rtems_clock_get_ticks_per_second() - 1
+  );
+  ctx->expected = DaysFromCivil( ctx->tod.year, ctx->tod.month, ctx->tod.day ) *
+                    86400 +
+                  (int64_t) ctx->tod.hour * 3600 +
+                  (int64_t) ctx->tod.minute * 60 + ctx->tod.second;
+  ctx->seconds = TOD_NO_EFFECT;
+  ctx->accepted = ( *ctx->call )( ctx->arg, &ctx->tod, &ctx->seconds );
+test-brief: null
+test-cleanup: null
+test-context:
+- brief: |
+    This member specifies the hour state.
+  description: null
+  member: |
+    TODTimeState hour
+- brief: |
+    This member specifies the minute state.
+  description: null
+  member: |
+    TODTimeState minute
+- brief: |
+    This member specifies the second state.
+  description: null
+  member: |
+    TODTimeState second
+- brief: |
+    This member specifies the ticks state.
+  description: null
+  member: |
+    TODTimeState ticks
+- brief: |
+    This member contains the object referenced by the `time_of_day` parameter.
+  description: null
+  member: |
+    rtems_time_of_day tod
+- brief: |
+    This member contains the expected seconds since the Epoch.
+  description: null
+  member: |
+    int64_t expected
+- brief: |
+    This member contains the seconds since the Epoch which the directive call used.
+  description: null
+  member: |
+    int64_t seconds
+- brief: |
+    This member is true, if the directive call accepted the time of day.
+  description: null
+  member: |
+    bool accepted
+test-context-support: |
+  typedef enum {
+    STATE_FIRST,
+    STATE_BETWEEN,
+    STATE_LAST,
+    STATE_ABOVE,
+    STATE_MAX
+  } TODTimeState;
+test-description: null
+test-header:
+  code: null
+  freestanding: false
+  includes:
+  - rtems.h
+  local-includes:
+  - tr-tod-convert-date.h
+  run-params:
+  - description: |
+      is the handler which calls the directive.
+    dir: null
+    name: call
+    specifier: TODCall ${.:name}
+  - description: |
+      is the argument of the handler.
+    dir: null
+    name: arg
+    specifier: void *${.:name}
+  - description: |
+      is true, if the directive validates the ticks of the time of day.
+    dir: null
+    name: ticks_validation
+    specifier: bool ${.:name}
+  target: testsuites/validation/tr-tod-convert-time.h
+test-includes:
+- rtems.h
+test-local-includes:
+- tx-support.h
+- tr-tod-convert-time.h
+test-prepare: null
+test-setup: null
+test-stop: null
+test-support: |
+  static uint32_t GetValue( TODTimeState state, uint32_t last )
+  {
+    switch ( state ) {
+      case STATE_FIRST:
+        return 0;
+      case STATE_BETWEEN:
+        return last / 2;
+      case STATE_LAST:
+        return last;
+      case STATE_ABOVE:
+        return last + 1;
+      default:
+        return UINT32_MAX;
+    }
+  }
+test-target: testsuites/validation/tr-tod-convert-time.c
+test-teardown: null
+text: |
+  ${.:text-template}
+transition-map:
+- enabled-by: true
+  post-conditions:
+    Result:
+    - if:
+        pre-conditions:
+          Hour:
+          - First
+          - Between
+          - Last
+          Minute:
+          - First
+          - Between
+          - Last
+          Second:
+          - First
+          - Between
+          - Last
+      then: Accept
+    - else: Reject
+    Effect:
+    - if:
+        pre-conditions:
+          Hour:
+          - First
+          - Between
+          - Last
+          Minute:
+          - First
+          - Between
+          - Last
+          Second:
+          - First
+          - Between
+          - Last
+      then: Seconds
+    - else: Nop
+  pre-conditions:
+    TicksValidation:
+    - Disabled
+    Hour: all
+    Minute: all
+    Second: all
+    Ticks: all
+- enabled-by: true
+  post-conditions:
+    Result:
+    - if:
+        pre-conditions:
+          Hour:
+          - First
+          - Between
+          - Last
+          Minute:
+          - First
+          - Between
+          - Last
+          Second:
+          - First
+          - Between
+          - Last
+          Ticks:
+          - First
+          - Between
+          - Last
+      then: Accept
+    - else: Reject
+    Effect:
+    - if:
+        pre-conditions:
+          Hour:
+          - First
+          - Between
+          - Last
+          Minute:
+          - First
+          - Between
+          - Last
+          Second:
+          - First
+          - Between
+          - Last
+          Ticks:
+          - First
+          - Between
+          - Last
+      then: Seconds
+    - else: Nop
+  pre-conditions:
+    TicksValidation:
+    - Enabled
+    Hour: all
+    Minute: all
+    Second: all
+    Ticks: all
+type: requirement

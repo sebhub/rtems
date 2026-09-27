@@ -1,0 +1,74 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+links: []
+test-actions:
+- action-brief: |
+    Validate the time of day of ${../if/set:/name}.
+  action-code: |
+    rtems_status_code sc;
+  checks:
+  - brief: |
+      Validate the date.
+    code: |
+      ${/score/tod/req/convert-date:/test-run}( CallClockSet, NULL );
+    links:
+    - role: validation
+      uid: ../req/set-tod-date
+  - brief: |
+      Validate the time of the day.
+    code: |
+      ${/score/tod/req/convert-time:/test-run}( CallClockSet, NULL, true );
+    links:
+    - role: validation
+      uid: ../req/set-tod-time
+  - brief: |
+      Restore a valid time of day.
+    code: |
+      sc = rtems_clock_set( &tod_restore );
+      T_rsc_success( sc );
+    links: []
+  links: []
+test-brief: |
+  Tests the validation and the conversion of the time of day by
+  ${../if/set:/name}.
+test-context: []
+test-context-support: null
+test-description: null
+test-header: null
+test-includes:
+- rtems.h
+test-local-includes:
+- tx-support.h
+- tr-tod-convert-date.h
+- tr-tod-convert-time.h
+test-setup: null
+test-stop: null
+test-support: |
+  static const rtems_time_of_day tod_restore = { 1988, 1, 1, 0, 0, 0, 0 };
+
+  static bool CallClockSet(
+    void                    *arg,
+    const rtems_time_of_day *time_of_day,
+    int64_t                 *seconds
+  )
+  {
+    rtems_status_code status;
+    struct timespec   now;
+
+    (void) arg;
+    status = rtems_clock_set( time_of_day );
+
+    if ( status != RTEMS_SUCCESSFUL ) {
+      T_quiet_rsc( status, RTEMS_INVALID_CLOCK );
+      return false;
+    }
+
+    rtems_clock_get_realtime( &now );
+    *seconds = now.tv_sec;
+    return true;
+  }
+test-target: testsuites/validation/tc-clock-set-tod.c
+test-teardown: null
+type: test-case

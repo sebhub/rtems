@@ -1,0 +1,899 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: action
+links:
+- role: requirement-refinement
+  uid: ../if/group
+post-conditions:
+- name: Result
+  states:
+  - name: Accept
+    test-code: |
+      T_true( ctx->accepted );
+    text: |
+      The directive call shall accept the time of day referenced by the `time_of_day`
+      parameter.
+  - name: Reject
+    test-code: |
+      T_false( ctx->accepted );
+    text: |
+      The directive call shall reject the time of day referenced by the `time_of_day`
+      parameter.
+  test-epilogue: null
+  test-prologue: null
+- name: Effect
+  states:
+  - name: Seconds
+    test-code: |
+      T_eq_i64( ctx->seconds, ctx->expected );
+    text: |
+      The directive call shall use the seconds since the
+      ${/glossary/unix-epoch:/term} of the date and the time of the object referenced
+      by the `time_of_day` parameter.
+  - name: Nop
+    test-code: |
+      T_eq_i64( ctx->seconds, TOD_NO_EFFECT );
+    text: |
+      The directive call shall have no effect.
+  test-epilogue: null
+  test-prologue: null
+pre-conditions:
+- name: Year
+  states:
+  - name: Zero
+    test-code: |
+      ctx->year = YEAR_ZERO;
+    text: |
+      While the year of the object referenced by the `time_of_day` parameter is zero.
+  - name: TooEarly
+    test-code: |
+      ctx->year = YEAR_TOO_EARLY;
+    text: |
+      While the year of the object referenced by the `time_of_day` parameter is
+      greater than zero and less than 1988.
+  - name: Earliest
+    test-code: |
+      ctx->year = YEAR_EARLIEST;
+    text: |
+      While the year of the object referenced by the `time_of_day` parameter is 1988.
+  - name: Valid
+    test-code: |
+      ctx->year = YEAR_VALID;
+    text: |
+      While the year of the object referenced by the `time_of_day` parameter is
+      greater than 1988 and less than 2400.
+  - name: Latest
+    test-code: |
+      ctx->year = YEAR_LATEST;
+    text: |
+      While the year of the object referenced by the `time_of_day` parameter is 2400.
+  - name: TooLate
+    test-code: |
+      ctx->year = YEAR_TOO_LATE;
+    text: |
+      While the year of the object referenced by the `time_of_day` parameter is
+      greater than 2400 and less than the greatest value of type uint32_t.
+  - name: Max
+    test-code: |
+      ctx->year = YEAR_MAX;
+    text: |
+      While the year of the object referenced by the `time_of_day` parameter is the
+      greatest value of type uint32_t.
+  test-epilogue: null
+  test-prologue: null
+- name: LeapYear
+  states:
+  - name: Common
+    test-code: |
+      ctx->leap_year = LEAP_YEAR_COMMON;
+    text: |
+      While the year of the object referenced by the `time_of_day` parameter is not
+      divisible by four.
+  - name: Leap4
+    test-code: |
+      ctx->leap_year = LEAP_YEAR_4;
+    text: |
+      While the year of the object referenced by the `time_of_day` parameter is
+      divisible by four and not divisible by 100.
+  - name: Century
+    test-code: |
+      ctx->leap_year = LEAP_YEAR_CENTURY;
+    text: |
+      While the year of the object referenced by the `time_of_day` parameter is
+      divisible by 100 and not divisible by 400.
+  - name: Leap400
+    test-code: |
+      ctx->leap_year = LEAP_YEAR_400;
+    text: |
+      While the year of the object referenced by the `time_of_day` parameter is
+      divisible by 400.
+  test-epilogue: null
+  test-prologue: null
+- name: Month
+  states:
+  - name: Zero
+    test-code: |
+      ctx->month = 0;
+    text: |
+      While the month of the object referenced by the `time_of_day` parameter is
+      zero.
+  - name: January
+    test-code: |
+      ctx->month = 1;
+    text: |
+      While the month of the object referenced by the `time_of_day` parameter is
+      January.
+  - name: February
+    test-code: |
+      ctx->month = 2;
+    text: |
+      While the month of the object referenced by the `time_of_day` parameter is
+      February.
+  - name: Between
+    test-code: |
+      ctx->month = 4;
+    text: |
+      While the month of the object referenced by the `time_of_day` parameter is
+      after February and before December.
+  - name: December
+    test-code: |
+      ctx->month = 12;
+    text: |
+      While the month of the object referenced by the `time_of_day` parameter is
+      December.
+  - name: Above
+    test-code: |
+      ctx->month = 13;
+    text: |
+      While the month of the object referenced by the `time_of_day` parameter is
+      greater than 12 and less than the greatest value of type uint32_t.
+  - name: Max
+    test-code: |
+      ctx->month = UINT32_MAX;
+    text: |
+      While the month of the object referenced by the `time_of_day` parameter is the
+      greatest value of type uint32_t.
+  test-epilogue: null
+  test-prologue: null
+- name: Day
+  states:
+  - name: Zero
+    test-code: |
+      ctx->day = DAY_ZERO;
+    text: |
+      While the day of the object referenced by the `time_of_day` parameter is zero.
+  - name: First
+    test-code: |
+      ctx->day = DAY_FIRST;
+    text: |
+      While the day of the object referenced by the `time_of_day` parameter is one.
+  - name: Between
+    test-code: |
+      ctx->day = DAY_BETWEEN;
+    text: |
+      While the day of the object referenced by the `time_of_day` parameter is
+      greater than one and less than the last day of the month.
+  - name: Last
+    test-code: |
+      ctx->day = DAY_LAST;
+    text: |
+      While the day of the object referenced by the `time_of_day` parameter is the
+      last day of the month.
+  - name: Above
+    test-code: |
+      ctx->day = DAY_ABOVE;
+    text: |
+      While the day of the object referenced by the `time_of_day` parameter is
+      greater than the last day of the month and less than the greatest value of type
+      uint32_t.
+  - name: Max
+    test-code: |
+      ctx->day = DAY_MAX;
+    text: |
+      While the day of the object referenced by the `time_of_day` parameter is the
+      greatest value of type uint32_t.
+  test-epilogue: null
+  test-prologue: null
+rationale: |
+  Dimension Year covers the member year, 7 states. Dimension LeapYear covers the
+  leap year rule of the proleptic Gregorian calendar, 4 states. Dimension Month
+  covers the member month, 7 states. Dimension Day covers the member day, 6
+  states. The documentation of rtems_time_of_day and of rtems_clock_set() gives
+  the valid ranges. The latest time of day which rtems_clock_set() accepts is in
+  the year 2400.
+
+  Each dimension partitions the values of type uint32_t. Two states hold the
+  least and the greatest value. Three states hold the first valid value, the
+  values between and the last valid value. The other states hold the invalid
+  values between the valid range and the greatest value. February is a state of
+  its own, since its length depends on the leap year rule. The state Between of
+  the month arranges April, a month of 30 days.
+
+  The last day of the month depends on a valid month. The item skips the states
+  of the day which refer to it, where the month is invalid. Some years fix the
+  leap year class, so the item skips the other classes of these years.
+
+  The item ${convert-time:/spec} states the time of the day. This item arranges a
+  valid time of the day. The expected seconds derive from DaysFromCivil(), which
+  implements an algorithm independent of RTEMS and of the C library.
+requirement-type: functional
+skip-reasons:
+  NoMonth: |
+    The month is invalid, so the month has no last day.
+  YearClass: |
+    The year fixes the leap year class.
+test-action: |
+  ctx->tod.year = GetYear( ctx->year, ctx->leap_year );
+  ctx->tod.month = ctx->month;
+  ctx->tod.day = GetDay( ctx->tod.year, ctx->month, ctx->day );
+  ctx->tod.hour = 12;
+  ctx->tod.minute = 30;
+  ctx->tod.second = 30;
+  ctx->tod.ticks = 0;
+  ctx->expected = DaysFromCivil( ctx->tod.year, ctx->tod.month, ctx->tod.day ) *
+                    86400 +
+                  (int64_t) ctx->tod.hour * 3600 +
+                  (int64_t) ctx->tod.minute * 60 + ctx->tod.second;
+  ctx->seconds = TOD_NO_EFFECT;
+  ctx->accepted = ( *ctx->call )( ctx->arg, &ctx->tod, &ctx->seconds );
+test-brief: null
+test-cleanup: null
+test-context:
+- brief: |
+    This member specifies the year state.
+  description: null
+  member: |
+    TODDateYear year
+- brief: |
+    This member specifies the class of the year.
+  description: null
+  member: |
+    TODDateLeapYear leap_year
+- brief: |
+    This member specifies the month.
+  description: null
+  member: |
+    uint32_t month
+- brief: |
+    This member specifies the day state.
+  description: null
+  member: |
+    TODDateDay day
+- brief: |
+    This member contains the object referenced by the `time_of_day` parameter.
+  description: null
+  member: |
+    rtems_time_of_day tod
+- brief: |
+    This member contains the expected seconds since the Epoch.
+  description: null
+  member: |
+    int64_t expected
+- brief: |
+    This member contains the seconds since the Epoch which the directive call used.
+  description: null
+  member: |
+    int64_t seconds
+- brief: |
+    This member is true, if the directive call accepted the time of day.
+  description: null
+  member: |
+    bool accepted
+test-context-support: |
+  typedef enum {
+    YEAR_ZERO,
+    YEAR_TOO_EARLY,
+    YEAR_EARLIEST,
+    YEAR_VALID,
+    YEAR_LATEST,
+    YEAR_TOO_LATE,
+    YEAR_MAX
+  } TODDateYear;
+
+  typedef enum {
+    LEAP_YEAR_COMMON,
+    LEAP_YEAR_4,
+    LEAP_YEAR_CENTURY,
+    LEAP_YEAR_400
+  } TODDateLeapYear;
+
+  typedef enum {
+    DAY_ZERO,
+    DAY_FIRST,
+    DAY_BETWEEN,
+    DAY_LAST,
+    DAY_ABOVE,
+    DAY_MAX
+  } TODDateDay;
+test-description: null
+test-header:
+  code: |
+    /**
+     * @brief This constant indicates that the directive call had no effect.
+     */
+    #define TOD_NO_EFFECT INT64_MIN
+
+    /**
+     * @brief Calls the directive with the time of day.
+     *
+     * @param arg is the argument of the handler.
+     *
+     * @param time_of_day is the time of day.
+     *
+     * @param[out] seconds is the seconds since the Epoch which the directive
+     *   call used.  The handler shall not change the object, if the directive
+     *   call had no effect.
+     *
+     * @return Returns true, if the directive call accepted the time of day,
+     *   otherwise false.
+     */
+    typedef bool ( *TODCall )(
+      void                    *arg,
+      const rtems_time_of_day *time_of_day,
+      int64_t                 *seconds
+    );
+  freestanding: false
+  includes:
+  - rtems.h
+  local-includes: []
+  run-params:
+  - description: |
+      is the handler which calls the directive.
+    dir: null
+    name: call
+    specifier: TODCall ${.:name}
+  - description: |
+      is the argument of the handler.
+    dir: null
+    name: arg
+    specifier: void *${.:name}
+  target: testsuites/validation/tr-tod-convert-date.h
+test-includes:
+- rtems.h
+test-local-includes:
+- tx-support.h
+- tr-tod-convert-date.h
+test-prepare: null
+test-setup: null
+test-stop: null
+test-support: |
+  /* A zero marks a class which the year does not have. */
+  static const uint32_t years[ 7 ][ 4 ] = {
+    { 0, 0, 0, 1 },
+    { 1987, 1984, 1900, 1600 },
+    { 0, 1988, 0, 0 },
+    { 2023, 2096, 2100, 2000 },
+    { 0, 0, 0, 2400 },
+    { 2401, 2404, 2500, 2800 },
+    { UINT32_MAX, 0, 0, 0 }
+  };
+
+  static uint32_t GetYear( TODDateYear year, TODDateLeapYear leap_year )
+  {
+    if ( year == YEAR_ZERO ) {
+      return 0;
+    }
+
+    return years[ year ][ leap_year ];
+  }
+
+  static uint32_t GetDay( uint32_t year, uint32_t month, TODDateDay day )
+  {
+    uint32_t last;
+
+    if ( day == DAY_ZERO ) {
+      return 0;
+    }
+
+    if ( day == DAY_FIRST ) {
+      return 1;
+    }
+
+    if ( day == DAY_MAX ) {
+      return UINT32_MAX;
+    }
+
+    if ( month == 12 ) {
+      last = 31;
+    } else {
+      last = (uint32_t) ( DaysFromCivil( year, month + 1, 1 ) -
+                          DaysFromCivil( year, month, 1 ) );
+    }
+
+    if ( day == DAY_BETWEEN ) {
+      return 15;
+    }
+
+    if ( day == DAY_LAST ) {
+      return last;
+    }
+
+    return last + 1;
+  }
+test-target: testsuites/validation/tr-tod-convert-date.c
+test-teardown: null
+text: |
+  ${.:text-template}
+transition-map:
+- enabled-by: true
+  post-conditions:
+    Result: Reject
+    Effect: Nop
+  pre-conditions:
+    Year:
+    - Zero
+    LeapYear:
+    - Leap400
+    Month: all
+    Day:
+    - Zero
+    - First
+    - Max
+- enabled-by: true
+  post-conditions:
+    Result: Reject
+    Effect: Nop
+  pre-conditions:
+    Year:
+    - Zero
+    LeapYear:
+    - Leap400
+    Month:
+    - January
+    - February
+    - Between
+    - December
+    Day:
+    - Between
+    - Last
+    - Above
+- enabled-by: true
+  post-conditions: NoMonth
+  pre-conditions:
+    Year:
+    - Zero
+    LeapYear:
+    - Leap400
+    Month:
+    - Zero
+    - Above
+    - Max
+    Day:
+    - Between
+    - Last
+    - Above
+- enabled-by: true
+  post-conditions:
+    Result: Reject
+    Effect: Nop
+  pre-conditions:
+    Year:
+    - TooEarly
+    - TooLate
+    LeapYear: all
+    Month: all
+    Day:
+    - Zero
+    - First
+    - Max
+- enabled-by: true
+  post-conditions:
+    Result: Reject
+    Effect: Nop
+  pre-conditions:
+    Year:
+    - TooEarly
+    - TooLate
+    LeapYear: all
+    Month:
+    - January
+    - February
+    - Between
+    - December
+    Day:
+    - Between
+    - Last
+    - Above
+- enabled-by: true
+  post-conditions: NoMonth
+  pre-conditions:
+    Year:
+    - TooEarly
+    - TooLate
+    LeapYear: all
+    Month:
+    - Zero
+    - Above
+    - Max
+    Day:
+    - Between
+    - Last
+    - Above
+- enabled-by: true
+  post-conditions:
+    Result: Reject
+    Effect: Nop
+  pre-conditions:
+    Year:
+    - Max
+    LeapYear:
+    - Common
+    Month: all
+    Day:
+    - Zero
+    - First
+    - Max
+- enabled-by: true
+  post-conditions:
+    Result: Reject
+    Effect: Nop
+  pre-conditions:
+    Year:
+    - Max
+    LeapYear:
+    - Common
+    Month:
+    - January
+    - February
+    - Between
+    - December
+    Day:
+    - Between
+    - Last
+    - Above
+- enabled-by: true
+  post-conditions: NoMonth
+  pre-conditions:
+    Year:
+    - Max
+    LeapYear:
+    - Common
+    Month:
+    - Zero
+    - Above
+    - Max
+    Day:
+    - Between
+    - Last
+    - Above
+- enabled-by: true
+  post-conditions:
+    Result:
+    - if:
+        pre-conditions:
+          Day:
+          - First
+          - Between
+          - Last
+          Month:
+          - January
+          - February
+          - Between
+          - December
+      then: Accept
+    - else: Reject
+    Effect:
+    - if:
+        pre-conditions:
+          Day:
+          - First
+          - Between
+          - Last
+          Month:
+          - January
+          - February
+          - Between
+          - December
+      then: Seconds
+    - else: Nop
+  pre-conditions:
+    Year:
+    - Earliest
+    LeapYear:
+    - Leap4
+    Month: all
+    Day:
+    - Zero
+    - First
+    - Max
+- enabled-by: true
+  post-conditions:
+    Result:
+    - if:
+        pre-conditions:
+          Day:
+          - First
+          - Between
+          - Last
+          Month:
+          - January
+          - February
+          - Between
+          - December
+      then: Accept
+    - else: Reject
+    Effect:
+    - if:
+        pre-conditions:
+          Day:
+          - First
+          - Between
+          - Last
+          Month:
+          - January
+          - February
+          - Between
+          - December
+      then: Seconds
+    - else: Nop
+  pre-conditions:
+    Year:
+    - Earliest
+    LeapYear:
+    - Leap4
+    Month:
+    - January
+    - February
+    - Between
+    - December
+    Day:
+    - Between
+    - Last
+    - Above
+- enabled-by: true
+  post-conditions: NoMonth
+  pre-conditions:
+    Year:
+    - Earliest
+    LeapYear:
+    - Leap4
+    Month:
+    - Zero
+    - Above
+    - Max
+    Day:
+    - Between
+    - Last
+    - Above
+- enabled-by: true
+  post-conditions:
+    Result:
+    - if:
+        pre-conditions:
+          Day:
+          - First
+          - Between
+          - Last
+          Month:
+          - January
+          - February
+          - Between
+          - December
+      then: Accept
+    - else: Reject
+    Effect:
+    - if:
+        pre-conditions:
+          Day:
+          - First
+          - Between
+          - Last
+          Month:
+          - January
+          - February
+          - Between
+          - December
+      then: Seconds
+    - else: Nop
+  pre-conditions:
+    Year:
+    - Valid
+    LeapYear: all
+    Month: all
+    Day:
+    - Zero
+    - First
+    - Max
+- enabled-by: true
+  post-conditions:
+    Result:
+    - if:
+        pre-conditions:
+          Day:
+          - First
+          - Between
+          - Last
+          Month:
+          - January
+          - February
+          - Between
+          - December
+      then: Accept
+    - else: Reject
+    Effect:
+    - if:
+        pre-conditions:
+          Day:
+          - First
+          - Between
+          - Last
+          Month:
+          - January
+          - February
+          - Between
+          - December
+      then: Seconds
+    - else: Nop
+  pre-conditions:
+    Year:
+    - Valid
+    LeapYear: all
+    Month:
+    - January
+    - February
+    - Between
+    - December
+    Day:
+    - Between
+    - Last
+    - Above
+- enabled-by: true
+  post-conditions: NoMonth
+  pre-conditions:
+    Year:
+    - Valid
+    LeapYear: all
+    Month:
+    - Zero
+    - Above
+    - Max
+    Day:
+    - Between
+    - Last
+    - Above
+- enabled-by: true
+  post-conditions:
+    Result:
+    - if:
+        pre-conditions:
+          Day:
+          - First
+          - Between
+          - Last
+          Month:
+          - January
+          - February
+          - Between
+          - December
+      then: Accept
+    - else: Reject
+    Effect:
+    - if:
+        pre-conditions:
+          Day:
+          - First
+          - Between
+          - Last
+          Month:
+          - January
+          - February
+          - Between
+          - December
+      then: Seconds
+    - else: Nop
+  pre-conditions:
+    Year:
+    - Latest
+    LeapYear:
+    - Leap400
+    Month: all
+    Day:
+    - Zero
+    - First
+    - Max
+- enabled-by: true
+  post-conditions:
+    Result:
+    - if:
+        pre-conditions:
+          Day:
+          - First
+          - Between
+          - Last
+          Month:
+          - January
+          - February
+          - Between
+          - December
+      then: Accept
+    - else: Reject
+    Effect:
+    - if:
+        pre-conditions:
+          Day:
+          - First
+          - Between
+          - Last
+          Month:
+          - January
+          - February
+          - Between
+          - December
+      then: Seconds
+    - else: Nop
+  pre-conditions:
+    Year:
+    - Latest
+    LeapYear:
+    - Leap400
+    Month:
+    - January
+    - February
+    - Between
+    - December
+    Day:
+    - Between
+    - Last
+    - Above
+- enabled-by: true
+  post-conditions: NoMonth
+  pre-conditions:
+    Year:
+    - Latest
+    LeapYear:
+    - Leap400
+    Month:
+    - Zero
+    - Above
+    - Max
+    Day:
+    - Between
+    - Last
+    - Above
+- enabled-by: true
+  post-conditions: YearClass
+  pre-conditions:
+    Year:
+    - Zero
+    LeapYear:
+    - Common
+    - Leap4
+    - Century
+    Month: all
+    Day: all
+- enabled-by: true
+  post-conditions: YearClass
+  pre-conditions:
+    Year:
+    - Earliest
+    LeapYear:
+    - Common
+    - Century
+    - Leap400
+    Month: all
+    Day: all
+- enabled-by: true
+  post-conditions: YearClass
+  pre-conditions:
+    Year:
+    - Latest
+    LeapYear:
+    - Common
+    - Leap4
+    - Century
+    Month: all
+    Day: all
+- enabled-by: true
+  post-conditions: YearClass
+  pre-conditions:
+    Year:
+    - Max
+    LeapYear:
+    - Leap4
+    - Century
+    - Leap400
+    Month: all
+    Day: all
+type: requirement
