@@ -4,7 +4,7 @@ areas:
     cpukit/score/src/threadscheduler.c:
       branches:
       - branches:
-        - 0
+        - 11
         line: 120
         md5: 5533d3efc247d95d84a8218d1e0f71f8
       functions: []
