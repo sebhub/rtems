@@ -1,0 +1,833 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: bsps/sparc/leon3
+functional-type: action
+links:
+- role: interface-function
+  uid: ../if/irqmap-set
+- role: reference
+  uid: /ref/soc/gaisler/gr740/gr740-um-ds-2-10/irqmap
+- role: reference
+  uid: /ref/soc/gaisler/gr765/gr765-dsum-0-11/irqmap
+post-conditions:
+- name: Status
+  states:
+  - name: Ok
+    test-code: |
+      T_rsc_success( ctx->status );
+    text: |
+      The return status of ${../if/irqmap-set:/name} shall be
+      ${/rtems/status/if/successful:/name}.
+  - name: InvNum
+    test-code: |
+      T_rsc( ctx->status, RTEMS_INVALID_NUMBER );
+    text: |
+      The return status of ${../if/irqmap-set:/name} shall be
+      ${/rtems/status/if/invalid-number:/name}.
+  - name: Unsat
+    test-code: |
+      T_rsc( ctx->status, RTEMS_UNSATISFIED );
+    text: |
+      The return status of ${../if/irqmap-set:/name} shall be
+      ${/rtems/status/if/unsatisfied:/name}.
+  - name: IncStat
+    test-code: |
+      T_rsc( ctx->status, RTEMS_INCORRECT_STATE );
+    text: |
+      The return status of ${../if/irqmap-set:/name} shall be
+      ${/rtems/status/if/incorrect-state:/name}.
+  - name: CalledFromIsr
+    test-code: |
+      T_rsc( ctx->status, RTEMS_CALLED_FROM_ISR );
+    text: |
+      The return status of ${../if/irqmap-set:/name} shall be
+      ${/rtems/status/if/called-from-isr:/name}.
+  - name: InUse
+    test-code: |
+      T_rsc( ctx->status, RTEMS_RESOURCE_IN_USE );
+    text: |
+      The return status of ${../if/irqmap-set:/name} shall be
+      ${/rtems/status/if/resource-in-use:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: MapEntry
+  states:
+  - name: Set
+    test-code: |
+      #if LEON3_IRQMAP_BUS_LINE_COUNT != 0
+        T_eq_u32( LEON3_IrqCtrl_Mapping[ ctx->bus_line ], ctx->controller_line );
+        T_eq_u32( GetMapField( ctx->bus_line ), ctx->controller_line );
+      #else
+        (void) ctx;
+      #endif
+    text: |
+      The ${../glossary/interrupt-map-entry:/term} of the
+      ${../glossary/bus-line:/term} in the ${../glossary/interrupt-map:/term} and in
+      the ${../glossary/interrupt-map-copy:/term} shall be set to the
+      ${../glossary/controller-line:/term} specified by the `controller_line`
+      parameter.
+  - name: Nop
+    test-code: |
+      #if LEON3_IRQMAP_BUS_LINE_COUNT != 0
+        T_eq_u32( LEON3_IrqCtrl_Mapping[ ctx->bus_line ], ctx->current_line );
+        T_eq_u32( GetMapField( ctx->bus_line ), ctx->current_line );
+      #else
+        (void) ctx;
+      #endif
+    text: |
+      The ${../glossary/interrupt-map-entry:/term} of the
+      ${../glossary/bus-line:/term} in the ${../glossary/interrupt-map:/term} and in
+      the ${../glossary/interrupt-map-copy:/term} shall not be modified by the
+      function call.
+  test-epilogue: null
+  test-prologue: null
+- name: OtherEntries
+  states:
+  - name: Nop
+    test-code: |
+      CheckOtherEntries( ctx );
+    text: |
+      The ${../glossary/interrupt-map-entry:/plural} of the
+      ${../glossary/bus-line:/plural} other than the ${../glossary/bus-line:/term}
+      specified by the `bus_line` parameter shall not be modified by the function
+      call.
+  test-epilogue: null
+  test-prologue: null
+- name: LineState
+  states:
+  - name: Nop
+    test-code: |
+      CheckLineState( ctx );
+    text: |
+      The ILEVEL, PIMASK, PIFORCE and BRDCST registers of the IRQ(A)MP shall not be
+      modified by the function call.
+  test-epilogue: null
+  test-prologue: null
+pre-conditions:
+- name: InterruptMap
+  states:
+  - name: 'Yes'
+    test-code: |
+      #if LEON3_IRQMAP_BUS_LINE_COUNT == 0
+        ${.:skip}
+      #endif
+    text: |
+      Where the BSP uses the ${../glossary/interrupt-map:/term}.
+  - name: 'No'
+    test-code: |
+      #if LEON3_IRQMAP_BUS_LINE_COUNT != 0
+        ${.:skip}
+      #endif
+    text: |
+      Where the BSP uses no ${../glossary/interrupt-map:/term}.
+  test-epilogue: null
+  test-prologue: null
+- name: BusLine
+  states:
+  - name: Zero
+    test-code: |
+      ctx->bus_line = 0;
+    text: |
+      While the `bus_line` parameter is zero.
+  - name: Valid
+    test-code: |
+      ctx->bus_line = BUS_LINE_VALID;
+    text: |
+      While the `bus_line` parameter is greater than zero and less than the count of
+      ${../glossary/bus-line:/plural}.
+  - name: Invalid
+    test-code: |
+      ctx->bus_line = BUS_LINE_COUNT;
+    text: |
+      While the `bus_line` parameter is greater than or equal to the count of
+      ${../glossary/bus-line:/plural}.
+  test-epilogue: null
+  test-prologue: null
+- name: Change
+  states:
+  - name: Same
+    test-code: |
+      ctx->change = false;
+    text: |
+      While the `controller_line` parameter is equal to the
+      ${../glossary/controller-line:/term} of the ${../glossary/bus-line:/term}.
+  - name: Other
+    test-code: |
+      ctx->change = true;
+    text: |
+      While the `controller_line` parameter is not equal to the
+      ${../glossary/controller-line:/term} of the ${../glossary/bus-line:/term}.
+  test-epilogue: null
+  test-prologue: null
+- name: ControllerLine
+  states:
+  - name: Zero
+    test-code: |
+      ctx->other_line = 0;
+    text: |
+      While the `controller_line` parameter is zero.
+  - name: Last
+    test-code: |
+      ctx->other_line = CONTROLLER_LINE_COUNT - 1;
+    text: |
+      While the `controller_line` parameter is the last
+      ${../glossary/controller-line:/term}.
+  - name: Invalid
+    test-code: |
+      ctx->other_line = CONTROLLER_LINE_COUNT;
+    text: |
+      While the `controller_line` parameter is greater than the last
+      ${../glossary/controller-line:/term}.
+  test-epilogue: null
+  test-prologue: null
+- name: Handler
+  states:
+  - name: 'Yes'
+    test-code: |
+      ctx->handler = true;
+    text: |
+      While an interrupt handler is installed on the
+      ${../glossary/controller-line:/term} of the ${../glossary/bus-line:/term}.
+  - name: 'No'
+    test-code: |
+      ctx->handler = false;
+    text: |
+      While no interrupt handler is installed on the
+      ${../glossary/controller-line:/term} of the ${../glossary/bus-line:/term}.
+  test-epilogue: null
+  test-prologue: null
+- name: Init
+  states:
+  - name: 'Yes'
+    test-code: |
+      ctx->initialized = true;
+    text: |
+      While the interrupt support is initialized.
+  - name: 'No'
+    test-code: |
+      ctx->initialized = false;
+    text: |
+      While the interrupt support is not initialized.
+  test-epilogue: null
+  test-prologue: null
+- name: ISR
+  states:
+  - name: 'Yes'
+    test-code: |
+      ctx->isr = true;
+    text: |
+      While ${../if/irqmap-set:/name} is called from within interrupt context.
+  - name: 'No'
+    test-code: |
+      ctx->isr = false;
+    text: |
+      While ${../if/irqmap-set:/name} is not called from within interrupt context.
+  test-epilogue: null
+  test-prologue: null
+rationale: |
+  Dimension InterruptMap covers whether the BSP uses the interrupt map, 2 states.
+
+  Dimension BusLine covers the parameter bus_line, 3 states. The directive
+  accepts the bus lines from 1 up to the count minus 1. The states Zero and
+  Invalid lie at the two bounds. The state Valid uses the bus line of
+  TM27_IRQMAP_BUS_LINE, which no driver uses. The first and the last valid bus
+  line carry peripherals. On the GR740, bus line 1 carries the clock timer. The
+  test therefore changes no map entry of them.
+
+  Dimension Change covers whether the controller_line parameter equals the
+  current controller line of the bus line, 2 states. Dimension ControllerLine
+  covers the parameter controller_line where it differs from the current
+  controller line, 3 states. The directive accepts the controller lines 0 to 31.
+  A controller line of zero disconnects the bus line.
+
+  Dimension Handler covers whether an interrupt handler is installed on the
+  current controller line of the bus line, 2 states. Dimension Init covers the
+  initialization of the interrupt support, 2 states. Dimension ISR covers the
+  calling context, 2 states.
+
+  The test writes the interrupt map register and the interrupt map copy of the
+  bus line directly. The arrangement then does not depend on the directive. The
+  test restores both in the cleanup.
+requirement-type: functional
+skip-reasons: {}
+test-action: |
+  Arrange( ctx );
+  SaveState( ctx );
+
+  bsp_interrupt_set_handler_unique(
+    BSP_INTERRUPT_DISPATCH_TABLE_SIZE,
+    ctx->initialized
+  );
+
+  if ( ctx->isr ) {
+    CallWithinISR( Action, ctx );
+  } else {
+    Action( ctx );
+  }
+
+  bsp_interrupt_set_handler_unique(
+    BSP_INTERRUPT_DISPATCH_TABLE_SIZE,
+    ctx->initialized_during_setup
+  );
+test-brief: null
+test-cleanup: |
+  Restore( ctx );
+test-context:
+- brief: |
+    This member specifies the `bus_line` parameter value.
+  description: null
+  member: |
+    rtems_vector_number bus_line
+- brief: |
+    This member specifies the `controller_line` parameter value.
+  description: null
+  member: |
+    rtems_vector_number controller_line
+- brief: |
+    If this member is true, then the `controller_line` parameter shall differ from
+    the current controller line of the bus line.
+  description: null
+  member: |
+    bool change
+- brief: |
+    This member specifies the `controller_line` parameter value if it differs from
+    the current controller line of the bus line.
+  description: null
+  member: |
+    rtems_vector_number other_line
+- brief: |
+    This member contains the arranged controller line of the bus line.
+  description: null
+  member: |
+    rtems_vector_number current_line
+- brief: |
+    If this member is true, then an interrupt handler shall be installed on the
+    controller line of the bus line.
+  description: null
+  member: |
+    bool handler
+- brief: |
+    If this member is true, then the interrupt support shall be initialized.
+  description: null
+  member: |
+    bool initialized
+- brief: |
+    If this member is true, then the interrupt support was initialized during
+    setup.
+  description: null
+  member: |
+    bool initialized_during_setup
+- brief: |
+    If this member is true, then the directive shall be called from within
+    interrupt context.
+  description: null
+  member: |
+    bool isr
+- brief: |
+    This member provides the interrupt entry of the handler.
+  description: null
+  member: |
+    rtems_interrupt_entry entry
+- brief: |
+    This member contains the interrupt map copy entry before the arrangement.
+  description: null
+  member: |
+    uint8_t entry_before
+- brief: |
+    This member contains the interrupt map register of the bus line before the
+    arrangement.
+  description: null
+  member: |
+    uint32_t register_before
+- brief: |
+    This member contains the interrupt map copy before the call.
+  description: null
+  member: |
+    uint8_t mapping_before[ BUS_LINE_COUNT ]
+- brief: |
+    This member contains the interrupt map registers before the call.
+  description: null
+  member: |
+    uint32_t map_registers_before[ BUS_LINE_COUNT / 4 ]
+- brief: |
+    This member contains the IRQ(A)MP register block before the call.
+  description: null
+  member: |
+    irqamp regs_before
+- brief: |
+    This member contains the return value of the directive call.
+  description: null
+  member: |
+    rtems_status_code status
+test-context-support: |
+  #define _RTEMS_TMTEST27
+  #include <tm27.h>
+
+  /*
+   * The IRQ(A)MP provides 32 controller lines, see the
+   * ${/ref/soc/gaisler/gr740/gr740-um-ds-2-10/irqmap:/name}, and the
+   * ${/ref/soc/gaisler/gr765/gr765-dsum-0-11/irqmap:/name}.
+   */
+  #define CONTROLLER_LINE_COUNT 32
+
+  #if LEON3_IRQMAP_BUS_LINE_COUNT != 0
+  #define BUS_LINE_COUNT LEON3_IRQMAP_BUS_LINE_COUNT
+  #define BUS_LINE_VALID TM27_IRQMAP_BUS_LINE
+  #else
+  /* Without the interrupt map, a bus line is a controller line. */
+  #define BUS_LINE_COUNT CONTROLLER_LINE_COUNT
+  #define BUS_LINE_VALID 13
+  #endif
+
+  /*
+   * The test arranges this controller line for the bus line.  No driver of
+   * the test suite uses it.
+   */
+  #define CURRENT_LINE 20
+test-description: null
+test-header: null
+test-includes:
+- rtems.h
+- string.h
+- bsp/irq.h
+- bsp/irq-generic.h
+- bsp/irqimpl.h
+- grlib/io.h
+test-local-includes:
+- tx-support.h
+test-prepare: null
+test-setup:
+  brief: null
+  code: |
+    ctx->initialized_during_setup = bsp_interrupt_is_initialized();
+  description: null
+test-stop: null
+test-support: |
+  typedef ${.:/test-context-type} Context;
+
+  static void Handler( void *arg )
+  {
+    (void) arg;
+  }
+
+  #if LEON3_IRQMAP_BUS_LINE_COUNT != 0
+  static uint32_t GetMapShift( rtems_vector_number bus_line )
+  {
+    return 24 - 8 * ( bus_line % 4 );
+  }
+
+  static uint32_t GetMapField( rtems_vector_number bus_line )
+  {
+    uint32_t value;
+
+    value = grlib_load_32( &LEON3_IrqCtrl_Regs->irqmap[ bus_line / 4 ] );
+    return ( value >> GetMapShift( bus_line ) ) & 0xff;
+  }
+  #endif
+
+  static bool IsArrangedBusLine( const Context *ctx )
+  {
+    return ctx->bus_line == BUS_LINE_VALID;
+  }
+
+  static void Arrange( Context *ctx )
+  {
+    rtems_status_code sc;
+
+  #if LEON3_IRQMAP_BUS_LINE_COUNT != 0
+    ctx->current_line = CURRENT_LINE;
+  #else
+    ctx->current_line = ctx->bus_line;
+  #endif
+
+    if ( !IsArrangedBusLine( ctx ) ) {
+      ctx->controller_line = CURRENT_LINE;
+      return;
+    }
+
+  #if LEON3_IRQMAP_BUS_LINE_COUNT != 0
+    {
+      rtems_interrupt_level level;
+      uint32_t             *reg;
+      uint32_t              shift;
+      uint32_t              value;
+
+      reg = &LEON3_IrqCtrl_Regs->irqmap[ ctx->bus_line / 4 ];
+      shift = GetMapShift( ctx->bus_line );
+      rtems_interrupt_local_disable( level );
+      ctx->entry_before = LEON3_IrqCtrl_Mapping[ ctx->bus_line ];
+      ctx->register_before = grlib_load_32( reg );
+      value = ctx->register_before & ~( UINT32_C( 0xff ) << shift );
+      value |= (uint32_t) ctx->current_line << shift;
+      grlib_store_32( reg, value );
+      LEON3_IrqCtrl_Mapping[ ctx->bus_line ] = (uint8_t) ctx->current_line;
+      rtems_interrupt_local_enable( level );
+    }
+  #endif
+
+    if ( ctx->change ) {
+      ctx->controller_line = ctx->other_line;
+    } else {
+      ctx->controller_line = ctx->current_line;
+    }
+
+    if ( ctx->handler ) {
+      rtems_interrupt_entry_initialize( &ctx->entry, Handler, ctx, "Test" );
+      sc = rtems_interrupt_entry_install(
+        ctx->bus_line,
+        RTEMS_INTERRUPT_SHARED,
+        &ctx->entry
+      );
+      T_rsc_success( sc );
+    }
+  }
+
+  static void Restore( Context *ctx )
+  {
+    rtems_status_code sc;
+
+    if ( !IsArrangedBusLine( ctx ) ) {
+      return;
+    }
+
+    if ( ctx->handler ) {
+      sc = rtems_interrupt_entry_remove( ctx->bus_line, &ctx->entry );
+      T_rsc_success( sc );
+    }
+
+  #if LEON3_IRQMAP_BUS_LINE_COUNT != 0
+    {
+      rtems_interrupt_level level;
+
+      rtems_interrupt_local_disable( level );
+      grlib_store_32(
+        &LEON3_IrqCtrl_Regs->irqmap[ ctx->bus_line / 4 ],
+        ctx->register_before
+      );
+      LEON3_IrqCtrl_Mapping[ ctx->bus_line ] = ctx->entry_before;
+      rtems_interrupt_local_enable( level );
+    }
+  #endif
+  }
+
+  static void SaveState( Context *ctx )
+  {
+    size_t i;
+
+    ctx->regs_before = *LEON3_IrqCtrl_Regs;
+
+  #if LEON3_IRQMAP_BUS_LINE_COUNT != 0
+    memcpy(
+      ctx->mapping_before,
+      LEON3_IrqCtrl_Mapping,
+      sizeof( ctx->mapping_before )
+    );
+  #endif
+
+    for ( i = 0; i < RTEMS_ARRAY_SIZE( ctx->map_registers_before ); ++i ) {
+      ctx->map_registers_before[ i ] = grlib_load_32(
+        &LEON3_IrqCtrl_Regs->irqmap[ i ]
+      );
+    }
+  }
+
+  static void Action( void *arg )
+  {
+    Context *ctx;
+
+    ctx = arg;
+    ctx->status = leon3_irqmap_set( ctx->bus_line, ctx->controller_line );
+  }
+
+  static void CheckOtherEntries( const Context *ctx )
+  {
+  #if LEON3_IRQMAP_BUS_LINE_COUNT != 0
+    size_t i;
+
+    for ( i = 0; i < BUS_LINE_COUNT; ++i ) {
+      if ( i != ctx->bus_line ) {
+        T_eq_u32( LEON3_IrqCtrl_Mapping[ i ], ctx->mapping_before[ i ] );
+      }
+    }
+
+    for ( i = 0; i < RTEMS_ARRAY_SIZE( ctx->map_registers_before ); ++i ) {
+      uint32_t mask;
+
+      if ( i == ctx->bus_line / 4 ) {
+        mask = ~( UINT32_C( 0xff ) << GetMapShift( ctx->bus_line ) );
+      } else {
+        mask = 0xffffffff;
+      }
+
+      T_eq_u32(
+        grlib_load_32( &LEON3_IrqCtrl_Regs->irqmap[ i ] ) & mask,
+        ctx->map_registers_before[ i ] & mask
+      );
+    }
+  #else
+    (void) ctx;
+  #endif
+  }
+
+  static void CheckLineState( const Context *ctx )
+  {
+    const irqamp *regs;
+    size_t        i;
+
+    regs = LEON3_IrqCtrl_Regs;
+    T_eq_u32( grlib_load_32( &regs->ilevel ), ctx->regs_before.ilevel );
+    T_eq_u32( grlib_load_32( &regs->brdcst ), ctx->regs_before.brdcst );
+
+    for ( i = 0; i < RTEMS_ARRAY_SIZE( regs->pimask ); ++i ) {
+      T_eq_u32(
+        grlib_load_32( &regs->pimask[ i ] ),
+        ctx->regs_before.pimask[ i ]
+      );
+      T_eq_u32(
+        grlib_load_32( &regs->piforce[ i ] ),
+        ctx->regs_before.piforce[ i ]
+      );
+    }
+  }
+test-target: testsuites/validation/bsps/tc-sparc-leon3-irqmap-set.c
+test-teardown: null
+text: |
+  ${.:text-template}
+transition-map:
+- enabled-by: true
+  post-conditions:
+    Status: InvNum
+    MapEntry: N/A
+    OtherEntries:
+    - if:
+        pre-conditions:
+          InterruptMap: 'No'
+      then: N/A
+    - else: Nop
+    LineState: Nop
+  pre-conditions:
+    InterruptMap: all
+    BusLine:
+    - Zero
+    - Invalid
+    Change: N/A
+    ControllerLine: N/A
+    Handler: N/A
+    Init: all
+    ISR: all
+- enabled-by: true
+  post-conditions:
+    Status: InvNum
+    MapEntry:
+    - if:
+        pre-conditions:
+          InterruptMap: 'No'
+      then: N/A
+    - else: Nop
+    OtherEntries:
+    - if:
+        pre-conditions:
+          InterruptMap: 'No'
+      then: N/A
+    - else: Nop
+    LineState: Nop
+  pre-conditions:
+    InterruptMap: all
+    BusLine:
+    - Valid
+    Change:
+    - Other
+    ControllerLine:
+    - Invalid
+    Handler: all
+    Init: all
+    ISR: all
+- enabled-by: true
+  post-conditions:
+    Status: Unsat
+    MapEntry: N/A
+    OtherEntries: N/A
+    LineState: Nop
+  pre-conditions:
+    InterruptMap:
+    - 'No'
+    BusLine:
+    - Valid
+    Change:
+    - Other
+    ControllerLine:
+    - Zero
+    - Last
+    Handler: all
+    Init: all
+    ISR: all
+- enabled-by: true
+  post-conditions:
+    Status: IncStat
+    MapEntry:
+    - if:
+        pre-conditions:
+          InterruptMap: 'No'
+      then: N/A
+    - else: Nop
+    OtherEntries:
+    - if:
+        pre-conditions:
+          InterruptMap: 'No'
+      then: N/A
+    - else: Nop
+    LineState: Nop
+  pre-conditions:
+    InterruptMap: all
+    BusLine:
+    - Valid
+    Change:
+    - Same
+    ControllerLine: N/A
+    Handler: all
+    Init:
+    - 'No'
+    ISR: all
+- enabled-by: true
+  post-conditions:
+    Status: IncStat
+    MapEntry: Nop
+    OtherEntries: Nop
+    LineState: Nop
+  pre-conditions:
+    InterruptMap:
+    - 'Yes'
+    BusLine:
+    - Valid
+    Change:
+    - Other
+    ControllerLine:
+    - Zero
+    - Last
+    Handler: all
+    Init:
+    - 'No'
+    ISR: all
+- enabled-by: true
+  post-conditions:
+    Status: CalledFromIsr
+    MapEntry:
+    - if:
+        pre-conditions:
+          InterruptMap: 'No'
+      then: N/A
+    - else: Nop
+    OtherEntries:
+    - if:
+        pre-conditions:
+          InterruptMap: 'No'
+      then: N/A
+    - else: Nop
+    LineState: Nop
+  pre-conditions:
+    InterruptMap: all
+    BusLine:
+    - Valid
+    Change:
+    - Same
+    ControllerLine: N/A
+    Handler: all
+    Init:
+    - 'Yes'
+    ISR:
+    - 'Yes'
+- enabled-by: true
+  post-conditions:
+    Status: CalledFromIsr
+    MapEntry: Nop
+    OtherEntries: Nop
+    LineState: Nop
+  pre-conditions:
+    InterruptMap:
+    - 'Yes'
+    BusLine:
+    - Valid
+    Change:
+    - Other
+    ControllerLine:
+    - Zero
+    - Last
+    Handler: all
+    Init:
+    - 'Yes'
+    ISR:
+    - 'Yes'
+- enabled-by: true
+  post-conditions:
+    Status: InUse
+    MapEntry: Nop
+    OtherEntries: Nop
+    LineState: Nop
+  pre-conditions:
+    InterruptMap:
+    - 'Yes'
+    BusLine:
+    - Valid
+    Change:
+    - Other
+    ControllerLine:
+    - Zero
+    - Last
+    Handler:
+    - 'Yes'
+    Init:
+    - 'Yes'
+    ISR:
+    - 'No'
+- enabled-by: true
+  post-conditions:
+    Status: Ok
+    MapEntry: Set
+    OtherEntries: Nop
+    LineState: Nop
+  pre-conditions:
+    InterruptMap:
+    - 'Yes'
+    BusLine:
+    - Valid
+    Change:
+    - Other
+    ControllerLine:
+    - Zero
+    - Last
+    Handler:
+    - 'No'
+    Init:
+    - 'Yes'
+    ISR:
+    - 'No'
+- enabled-by: true
+  post-conditions:
+    Status: Ok
+    MapEntry:
+    - if:
+        pre-conditions:
+          InterruptMap: 'No'
+      then: N/A
+    - else: Set
+    OtherEntries:
+    - if:
+        pre-conditions:
+          InterruptMap: 'No'
+      then: N/A
+    - else: Nop
+    LineState: Nop
+  pre-conditions:
+    InterruptMap: all
+    BusLine:
+    - Valid
+    Change:
+    - Same
+    ControllerLine: N/A
+    Handler: all
+    Init:
+    - 'Yes'
+    ISR:
+    - 'No'
+type: requirement
