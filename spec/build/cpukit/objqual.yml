@@ -35,6 +35,7 @@ source:
 - cpukit/compiler-rt/lib/builtins/udivdi3.c
 - cpukit/compiler-rt/lib/builtins/udivmoddi4.c
 - cpukit/compiler-rt/lib/builtins/umoddi3.c
+- cpukit/libc/misc/errno.c
 - cpukit/libc/string/flsl.c
 - cpukit/libc/string/memcpy.c
 - cpukit/libc/string/memset.c
