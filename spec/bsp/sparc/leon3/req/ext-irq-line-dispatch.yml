@@ -1,0 +1,26 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by:
+  or:
+  - sparc/gr712rc
+  - sparc/gr740
+  - sparc/gr765
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: ../if/group
+rationale: |
+  The extended interrupt is a standard ${../glossary/controller-line:/term}.
+  Where no extended ${../glossary/controller-line:/term} is pending, the extended
+  interrupt acknowledge register of the processor identifies no extended
+  ${../glossary/controller-line:/term}.
+requirement-type: functional
+text: |
+  While the ${../glossary/controller-line:/term} of the extended interrupt is
+  pending, while this ${../glossary/controller-line:/term} is enabled, while no
+  extended ${../glossary/controller-line:/term} is pending, when the interrupt is
+  serviced, the BSP shall dispatch the interrupt handlers installed for the
+  interrupt vector of the ${../glossary/bus-line:/term} which maps to the
+  ${../glossary/controller-line:/term} of the extended interrupt.
+type: requirement
