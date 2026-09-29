@@ -1,0 +1,26 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by:
+  or:
+  - sparc/gr712rc
+  - sparc/gr740
+  - sparc/gr765
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: ../if/group
+rationale: |
+  The IRQ(A)MP signals a pending extended ${../glossary/controller-line:/term} to
+  the processor through the extended interrupt, a standard
+  ${../glossary/controller-line:/term}. The extended interrupt acknowledge
+  register of the processor identifies the extended
+  ${../glossary/controller-line:/term}.
+requirement-type: functional
+text: |
+  While an extended ${../glossary/controller-line:/term} is pending, while this
+  ${../glossary/controller-line:/term} is enabled, when the interrupt is
+  serviced, the BSP shall dispatch the interrupt handlers installed for the
+  interrupt vector of the ${../glossary/bus-line:/term} which maps to this
+  ${../glossary/controller-line:/term}.
+type: requirement

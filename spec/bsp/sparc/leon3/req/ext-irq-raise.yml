@@ -1,0 +1,25 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by:
+  or:
+  - sparc/gr712rc
+  - sparc/gr740
+  - sparc/gr765
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: ../if/group
+rationale: |
+  The processor force registers of the IRQ(A)MP cover the standard
+  ${../glossary/controller-line:/plural} only. A software raise of an extended
+  ${../glossary/controller-line:/term} needs a read-modify-write of the pending
+  register, which may clear a pending state which a peripheral sets at the same
+  time.
+requirement-type: functional
+text: |
+  While the ${../glossary/bus-line:/term} of an interrupt vector maps to an
+  extended ${../glossary/controller-line:/term}, the BSP shall report the
+  interrupt vector as not raisable and shall reject a request to raise it with
+  the ${/rtems/status/if/unsatisfied:/name} status.
+type: requirement
