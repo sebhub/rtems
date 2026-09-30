@@ -1,0 +1,11 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+label: pthread_detach
+links:
+- role: reference-location
+  uid: ../posix-users
+name: pthread_detach
+path: thread.html
+type: reference-location
