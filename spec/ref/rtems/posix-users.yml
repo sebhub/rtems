@@ -1,0 +1,12 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+links: []
+organization: The RTEMS Project
+reference-type: manual
+title: RTEMS POSIX API Guide
+type: reference
+work-base-url: ${/pkg/deployment/doc-rtems:/directory:relpath}/posix-users/
+work-hash: null
+work-url: ${/pkg/deployment/doc-rtems:/directory:relpath}/posix-users.pdf
