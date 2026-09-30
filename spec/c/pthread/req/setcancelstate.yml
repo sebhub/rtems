@@ -1,0 +1,790 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: action
+links:
+- role: interface-function
+  uid: ../if/setcancelstate
+- role: reference
+  uid: /ref/std/posix-2024/cancelability-states
+- role: reference
+  uid: /ref/rtems/c-user/task-life-states
+- role: reference
+  uid: /ref/std/posix-2024/cancellation-points
+- role: reference
+  uid: /ref/std/posix-2024/thread-cancellation-cleanup-handlers
+post-conditions:
+- name: Status
+  states:
+  - name: Ok
+    test-code: |
+      T_eq_int( ctx->status, 0 );
+    text: |
+      The ${/glossary/returnvalue:/term} of ${../if/setcancelstate:/name} shall be
+      zero.
+  - name: Inval
+    test-code: |
+      T_eq_int( ctx->status, EINVAL );
+    text: |
+      The ${/glossary/returnvalue:/term} of ${../if/setcancelstate:/name} shall be
+      ${/c/errno/if/einval:/name}.
+  - name: Proto
+    test-code: |
+      T_eq_int( ctx->status, EPROTO );
+    text: |
+      The ${/glossary/returnvalue:/term} of ${../if/setcancelstate:/name} shall be
+      ${/c/errno/if/eproto:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: CancelState
+  states:
+  - name: Enable
+    test-code: |
+      T_eq_int( ctx->state_after, PTHREAD_CANCEL_ENABLE );
+    text: |
+      The ${../glossary/thread-cancel-state:/term} of the
+      ${/glossary/executingtask:/term} shall be ${../if/cancel-enable:/name}.
+  - name: Disable
+    test-code: |
+      T_eq_int( ctx->state_after, PTHREAD_CANCEL_DISABLE );
+    text: |
+      The ${../glossary/thread-cancel-state:/term} of the
+      ${/glossary/executingtask:/term} shall be ${../if/cancel-disable:/name}.
+  - name: Nop
+    test-code: |
+      T_eq_int( ctx->state_after, ctx->cancel_state );
+    text: |
+      The ${../glossary/thread-cancel-state:/term} of the
+      ${/glossary/executingtask:/term} shall not be modified by the
+      ${../if/setcancelstate:/name} call.
+  test-epilogue: null
+  test-prologue: null
+- name: OldState
+  states:
+  - name: Set
+    test-code: |
+      T_eq_int( ctx->oldstate_obj, ctx->cancel_state );
+    text: |
+      The value of the object referenced by the
+      ${../if/setcancelstate:/params[1]/name} parameter shall be set to the
+      ${../glossary/thread-cancel-state:/term} of the
+      ${/glossary/executingtask:/term} before the call.
+  - name: Nop
+    test-code: |
+      T_eq_int( ctx->oldstate_obj, -1 );
+    text: |
+      The object referenced by the ${../if/setcancelstate:/params[1]/name} parameter
+      shall not be modified by the ${../if/setcancelstate:/name} call.
+  test-epilogue: null
+  test-prologue: null
+- name: CancelType
+  states:
+  - name: Nop
+    test-code: |
+      T_eq_int( ctx->type_after, ctx->cancel_type );
+    text: |
+      The ${../glossary/thread-cancel-type:/term} of the
+      ${/glossary/executingtask:/term} shall not be modified by the
+      ${../if/setcancelstate:/name} call.
+  test-epilogue: null
+  test-prologue: null
+- name: Life
+  states:
+  - name: Nop
+    test-code: |
+      T_true( IsTaskSuspended( ctx->worker_id ) );
+      T_eq_u32( ctx->restarts, 0 );
+    text: |
+      The ${/glossary/executingtask:/term} shall be neither terminated nor restarted
+      by the ${../if/setcancelstate:/name} call.
+  - name: Terminate
+    test-code: |
+      JoinWorker( ctx );
+      T_eq_u32( ctx->restarts, 0 );
+    text: |
+      The ${/glossary/executingtask:/term} shall be terminated by a
+      ${../glossary/thread-cancellation:/term}.
+  - name: Restart
+    test-code: |
+      JoinWorker( ctx );
+      T_eq_ptr( ctx->exit_value, &exit_object );
+      T_eq_u32( ctx->restarts, 1 );
+    text: |
+      The ${/glossary/executingtask:/term} shall be restarted.
+  test-epilogue: null
+  test-prologue: null
+- name: Return
+  states:
+  - name: 'Yes'
+    test-code: |
+      T_true( ctx->returned );
+    text: |
+      The ${../if/setcancelstate:/name} call shall return to the caller.
+  - name: 'No'
+    test-code: |
+      T_false( ctx->returned );
+    text: |
+      The ${../if/setcancelstate:/name} call shall not return to the caller.
+  test-epilogue: null
+  test-prologue: null
+- name: ExitValue
+  states:
+  - name: Canceled
+    test-code: |
+      T_eq_ptr( ctx->exit_value, PTHREAD_CANCELED );
+    text: |
+      The ${../glossary/thread-exit-value:/term} of the
+      ${/glossary/executingtask:/term} shall be ${../if/canceled:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: Requests
+  states:
+  - name: Nop
+    test-code: |
+      ctx->phase = PHASE_LATER;
+      ResumeTask( ctx->worker_id );
+      T_eq_int( pthread_join( ctx->worker_thread, &ctx->exit_value ), 0 );
+      ctx->joined = true;
+
+      if ( ctx->cancel_pending ) {
+        T_eq_ptr( ctx->exit_value, PTHREAD_CANCELED );
+        T_false( ctx->late_returned );
+        T_eq_u32( ctx->restarts, 0 );
+      } else if ( ctx->restart_pending ) {
+        T_eq_ptr( ctx->exit_value, &exit_object );
+        T_eq_u32( ctx->restarts, 1 );
+      } else {
+        T_eq_ptr( ctx->exit_value, &exit_object );
+        T_true( ctx->late_returned );
+        T_eq_u32( ctx->restarts, 0 );
+      }
+    text: |
+      The pending ${../glossary/thread-cancel-request:/term} and the pending restart
+      by ${/rtems/task/if/restart:/name} of the ${/glossary/executingtask:/term}
+      shall not be modified by the ${../if/setcancelstate:/name} call.
+  test-epilogue: null
+  test-prologue: null
+pre-conditions:
+- name: Context
+  states:
+  - name: Task
+    test-code: |
+      ctx->in_interrupt = false;
+    text: |
+      While ${../if/setcancelstate:/name} is called from within task context.
+  - name: Interrupt
+    test-code: |
+      ctx->in_interrupt = true;
+    text: |
+      While ${../if/setcancelstate:/name} is called from within interrupt context.
+  test-epilogue: null
+  test-prologue: null
+- name: State
+  states:
+  - name: Enable
+    test-code: |
+      ctx->state = PTHREAD_CANCEL_ENABLE;
+    text: |
+      While the ${../if/setcancelstate:/params[0]/name} parameter is equal to
+      ${../if/cancel-enable:/name}.
+  - name: Disable
+    test-code: |
+      ctx->state = PTHREAD_CANCEL_DISABLE;
+    text: |
+      While the ${../if/setcancelstate:/params[0]/name} parameter is equal to
+      ${../if/cancel-disable:/name}.
+  - name: Invalid
+    test-code: |
+      ctx->state = -1;
+    text: |
+      While the ${../if/setcancelstate:/params[0]/name} parameter is neither equal to
+      ${../if/cancel-enable:/name} nor equal to ${../if/cancel-disable:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: OldState
+  states:
+  - name: Valid
+    test-code: |
+      ctx->oldstate = &ctx->oldstate_obj;
+    text: |
+      While the ${../if/setcancelstate:/params[1]/name} parameter references an
+      object of type int.
+  - name: 'Null'
+    test-code: |
+      ctx->oldstate = NULL;
+    text: |
+      While the ${../if/setcancelstate:/params[1]/name} parameter is equal to
+      ${/c/if/null:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: CancelState
+  states:
+  - name: Enable
+    test-code: |
+      ctx->cancel_state = PTHREAD_CANCEL_ENABLE;
+    text: |
+      While the ${../glossary/thread-cancel-state:/term} of the
+      ${/glossary/executingtask:/term} is ${../if/cancel-enable:/name}.
+  - name: Disable
+    test-code: |
+      ctx->cancel_state = PTHREAD_CANCEL_DISABLE;
+    text: |
+      While the ${../glossary/thread-cancel-state:/term} of the
+      ${/glossary/executingtask:/term} is ${../if/cancel-disable:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: CancelType
+  states:
+  - name: Deferred
+    test-code: |
+      ctx->cancel_type = PTHREAD_CANCEL_DEFERRED;
+    text: |
+      While the ${../glossary/thread-cancel-type:/term} of the
+      ${/glossary/executingtask:/term} is ${../if/cancel-deferred:/name}.
+  - name: Asynchronous
+    test-code: |
+      ctx->cancel_type = PTHREAD_CANCEL_ASYNCHRONOUS;
+    text: |
+      While the ${../glossary/thread-cancel-type:/term} of the
+      ${/glossary/executingtask:/term} is ${../if/cancel-asynchronous:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: CancelPending
+  states:
+  - name: 'Yes'
+    test-code: |
+      ctx->cancel_pending = true;
+    text: |
+      While a ${../glossary/thread-cancel-request:/term} is pending for the
+      ${/glossary/executingtask:/term}.
+  - name: 'No'
+    test-code: |
+      ctx->cancel_pending = false;
+    text: |
+      While no ${../glossary/thread-cancel-request:/term} is pending for the
+      ${/glossary/executingtask:/term}.
+  test-epilogue: null
+  test-prologue: null
+- name: RestartPending
+  states:
+  - name: 'Yes'
+    test-code: |
+      ctx->restart_pending = true;
+    text: |
+      While a restart of the ${/glossary/executingtask:/term} by
+      ${/rtems/task/if/restart:/name} is pending.
+  - name: 'No'
+    test-code: |
+      ctx->restart_pending = false;
+    text: |
+      While no restart of the ${/glossary/executingtask:/term} is pending.
+  test-epilogue: null
+  test-prologue: null
+rationale: |
+  Dimension Context covers the context of the call, 2 states. The interface item
+  states the ${/c/errno/if/eproto:/name} status for interrupt context. The
+  executing task of that context is the interrupted task.
+
+  Dimension CancelState covers the ${../glossary/thread-cancel-state:/term} of
+  the executing task before the call, 2 states. Dimension CancelType covers its
+  ${../glossary/thread-cancel-type:/term}, 2 states.
+  ${/ref/std/posix-2024/cancelability-states:/name} defines both sets of states.
+
+  Dimension CancelPending covers the pending
+  ${../glossary/thread-cancel-request:/term} of the executing task, 2 states.
+  Dimension RestartPending covers the pending restart request of the executing
+  task, 2 states. The section ${/ref/rtems/c-user/task-life-states:/name} of the
+  RTEMS Classic API Guide states that the task life protection and the deferred
+  life changes block both requests.
+
+  ${/ref/std/posix-2024/cancellation-points:/name} does not list
+  ${../if/setcancelstate:/name} as a ${../glossary/cancellation-point:/term}. The
+  call therefore acts upon no request while the type is deferred. With the
+  asynchronous type, the enabled state ends the block of the Task Life States
+  section. The notes of ${/rtems/task/if/delete:/name} state that a terminating
+  task with a protected task life executes normally until it disables the
+  protection. The item /rtems/task/req/restart states that a terminating task
+  which restarts terminates.
+
+  A call during the termination of the executing task is no state of a dimension.
+  ${/ref/std/posix-2024/thread-cancellation-cleanup-handlers:/name} leaves a
+  change to the enabled state undefined there.
+
+  A task with the enabled state and the asynchronous type acted upon each request
+  when the request was made. The request is then never pending, so the map skips
+  these variants.
+requirement-type: functional
+skip-reasons:
+  ActedUpon: |
+    A task with the ${../if/cancel-enable:/name} state and the
+    ${../if/cancel-asynchronous:/name} type acts upon a request when the request is
+    made, so no request is pending.
+test-action: |
+  ctx->worker_id = CreateTask( "WORK", PRIO_HIGH );
+  StartTask( ctx->worker_id, Worker, ctx );
+test-brief: null
+test-cleanup: |
+  if ( !ctx->joined ) {
+    ctx->phase = PHASE_CLEANUP;
+    ResumeTask( ctx->worker_id );
+    T_eq_int( pthread_join( ctx->worker_thread, NULL ), 0 );
+  }
+test-context:
+- brief: |
+    This member contains the identifier of the worker task.
+  description: null
+  member: |
+    rtems_id worker_id
+- brief: |
+    This member contains the thread identifier of the worker task.
+  description: null
+  member: |
+    pthread_t worker_thread
+- brief: |
+    This member contains the phase of the variant.
+  description: null
+  member: |
+    Phase phase
+- brief: |
+    This member is true, if the worker task started.
+  description: null
+  member: |
+    bool worker_started
+- brief: |
+    This member is true, if the test joined the worker task.
+  description: null
+  member: |
+    bool joined
+- brief: |
+    This member contains the ${../glossary/thread-exit-value:/term} of the worker
+    task.
+  description: null
+  member: |
+    void *exit_value
+- brief: |
+    This member contains the count of restarts of the worker task in the action
+    phase.
+  description: null
+  member: |
+    uint32_t restarts
+- brief: |
+    This member is true, if the call returned to the caller.
+  description: null
+  member: |
+    bool returned
+- brief: |
+    This member is true, if the enabled asynchronous cancellation of the later
+    phase returned to the worker task.
+  description: null
+  member: |
+    bool late_returned
+- brief: |
+    This member is true, if the call is made from within interrupt context.
+  description: null
+  member: |
+    bool in_interrupt
+- brief: |
+    This member contains the ${../glossary/thread-cancel-state:/term} which the
+    worker task sets before the call.
+  description: null
+  member: |
+    int cancel_state
+- brief: |
+    This member contains the ${../glossary/thread-cancel-type:/term} which the
+    worker task sets before the call.
+  description: null
+  member: |
+    int cancel_type
+- brief: |
+    This member is true, if a ${../glossary/thread-cancel-request:/term} shall be
+    pending.
+  description: null
+  member: |
+    bool cancel_pending
+- brief: |
+    This member is true, if a restart request shall be pending.
+  description: null
+  member: |
+    bool restart_pending
+- brief: |
+    This member contains the ${../glossary/thread-cancel-state:/term} after the
+    call.
+  description: null
+  member: |
+    int state_after
+- brief: |
+    This member contains the ${../glossary/thread-cancel-type:/term} after the
+    call.
+  description: null
+  member: |
+    int type_after
+- brief: |
+    This member provides the object referenced by the
+    ${../if/setcancelstate:/params[1]/name} parameter.
+  description: null
+  member: |
+    int oldstate_obj
+- brief: |
+    This member contains the return value of the ${../if/setcancelstate:/name}
+    call.
+  description: null
+  member: |
+    int status
+- brief: |
+    This member specifies the ${../if/setcancelstate:/params[0]/name} parameter
+    value.
+  description: null
+  member: |
+    int state
+- brief: |
+    This member specifies the ${../if/setcancelstate:/params[1]/name} parameter
+    value.
+  description: null
+  member: |
+    int *oldstate
+test-context-support: |
+  typedef enum { PHASE_ACTION, PHASE_LATER, PHASE_CLEANUP } Phase;
+test-description: null
+test-header: null
+test-includes:
+- errno.h
+- pthread.h
+- rtems.h
+test-local-includes:
+- tx-support.h
+test-prepare: |
+  ctx->phase = PHASE_ACTION;
+  ctx->worker_started = false;
+  ctx->joined = false;
+  ctx->restarts = 0;
+  ctx->returned = false;
+  ctx->late_returned = false;
+  ctx->exit_value = NULL;
+  ctx->status = -1;
+  ctx->oldstate_obj = -1;
+  ctx->state_after = -1;
+  ctx->type_after = -1;
+test-setup:
+  brief: null
+  code: |
+    SetSelfPriority( PRIO_NORMAL );
+  description: null
+test-stop: null
+test-support: |
+  typedef ${.:/test-context-type} Context;
+
+  static int exit_object;
+
+  static void Action( void *arg )
+  {
+    Context *ctx;
+
+    ctx = arg;
+    ctx->status = pthread_setcancelstate( ctx->state, ctx->oldstate );
+  }
+
+  static void JoinWorker( Context *ctx )
+  {
+    bool suspended;
+
+    suspended = IsTaskSuspended( ctx->worker_id );
+    T_false( suspended );
+
+    if ( suspended ) {
+      ctx->phase = PHASE_CLEANUP;
+      ResumeTask( ctx->worker_id );
+    }
+
+    T_eq_int( pthread_join( ctx->worker_thread, &ctx->exit_value ), 0 );
+    ctx->joined = true;
+  }
+
+  static void Worker( rtems_task_argument arg )
+  {
+    Context *ctx;
+
+    ctx = (Context *) arg;
+
+    if ( ctx->worker_started ) {
+      ++ctx->restarts;
+      pthread_exit( &exit_object );
+    }
+
+    ctx->worker_started = true;
+    ctx->worker_thread = pthread_self();
+    DisableCancelability( NULL, NULL );
+    RequestLifeChangesWithinISR(
+      ctx->worker_id,
+      ctx,
+      ctx->restart_pending,
+      ctx->cancel_pending
+    );
+    SetCancelability( ctx->cancel_state, ctx->cancel_type );
+
+    if ( ctx->in_interrupt ) {
+      CallWithinISR( Action, ctx );
+    } else {
+      Action( ctx );
+    }
+
+    ctx->returned = true;
+    DisableCancelability( &ctx->state_after, &ctx->type_after );
+    SuspendSelf();
+    SetCancelability( PTHREAD_CANCEL_ENABLE, PTHREAD_CANCEL_ASYNCHRONOUS );
+
+    if ( ctx->phase == PHASE_LATER ) {
+      ctx->late_returned = true;
+    }
+
+    pthread_exit( &exit_object );
+  }
+test-target: testsuites/validation/tc-pthread-setcancelstate.c
+test-teardown:
+  brief: null
+  code: |
+    RestoreRunnerPriority();
+  description: null
+text: |
+  ${.:text-template}
+transition-map:
+- enabled-by: true
+  post-conditions:
+    Status: Ok
+    CancelState:
+    - specified-by: State
+    OldState:
+    - if:
+        pre-conditions:
+          OldState: 'Null'
+      then: N/A
+    - else: Set
+    CancelType: Nop
+    Life: Nop
+    Return: 'Yes'
+    ExitValue: N/A
+    Requests: Nop
+  pre-conditions:
+    Context:
+    - Task
+    State:
+    - Enable
+    - Disable
+    OldState: all
+    CancelState: all
+    CancelType:
+    - Deferred
+    CancelPending: all
+    RestartPending: all
+- enabled-by: true
+  post-conditions:
+    Status: Ok
+    CancelState:
+    - specified-by: State
+    OldState:
+    - if:
+        pre-conditions:
+          OldState: 'Null'
+      then: N/A
+    - else: Set
+    CancelType: Nop
+    Life: Nop
+    Return: 'Yes'
+    ExitValue: N/A
+    Requests: Nop
+  pre-conditions:
+    Context:
+    - Task
+    State:
+    - Enable
+    OldState: all
+    CancelState:
+    - Disable
+    CancelType:
+    - Asynchronous
+    CancelPending:
+    - 'No'
+    RestartPending:
+    - 'No'
+- enabled-by: true
+  post-conditions:
+    Status: Ok
+    CancelState: Disable
+    OldState:
+    - if:
+        pre-conditions:
+          OldState: 'Null'
+      then: N/A
+    - else: Set
+    CancelType: Nop
+    Life: Nop
+    Return: 'Yes'
+    ExitValue: N/A
+    Requests: Nop
+  pre-conditions:
+    Context:
+    - Task
+    State:
+    - Disable
+    OldState: all
+    CancelState:
+    - Disable
+    CancelType:
+    - Asynchronous
+    CancelPending: all
+    RestartPending: all
+- enabled-by: true
+  post-conditions:
+    Status: N/A
+    CancelState: N/A
+    OldState: N/A
+    CancelType: N/A
+    Life: Terminate
+    Return: 'No'
+    ExitValue: Canceled
+    Requests: N/A
+  pre-conditions:
+    Context:
+    - Task
+    State:
+    - Enable
+    OldState: all
+    CancelState:
+    - Disable
+    CancelType:
+    - Asynchronous
+    CancelPending:
+    - 'Yes'
+    RestartPending: all
+- enabled-by: true
+  post-conditions:
+    Status: N/A
+    CancelState: N/A
+    OldState: N/A
+    CancelType: N/A
+    Life: Restart
+    Return: 'No'
+    ExitValue: N/A
+    Requests: N/A
+  pre-conditions:
+    Context:
+    - Task
+    State:
+    - Enable
+    OldState: all
+    CancelState:
+    - Disable
+    CancelType:
+    - Asynchronous
+    CancelPending:
+    - 'No'
+    RestartPending:
+    - 'Yes'
+- enabled-by: true
+  post-conditions:
+    Status: Ok
+    CancelState:
+    - specified-by: State
+    OldState:
+    - if:
+        pre-conditions:
+          OldState: 'Null'
+      then: N/A
+    - else: Set
+    CancelType: Nop
+    Life: Nop
+    Return: 'Yes'
+    ExitValue: N/A
+    Requests: Nop
+  pre-conditions:
+    Context:
+    - Task
+    State:
+    - Enable
+    - Disable
+    OldState: all
+    CancelState:
+    - Enable
+    CancelType:
+    - Asynchronous
+    CancelPending:
+    - 'No'
+    RestartPending:
+    - 'No'
+- enabled-by: true
+  post-conditions:
+    Status: Inval
+    CancelState: Nop
+    OldState:
+    - if:
+        pre-conditions:
+          OldState: 'Null'
+      then: N/A
+    - else: Nop
+    CancelType: Nop
+    Life: Nop
+    Return: 'Yes'
+    ExitValue: N/A
+    Requests: Nop
+  pre-conditions:
+    Context:
+    - Task
+    State:
+    - Invalid
+    OldState: all
+    CancelState: all
+    CancelType: all
+    CancelPending: all
+    RestartPending: all
+- enabled-by: true
+  post-conditions:
+    Status: Proto
+    CancelState: Nop
+    OldState:
+    - if:
+        pre-conditions:
+          OldState: 'Null'
+      then: N/A
+    - else: Nop
+    CancelType: Nop
+    Life: Nop
+    Return: 'Yes'
+    ExitValue: N/A
+    Requests: Nop
+  pre-conditions:
+    Context:
+    - Interrupt
+    State: all
+    OldState: all
+    CancelState: all
+    CancelType: all
+    CancelPending: all
+    RestartPending: all
+- enabled-by: true
+  post-conditions: ActedUpon
+  pre-conditions:
+    Context: all
+    State: all
+    OldState: all
+    CancelState:
+    - Enable
+    CancelType:
+    - Asynchronous
+    CancelPending:
+    - 'Yes'
+    RestartPending: all
+- enabled-by: true
+  post-conditions: ActedUpon
+  pre-conditions:
+    Context: all
+    State: all
+    OldState: all
+    CancelState:
+    - Enable
+    CancelType:
+    - Asynchronous
+    CancelPending:
+    - 'No'
+    RestartPending:
+    - 'Yes'
+type: requirement

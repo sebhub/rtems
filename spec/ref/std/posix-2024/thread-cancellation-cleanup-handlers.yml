@@ -1,0 +1,12 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+links:
+- role: reference-location
+  uid: ../posix-2024
+location: 2.9.5.3
+name: POSIX.1-2024, System Interfaces, Section 2.9.5.3 Thread Cancellation Cleanup
+  Handlers
+path: functions/V2_chap02.html#tag_16_09_05_03
+type: reference-location

@@ -1,0 +1,11 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+links:
+- role: reference-location
+  uid: ../posix-2024
+location: 2.9.5.1
+name: POSIX.1-2024, System Interfaces, Section 2.9.5.1 Cancelability States
+path: functions/V2_chap02.html#tag_16_09_05_01
+type: reference-location
