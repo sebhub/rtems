@@ -1,12 +1,10 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 brief: |
-  This constant represents the ${../glossary/thread-exit-value:/term} of a
-  ${../glossary/thread:/term} which terminated by a
-  ${../glossary/thread-cancellation:/term}.
+  This error code indicates resource deadlock avoided.
 copyrights:
 - Copyright (C) 2026 embedded brains GmbH & Co. KG
 definition:
-  default: ((void *) -1)
+  default: _ImplementationDefined
   variants: []
 description: null
 enabled-by: true
@@ -18,8 +16,10 @@ links:
 - role: interface-ingroup
   uid: group
 - role: reference
-  uid: /ref/std/posix-2024/pthread-h
-name: PTHREAD_CANCELED
+  uid: /ref/std/c23/errno-h
+- role: reference
+  uid: /ref/std/cppreference-c/errno-macros
+name: EDEADLK
 notes: |
-  See ${/ref/std/posix-2024/pthread-h:/name}.
+  See ${/ref/std/c23/errno-h:/name}, EDEADLK, and ${/ref/std/cppreference-c/errno-macros:/name}.
 type: interface

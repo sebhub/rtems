@@ -1,0 +1,55 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Detach the ${../glossary/thread:/term} specified by ${.:/params[0]/name}.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+  default:
+    attributes: null
+    body: null
+    params:
+    - ${/c/if/pthread_t:/name} ${.:/params[0]/name}
+    return: int
+  variants: []
+description: null
+enabled-by: true
+index-entries: []
+interface-type: function
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+- description: |
+    The ${.:/params[0]/name} is not a ${../glossary/joinable-thread:/term}.
+  role: errno
+  uid: /c/errno/if/einval
+- description: |
+    No thread with the ID ${.:/params[0]/name} could be found.
+  role: errno
+  uid: /c/errno/if/esrch
+- role: reference
+  uid: /ref/std/posix-2024/pthread-detach
+name: pthread_detach
+notes: |
+  See ${/ref/std/posix-2024/pthread-detach:/name}.
+params:
+- description: |
+    is the thread to detach.
+  dir: null
+  name: thread
+return:
+  return: null
+  return-values:
+  - description: |
+      The successful completion returns zero.
+    value: 0
+  - description: |
+      The implementation has detected that the value specified by
+      ${.:/params[0]/name} does not refer to a ${../glossary/joinable-thread:/term}.
+    value: ${/c/errno/if/einval:/name}
+  - description: |
+      No thread could be found corresponding to that specified by the given
+      ${.:/params[0]/name} ID.
+    value: ${/c/errno/if/esrch:/name}
+type: interface

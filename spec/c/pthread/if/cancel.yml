@@ -1,0 +1,49 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Request the ${../glossary/thread-cancellation:/term} of the
+  ${../glossary/thread:/term} specified by ${.:/params[0]/name}.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+  default:
+    attributes: null
+    body: null
+    params:
+    - ${/c/if/pthread_t:/name} ${.:/params[0]/name}
+    return: int
+  variants: []
+description: null
+enabled-by: true
+index-entries: []
+interface-type: function
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+- description: |
+    No ${/c/pthread/glossary/thread:/term} with the ID ${.:/params[0]/name} could
+    be found.
+  role: errno
+  uid: /c/errno/if/esrch
+- role: reference
+  uid: /ref/std/posix-2024/pthread-cancel
+name: pthread_cancel
+notes: |
+  See ${/ref/std/posix-2024/pthread-cancel:/name}.
+params:
+- description: |
+    is the thread to cancel.
+  dir: null
+  name: thread
+return:
+  return: null
+  return-values:
+  - description: |
+      The requested operation was successful.
+    value: 0
+  - description: |
+      No thread could be found corresponding to that specified by the given
+      ${.:/params[0]/name} ID.
+    value: ${/c/errno/if/esrch:/name}
+type: interface

@@ -1,13 +1,25 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This error code indicates invalid argument.
 copyrights:
-- Copyright (C) 2021 embedded brains GmbH & Co. KG
+- Copyright (C) 2021, 2026 embedded brains GmbH & Co. KG
+definition:
+  default: _ImplementationDefined
+  variants: []
+description: null
 enabled-by: true
 index-entries: []
-interface-type: unspecified-define
+interface-type: define
 links:
 - role: interface-placement
   uid: header
 - role: interface-ingroup
   uid: group
+- role: reference
+  uid: /ref/std/c23/errno-h
+- role: reference
+  uid: /ref/std/cppreference-c/errno-macros
 name: EINVAL
+notes: |
+  See ${/ref/std/c23/errno-h:/name}, EINVAL, and ${/ref/std/cppreference-c/errno-macros:/name}.
 type: interface

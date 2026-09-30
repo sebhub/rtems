@@ -1,0 +1,62 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Set the ${../glossary/thread-cancel-state:/term} of the calling
+  ${../glossary/thread:/term} to the state specified by ${.:/params[0]/name} and
+  optionally store the previous state in the object referenced by
+  ${.:/params[1]/name}.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+  default:
+    attributes: null
+    body: null
+    params:
+    - int ${.:/params[0]/name}
+    - int *${.:/params[1]/name}
+    return: int
+  variants: []
+description: null
+enabled-by: true
+index-entries: []
+interface-type: function
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+- description: |
+    The value specified in ${.:/params[0]/name} is invalid.
+  role: errno
+  uid: /c/errno/if/einval
+- description: |
+    The function was called from within interrupt context.
+  role: errno
+  uid: /c/errno/if/eproto
+- role: reference
+  uid: /ref/std/posix-2024/pthread-setcancelstate
+name: pthread_setcancelstate
+notes: |
+  See ${/ref/std/posix-2024/pthread-setcancelstate:/name}.
+params:
+- description: |
+    is the new ${../glossary/thread-cancel-state:/term}.
+  dir: null
+  name: state
+- description: |
+    is the pointer to store the previous ${../glossary/thread-cancel-state:/term}.
+  dir: out
+  name: oldstate
+return:
+  return: null
+  return-values:
+  - description: |
+      The requested operation was successful.
+    value: 0
+  - description: |
+      The specified ${.:/params[0]/name} is not ${/c/pthread/if/cancel-enable:/name}
+      or ${/c/pthread/if/cancel-disable:/name}.
+    value: ${/c/errno/if/einval:/name}
+  - description: |
+      The function was called from within interrupt context.
+    value: ${/c/errno/if/eproto:/name}
+type: interface

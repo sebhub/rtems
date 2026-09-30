@@ -1,0 +1,18 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+- role: reference
+  uid: /ref/std/posix-2024/pthread-testcancel
+term: cancellation point
+text: |
+  A point in the execution of a ${thread:/term} at which the thread acts upon a
+  pending ${thread-cancel-request:/term} while its ${thread-cancel-type:/term} is
+  ${../if/cancel-deferred:/name}. RTEMS implements no cancellation point.
+  ${../if/testcancel:/name} acts upon a pending request instead. See
+  ${/ref/std/posix-2024/pthread-testcancel:/name}.
+type: glossary

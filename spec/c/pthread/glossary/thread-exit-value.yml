@@ -1,0 +1,15 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+- role: reference
+  uid: /ref/std/posix-2024/pthread-exit
+term: thread exit value
+text: |
+  The value which a terminated ${thread:/term} makes available to a thread which
+  joins it. See ${/ref/std/posix-2024/pthread-exit:/name}.
+type: glossary

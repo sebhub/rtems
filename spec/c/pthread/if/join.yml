@@ -1,0 +1,59 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Wait for the termination of the ${../glossary/thread:/term} specified by
+  ${.:/params[0]/name} and optionally store its
+  ${../glossary/thread-exit-value:/term} in the object referenced by
+  ${.:/params[1]/name}.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+  default:
+    attributes: null
+    body: null
+    params:
+    - ${/c/if/pthread_t:/name} ${.:/params[0]/name}
+    - void **${.:/params[1]/name}
+    return: int
+  variants: []
+description: null
+enabled-by: true
+index-entries: []
+interface-type: function
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+- role: reference
+  uid: /ref/std/posix-2024/pthread-join
+name: pthread_join
+notes: |
+  See ${/ref/std/posix-2024/pthread-join:/name}.
+params:
+- description: |
+    is the thread to wait for.
+  dir: null
+  name: thread
+- description: |
+    is the pointer to a location where the ${../glossary/thread-exit-value:/term}
+    of the joined thread will be stored.
+  dir: out
+  name: value_ptr
+return:
+  return: null
+  return-values:
+  - description: |
+      The successful completion returns zero.
+    value: 0
+  - description: |
+      A deadlock was detected.
+    value: ${/c/errno/if/edeadlk:/name}
+  - description: |
+      The implementation has detected that the value specified by
+      ${.:/params[0]/name} does not refer to a ${../glossary/joinable-thread:/term}.
+    value: ${/c/errno/if/einval:/name}
+  - description: |
+      No thread could be found corresponding to that specified by the given
+      ${.:/params[0]/name} ID.
+    value: ${/c/errno/if/esrch:/name}
+type: interface
