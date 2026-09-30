@@ -1,0 +1,16 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+- role: reference
+  uid: /ref/std/posix-2024/pthread-detach
+term: detached thread
+text: |
+  A ${thread:/term} which no other thread can join. The system reclaims the
+  storage of a detached thread when the thread terminates. See
+  ${/ref/std/posix-2024/pthread-detach:/name}.
+type: glossary

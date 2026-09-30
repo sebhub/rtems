@@ -1,0 +1,30 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Request delivery of any pending ${../glossary/thread-cancel-request:/term} to
+  the calling ${../glossary/thread:/term}.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+  default:
+    attributes: null
+    body: null
+    params: []
+    return: null
+  variants: []
+description: null
+enabled-by: true
+index-entries: []
+interface-type: function
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+- role: reference
+  uid: /ref/std/posix-2024/pthread-testcancel
+name: pthread_testcancel
+notes: |
+  See ${/ref/std/posix-2024/pthread-testcancel:/name}.
+params: []
+return: null
+type: interface

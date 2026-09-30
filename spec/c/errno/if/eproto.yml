@@ -1,0 +1,23 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This error code indicates protocol error.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+  default: _ImplementationDefined
+  variants: []
+description: null
+enabled-by: true
+index-entries: []
+interface-type: define
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+- role: reference
+  uid: /ref/std/posix-2024/errno-h
+name: EPROTO
+notes: |
+  See ${/ref/std/posix-2024/errno-h:/name}.
+type: interface

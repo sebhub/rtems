@@ -1,10 +1,12 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 brief: |
-  This constant represents the return value of a canceled thread.
+  This constant represents the ${../glossary/thread-exit-value:/term} of a
+  ${../glossary/thread:/term} which terminated by a
+  ${../glossary/thread-cancellation:/term}.
 copyrights:
 - Copyright (C) 2026 embedded brains GmbH & Co. KG
 definition:
-  default: ((void *) -1)
+  default: _ImplementationDefined
   variants: []
 description: null
 enabled-by: true

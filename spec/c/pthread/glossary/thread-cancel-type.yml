@@ -10,7 +10,9 @@ links:
   uid: /ref/std/posix-2024/pthread-setcanceltype
 term: thread cancel type attribute
 text: |
-  An attribute of a ${thread:/term} that specifies its cancelability type. See
-  ${/ref/std/posix-2024/pthread-setcanceltype:/name}. This attribute can be set
-  to ${../if/cancel-deferred:/name} or ${../if/cancel-asynchronous:/name}.
+  An attribute of a ${thread:/term} which decides whether the thread acts upon a
+  ${thread-cancel-request:/term} only at a ${cancellation-point:/term}. The
+  attribute is ${../if/cancel-deferred:/name} or
+  ${../if/cancel-asynchronous:/name}. See
+  ${/ref/std/posix-2024/pthread-setcanceltype:/name}.
 type: glossary

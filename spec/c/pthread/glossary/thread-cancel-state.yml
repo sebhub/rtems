@@ -10,7 +10,8 @@ links:
   uid: /ref/std/posix-2024/pthread-setcancelstate
 term: thread cancel state attribute
 text: |
-  An attribute of a ${thread:/term} that specifies its cancelability state. See
-  ${/ref/std/posix-2024/pthread-setcancelstate:/name}. This attribute can be set
-  to ${../if/cancel-enable:/name} or ${../if/cancel-disable:/name}.
+  An attribute of a ${thread:/term} which decides whether the thread holds each
+  ${thread-cancel-request:/term} pending. The attribute is
+  ${../if/cancel-enable:/name} or ${../if/cancel-disable:/name}. See
+  ${/ref/std/posix-2024/pthread-setcancelstate:/name}.
 type: glossary
