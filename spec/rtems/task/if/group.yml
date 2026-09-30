@@ -56,6 +56,8 @@ links:
 - role: placement-order
   uid: set-affinity
 - role: placement-order
+  uid: get-cpu-usage
+- role: placement-order
   uid: iterate
 name: Task Manager
 text: |
