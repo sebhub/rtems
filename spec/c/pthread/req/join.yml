@@ -1,0 +1,955 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: action
+links:
+- role: interface-function
+  uid: ../if/join
+- role: reference
+  uid: /ref/rtems/posix-users/pthread-join
+- role: reference
+  uid: /ref/rtems/c-user/task-life-states
+- role: reference
+  uid: /ref/std/posix-2024/pthread-join
+post-conditions:
+- name: Status
+  states:
+  - name: Ok
+    test-code: |
+      T_eq_int( ctx->status, 0 );
+    text: |
+      The ${/glossary/returnvalue:/term} of ${../if/join:/name} shall be zero.
+  - name: Deadlk
+    test-code: |
+      T_eq_int( ctx->status, EDEADLK );
+    text: |
+      The ${/glossary/returnvalue:/term} of ${../if/join:/name} shall be
+      ${/c/errno/if/edeadlk:/name}.
+  - name: Inval
+    test-code: |
+      T_eq_int( ctx->status, EINVAL );
+    text: |
+      The ${/glossary/returnvalue:/term} of ${../if/join:/name} shall be
+      ${/c/errno/if/einval:/name}.
+  - name: Srch
+    test-code: |
+      T_eq_int( ctx->status, ESRCH );
+    text: |
+      The ${/glossary/returnvalue:/term} of ${../if/join:/name} shall be
+      ${/c/errno/if/esrch:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: Value
+  states:
+  - name: Set
+    test-code: |
+      T_eq_ptr( ctx->value, &exit_object );
+    text: |
+      The value of the object referenced by the ${../if/join:/params[1]/name}
+      parameter shall be the ${../glossary/thread-exit-value:/term} of the thread
+      specified by the ${../if/join:/params[0]/name} parameter.
+  - name: Nop
+    test-code: |
+      T_eq_ptr( ctx->value, &initial_object );
+    text: |
+      The object referenced by the ${../if/join:/params[1]/name} parameter shall not
+      be modified by the ${../if/join:/name} call.
+  test-epilogue: null
+  test-prologue: null
+- name: Wait
+  states:
+  - name: 'Yes'
+    test-code: |
+      T_false( ctx->returned_early );
+
+      if ( ctx->target_restarted ) {
+        T_false( ctx->returned_after_restart );
+      }
+    text: |
+      The ${/glossary/executingtask:/term} shall be blocked by the
+      ${../if/join:/name} call until the thread specified by the
+      ${../if/join:/params[0]/name} parameter terminates.
+  - name: 'No'
+    test-code: |
+      T_true( ctx->returned_early );
+    text: |
+      The ${/glossary/executingtask:/term} shall not be blocked by the
+      ${../if/join:/name} call.
+  test-epilogue: null
+  test-prologue: null
+- name: Return
+  states:
+  - name: 'Yes'
+    test-code: |
+      T_true( ctx->returned );
+    text: |
+      The ${../if/join:/name} call shall return to the caller.
+  - name: 'No'
+    test-code: |
+      T_false( ctx->returned );
+    text: |
+      The ${../if/join:/name} call shall not return to the caller.
+  test-epilogue: null
+  test-prologue: null
+- name: Target
+  states:
+  - name: Reclaimed
+    test-code: |
+      T_eq_int( pthread_detach( ctx->target_thread ), ESRCH );
+    text: |
+      The identifier specified by the ${../if/join:/params[0]/name} parameter shall
+      be associated with no thread.
+  - name: Joinable
+    test-code: |
+      T_eq_int( pthread_detach( ctx->target_thread ), 0 );
+    text: |
+      The thread specified by the ${../if/join:/params[0]/name} parameter shall be a
+      ${../glossary/joinable-thread:/term}.
+  - name: Detached
+    test-code: |
+      T_eq_int( pthread_detach( ctx->target_thread ), EINVAL );
+    text: |
+      The thread specified by the ${../if/join:/params[0]/name} parameter shall be a
+      ${../glossary/detached-thread:/term}.
+  test-epilogue: null
+  test-prologue: null
+- name: Caller
+  states:
+  - name: Nop
+    test-code: |
+      T_eq_u32( ctx->caller_restarts, 0 );
+      T_false( ctx->caller_exited );
+    text: |
+      The ${/glossary/executingtask:/term} shall be neither terminated nor restarted
+      during the ${../if/join:/name} call.
+  - name: Terminated
+    test-code: |
+      T_eq_int( pthread_join( ctx->caller_thread, &value ), 0 );
+      ctx->caller_joined = true;
+      T_eq_ptr( value, PTHREAD_CANCELED );
+      T_eq_u32( ctx->caller_restarts, 0 );
+    text: |
+      The ${/glossary/executingtask:/term} shall be terminated by a
+      ${../glossary/thread-cancellation:/term}.
+  - name: Restarted
+    test-code: |
+      T_eq_u32( ctx->caller_restarts, 1 );
+      T_false( ctx->caller_exited );
+    text: |
+      The ${/glossary/executingtask:/term} shall be restarted.
+  test-epilogue: null
+  test-prologue: |
+    void *value;
+pre-conditions:
+- name: Thread
+  states:
+  - name: Invalid
+    test-code: |
+      ctx->thread_kind = THREAD_INVALID;
+    text: |
+      While the ${../if/join:/params[0]/name} parameter is not associated with a
+      thread.
+  - name: Executing
+    test-code: |
+      ctx->thread_kind = THREAD_EXECUTING;
+    text: |
+      While the ${../if/join:/params[0]/name} parameter is associated with the
+      ${/glossary/executingtask:/term}.
+  - name: Other
+    test-code: |
+      ctx->thread_kind = THREAD_OTHER;
+    text: |
+      While the ${../if/join:/params[0]/name} parameter is associated with a thread
+      other than the ${/glossary/executingtask:/term}.
+  test-epilogue: null
+  test-prologue: null
+- name: Joinable
+  states:
+  - name: 'Yes'
+    test-code: |
+      ctx->joinable = true;
+    text: |
+      While the thread specified by the ${../if/join:/params[0]/name} parameter is a
+      ${../glossary/joinable-thread:/term}.
+  - name: 'No'
+    test-code: |
+      ctx->joinable = false;
+    text: |
+      While the thread specified by the ${../if/join:/params[0]/name} parameter is a
+      ${../glossary/detached-thread:/term}.
+  test-epilogue: null
+  test-prologue: null
+- name: Terminated
+  states:
+  - name: 'Yes'
+    test-code: |
+      ctx->terminated = true;
+    text: |
+      While the thread specified by the ${../if/join:/params[0]/name} parameter is
+      terminated.
+  - name: 'No'
+    test-code: |
+      ctx->terminated = false;
+    text: |
+      While the thread specified by the ${../if/join:/params[0]/name} parameter is
+      not terminated.
+  test-epilogue: null
+  test-prologue: null
+- name: Joining
+  states:
+  - name: 'Yes'
+    test-code: |
+      ctx->joining = true;
+    text: |
+      While the thread specified by the ${../if/join:/params[0]/name} parameter waits
+      to join the ${/glossary/executingtask:/term}.
+  - name: 'No'
+    test-code: |
+      ctx->joining = false;
+    text: |
+      While the thread specified by the ${../if/join:/params[0]/name} parameter does
+      not wait to join the ${/glossary/executingtask:/term}.
+  test-epilogue: null
+  test-prologue: null
+- name: Canceled
+  states:
+  - name: 'Yes'
+    test-code: |
+      ctx->canceled = true;
+    text: |
+      While a ${../glossary/thread-cancellation:/term} of the
+      ${/glossary/executingtask:/term} is requested during the ${../if/join:/name}
+      call.
+  - name: 'No'
+    test-code: |
+      ctx->canceled = false;
+    text: |
+      While no ${../glossary/thread-cancellation:/term} of the
+      ${/glossary/executingtask:/term} is requested during the ${../if/join:/name}
+      call.
+  test-epilogue: null
+  test-prologue: null
+- name: Restarted
+  states:
+  - name: 'Yes'
+    test-code: |
+      ctx->restarted = true;
+    text: |
+      While a restart of the ${/glossary/executingtask:/term} by
+      ${/rtems/task/if/restart:/name} is requested during the ${../if/join:/name}
+      call.
+  - name: 'No'
+    test-code: |
+      ctx->restarted = false;
+    text: |
+      While no restart of the ${/glossary/executingtask:/term} is requested during
+      the ${../if/join:/name} call.
+  test-epilogue: null
+  test-prologue: null
+- name: TargetRestarted
+  states:
+  - name: 'Yes'
+    test-code: |
+      ctx->target_restarted = true;
+    text: |
+      While the thread specified by the ${../if/join:/params[0]/name} parameter is
+      restarted by ${/rtems/task/if/restart:/name} during the ${../if/join:/name}
+      call.
+  - name: 'No'
+    test-code: |
+      ctx->target_restarted = false;
+    text: |
+      While the thread specified by the ${../if/join:/params[0]/name} parameter is
+      not restarted during the ${../if/join:/name} call.
+  test-epilogue: null
+  test-prologue: null
+- name: ValuePtr
+  states:
+  - name: Valid
+    test-code: |
+      ctx->value_ptr = &ctx->value;
+    text: |
+      While the ${../if/join:/params[1]/name} parameter references an object of type
+      void pointer.
+  - name: 'Null'
+    test-code: |
+      ctx->value_ptr = NULL;
+    text: |
+      While the ${../if/join:/params[1]/name} parameter is equal to
+      ${/c/if/null:/name}.
+  test-epilogue: null
+  test-prologue: null
+rationale: |
+  Dimension Thread covers the threads which the identifier can reach, 3 states.
+  The section ${/ref/rtems/posix-users/pthread-join:/name} of the RTEMS POSIX API
+  Guide gives ${/c/errno/if/esrch:/name} for an invalid thread and
+  ${/c/errno/if/edeadlk:/name} for the calling thread.
+
+  Dimension Joinable covers whether the thread is a
+  ${../glossary/joinable-thread:/term}, 2 states. The section
+  ${/ref/rtems/c-user/task-life-states:/name} of the RTEMS Classic API Guide
+  states that a Classic API task is created not detached. It states that
+  ${../if/detach:/name} detaches a thread. The section
+  ${/ref/rtems/posix-users/pthread-join:/name} of the RTEMS POSIX API Guide gives
+  ${/c/errno/if/einval:/name} for a thread which is not joinable.
+
+  Dimension Terminated covers the termination of the thread before the call, 2
+  states. ${/ref/std/posix-2024/pthread-join:/name} states that the call suspends
+  the caller until the thread terminates, unless the thread terminated before.
+  The system reclaims a ${../glossary/detached-thread:/term} when it terminates,
+  so a terminated detached thread is no thread.
+
+  Dimension Joining covers a thread which waits to join the calling thread, 2
+  states. Each thread then waits for the other, which is the deadlock of the
+  ${/c/errno/if/edeadlk:/name} status.
+
+  Dimension Canceled covers a request of a
+  ${../glossary/thread-cancellation:/term} of the calling thread during the wait,
+  2 states. ${/ref/std/posix-2024/pthread-join:/name} states that the thread
+  specified by the ${../if/join:/params[0]/name} parameter shall not be detached
+  then.
+
+  Dimension Restarted covers a request of a restart of the calling thread by
+  ${/rtems/task/if/restart:/name} during the wait, 2 states. The directive makes
+  a blocked task ready and starts it again at its entry point. The thread
+  specified by the ${../if/join:/params[0]/name} parameter stays a
+  ${../glossary/joinable-thread:/term}, as with a cancellation. The item
+  /rtems/task/req/restart states that a terminating task which restarts
+  terminates.
+
+  Dimension TargetRestarted covers a restart of the thread specified by the
+  ${../if/join:/params[0]/name} parameter during the wait, 2 states. A restart
+  does not terminate the thread, so the call waits until the thread terminates.
+
+  Each of the three requests can take place only while the call waits.
+
+  Dimension ValuePtr covers the ${../if/join:/params[1]/name} parameter, 2
+  states. POSIX.1-2024 makes the value available for a non-NULL pointer only.
+
+  A successful call reclaims the thread. The notes of ${../if/join:/name} in the
+  section ${/ref/rtems/posix-users/pthread-join:/name} of the RTEMS POSIX API
+  Guide state that a later join of the thread fails.
+requirement-type: functional
+skip-reasons:
+  DetachedTerminated: |
+    The system reclaims a ${../glossary/detached-thread:/term} when it terminates,
+    so the identifier is associated with no thread.
+  NoWait: |
+    A ${../glossary/thread-cancellation:/term} or a restart can be requested during
+    the call only while the call waits.
+  TerminatedJoining: |
+    A terminated thread does not wait to join a thread.
+test-action: |
+  ctx->caller_id = CreateTask( "CALL", PRIO_HIGH );
+  StartTask( ctx->caller_id, Caller, ctx );
+  ctx->target_id = CreateTask( "TARG", PRIO_HIGH );
+  StartTask( ctx->target_id, Target, ctx );
+
+  if ( !ctx->joinable ) {
+    T_eq_int( pthread_detach( ctx->target_thread ), 0 );
+  }
+
+  switch ( ctx->thread_kind ) {
+    case THREAD_INVALID:
+      ctx->thread = INVALID_ID;
+      break;
+    case THREAD_EXECUTING:
+      ctx->thread = ctx->caller_thread;
+      break;
+    default:
+      ctx->thread = ctx->target_thread;
+      break;
+  }
+
+  ResumeTask( ctx->caller_id );
+  ctx->returned_early = ctx->returned;
+
+  if ( ctx->target_restarted ) {
+    RestartTask( ctx->target_id, ctx );
+    (void) rtems_task_resume( ctx->target_id );
+    ctx->returned_after_restart = ctx->returned;
+  }
+
+  if ( ctx->canceled || ctx->restarted ) {
+    RequestLifeChangesWithinISR(
+      ctx->caller_id,
+      ctx,
+      ctx->restarted,
+      ctx->canceled
+    );
+  } else if ( !ctx->returned ) {
+    EndTarget( ctx );
+  }
+test-brief: null
+test-cleanup: |
+  if ( !ctx->caller_exited && !ctx->canceled ) {
+    ResumeTask( ctx->caller_id );
+  }
+
+  if ( !ctx->joining && !ctx->caller_joined ) {
+    T_eq_int( pthread_join( ctx->caller_thread, NULL ), 0 );
+  }
+
+  (void) pthread_detach( ctx->target_thread );
+
+  if ( !ctx->target_exited ) {
+    EndTarget( ctx );
+  }
+test-context:
+- brief: |
+    This member contains the identifier of the calling task.
+  description: null
+  member: |
+    rtems_id caller_id
+- brief: |
+    This member contains the thread identifier of the calling task.
+  description: null
+  member: |
+    pthread_t caller_thread
+- brief: |
+    This member is true, if the calling task started.
+  description: null
+  member: |
+    bool caller_started
+- brief: |
+    This member contains the identifier of the target task.
+  description: null
+  member: |
+    rtems_id target_id
+- brief: |
+    This member contains the thread identifier of the target task.
+  description: null
+  member: |
+    pthread_t target_thread
+- brief: |
+    This member is true, if the target task started.
+  description: null
+  member: |
+    bool target_started
+- brief: |
+    This member specifies the thread which the call joins.
+  description: null
+  member: |
+    ThreadKind thread_kind
+- brief: |
+    This member is true, if the target task is a
+    ${../glossary/joinable-thread:/term}.
+  description: null
+  member: |
+    bool joinable
+- brief: |
+    This member is true, if the target task terminates before the call.
+  description: null
+  member: |
+    bool terminated
+- brief: |
+    This member is true, if the target task waits to join the calling task.
+  description: null
+  member: |
+    bool joining
+- brief: |
+    This member is true, if a ${../glossary/thread-cancellation:/term} of the
+    calling task is requested during the call.
+  description: null
+  member: |
+    bool canceled
+- brief: |
+    This member is true, if a restart of the calling task is requested during the
+    call.
+  description: null
+  member: |
+    bool restarted
+- brief: |
+    This member is true, if the target task is restarted during the call.
+  description: null
+  member: |
+    bool target_restarted
+- brief: |
+    This member is true, if the call returned to the caller.
+  description: null
+  member: |
+    bool returned
+- brief: |
+    This member is true, if the call returned before the target task was resumed.
+  description: null
+  member: |
+    bool returned_early
+- brief: |
+    This member is true, if the call returned before the restart of the target task
+    ended.
+  description: null
+  member: |
+    bool returned_after_restart
+- brief: |
+    This member is true, if the calling task exited.
+  description: null
+  member: |
+    bool caller_exited
+- brief: |
+    This member is true, if the test joined the calling task.
+  description: null
+  member: |
+    bool caller_joined
+- brief: |
+    This member contains the count of restarts of the calling task.
+  description: null
+  member: |
+    uint32_t caller_restarts
+- brief: |
+    This member is true, if the target task exited.
+  description: null
+  member: |
+    bool target_exited
+- brief: |
+    This member provides the object referenced by the ${../if/join:/params[1]/name}
+    parameter.
+  description: null
+  member: |
+    void *value
+- brief: |
+    This member contains the return value of the ${../if/join:/name} call.
+  description: null
+  member: |
+    int status
+- brief: |
+    This member specifies the ${../if/join:/params[0]/name} parameter value.
+  description: null
+  member: |
+    pthread_t thread
+- brief: |
+    This member specifies the ${../if/join:/params[1]/name} parameter value.
+  description: null
+  member: |
+    void **value_ptr
+test-context-support: |
+  typedef enum { THREAD_INVALID, THREAD_EXECUTING, THREAD_OTHER } ThreadKind;
+test-description: null
+test-header: null
+test-includes:
+- errno.h
+- pthread.h
+- rtems.h
+test-local-includes:
+- tx-support.h
+test-prepare: |
+  ctx->joinable = true;
+  ctx->terminated = false;
+  ctx->joining = false;
+  ctx->canceled = false;
+  ctx->restarted = false;
+  ctx->target_restarted = false;
+  ctx->returned = false;
+  ctx->returned_early = false;
+  ctx->returned_after_restart = false;
+  ctx->caller_started = false;
+  ctx->caller_exited = false;
+  ctx->caller_joined = false;
+  ctx->caller_restarts = 0;
+  ctx->target_started = false;
+  ctx->target_exited = false;
+  ctx->status = -1;
+  ctx->value = &initial_object;
+test-setup:
+  brief: null
+  code: |
+    SetSelfPriority( PRIO_NORMAL );
+  description: null
+test-stop: null
+test-support: |
+  typedef ${.:/test-context-type} Context;
+
+  static int exit_object;
+
+  static int initial_object;
+
+  static void EndTarget( Context *ctx )
+  {
+    if ( ctx->target_restarted ) {
+      SendEvents( ctx->target_id, RTEMS_EVENT_0 );
+    } else {
+      ResumeTask( ctx->target_id );
+    }
+  }
+
+  static void Caller( rtems_task_argument arg )
+  {
+    Context *ctx;
+
+    ctx = (Context *) arg;
+
+    if ( ctx->caller_started ) {
+      ++ctx->caller_restarts;
+    } else {
+      ctx->caller_started = true;
+      ctx->caller_thread = pthread_self();
+      SuspendSelf();
+      ctx->status = pthread_join( ctx->thread, ctx->value_ptr );
+      ctx->returned = true;
+    }
+
+    SuspendSelf();
+    ctx->caller_exited = true;
+    pthread_exit( NULL );
+  }
+
+  static void Target( rtems_task_argument arg )
+  {
+    Context *ctx;
+
+    ctx = (Context *) arg;
+
+    if ( ctx->target_started ) {
+      (void) ReceiveAnyEvents();
+    } else {
+      ctx->target_started = true;
+      ctx->target_thread = pthread_self();
+
+      if ( ctx->joining ) {
+        (void) pthread_join( ctx->caller_thread, NULL );
+      }
+
+      if ( !ctx->terminated ) {
+        SuspendSelf();
+      }
+    }
+
+    ctx->target_exited = true;
+    pthread_exit( &exit_object );
+  }
+test-target: testsuites/validation/tc-pthread-join.c
+test-teardown:
+  brief: null
+  code: |
+    RestoreRunnerPriority();
+  description: null
+text: |
+  ${.:text-template}
+transition-map:
+- enabled-by: true
+  post-conditions:
+    Status: Srch
+    Value: &id001
+    - if:
+        pre-conditions:
+          ValuePtr: 'Null'
+      then: N/A
+    - else: Nop
+    Wait: 'No'
+    Return: 'Yes'
+    Target: N/A
+    Caller: Nop
+  pre-conditions:
+    Thread:
+    - Invalid
+    Joinable: N/A
+    Terminated: N/A
+    Joining: N/A
+    Canceled: N/A
+    Restarted: N/A
+    TargetRestarted: N/A
+    ValuePtr: all
+- enabled-by: true
+  post-conditions:
+    Status: Deadlk
+    Value: *id001
+    Wait: 'No'
+    Return: 'Yes'
+    Target: N/A
+    Caller: Nop
+  pre-conditions:
+    Thread:
+    - Executing
+    Joinable: N/A
+    Terminated: N/A
+    Joining: N/A
+    Canceled: N/A
+    Restarted: N/A
+    TargetRestarted: N/A
+    ValuePtr: all
+- enabled-by: true
+  post-conditions:
+    Status: Ok
+    Value: &id002
+    - if:
+        pre-conditions:
+          ValuePtr: 'Null'
+      then: N/A
+    - else: Set
+    Wait: 'No'
+    Return: 'Yes'
+    Target: Reclaimed
+    Caller: Nop
+  pre-conditions:
+    Thread:
+    - Other
+    Joinable:
+    - 'Yes'
+    Terminated:
+    - 'Yes'
+    Joining:
+    - 'No'
+    Canceled:
+    - 'No'
+    Restarted:
+    - 'No'
+    TargetRestarted:
+    - 'No'
+    ValuePtr: all
+- enabled-by: true
+  post-conditions:
+    Status: Ok
+    Value: *id002
+    Wait: 'Yes'
+    Return: 'Yes'
+    Target: Reclaimed
+    Caller: Nop
+  pre-conditions:
+    Thread: &id003
+    - Other
+    Joinable: &id004
+    - 'Yes'
+    Terminated: &id005
+    - 'No'
+    Joining: &id006
+    - 'No'
+    Canceled:
+    - 'No'
+    Restarted:
+    - 'No'
+    TargetRestarted: all
+    ValuePtr: all
+- enabled-by: true
+  post-conditions:
+    Status: N/A
+    Value: N/A
+    Wait: 'Yes'
+    Return: 'No'
+    Target: Joinable
+    Caller: Restarted
+  pre-conditions:
+    Thread: *id003
+    Joinable: *id004
+    Terminated: *id005
+    Joining: *id006
+    Canceled:
+    - 'No'
+    Restarted:
+    - 'Yes'
+    TargetRestarted: all
+    ValuePtr: all
+- enabled-by: true
+  post-conditions:
+    Status: N/A
+    Value: N/A
+    Wait: 'Yes'
+    Return: 'No'
+    Target: Joinable
+    Caller: Terminated
+  pre-conditions:
+    Thread: *id003
+    Joinable: *id004
+    Terminated: *id005
+    Joining: *id006
+    Canceled:
+    - 'Yes'
+    Restarted: all
+    TargetRestarted: all
+    ValuePtr: all
+- enabled-by: true
+  post-conditions:
+    Status: Deadlk
+    Value: *id001
+    Wait: 'No'
+    Return: 'Yes'
+    Target: Joinable
+    Caller: Nop
+  pre-conditions:
+    Thread:
+    - Other
+    Joinable:
+    - 'Yes'
+    Terminated:
+    - 'No'
+    Joining:
+    - 'Yes'
+    Canceled:
+    - 'No'
+    Restarted:
+    - 'No'
+    TargetRestarted:
+    - 'No'
+    ValuePtr: all
+- enabled-by: true
+  post-conditions:
+    Status: Inval
+    Value: *id001
+    Wait: 'No'
+    Return: 'Yes'
+    Target: Detached
+    Caller: Nop
+  pre-conditions:
+    Thread:
+    - Other
+    Joinable:
+    - 'No'
+    Terminated:
+    - 'No'
+    Joining: all
+    Canceled:
+    - 'No'
+    Restarted:
+    - 'No'
+    TargetRestarted:
+    - 'No'
+    ValuePtr: all
+- enabled-by: true
+  post-conditions: NoWait
+  pre-conditions:
+    Thread:
+    - Other
+    Joinable: all
+    Terminated: &id007
+    - 'Yes'
+    Joining: all
+    Canceled:
+    - 'Yes'
+    Restarted: all
+    TargetRestarted: all
+    ValuePtr: all
+- enabled-by: true
+  post-conditions: NoWait
+  pre-conditions:
+    Thread:
+    - Other
+    Joinable: all
+    Terminated: *id007
+    Joining: all
+    Canceled: all
+    Restarted:
+    - 'Yes'
+    TargetRestarted: all
+    ValuePtr: all
+- enabled-by: true
+  post-conditions: NoWait
+  pre-conditions:
+    Thread:
+    - Other
+    Joinable: all
+    Terminated: *id007
+    Joining: all
+    Canceled: all
+    Restarted: all
+    TargetRestarted:
+    - 'Yes'
+    ValuePtr: all
+- enabled-by: true
+  post-conditions: NoWait
+  pre-conditions:
+    Thread:
+    - Other
+    Joinable: all
+    Terminated: all
+    Joining: &id008
+    - 'Yes'
+    Canceled:
+    - 'Yes'
+    Restarted: all
+    TargetRestarted: all
+    ValuePtr: all
+- enabled-by: true
+  post-conditions: NoWait
+  pre-conditions:
+    Thread:
+    - Other
+    Joinable: all
+    Terminated: all
+    Joining: *id008
+    Canceled: all
+    Restarted:
+    - 'Yes'
+    TargetRestarted: all
+    ValuePtr: all
+- enabled-by: true
+  post-conditions: NoWait
+  pre-conditions:
+    Thread:
+    - Other
+    Joinable: all
+    Terminated: all
+    Joining: *id008
+    Canceled: all
+    Restarted: all
+    TargetRestarted:
+    - 'Yes'
+    ValuePtr: all
+- enabled-by: true
+  post-conditions: NoWait
+  pre-conditions:
+    Thread:
+    - Other
+    Joinable: &id009
+    - 'No'
+    Terminated: all
+    Joining: all
+    Canceled:
+    - 'Yes'
+    Restarted: all
+    TargetRestarted: all
+    ValuePtr: all
+- enabled-by: true
+  post-conditions: NoWait
+  pre-conditions:
+    Thread:
+    - Other
+    Joinable: *id009
+    Terminated: all
+    Joining: all
+    Canceled: all
+    Restarted:
+    - 'Yes'
+    TargetRestarted: all
+    ValuePtr: all
+- enabled-by: true
+  post-conditions: NoWait
+  pre-conditions:
+    Thread:
+    - Other
+    Joinable: *id009
+    Terminated: all
+    Joining: all
+    Canceled: all
+    Restarted: all
+    TargetRestarted:
+    - 'Yes'
+    ValuePtr: all
+- enabled-by: true
+  post-conditions: DetachedTerminated
+  pre-conditions:
+    Thread:
+    - Other
+    Joinable:
+    - 'No'
+    Terminated:
+    - 'Yes'
+    Joining: all
+    Canceled: all
+    Restarted: all
+    TargetRestarted: all
+    ValuePtr: all
+- enabled-by: true
+  post-conditions: TerminatedJoining
+  pre-conditions:
+    Thread:
+    - Other
+    Joinable:
+    - 'Yes'
+    Terminated:
+    - 'Yes'
+    Joining:
+    - 'Yes'
+    Canceled: all
+    Restarted: all
+    TargetRestarted: all
+    ValuePtr: all
+type: requirement
