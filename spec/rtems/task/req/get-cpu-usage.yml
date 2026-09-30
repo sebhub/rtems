@@ -1,0 +1,499 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: action
+links:
+- role: interface-function
+  uid: ../if/get-cpu-usage
+post-conditions:
+- name: Status
+  states:
+  - name: Ok
+    test-code: |
+      T_rsc_success( ctx->status );
+    text: |
+      The return status of ${../if/get-cpu-usage:/name} shall be
+      ${../../status/if/successful:/name}.
+  - name: InvAddr
+    test-code: |
+      T_rsc( ctx->status, RTEMS_INVALID_ADDRESS );
+    text: |
+      The return status of ${../if/get-cpu-usage:/name} shall be
+      ${../../status/if/invalid-address:/name}.
+  - name: InvId
+    test-code: |
+      T_rsc( ctx->status, RTEMS_INVALID_ID );
+    text: |
+      The return status of ${../if/get-cpu-usage:/name} shall be
+      ${../../status/if/invalid-id:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: Time
+  states:
+  - name: Set
+    test-code: |
+      _Timestamp_To_timespec( &ctx->used_before, &before );
+      _Timestamp_To_timespec( &ctx->used_after, &after );
+      if ( ctx->executing ) {
+        T_gt_i64( GetNanoseconds( &ctx->ts_obj ), GetNanoseconds( &before ) );
+      } else {
+        T_ge_i64( GetNanoseconds( &ctx->ts_obj ), GetNanoseconds( &before ) );
+      }
+
+      T_le_i64( GetNanoseconds( &ctx->ts_obj ), GetNanoseconds( &after ) );
+    text: |
+      The value of the object referenced by the
+      ${../if/get-cpu-usage:/params[1]/name} parameter shall be set to the processor
+      time which the task specified by the ${../if/get-cpu-usage:/params[0]/name}
+      parameter used throughout its lifetime up to some time point during the
+      ${../if/get-cpu-usage:/name} call.
+  - name: Nop
+    test-code: |
+      T_eq_i64( (int64_t) ctx->ts_obj.tv_sec, -1 );
+      T_eq_long( ctx->ts_obj.tv_nsec, -1 );
+    text: |
+      The object referenced by the ${../if/get-cpu-usage:/params[1]/name} parameter
+      shall not be modified by the ${../if/get-cpu-usage:/name} call.
+  test-epilogue: null
+  test-prologue: |
+    struct timespec before;
+    struct timespec after;
+pre-conditions:
+- name: CPUs
+  states:
+  - name: One
+    test-code: |
+      if ( rtems_scheduler_get_processor_maximum() != 1 ) {
+        ${.:skip}
+      }
+    text: |
+      Where the system has exactly one processor.
+  - name: More
+    test-code: |
+      if ( rtems_scheduler_get_processor_maximum() == 1 ) {
+        ${.:skip}
+      }
+    text: |
+      Where the system has more than one processor.
+  test-epilogue: null
+  test-prologue: null
+- name: State
+  states:
+  - name: Dormant
+    test-code: |
+      ctx->task_id = CreateTask( "WORK", PRIO_HIGH );
+      ctx->worker_id = ctx->task_id;
+    text: |
+      While the task is ${/glossary/dormant:/term}.
+  - name: Ready
+    test-code: |
+      ctx->task_id = CreateTask( "WORK", PRIO_HIGH );
+      ctx->worker_id = ctx->task_id;
+      StartTask( ctx->task_id, WorkerReady, ctx );
+    text: |
+      While the task executed at least once, while the task is a
+      ${/glossary/readytask:/term}.
+  - name: Blocked
+    test-code: |
+      ctx->task_id = CreateTask( "WORK", PRIO_HIGH );
+      ctx->worker_id = ctx->task_id;
+      StartTask( ctx->task_id, WorkerBlocked, ctx );
+    text: |
+      While the task executed at least once, while the task is a
+      ${/glossary/blockedtask:/term}.
+  - name: Executing
+    test-code: |
+      ctx->executing = true;
+
+      if ( rtems_scheduler_get_processor_maximum() > 1 ) {
+        ctx->task_id = CreateTask( "WORK", PRIO_HIGH );
+        ctx->worker_id = ctx->task_id;
+        SetScheduler( ctx->task_id, SCHEDULER_B_ID, PRIO_NORMAL );
+        StartTask( ctx->task_id, WorkerBusy, ctx );
+        T_true( WaitForFlag( &ctx->worker_busy ) );
+      }
+    text: |
+      While the task is an ${/glossary/executingtask:/term}.
+  test-epilogue: null
+  test-prologue: null
+- name: Reset
+  states:
+  - name: 'Yes'
+    test-code: |
+      rtems_cpu_usage_reset();
+    text: |
+      While ${../../cpuuse/if/reset:/name} was called after the task used processor
+      time.
+  - name: 'No'
+    test-code: |
+      /* Nothing to do */
+    text: |
+      While ${../../cpuuse/if/reset:/name} was not called after the task used
+      processor time.
+  test-epilogue: null
+  test-prologue: null
+- name: Id
+  states:
+  - name: Invalid
+    test-code: |
+      ctx->id = INVALID_ID;
+      ctx->thread = NULL;
+    text: |
+      While the ${../if/get-cpu-usage:/params[0]/name} parameter is not associated
+      with an object.
+  - name: Object
+    test-code: |
+      ctx->id = ctx->mutex_id;
+      ctx->thread = NULL;
+    text: |
+      While the ${../if/get-cpu-usage:/params[0]/name} parameter is associated with
+      an object which is not a task.
+  - name: Self
+    test-code: |
+      ctx->id = RTEMS_SELF;
+      ctx->thread = GetThread( RTEMS_SELF );
+    text: |
+      While the ${../if/get-cpu-usage:/params[0]/name} parameter is equal to
+      ${../if/self-define:/name}.
+  - name: Caller
+    test-code: |
+      ctx->id = rtems_task_self();
+      ctx->thread = GetThread( RTEMS_SELF );
+    text: |
+      While the ${../if/get-cpu-usage:/params[0]/name} parameter is the identifier of
+      the calling task.
+  - name: Task
+    test-code: |
+      ctx->id = ctx->task_id;
+      ctx->thread = GetThread( ctx->task_id );
+    text: |
+      While the ${../if/get-cpu-usage:/params[0]/name} parameter is the identifier of
+      the task, while the task is not the calling task.
+  test-epilogue: null
+  test-prologue: null
+- name: Ts
+  states:
+  - name: Valid
+    test-code: |
+      ctx->ts = &ctx->ts_obj;
+    text: |
+      While the ${../if/get-cpu-usage:/params[1]/name} parameter references an object
+      of type ${/c/if/timespec:/name}.
+  - name: 'Null'
+    test-code: |
+      ctx->ts = NULL;
+    text: |
+      While the ${../if/get-cpu-usage:/params[1]/name} parameter is equal to
+      ${/c/if/null:/name}.
+  test-epilogue: null
+  test-prologue: null
+rationale: |
+  Dimension CPUs covers the count of processors of the system, 2 states. A task
+  other than the calling task can be an executing task only in a system with more
+  than one processor.
+
+  Dimension State covers the task states of the Classic API, 4 states. The task
+  is the task specified by the ${../if/get-cpu-usage:/params[0]/name} parameter
+  in the states Self, Caller and Task of the Id dimension. A dormant task never
+  executed. A ready task and a blocked task executed and do not execute during
+  the call. In the states Self and Caller of the Id dimension, the task is the
+  calling task, which is an executing task.
+
+  Dimension Reset covers the calls of ${../../cpuuse/if/reset:/name} between the
+  last execution of the task and the ${../if/get-cpu-usage:/name} call, 2 states.
+  The notes of ${../if/get-cpu-usage:/name} state that the reset does not change
+  the returned processor time.
+
+  The arrangement of the State dimension comes before the arrangement of the
+  Reset dimension, so that the reset follows the execution of the task.
+requirement-type: functional
+skip-reasons:
+  CallerExecutes: |
+    The parameter value ${../if/self-define:/name} and the identifier of the
+    calling task specify the calling task, which is an executing task.
+  OnlyCallerExecutes: |
+    Where the system has exactly one processor, the calling task is the only
+    executing task.
+test-action: |
+  if ( ctx->thread != NULL ) {
+    ctx->used_before = _Thread_Get_CPU_time_used( ctx->thread );
+  }
+
+  ctx->status = rtems_task_get_cpu_usage( ctx->id, ctx->ts );
+
+  if ( ctx->thread != NULL ) {
+    ctx->used_after = _Thread_Get_CPU_time_used( ctx->thread );
+  }
+test-brief: null
+test-cleanup: |
+  if ( ctx->worker_id != RTEMS_ID_NONE ) {
+    DeleteTask( ctx->worker_id );
+  }
+test-context:
+- brief: |
+    This member contains the identifier of a mutex.
+  description: null
+  member: |
+    rtems_id mutex_id
+- brief: |
+    This member contains the identifier of the task which the test arranges.
+  description: null
+  member: |
+    rtems_id task_id
+- brief: |
+    This member contains the identifier of the worker task, or
+    ${../../type/if/id-none:/name}.
+  description: null
+  member: |
+    rtems_id worker_id
+- brief: |
+    This member is set, if the busy worker task executes.
+  description: null
+  member: |
+    Atomic_Uint worker_busy
+- brief: |
+    This member is true, if the task is an ${/glossary/executingtask:/term}.
+  description: null
+  member: |
+    bool executing
+- brief: |
+    This member references the thread of the task specified by the
+    ${../if/get-cpu-usage:/params[0]/name} parameter, or is NULL.
+  description: null
+  member: |
+    Thread_Control *thread
+- brief: |
+    This member contains the processor time of the task immediately before the
+    ${../if/get-cpu-usage:/name} call.
+  description: null
+  member: |
+    Timestamp_Control used_before
+- brief: |
+    This member contains the processor time of the task immediately after the
+    ${../if/get-cpu-usage:/name} call.
+  description: null
+  member: |
+    Timestamp_Control used_after
+- brief: |
+    This member provides the object referenced by the
+    ${../if/get-cpu-usage:/params[1]/name} parameter.
+  description: null
+  member: |
+    struct timespec ts_obj
+- brief: |
+    This member contains the return value of the ${../if/get-cpu-usage:/name} call.
+  description: null
+  member: |
+    rtems_status_code status
+- brief: |
+    This member specifies the ${../if/get-cpu-usage:/params[0]/name} parameter
+    value.
+  description: null
+  member: |
+    rtems_id id
+- brief: |
+    This member specifies the ${../if/get-cpu-usage:/params[1]/name} parameter
+    value.
+  description: null
+  member: |
+    struct timespec *ts
+test-context-support: null
+test-description: null
+test-header: null
+test-includes:
+- rtems.h
+- rtems/cpuuse.h
+- rtems/score/threadimpl.h
+- rtems/score/timestampimpl.h
+test-local-includes:
+- tx-support.h
+test-prepare: |
+  ctx->worker_id = RTEMS_ID_NONE;
+  SetFlag( &ctx->worker_busy, 0 );
+  ctx->executing = false;
+  ctx->ts_obj.tv_sec = -1;
+  ctx->ts_obj.tv_nsec = -1;
+test-setup:
+  brief: null
+  code: |
+    SetSelfPriority( PRIO_NORMAL );
+    ctx->mutex_id = CreateMutex();
+  description: null
+test-stop: null
+test-support: |
+  typedef ${.:/test-context-type} Context;
+
+  static int64_t GetNanoseconds( const struct timespec *ts )
+  {
+    return (int64_t) ts->tv_sec * 1000000000 + ts->tv_nsec;
+  }
+
+  static void WorkerReady( rtems_task_argument arg )
+  {
+    (void) arg;
+    (void) SetSelfPriority( PRIO_LOW );
+    SuspendSelf();
+  }
+
+  static void WorkerBlocked( rtems_task_argument arg )
+  {
+    (void) arg;
+    SuspendSelf();
+  }
+
+  static void WorkerBusy( rtems_task_argument arg )
+  {
+    Context *ctx;
+
+    ctx = (Context *) arg;
+    SetFlag( &ctx->worker_busy, 1 );
+    (void) _CPU_Thread_Idle_body( 0 );
+  }
+test-target: testsuites/validation/tc-task-get-cpu-usage.c
+test-teardown:
+  brief: null
+  code: |
+    DeleteMutex( ctx->mutex_id );
+    RestoreRunnerPriority();
+  description: null
+text: |
+  ${.:text-template}
+transition-map:
+- enabled-by: true
+  post-conditions:
+    Status: Ok
+    Time: Set
+  pre-conditions:
+    CPUs: all
+    State:
+    - Dormant
+    - Ready
+    - Blocked
+    Reset: all
+    Id:
+    - Task
+    Ts:
+    - Valid
+- enabled-by: true
+  post-conditions:
+    Status: Ok
+    Time: Set
+  pre-conditions:
+    CPUs: all
+    State:
+    - Executing
+    Reset: all
+    Id:
+    - Self
+    - Caller
+    Ts:
+    - Valid
+- enabled-by: true
+  post-conditions:
+    Status: InvAddr
+    Time: Nop
+  pre-conditions:
+    CPUs: all
+    State:
+    - Dormant
+    - Ready
+    - Blocked
+    Reset: all
+    Id:
+    - Task
+    Ts:
+    - 'Null'
+- enabled-by: true
+  post-conditions:
+    Status: InvAddr
+    Time: Nop
+  pre-conditions:
+    CPUs: all
+    State:
+    - Executing
+    Reset: all
+    Id:
+    - Self
+    - Caller
+    Ts:
+    - 'Null'
+- enabled-by: true
+  post-conditions:
+    Status: InvAddr
+    Time: Nop
+  pre-conditions:
+    CPUs: all
+    State: all
+    Reset: all
+    Id:
+    - Invalid
+    - Object
+    Ts:
+    - 'Null'
+- enabled-by: true
+  post-conditions:
+    Status: InvId
+    Time: Nop
+  pre-conditions:
+    CPUs: all
+    State: all
+    Reset: all
+    Id:
+    - Invalid
+    - Object
+    Ts:
+    - Valid
+- enabled-by: true
+  post-conditions: CallerExecutes
+  pre-conditions:
+    CPUs: all
+    State:
+    - Dormant
+    - Ready
+    - Blocked
+    Reset: all
+    Id:
+    - Self
+    - Caller
+    Ts: all
+- enabled-by: true
+  post-conditions: OnlyCallerExecutes
+  pre-conditions:
+    CPUs:
+    - One
+    State:
+    - Executing
+    Reset: all
+    Id:
+    - Task
+    Ts: all
+- enabled-by: true
+  post-conditions:
+    Status: Ok
+    Time: Set
+  pre-conditions:
+    CPUs:
+    - More
+    State:
+    - Executing
+    Reset: all
+    Id:
+    - Task
+    Ts:
+    - Valid
+- enabled-by: true
+  post-conditions:
+    Status: InvAddr
+    Time: Nop
+  pre-conditions:
+    CPUs:
+    - More
+    State:
+    - Executing
+    Reset: all
+    Id:
+    - Task
+    Ts:
+    - 'Null'
+type: requirement
