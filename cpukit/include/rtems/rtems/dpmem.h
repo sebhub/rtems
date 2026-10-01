@@ -79,14 +79,14 @@ extern "C" {
  *
  * @param length is the length in bytes of the memory area.
  *
- * @param[out] id is the pointer to an ::rtems_id object.  When the directive
+ * @param[out] id is the pointer to an ::rtems_id object. When the directive
  *   call is successful, the identifier of the created port will be stored in
  *   this object.
  *
- * This directive creates a port which resides on the local node.  The port has
- * the user-defined object name specified in ``name``.  The assigned object
- * identifier is returned in ``id``.  This identifier is used to access the
- * port with other dual-ported memory port related directives.
+ * This directive creates a port which resides on the local node. The port has
+ * the user-defined object name specified in ``name``. The assigned object
+ * identifier is returned in ``id``. This identifier is used to access the port
+ * with other dual-ported memory port related directives.
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
  *
@@ -101,7 +101,7 @@ extern "C" {
  *   properly aligned.
  *
  * @retval ::RTEMS_TOO_MANY There was no inactive object available to create a
- *   port.  The number of port available to the application is configured
+ *   port. The number of port available to the application is configured
  *   through the @ref CONFIGURE_MAXIMUM_PORTS application configuration option.
  *
  * @par Notes
@@ -122,7 +122,7 @@ extern "C" {
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  *
  * - The number of ports available to the application is configured through the
@@ -150,7 +150,7 @@ rtems_status_code rtems_port_create(
  *
  * @param name is the object name to look up.
  *
- * @param[out] id is the pointer to an ::rtems_id object.  When the directive
+ * @param[out] id is the pointer to an ::rtems_id object. When the directive
  *   call is successful, the object identifier of an object with the specified
  *   name will be stored in this object.
  *
@@ -169,10 +169,10 @@ rtems_status_code rtems_port_create(
  * @par Notes
  * @parblock
  * If the port name is not unique, then the port identifier will match the
- * first port with that name in the search order.  However, this port
- * identifier is not guaranteed to correspond to the desired port.
+ * first port with that name in the search order. However, this port identifier
+ * is not guaranteed to correspond to the desired port.
  *
- * The objects are searched from lowest to the highest index.  Only the local
+ * The objects are searched from lowest to the highest index. Only the local
  * node is searched.
  *
  * The port identifier is used with other dual-ported memory related directives
@@ -218,7 +218,7 @@ rtems_status_code rtems_port_ident( rtems_name name, rtems_id *id );
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  *
  * - The calling task does not have to be the task that created the object.
@@ -241,12 +241,12 @@ rtems_status_code rtems_port_delete( rtems_id id );
  *
  * @param external is the external address to convert.
  *
- * @param[out] internal is the pointer to a `void` pointer object.  When the
+ * @param[out] internal is the pointer to a `void` pointer object. When the
  *   directive call is successful, the external address associated with the
  *   internal address will be stored in this object.
  *
  * This directive converts a dual-ported memory address from external to
- * internal representation for the specified port.  If the given external
+ * internal representation for the specified port. If the given external
  * address is invalid for the specified port, then the internal address is set
  * to the given external address.
  *
@@ -287,13 +287,13 @@ rtems_status_code rtems_port_external_to_internal(
  *
  * @param internal is the internal address to convert.
  *
- * @param[out] external is the pointer to a `void` pointer object.  When the
+ * @param[out] external is the pointer to a `void` pointer object. When the
  *   directive call is successful, the external address associated with the
  *   internal address will be stored in this object.
  *
  * This directive converts a dual-ported memory address from internal to
  * external representation so that it can be passed to owner of the DPMA
- * represented by the specified port.  If the given internal address is an
+ * represented by the specified port. If the given internal address is an
  * invalid dual-ported address, then the external address is set to the given
  * internal address.
  *

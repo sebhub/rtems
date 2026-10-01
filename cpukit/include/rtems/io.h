@@ -177,15 +177,15 @@ typedef struct {
  * @brief Registers and initializes the device with the specified device driver
  *   address table and device major number in the Device Driver Table.
  *
- * @param major is the device major number.  Use a value of zero to let the
+ * @param major is the device major number. Use a value of zero to let the
  *   system obtain a device major number automatically.
  *
  * @param driver_table is the device driver address table.
  *
  * @param[out] registered_major is the pointer to an
- *   ::rtems_device_major_number object.  When the directive call is
- *   successful, the device major number of the registered device will be
- *   stored in this object.
+ *   ::rtems_device_major_number object. When the directive call is successful,
+ *   the device major number of the registered device will be stored in this
+ *   object.
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
  *
@@ -210,8 +210,7 @@ typedef struct {
  * @par Notes
  * @parblock
  * If the device major number equals zero a device major number will be
- * obtained.  The device major number of the registered driver will be
- * returned.
+ * obtained. The device major number of the registered driver will be returned.
  *
  * After a successful registration, the rtems_io_initialize() directive will be
  * called to initialize the device.
@@ -279,7 +278,7 @@ rtems_status_code rtems_io_unregister_driver(
  * rtems_io_register_driver() directive.
  *
  * A device driver initialization entry is responsible for initializing all
- * hardware and data structures associated with a device.  If necessary, it can
+ * hardware and data structures associated with a device. If necessary, it can
  * allocate memory to be used during other operations.
  * @endparblock
  */
@@ -406,8 +405,8 @@ rtems_status_code rtems_io_close(
  *
  * @par Notes
  * Read operations typically require a buffer address as part of the argument
- * parameter block.  The contents of this buffer will be replaced with data
- * from the device.
+ * parameter block. The contents of this buffer will be replaced with data from
+ * the device.
  */
 rtems_status_code rtems_io_read(
   rtems_device_major_number major,
@@ -439,7 +438,7 @@ rtems_status_code rtems_io_read(
  *
  * @par Notes
  * Write operations typically require a buffer address as part of the argument
- * parameter block.  The contents of this buffer will be sent to the device.
+ * parameter block. The contents of this buffer will be sent to the device.
  */
 rtems_status_code rtems_io_write(
   rtems_device_major_number major,
@@ -473,8 +472,8 @@ rtems_status_code rtems_io_write(
  *
  * @par Notes
  * The exact functionality of the driver entry called by this directive is
- * driver dependent.  It should not be assumed that the control entries of two
- * device drivers are compatible.  For example, an RS-232 driver I/O control
+ * driver dependent. It should not be assumed that the control entries of two
+ * device drivers are compatible. For example, an RS-232 driver I/O control
  * operation may change the baud of a serial line, while an I/O control
  * operation for a floppy disk driver may cause a seek operation.
  */

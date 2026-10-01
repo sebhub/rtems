@@ -172,8 +172,8 @@ typedef struct {
  *
  * @par Notes
  * The resource number is defined by the @ref CONFIGURE_MAXIMUM_BARRIERS
- * application configuration option.  See also rtems_resource_is_unlimited()
- * and rtems_resource_maximum_per_allocation().
+ * application configuration option. See also rtems_resource_is_unlimited() and
+ * rtems_resource_maximum_per_allocation().
  *
  * @par Constraints
  * @parblock
@@ -199,8 +199,8 @@ uint32_t rtems_configuration_get_maximum_barriers( void );
  *
  * @par Notes
  * The resource number is defined by the @ref CONFIGURE_MAXIMUM_MESSAGE_QUEUES
- * application configuration option.  See also rtems_resource_is_unlimited()
- * and rtems_resource_maximum_per_allocation().
+ * application configuration option. See also rtems_resource_is_unlimited() and
+ * rtems_resource_maximum_per_allocation().
  *
  * @par Constraints
  * @parblock
@@ -226,8 +226,8 @@ uint32_t rtems_configuration_get_maximum_message_queues( void );
  *
  * @par Notes
  * The resource number is defined by the @ref CONFIGURE_MAXIMUM_PARTITIONS
- * application configuration option.  See also rtems_resource_is_unlimited()
- * and rtems_resource_maximum_per_allocation().
+ * application configuration option. See also rtems_resource_is_unlimited() and
+ * rtems_resource_maximum_per_allocation().
  *
  * @par Constraints
  * @parblock
@@ -253,8 +253,8 @@ uint32_t rtems_configuration_get_maximum_partitions( void );
  *
  * @par Notes
  * The resource number is defined by the @ref CONFIGURE_MAXIMUM_PERIODS
- * application configuration option.  See also rtems_resource_is_unlimited()
- * and rtems_resource_maximum_per_allocation().
+ * application configuration option. See also rtems_resource_is_unlimited() and
+ * rtems_resource_maximum_per_allocation().
  *
  * @par Constraints
  * @parblock
@@ -280,8 +280,8 @@ uint32_t rtems_configuration_get_maximum_periods( void );
  *
  * @par Notes
  * The resource number is defined by the @ref CONFIGURE_MAXIMUM_PORTS
- * application configuration option.  See also rtems_resource_is_unlimited()
- * and rtems_resource_maximum_per_allocation().
+ * application configuration option. See also rtems_resource_is_unlimited() and
+ * rtems_resource_maximum_per_allocation().
  *
  * @par Constraints
  * @parblock
@@ -307,8 +307,8 @@ uint32_t rtems_configuration_get_maximum_ports( void );
  *
  * @par Notes
  * The resource number is defined by the @ref CONFIGURE_MAXIMUM_REGIONS
- * application configuration option.  See also rtems_resource_is_unlimited()
- * and rtems_resource_maximum_per_allocation().
+ * application configuration option. See also rtems_resource_is_unlimited() and
+ * rtems_resource_maximum_per_allocation().
  *
  * @par Constraints
  * @parblock
@@ -334,8 +334,8 @@ uint32_t rtems_configuration_get_maximum_regions( void );
  *
  * @par Notes
  * The resource number is defined by the @ref CONFIGURE_MAXIMUM_SEMAPHORES
- * application configuration option.  See also rtems_resource_is_unlimited()
- * and rtems_resource_maximum_per_allocation().
+ * application configuration option. See also rtems_resource_is_unlimited() and
+ * rtems_resource_maximum_per_allocation().
  *
  * @par Constraints
  * @parblock
@@ -361,8 +361,8 @@ uint32_t rtems_configuration_get_maximum_semaphores( void );
  *
  * @par Notes
  * The resource number is defined by the @ref CONFIGURE_MAXIMUM_TASKS
- * application configuration option.  See also rtems_resource_is_unlimited()
- * and rtems_resource_maximum_per_allocation().
+ * application configuration option. See also rtems_resource_is_unlimited() and
+ * rtems_resource_maximum_per_allocation().
  *
  * @par Constraints
  * @parblock
@@ -388,8 +388,8 @@ uint32_t rtems_configuration_get_maximum_tasks( void );
  *
  * @par Notes
  * The resource number is defined by the @ref CONFIGURE_MAXIMUM_TIMERS
- * application configuration option.  See also rtems_resource_is_unlimited()
- * and rtems_resource_maximum_per_allocation().
+ * application configuration option. See also rtems_resource_is_unlimited() and
+ * rtems_resource_maximum_per_allocation().
  *
  * @par Constraints
  * @parblock

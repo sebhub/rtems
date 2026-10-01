@@ -104,7 +104,7 @@ int rtems_cpu_info_report( const struct rtems_printer *printer );
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  * @endparblock
  */
@@ -128,7 +128,7 @@ void rtems_cpu_usage_report( void );
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  * @endparblock
  */
@@ -150,7 +150,7 @@ void rtems_cpu_usage_report_with_plugin( const struct rtems_printer *printer );
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  * @endparblock
  */
@@ -172,7 +172,7 @@ void rtems_cpu_usage_reset( void );
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  *
  * - The directive sends a request to another task and waits for a response.
@@ -191,7 +191,7 @@ void rtems_cpu_usage_top( void );
  * @param printer is the printer plugin to output the report.
  *
  * @par Notes
- * The directive starts a task to do the reporting.  The getchar() function is
+ * The directive starts a task to do the reporting. The getchar() function is
  * used to get commands from the user.
  *
  * @par Constraints
@@ -200,7 +200,7 @@ void rtems_cpu_usage_top( void );
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  *
  * - The directive sends a request to another task and waits for a response.

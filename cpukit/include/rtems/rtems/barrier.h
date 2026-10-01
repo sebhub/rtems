@@ -79,22 +79,22 @@ extern "C" {
  * @param maximum_waiters is the maximum count of waiters on an automatic
  *   release barrier.
  *
- * @param id is the pointer to an ::rtems_id object.  When the directive call
- *   is successful, the identifier of the created barrier will be stored in
- *   this object.
+ * @param id is the pointer to an ::rtems_id object. When the directive call is
+ *   successful, the identifier of the created barrier will be stored in this
+ *   object.
  *
- * This directive creates a barrier which resides on the local node.  The
+ * This directive creates a barrier which resides on the local node. The
  * barrier has the user-defined object name specified in ``name`` and the
- * initial count specified in ``attribute_set``.  The assigned object
- * identifier is returned in ``id``.  This identifier is used to access the
- * barrier with other barrier related directives.
+ * initial count specified in ``attribute_set``. The assigned object identifier
+ * is returned in ``id``. This identifier is used to access the barrier with
+ * other barrier related directives.
  *
  * The **attribute set** specified in ``attribute_set`` is built through a
- * *bitwise or* of the attribute constants described below.  Not all
- * combinations of attributes are allowed.  Some attributes are mutually
- * exclusive.  If mutually exclusive attributes are combined, the behaviour is
- * undefined.  Attributes not mentioned below are not evaluated by this
- * directive and have no effect.  Default attributes can be selected by using
+ * *bitwise or* of the attribute constants described below. Not all
+ * combinations of attributes are allowed. Some attributes are mutually
+ * exclusive. If mutually exclusive attributes are combined, the behaviour is
+ * undefined. Attributes not mentioned below are not evaluated by this
+ * directive and have no effect. Default attributes can be selected by using
  * the #RTEMS_DEFAULT_ATTRIBUTES constant.
  *
  * The **barrier class** is selected by the mutually exclusive
@@ -102,15 +102,15 @@ extern "C" {
  * attributes.
  *
  * - The **manual release class** is the default and can be emphasized through
- *   use of the #RTEMS_BARRIER_MANUAL_RELEASE attribute.  For this class, there
+ *   use of the #RTEMS_BARRIER_MANUAL_RELEASE attribute. For this class, there
  *   is no limit on the number of tasks that will block at the barrier. Only
  *   when the rtems_barrier_release() directive is invoked, are the tasks
  *   waiting at the barrier unblocked.
  *
  * - The **automatic release class** is selected by the
- *   #RTEMS_BARRIER_AUTOMATIC_RELEASE attribute.  For this class, tasks calling
+ *   #RTEMS_BARRIER_AUTOMATIC_RELEASE attribute. For this class, tasks calling
  *   the rtems_barrier_wait() directive will block until there are
- *   ``maximum_waiters`` minus one tasks waiting at the barrier.  When the
+ *   ``maximum_waiters`` minus one tasks waiting at the barrier. When the
  *   ``maximum_waiters`` task invokes the rtems_barrier_wait() directive, the
  *   previous ``maximum_waiters`` - 1 tasks are automatically released and the
  *   caller returns.
@@ -125,9 +125,9 @@ extern "C" {
  *   an automatic release barrier.
  *
  * @retval ::RTEMS_TOO_MANY There was no inactive object available to create a
- *   barrier.  The number of barriers available to the application is
- *   configured through the @ref CONFIGURE_MAXIMUM_BARRIERS application
- *   configuration option.
+ *   barrier. The number of barriers available to the application is configured
+ *   through the @ref CONFIGURE_MAXIMUM_BARRIERS application configuration
+ *   option.
  *
  * @par Notes
  * For control and maintenance of the barrier, RTEMS allocates a BCB from the
@@ -142,7 +142,7 @@ extern "C" {
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  *
  * - The number of barriers available to the application is configured through
@@ -169,7 +169,7 @@ rtems_status_code rtems_barrier_create(
  *
  * @param name is the object name to look up.
  *
- * @param[out] id is the pointer to an ::rtems_id object.  When the directive
+ * @param[out] id is the pointer to an ::rtems_id object. When the directive
  *   call is successful, the object identifier of an object with the specified
  *   name will be stored in this object.
  *
@@ -188,10 +188,10 @@ rtems_status_code rtems_barrier_create(
  * @par Notes
  * @parblock
  * If the barrier name is not unique, then the barrier identifier will match
- * the first barrier with that name in the search order.  However, this barrier
+ * the first barrier with that name in the search order. However, this barrier
  * identifier is not guaranteed to correspond to the desired barrier.
  *
- * The objects are searched from lowest to the highest index.  Only the local
+ * The objects are searched from lowest to the highest index. Only the local
  * node is searched.
  *
  * The barrier identifier is used with other barrier related directives to
@@ -218,7 +218,7 @@ rtems_status_code rtems_barrier_ident( rtems_name name, rtems_id *id );
  *
  * @param id is the barrier identifier.
  *
- * This directive deletes the barrier specified by ``id``.  All tasks blocked
+ * This directive deletes the barrier specified by ``id``. All tasks blocked
  * waiting for the barrier to be released will be readied and returned a status
  * code which indicates that the barrier was deleted.
  *
@@ -239,7 +239,7 @@ rtems_status_code rtems_barrier_ident( rtems_name name, rtems_id *id );
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  *
  * - The calling task does not have to be the task that created the object.
@@ -260,18 +260,18 @@ rtems_status_code rtems_barrier_delete( rtems_id id );
  *
  * @param id is the barrier identifier.
  *
- * @param timeout is the timeout in clock ticks.  Use #RTEMS_NO_TIMEOUT to wait
+ * @param timeout is the timeout in clock ticks. Use #RTEMS_NO_TIMEOUT to wait
  *   potentially forever.
  *
- * This directive waits at the barrier specified by ``id``.  The ``timeout``
- * parameter defines how long the calling task is willing to wait.  Use
+ * This directive waits at the barrier specified by ``id``. The ``timeout``
+ * parameter defines how long the calling task is willing to wait. Use
  * #RTEMS_NO_TIMEOUT to wait potentially forever, otherwise set a timeout
  * interval in clock ticks.
  *
  * Conceptually, the calling task should always be thought of as blocking when
- * it makes this call and being unblocked when the barrier is released.  If the
+ * it makes this call and being unblocked when the barrier is released. If the
  * barrier is configured for manual release, this rule of thumb will always be
- * valid.  If the barrier is configured for automatic release, all callers will
+ * valid. If the barrier is configured for automatic release, all callers will
  * block except for the one which trips the automatic release condition.
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
@@ -309,12 +309,12 @@ rtems_status_code rtems_barrier_wait( rtems_id id, rtems_interval timeout );
  *
  * @param id is the barrier identifier.
  *
- * @param[out] released is the pointer to an uint32_t object.  When the
+ * @param[out] released is the pointer to an uint32_t object. When the
  *   directive call is successful, the number of released tasks will be stored
  *   in this object.
  *
- * This directive releases the barrier specified by ``id``.  All tasks waiting
- * at the barrier will be unblocked.  The number of released tasks will be
+ * This directive releases the barrier specified by ``id``. All tasks waiting
+ * at the barrier will be unblocked. The number of released tasks will be
  * returned in ``released``.
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
@@ -332,7 +332,7 @@ rtems_status_code rtems_barrier_wait( rtems_id id, rtems_interval timeout );
  *
  * - The directive may be called from within task context.
  *
- * - The directive may unblock a task.  This may cause the calling task to be
+ * - The directive may unblock a task. This may cause the calling task to be
  *   preempted.
  * @endparblock
  */

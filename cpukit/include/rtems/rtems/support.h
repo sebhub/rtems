@@ -134,7 +134,7 @@ static inline bool rtems_is_name_valid( rtems_name name )
  * The following constraints apply to this directive:
  *
  * - The directive is implemented by a macro and may be called from within
- *   C/C++ constant expressions.  In addition, a function implementation of the
+ *   C/C++ constant expressions. In addition, a function implementation of the
  *   directive exists for bindings to other programming languages.
  *
  * - The directive will not cause the calling task to be preempted.
@@ -218,7 +218,7 @@ static inline void rtems_name_to_characters(
  *
  * @param bytes is the number of bytes to allocated.
  *
- * @param[out] pointer is the pointer to a `void` pointer object.  When the
+ * @param[out] pointer is the pointer to a `void` pointer object. When the
  *   directive call is successful, the begin address of the allocated memory
  *   area will be stored in this object.
  *
@@ -236,7 +236,7 @@ static inline void rtems_name_to_characters(
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  * @endparblock
  */
@@ -263,7 +263,7 @@ bool rtems_workspace_allocate( size_t bytes, void **pointer );
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  * @endparblock
  */
@@ -292,7 +292,7 @@ bool rtems_workspace_free( void *pointer );
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  * @endparblock
  */
@@ -310,8 +310,8 @@ bool rtems_workspace_get_information( Heap_Information_block *the_info );
  * @param block_count is the block count.
  *
  * Afterwards the heap has at most ``block_count`` allocatable blocks of sizes
- * specified by ``block_sizes``.  The ``block_sizes`` must point to an array
- * with ``block_count`` members.  All other blocks are used.
+ * specified by ``block_sizes``. The ``block_sizes`` must point to an array
+ * with ``block_count`` members. All other blocks are used.
  *
  * @return The returned pointer value may be used to free the greedy allocation
  *   by calling rtems_workspace_greedy_free().
@@ -331,9 +331,9 @@ void *rtems_workspace_greedy_allocate(
  *
  * @param allocatable_size is the remaining allocatable size.
  *
- * Afterwards the heap has at most one allocatable block.  This block is the
- * largest free block if it exists.  The allocatable size of this block is
- * stored in ``allocatable_size``.  All other blocks are used.
+ * Afterwards the heap has at most one allocatable block. This block is the
+ * largest free block if it exists. The allocatable size of this block is
+ * stored in ``allocatable_size``. All other blocks are used.
  *
  * @return The returned pointer value may be used to free the greedy allocation
  *   by calling rtems_workspace_greedy_free().
@@ -350,7 +350,7 @@ void *rtems_workspace_greedy_allocate(
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  * @endparblock
  */
@@ -381,7 +381,7 @@ void *rtems_workspace_greedy_allocate_all_except_largest(
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  * @endparblock
  */

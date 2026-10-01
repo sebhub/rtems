@@ -65,8 +65,7 @@ extern "C" {
  *
  * The actual actions of the Cache Manager operations depend on the hardware
  * and the implementation provided by the CPU architecture port or a board
- * support package.  Cache implementations tend to be highly hardware
- * dependent.
+ * support package. Cache implementations tend to be highly hardware dependent.
  */
 
 /* Find related documentation with spec:/rtems/cache/if/coherent-add-area */
@@ -91,7 +90,7 @@ extern "C" {
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  * @endparblock
  */
@@ -105,16 +104,15 @@ rtems_status_code rtems_cache_coherent_add_area( void *begin, uintptr_t size );
  * @param size is the requested size in bytes of the memory area to allocate.
  *
  * @param alignment is the requested alignment in bytes of the memory area to
- *   allocate.  If the alignment parameter is not equal to zero, the allocated
+ *   allocate. If the alignment parameter is not equal to zero, the allocated
  *   memory area will begin at an address aligned by this value.
  *
  * @param boundary is the requested boundary in bytes of the memory area to
- *   allocate.  If the boundary parameter is not equal to zero, the allocated
- *   memory area will comply with a boundary constraint.  The boundary value
+ *   allocate. If the boundary parameter is not equal to zero, the allocated
+ *   memory area will comply with a boundary constraint. The boundary value
  *   specifies the set of addresses which are aligned by the boundary value.
  *   The interior of the allocated memory area will not contain an element of
- *   this set.  The begin or end address of the area may be a member of the
- *   set.
+ *   this set. The begin or end address of the area may be a member of the set.
  *
  * @retval NULL There is not enough memory available to satisfy the allocation
  *   request.
@@ -129,7 +127,7 @@ rtems_status_code rtems_cache_coherent_add_area( void *begin, uintptr_t size );
  * The memory allocated by the directive may be released with a call to
  * rtems_cache_coherent_free().
  *
- * By default the C Program Heap allocator is used.  In case special memory
+ * By default the C Program Heap allocator is used. In case special memory
  * areas must be used, then the BSP or the application should add cache
  * coherent memory areas for the allocator via rtems_cache_coherent_add_area().
  * @endparblock
@@ -143,7 +141,7 @@ rtems_status_code rtems_cache_coherent_add_area( void *begin, uintptr_t size );
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  * @endparblock
  */
@@ -169,7 +167,7 @@ void *rtems_cache_coherent_allocate(
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  * @endparblock
  */
@@ -275,8 +273,8 @@ void rtems_cache_flush_multiple_data_lines( const void *begin, size_t size );
  *
  * @param size is the size in bytes of the memory area to invalidate.
  *
- * The cache lines covering the area are marked as invalid.  A later read
- * access in the area will load the data from memory.
+ * The cache lines covering the area are marked as invalid. A later read access
+ * in the area will load the data from memory.
  *
  * @par Notes
  * @parblock
@@ -311,8 +309,8 @@ void rtems_cache_invalidate_multiple_data_lines(
  *
  * @param size is the size in bytes of the memory area to invalidate.
  *
- * The cache lines covering the area are marked as invalid.  A later
- * instruction fetch from the area will result in a load from memory.
+ * The cache lines covering the area are marked as invalid. A later instruction
+ * fetch from the area will result in a load from memory.
  *
  * @par Notes
  * In SMP configurations, on processors without instruction cache snooping,
@@ -347,8 +345,8 @@ void rtems_cache_invalidate_multiple_instruction_lines(
  * @par Notes
  * When code is loaded or modified, then most systems require synchronization
  * instructions to update the instruction caches so that the loaded or modified
- * code is fetched.  For example, systems with separate data and instruction
- * caches or systems without instruction cache snooping.  The directives should
+ * code is fetched. For example, systems with separate data and instruction
+ * caches or systems without instruction cache snooping. The directives should
  * be used by run time loader for example.
  *
  * @par Constraints
@@ -398,7 +396,7 @@ size_t rtems_cache_get_maximal_line_size( void );
  *
  * @retval 0 There is no data cache present.
  *
- * @return Returns the data cache line size in bytes.  For multi-level caches
+ * @return Returns the data cache line size in bytes. For multi-level caches
  *   this is the maximum of the cache line sizes of all levels.
  *
  * @par Constraints
@@ -421,7 +419,7 @@ size_t rtems_cache_get_data_line_size( void );
  *
  * @retval 0 There is no instruction cache present.
  *
- * @return Returns the instruction cache line size in bytes.  For multi-level
+ * @return Returns the instruction cache line size in bytes. For multi-level
  *   caches this is the maximum of the cache line sizes of all levels.
  *
  * @par Constraints
@@ -442,7 +440,7 @@ size_t rtems_cache_get_instruction_line_size( void );
  *
  * @brief Gets the data cache size in bytes for the cache level.
  *
- * @param level is the requested data cache level.  The cache level zero
+ * @param level is the requested data cache level. The cache level zero
  *   specifies the entire data cache.
  *
  * @retval 0 There is no data cache present at the requested cache level.
@@ -467,7 +465,7 @@ size_t rtems_cache_get_data_cache_size( uint32_t level );
  *
  * @brief Gets the instruction cache size in bytes for the cache level.
  *
- * @param level is the requested instruction cache level.  The cache level zero
+ * @param level is the requested instruction cache level. The cache level zero
  *   specifies the entire instruction cache.
  *
  * @retval 0 There is no instruction cache present at the requested cache
@@ -569,9 +567,9 @@ void rtems_cache_enable_data( void );
  * @par Notes
  * On some targets or configurations, calling this directive may cause a fatal
  * error with a fatal source of INTERNAL_ERROR_CORE and fatal code of
- * INTERNAL_ERROR_CANNOT_DISABLE_DATA_CACHE.   The data cache may be necessary
- * to provide atomic operations. In SMP configurations, the data cache may be
- * required to ensure data coherency.  See the BSP documentation in the *RTEMS
+ * INTERNAL_ERROR_CANNOT_DISABLE_DATA_CACHE. The data cache may be necessary to
+ * provide atomic operations. In SMP configurations, the data cache may be
+ * required to ensure data coherency. See the BSP documentation in the *RTEMS
  * User Manual* for more information.
  *
  * @par Constraints
@@ -634,8 +632,8 @@ void rtems_cache_disable_instruction( void );
  * @retval NULL There is not enough memory available to satisfy the allocation
  *   request.
  *
- * @return Returns the begin address of the allocated memory.  The begin
- *   address is on a cache line boundary.
+ * @return Returns the begin address of the allocated memory. The begin address
+ *   is on a cache line boundary.
  *
  * @par Constraints
  * @parblock
@@ -646,7 +644,7 @@ void rtems_cache_disable_instruction( void );
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  * @endparblock
  */

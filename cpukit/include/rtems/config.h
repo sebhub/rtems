@@ -79,7 +79,7 @@ extern "C" {
  * @brief The application configuration information group provides an API to
  *   get the configuration of an application.
  *
- * RTEMS must be configured for an application.  This configuration encompasses
+ * RTEMS must be configured for an application. This configuration encompasses
  * a variety of information including the length of each clock tick, the
  * maximum number of each information RTEMS object that can be created, the
  * application initialization tasks, the task scheduling algorithm to be used,
@@ -95,7 +95,7 @@ extern "C" {
  * macros which define configuration parameters of interest to the application
  * and defaulting or calculating all others. This variety of macros can
  * automatically produce all of the configuration data required for an RTEMS
- * application.  The term `confdefs` is shorthand for a *Configuration
+ * application. The term `confdefs` is shorthand for a *Configuration
  * Defaults*.
  *
  * As a general rule, application developers only specify values for the
@@ -227,18 +227,18 @@ typedef Stack_Allocator_free rtems_stack_free_hook;
  * @brief Gets the RTEMS build label.
  *
  * The build label is a user-provided string defined by the build configuration
- * through the `RTEMS_BUILD_LABEL` build option.  The format of the string is
+ * through the `RTEMS_BUILD_LABEL` build option. The format of the string is
  * completely user-defined.
  *
  * @return Returns a pointer to the RTEMS build label.
  *
  * @par Notes
  * The build label can be used to distinguish test suite results obtained from
- * different build configurations.  A use case is to record test results with
- * performance data to track performance regressions.  For this a database of
- * performance limits is required.  The build label and the target hash
- * obtained from rtems_get_target_hash() can be used as a key to obtain
- * performance limits.
+ * different build configurations. A use case is to record test results with
+ * performance data to track performance regressions. For this a database of
+ * performance limits is required. The build label and the target hash obtained
+ * from rtems_get_target_hash() can be used as a key to obtain performance
+ * limits.
  *
  * @par Constraints
  * @parblock
@@ -279,8 +279,8 @@ const char *rtems_get_copyright_notice( void );
  * @brief Gets the RTEMS target hash.
  *
  * The target hash is calculated from BSP-specific values which characterize a
- * target system.  The target hash is encoded as a base64url string.  The
- * target hash algorithm is unspecified.
+ * target system. The target hash is encoded as a base64url string. The target
+ * hash algorithm is unspecified.
  *
  * @return Returns a pointer to the RTEMS target hash.
  *
@@ -291,7 +291,7 @@ const char *rtems_get_copyright_notice( void );
  * target hash.
  *
  * The target hash can be used to distinguish test suite results obtained from
- * different target systems.  See also rtems_get_build_label().
+ * different target systems. See also rtems_get_build_label().
  * @endparblock
  *
  * @par Constraints
@@ -315,7 +315,7 @@ const char *rtems_get_target_hash( void );
  * @return Returns a pointer to the RTEMS version string.
  *
  * @par Notes
- * The version string has no particular format.  Parsing the string may break
+ * The version string has no particular format. Parsing the string may break
  * across RTEMS releases.
  *
  * @par Constraints
@@ -441,8 +441,8 @@ const char *rtems_get_version_string( void );
  *
  * @par Notes
  * The resource number is defined by the @ref CONFIGURE_MAXIMUM_USER_EXTENSIONS
- * application configuration option.  See also rtems_resource_is_unlimited()
- * and rtems_resource_maximum_per_allocation().
+ * application configuration option. See also rtems_resource_is_unlimited() and
+ * rtems_resource_maximum_per_allocation().
  *
  * @par Constraints
  * @parblock
@@ -845,7 +845,7 @@ uint32_t rtems_configuration_get_maximum_extensions( void );
  * The following constraints apply to this directive:
  *
  * - The directive is implemented by a macro and may be called from within
- *   C/C++ constant expressions.  In addition, a function implementation of the
+ *   C/C++ constant expressions. In addition, a function implementation of the
  *   directive exists for bindings to other programming languages.
  *
  * - The directive will not cause the calling task to be preempted.
@@ -870,7 +870,7 @@ uint32_t rtems_configuration_get_maximum_extensions( void );
  * The following constraints apply to this directive:
  *
  * - The directive is implemented by a macro and may be called from within
- *   C/C++ constant expressions.  In addition, a function implementation of the
+ *   C/C++ constant expressions. In addition, a function implementation of the
  *   directive exists for bindings to other programming languages.
  *
  * - The directive will not cause the calling task to be preempted.
@@ -901,7 +901,7 @@ uint32_t rtems_configuration_get_maximum_extensions( void );
  * The following constraints apply to this directive:
  *
  * - The directive is implemented by a macro and may be called from within
- *   C/C++ constant expressions.  In addition, a function implementation of the
+ *   C/C++ constant expressions. In addition, a function implementation of the
  *   directive exists for bindings to other programming languages.
  *
  * - The directive will not cause the calling task to be preempted.

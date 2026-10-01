@@ -258,13 +258,13 @@ typedef rtems_timer_service_routine ( *rtems_timer_service_routine_entry )(
  *
  * @param name is the object name of the timer.
  *
- * @param[out] id is the pointer to an ::rtems_id object.  When the directive
+ * @param[out] id is the pointer to an ::rtems_id object. When the directive
  *   call is successful, the identifier of the created timer will be stored in
  *   this object.
  *
- * This directive creates a timer which resides on the local node.  The timer
- * has the user-defined object name specified in ``name``.  The assigned object
- * identifier is returned in ``id``.  This identifier is used to access the
+ * This directive creates a timer which resides on the local node. The timer
+ * has the user-defined object name specified in ``name``. The assigned object
+ * identifier is returned in ``id``. This identifier is used to access the
  * timer with other timer related directives.
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
@@ -274,7 +274,7 @@ typedef rtems_timer_service_routine ( *rtems_timer_service_routine_entry )(
  * @retval ::RTEMS_INVALID_ADDRESS The ``id`` parameter was NULL.
  *
  * @retval ::RTEMS_TOO_MANY There was no inactive object available to create a
- *   timer.  The number of timers available to the application is configured
+ *   timer. The number of timers available to the application is configured
  *   through the @ref CONFIGURE_MAXIMUM_TIMERS application configuration
  *   option.
  *
@@ -296,7 +296,7 @@ typedef rtems_timer_service_routine ( *rtems_timer_service_routine_entry )(
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  *
  * - The number of timers available to the application is configured through
@@ -318,7 +318,7 @@ rtems_status_code rtems_timer_create( rtems_name name, rtems_id *id );
  *
  * @param name is the object name to look up.
  *
- * @param[out] id is the pointer to an ::rtems_id object.  When the directive
+ * @param[out] id is the pointer to an ::rtems_id object. When the directive
  *   call is successful, the object identifier of an object with the specified
  *   name will be stored in this object.
  *
@@ -337,10 +337,10 @@ rtems_status_code rtems_timer_create( rtems_name name, rtems_id *id );
  * @par Notes
  * @parblock
  * If the timer name is not unique, then the timer identifier will match the
- * first timer with that name in the search order.  However, this timer
+ * first timer with that name in the search order. However, this timer
  * identifier is not guaranteed to correspond to the desired timer.
  *
- * The objects are searched from lowest to the highest index.  Only the local
+ * The objects are searched from lowest to the highest index. Only the local
  * node is searched.
  *
  * The timer identifier is used with other timer related directives to access
@@ -367,7 +367,7 @@ rtems_status_code rtems_timer_ident( rtems_name name, rtems_id *id );
  *
  * @param id is the timer identifier.
  *
- * This directive cancels the timer specified by ``id``.  This timer will be
+ * This directive cancels the timer specified by ``id``. This timer will be
  * reinitiated by the next invocation of rtems_timer_reset(),
  * rtems_timer_fire_after(), rtems_timer_fire_when(),
  * rtems_timer_server_fire_after(), or rtems_timer_server_fire_when() with the
@@ -403,7 +403,7 @@ rtems_status_code rtems_timer_cancel( rtems_id id );
  *
  * @param id is the timer identifier.
  *
- * This directive deletes the timer specified by ``id``.  If the timer is
+ * This directive deletes the timer specified by ``id``. If the timer is
  * running, it is automatically canceled.
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
@@ -423,7 +423,7 @@ rtems_status_code rtems_timer_cancel( rtems_id id );
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  *
  * - The calling task does not have to be the task that created the object.
@@ -450,10 +450,10 @@ rtems_status_code rtems_timer_delete( rtems_id id );
  *
  * @param user_data is the argument passed to the routine when it is fired.
  *
- * This directive initiates the timer specified by ``id``.  If the timer is
- * running, it is automatically canceled before being initiated.  The timer is
+ * This directive initiates the timer specified by ``id``. If the timer is
+ * running, it is automatically canceled before being initiated. The timer is
  * scheduled to fire after an interval of clock ticks has passed specified by
- * ``ticks``.  When the timer fires, the timer service routine ``routine`` will
+ * ``ticks``. When the timer fires, the timer service routine ``routine`` will
  * be invoked with the argument ``user_data`` in the context of the clock tick
  * ISR.
  *
@@ -502,9 +502,9 @@ rtems_status_code rtems_timer_fire_after(
  *
  * @param user_data is the argument passed to the routine when it is fired.
  *
- * This directive initiates the timer specified by ``id``.  If the timer is
- * running, it is automatically canceled before being initiated.  The timer is
- * scheduled to fire at the time of day specified by ``wall_time``.  When the
+ * This directive initiates the timer specified by ``id``. If the timer is
+ * running, it is automatically canceled before being initiated. The timer is
+ * scheduled to fire at the time of day specified by ``wall_time``. When the
  * timer fires, the timer service routine ``routine`` will be invoked with the
  * argument ``user_data`` in the context of the clock tick ISR.
  *
@@ -555,9 +555,9 @@ rtems_status_code rtems_timer_fire_when(
  *
  * @param attribute_set is the task attribute set.
  *
- * This directive initiates the Timer Server task.  This task is responsible
- * for executing all timers initiated via the rtems_timer_server_fire_after()
- * or rtems_timer_server_fire_when() directives.
+ * This directive initiates the Timer Server task. This task is responsible for
+ * executing all timers initiated via the rtems_timer_server_fire_after() or
+ * rtems_timer_server_fire_when() directives.
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
  *
@@ -569,7 +569,7 @@ rtems_status_code rtems_timer_fire_when(
  *   create the Timer Server task.
  *
  * @retval ::RTEMS_UNSATISFIED There was not enough memory to allocate the task
- *   storage area.  The task storage area contains the task stack, the
+ *   storage area. The task storage area contains the task stack, the
  *   thread-local storage, and the floating point context.
  *
  * @retval ::RTEMS_UNSATISFIED One of the task create extensions failed to
@@ -583,7 +583,7 @@ rtems_status_code rtems_timer_fire_when(
  * @parblock
  * The following constraints apply to this directive:
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  *
  * - The directive may be called from within device driver initialization
@@ -620,10 +620,10 @@ rtems_status_code rtems_timer_initiate_server(
  *
  * @param user_data is the argument passed to the routine when it is fired.
  *
- * This directive initiates the timer specified by ``id``.  If the timer is
- * running, it is automatically canceled before being initiated.  The timer is
+ * This directive initiates the timer specified by ``id``. If the timer is
+ * running, it is automatically canceled before being initiated. The timer is
  * scheduled to fire after an interval of clock ticks has passed specified by
- * ``ticks``.  When the timer fires, the timer service routine ``routine`` will
+ * ``ticks``. When the timer fires, the timer service routine ``routine`` will
  * be invoked with the argument ``user_data`` in the context of the Timer
  * Server task.
  *
@@ -674,9 +674,9 @@ rtems_status_code rtems_timer_server_fire_after(
  *
  * @param user_data is the argument passed to the routine when it is fired.
  *
- * This directive initiates the timer specified by ``id``.  If the timer is
- * running, it is automatically canceled before being initiated.  The timer is
- * scheduled to fire at the time of day specified by ``wall_time``.  When the
+ * This directive initiates the timer specified by ``id``. If the timer is
+ * running, it is automatically canceled before being initiated. The timer is
+ * scheduled to fire at the time of day specified by ``wall_time``. When the
  * timer fires, the timer service routine ``routine`` will be invoked with the
  * argument ``user_data`` in the context of the Timer Server task.
  *
@@ -725,9 +725,9 @@ rtems_status_code rtems_timer_server_fire_when(
  *
  * @param id is the timer identifier.
  *
- * This directive resets the timer specified by ``id``.  This timer must have
+ * This directive resets the timer specified by ``id``. This timer must have
  * been previously initiated with either the rtems_timer_fire_after() or
- * rtems_timer_server_fire_after() directive.  If active the timer is canceled,
+ * rtems_timer_server_fire_after() directive. If active the timer is canceled,
  * after which the timer is reinitiated using the same interval and timer
  * service routine which the original rtems_timer_fire_after() or
  * rtems_timer_server_fire_after() directive used.

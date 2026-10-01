@@ -63,7 +63,7 @@ extern "C" {
  * @ingroup RTEMSAPIClassic
  *
  * @brief RTEMS provides a collection of services to assist in the management
- *   and usage of the objects created and utilized via other managers.  These
+ *   and usage of the objects created and utilized via other managers. These
  *   services assist in the manipulation of RTEMS objects independent of the
  *   API used to create them.
  */
@@ -230,7 +230,7 @@ typedef struct {
  * The following constraints apply to this directive:
  *
  * - The directive is implemented by a macro and may be called from within
- *   C/C++ constant expressions.  In addition, a function implementation of the
+ *   C/C++ constant expressions. In addition, a function implementation of the
  *   directive exists for bindings to other programming languages.
  *
  * - The directive will not cause the calling task to be preempted.
@@ -273,7 +273,7 @@ rtems_id rtems_build_id(
  * The following constraints apply to this directive:
  *
  * - The directive is implemented by a macro and may be called from within
- *   C/C++ constant expressions.  In addition, a function implementation of the
+ *   C/C++ constant expressions. In addition, a function implementation of the
  *   directive exists for bindings to other programming languages.
  *
  * - The directive will not cause the calling task to be preempted.
@@ -294,7 +294,7 @@ rtems_name rtems_build_name( char c1, char c2, char c3, char c4 );
  *
  * @param id is the object identifier to get the name.
  *
- * @param[out] name is the pointer to an ::rtems_name object.  When the
+ * @param[out] name is the pointer to an ::rtems_name object. When the
  *   directive call is successful, the object name associated with the object
  *   identifier will be stored in this object.
  *
@@ -339,11 +339,11 @@ rtems_status_code rtems_object_get_classic_name(
  *
  * @param[out] name is the pointer to a buffer of the specified length.
  *
- * The object name is stored in the name buffer.  If the name buffer length is
+ * The object name is stored in the name buffer. If the name buffer length is
  * greater than zero, then the stored object name will be `NUL` terminated. The
- * stored object name may be truncated to fit the length.  There is no
- * indication if a truncation occurred.  Every attempt is made to return name
- * as a printable string even if the object has the Classic API 32-bit integer
+ * stored object name may be truncated to fit the length. There is no
+ * indication if a truncation occurred. Every attempt is made to return name as
+ * a printable string even if the object has the Classic API 32-bit integer
  * style name.
  *
  * @retval NULL The ``length`` parameter was 0.
@@ -420,7 +420,7 @@ char *rtems_object_get_name( rtems_id id, size_t length, char *name );
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  * @endparblock
  */
@@ -445,7 +445,7 @@ rtems_status_code rtems_object_set_name( rtems_id id, const char *name );
  * The following constraints apply to this directive:
  *
  * - The directive is implemented by a macro and may be called from within
- *   C/C++ constant expressions.  In addition, a function implementation of the
+ *   C/C++ constant expressions. In addition, a function implementation of the
  *   directive exists for bindings to other programming languages.
  *
  * - The directive will not cause the calling task to be preempted.
@@ -475,7 +475,7 @@ int rtems_object_id_get_api( rtems_id id );
  * The following constraints apply to this directive:
  *
  * - The directive is implemented by a macro and may be called from within
- *   C/C++ constant expressions.  In addition, a function implementation of the
+ *   C/C++ constant expressions. In addition, a function implementation of the
  *   directive exists for bindings to other programming languages.
  *
  * - The directive will not cause the calling task to be preempted.
@@ -505,7 +505,7 @@ int rtems_object_id_get_class( rtems_id id );
  * The following constraints apply to this directive:
  *
  * - The directive is implemented by a macro and may be called from within
- *   C/C++ constant expressions.  In addition, a function implementation of the
+ *   C/C++ constant expressions. In addition, a function implementation of the
  *   directive exists for bindings to other programming languages.
  *
  * - The directive will not cause the calling task to be preempted.
@@ -535,7 +535,7 @@ int rtems_object_id_get_node( rtems_id id );
  * The following constraints apply to this directive:
  *
  * - The directive is implemented by a macro and may be called from within
- *   C/C++ constant expressions.  In addition, a function implementation of the
+ *   C/C++ constant expressions. In addition, a function implementation of the
  *   directive exists for bindings to other programming languages.
  *
  * - The directive will not cause the calling task to be preempted.
@@ -562,7 +562,7 @@ int rtems_object_id_get_index( rtems_id id );
  * The following constraints apply to this directive:
  *
  * - The directive is implemented by a macro and may be called from within
- *   C/C++ constant expressions.  In addition, a function implementation of the
+ *   C/C++ constant expressions. In addition, a function implementation of the
  *   directive exists for bindings to other programming languages.
  *
  * - The directive will not cause the calling task to be preempted.
@@ -589,7 +589,7 @@ int rtems_object_id_api_minimum( void );
  * The following constraints apply to this directive:
  *
  * - The directive is implemented by a macro and may be called from within
- *   C/C++ constant expressions.  In addition, a function implementation of the
+ *   C/C++ constant expressions. In addition, a function implementation of the
  *   directive exists for bindings to other programming languages.
  *
  * - The directive will not cause the calling task to be preempted.
@@ -662,7 +662,7 @@ int rtems_object_api_maximum_class( int api );
  * @return Returns a descriptive name of the API, if the API was valid.
  *
  * @par Notes
- * The string returned is from constant space.  Do not modify or free it.
+ * The string returned is from constant space. Do not modify or free it.
  *
  * @par Constraints
  * @parblock
@@ -694,7 +694,7 @@ const char *rtems_object_get_api_name( int api );
  *   the API and the API were valid.
  *
  * @par Notes
- * The string returned is from constant space.  Do not modify or free it.
+ * The string returned is from constant space. Do not modify or free it.
  *
  * @par Constraints
  * @parblock
@@ -721,7 +721,7 @@ const char *rtems_object_get_api_class_name( int the_api, int the_class );
  *   information.
  *
  * @param[out] info is the pointer to an rtems_object_api_class_information
- *   object.  When the directive call is successful, the object class
+ *   object. When the directive call is successful, the object class
  *   information of the class of the API will be stored in this object.
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.

@@ -62,7 +62,7 @@ extern "C" {
  * @ingroup RTEMSAPIClassic
  *
  * @brief The Fatal Error Manager processes all fatal or irrecoverable errors
- *   and other sources of system termination (for example after exit()).  Fatal
+ *   and other sources of system termination (for example after exit()). Fatal
  *   errors are identified by the fatal source and code pair.
  */
 
@@ -119,9 +119,9 @@ typedef CPU_Exception_frame rtems_exception_frame;
  *
  * @param fatal_code is the fatal code.
  *
- * This directive processes fatal errors.  The fatal source is set to the value
- * of the ``fatal_source`` parameter.  The fatal code is set to the value of
- * the ``fatal_code`` parameter.
+ * This directive processes fatal errors. The fatal source is set to the value
+ * of the ``fatal_source`` parameter. The fatal code is set to the value of the
+ * ``fatal_code`` parameter.
  *
  * @par Constraints
  * @parblock
@@ -161,7 +161,7 @@ RTEMS_NO_RETURN static inline void rtems_fatal(
  *
  * This directive prints a message via printk() specified by the ``fmt``
  * parameter and optional parameters and then invokes the fatal error handler.
- * The fatal source is set to RTEMS_FATAL_SOURCE_PANIC.  The fatal code is set
+ * The fatal source is set to RTEMS_FATAL_SOURCE_PANIC. The fatal code is set
  * to the value of the ``fmt`` parameter value.
  *
  * @par Constraints
@@ -216,7 +216,7 @@ static inline void rtems_exception_frame_print(
  *
  * @retval "?" The ``fatal_source`` parameter value was not a fatal source.
  *
- * @return Returns a descriptive text for the fatal source.  The text for the
+ * @return Returns a descriptive text for the fatal source. The text for the
  *   fatal source is the enumerator constant name.
  *
  * @par Constraints
@@ -240,8 +240,8 @@ const char *rtems_fatal_source_text( rtems_fatal_source fatal_source );
  * @retval "?" The ``internal_error_code`` parameter value was not an internal
  *   error code.
  *
- * @return Returns a descriptive text for the internal error code.  The text
- *   for the internal error code is the enumerator constant name.
+ * @return Returns a descriptive text for the internal error code. The text for
+ *   the internal error code is the enumerator constant name.
  *
  * @par Constraints
  * @parblock
@@ -261,14 +261,14 @@ const char *rtems_internal_error_text( rtems_fatal_code internal_error_code );
  *
  * @param fatal_code is the fatal code.
  *
- * This directive processes fatal errors.  The fatal source is set to
- * INTERNAL_ERROR_RTEMS_API.  The fatal code is set to the value of the
+ * This directive processes fatal errors. The fatal source is set to
+ * INTERNAL_ERROR_RTEMS_API. The fatal code is set to the value of the
  * ``fatal_code`` parameter.
  *
  * @par Notes
- * This directive is deprecated and should not be used in new code.  It is
+ * This directive is deprecated and should not be used in new code. It is
  * recommended to not use this directive since error locations cannot be
- * uniquely identified.  A recommended alternative directive is rtems_fatal().
+ * uniquely identified. A recommended alternative directive is rtems_fatal().
  *
  * @par Constraints
  * @parblock

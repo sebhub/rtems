@@ -74,7 +74,7 @@ extern "C" {
  *
  * @brief Any real-time executive must provide a mechanism for quick response
  *   to externally generated interrupts to satisfy the critical time
- *   constraints of the application.  The Interrupt Manager provides this
+ *   constraints of the application. The Interrupt Manager provides this
  *   mechanism for RTEMS. This manager permits quick interrupt response times
  *   by providing the critical ability to alter task execution which allows a
  *   task to be preempted upon exit from an ISR.
@@ -141,8 +141,8 @@ typedef void ( *rtems_isr_entry )( void * );
  *   object.
  *
  * This directive establishes an interrupt service routine (ISR) for the
- * interrupt specified by the ``vector`` number.  The ``new_isr_handler``
- * parameter specifies the entry point of the ISR.  The entry point of the
+ * interrupt specified by the ``vector`` number. The ``new_isr_handler``
+ * parameter specifies the entry point of the ISR. The entry point of the
  * previous ISR for the specified vector is returned in ``old_isr_handler``.
  *
  * To release an interrupt vector, pass the old handler's address obtained when
@@ -243,10 +243,11 @@ rtems_status_code rtems_interrupt_catch(
    *
    * - The directive will not cause the calling task to be preempted.
    *
-   * - Where the system was built with SMP support enabled, the directive is not
-   *   available.  Its use will result in compiler warnings and linker errors.
-   *   The rtems_interrupt_local_disable() and rtems_interrupt_local_enable()
-   *   directives are available in all build configurations.
+   * - Where the system was built with SMP support enabled, the directive is
+   *   not available. Its use will result in compiler warnings and linker
+   *   errors. The rtems_interrupt_local_disable() and
+   *   rtems_interrupt_local_enable() directives are available in all build
+   *   configurations.
    * @endparblock
    */
   #define rtems_interrupt_disable( _isr_cookie ) \
@@ -261,9 +262,9 @@ rtems_status_code rtems_interrupt_catch(
    *
    * @brief Restores the previous interrupt level on the current processor.
    *
-   * @param[in] _isr_cookie is the previous interrupt level to restore.  The
-   *   value must be obtained by a previous call to rtems_interrupt_disable() or
-   *   rtems_interrupt_flash().
+   * @param[in] _isr_cookie is the previous interrupt level to restore. The
+   *   value must be obtained by a previous call to rtems_interrupt_disable()
+   *   or rtems_interrupt_flash().
    *
    * This directive restores the interrupt level specified by ``_isr_cookie`` on
    * the current processor.
@@ -271,7 +272,7 @@ rtems_status_code rtems_interrupt_catch(
    * @par Notes
    * @parblock
    * The ``_isr_cookie`` parameter value must be obtained by a previous call to
-   * rtems_interrupt_disable() or rtems_interrupt_flash().  Using an otherwise
+   * rtems_interrupt_disable() or rtems_interrupt_flash(). Using an otherwise
    * obtained value is undefined behaviour.
    *
    * This directive is unsuitable to enable particular interrupt sources, for
@@ -288,13 +289,14 @@ rtems_status_code rtems_interrupt_catch(
    *
    * - While at least one maskable interrupt is pending, when the directive
    *   enables maskable interrupts, the pending interrupts are immediately
-   *   serviced.  The interrupt service routines may unblock higher priority
+   *   serviced. The interrupt service routines may unblock higher priority
    *   tasks which may preempt the calling task.
    *
-   * - Where the system was built with SMP support enabled, the directive is not
-   *   available.  Its use will result in compiler warnings and linker errors.
-   *   The rtems_interrupt_local_disable() and rtems_interrupt_local_enable()
-   *   directives are available in all build configurations.
+   * - Where the system was built with SMP support enabled, the directive is
+   *   not available. Its use will result in compiler warnings and linker
+   *   errors. The rtems_interrupt_local_disable() and
+   *   rtems_interrupt_local_enable() directives are available in all build
+   *   configurations.
    * @endparblock
    */
   #define rtems_interrupt_enable( _isr_cookie ) \
@@ -313,17 +315,17 @@ rtems_status_code rtems_interrupt_catch(
    *
    * This directive is functionally equivalent to a calling
    * rtems_interrupt_enable() immediately followed by a
-   * rtems_interrupt_disable().  On some architectures it is possible to provide
+   * rtems_interrupt_disable(). On some architectures it is possible to provide
    * an optimized implementation for this sequence.
    *
    * @par Notes
    * @parblock
    * The ``_isr_cookie`` parameter value must be obtained by a previous call to
-   * rtems_interrupt_disable() or rtems_interrupt_flash().  Using an otherwise
+   * rtems_interrupt_disable() or rtems_interrupt_flash(). Using an otherwise
    * obtained value is undefined behaviour.
    *
    * Historically, the interrupt flash directive was heavily used in the
-   * operating system implementation.  However, this is no longer the case.  The
+   * operating system implementation. However, this is no longer the case. The
    * interrupt flash directive is provided for backward compatibility reasons.
    * @endparblock
    *
@@ -335,10 +337,11 @@ rtems_status_code rtems_interrupt_catch(
    *
    * - The directive will not cause the calling task to be preempted.
    *
-   * - Where the system was built with SMP support enabled, the directive is not
-   *   available.  Its use will result in compiler warnings and linker errors.
-   *   The rtems_interrupt_local_disable() and rtems_interrupt_local_enable()
-   *   directives are available in all build configurations.
+   * - Where the system was built with SMP support enabled, the directive is
+   *   not available. Its use will result in compiler warnings and linker
+   *   errors. The rtems_interrupt_local_disable() and
+   *   rtems_interrupt_local_enable() directives are available in all build
+   *   configurations.
    * @endparblock
    */
   #define rtems_interrupt_flash( _isr_cookie ) _ISR_Local_flash( _isr_cookie )
@@ -366,8 +369,8 @@ rtems_status_code rtems_interrupt_catch(
  * parameter.
  *
  * Where the system was built with SMP support enabled, this will not ensure
- * system wide mutual exclusion.  Use interrupt locks instead, see
- * rtems_interrupt_lock_acquire().  Interrupt disabled critical sections may be
+ * system wide mutual exclusion. Use interrupt locks instead, see
+ * rtems_interrupt_lock_acquire(). Interrupt disabled critical sections may be
  * used to access processor-specific data structures or disable thread
  * dispatching.
  *
@@ -424,9 +427,8 @@ rtems_status_code rtems_interrupt_catch(
  *
  * @brief Restores the previous interrupt level on the current processor.
  *
- * @param[in] _isr_cookie is the previous interrupt level to restore.  The
- *   value must be obtained by a previous call to
- *   rtems_interrupt_local_disable().
+ * @param[in] _isr_cookie is the previous interrupt level to restore. The value
+ *   must be obtained by a previous call to rtems_interrupt_local_disable().
  *
  * This directive restores the interrupt level specified by ``_isr_cookie`` on
  * the current processor.
@@ -434,7 +436,7 @@ rtems_status_code rtems_interrupt_catch(
  * @par Notes
  * @parblock
  * The ``_isr_cookie`` parameter value must be obtained by a previous call to
- * rtems_interrupt_local_disable().  Using an otherwise obtained value is
+ * rtems_interrupt_local_disable(). Using an otherwise obtained value is
  * undefined behaviour.
  *
  * This directive is unsuitable to enable particular interrupt sources, for
@@ -451,8 +453,8 @@ rtems_status_code rtems_interrupt_catch(
  *
  * - While at least one maskable interrupt is pending, when the directive
  *   enables maskable interrupts, the pending interrupts are immediately
- *   serviced.  The interrupt service routines may unblock higher priority
- *   tasks which may preempt the calling task.
+ *   serviced. The interrupt service routines may unblock higher priority tasks
+ *   which may preempt the calling task.
  * @endparblock
  */
 #define rtems_interrupt_local_enable( _isr_cookie ) \
@@ -466,7 +468,7 @@ rtems_status_code rtems_interrupt_catch(
  * @brief Checks if an ISR is in progress on the current processor.
  *
  * This directive returns `true`, if the current processor is currently
- * servicing an interrupt, and `false` otherwise.  A return value of `true`
+ * servicing an interrupt, and `false` otherwise. A return value of `true`
  * indicates that the caller is an interrupt service routine, **not** a task.
  * The directives available to an interrupt service routine are restricted.
  *
@@ -494,9 +496,9 @@ rtems_status_code rtems_interrupt_catch(
  * @par Notes
  * @parblock
  * Lock objects are only needed in some RTEMS build configurations, for example
- * where the SMP support is enabled.  The #RTEMS_INTERRUPT_LOCK_NEEDS_OBJECT
+ * where the SMP support is enabled. The #RTEMS_INTERRUPT_LOCK_NEEDS_OBJECT
  * constant can be used to determine whether a lock object is needed or not.
- * This may help to reduce the memory demands of an application.  All lock
+ * This may help to reduce the memory demands of an application. All lock
  * operations do not use the lock object parameter if lock objects are not
  * needed.
  *
@@ -533,7 +535,7 @@ typedef char rtems_interrupt_lock;
  *
  * @par Notes
  * This indication can be used to avoid the space overhead for lock objects
- * when they are not needed.  In this case, the lock operations will not use a
+ * when they are not needed. In this case, the lock operations will not use a
  * lock objects parameter.
  */
 #define RTEMS_INTERRUPT_LOCK_NEEDS_OBJECT ISR_LOCK_NEEDS_OBJECT
@@ -557,7 +559,7 @@ typedef ISR_lock_Context rtems_interrupt_lock_context;
  *
  * @param[out] _lock is the ISR lock to initialize.
  *
- * @param _name is the ISR lock name.  It shall be a string.  The name is only
+ * @param _name is the ISR lock name. It shall be a string. The name is only
  *   used where the system was built with profiling support enabled.
  *
  * @par Notes
@@ -607,11 +609,11 @@ typedef ISR_lock_Context rtems_interrupt_lock_context;
  *
  * @param[in,out] _lock is the ISR lock to acquire.
  *
- * @param[out] _lock_context is the ISR lock context.  This lock context shall
+ * @param[out] _lock_context is the ISR lock context. This lock context shall
  *   be used to release the lock by calling rtems_interrupt_lock_release().
  *
  * This directive acquires the ISR lock specified by ``_lock`` using the lock
- * context provided by ``_lock_context``.  Maskable interrupts will be disabled
+ * context provided by ``_lock_context``. Maskable interrupts will be disabled
  * on the current processor.
  *
  * @par Notes
@@ -620,7 +622,7 @@ typedef ISR_lock_Context rtems_interrupt_lock_context;
  * pair, for example an automatic variable.
  *
  * Where the system was built with SMP support enabled, this directive acquires
- * an SMP lock.  An attempt to recursively acquire the lock may result in an
+ * an SMP lock. An attempt to recursively acquire the lock may result in an
  * infinite loop with maskable interrupts disabled.
  *
  * This directive establishes a non-preemptive critical section with system
@@ -665,12 +667,12 @@ typedef ISR_lock_Context rtems_interrupt_lock_context;
  *
  * @param[in,out] _lock is the ISR lock to release.
  *
- * @param[in,out] _lock_context is the ISR lock context.  This lock context
+ * @param[in,out] _lock_context is the ISR lock context. This lock context
  *   shall have been used to acquire the lock by calling
  *   rtems_interrupt_lock_acquire().
  *
  * This directive releases the ISR lock specified by ``_lock`` using the lock
- * context provided by ``_lock_context``.  The previous interrupt level will be
+ * context provided by ``_lock_context``. The previous interrupt level will be
  * restored on the current processor.
  *
  * @par Notes
@@ -692,8 +694,8 @@ typedef ISR_lock_Context rtems_interrupt_lock_context;
  *
  * - While at least one maskable interrupt is pending, when the directive
  *   enables maskable interrupts, the pending interrupts are immediately
- *   serviced.  The interrupt service routines may unblock higher priority
- *   tasks which may preempt the calling task.
+ *   serviced. The interrupt service routines may unblock higher priority tasks
+ *   which may preempt the calling task.
  * @endparblock
  */
 #define rtems_interrupt_lock_release( _lock, _lock_context ) \
@@ -708,11 +710,11 @@ typedef ISR_lock_Context rtems_interrupt_lock_context;
  *
  * @param[in,out] _lock is the ISR lock to acquire within an ISR.
  *
- * @param[out] _lock_context is the ISR lock context.  This lock context shall
+ * @param[out] _lock_context is the ISR lock context. This lock context shall
  *   be used to release the lock by calling rtems_interrupt_lock_release_isr().
  *
  * This directive acquires the ISR lock specified by ``_lock`` using the lock
- * context provided by ``_lock_context``.  The interrupt level will remain
+ * context provided by ``_lock_context``. The interrupt level will remain
  * unchanged.
  *
  * @par Notes
@@ -721,7 +723,7 @@ typedef ISR_lock_Context rtems_interrupt_lock_context;
  * pair, for example an automatic variable.
  *
  * Where the system was built with SMP support enabled, this directive acquires
- * an SMP lock.  An attempt to recursively acquire the lock may result in an
+ * an SMP lock. An attempt to recursively acquire the lock may result in an
  * infinite loop.
  *
  * This directive is intended for device drivers and should be called from the
@@ -729,8 +731,8 @@ typedef ISR_lock_Context rtems_interrupt_lock_context;
  *
  * In case the corresponding interrupt service routine can be interrupted by
  * higher priority interrupts and these interrupts enter the critical section
- * protected by this lock, then the result is unpredictable.  This directive
- * may be used under specific circumstances as an optimization.  In doubt, use
+ * protected by this lock, then the result is unpredictable. This directive may
+ * be used under specific circumstances as an optimization. In doubt, use
  * rtems_interrupt_lock_acquire() and rtems_interrupt_lock_release().
  * @endparblock
  *
@@ -762,12 +764,12 @@ typedef ISR_lock_Context rtems_interrupt_lock_context;
  *
  * @param[in,out] _lock is the ISR lock to release within an ISR.
  *
- * @param[in,out] _lock_context is the ISR lock context.  This lock context
+ * @param[in,out] _lock_context is the ISR lock context. This lock context
  *   shall have been used to acquire the lock by calling
  *   rtems_interrupt_lock_acquire_isr().
  *
  * This directive releases the ISR lock specified by ``_lock`` using the lock
- * context provided by ``_lock_context``.  The interrupt level will remain
+ * context provided by ``_lock_context``. The interrupt level will remain
  * unchanged.
  *
  * @par Notes
@@ -857,7 +859,7 @@ typedef ISR_lock_Context rtems_interrupt_lock_context;
  *
  * @param _designator is the ISR lock object designator.
  *
- * @param _name is the ISR lock name.  It shall be a string.  The name is only
+ * @param _name is the ISR lock name. It shall be a string. The name is only
  *   used where the system was built with profiling support enabled.
  *
  * @par Notes
@@ -883,7 +885,7 @@ typedef ISR_lock_Context rtems_interrupt_lock_context;
  *
  * @brief Statically initializes an ISR lock object.
  *
- * @param _name is the ISR lock name.  It shall be a string.  The name is only
+ * @param _name is the ISR lock name. It shall be a string. The name is only
  *   used where the system was built with profiling support enabled.
  *
  * @par Notes
@@ -1043,11 +1045,11 @@ typedef void ( *rtems_interrupt_per_handler_routine )(
  *
  * @par Notes
  * This structure shall be treated as an opaque data type from the API point of
- * view.  Members shall not be accessed directly.  An entry may be initialized
- * by RTEMS_INTERRUPT_ENTRY_INITIALIZER() or
- * rtems_interrupt_entry_initialize().  It may be installed for an interrupt
- * vector with rtems_interrupt_entry_install() and removed from an interrupt
- * vector by rtems_interrupt_entry_remove().
+ * view. Members shall not be accessed directly. An entry may be initialized by
+ * RTEMS_INTERRUPT_ENTRY_INITIALIZER() or rtems_interrupt_entry_initialize().
+ * It may be installed for an interrupt vector with
+ * rtems_interrupt_entry_install() and removed from an interrupt vector by
+ * rtems_interrupt_entry_remove().
  *
  * @par Constraints
  * @parblock
@@ -1161,9 +1163,9 @@ static inline void rtems_interrupt_entry_initialize(
  * shall be set in the ``options`` parameter.
  *
  * The handler routine of the entry specified by ``entry`` will be called with
- * the handler argument of the entry when dispatched.  The order in which
- * shared interrupt handlers are dispatched for one vector is defined by the
- * installation order.  The first installed handler is dispatched first.
+ * the handler argument of the entry when dispatched. The order in which shared
+ * interrupt handlers are dispatched for one vector is defined by the
+ * installation order. The first installed handler is dispatched first.
  *
  * If the option #RTEMS_INTERRUPT_UNIQUE is set, then it will be ensured that
  * the handler will be the only one for the interrupt vector.
@@ -1201,7 +1203,7 @@ static inline void rtems_interrupt_entry_initialize(
  *
  * @par Notes
  * When the directive call was successful, the ownership of the interrupt entry
- * has been transferred from the caller to the interrupt service.  An installed
+ * has been transferred from the caller to the interrupt service. An installed
  * interrupt entry may be removed from the interrupt service by calling
  * rtems_interrupt_entry_remove().
  *
@@ -1214,7 +1216,7 @@ static inline void rtems_interrupt_entry_initialize(
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  *
  * - The interrupt entry shall have been initialized by
@@ -1266,7 +1268,7 @@ rtems_status_code rtems_interrupt_entry_install(
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  *
  * - The interrupt entry shall have been installed by
@@ -1308,9 +1310,9 @@ rtems_status_code rtems_interrupt_entry_remove(
  * shall be set in the ``options`` parameter.
  *
  * The handler routine will be called with the argument specified by ``arg``
- * when dispatched.  The order in which shared interrupt handlers are
- * dispatched for one vector is defined by the installation order.  The first
- * installed handler is dispatched first.
+ * when dispatched. The order in which shared interrupt handlers are dispatched
+ * for one vector is defined by the installation order. The first installed
+ * handler is dispatched first.
  *
  * If the option #RTEMS_INTERRUPT_UNIQUE is set, then it will be ensured that
  * the handler will be the only one for the interrupt vector.
@@ -1320,13 +1322,13 @@ rtems_status_code rtems_interrupt_entry_remove(
  *
  * If the option #RTEMS_INTERRUPT_REPLACE is set, then the handler specified by
  * ``routine`` will replace the first handler with the same argument for the
- * interrupt vector if it exists, otherwise an error status will be returned.
- * A second handler with the same argument for the interrupt vector will remain
- * unchanged.  The new handler will inherit the unique or shared options from
+ * interrupt vector if it exists, otherwise an error status will be returned. A
+ * second handler with the same argument for the interrupt vector will remain
+ * unchanged. The new handler will inherit the unique or shared options from
  * the replaced handler.
  *
- * An informative description may be provided in ``info``.  It may be used for
- * system debugging and diagnostic tools.  The referenced string has to be
+ * An informative description may be provided in ``info``. It may be used for
+ * system debugging and diagnostic tools. The referenced string has to be
  * persistent as long as the handler is installed.
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
@@ -1367,7 +1369,7 @@ rtems_status_code rtems_interrupt_entry_remove(
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  * @endparblock
  */
@@ -1417,7 +1419,7 @@ rtems_status_code rtems_interrupt_handler_install(
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  * @endparblock
  */
@@ -1436,10 +1438,10 @@ rtems_status_code rtems_interrupt_handler_remove(
  *
  * @param vector is the interrupt vector number.
  *
- * @param[out] enabled is the pointer to a `bool` object.  When the directive
+ * @param[out] enabled is the pointer to a `bool` object. When the directive
  *   call is successful, the enabled status of the interrupt associated with
  *   the interrupt vector specified by ``vector`` will be stored in this
- *   object.  When the interrupt was enabled for the processor executing the
+ *   object. When the interrupt was enabled for the processor executing the
  *   directive call at some time point during the call, the object value will
  *   be set to true, otherwise to false.
  *
@@ -1488,7 +1490,7 @@ rtems_status_code rtems_interrupt_vector_is_enabled(
  *
  * The directive enables the interrupt vector specified by ``vector``. This
  * allows that interrupt service requests are issued to the target processors
- * of the interrupt vector.  Interrupt service requests for an interrupt vector
+ * of the interrupt vector. Interrupt service requests for an interrupt vector
  * may be raised by rtems_interrupt_raise(), rtems_interrupt_raise_on(),
  * external signals, or messages.
  *
@@ -1502,7 +1504,7 @@ rtems_status_code rtems_interrupt_vector_is_enabled(
  *
  * @par Notes
  * The rtems_interrupt_get_attributes() directive may be used to check if an
- * interrupt vector can be enabled.  Interrupt vectors may be disabled by
+ * interrupt vector can be enabled. Interrupt vectors may be disabled by
  * rtems_interrupt_vector_disable().
  *
  * @par Constraints
@@ -1530,7 +1532,7 @@ rtems_status_code rtems_interrupt_vector_enable( rtems_vector_number vector );
  *
  * @param vector is the number of the interrupt vector to disable.
  *
- * The directive disables the interrupt vector specified by ``vector``.  This
+ * The directive disables the interrupt vector specified by ``vector``. This
  * prevents that an interrupt service request is issued to the target
  * processors of the interrupt vector.
  *
@@ -1544,8 +1546,8 @@ rtems_status_code rtems_interrupt_vector_enable( rtems_vector_number vector );
  *
  * @par Notes
  * The rtems_interrupt_get_attributes() directive may be used to check if an
- * interrupt vector can be disabled.  Interrupt vectors may be enabled by
- * rtems_interrupt_vector_enable().  There may be targets on which some
+ * interrupt vector can be disabled. Interrupt vectors may be enabled by
+ * rtems_interrupt_vector_enable(). There may be targets on which some
  * interrupt vectors cannot be disabled, for example a hardware watchdog
  * interrupt or software generated interrupts.
  *
@@ -1574,10 +1576,10 @@ rtems_status_code rtems_interrupt_vector_disable( rtems_vector_number vector );
  *
  * @param vector is the interrupt vector number.
  *
- * @param[out] pending is the pointer to a `bool` object.  When the directive
+ * @param[out] pending is the pointer to a `bool` object. When the directive
  *   call is successful, the pending status of the interrupt associated with
  *   the interrupt vector specified by ``vector`` will be stored in this
- *   object.  When the interrupt was pending for the processor executing the
+ *   object. When the interrupt was pending for the processor executing the
  *   directive call at some time point during the call, the object value will
  *   be set to true, otherwise to false.
  *
@@ -1598,7 +1600,7 @@ rtems_status_code rtems_interrupt_vector_disable( rtems_vector_number vector );
  * @par Notes
  * Interrupts may be made pending by calling the rtems_interrupt_raise() or
  * rtems_interrupt_raise_on() directives or due to external signals or
- * messages.  The pending state may be cleared by rtems_interrupt_clear().
+ * messages. The pending state may be cleared by rtems_interrupt_clear().
  *
  * @par Constraints
  * @parblock
@@ -1751,7 +1753,7 @@ rtems_status_code rtems_interrupt_clear( rtems_vector_number vector );
  *
  * @param vector is the interrupt vector number.
  *
- * @param[out] priority is the pointer to an uint32_t object.  When the
+ * @param[out] priority is the pointer to an uint32_t object. When the
  *   directive call is successful, the priority of the interrupt vector will be
  *   stored in this object.
  *
@@ -1822,16 +1824,16 @@ rtems_status_code rtems_interrupt_get_priority(
  * associated with an interrupt vector.
  *
  * The interrupt prioritization support depends on the interrupt controller of
- * the target.  It is strongly recommended to read the relevant hardware
- * documentation.  What happens when the priority of a pending or active
- * interrupt is changed, depends on the interrupt controller.  In general, you
+ * the target. It is strongly recommended to read the relevant hardware
+ * documentation. What happens when the priority of a pending or active
+ * interrupt is changed, depends on the interrupt controller. In general, you
  * should set the interrupt priority of an interrupt vector before a handler is
- * installed.  On some interrupt controllers, setting the priority to the
+ * installed. On some interrupt controllers, setting the priority to the
  * maximum value (lowest importance) effectively disables the interrupt.
  *
  * On some architectures, a range of interrupt priority values may be not
  * disabled by the interrupt disable directives such as
- * rtems_interrupt_disable() and rtems_interrupt_local_disable().  These
+ * rtems_interrupt_disable() and rtems_interrupt_local_disable(). These
  * interrupts are called non-maskable interrupts. Handlers of non-maskable
  * interrupts shall not use operating system services. In addition,
  * non-maskable interrupts may be not installable through
@@ -1839,39 +1841,39 @@ rtems_status_code rtems_interrupt_get_priority(
  * may require architecture-specific prologue and epilogue code.
  *
  * The interrupt priority settings affect the maximum nesting depth while
- * servicing interrupts.  The interrupt stack size calculation needs to take
+ * servicing interrupts. The interrupt stack size calculation needs to take
  * this into account, see also @ref CONFIGURE_INTERRUPT_STACK_SIZE.
  *
  * For the ARM Generic Interrupt Controller (GIC), an 8-bit priority value is
- * supported.  The granularity of the priority levels depends on the interrupt
- * controller configuration.  Some low-order bits of a priority value may be
- * read-as-zero (RAZ) and writes are ignored (WI).  Where group 0 (FIQ) and
+ * supported. The granularity of the priority levels depends on the interrupt
+ * controller configuration. Some low-order bits of a priority value may be
+ * read-as-zero (RAZ) and writes are ignored (WI). Where group 0 (FIQ) and
  * group 1 (IRQ) interrupts are used, it is recommended to use the lower half
  * of the supported priority value range for the group 0 interrupts and the
- * upper half for group 1 interrupts.  This ensures that group 1 interrupts
+ * upper half for group 1 interrupts. This ensures that group 1 interrupts
  * cannot preempt group 0 interrupts.
  *
  * For the Armv7-M Nested Vector Interrupt Controller (NVIC), an 8-bit priority
- * value is supported.  The granularity of the priority levels depends on the
- * interrupt controller configuration.  Some lower bits of a priority value may
- * be read-as-zero (RAZ) and writes are ignored (WI).  Interrupts with a
+ * value is supported. The granularity of the priority levels depends on the
+ * interrupt controller configuration. Some lower bits of a priority value may
+ * be read-as-zero (RAZ) and writes are ignored (WI). Interrupts with a
  * priority value less than 128 are not disabled by the RTEMS interrupt disable
- * directives.  Handlers of such interrupts shall not use operating system
+ * directives. Handlers of such interrupts shall not use operating system
  * services.
  *
  * For the RISC-V Platform-Level Interrupt Controller (PLIC), all priority
  * values from 0 up to and including the 0xffffffff are supported since the
  * priority for the PLIC is defined by a write-any-read-legal (WARL) register.
  * Please note that for this directive in contrast to the PLIC, a higher
- * priority value is associated with a lower importance.  The maximum priority
+ * priority value is associated with a lower importance. The maximum priority
  * value (mapped to the value 0 for the PLIC) is reserved to mean "never
  * interrupt" and effectively disables the interrupt.
  *
  * For the QorIQ Multicore Programmable Interrupt Controller (MPIC), a 4-bit
- * priority value is supported.  Please note that for this directive in
- * contrast to the MPIC, a higher priority value is associated with a lower
- * importance. The maximum priority value of 15 (mapped to the value 0 for the
- * MPIC) inhibits signalling of this interrupt.
+ * priority value is supported. Please note that for this directive in contrast
+ * to the MPIC, a higher priority value is associated with a lower importance.
+ * The maximum priority value of 15 (mapped to the value 0 for the MPIC)
+ * inhibits signalling of this interrupt.
  *
  * Consult the *RTEMS CPU Architecture Supplement* and the BSP documentation in
  * the *RTEMS User Manual* for further information.
@@ -1908,11 +1910,11 @@ rtems_status_code rtems_interrupt_set_priority(
  * @param affinity_size is the size of the processor set referenced by
  *   ``affinity`` in bytes.
  *
- * @param[out] affinity is the pointer to a cpu_set_t object.  When the
+ * @param[out] affinity is the pointer to a cpu_set_t object. When the
  *   directive call is successful, the processor affinity set of the interrupt
- *   vector will be stored in this object.  A set bit in the processor set
- *   means that the corresponding processor is in the processor affinity set of
- *   the interrupt vector, otherwise the bit is cleared.
+ *   vector will be stored in this object. A set bit in the processor set means
+ *   that the corresponding processor is in the processor affinity set of the
+ *   interrupt vector, otherwise the bit is cleared.
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
  *
@@ -1957,8 +1959,8 @@ rtems_status_code rtems_interrupt_get_affinity(
  * @param affinity_size is the size of the processor set referenced by
  *   ``affinity`` in bytes.
  *
- * @param affinity is the pointer to a cpu_set_t object.  The processor set
- *   defines the new processor affinity set of the interrupt vector.  A set bit
+ * @param affinity is the pointer to a cpu_set_t object. The processor set
+ *   defines the new processor affinity set of the interrupt vector. A set bit
  *   in the processor set means that the corresponding processor shall be in
  *   the processor affinity set of the interrupt vector, otherwise the bit
  *   shall be cleared.
@@ -1982,8 +1984,8 @@ rtems_status_code rtems_interrupt_get_affinity(
  * processor affinity of an interrupt vector can be set.
  *
  * Only online processors of the affinity set specified by ``affinity_size``
- * and ``affinity`` are considered by the directive.  Other processors of the
- * set are ignored.  If the set contains no online processor, then the set is
+ * and ``affinity`` are considered by the directive. Other processors of the
+ * set are ignored. If the set contains no online processor, then the set is
  * invalid and an error status is returned.
  * @endparblock
  *
@@ -2078,7 +2080,7 @@ typedef struct {
    *   rtems_interrupt_vector_enable(), otherwise it is false.
    *
    * When an interrupt vector can be enabled, this means that the enabled state
-   * can always be changed from disabled to enabled.  For an interrupt vector
+   * can always be changed from disabled to enabled. For an interrupt vector
    * which can be enabled it follows that it may be enabled.
    */
   bool can_enable;
@@ -2088,10 +2090,10 @@ typedef struct {
    *   rtems_interrupt_vector_enable(), otherwise it is false.
    *
    * When an interrupt vector may be enabled, this means that the enabled state
-   * may be changed from disabled to enabled.  The requested enabled state change
-   * should be checked by rtems_interrupt_vector_is_enabled().  Some interrupt
-   * vectors may be optionally available and cannot be enabled on a particular
-   * target.
+   * may be changed from disabled to enabled. The requested enabled state
+   * change should be checked by rtems_interrupt_vector_is_enabled(). Some
+   * interrupt vectors may be optionally available and cannot be enabled on a
+   * particular target.
    */
   bool maybe_enable;
 
@@ -2099,9 +2101,9 @@ typedef struct {
    * @brief This member is true, if the interrupt vector can be disabled by
    *   rtems_interrupt_vector_disable(), otherwise it is false.
    *
-   * When an interrupt vector can be disabled, this means that the enabled state
-   * can be changed from enabled to disabled.  For an interrupt vector which can
-   * be disabled it follows that it may be disabled.
+   * When an interrupt vector can be disabled, this means that the enabled
+   * state can be changed from enabled to disabled. For an interrupt vector
+   * which can be disabled it follows that it may be disabled.
    */
   bool can_disable;
 
@@ -2109,10 +2111,11 @@ typedef struct {
    * @brief This member is true, if the interrupt vector may be disabled by
    *   rtems_interrupt_vector_disable(), otherwise it is false.
    *
-   * When an interrupt vector may be disabled, this means that the enabled state
-   * may be changed from enabled to disabled.  The requested enabled state change
-   * should be checked by rtems_interrupt_vector_is_enabled().  Some interrupt
-   * vectors may be always enabled and cannot be disabled on a particular target.
+   * When an interrupt vector may be disabled, this means that the enabled
+   * state may be changed from enabled to disabled. The requested enabled state
+   * change should be checked by rtems_interrupt_vector_is_enabled(). Some
+   * interrupt vectors may be always enabled and cannot be disabled on a
+   * particular target.
    */
   bool maybe_disable;
 
@@ -2158,9 +2161,9 @@ typedef struct {
    *   vector can be triggered by a message.
    *
    * Interrupts may be also triggered by signals, rtems_interrupt_raise(), or
-   * rtems_interrupt_raise_on().  Examples for message triggered interrupts are
-   * the PCIe MSI/MSI-X and the ARM GICv3 Locality-specific Peripheral Interrupts
-   * (LPI).
+   * rtems_interrupt_raise_on(). Examples for message triggered interrupts are
+   * the PCIe MSI/MSI-X and the ARM GICv3 Locality-specific Peripheral
+   * Interrupts (LPI).
    */
   bool can_be_triggered_by_message;
 
@@ -2169,7 +2172,7 @@ typedef struct {
    *   with the interrupt vector.
    *
    * Interrupts are normally triggered by signals which indicate an interrupt
-   * request from a peripheral.  Interrupts may be also triggered by messages,
+   * request from a peripheral. Interrupts may be also triggered by messages,
    * rtems_interrupt_raise(), or rtems_interrupt_raise_on().
    */
   rtems_interrupt_signal_variant trigger_signal;
@@ -2188,10 +2191,10 @@ typedef struct {
 
   /**
    * @brief This member represents the maximum priority value of the interrupt
-   *   vector.  By convention, the minimum priority value is zero.  Lower
-   *   priority values shall be associated with a higher importance.  The higher
+   *   vector. By convention, the minimum priority value is zero. Lower
+   *   priority values shall be associated with a higher importance. The higher
    *   the priority value, the less important is the service of the associated
-   *   interrupt vector.  Where nested interrupts are supported, interrupts with
+   *   interrupt vector. Where nested interrupts are supported, interrupts with
    *   a lower priority value may preempt other interrupts having a higher
    *   priority value.
    */
@@ -2208,7 +2211,7 @@ typedef struct {
  * @param vector is the interrupt vector number.
  *
  * @param[out] attributes is the pointer to an rtems_interrupt_attributes
- *   object.  When the directive call is successful, the attributes of the
+ *   object. When the directive call is successful, the attributes of the
  *   interrupt vector will be stored in this object.
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
@@ -2284,7 +2287,7 @@ rtems_status_code rtems_interrupt_get_attributes(
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  * @endparblock
  */
@@ -2312,7 +2315,7 @@ rtems_status_code rtems_interrupt_handler_iterate(
  *
  * @par Notes
  * This structure shall be treated as an opaque data type from the API point of
- * view.  Members shall not be accessed directly.  The structure is initialized
+ * view. Members shall not be accessed directly. The structure is initialized
  * by rtems_interrupt_server_create() and maintained by the interrupt server
  * support.
  *
@@ -2421,9 +2424,9 @@ typedef struct {
    * @brief This member is an optional handler to destroy the interrupt server
    *   control handed over to rtems_interrupt_server_create().
    *
-   * The destroy handler is optional and may be NULL.  If the destroy handler is
-   * present, it is called from within the context of the interrupt server to be
-   * deleted, see also rtems_interrupt_server_delete().
+   * The destroy handler is optional and may be NULL. If the destroy handler is
+   * present, it is called from within the context of the interrupt server to
+   * be deleted, see also rtems_interrupt_server_delete().
    */
   void ( *destroy )( rtems_interrupt_server_control * );
 } rtems_interrupt_server_config;
@@ -2450,10 +2453,10 @@ typedef struct {
  *   status.
  *
  * The directive tries to create an interrupt server task for each online
- * processor in the system.  The tasks will have the initial priority specified
+ * processor in the system. The tasks will have the initial priority specified
  * by ``priority``, the stack size specified by ``stack_size``, the initial
  * mode set specified by ``modes``, and the attribute set specified by
- * ``attributes``.  The count of successfully created server tasks will be
+ * ``attributes``. The count of successfully created server tasks will be
  * returned in ``server_count`` if the pointer is not equal to NULL.
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
@@ -2461,16 +2464,16 @@ typedef struct {
  * @retval ::RTEMS_INCORRECT_STATE The interrupt servers were already
  *   initialized.
  *
- * @return The directive uses rtems_task_create().  If this directive fails,
+ * @return The directive uses rtems_task_create(). If this directive fails,
  *   then its error status will be returned.
  *
  * @par Notes
  * @parblock
  * Interrupt handlers may be installed on an interrupt server with
  * rtems_interrupt_server_handler_install() and removed with
- * rtems_interrupt_server_handler_remove() using a server index.  In case of an
- * interrupt, the request will be forwarded to the interrupt server.  The
- * handlers are executed within the interrupt server context.  If one handler
+ * rtems_interrupt_server_handler_remove() using a server index. In case of an
+ * interrupt, the request will be forwarded to the interrupt server. The
+ * handlers are executed within the interrupt server context. If one handler
  * blocks on something this may delay the processing of other handlers.
  *
  * Interrupt servers may be deleted by rtems_interrupt_server_delete().
@@ -2485,7 +2488,7 @@ typedef struct {
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  * @endparblock
  */
@@ -2505,19 +2508,19 @@ rtems_status_code rtems_interrupt_server_initialize(
  * @brief Creates an interrupt server.
  *
  * @param[out] control is the pointer to an rtems_interrupt_server_control
- *   object.  When the directive call was successful, the ownership of the
+ *   object. When the directive call was successful, the ownership of the
  *   object was transferred from the caller of the directive to the interrupt
  *   server management.
  *
  * @param config is the interrupt server configuration.
  *
- * @param[out] server_index is the pointer to an uint32_t object.  When the
+ * @param[out] server_index is the pointer to an uint32_t object. When the
  *   directive call was successful, the index of the created interrupt server
  *   will be stored in this object.
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
  *
- * @return The directive uses rtems_task_create().  If this directive fails,
+ * @return The directive uses rtems_task_create(). If this directive fails,
  *   then its error status will be returned.
  *
  * @par Notes
@@ -2533,7 +2536,7 @@ rtems_status_code rtems_interrupt_server_initialize(
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  * @endparblock
  */
@@ -2551,7 +2554,7 @@ rtems_status_code rtems_interrupt_server_create(
  * @brief Installs the interrupt handler routine and argument at the interrupt
  *   vector on the interrupt server.
  *
- * @param server_index is the interrupt server index.  The constant
+ * @param server_index is the interrupt server index. The constant
  *   #RTEMS_INTERRUPT_SERVER_DEFAULT may be used to specify the default
  *   interrupt server.
  *
@@ -2611,7 +2614,7 @@ rtems_status_code rtems_interrupt_server_create(
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  * @endparblock
  */
@@ -2632,7 +2635,7 @@ rtems_status_code rtems_interrupt_server_handler_install(
  * @brief Removes the interrupt handler routine and argument from the interrupt
  *   vector and the interrupt server.
  *
- * @param server_index is the interrupt server index.  The constant
+ * @param server_index is the interrupt server index. The constant
  *   #RTEMS_INTERRUPT_SERVER_DEFAULT may be used to specify the default
  *   interrupt server.
  *
@@ -2659,14 +2662,14 @@ rtems_status_code rtems_interrupt_server_handler_install(
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  *
  * - The directive sends a request to another task and waits for a response.
  *   This may cause the calling task to be blocked and unblocked.
  *
  * - The directive shall not be called from within the context of an interrupt
- *   server.  Calling the directive from within the context of an interrupt
+ *   server. Calling the directive from within the context of an interrupt
  *   server is undefined behaviour.
  * @endparblock
  */
@@ -2684,15 +2687,15 @@ rtems_status_code rtems_interrupt_server_handler_remove(
  *
  * @brief Sets the processor affinity of the interrupt server.
  *
- * @param server_index is the interrupt server index.  The constant
+ * @param server_index is the interrupt server index. The constant
  *   #RTEMS_INTERRUPT_SERVER_DEFAULT may be used to specify the default
  *   interrupt server.
  *
  * @param affinity_size is the size of the processor set referenced by
  *   ``affinity`` in bytes.
  *
- * @param affinity is the pointer to a cpu_set_t object.  The processor set
- *   defines the new processor affinity set of the interrupt server.  A set bit
+ * @param affinity is the pointer to a cpu_set_t object. The processor set
+ *   defines the new processor affinity set of the interrupt server. A set bit
  *   in the processor set means that the corresponding processor shall be in
  *   the processor affinity set of the task, otherwise the bit shall be
  *   cleared.
@@ -2705,8 +2708,8 @@ rtems_status_code rtems_interrupt_server_handler_remove(
  *   index specified by ``server_index``.
  *
  * @return The directive uses rtems_scheduler_ident_by_processor_set(),
- *   rtems_task_set_scheduler(), and rtems_task_set_affinity().  If one of
- *   these directive fails, then its error status will be returned.
+ *   rtems_task_set_scheduler(), and rtems_task_set_affinity(). If one of these
+ *   directive fails, then its error status will be returned.
  *
  * @par Notes
  * @parblock
@@ -2728,10 +2731,10 @@ rtems_status_code rtems_interrupt_server_handler_remove(
  *
  * - The directive may be called from within task context.
  *
- * - The directive may change the processor affinity of a task.  This may cause
+ * - The directive may change the processor affinity of a task. This may cause
  *   the calling task to be preempted.
  *
- * - The directive may change the priority of a task.  This may cause the
+ * - The directive may change the priority of a task. This may cause the
  *   calling task to be preempted.
  * @endparblock
  */
@@ -2772,7 +2775,7 @@ rtems_status_code rtems_interrupt_server_set_affinity(
  * - The directive may be called from within task context.
  *
  * - The directive shall not be called from within the context of an interrupt
- *   server.  Calling the directive from within the context of an interrupt
+ *   server. Calling the directive from within the context of an interrupt
  *   server is undefined behaviour.
  *
  * - The directive sends a request to another task and waits for a response.
@@ -2788,7 +2791,7 @@ rtems_status_code rtems_interrupt_server_delete( uint32_t server_index );
  *
  * @brief Suspends the interrupt server.
  *
- * @param server_index is the index of the interrupt server to suspend.  The
+ * @param server_index is the index of the interrupt server to suspend. The
  *   constant #RTEMS_INTERRUPT_SERVER_DEFAULT may be used to specify the
  *   default interrupt server.
  *
@@ -2807,7 +2810,7 @@ rtems_status_code rtems_interrupt_server_delete( uint32_t server_index );
  * - The directive may be called from within task context.
  *
  * - The directive shall not be called from within the context of an interrupt
- *   server.  Calling the directive from within the context of an interrupt
+ *   server. Calling the directive from within the context of an interrupt
  *   server is undefined behaviour.
  *
  * - The directive sends a request to another task and waits for a response.
@@ -2823,7 +2826,7 @@ rtems_status_code rtems_interrupt_server_suspend( uint32_t server_index );
  *
  * @brief Resumes the interrupt server.
  *
- * @param server_index is the index of the interrupt server to resume.  The
+ * @param server_index is the index of the interrupt server to resume. The
  *   constant #RTEMS_INTERRUPT_SERVER_DEFAULT may be used to specify the
  *   default interrupt server.
  *
@@ -2842,7 +2845,7 @@ rtems_status_code rtems_interrupt_server_suspend( uint32_t server_index );
  * - The directive may be called from within task context.
  *
  * - The directive shall not be called from within the context of an interrupt
- *   server.  Calling the directive from within the context of an interrupt
+ *   server. Calling the directive from within the context of an interrupt
  *   server is undefined behaviour.
  *
  * - The directive sends a request to another task and waits for a response.
@@ -2859,14 +2862,14 @@ rtems_status_code rtems_interrupt_server_resume( uint32_t server_index );
  * @brief Moves the interrupt handlers installed at the interrupt vector and
  *   the source interrupt server to the destination interrupt server.
  *
- * @param source_server_index is the index of the source interrupt server.  The
+ * @param source_server_index is the index of the source interrupt server. The
  *   constant #RTEMS_INTERRUPT_SERVER_DEFAULT may be used to specify the
  *   default interrupt server.
  *
  * @param vector is the interrupt vector number.
  *
  * @param destination_server_index is the index of the destination interrupt
- *   server.  The constant #RTEMS_INTERRUPT_SERVER_DEFAULT may be used to
+ *   server. The constant #RTEMS_INTERRUPT_SERVER_DEFAULT may be used to
  *   specify the default interrupt server.
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
@@ -2887,7 +2890,7 @@ rtems_status_code rtems_interrupt_server_resume( uint32_t server_index );
  * - The directive may be called from within task context.
  *
  * - The directive shall not be called from within the context of an interrupt
- *   server.  Calling the directive from within the context of an interrupt
+ *   server. Calling the directive from within the context of an interrupt
  *   server is undefined behaviour.
  *
  * - The directive sends a request to another task and waits for a response.
@@ -2946,7 +2949,7 @@ rtems_status_code rtems_interrupt_server_move(
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  * @endparblock
  */
@@ -2966,7 +2969,7 @@ rtems_status_code rtems_interrupt_server_handler_iterate(
  *
  * @par Notes
  * This structure shall be treated as an opaque data type from the API point of
- * view.  Members shall not be accessed directly.
+ * view. Members shall not be accessed directly.
  *
  * @par Constraints
  * @parblock
@@ -3001,11 +3004,11 @@ typedef struct rtems_interrupt_server_action {
  *
  * @par Notes
  * This structure shall be treated as an opaque data type from the API point of
- * view.  Members shall not be accessed directly.  An entry is initialized by
+ * view. Members shall not be accessed directly. An entry is initialized by
  * rtems_interrupt_server_entry_initialize() and destroyed by
- * rtems_interrupt_server_entry_destroy().  Interrupt server actions can be
- * prepended to the entry by rtems_interrupt_server_action_prepend().  The
- * entry is submitted to be serviced by rtems_interrupt_server_entry_submit().
+ * rtems_interrupt_server_entry_destroy(). Interrupt server actions can be
+ * prepended to the entry by rtems_interrupt_server_action_prepend(). The entry
+ * is submitted to be serviced by rtems_interrupt_server_entry_submit().
  *
  * @par Constraints
  * @parblock
@@ -3044,7 +3047,7 @@ typedef struct {
  *
  * @brief Initializes the interrupt server entry.
  *
- * @param server_index is the interrupt server index.  The constant
+ * @param server_index is the interrupt server index. The constant
  *   #RTEMS_INTERRUPT_SERVER_DEFAULT may be used to specify the default
  *   interrupt server.
  *
@@ -3057,9 +3060,9 @@ typedef struct {
  *
  * @par Notes
  * After initialization, the list of actions of the interrupt server entry is
- * empty.  Actions may be prepended by rtems_interrupt_server_action_prepend().
+ * empty. Actions may be prepended by rtems_interrupt_server_action_prepend().
  * Interrupt server entries may be moved to another interrupt vector with
- * rtems_interrupt_server_entry_move().  Server entries may be submitted to get
+ * rtems_interrupt_server_entry_move(). Server entries may be submitted to get
  * serviced by the interrupt server with rtems_interrupt_server_entry_submit().
  * Server entries may be destroyed by rtems_interrupt_server_entry_destroy().
  *
@@ -3072,7 +3075,7 @@ typedef struct {
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  * @endparblock
  */
@@ -3090,7 +3093,7 @@ rtems_status_code rtems_interrupt_server_entry_initialize(
  *   interrupt server entry.
  *
  * @param[in,out] entry is the interrupt server entry to prepend the interrupt
- *   server action.  It shall have been initialized via
+ *   server action. It shall have been initialized via
  *   rtems_interrupt_server_entry_initialize().
  *
  * @param[out] action is the interrupt server action to initialize and prepend
@@ -3133,7 +3136,7 @@ rtems_status_code rtems_interrupt_server_entry_initialize(
  *   entry. Calling the directive under this condition is undefined behaviour.
  *
  * - The directive shall not be called while the interrupt server entry is
- *   pending on or serviced by its current interrupt server.  Calling the
+ *   pending on or serviced by its current interrupt server. Calling the
  *   directive under these conditions is undefined behaviour.
  * @endparblock
  */
@@ -3163,7 +3166,7 @@ void rtems_interrupt_server_action_prepend(
  * - The directive may be called from within task context.
  *
  * - The directive shall not be called from within the context of an interrupt
- *   server.  Calling the directive from within the context of an interrupt
+ *   server. Calling the directive from within the context of an interrupt
  *   server is undefined behaviour.
  *
  * - The directive sends a request to another task and waits for a response.
@@ -3189,14 +3192,14 @@ void rtems_interrupt_server_entry_destroy(
  * @param entry is the interrupt server entry to submit.
  *
  * The directive appends the entry to the pending entries of the interrupt
- * server.  The interrupt server is notified that a new entry is pending.  Once
+ * server. The interrupt server is notified that a new entry is pending. Once
  * the interrupt server is scheduled it services the actions of all pending
  * entries.
  *
  * @par Notes
  * @parblock
- * This directive may be used to do a two-step interrupt processing.  The first
- * step is done from within interrupt context by a call to this directive.  The
+ * This directive may be used to do a two-step interrupt processing. The first
+ * step is done from within interrupt context by a call to this directive. The
  * second step is then done from within the context of the interrupt server.
  *
  * No error checking is performed by the directive.
@@ -3216,7 +3219,7 @@ void rtems_interrupt_server_entry_destroy(
  *
  * - The directive may be called from within task context.
  *
- * - The directive may unblock a task.  This may cause the calling task to be
+ * - The directive may unblock a task. This may cause the calling task to be
  *   preempted.
  *
  * - The interrupt server entry shall have been initialized by
@@ -3245,7 +3248,7 @@ void rtems_interrupt_server_entry_submit(
  *
  * @param entry is the interrupt server entry to move.
  *
- * @param server_index is the index of the destination interrupt server.  The
+ * @param server_index is the index of the destination interrupt server. The
  *   constant #RTEMS_INTERRUPT_SERVER_DEFAULT may be used to specify the
  *   default interrupt server.
  *
@@ -3263,7 +3266,7 @@ void rtems_interrupt_server_entry_submit(
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  *
  * - The interrupt server entry shall have been initialized by
@@ -3283,7 +3286,7 @@ void rtems_interrupt_server_entry_submit(
  *   entry. Calling the directive under this condition is undefined behaviour.
  *
  * - The directive shall not be called while the interrupt server entry is
- *   pending on or serviced by its current interrupt server.  Calling the
+ *   pending on or serviced by its current interrupt server. Calling the
  *   directive under these conditions is undefined behaviour.
  * @endparblock
  */
@@ -3301,10 +3304,10 @@ rtems_status_code rtems_interrupt_server_entry_move(
  *
  * @par Notes
  * This structure shall be treated as an opaque data type from the API point of
- * view.  Members shall not be accessed directly.  A request is initialized by
+ * view. Members shall not be accessed directly. A request is initialized by
  * rtems_interrupt_server_request_initialize() and destroyed by
- * rtems_interrupt_server_request_destroy().  The interrupt vector of the
- * request can be set by rtems_interrupt_server_request_set_vector().  The
+ * rtems_interrupt_server_request_destroy(). The interrupt vector of the
+ * request can be set by rtems_interrupt_server_request_set_vector(). The
  * request is submitted to be serviced by
  * rtems_interrupt_server_request_submit().
  *
@@ -3334,7 +3337,7 @@ typedef struct {
  *
  * @brief Initializes the interrupt server request.
  *
- * @param server_index is the interrupt server index.  The constant
+ * @param server_index is the interrupt server index. The constant
  *   #RTEMS_INTERRUPT_SERVER_DEFAULT may be used to specify the default
  *   interrupt server.
  *
@@ -3351,10 +3354,10 @@ typedef struct {
  *
  * @par Notes
  * An interrupt server requests consists of an interrupt server entry and
- * exactly one interrupt server action.  The interrupt vector of the request
- * may be changed with rtems_interrupt_server_request_set_vector().  Interrupt
+ * exactly one interrupt server action. The interrupt vector of the request may
+ * be changed with rtems_interrupt_server_request_set_vector(). Interrupt
  * server requests may be submitted to get serviced by the interrupt server
- * with rtems_interrupt_server_request_submit().  Requests may be destroyed by
+ * with rtems_interrupt_server_request_submit(). Requests may be destroyed by
  * rtems_interrupt_server_request_destroy().
  *
  * @par Constraints
@@ -3366,7 +3369,7 @@ typedef struct {
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  * @endparblock
  */
@@ -3395,7 +3398,7 @@ rtems_status_code rtems_interrupt_server_request_initialize(
  * interrupt controller hardware.
  *
  * Calls to rtems_interrupt_server_request_submit() will disable the interrupt
- * vector of the request.  After processing of the request by the interrupt
+ * vector of the request. After processing of the request by the interrupt
  * server the interrupt vector will be enabled again.
  * @endparblock
  *
@@ -3417,7 +3420,7 @@ rtems_status_code rtems_interrupt_server_request_initialize(
  *
  * - The directive shall not be called concurrently with
  *   rtems_interrupt_server_request_set_vector() with the same interrupt server
- *   request.  Calling the directive under this condition is undefined
+ *   request. Calling the directive under this condition is undefined
  *   behaviour.
  *
  * - The directive shall not be called concurrently with
@@ -3426,7 +3429,7 @@ rtems_status_code rtems_interrupt_server_request_initialize(
  *   behaviour.
  *
  * - The directive shall not be called while the interrupt server entry is
- *   pending on or serviced by its current interrupt server.  Calling the
+ *   pending on or serviced by its current interrupt server. Calling the
  *   directive under these conditions is undefined behaviour.
  * @endparblock
  */
@@ -3457,7 +3460,7 @@ static inline void rtems_interrupt_server_request_set_vector(
  * - The directive may be called from within task context.
  *
  * - The directive shall not be called from within the context of an interrupt
- *   server.  Calling the directive from within the context of an interrupt
+ *   server. Calling the directive from within the context of an interrupt
  *   server is undefined behaviour.
  *
  * - The directive sends a request to another task and waits for a response.
@@ -3485,14 +3488,14 @@ static inline void rtems_interrupt_server_request_destroy(
  * @param[in,out] request is the interrupt server request to submit.
  *
  * The directive appends the interrupt server entry of the request to the
- * pending entries of the interrupt server.  The interrupt server is notified
- * that a new entry is pending.  Once the interrupt server is scheduled it
+ * pending entries of the interrupt server. The interrupt server is notified
+ * that a new entry is pending. Once the interrupt server is scheduled it
  * services the actions of all pending entries.
  *
  * @par Notes
  * @parblock
- * This directive may be used to do a two-step interrupt processing.  The first
- * step is done from within interrupt context by a call to this directive.  The
+ * This directive may be used to do a two-step interrupt processing. The first
+ * step is done from within interrupt context by a call to this directive. The
  * second step is then done from within the context of the interrupt server.
  *
  * No error checking is performed by the directive.
@@ -3512,7 +3515,7 @@ static inline void rtems_interrupt_server_request_destroy(
  *
  * - The directive may be called from within task context.
  *
- * - The directive may unblock a task.  This may cause the calling task to be
+ * - The directive may unblock a task. This may cause the calling task to be
  *   preempted.
  *
  * - The interrupt server request shall have been initialized by
@@ -3520,7 +3523,7 @@ static inline void rtems_interrupt_server_request_destroy(
  *
  * - The directive shall not be called concurrently with
  *   rtems_interrupt_server_request_set_vector() with the same interrupt server
- *   request.  Calling the directive under this condition is undefined
+ *   request. Calling the directive under this condition is undefined
  *   behaviour.
  * @endparblock
  */

@@ -77,7 +77,7 @@ extern "C" {
  *
  * @param segment is the begin address of the segment.
  *
- * @param[out] size is the pointer to a uintptr_t object.  When the directive
+ * @param[out] size is the pointer to a uintptr_t object. When the directive
  *   call is successful, the size of the segment in bytes will be stored in
  *   this object.
  *
@@ -108,7 +108,7 @@ extern "C" {
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  * @endparblock
  */
@@ -138,30 +138,30 @@ rtems_status_code rtems_region_get_segment_size(
  *
  * @param attribute_set is the attribute set of the region.
  *
- * @param[out] id is the pointer to an ::rtems_id object.  When the directive
+ * @param[out] id is the pointer to an ::rtems_id object. When the directive
  *   call is successful, the identifier of the created region will be stored in
  *   this object.
  *
- * This directive creates a region which resides on the local node.  The region
- * has the user-defined object name specified in ``name``.  The assigned object
- * identifier is returned in ``id``.  This identifier is used to access the
+ * This directive creates a region which resides on the local node. The region
+ * has the user-defined object name specified in ``name``. The assigned object
+ * identifier is returned in ``id``. This identifier is used to access the
  * region with other region related directives.
  *
  * The region manages the **contiguous memory area** which starts at
- * ``starting_address`` and is ``length`` bytes long.  The memory area shall be
+ * ``starting_address`` and is ``length`` bytes long. The memory area shall be
  * large enough to contain some internal region administration data.
  *
  * The **starting address** and **length of segments** allocated from the
- * region will be an integral multiple of ``page_size``.  The specified page
+ * region will be an integral multiple of ``page_size``. The specified page
  * size will be aligned to an implementation-dependent minimum alignment if
  * necessary.
  *
  * The **attribute set** specified in ``attribute_set`` is built through a
- * *bitwise or* of the attribute constants described below.  Not all
- * combinations of attributes are allowed.  Some attributes are mutually
- * exclusive.  If mutually exclusive attributes are combined, the behaviour is
- * undefined.  Attributes not mentioned below are not evaluated by this
- * directive and have no effect.  Default attributes can be selected by using
+ * *bitwise or* of the attribute constants described below. Not all
+ * combinations of attributes are allowed. Some attributes are mutually
+ * exclusive. If mutually exclusive attributes are combined, the behaviour is
+ * undefined. Attributes not mentioned below are not evaluated by this
+ * directive and have no effect. Default attributes can be selected by using
  * the #RTEMS_DEFAULT_ATTRIBUTES constant.
  *
  * The **task wait queue discipline** is selected by the mutually exclusive
@@ -182,7 +182,7 @@ rtems_status_code rtems_region_get_segment_size(
  * @retval ::RTEMS_INVALID_ADDRESS The ``starting_address`` parameter was NULL.
  *
  * @retval ::RTEMS_TOO_MANY There was no inactive object available to create a
- *   region.  The number of regions available to the application is configured
+ *   region. The number of regions available to the application is configured
  *   through the @ref CONFIGURE_MAXIMUM_REGIONS application configuration
  *   option.
  *
@@ -204,7 +204,7 @@ rtems_status_code rtems_region_get_segment_size(
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  *
  * - The number of regions available to the application is configured through
@@ -233,7 +233,7 @@ rtems_status_code rtems_region_create(
  *
  * @param name is the object name to look up.
  *
- * @param[out] id is the pointer to an ::rtems_id object.  When the directive
+ * @param[out] id is the pointer to an ::rtems_id object. When the directive
  *   call is successful, the object identifier of an object with the specified
  *   name will be stored in this object.
  *
@@ -252,10 +252,10 @@ rtems_status_code rtems_region_create(
  * @par Notes
  * @parblock
  * If the region name is not unique, then the region identifier will match the
- * first region with that name in the search order.  However, this region
+ * first region with that name in the search order. However, this region
  * identifier is not guaranteed to correspond to the desired region.
  *
- * The objects are searched from lowest to the highest index.  Only the local
+ * The objects are searched from lowest to the highest index. Only the local
  * node is searched.
  *
  * The region identifier is used with other region related directives to access
@@ -308,7 +308,7 @@ rtems_status_code rtems_region_ident( rtems_name name, rtems_id *id );
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  *
  * - The calling task does not have to be the task that created the object.
@@ -349,10 +349,10 @@ rtems_status_code rtems_region_delete( rtems_id id );
  *   ``starting_address`` and ``length`` was insufficient to extend the heap.
  *
  * @par Notes
- * There are no alignment requirements for the memory area.  The memory area
- * must be big enough to contain some maintenance blocks.  It must not overlap
- * parts of the current heap memory areas.  Disconnected memory areas added to
- * the heap will lead to used blocks which cover the gaps.  Extending with an
+ * There are no alignment requirements for the memory area. The memory area
+ * must be big enough to contain some maintenance blocks. It must not overlap
+ * parts of the current heap memory areas. Disconnected memory areas added to
+ * the heap will lead to used blocks which cover the gaps. Extending with an
  * inappropriate memory area will corrupt the heap resulting in undefined
  * behaviour.
  *
@@ -365,7 +365,7 @@ rtems_status_code rtems_region_delete( rtems_id id );
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  * @endparblock
  */
@@ -389,35 +389,34 @@ rtems_status_code rtems_region_extend(
  * @param option_set is the option set.
  *
  * @param timeout is the timeout in clock ticks if the #RTEMS_WAIT option is
- *   set.  Use #RTEMS_NO_TIMEOUT to wait potentially forever.
+ *   set. Use #RTEMS_NO_TIMEOUT to wait potentially forever.
  *
- * @param[out] segment is the pointer to a `void` pointer object.  When the
+ * @param[out] segment is the pointer to a `void` pointer object. When the
  *   directive call is successful, the begin address of the allocated segment
  *   will be stored in this object.
  *
  * This directive gets a segment from the region specified by ``id``.
  *
  * The **option set** specified in ``option_set`` is built through a *bitwise
- * or* of the option constants described below.  Not all combinations of
- * options are allowed.  Some options are mutually exclusive.  If mutually
- * exclusive options are combined, the behaviour is undefined.  Options not
- * mentioned below are not evaluated by this directive and have no effect.
- * Default options can be selected by using the #RTEMS_DEFAULT_OPTIONS
- * constant.
+ * or* of the option constants described below. Not all combinations of options
+ * are allowed. Some options are mutually exclusive. If mutually exclusive
+ * options are combined, the behaviour is undefined. Options not mentioned
+ * below are not evaluated by this directive and have no effect. Default
+ * options can be selected by using the #RTEMS_DEFAULT_OPTIONS constant.
  *
  * The calling task can **wait** or **try to get** a segment from the region
  * according to the mutually exclusive #RTEMS_WAIT and #RTEMS_NO_WAIT options.
  *
  * - **Waiting to get** a segment from the region is the default and can be
  *   emphasized through the use of the #RTEMS_WAIT option. The ``timeout``
- *   parameter defines how long the calling task is willing to wait.  Use
+ *   parameter defines how long the calling task is willing to wait. Use
  *   #RTEMS_NO_TIMEOUT to wait potentially forever, otherwise set a timeout
  *   interval in clock ticks.
  *
  * - **Trying to get** a segment from the region is selected by the
- *   #RTEMS_NO_WAIT option.  If this option is defined, then the ``timeout``
- *   parameter is ignored.  When a segment from the region cannot be
- *   immediately allocated, then the ::RTEMS_UNSATISFIED status is returned.
+ *   #RTEMS_NO_WAIT option. If this option is defined, then the ``timeout``
+ *   parameter is ignored. When a segment from the region cannot be immediately
+ *   allocated, then the ::RTEMS_UNSATISFIED status is returned.
  *
  * With either #RTEMS_WAIT or #RTEMS_NO_WAIT if there is a segment of the
  * requested size is available, then it is returned in ``segment`` and this
@@ -425,11 +424,11 @@ rtems_status_code rtems_region_extend(
  *
  * If the calling task chooses to return immediately and the region has no
  * segment of the requested size available, then the directive returns
- * immediately with the ::RTEMS_UNSATISFIED status code.  If the calling task
+ * immediately with the ::RTEMS_UNSATISFIED status code. If the calling task
  * chooses to wait for a segment, then the calling task is placed on the region
- * wait queue and blocked.  If the region was created with the #RTEMS_PRIORITY
+ * wait queue and blocked. If the region was created with the #RTEMS_PRIORITY
  * option specified, then the calling task is inserted into the wait queue
- * according to its priority.  But, if the region was created with the
+ * according to its priority. But, if the region was created with the
  * #RTEMS_FIFO option specified, then the calling task is placed at the rear of
  * the wait queue.
  *
@@ -464,7 +463,7 @@ rtems_status_code rtems_region_extend(
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  *
  * - When the request cannot be immediately satisfied and the #RTEMS_WAIT
@@ -494,11 +493,11 @@ rtems_status_code rtems_region_get_segment(
  * @param segment is the begin address of the segment to return.
  *
  * This directive returns the segment specified by ``segment`` to the region
- * specified by ``id``.  The returned segment is merged with its neighbors to
- * form the largest possible segment.  The first task on the wait queue is
- * examined to determine if its segment request can now be satisfied.  If so,
- * it is given a segment and unblocked.  This process is repeated until the
- * first task's segment request cannot be satisfied.
+ * specified by ``id``. The returned segment is merged with its neighbors to
+ * form the largest possible segment. The first task on the wait queue is
+ * examined to determine if its segment request can now be satisfied. If so, it
+ * is given a segment and unblocked. This process is repeated until the first
+ * task's segment request cannot be satisfied.
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
  *
@@ -527,10 +526,10 @@ rtems_status_code rtems_region_get_segment(
  *
  * - The directive may be called from within task context.
  *
- * - The directive may unblock a task.  This may cause the calling task to be
+ * - The directive may unblock a task. This may cause the calling task to be
  *   preempted.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  * @endparblock
  */
@@ -549,14 +548,14 @@ rtems_status_code rtems_region_return_segment( rtems_id id, void *segment );
  *
  * @param size is the requested new size of the segment.
  *
- * @param[out] old_size is the pointer to an uintptr_t object.  When the
+ * @param[out] old_size is the pointer to an uintptr_t object. When the
  *   directive call is successful, the old size of the segment will be stored
  *   in this object.
  *
  * This directive is used to increase or decrease the size of the ``segment``
- * of the region specified by ``id``.  When increasing the size of a segment,
- * it is possible that there is no memory available contiguous to the segment.
- * In this case, the request is unsatisfied.
+ * of the region specified by ``id``. When increasing the size of a segment, it
+ * is possible that there is no memory available contiguous to the segment. In
+ * this case, the request is unsatisfied.
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
  *
@@ -584,7 +583,7 @@ rtems_status_code rtems_region_return_segment( rtems_id id, void *segment );
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  * @endparblock
  */
@@ -641,7 +640,7 @@ rtems_status_code rtems_region_resize_segment(
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  * @endparblock
  */
@@ -698,7 +697,7 @@ rtems_status_code rtems_region_get_information(
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  * @endparblock
  */

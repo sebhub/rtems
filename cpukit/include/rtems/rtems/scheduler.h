@@ -87,7 +87,7 @@ extern "C" {
  *
  * @param name is the scheduler name to look up.
  *
- * @param[out] id is the pointer to an ::rtems_id object.  When the directive
+ * @param[out] id is the pointer to an ::rtems_id object. When the directive
  *   call is successful, the identifier of the scheduler will be stored in this
  *   object.
  *
@@ -129,7 +129,7 @@ rtems_status_code rtems_scheduler_ident( rtems_name name, rtems_id *id );
  *
  * @param cpu_index is the processor index to identify the scheduler.
  *
- * @param[out] id is the pointer to an ::rtems_id object.  When the directive
+ * @param[out] id is the pointer to an ::rtems_id object. When the directive
  *   call is successful, the identifier of the scheduler will be stored in this
  *   object.
  *
@@ -164,12 +164,12 @@ rtems_status_code rtems_scheduler_ident_by_processor(
  * @brief Identifies a scheduler by the processor set.
  *
  * @param cpusetsize is the size of the processor set referenced by ``cpuset``
- *   in bytes.  The size shall be positive.
+ *   in bytes. The size shall be positive.
  *
- * @param cpuset is the pointer to a cpu_set_t.  The referenced processor set
+ * @param cpuset is the pointer to a cpu_set_t. The referenced processor set
  *   will be used to identify the scheduler.
  *
- * @param[out] id is the pointer to an ::rtems_id object.  When the directive
+ * @param[out] id is the pointer to an ::rtems_id object. When the directive
  *   call is successful, the identifier of the scheduler will be stored in this
  *   object.
  *
@@ -252,7 +252,7 @@ rtems_status_code rtems_scheduler_get_maximum_priority(
  *
  * @param priority is the Classic API task priority to map.
  *
- * @param[out] posix_priority is the pointer to an `int` object.  When the
+ * @param[out] posix_priority is the pointer to an `int` object. When the
  *   directive call is successful, the POSIX thread priority value
  *   corresponding to the specified Classic API task priority value will be
  *   stored in this object.
@@ -333,7 +333,7 @@ rtems_status_code rtems_scheduler_map_priority_from_posix(
  * evaluates to a compile time constant of zero.
  *
  * Where the system was built with SMP support enabled, this directive returns
- * the index of the current processor.  The set of processor indices is the
+ * the index of the current processor. The set of processor indices is the
  * range of integers starting with zero up to
  * rtems_scheduler_get_processor_maximum() minus one.
  *
@@ -342,7 +342,7 @@ rtems_status_code rtems_scheduler_map_priority_from_posix(
  * @par Notes
  * Outside of sections with disabled thread dispatching the current processor
  * index may change after every instruction since the thread may migrate from
- * one processor to another.  Sections with disabled interrupts are sections
+ * one processor to another. Sections with disabled interrupts are sections
  * with thread dispatching disabled.
  *
  * @par Constraints
@@ -372,7 +372,7 @@ uint32_t rtems_scheduler_get_processor( void );
  * Where the system was built with SMP support enabled, this directive returns
  * the minimum of the processors (physically or virtually) available at the
  * target and the configured processor maximum (see @ref
- * CONFIGURE_MAXIMUM_PROCESSORS).  Not all processors in the range from
+ * CONFIGURE_MAXIMUM_PROCESSORS). Not all processors in the range from
  * processor index zero to the last processor index (which is the processor
  * maximum minus one) may be configured to be used by a scheduler or may be
  * online (online processors have a scheduler assigned).
@@ -405,9 +405,9 @@ uint32_t rtems_scheduler_get_processor_maximum( void );
  * @param cpusetsize is the size of the processor set referenced by ``cpuset``
  *   in bytes.
  *
- * @param[out] cpuset is the pointer to a cpu_set_t object.  When the directive
+ * @param[out] cpuset is the pointer to a cpu_set_t object. When the directive
  *   call is successful, the processor set of the scheduler will be stored in
- *   this object.  A set bit in the processor set means that the corresponding
+ *   this object. A set bit in the processor set means that the corresponding
  *   processor is owned by the scheduler, otherwise the bit is cleared.
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
@@ -472,7 +472,7 @@ rtems_status_code rtems_scheduler_get_processor_set(
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  * @endparblock
  */
@@ -523,7 +523,7 @@ rtems_status_code rtems_scheduler_add_processor(
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  * @endparblock
  */

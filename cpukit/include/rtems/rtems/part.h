@@ -100,33 +100,33 @@ extern "C" {
  *
  * @param attribute_set is the attribute set of the partition.
  *
- * @param[out] id is the pointer to an ::rtems_id object.  When the directive
+ * @param[out] id is the pointer to an ::rtems_id object. When the directive
  *   call is successful, the identifier of the created partition will be stored
  *   in this object.
  *
  * This directive creates a partition of fixed size buffers from a physically
  * contiguous memory space which starts at ``starting_address`` and is
- * ``length`` bytes in size.  Each allocated buffer is to be of ``buffer_size``
- * in bytes.  The partition has the user-defined object name specified in
- * ``name``.  The assigned object identifier is returned in ``id``.  This
+ * ``length`` bytes in size. Each allocated buffer is to be of ``buffer_size``
+ * in bytes. The partition has the user-defined object name specified in
+ * ``name``. The assigned object identifier is returned in ``id``. This
  * identifier is used to access the partition with other partition related
  * directives.
  *
  * The **attribute set** specified in ``attribute_set`` is built through a
- * *bitwise or* of the attribute constants described below.  Not all
- * combinations of attributes are allowed.  Some attributes are mutually
- * exclusive.  If mutually exclusive attributes are combined, the behaviour is
- * undefined.  Attributes not mentioned below are not evaluated by this
- * directive and have no effect.  Default attributes can be selected by using
+ * *bitwise or* of the attribute constants described below. Not all
+ * combinations of attributes are allowed. Some attributes are mutually
+ * exclusive. If mutually exclusive attributes are combined, the behaviour is
+ * undefined. Attributes not mentioned below are not evaluated by this
+ * directive and have no effect. Default attributes can be selected by using
  * the #RTEMS_DEFAULT_ATTRIBUTES constant.
  *
  * The partition has a local or global **scope** in a multiprocessing network
- * (this attribute does not refer to SMP systems).  The scope is selected by
- * the mutually exclusive #RTEMS_LOCAL and #RTEMS_GLOBAL attributes.
+ * (this attribute does not refer to SMP systems). The scope is selected by the
+ * mutually exclusive #RTEMS_LOCAL and #RTEMS_GLOBAL attributes.
  *
  * - A **local scope** is the default and can be emphasized through the use of
- *   the #RTEMS_LOCAL attribute.  A local partition can be only used by the
- *   node which created it.
+ *   the #RTEMS_LOCAL attribute. A local partition can be only used by the node
+ *   which created it.
  *
  * - A **global scope** is established if the #RTEMS_GLOBAL attribute is set.
  *   The memory space used for the partition must reside in shared memory.
@@ -155,39 +155,39 @@ extern "C" {
  *   on a pointer size boundary.
  *
  * @retval ::RTEMS_TOO_MANY There was no inactive object available to create a
- *   partition.  The number of partitions available to the application is
+ *   partition. The number of partitions available to the application is
  *   configured through the @ref CONFIGURE_MAXIMUM_PARTITIONS application
  *   configuration option.
  *
  * @retval ::RTEMS_TOO_MANY In multiprocessing configurations, there was no
- *   inactive global object available to create a global semaphore.  The number
+ *   inactive global object available to create a global semaphore. The number
  *   of global objects available to the application is configured through the
  *   @ref CONFIGURE_MP_MAXIMUM_GLOBAL_OBJECTS application configuration option.
  *
  * @par Notes
  * @parblock
  * The partition buffer area specified by the ``starting_address`` must be
- * properly aligned.  It must be possible to directly store target architecture
- * pointers and also the user data.  For example, if the user data contains
- * some long double or vector data types, the partition buffer area and the
- * buffer size must take the alignment of these types into account which is
- * usually larger than the pointer alignment.  A cache line alignment may be
- * also a factor.  Use #RTEMS_PARTITION_ALIGNMENT to specify the minimum
- * alignment of a partition buffer type.
+ * properly aligned. It must be possible to directly store target architecture
+ * pointers and also the user data. For example, if the user data contains some
+ * long double or vector data types, the partition buffer area and the buffer
+ * size must take the alignment of these types into account which is usually
+ * larger than the pointer alignment. A cache line alignment may be also a
+ * factor. Use #RTEMS_PARTITION_ALIGNMENT to specify the minimum alignment of a
+ * partition buffer type.
  *
  * The ``buffer_size`` parameter must be an integral multiple of the pointer
- * size on the target architecture.  Additionally, ``buffer_size`` must be
- * large enough to hold two pointers on the target architecture.  This is
- * required for RTEMS to manage the buffers when they are free.
+ * size on the target architecture. Additionally, ``buffer_size`` must be large
+ * enough to hold two pointers on the target architecture. This is required for
+ * RTEMS to manage the buffers when they are free.
  *
  * For control and maintenance of the partition, RTEMS allocates a PTCB from
  * the local PTCB free pool and initializes it. Memory from the partition
  * buffer area is not used by RTEMS to store the PTCB.
  *
- * The PTCB for a global partition is allocated on the local node.  Partitions
+ * The PTCB for a global partition is allocated on the local node. Partitions
  * should not be made global unless remote tasks must interact with the
- * partition.  This is to avoid the overhead incurred by the creation of a
- * global partition.  When a global partition is created, the partition's name
+ * partition. This is to avoid the overhead incurred by the creation of a
+ * global partition. When a global partition is created, the partition's name
  * and identifier must be transmitted to every node in the system for insertion
  * in the local copy of the global object table.
  * @endparblock
@@ -201,11 +201,11 @@ extern "C" {
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  *
  * - When the directive operates on a global object, the directive sends a
- *   message to remote nodes.  This may preempt the calling task.
+ *   message to remote nodes. This may preempt the calling task.
  *
  * - The number of partitions available to the application is configured
  *   through the @ref CONFIGURE_MAXIMUM_PARTITIONS application configuration
@@ -240,14 +240,14 @@ rtems_status_code rtems_partition_create(
  *
  * @param node is the node or node set to search for a matching object.
  *
- * @param[out] id is the pointer to an ::rtems_id object.  When the directive
+ * @param[out] id is the pointer to an ::rtems_id object. When the directive
  *   call is successful, the object identifier of an object with the specified
  *   name will be stored in this object.
  *
  * This directive obtains a partition identifier associated with the partition
  * name specified in ``name``.
  *
- * The node to search is specified in ``node``.  It shall be
+ * The node to search is specified in ``node``. It shall be
  *
  * - a valid node number,
  *
@@ -273,19 +273,19 @@ rtems_status_code rtems_partition_create(
  * @par Notes
  * @parblock
  * If the partition name is not unique, then the partition identifier will
- * match the first partition with that name in the search order.  However, this
+ * match the first partition with that name in the search order. However, this
  * partition identifier is not guaranteed to correspond to the desired
  * partition.
  *
- * The objects are searched from lowest to the highest index.  If ``node`` is
+ * The objects are searched from lowest to the highest index. If ``node`` is
  * #RTEMS_SEARCH_ALL_NODES, all nodes are searched with the local node being
- * searched first.  All other nodes are searched from lowest to the highest
- * node number.
+ * searched first. All other nodes are searched from lowest to the highest node
+ * number.
  *
  * If node is a valid node number which does not represent the local node, then
  * only the partitions exported by the designated node are searched.
  *
- * This directive does not generate activity on remote nodes.  It accesses only
+ * This directive does not generate activity on remote nodes. It accesses only
  * the local copy of the global object table.
  *
  * The partition identifier is used with other partition related directives to
@@ -352,11 +352,11 @@ rtems_status_code rtems_partition_ident(
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  *
  * - When the directive operates on a global object, the directive sends a
- *   message to remote nodes.  This may preempt the calling task.
+ *   message to remote nodes. This may preempt the calling task.
  *
  * - The calling task does not have to be the task that created the object.
  *   Any local task that knows the object identifier can delete the object.
@@ -376,12 +376,12 @@ rtems_status_code rtems_partition_delete( rtems_id id );
  *
  * @param id is the partition identifier.
  *
- * @param[out] buffer is the pointer to a `void` pointer object.  When the
+ * @param[out] buffer is the pointer to a `void` pointer object. When the
  *   directive call is successful, the pointer to the allocated buffer will be
  *   stored in this object.
  *
  * This directive allows a buffer to be obtained from the partition specified
- * by ``id``.  The address of the allocated buffer is returned through the
+ * by ``id``. The address of the allocated buffer is returned through the
  * ``buffer`` parameter.
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
@@ -419,7 +419,7 @@ rtems_status_code rtems_partition_delete( rtems_id id );
  *   cause the calling task to be preempted.
  *
  * - When the directive operates on a remote object, the directive sends a
- *   message to the remote node and waits for a reply.  This will preempt the
+ *   message to the remote node and waits for a reply. This will preempt the
  *   calling task.
  * @endparblock
  */
@@ -448,7 +448,7 @@ rtems_status_code rtems_partition_get_buffer( rtems_id id, void **buffer );
  *   in the partition.
  *
  * @par Notes
- * Returning a buffer multiple times is an error.  It will corrupt the internal
+ * Returning a buffer multiple times is an error. It will corrupt the internal
  * state of the partition.
  *
  * @par Constraints
@@ -464,7 +464,7 @@ rtems_status_code rtems_partition_get_buffer( rtems_id id, void **buffer );
  *   cause the calling task to be preempted.
  *
  * - When the directive operates on a remote object, the directive sends a
- *   message to the remote node and waits for a reply.  This will preempt the
+ *   message to the remote node and waits for a reply. This will preempt the
  *   calling task.
  * @endparblock
  */

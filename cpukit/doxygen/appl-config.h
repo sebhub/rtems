@@ -76,7 +76,7 @@
  *
  * @par Notes
  * Each option of the Block Device Cache (bdbuf) configuration can be
- * explicitly set by the user with the configuration options below.  The Block
+ * explicitly set by the user with the configuration options below. The Block
  * Device Cache is used for example by the RFS and DOSFS filesystems.
  */
 #define CONFIGURE_APPLICATION_NEEDS_LIBBLOCK
@@ -184,9 +184,9 @@
  * @endparblock
  *
  * @par Notes
- * A value of 0 disables the read-ahead task (default).  The read-ahead task
+ * A value of 0 disables the read-ahead task (default). The read-ahead task
  * will issue speculative read transfers if a sequential access pattern is
- * detected.  This can improve the performance on some systems.
+ * detected. This can improve the performance on some systems.
  */
 #define CONFIGURE_BDBUF_MAX_READ_AHEAD_BLOCKS
 
@@ -230,7 +230,7 @@
  *
  * @par Constraints
  * The value of the configuration option shall be a valid Classic API task
- * priority.  The set of valid task priorities depends on the scheduler
+ * priority. The set of valid task priorities depends on the scheduler
  * configuration.
  */
 #define CONFIGURE_BDBUF_READ_AHEAD_TASK_PRIORITY
@@ -333,7 +333,7 @@
  *
  * @par Constraints
  * The value of the configuration option shall be a valid Classic API task
- * priority.  The set of valid task priorities depends on the scheduler
+ * priority. The set of valid task priorities depends on the scheduler
  * configuration.
  */
 #define CONFIGURE_SWAPOUT_TASK_PRIORITY
@@ -379,7 +379,7 @@
  *
  * @par Constraints
  * The value of the configuration option shall be a valid Classic API task
- * priority.  The set of valid task priorities depends on the scheduler
+ * priority. The set of valid task priorities depends on the scheduler
  * configuration.
  */
 #define CONFIGURE_SWAPOUT_WORKER_TASK_PRIORITY
@@ -433,7 +433,7 @@
  *
  * @par Notes
  * This object class can be configured in unlimited allocation mode, see <a
- * href="https://docs.rtems.org/branches/master/c-user/config/intro.html#unlimited-objects">Unlimited
+ * href="https://docs.rtems.org/docs/main/c-user/config/intro.html#unlimited-objects">Unlimited
  * Objects</a>.
  */
 #define CONFIGURE_MAXIMUM_BARRIERS
@@ -473,8 +473,8 @@
  *
  * @par Notes
  * This object class can be configured in unlimited allocation mode, see <a
- * href="https://docs.rtems.org/branches/master/c-user/config/intro.html#unlimited-objects">Unlimited
- * Objects</a>.  You have to account for the memory used to store the messages
+ * href="https://docs.rtems.org/docs/main/c-user/config/intro.html#unlimited-objects">Unlimited
+ * Objects</a>. You have to account for the memory used to store the messages
  * of each message queue, see @ref CONFIGURE_MESSAGE_BUFFER_MEMORY.
  */
 #define CONFIGURE_MAXIMUM_MESSAGE_QUEUES
@@ -514,7 +514,7 @@
  *
  * @par Notes
  * This object class can be configured in unlimited allocation mode, see <a
- * href="https://docs.rtems.org/branches/master/c-user/config/intro.html#unlimited-objects">Unlimited
+ * href="https://docs.rtems.org/docs/main/c-user/config/intro.html#unlimited-objects">Unlimited
  * Objects</a>.
  */
 #define CONFIGURE_MAXIMUM_PARTITIONS
@@ -554,7 +554,7 @@
  *
  * @par Notes
  * This object class can be configured in unlimited allocation mode, see <a
- * href="https://docs.rtems.org/branches/master/c-user/config/intro.html#unlimited-objects">Unlimited
+ * href="https://docs.rtems.org/docs/main/c-user/config/intro.html#unlimited-objects">Unlimited
  * Objects</a>.
  */
 #define CONFIGURE_MAXIMUM_PERIODS
@@ -594,7 +594,7 @@
  *
  * @par Notes
  * This object class can be configured in unlimited allocation mode, see <a
- * href="https://docs.rtems.org/branches/master/c-user/config/intro.html#unlimited-objects">Unlimited
+ * href="https://docs.rtems.org/docs/main/c-user/config/intro.html#unlimited-objects">Unlimited
  * Objects</a>.
  */
 #define CONFIGURE_MAXIMUM_PORTS
@@ -634,7 +634,7 @@
  *
  * @par Notes
  * This object class can be configured in unlimited allocation mode, see <a
- * href="https://docs.rtems.org/branches/master/c-user/config/intro.html#unlimited-objects">Unlimited
+ * href="https://docs.rtems.org/docs/main/c-user/config/intro.html#unlimited-objects">Unlimited
  * Objects</a>.
  */
 #define CONFIGURE_MAXIMUM_REGIONS
@@ -675,14 +675,14 @@
  * @par Notes
  * @parblock
  * This object class can be configured in unlimited allocation mode, see <a
- * href="https://docs.rtems.org/branches/master/c-user/config/intro.html#unlimited-objects">Unlimited
+ * href="https://docs.rtems.org/docs/main/c-user/config/intro.html#unlimited-objects">Unlimited
  * Objects</a>.
  *
  * In SMP configurations, the size of a Semaphore Control Block depends on the
  * scheduler count (see <a
- * href="https://docs.rtems.org/branches/master/c-user/config/scheduler-clustered.html#configuration-step-3-scheduler-table">Configuration
- * Step 3 - Scheduler Table</a>).  The semaphores using the <a
- * href="https://docs.rtems.org/branches/master/c-user/key_concepts.html#multiprocessor-resource-sharing-protocol-mrsp">Multiprocessor
+ * href="https://docs.rtems.org/docs/main/c-user/config/scheduler-clustered.html#configuration-step-3-scheduler-table">Configuration
+ * Step 3 - Scheduler Table</a>). The semaphores using the <a
+ * href="https://docs.rtems.org/docs/main/c-user/key_concepts.html#multiprocessor-resource-sharing-protocol-mrsp">Multiprocessor
  * Resource Sharing Protocol (MrsP)</a> need a ceiling priority per scheduler.
  * @endparblock
  */
@@ -729,12 +729,12 @@
  * @par Notes
  * @parblock
  * This object class can be configured in unlimited allocation mode, see <a
- * href="https://docs.rtems.org/branches/master/c-user/config/intro.html#unlimited-objects">Unlimited
+ * href="https://docs.rtems.org/docs/main/c-user/config/intro.html#unlimited-objects">Unlimited
  * Objects</a>.
  *
  * The calculations for the required memory in the RTEMS Workspace for tasks
  * assume that each task has a minimum stack size and has floating point
- * support enabled.  The configuration option @ref CONFIGURE_EXTRA_TASK_STACKS
+ * support enabled. The configuration option @ref CONFIGURE_EXTRA_TASK_STACKS
  * is used to specify task stack requirements *above* the minimum size
  * required.
  *
@@ -784,7 +784,7 @@
  *
  * @par Notes
  * This object class can be configured in unlimited allocation mode, see <a
- * href="https://docs.rtems.org/branches/master/c-user/config/intro.html#unlimited-objects">Unlimited
+ * href="https://docs.rtems.org/docs/main/c-user/config/intro.html#unlimited-objects">Unlimited
  * Objects</a>.
  */
 #define CONFIGURE_MAXIMUM_TIMERS
@@ -849,7 +849,7 @@
  * @par Notes
  * By default, the calculation for the required memory in the RTEMS Workspace
  * for tasks assumes that all Classic API Tasks are created by
- * rtems_task_create().  This configuration option can be used to reduce the
+ * rtems_task_create(). This configuration option can be used to reduce the
  * required memory for the system-provided task storage areas since tasks
  * constructed by rtems_task_construct() use a user-provided task storage area.
  */
@@ -1044,7 +1044,7 @@
  *
  * @par Constraints
  * The value of the configuration option shall be a valid Classic API task
- * priority.  The set of valid task priorities depends on the scheduler
+ * priority. The set of valid task priorities depends on the scheduler
  * configuration.
  */
 #define CONFIGURE_INIT_TASK_PRIORITY
@@ -1116,7 +1116,7 @@
  * otherwise a compile time error in the configuration file will occur.
  *
  * The Classic API initialization task performs the <a
- * href="https://docs.rtems.org/branches/master/c-user/initialization/operations.html">Global
+ * href="https://docs.rtems.org/docs/main/c-user/initialization/operations.html#global-construction">Global
  * Construction</a>.
  * @endparblock
  */
@@ -1274,7 +1274,7 @@
  * @par Notes
  * @parblock
  * The Console Driver is responsible for providing the `/dev/console` device
- * file.  This device is used to initialize the standard input, output, and
+ * file. This device is used to initialize the standard input, output, and
  * error file descriptors.
  *
  * BSPs should be constructed in a manner that allows printk() to work properly
@@ -1403,14 +1403,14 @@
  * @par Notes
  * @parblock
  * This device driver is responsible for providing the `/dev/console` device
- * file.  This device is used to initialize the standard input, output, and
+ * file. This device is used to initialize the standard input, output, and
  * error file descriptors.
  *
  * This device driver reads via getchark().
  *
  * This device driver writes via rtems_putc().
  *
- * The Termios framework is not used.  There is no support to change device
+ * The Termios framework is not used. There is no support to change device
  * settings, e.g. baud, stop bits, parity, etc.
  *
  * The
@@ -1443,24 +1443,24 @@
  * @par Notes
  * @parblock
  * This device driver is responsible for providing the `/dev/console` device
- * file.  This device is used to initialize the standard input, output, and
+ * file. This device is used to initialize the standard input, output, and
  * error file descriptors.
  *
  * This device driver reads via getchark().
  *
- * This device driver writes into a write buffer.  The count of characters
- * written into the write buffer is returned.  It might be less than the
- * requested count, in case the write buffer is full.  The write is
- * non-blocking and may be called from interrupt context.  A dedicated task
- * reads from the write buffer and outputs the characters via rtems_putc().
- * This task runs with the least important priority. The write buffer size is
- * 2047 characters and it is not configurable.
+ * This device driver writes into a write buffer. The count of characters
+ * written into the write buffer is returned. It might be less than the
+ * requested count, in case the write buffer is full. The write is non-blocking
+ * and may be called from interrupt context. A dedicated task reads from the
+ * write buffer and outputs the characters via rtems_putc(). This task runs
+ * with the least important priority. The write buffer size is 2047 characters
+ * and it is not configurable.
  *
  * Use `fsync( STDOUT_FILENO )` or `fdatasync( STDOUT_FILENO )` to drain the
  * write buffer.
  *
- * The Termios framework is not used.  There is no support to change device
- * settings, e.g.  baud, stop bits, parity, etc.
+ * The Termios framework is not used. There is no support to change device
+ * settings, e.g. baud, stop bits, parity, etc.
  *
  * The
  *
@@ -1512,7 +1512,7 @@
  * @par Notes
  * @parblock
  * The Benchmark Timer Driver is intended for the benchmark tests of the RTEMS
- * Testsuite.  Applications should not use this driver.
+ * Testsuite. Applications should not use this driver.
  *
  * The application shall define exactly one of the following configuration
  * options
@@ -1615,7 +1615,7 @@
  *
  * @par Constraints
  * The value of the configuration option shall be a valid Classic API task
- * priority.  The set of valid task priorities depends on the scheduler
+ * priority. The set of valid task priorities depends on the scheduler
  * configuration.
  *
  * @par Notes
@@ -1780,7 +1780,7 @@
  *
  * then the event records are dumped in Base64 encoding in a fatal error
  * extension (see <a
- * href="https://docs.rtems.org/branches/master/c-user/fatal-error/background.html#terminate">System
+ * href="https://docs.rtems.org/docs/main/c-user/fatal-error/background.html#terminate">System
  * Termination Procedure</a>).
  *
  * @par Default Configuration
@@ -1807,7 +1807,7 @@
  *
  * then the event records are compressed by zlib and dumped in Base64 encoding
  * in a fatal error extension (see <a
- * href="https://docs.rtems.org/branches/master/c-user/fatal-error/background.html#terminate">System
+ * href="https://docs.rtems.org/docs/main/c-user/fatal-error/background.html#terminate">System
  * Termination Procedure</a>).
  *
  * @par Default Configuration
@@ -1815,7 +1815,7 @@
  * enabled.
  *
  * @par Notes
- * The zlib compression needs about 512KiB of RAM.  This extension can be used
+ * The zlib compression needs about 512KiB of RAM. This extension can be used
  * to produce crash dumps.
  */
 #define CONFIGURE_RECORD_FATAL_DUMP_BASE64_ZLIB
@@ -1877,7 +1877,7 @@
  *
  * @par Notes
  * The event record buffers are statically allocated for each configured
- * processor (@ref CONFIGURE_MAXIMUM_PROCESSORS).  If the value of this
+ * processor (@ref CONFIGURE_MAXIMUM_PROCESSORS). If the value of this
  * configuration option is zero, then nothing is allocated.
  */
 #define CONFIGURE_RECORD_PER_PROCESSOR_ITEMS
@@ -1919,7 +1919,7 @@
  * @anchor CONFIGURE_POSIX_TIMERS_FACE_BEHAVIOR
  *
  * If this configuration option is defined, then POSIX timers may not be
- * created to use the CLOCK_REALTIME.  Per POSIX, this is allowed behavior but
+ * created to use the CLOCK_REALTIME. Per POSIX, this is allowed behavior but
  * per the FACE Technical Standard, it is not. Using POSIX timers based on
  * CLOCK_REALTIME (e.g., time of day) is unsafe for real-time safety systems as
  * setting CLOCK_REALTIME will perturb any active timers.
@@ -1944,13 +1944,13 @@
  *
  * This section describes configuration options related to filesytems. By
  * default, the In-Memory Filesystem (IMFS) is used as the base filesystem
- * (also known as root filesystem).  In order to save some memory for your
+ * (also known as root filesystem). In order to save some memory for your
  * application, you can disable the filesystem support with the @ref
  * CONFIGURE_APPLICATION_DISABLE_FILESYSTEM configuration option.
  * Alternatively, you can strip down the features of the base filesystem with
  * the @ref CONFIGURE_USE_MINIIMFS_AS_BASE_FILESYSTEM and @ref
- * CONFIGURE_USE_DEVFS_AS_BASE_FILESYSTEM configuration options.  These three
- * configuration options are mutually exclusive.  They are intended for an
+ * CONFIGURE_USE_DEVFS_AS_BASE_FILESYSTEM configuration options. These three
+ * configuration options are mutually exclusive. They are intended for an
  * advanced application configuration.
  *
  * Features of the IMFS can be disabled and enabled with the following
@@ -2093,8 +2093,8 @@
  * enabled.
  *
  * @par Notes
- * Applications will rarely need this configuration option.  This configuration
- * option is intended for test programs.  You do not need to define this
+ * Applications will rarely need this configuration option. This configuration
+ * option is intended for test programs. You do not need to define this
  * configuration option for the base filesystem (also known as root
  * filesystem).
  */
@@ -2292,8 +2292,8 @@
  * @anchor CONFIGURE_IMFS_DISABLE_READDIR
  *
  * In case this configuration option is defined, then the root IMFS does not
- * support reading directories (no support for readdir()).  It is still
- * possible to open files in a directory.
+ * support reading directories (no support for readdir()). It is still possible
+ * to open files in a directory.
  *
  * @par Default Configuration
  * If this configuration option is undefined, then the root IMFS supports
@@ -2433,12 +2433,12 @@
  * @par Notes
  * @parblock
  * The configured block size has two impacts. The first is the average amount
- * of unused memory in the last block of each file.  For example, when the
- * block size is 512, on average one-half of the last block of each file will
- * remain unused and the memory is wasted. In contrast, when the block size is
- * 16, the average unused memory per file is only 8 bytes. However, it requires
- * more allocations for the same size file and thus more overhead per block for
- * the dynamic memory management.
+ * of unused memory in the last block of each file. For example, when the block
+ * size is 512, on average one-half of the last block of each file will remain
+ * unused and the memory is wasted. In contrast, when the block size is 16, the
+ * average unused memory per file is only 8 bytes. However, it requires more
+ * allocations for the same size file and thus more overhead per block for the
+ * dynamic memory management.
  *
  * Second, the block size has an impact on the maximum size file that can be
  * stored in the IMFS. With smaller block size, the maximum file size is
@@ -2478,7 +2478,7 @@
  *
  * @par Constraints
  * The value of the configuration option shall be a valid Classic API task
- * priority.  The set of valid task priorities depends on the scheduler
+ * priority. The set of valid task priorities depends on the scheduler
  * configuration.
  */
 #define CONFIGURE_JFFS2_DELAYED_WRITE_TASK_PRIORITY
@@ -2526,10 +2526,10 @@
  *
  * - @ref CONFIGURE_IMFS_DISABLE_UNMOUNT.
  *
- * In addition, a simplified path evaluation is enabled.  It allows only a look
+ * In addition, a simplified path evaluation is enabled. It allows only a look
  * up of absolute paths.
  *
- * This configuration of the IMFS is basically a device-only filesystem.  It is
+ * This configuration of the IMFS is basically a device-only filesystem. It is
  * comparable in functionality to the pseudo-filesystem name space provided
  * before RTEMS release 4.5.0.
  * @endparblock
@@ -2606,9 +2606,9 @@
  *
  * @par Notes
  * @parblock
- * Dirtying memory can add significantly to system initialization time.  It may
+ * Dirtying memory can add significantly to system initialization time. It may
  * assist in finding code that incorrectly assumes the contents of free memory
- * areas is cleared to zero during system initialization.  In case @ref
+ * areas is cleared to zero during system initialization. In case @ref
  * CONFIGURE_ZERO_WORKSPACE_AUTOMATICALLY is also defined, then the memory is
  * first dirtied and then zeroed.
  *
@@ -2637,8 +2637,8 @@
  * - @ref CONFIGURE_INTERRUPT_STACK_SIZE
  *
  * The optional BSP provided initial extension set is disabled (see initial
- * extension sets).  The optional BSP provided prerequisite IO device drivers
- * are disabled (see Device Driver Configuration).  The optional BSP provided
+ * extension sets). The optional BSP provided prerequisite IO device drivers
+ * are disabled (see Device Driver Configuration). The optional BSP provided
  * support for sbrk() is disabled.
  *
  * This configuration option provides an all or nothing choice with respect to
@@ -2665,9 +2665,9 @@
  * enabled.
  *
  * @par Notes
- * You can enable this option to reduce the size of the `TCB`.  Use this option
+ * You can enable this option to reduce the size of the `TCB`. Use this option
  * with care, since it can lead to race conditions and undefined system
- * behaviour.  For example, #errno is no longer a thread-local variable if this
+ * behaviour. For example, #errno is no longer a thread-local variable if this
  * option is enabled.
  */
 #define CONFIGURE_DISABLE_NEWLIB_REENTRANCY
@@ -2703,7 +2703,7 @@
  * @endparblock
  *
  * @par Notes
- * This is an advanced configuration option.  Use it only if you know exactly
+ * This is an advanced configuration option. Use it only if you know exactly
  * what you are doing.
  */
 #define CONFIGURE_EXECUTIVE_RAM_SIZE
@@ -2736,7 +2736,7 @@
  * @endparblock
  *
  * @par Notes
- * This parameter is very important.  If the application creates tasks with
+ * This parameter is very important. If the application creates tasks with
  * stacks larger then the minimum, then that memory is **not** accounted for by
  * ``<rtems/confdefs.h>``.
  */
@@ -2751,9 +2751,9 @@
  *
  * While this configuration option is defined, when the ``<rtems/confdefs.h>``
  * is included, the system settings defined by present application
- * configuration options are statically allocated and initialized.  All user
+ * configuration options are statically allocated and initialized. All user
  * provided application configuration options defined before the include of
- * ``<rtems/confdefs.h>`` are evaluated.  They define the actual system
+ * ``<rtems/confdefs.h>`` are evaluated. They define the actual system
  * settings.
  *
  * @par Default Configuration
@@ -2788,7 +2788,7 @@
  *
  * It is recommended that applications provide a fatal extension to customize
  * the <a
- * href="https://docs.rtems.org/branches/master/c-user/fatal-error/background.html#terminate">System
+ * href="https://docs.rtems.org/docs/main/c-user/fatal-error/background.html#terminate">System
  * Termination Procedure</a>.
  * @endparblock
  */
@@ -2829,7 +2829,7 @@
  * @par Notes
  * @parblock
  * There is one interrupt stack available for each configured processor (@ref
- * CONFIGURE_MAXIMUM_PROCESSORS).  The interrupt stack areas are statically
+ * CONFIGURE_MAXIMUM_PROCESSORS). The interrupt stack areas are statically
  * allocated in a special linker section (`.rtemsstack.interrupt`). The
  * placement of this linker section is BSP-specific.
  *
@@ -2838,7 +2838,7 @@
  * started.
  *
  * The interrupt stacks are covered by the stack checker, see @ref
- * CONFIGURE_STACK_CHECKER_ENABLED.  However, using a too small interrupt stack
+ * CONFIGURE_STACK_CHECKER_ENABLED. However, using a too small interrupt stack
  * size may still result in undefined behaviour.
  *
  * The interrupt stack size may depend on the interrupt priority settings, see
@@ -2915,9 +2915,9 @@
  * @anchor CONFIGURE_MAXIMUM_PROCESSORS
  *
  * The value of this configuration option defines the maximum number of
- * processors an application intends to use.  The number of actually available
- * processors depends on the hardware and may be less.  It is recommended to
- * use the smallest value suitable for the application in order to save memory.
+ * processors an application intends to use. The number of actually available
+ * processors depends on the hardware and may be less. It is recommended to use
+ * the smallest value suitable for the application in order to save memory.
  * Each processor needs an IDLE task stack and interrupt stack for example.
  *
  * @par Default Value
@@ -2989,7 +2989,7 @@
  * meet the minimum alignment requirement of a thread-local storage area.
  *
  * The actual thread-local storage size is determined when the application
- * executable is linked.  The `rtems-exeinfo` command line tool included in the
+ * executable is linked. The `rtems-exeinfo` command line tool included in the
  * RTEMS Tools can be used to obtain the thread-local storage size and
  * alignment of an application executable.
  * @endparblock
@@ -3070,7 +3070,7 @@
  *
  * @par Notes
  * This configuration option should only be used when it is suspected that a
- * bug in ``<rtems/confdefs.h>`` has resulted in an underestimation.  Typically
+ * bug in ``<rtems/confdefs.h>`` has resulted in an underestimation. Typically
  * the memory allocation will be too low when an application does not account
  * for all message queue buffers or task stacks, see @ref
  * CONFIGURE_MESSAGE_BUFFER_MEMORY.
@@ -3111,9 +3111,9 @@
  * @parblock
  * The configuration options @ref CONFIGURE_MAXIMUM_MESSAGE_QUEUES and @ref
  * CONFIGURE_MAXIMUM_POSIX_MESSAGE_QUEUES define only how many message queues
- * can be created by the application.  The memory for the message buffers is
- * configured by this option.  For each message queue you have to reserve some
- * memory for the message buffers.  The size depends on the maximum number of
+ * can be created by the application. The memory for the message buffers is
+ * configured by this option. For each message queue you have to reserve some
+ * memory for the message buffers. The size depends on the maximum number of
  * pending messages and the maximum size of the messages of a message queue.
  * Use the `CONFIGURE_MESSAGE_BUFFERS_FOR_QUEUE()` macro to specify the message
  * buffer memory for each message queue and sum them up to define the value for
@@ -3128,16 +3128,16 @@
  *
  * Where `max_messages` is the maximum number of pending messages and
  * `max_msg_size` is the maximum size in bytes of the messages of the
- * corresponding message queue.  Both parameters shall be compile time
- * constants.  Not using this help macro (e.g. just using `max_messages *
+ * corresponding message queue. Both parameters shall be compile time
+ * constants. Not using this help macro (e.g. just using `max_messages *
  * max_msg_size`) may result in an underestimate of the RTEMS Workspace size.
  *
  * The following example illustrates how the
  * `CONFIGURE_MESSAGE_BUFFERS_FOR_QUEUE()` help macro can be used to assist in
- * calculating the message buffer memory required.  In this example, there are
- * two message queues used in this application.  The first message queue has a
+ * calculating the message buffer memory required. In this example, there are
+ * two message queues used in this application. The first message queue has a
  * maximum of 24 pending messages with the message structure defined by the
- * type `one_message_type`.  The other message queue has a maximum of 500
+ * type `one_message_type`. The other message queue has a maximum of 500
  * pending messages with the message structure defined by the type
  * `other_message_type`.
  *
@@ -3237,7 +3237,7 @@
  *
  * @par Notes
  * @parblock
- * Adjusting this parameter should be done with caution.  Examining the actual
+ * Adjusting this parameter should be done with caution. Examining the actual
  * stack usage using the stack checker usage reporting facility is recommended
  * (see also @ref CONFIGURE_STACK_CHECKER_ENABLED).
  *
@@ -3251,7 +3251,7 @@
  * overflow without performing analysis on actual consumption.
  *
  * By default, this configuration parameter defines also the minimum stack size
- * of POSIX threads.  This can be changed with the @ref
+ * of POSIX threads. This can be changed with the @ref
  * CONFIGURE_MINIMUM_POSIX_THREAD_STACK_SIZE configuration option.
  *
  * In releases before RTEMS 5.1 the `CONFIGURE_MINIMUM_TASK_STACK_SIZE` was
@@ -3276,7 +3276,7 @@
  *
  * @par Notes
  * @parblock
- * The stack checker performs run-time stack bounds checking.  This increases
+ * The stack checker performs run-time stack bounds checking. This increases
  * the time required to create tasks as well as adding overhead to each context
  * switch.
  *
@@ -3337,8 +3337,8 @@
  * pool is very undesirable.
  *
  * In high memory environments, this is desirable when you want to use the <a
- * href="https://docs.rtems.org/branches/master/c-user/config/intro.html#unlimited-objects">Unlimited
- * Objects</a> option.  You will be able to create objects until you run out of
+ * href="https://docs.rtems.org/docs/main/c-user/config/intro.html#unlimited-objects">Unlimited
+ * Objects</a> option. You will be able to create objects until you run out of
  * all available memory rather then just until you run out of RTEMS Workspace.
  * @endparblock
  */
@@ -3354,7 +3354,7 @@
  * If @ref CONFIGURE_UNLIMITED_OBJECTS is defined, then the value of this
  * configuration option defines the default objects maximum of all object
  * classes supporting <a
- * href="https://docs.rtems.org/branches/master/c-user/config/intro.html#unlimited-objects">Unlimited
+ * href="https://docs.rtems.org/docs/main/c-user/config/intro.html#unlimited-objects">Unlimited
  * Objects</a> to `rtems_resource_unlimited(
  * CONFIGURE_UNLIMITED_ALLOCATION_SIZE )`.
  *
@@ -3419,8 +3419,8 @@
  * enabled.
  *
  * @par Notes
- * You may use this feature to debug system initialization issues.  The
- * printk() function is used to print the information.
+ * You may use this feature to debug system initialization issues. The printk()
+ * function is used to print the information.
  */
 #define CONFIGURE_VERBOSE_SYSTEM_INITIALIZATION
 
@@ -3441,7 +3441,7 @@
  *
  * @par Notes
  * Zeroing memory can add significantly to the system initialization time. It
- * is not necessary for RTEMS but is often assumed by support libraries.  In
+ * is not necessary for RTEMS but is often assumed by support libraries. In
  * case @ref CONFIGURE_DIRTY_MEMORY is also defined, then the memory is first
  * dirtied and then zeroed.
  */
@@ -3482,7 +3482,7 @@
  *
  * @par Notes
  * @parblock
- * IDLE threads shall not block.  A blocking IDLE thread results in undefined
+ * IDLE threads shall not block. A blocking IDLE thread results in undefined
  * system behaviour because the scheduler assume that at least one ready thread
  * exists.
  *
@@ -3516,7 +3516,7 @@
  * @par Notes
  * @parblock
  * If you use this option be careful, the user IDLE task **cannot** block at
- * all during the initialization sequence.  Further, once application
+ * all during the initialization sequence. Further, once application
  * initialization is complete, it shall make itself preemptible and enter an
  * idle body loop.
  *
@@ -3539,7 +3539,7 @@
  *
  * If no Classic API initialization task and no POSIX API initialization thread
  * is configured, then no <a
- * href="https://docs.rtems.org/branches/master/c-user/initialization/operations.html">Global
+ * href="https://docs.rtems.org/docs/main/c-user/initialization/operations.html#global-construction">Global
  * Construction</a> is performed.
  * @endparblock
  */
@@ -3589,9 +3589,9 @@
  * @anchor CONFIGURE_IDLE_TASK_STORAGE_SIZE
  *
  * If this configuration option is specified, then the task storage areas for
- * the IDLE tasks are statically allocated by ``<rtems/confdefs.h>``.  The
- * value of this configuration option defines the size in bytes of the task
- * storage area of each IDLE task in the system.
+ * the IDLE tasks are statically allocated by ``<rtems/confdefs.h>``. The value
+ * of this configuration option defines the size in bytes of the task storage
+ * area of each IDLE task in the system.
  *
  * @par Default Value
  * This configuration option has no default value.  If it is not specified,
@@ -3605,20 +3605,22 @@
  * @par Notes
  * @parblock
  * By default, the IDLE task storage areas are allocated from the RTEMS
- * Workspace.  Applications which do not want to use a heap allocator can use
+ * Workspace. Applications which do not want to use a heap allocator can use
  * this configuration option to use statically allocated memory for the IDLE
- * task storage areas.  The task storage area contains the task stack, the
+ * task storage areas. The task storage area contains the task stack, the
  * thread-local storage, and the floating-point context on architectures with a
- * separate floating-point context.  The size of the thread-local storage area
+ * separate floating-point context. The size of the thread-local storage area
  * is defined at link time or by the @ref
- * CONFIGURE_MAXIMUM_THREAD_LOCAL_STORAGE_SIZE configuration option.  You have
+ * CONFIGURE_MAXIMUM_THREAD_LOCAL_STORAGE_SIZE configuration option. You have
  * to estimate the actual thread-local storage size if you want to use this
- * configuration option.  If the IDLE task stack size would be less than the
+ * configuration option. If the IDLE task stack size would be less than the
  * value defined by the @ref CONFIGURE_IDLE_TASK_STACK_SIZE configuration
  * option, for example because the thread-local storage size is larger than
- * expected, then the system terminates with the INTERNAL_ERROR_CORE fatal
- * source and the INTERNAL_ERROR_IDLE_THREAD_STACK_TOO_SMALL fatal code during
- * system initialization.
+ * expected, then the system terminates with the <a
+ * href="https://docs.rtems.org/docs/main/c-user/fatal-error/background.html#fatal-sources">INTERNAL_ERROR_CORE</a>
+ * fatal source and the <a
+ * href="https://docs.rtems.org/docs/main/c-user/fatal-error/background.html#internal-errors">INTERNAL_ERROR_IDLE_THREAD_STACK_TOO_SMALL</a>
+ * fatal code during system initialization.
  *
  * The value of this configuration option is passed to
  * RTEMS_TASK_STORAGE_SIZE() by ``<rtems/confdefs.h>`` to determine the actual
@@ -3649,10 +3651,10 @@
  * This section describes multiprocessing related configuration options. The
  * options are only used if RTEMS was built when the multiprocessing build
  * configuration option is enabled. The multiprocessing configuration is
- * distinct from the SMP configuration.  Additionally, this class of
+ * distinct from the SMP configuration. Additionally, this class of
  * configuration options are only applicable if the configuration option @ref
- * CONFIGURE_MP_APPLICATION is defined.  The multiprocessing (MPCI) support
- * must not be confused with the SMP support.
+ * CONFIGURE_MP_APPLICATION is defined. The multiprocessing (MPCI) support must
+ * not be confused with the SMP support.
  *
  * @{
  */
@@ -3701,7 +3703,7 @@
  * @anchor CONFIGURE_MP_APPLICATION
  *
  * This configuration option is defined to indicate that the application
- * intends to be part of a multiprocessing configuration.  Additional
+ * intends to be part of a multiprocessing configuration. Additional
  * configuration options are assumed to be provided.
  *
  * @par Default Configuration
@@ -3711,7 +3713,7 @@
  * @par Notes
  * This configuration option shall be undefined if the multiprocessing support
  * is not enabled (e.g. RTEMS was built without the multiprocessing build
- * configuration option enabled).  Otherwise a compile time error in the
+ * configuration option enabled). Otherwise a compile time error in the
  * configuration file will occur.
  */
 #define CONFIGURE_MP_APPLICATION
@@ -3811,7 +3813,7 @@
  * Since a proxy is used to represent a remote task/thread which is blocking on
  * this node. This configuration parameter reflects the maximum number of
  * remote tasks/threads which can be blocked on objects on this node, see <a
- * href="https://docs.rtems.org/branches/master/c-user/multiprocessing/background.html#proxies">Proxies</a>.
+ * href="https://docs.rtems.org/docs/main/c-user/multiprocessing/background.html#proxies">Proxies</a>.
  *
  * This configuration option is only evaluated if @ref CONFIGURE_MP_APPLICATION
  * is defined.
@@ -3894,8 +3896,8 @@
  *
  * @ingroup RTEMSApplConfig
  *
- * This section describes configuration options related to the POSIX API.  Most
- * POSIX API objects are available by default since RTEMS 5.1.  The queued
+ * This section describes configuration options related to the POSIX API. Most
+ * POSIX API objects are available by default since RTEMS 5.1. The queued
  * signals and timers are only available if RTEMS was built with the enable
  * POSIX build configuration option.
  *
@@ -3937,7 +3939,7 @@
  *
  * @par Notes
  * This object class can be configured in unlimited allocation mode, see <a
- * href="https://docs.rtems.org/branches/master/c-user/config/intro.html#unlimited-objects">Unlimited
+ * href="https://docs.rtems.org/docs/main/c-user/config/intro.html#unlimited-objects">Unlimited
  * Objects</a>.
  */
 #define CONFIGURE_MAXIMUM_POSIX_KEYS
@@ -3979,7 +3981,7 @@
  * @par Notes
  * @parblock
  * This object class can be configured in unlimited allocation mode, see <a
- * href="https://docs.rtems.org/branches/master/c-user/config/intro.html#unlimited-objects">Unlimited
+ * href="https://docs.rtems.org/docs/main/c-user/config/intro.html#unlimited-objects">Unlimited
  * Objects</a>.
  *
  * A key value pair is created by pthread_setspecific() if the value is not <a
@@ -4029,8 +4031,8 @@
  *
  * @par Notes
  * This object class can be configured in unlimited allocation mode, see <a
- * href="https://docs.rtems.org/branches/master/c-user/config/intro.html#unlimited-objects">Unlimited
- * Objects</a>.  You have to account for the memory used to store the messages
+ * href="https://docs.rtems.org/docs/main/c-user/config/intro.html#unlimited-objects">Unlimited
+ * Objects</a>. You have to account for the memory used to store the messages
  * of each message queue, see @ref CONFIGURE_MESSAGE_BUFFER_MEMORY.
  */
 #define CONFIGURE_MAXIMUM_POSIX_MESSAGE_QUEUES
@@ -4066,7 +4068,7 @@
  *
  * - The value of the configuration option shall be zero if the POSIX API is
  *   not enabled (e.g. RTEMS was built without the `RTEMS_POSIX_API = True`
- *   build configuration option).  Otherwise a compile time error in the
+ *   build configuration option). Otherwise a compile time error in the
  *   configuration file will occur.
  * @endparblock
  *
@@ -4121,10 +4123,10 @@
  * @par Notes
  * @parblock
  * This object class can be configured in unlimited allocation mode, see <a
- * href="https://docs.rtems.org/branches/master/c-user/config/intro.html#unlimited-objects">Unlimited
+ * href="https://docs.rtems.org/docs/main/c-user/config/intro.html#unlimited-objects">Unlimited
  * Objects</a>.
  *
- * Named semaphores are created with sem_open().  Semaphores initialized with
+ * Named semaphores are created with sem_open(). Semaphores initialized with
  * sem_init() are not affected by this configuration option since the storage
  * space for these semaphores is user-provided.
  * @endparblock
@@ -4171,7 +4173,7 @@
  *
  * @par Notes
  * This object class can be configured in unlimited allocation mode, see <a
- * href="https://docs.rtems.org/branches/master/c-user/config/intro.html#unlimited-objects">Unlimited
+ * href="https://docs.rtems.org/docs/main/c-user/config/intro.html#unlimited-objects">Unlimited
  * Objects</a>.
  */
 #define CONFIGURE_MAXIMUM_POSIX_SHMS
@@ -4212,12 +4214,12 @@
  * @par Notes
  * @parblock
  * This object class can be configured in unlimited allocation mode, see <a
- * href="https://docs.rtems.org/branches/master/c-user/config/intro.html#unlimited-objects">Unlimited
+ * href="https://docs.rtems.org/docs/main/c-user/config/intro.html#unlimited-objects">Unlimited
  * Objects</a>.
  *
  * This calculations for the required memory in the RTEMS Workspace for threads
  * assume that each thread has a minimum stack size and has floating point
- * support enabled.  The configuration option @ref CONFIGURE_EXTRA_TASK_STACKS
+ * support enabled. The configuration option @ref CONFIGURE_EXTRA_TASK_STACKS
  * is used to specify thread stack requirements **above** the minimum size
  * required.
  *
@@ -4263,14 +4265,14 @@
  *
  * - The value of the configuration option shall be zero if the POSIX API is
  *   not enabled (e.g. RTEMS was built without the `RTEMS_POSIX_API = True`
- *   build configuration option).  Otherwise a compile time error in the
+ *   build configuration option). Otherwise a compile time error in the
  *   configuration file will occur.
  * @endparblock
  *
  * @par Notes
  * @parblock
  * This object class can be configured in unlimited allocation mode, see <a
- * href="https://docs.rtems.org/branches/master/c-user/config/intro.html#unlimited-objects">Unlimited
+ * href="https://docs.rtems.org/docs/main/c-user/config/intro.html#unlimited-objects">Unlimited
  * Objects</a>.
  *
  * Timers are only available if RTEMS was built with the POSIX API build
@@ -4404,7 +4406,7 @@
  *
  * If no Classic API initialization task is configured, then the POSIX API
  * initialization thread performs the <a
- * href="https://docs.rtems.org/branches/master/c-user/initialization/operations.html">Global
+ * href="https://docs.rtems.org/docs/main/c-user/initialization/operations.html#global-construction">Global
  * Construction</a>.
  * @endparblock
  */
@@ -4421,28 +4423,28 @@
  * @ingroup RTEMSApplConfig
  *
  * This section describes configuration options related to selecting a
- * scheduling algorithm for an application.  A scheduler configuration is
- * optional and only necessary in very specific circumstances.  A normal
+ * scheduling algorithm for an application. A scheduler configuration is
+ * optional and only necessary in very specific circumstances. A normal
  * application configuration does not need any of the configuration options
  * described in this section.
  *
  * By default, the <a
- * href="https://docs.rtems.org/branches/master/c-user/scheduling-concepts/uniprocessor-schedulers.html#deterministic-priority-scheduler">Deterministic
- * Priority Scheduler</a> algorithm is used in uniprocessor configurations.  In
+ * href="https://docs.rtems.org/docs/main/c-user/scheduling-concepts/uniprocessor-schedulers.html#deterministic-priority-scheduler">Deterministic
+ * Priority Scheduler</a> algorithm is used in uniprocessor configurations. In
  * case SMP is enabled and the configured maximum processors (@ref
  * CONFIGURE_MAXIMUM_PROCESSORS) is greater than one, then the <a
- * href="https://docs.rtems.org/branches/master/c-user/scheduling-concepts/smp-schedulers.html#earliest-deadline-first-smp-scheduler">Earliest
+ * href="https://docs.rtems.org/docs/main/c-user/scheduling-concepts/smp-schedulers.html#earliest-deadline-first-smp-scheduler">Earliest
  * Deadline First SMP Scheduler</a> is selected as the default scheduler
  * algorithm.
  *
  * For the schedulers provided by RTEMS (see <a
- * href="https://docs.rtems.org/branches/master/c-user/scheduling-concepts/index.html">Scheduling
- * Concepts</a>), the configuration is straightforward.  All that is required
- * is to define the configuration option which specifies which scheduler you
- * want for in your application.
+ * href="https://docs.rtems.org/docs/main/c-user/scheduling-concepts/index.html#scheduling-concepts">Scheduling
+ * Concepts</a>), the configuration is straightforward. All that is required is
+ * to define the configuration option which specifies which scheduler you want
+ * for in your application.
  *
  * The pluggable scheduler interface also enables the user to provide their own
- * scheduling algorithm.  If you choose to do this, you must define multiple
+ * scheduling algorithm. If you choose to do this, you must define multiple
  * configuration option.
  *
  * @{
@@ -4492,25 +4494,25 @@
  * For the following schedulers
  *
  * - <a
- *   href="https://docs.rtems.org/branches/master/c-user/scheduling-concepts/uniprocessor-schedulers.html#deterministic-priority-scheduler">Deterministic
+ *   href="https://docs.rtems.org/docs/main/c-user/scheduling-concepts/uniprocessor-schedulers.html#deterministic-priority-scheduler">Deterministic
  *   Priority Scheduler</a>, which is the default in uniprocessor
  *   configurations and can be configured through the @ref
  *   CONFIGURE_SCHEDULER_PRIORITY configuration option,
  *
  * - <a
- *   href="https://docs.rtems.org/branches/master/c-user/scheduling-concepts/smp-schedulers.html#deterministic-priority-smp-scheduler">Deterministic
+ *   href="https://docs.rtems.org/docs/main/c-user/scheduling-concepts/smp-schedulers.html#deterministic-priority-smp-scheduler">Deterministic
  *   Priority SMP Scheduler</a> which can be configured through the @ref
  *   CONFIGURE_SCHEDULER_PRIORITY_SMP configuration option, and
  *
  * - <a
- *   href="https://docs.rtems.org/branches/master/c-user/scheduling-concepts/smp-schedulers.html#arbitrary-processor-affinity-priority-smp-scheduler">Arbitrary
+ *   href="https://docs.rtems.org/docs/main/c-user/scheduling-concepts/smp-schedulers.html#arbitrary-processor-affinity-priority-smp-scheduler">Arbitrary
  *   Processor Affinity Priority SMP Scheduler</a> which can be configured
  *   through the @ref CONFIGURE_SCHEDULER_PRIORITY_AFFINITY_SMP configuration
  *   option
  *
  * this configuration option specifies the maximum numeric priority of any task
  * for these schedulers and one less that the number of priority levels for
- * these schedulers.  For all other schedulers provided by RTEMS, this
+ * these schedulers. For all other schedulers provided by RTEMS, this
  * configuration option has no effect.
  *
  * @par Default Value
@@ -4529,15 +4531,15 @@
  * applications.
  *
  * Reducing the number of priorities through this configuration option reduces
- * the amount of memory allocated by the schedulers listed above.  These
+ * the amount of memory allocated by the schedulers listed above. These
  * schedulers use a chain control structure per priority and this structure
- * consists of three pointers.  On a 32-bit architecture, the allocated memory
- * is 12 bytes * (`CONFIGURE_MAXIMUM_PRIORITY` + 1), e.g. 3072 bytes for 256
+ * consists of three pointers. On a 32-bit architecture, the allocated memory
+ * is 12 bytes \* (`CONFIGURE_MAXIMUM_PRIORITY` + 1), e.g. 3072 bytes for 256
  * priority levels (default), 48 bytes for 4 priority levels
  * (`CONFIGURE_MAXIMUM_PRIORITY == 3`).
  *
  * The default value is 255, because RTEMS shall support 256 priority levels to
- * be compliant with various standards.  These priorities range from 0 to 255.
+ * be compliant with various standards. These priorities range from 0 to 255.
  * @endparblock
  */
 #define CONFIGURE_MAXIMUM_PRIORITY
@@ -4588,7 +4590,7 @@
  * option is evaluated, otherwise it is ignored.
  *
  * This is an advanced configuration option, see <a
- * href="https://docs.rtems.org/branches/master/c-user/config/scheduler-clustered.html">Clustered
+ * href="https://docs.rtems.org/docs/main/c-user/config/scheduler-clustered.html#clustered-scheduler-configuration">Clustered
  * Scheduler Configuration</a>.
  * @endparblock
  */
@@ -4602,7 +4604,7 @@
  * @anchor CONFIGURE_SCHEDULER_CBS
  *
  * In case this configuration option is defined, then the <a
- * href="https://docs.rtems.org/branches/master/c-user/scheduling-concepts/uniprocessor-schedulers.html#constant-bandwidth-server-scheduling-cbs">Constant
+ * href="https://docs.rtems.org/docs/main/c-user/scheduling-concepts/uniprocessor-schedulers.html#constant-bandwidth-server-scheduling-cbs">Constant
  * Bandwidth Server Scheduling (CBS)</a> algorithm is made available to the
  * application.
  *
@@ -4616,7 +4618,7 @@
  * Think twice before you use it.
  *
  * In case no explicit <a
- * href="https://docs.rtems.org/branches/master/c-user/config/scheduler-clustered.html">Clustered
+ * href="https://docs.rtems.org/docs/main/c-user/config/scheduler-clustered.html#clustered-scheduler-configuration">Clustered
  * Scheduler Configuration</a> is present, then it is used as the scheduler for
  * exactly one processor.
  * @endparblock
@@ -4631,7 +4633,7 @@
  * @anchor CONFIGURE_SCHEDULER_EDF
  *
  * In case this configuration option is defined, then the <a
- * href="https://docs.rtems.org/branches/master/c-user/scheduling-concepts/uniprocessor-schedulers.html#earliest-deadline-first-scheduler">Earliest
+ * href="https://docs.rtems.org/docs/main/c-user/scheduling-concepts/uniprocessor-schedulers.html#earliest-deadline-first-scheduler">Earliest
  * Deadline First Scheduler</a> algorithm is made available to the application.
  *
  * @par Default Configuration
@@ -4644,7 +4646,7 @@
  * Think twice before you use it.
  *
  * In case no explicit <a
- * href="https://docs.rtems.org/branches/master/c-user/config/scheduler-clustered.html">Clustered
+ * href="https://docs.rtems.org/docs/main/c-user/config/scheduler-clustered.html#clustered-scheduler-configuration">Clustered
  * Scheduler Configuration</a> is present, then it is used as the scheduler for
  * exactly one processor.
  * @endparblock
@@ -4659,7 +4661,7 @@
  * @anchor CONFIGURE_SCHEDULER_EDF_SMP
  *
  * In case this configuration option is defined, then the <a
- * href="https://docs.rtems.org/branches/master/c-user/scheduling-concepts/smp-schedulers.html#earliest-deadline-first-smp-scheduler">Earliest
+ * href="https://docs.rtems.org/docs/main/c-user/scheduling-concepts/smp-schedulers.html#earliest-deadline-first-smp-scheduler">Earliest
  * Deadline First SMP Scheduler</a> algorithm is made available to the
  * application.
  *
@@ -4676,7 +4678,7 @@
  * support enabled.
  *
  * In case no explicit <a
- * href="https://docs.rtems.org/branches/master/c-user/config/scheduler-clustered.html">Clustered
+ * href="https://docs.rtems.org/docs/main/c-user/config/scheduler-clustered.html#clustered-scheduler-configuration">Clustered
  * Scheduler Configuration</a> is present, then it is used as the scheduler for
  * up to 32 processors.
  *
@@ -4701,35 +4703,35 @@
  * The default value is
  *
  * - `"MEDF"` for the <a
- *   href="https://docs.rtems.org/branches/master/c-user/scheduling-concepts/smp-schedulers.html#earliest-deadline-first-smp-scheduler">Earliest
+ *   href="https://docs.rtems.org/docs/main/c-user/scheduling-concepts/smp-schedulers.html#earliest-deadline-first-smp-scheduler">Earliest
  *   Deadline First SMP Scheduler</a>,
  *
  * - `"MPA "` for the <a
- *   href="https://docs.rtems.org/branches/master/c-user/scheduling-concepts/smp-schedulers.html#arbitrary-processor-affinity-priority-smp-scheduler">Arbitrary
+ *   href="https://docs.rtems.org/docs/main/c-user/scheduling-concepts/smp-schedulers.html#arbitrary-processor-affinity-priority-smp-scheduler">Arbitrary
  *   Processor Affinity Priority SMP Scheduler</a>,
  *
  * - `"MPD "` for the <a
- *   href="https://docs.rtems.org/branches/master/c-user/scheduling-concepts/smp-schedulers.html#deterministic-priority-smp-scheduler">Deterministic
+ *   href="https://docs.rtems.org/docs/main/c-user/scheduling-concepts/smp-schedulers.html#deterministic-priority-smp-scheduler">Deterministic
  *   Priority SMP Scheduler</a>,
  *
  * - `"MPS "` for the <a
- *   href="https://docs.rtems.org/branches/master/c-user/scheduling-concepts/smp-schedulers.html#simple-priority-smp-scheduler">Simple
+ *   href="https://docs.rtems.org/docs/main/c-user/scheduling-concepts/smp-schedulers.html#simple-priority-smp-scheduler">Simple
  *   Priority SMP Scheduler</a>,
  *
  * - `"UCBS"` for the <a
- *   href="https://docs.rtems.org/branches/master/c-user/scheduling-concepts/uniprocessor-schedulers.html#constant-bandwidth-server-scheduling-cbs">Constant
+ *   href="https://docs.rtems.org/docs/main/c-user/scheduling-concepts/uniprocessor-schedulers.html#constant-bandwidth-server-scheduling-cbs">Constant
  *   Bandwidth Server Scheduling (CBS)</a>,
  *
  * - `"UEDF"` for the <a
- *   href="https://docs.rtems.org/branches/master/c-user/scheduling-concepts/uniprocessor-schedulers.html#earliest-deadline-first-scheduler">Earliest
+ *   href="https://docs.rtems.org/docs/main/c-user/scheduling-concepts/uniprocessor-schedulers.html#earliest-deadline-first-scheduler">Earliest
  *   Deadline First Scheduler</a>,
  *
  * - `"UPD "` for the <a
- *   href="https://docs.rtems.org/branches/master/c-user/scheduling-concepts/uniprocessor-schedulers.html#deterministic-priority-scheduler">Deterministic
+ *   href="https://docs.rtems.org/docs/main/c-user/scheduling-concepts/uniprocessor-schedulers.html#deterministic-priority-scheduler">Deterministic
  *   Priority Scheduler</a>, and
  *
  * - `"UPS "` for the <a
- *   href="https://docs.rtems.org/branches/master/c-user/scheduling-concepts/uniprocessor-schedulers.html#simple-priority-scheduler">Simple
+ *   href="https://docs.rtems.org/docs/main/c-user/scheduling-concepts/uniprocessor-schedulers.html#simple-priority-scheduler">Simple
  *   Priority Scheduler</a>.
  * @endparblock
  *
@@ -4757,7 +4759,7 @@
  * @anchor CONFIGURE_SCHEDULER_PRIORITY
  *
  * In case this configuration option is defined, then the <a
- * href="https://docs.rtems.org/branches/master/c-user/scheduling-concepts/uniprocessor-schedulers.html#deterministic-priority-scheduler">Deterministic
+ * href="https://docs.rtems.org/docs/main/c-user/scheduling-concepts/uniprocessor-schedulers.html#deterministic-priority-scheduler">Deterministic
  * Priority Scheduler</a> algorithm is made available to the application.
  *
  * @par Default Configuration
@@ -4770,7 +4772,7 @@
  * Think twice before you use it.
  *
  * In case no explicit <a
- * href="https://docs.rtems.org/branches/master/c-user/config/scheduler-clustered.html">Clustered
+ * href="https://docs.rtems.org/docs/main/c-user/config/scheduler-clustered.html#clustered-scheduler-configuration">Clustered
  * Scheduler Configuration</a> is present, then it is used as the scheduler for
  * exactly one processor.
  *
@@ -4791,7 +4793,7 @@
  * @anchor CONFIGURE_SCHEDULER_PRIORITY_AFFINITY_SMP
  *
  * In case this configuration option is defined, then the <a
- * href="https://docs.rtems.org/branches/master/c-user/scheduling-concepts/smp-schedulers.html#arbitrary-processor-affinity-priority-smp-scheduler">Arbitrary
+ * href="https://docs.rtems.org/docs/main/c-user/scheduling-concepts/smp-schedulers.html#arbitrary-processor-affinity-priority-smp-scheduler">Arbitrary
  * Processor Affinity Priority SMP Scheduler</a> algorithm is made available to
  * the application.
  *
@@ -4808,7 +4810,7 @@
  * support enabled.
  *
  * In case no explicit <a
- * href="https://docs.rtems.org/branches/master/c-user/config/scheduler-clustered.html">Clustered
+ * href="https://docs.rtems.org/docs/main/c-user/config/scheduler-clustered.html#clustered-scheduler-configuration">Clustered
  * Scheduler Configuration</a> is present, then it is used as the scheduler for
  * up to 32 processors.
  *
@@ -4826,7 +4828,7 @@
  * @anchor CONFIGURE_SCHEDULER_PRIORITY_SMP
  *
  * In case this configuration option is defined, then the <a
- * href="https://docs.rtems.org/branches/master/c-user/scheduling-concepts/smp-schedulers.html#deterministic-priority-smp-scheduler">Deterministic
+ * href="https://docs.rtems.org/docs/main/c-user/scheduling-concepts/smp-schedulers.html#deterministic-priority-smp-scheduler">Deterministic
  * Priority SMP Scheduler</a> algorithm is made available to the application.
  *
  * @par Default Configuration
@@ -4842,7 +4844,7 @@
  * support enabled.
  *
  * In case no explicit <a
- * href="https://docs.rtems.org/branches/master/c-user/config/scheduler-clustered.html">Clustered
+ * href="https://docs.rtems.org/docs/main/c-user/config/scheduler-clustered.html#clustered-scheduler-configuration">Clustered
  * Scheduler Configuration</a> is present, then it is used as the scheduler for
  * up to 32 processors.
  *
@@ -4860,7 +4862,7 @@
  * @anchor CONFIGURE_SCHEDULER_SIMPLE
  *
  * In case this configuration option is defined, then the <a
- * href="https://docs.rtems.org/branches/master/c-user/scheduling-concepts/uniprocessor-schedulers.html#simple-priority-scheduler">Simple
+ * href="https://docs.rtems.org/docs/main/c-user/scheduling-concepts/uniprocessor-schedulers.html#simple-priority-scheduler">Simple
  * Priority Scheduler</a> algorithm is made available to the application.
  *
  * @par Default Configuration
@@ -4873,7 +4875,7 @@
  * Think twice before you use it.
  *
  * In case no explicit <a
- * href="https://docs.rtems.org/branches/master/c-user/config/scheduler-clustered.html">Clustered
+ * href="https://docs.rtems.org/docs/main/c-user/config/scheduler-clustered.html#clustered-scheduler-configuration">Clustered
  * Scheduler Configuration</a> is present, then it is used as the scheduler for
  * exactly one processor.
  * @endparblock
@@ -4888,7 +4890,7 @@
  * @anchor CONFIGURE_SCHEDULER_SIMPLE_SMP
  *
  * In case this configuration option is defined, then the <a
- * href="https://docs.rtems.org/branches/master/c-user/scheduling-concepts/smp-schedulers.html#simple-priority-smp-scheduler">Simple
+ * href="https://docs.rtems.org/docs/main/c-user/scheduling-concepts/smp-schedulers.html#simple-priority-smp-scheduler">Simple
  * Priority SMP Scheduler</a> algorithm is made available to the application.
  *
  * @par Default Configuration
@@ -4904,7 +4906,7 @@
  * support enabled.
  *
  * In case no explicit <a
- * href="https://docs.rtems.org/branches/master/c-user/config/scheduler-clustered.html">Clustered
+ * href="https://docs.rtems.org/docs/main/c-user/config/scheduler-clustered.html#clustered-scheduler-configuration">Clustered
  * Scheduler Configuration</a> is present, then it is used as the scheduler for
  * up to 32 processors.
  * @endparblock
@@ -4933,7 +4935,7 @@
  * This scheduler algorithm is only available when RTEMS is built with SMP
  * support enabled.
  *
- * This scheduler algorithm is not correctly implemented.  Do not use it.
+ * This scheduler algorithm is not correctly implemented. Do not use it.
  * @endparblock
  */
 #define CONFIGURE_SCHEDULER_STRONG_APA
@@ -4979,10 +4981,10 @@
  *
  *   The `name` macro parameter shall be the name associated with the scheduler
  *   data structures, see <a
- *   href="https://docs.rtems.org/branches/master/c-user/config/scheduler-clustered.html">Clustered
+ *   href="https://docs.rtems.org/docs/main/c-user/config/scheduler-clustered.html#clustered-scheduler-configuration">Clustered
  *   Scheduler Configuration</a>.
  *
- *   The `obj_name` macro parameter shall be the scheduler object name.  It is
+ *   The `obj_name` macro parameter shall be the scheduler object name. It is
  *   recommended to define the scheduler object name through
  *   rtems_build_name().
  *
@@ -4993,11 +4995,11 @@
  * @par Notes
  * @parblock
  * Schedulers registered in the scheduler table by this configuration option
- * are available to the application.  The scheduler table entry index defines
+ * are available to the application. The scheduler table entry index defines
  * the index of the scheduler.
  *
  * This is an advanced configuration option, see <a
- * href="https://docs.rtems.org/branches/master/c-user/config/scheduler-clustered.html">Clustered
+ * href="https://docs.rtems.org/docs/main/c-user/config/scheduler-clustered.html#clustered-scheduler-configuration">Clustered
  * Scheduler Configuration</a>.
  * @endparblock
  */
@@ -5038,9 +5040,9 @@
  *   per-thread information of the user scheduler.
  *
  * At this time, the mechanics and requirements for writing a new scheduler are
- * evolving and not fully documented.  It is recommended that you look at the
+ * evolving and not fully documented. It is recommended that you look at the
  * existing Deterministic Priority Scheduler in
- * `cpukit/score/src/schedulerpriority*.c` for guidance.  For guidance on the
+ * `cpukit/score/src/schedulerpriority*.c` for guidance. For guidance on the
  * configuration macros, please examine
  * `cpukit/include/rtems/confdefs/scheduler.h` for how these are defined for
  * the Deterministic Priority Scheduler.
@@ -5059,7 +5061,7 @@
  * @ingroup RTEMSApplConfig
  *
  * This section describes configuration options related to the task stack
- * allocator.  RTEMS allows the application or BSP to define its own allocation
+ * allocator. RTEMS allows the application or BSP to define its own allocation
  * and deallocation methods for task stacks. This can be used to place task
  * stacks in special areas of memory or to utilize a Memory Management Unit so
  * that stack overflows are detected in hardware.
@@ -5152,7 +5154,7 @@
  * @par Notes
  * @parblock
  * This configuration option is independent of the other thread stack allocator
- * configuration options.  It is assumed that any memory allocated for the task
+ * configuration options. It is assumed that any memory allocated for the task
  * storage area of an IDLE task will not be from the RTEMS Workspace.
  *
  * The IDLE task stack allocator may increase the size of the allocated memory
@@ -5249,10 +5251,9 @@
  *
  * @par Constraints
  * The value of the configuration option shall be defined to a macro which
- * accepts exactly one parameter and returns an unsigned integer.  The
- * parameter will be an allocation size and the macro shall return this size
- * plus the overhead of the allocator to manage an allocation request for this
- * size.
+ * accepts exactly one parameter and returns an unsigned integer. The parameter
+ * will be an allocation size and the macro shall return this size plus the
+ * overhead of the allocator to manage an allocation request for this size.
  *
  * @par Notes
  * This configuration option may be used if a custom task stack allocator is

@@ -132,8 +132,8 @@ extern "C" {
  *
  * @par Notes
  * The Classic API supports 256 interrupt levels using the least significant
- * eight bits of the mode set.  On any particular processor variant, fewer than
- * 256 levels may be supported.  At least level 0 (all interrupts enabled) and
+ * eight bits of the mode set. On any particular processor variant, fewer than
+ * 256 levels may be supported. At least level 0 (all interrupts enabled) and
  * level 1 (interrupts disabled, on most architectures) are supported.
  */
 #define RTEMS_INTERRUPT_LEVEL( _interrupt_level ) \

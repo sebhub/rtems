@@ -74,7 +74,7 @@ extern "C" {
  *
  * @param name is the object name of the semaphore.
  *
- * @param count is the initial count of the semaphore.  If the semaphore is a
+ * @param count is the initial count of the semaphore. If the semaphore is a
  *   binary semaphore, then a count of 0 will make the calling task the owner
  *   of the binary semaphore and a count of 1 will create a binary semaphore
  *   without an owner.
@@ -85,23 +85,23 @@ extern "C" {
  *   semaphore with the priority ceiling or MrsP locking protocol as defined by
  *   the attribute set.
  *
- * @param[out] id is the pointer to an ::rtems_id object.  When the directive
+ * @param[out] id is the pointer to an ::rtems_id object. When the directive
  *   call is successful, the identifier of the created semaphore will be stored
  *   in this object.
  *
- * This directive creates a semaphore which resides on the local node.  The
+ * This directive creates a semaphore which resides on the local node. The
  * semaphore has the user-defined object name specified in ``name`` and the
- * initial count specified in ``count``.  The assigned object identifier is
- * returned in ``id``.  This identifier is used to access the semaphore with
+ * initial count specified in ``count``. The assigned object identifier is
+ * returned in ``id``. This identifier is used to access the semaphore with
  * other semaphore related directives.
  *
  * The **attribute set** specified in ``attribute_set`` is built through a
- * *bitwise or* of the attribute constants described below.  Not all
- * combinations of attributes are allowed.  Some attributes are mutually
- * exclusive.  If mutually exclusive attributes are combined, the behaviour is
- * undefined.  Attributes not mentioned below are not evaluated by this
- * directive and have no effect.  Default attributes can be selected by using
- * the #RTEMS_DEFAULT_ATTRIBUTES constant.  The attribute set defines
+ * *bitwise or* of the attribute constants described below. Not all
+ * combinations of attributes are allowed. Some attributes are mutually
+ * exclusive. If mutually exclusive attributes are combined, the behaviour is
+ * undefined. Attributes not mentioned below are not evaluated by this
+ * directive and have no effect. Default attributes can be selected by using
+ * the #RTEMS_DEFAULT_ATTRIBUTES constant. The attribute set defines
  *
  * - the scope of the semaphore: #RTEMS_LOCAL (default) or #RTEMS_GLOBAL,
  *
@@ -116,12 +116,12 @@ extern "C" {
  *   #RTEMS_MULTIPROCESSOR_RESOURCE_SHARING.
  *
  * The semaphore has a local or global **scope** in a multiprocessing network
- * (this attribute does not refer to SMP systems).  The scope is selected by
- * the mutually exclusive #RTEMS_LOCAL and #RTEMS_GLOBAL attributes.
+ * (this attribute does not refer to SMP systems). The scope is selected by the
+ * mutually exclusive #RTEMS_LOCAL and #RTEMS_GLOBAL attributes.
  *
  * - A **local scope** is the default and can be emphasized through the use of
- *   the #RTEMS_LOCAL attribute.  A local semaphore can be only used by the
- *   node which created it.
+ *   the #RTEMS_LOCAL attribute. A local semaphore can be only used by the node
+ *   which created it.
  *
  * - A **global scope** is established if the #RTEMS_GLOBAL attribute is set.
  *   Setting the global attribute in a single node system has no effect.
@@ -143,23 +143,23 @@ extern "C" {
  *   through use of the #RTEMS_COUNTING_SEMAPHORE attribute.
  *
  * - The **binary semaphore class** is selected by the #RTEMS_BINARY_SEMAPHORE
- *   attribute.  Binary semaphores are mutual exclusion (mutex) synchronization
- *   primitives which may have an owner.  The count of a binary semaphore is
+ *   attribute. Binary semaphores are mutual exclusion (mutex) synchronization
+ *   primitives which may have an owner. The count of a binary semaphore is
  *   restricted to 0 and 1 values.
  *
  * - The **simple binary semaphore class** is selected by the
- *   #RTEMS_SIMPLE_BINARY_SEMAPHORE attribute.  Simple binary semaphores have
- *   no owner.  They may be used for task and interrupt synchronization.  The
- *   count of a simple binary semaphore is restricted to 0 and 1 values.
+ *   #RTEMS_SIMPLE_BINARY_SEMAPHORE attribute. Simple binary semaphores have no
+ *   owner. They may be used for task and interrupt synchronization. The count
+ *   of a simple binary semaphore is restricted to 0 and 1 values.
  *
- * Binary semaphores may use a **locking protocol**.  If a locking protocol is
+ * Binary semaphores may use a **locking protocol**. If a locking protocol is
  * selected, then the scope shall be local and the priority task wait queue
- * discipline shall be selected.  The locking protocol is selected by the
+ * discipline shall be selected. The locking protocol is selected by the
  * mutually exclusive #RTEMS_INHERIT_PRIORITY, #RTEMS_PRIORITY_CEILING, and
  * #RTEMS_MULTIPROCESSOR_RESOURCE_SHARING attributes.
  *
- * - The default is **no locking protocol**.  This can be emphasized through
- *   use of the #RTEMS_NO_INHERIT_PRIORITY,
+ * - The default is **no locking protocol**. This can be emphasized through use
+ *   of the #RTEMS_NO_INHERIT_PRIORITY,
  *   #RTEMS_NO_MULTIPROCESSOR_RESOURCE_SHARING, and #RTEMS_NO_PRIORITY_CEILING
  *   attributes.
  *
@@ -167,15 +167,15 @@ extern "C" {
  *   #RTEMS_INHERIT_PRIORITY attribute.
  *
  * - The **priority ceiling locking protocol** is selected by the
- *   #RTEMS_PRIORITY_CEILING attribute.  For this locking protocol a priority
+ *   #RTEMS_PRIORITY_CEILING attribute. For this locking protocol a priority
  *   ceiling shall be specified in ``priority_ceiling``.
  *
  * - The **MrsP locking protocol** is selected by the
  *   #RTEMS_MULTIPROCESSOR_RESOURCE_SHARING attribute in SMP configurations,
  *   otherwise this attribute selects the **priority ceiling locking
- *   protocol**.  For these locking protocols a priority ceiling shall be
- *   specified in ``priority_ceiling``.  This priority is used to set the
- *   priority ceiling for all schedulers.  This can be changed later with the
+ *   protocol**. For these locking protocols a priority ceiling shall be
+ *   specified in ``priority_ceiling``. This priority is used to set the
+ *   priority ceiling for all schedulers. This can be changed later with the
  *   rtems_semaphore_set_priority() directive using the returned object
  *   identifier.
  *
@@ -190,12 +190,12 @@ extern "C" {
  * @retval ::RTEMS_NOT_DEFINED The ``attribute_set`` parameter was invalid.
  *
  * @retval ::RTEMS_TOO_MANY There was no inactive object available to create a
- *   semaphore.  The number of semaphores available to the application is
+ *   semaphore. The number of semaphores available to the application is
  *   configured through the @ref CONFIGURE_MAXIMUM_SEMAPHORES application
  *   configuration option.
  *
  * @retval ::RTEMS_TOO_MANY In multiprocessing configurations, there was no
- *   inactive global object available to create a global semaphore.  The number
+ *   inactive global object available to create a global semaphore. The number
  *   of global objects available to the application is configured through the
  *   @ref CONFIGURE_MP_MAXIMUM_GLOBAL_OBJECTS application configuration option.
  *
@@ -207,12 +207,12 @@ extern "C" {
  * For control and maintenance of the semaphore, RTEMS allocates a SMCB from
  * the local SMCB free pool and initializes it.
  *
- * The SMCB for a global semaphore is allocated on the local node.  Semaphores
+ * The SMCB for a global semaphore is allocated on the local node. Semaphores
  * should not be made global unless remote tasks must interact with the
- * semaphore.  This is to avoid the system overhead incurred by the creation of
- * a global semaphore.  When a global semaphore is created, the semaphore's
- * name and identifier must be transmitted to every node in the system for
- * insertion in the local copy of the global object table.
+ * semaphore. This is to avoid the system overhead incurred by the creation of
+ * a global semaphore. When a global semaphore is created, the semaphore's name
+ * and identifier must be transmitted to every node in the system for insertion
+ * in the local copy of the global object table.
  * @endparblock
  *
  * @par Constraints
@@ -224,11 +224,11 @@ extern "C" {
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  *
  * - When the directive operates on a global object, the directive sends a
- *   message to remote nodes.  This may preempt the calling task.
+ *   message to remote nodes. This may preempt the calling task.
  *
  * - The number of semaphores available to the application is configured
  *   through the @ref CONFIGURE_MAXIMUM_SEMAPHORES application configuration
@@ -262,14 +262,14 @@ rtems_status_code rtems_semaphore_create(
  *
  * @param node is the node or node set to search for a matching object.
  *
- * @param[out] id is the pointer to an ::rtems_id object.  When the directive
+ * @param[out] id is the pointer to an ::rtems_id object. When the directive
  *   call is successful, the object identifier of an object with the specified
  *   name will be stored in this object.
  *
  * This directive obtains a semaphore identifier associated with the semaphore
  * name specified in ``name``.
  *
- * The node to search is specified in ``node``.  It shall be
+ * The node to search is specified in ``node``. It shall be
  *
  * - a valid node number,
  *
@@ -295,19 +295,19 @@ rtems_status_code rtems_semaphore_create(
  * @par Notes
  * @parblock
  * If the semaphore name is not unique, then the semaphore identifier will
- * match the first semaphore with that name in the search order.  However, this
+ * match the first semaphore with that name in the search order. However, this
  * semaphore identifier is not guaranteed to correspond to the desired
  * semaphore.
  *
- * The objects are searched from lowest to the highest index.  If ``node`` is
+ * The objects are searched from lowest to the highest index. If ``node`` is
  * #RTEMS_SEARCH_ALL_NODES, all nodes are searched with the local node being
- * searched first.  All other nodes are searched from lowest to the highest
- * node number.
+ * searched first. All other nodes are searched from lowest to the highest node
+ * number.
  *
  * If node is a valid node number which does not represent the local node, then
  * only the semaphores exported by the designated node are searched.
  *
- * This directive does not generate activity on remote nodes.  It accesses only
+ * This directive does not generate activity on remote nodes. It accesses only
  * the local copy of the global object table.
  *
  * The semaphore identifier is used with other semaphore related directives to
@@ -380,11 +380,11 @@ rtems_status_code rtems_semaphore_ident(
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  *
  * - When the directive operates on a global object, the directive sends a
- *   message to remote nodes.  This may preempt the calling task.
+ *   message to remote nodes. This may preempt the calling task.
  *
  * - The calling task does not have to be the task that created the object.
  *   Any local task that knows the object identifier can delete the object.
@@ -407,30 +407,29 @@ rtems_status_code rtems_semaphore_delete( rtems_id id );
  * @param option_set is the option set.
  *
  * @param timeout is the timeout in clock ticks if the #RTEMS_WAIT option is
- *   set.  Use #RTEMS_NO_TIMEOUT to wait potentially forever.
+ *   set. Use #RTEMS_NO_TIMEOUT to wait potentially forever.
  *
  * This directive obtains the semaphore specified by ``id``.
  *
  * The **option set** specified in ``option_set`` is built through a *bitwise
- * or* of the option constants described below.  Not all combinations of
- * options are allowed.  Some options are mutually exclusive.  If mutually
- * exclusive options are combined, the behaviour is undefined.  Options not
- * mentioned below are not evaluated by this directive and have no effect.
- * Default options can be selected by using the #RTEMS_DEFAULT_OPTIONS
- * constant.
+ * or* of the option constants described below. Not all combinations of options
+ * are allowed. Some options are mutually exclusive. If mutually exclusive
+ * options are combined, the behaviour is undefined. Options not mentioned
+ * below are not evaluated by this directive and have no effect. Default
+ * options can be selected by using the #RTEMS_DEFAULT_OPTIONS constant.
  *
  * The calling task can **wait** or **try to obtain** the semaphore according
  * to the mutually exclusive #RTEMS_WAIT and #RTEMS_NO_WAIT options.
  *
  * - **Waiting to obtain** the semaphore is the default and can be emphasized
- *   through the use of the #RTEMS_WAIT option.  The ``timeout`` parameter
- *   defines how long the calling task is willing to wait.  Use
+ *   through the use of the #RTEMS_WAIT option. The ``timeout`` parameter
+ *   defines how long the calling task is willing to wait. Use
  *   #RTEMS_NO_TIMEOUT to wait potentially forever, otherwise set a timeout
  *   interval in clock ticks.
  *
  * - **Trying to obtain** the semaphore is selected by the #RTEMS_NO_WAIT
- *   option.  If this option is defined, then the ``timeout`` parameter is
- *   ignored.  When the semaphore cannot be immediately obtained, then the
+ *   option. If this option is defined, then the ``timeout`` parameter is
+ *   ignored. When the semaphore cannot be immediately obtained, then the
  *   ::RTEMS_UNSATISFIED status is returned.
  *
  * With either #RTEMS_WAIT or #RTEMS_NO_WAIT if the current semaphore count is
@@ -443,14 +442,14 @@ rtems_status_code rtems_semaphore_delete( rtems_id id );
  *
  * If the calling task chooses to wait for a semaphore and the current
  * semaphore count is zero, then the calling task is placed on the semaphore's
- * wait queue and blocked.  If a local, binary semaphore was created with the
+ * wait queue and blocked. If a local, binary semaphore was created with the
  * #RTEMS_INHERIT_PRIORITY attribute, then the priority of the task currently
  * holding the binary semaphore will inherit the current priority set of the
- * blocking task.  The priority inheritance is carried out recursively.  This
+ * blocking task. The priority inheritance is carried out recursively. This
  * means, that if the task currently holding the binary semaphore is blocked on
  * another local, binary semaphore using the priority inheritance locking
  * protocol, then the owner of this semaphore will inherit the current priority
- * sets of both tasks, and so on.  A task has a current priority for each
+ * sets of both tasks, and so on. A task has a current priority for each
  * scheduler.
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
@@ -490,13 +489,13 @@ rtems_status_code rtems_semaphore_delete( rtems_id id );
  * ceiling priority for this semaphore, then the priority of the task acquiring
  * the semaphore is elevated to that of the ceiling.
  *
- * Deadlock situations are detected for local, binary semaphores.  If a
- * deadlock is detected, then the directive immediately returns the
+ * Deadlock situations are detected for local, binary semaphores. If a deadlock
+ * is detected, then the directive immediately returns the
  * ::RTEMS_INCORRECT_STATE status code.
  *
  * It is not allowed to recursively obtain (nested access) a local, binary
  * semaphore using the MrsP locking protocol and any attempt to do this will
- * just return the ::RTEMS_INCORRECT_STATE status code.  This error can only
+ * just return the ::RTEMS_INCORRECT_STATE status code. This error can only
  * happen in SMP configurations.
  *
  * If the semaphore was created with the #RTEMS_PRIORITY attribute, then the
@@ -505,9 +504,9 @@ rtems_status_code rtems_semaphore_delete( rtems_id id );
  * the calling task is placed at the rear of the wait queue.
  *
  * Attempting to obtain a global semaphore which does not reside on the local
- * node will generate a request to the remote node to access the semaphore.  If
+ * node will generate a request to the remote node to access the semaphore. If
  * the semaphore is not available and #RTEMS_NO_WAIT was not specified, then
- * the task must be blocked until the semaphore is released.  A proxy is
+ * the task must be blocked until the semaphore is released. A proxy is
  * allocated on the remote node to represent the task until the semaphore is
  * released.
  * @endparblock
@@ -533,7 +532,7 @@ rtems_status_code rtems_semaphore_delete( rtems_id id );
  * - The timeout functionality of the directive requires a clock tick.
  *
  * - When the directive operates on a remote object, the directive sends a
- *   message to the remote node and waits for a reply.  This will preempt the
+ *   message to the remote node and waits for a reply. This will preempt the
  *   calling task.
  * @endparblock
  */
@@ -552,7 +551,7 @@ rtems_status_code rtems_semaphore_obtain(
  *
  * @param id is the semaphore identifier.
  *
- * This directive releases the semaphore specified by ``id``.  If the
+ * This directive releases the semaphore specified by ``id``. If the
  * semaphore's wait queue is not empty, then
  *
  * - the first task on the wait queue is removed and unblocked, the semaphore's
@@ -579,9 +578,9 @@ rtems_status_code rtems_semaphore_obtain(
  *
  * The outermost release of a local, binary semaphore using the priority
  * inheritance, priority ceiling, or MrsP locking protocol may result in the
- * calling task having its priority lowered.  This will occur if the highest
+ * calling task having its priority lowered. This will occur if the highest
  * priority of the calling task was available due to the ownership of the
- * released semaphore.  If a task was on the semaphore's wait queue, then the
+ * released semaphore. If a task was on the semaphore's wait queue, then the
  * priority associated with the semaphore will be transferred to the new owner.
  *
  * Releasing a global semaphore which does not reside on the local node will
@@ -605,11 +604,11 @@ rtems_status_code rtems_semaphore_obtain(
  *
  * - The directive may be called from within task context.
  *
- * - The directive may unblock a task.  This may cause the calling task to be
+ * - The directive may unblock a task. This may cause the calling task to be
  *   preempted.
  *
  * - When the directive operates on a remote object, the directive sends a
- *   message to the remote node and waits for a reply.  This will preempt the
+ *   message to the remote node and waits for a reply. This will preempt the
  *   calling task.
  * @endparblock
  */
@@ -625,8 +624,8 @@ rtems_status_code rtems_semaphore_release( rtems_id id );
  * @param id is the semaphore identifier.
  *
  * This directive unblocks all tasks waiting on the semaphore specified by
- * ``id``.  The semaphore's count is not changed by this directive.  Tasks
- * which are unblocked as the result of this directive will return from the
+ * ``id``. The semaphore's count is not changed by this directive. Tasks which
+ * are unblocked as the result of this directive will return from the
  * rtems_semaphore_obtain() directive with a status code of ::RTEMS_UNSATISFIED
  * to indicate that the semaphore was not obtained.
  *
@@ -649,14 +648,14 @@ rtems_status_code rtems_semaphore_release( rtems_id id );
  *
  * It is not allowed to flush a local, binary semaphore using the MrsP locking
  * protocol and any attempt to do this will just return the ::RTEMS_NOT_DEFINED
- * status code.  This error can only happen in SMP configurations.
+ * status code. This error can only happen in SMP configurations.
  *
  * For barrier synchronization, the @ref RTEMSAPIClassicBarrier offers a
- * cleaner alternative to using the semaphore flush directive.  Unlike POSIX
+ * cleaner alternative to using the semaphore flush directive. Unlike POSIX
  * barriers, they have a manual release option.
  *
  * Using the semaphore flush directive for condition synchronization in concert
- * with another semaphore may be subject to the lost wake-up problem.  The
+ * with another semaphore may be subject to the lost wake-up problem. The
  * following attempt to implement a condition variable is broken.
  *
  * @code
@@ -702,11 +701,11 @@ rtems_status_code rtems_semaphore_release( rtems_id id );
  *
  * - The directive may be called from within task context.
  *
- * - The directive may unblock a task.  This may cause the calling task to be
+ * - The directive may unblock a task. This may cause the calling task to be
  *   preempted.
  *
  * - When the directive operates on a remote object, the directive sends a
- *   message to the remote node and waits for a reply.  This will preempt the
+ *   message to the remote node and waits for a reply. This will preempt the
  *   calling task.
  * @endparblock
  */
@@ -732,7 +731,7 @@ rtems_status_code rtems_semaphore_flush( rtems_id id );
  *   corresponding to the specified scheduler will be stored in this object.
  *
  * This directive sets the priority of the semaphore specified by
- * ``semaphore_id``.  The priority corresponds to the scheduler specified by
+ * ``semaphore_id``. The priority corresponds to the scheduler specified by
  * ``scheduler_id``.
  *
  * The special priority value #RTEMS_CURRENT_PRIORITY can be used to get the
@@ -874,7 +873,7 @@ rtems_status_code rtems_semaphore_flush( rtems_id id );
  *
  * - The directive may be called from within task context.
  *
- * - The directive may change the priority of a task.  This may cause the
+ * - The directive may change the priority of a task. This may cause the
  *   calling task to be preempted.
  * @endparblock
  */

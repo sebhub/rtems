@@ -93,7 +93,7 @@ extern "C" {
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  *
  * - The calling task does not have to be the task that created the object.
@@ -109,14 +109,14 @@ rtems_status_code rtems_extension_delete( rtems_id id );
  *
  * @brief Fatal extensions are invoked when the system should terminate.
  *
- * @param source is the system termination source.  The source indicates the
+ * @param source is the system termination source. The source indicates the
  *   component which caused the system termination request, see
- *   ::rtems_fatal_source.  The system termination code may provide additional
+ *   ::rtems_fatal_source. The system termination code may provide additional
  *   information related to the system termination request.
  *
  * @param always_set_to_false is a value equal to false.
  *
- * @param code is the system termination code.  This value must be interpreted
+ * @param code is the system termination code. This value must be interpreted
  *   with respect to the source.
  *
  * @par Notes
@@ -125,7 +125,7 @@ rtems_status_code rtems_extension_delete( rtems_id id );
  * maskable interrupts disabled.
  *
  * The fatal extension should be extremely careful with respect to the RTEMS
- * directives it calls.  Depending on the system termination source, the system
+ * directives it calls. Depending on the system termination source, the system
  * may be in an undefined and corrupt state.
  *
  * It is recommended to register fatal extensions through initial extension
@@ -171,7 +171,7 @@ typedef Internal_errors_Source rtems_fatal_source;
  *
  * @param name is the object name to look up.
  *
- * @param[out] id is the pointer to an ::rtems_id object.  When the directive
+ * @param[out] id is the pointer to an ::rtems_id object. When the directive
  *   call is successful, the object identifier of an object with the specified
  *   name will be stored in this object.
  *
@@ -194,7 +194,7 @@ typedef Internal_errors_Source rtems_fatal_source;
  * However, this extension set identifier is not guaranteed to correspond to
  * the desired extension set.
  *
- * The objects are searched from lowest to the highest index.  Only the local
+ * The objects are searched from lowest to the highest index. Only the local
  * node is searched.
  *
  * The extension set identifier is used with other extension related directives
@@ -237,15 +237,14 @@ typedef User_extensions_Table rtems_extensions_table;
  * @param extension_table is the table with the extensions to be used by the
  *   extension set.
  *
- * @param[out] id is the pointer to an ::rtems_id object.  When the directive
+ * @param[out] id is the pointer to an ::rtems_id object. When the directive
  *   call is successful, the identifier of the created extension set will be
  *   stored in this object.
  *
- * This directive creates an extension set which resides on the local node.
- * The extension set has the user-defined object name specified in ``name``.
- * The assigned object identifier is returned in ``id``.  This identifier is
- * used to access the extension set with other extension set related
- * directives.
+ * This directive creates an extension set which resides on the local node. The
+ * extension set has the user-defined object name specified in ``name``. The
+ * assigned object identifier is returned in ``id``. This identifier is used to
+ * access the extension set with other extension set related directives.
  *
  * The extension set is initialized using the extension table specified in
  * ``extension_table``.
@@ -259,7 +258,7 @@ typedef User_extensions_Table rtems_extensions_table;
  * @retval ::RTEMS_INVALID_ADDRESS The ``id`` parameter was NULL.
  *
  * @retval ::RTEMS_TOO_MANY There was no inactive object available to create an
- *   extension set.  The number of extension sets available to the application
+ *   extension set. The number of extension sets available to the application
  *   is configured through the @ref CONFIGURE_MAXIMUM_USER_EXTENSIONS
  *   application configuration option.
  *
@@ -268,14 +267,14 @@ typedef User_extensions_Table rtems_extensions_table;
  * The user-provided extension table is not used after the return of the
  * directive.
  *
- * Each extension of the extension table is optional and may be NULL.  All
+ * Each extension of the extension table is optional and may be NULL. All
  * extensions except the task switch extension of the extension table are
- * atomically and immediately installed.  A task switch extension is separately
- * installed after the other extensions.  The extensions of the extension table
+ * atomically and immediately installed. A task switch extension is separately
+ * installed after the other extensions. The extensions of the extension table
  * are invoked upon the next system event supporting an extension.
  *
  * An alternative to dynamically created extension sets are initial extensions,
- * see @ref CONFIGURE_INITIAL_EXTENSIONS.  Initial extensions are recommended
+ * see @ref CONFIGURE_INITIAL_EXTENSIONS. Initial extensions are recommended
  * for extension sets which provide a fatal error extension.
  *
  * For control and maintenance of the extension set, RTEMS allocates a ESCB
@@ -291,7 +290,7 @@ typedef User_extensions_Table rtems_extensions_table;
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  *
  * - The number of extension sets available to the application is configured
@@ -318,10 +317,10 @@ rtems_status_code rtems_extension_create(
  * @parblock
  * The task begin extensions are invoked in extension forward order.
  *
- * Task begin extensions are invoked with thread dispatching enabled.  This
+ * Task begin extensions are invoked with thread dispatching enabled. This
  * allows the use of dynamic memory allocation, creation of POSIX keys, and use
- * of C++ thread-local storage.  Blocking synchronization primitives are
- * allowed also.
+ * of C++ thread-local storage. Blocking synchronization primitives are allowed
+ * also.
  *
  * The task begin extensions are invoked before the global construction.
  *
@@ -347,8 +346,8 @@ typedef User_extensions_thread_begin_extension rtems_task_begin_extension;
  *
  * @brief Task create extensions are invoked when a task is created.
  *
- * @param executing is the TCB of the executing thread.  When the idle thread
- *   is created, the executing thread is equal to NULL.
+ * @param executing is the TCB of the executing thread. When the idle thread is
+ *   created, the executing thread is equal to NULL.
  *
  * @param created is the TCB of the created thread.
  *
@@ -363,12 +362,12 @@ typedef User_extensions_thread_begin_extension rtems_task_begin_extension;
  * initialized, but before it is started.
  *
  * While normal tasks are created, the executing thread is the owner of the
- * object allocator mutex.  The object allocator mutex allows nesting, so the
+ * object allocator mutex. The object allocator mutex allows nesting, so the
  * normal memory allocation routines can be used allocate memory for the
  * created thread.
  *
  * If the task create extension returns false, then the task create operation
- * stops immediately and the entire task create operation will fail.  In this
+ * stops immediately and the entire task create operation will fail. In this
  * case, all task delete extensions are invoked, see
  * ::rtems_task_delete_extension.
  * @endparblock
@@ -404,11 +403,11 @@ typedef User_extensions_thread_create_extension rtems_task_create_extension;
  *
  * @brief Task delete extensions are invoked when a task is deleted.
  *
- * @param executing is the TCB of the executing thread.  If the idle thread is
+ * @param executing is the TCB of the executing thread. If the idle thread is
  *   created and one of the initial task create extension fails, then the
  *   executing thread is equal to NULL.
  *
- * @param created is the TCB of the deleted thread.  The executing and deleted
+ * @param created is the TCB of the deleted thread. The executing and deleted
  *   arguments are never equal.
  *
  * @par Notes
@@ -477,7 +476,7 @@ typedef User_extensions_thread_exitted_extension rtems_task_exitted_extension;
  *
  * @param executing is the TCB of the executing thread.
  *
- * @param restarted is the TCB of the executing thread.  Yes, the executing
+ * @param restarted is the TCB of the executing thread. Yes, the executing
  *   thread.
  *
  * @par Notes
@@ -485,7 +484,7 @@ typedef User_extensions_thread_exitted_extension rtems_task_exitted_extension;
  * The task restart extensions are invoked in extension forward order.
  *
  * The task restart extensions are invoked in the context of the restarted
- * thread right before the execution context is reloaded.  The thread stack
+ * thread right before the execution context is reloaded. The thread stack
  * reflects the previous execution context.
  *
  * Thread restart and delete requests issued by restart extensions lead to
@@ -522,7 +521,7 @@ typedef User_extensions_thread_restart_extension rtems_task_restart_extension;
  * The task start extensions are invoked in extension forward order.
  *
  * In SMP configurations, the thread may already run on another processor
- * before the task start extensions are actually invoked.  Task switch and task
+ * before the task start extensions are actually invoked. Task switch and task
  * begin extensions may run before or in parallel with the thread start
  * extension in SMP configurations, see ::rtems_task_switch_extension and
  * ::rtems_task_begin_extension.
@@ -545,10 +544,10 @@ typedef User_extensions_thread_start_extension rtems_task_start_extension;
  * @brief Task switch extensions are invoked when a thread switch from an
  *   executing thread to a heir thread takes place.
  *
- * @param executing is the TCB of the executing thread.  In SMP configurations,
+ * @param executing is the TCB of the executing thread. In SMP configurations,
  *   this is the previously executing thread also known as the ancestor thread.
  *
- * @param heir is the TCB of the heir thread.  In SMP configurations, this is
+ * @param heir is the TCB of the heir thread. In SMP configurations, this is
  *   the executing thread.
  *
  * @par Notes
@@ -556,29 +555,29 @@ typedef User_extensions_thread_start_extension rtems_task_start_extension;
  * The task switch extensions are invoked in extension forward order.
  *
  * The invocation conditions of the task switch extensions depend on whether
- * RTEMS was built with SMP support enabled or disabled.  A user must pay
+ * RTEMS was built with SMP support enabled or disabled. A user must pay
  * attention to the differences to correctly implement a task switch extension.
  *
  * Where the system was built with SMP support disabled, the task switch
  * extensions are invoked before the context switch from the currently
- * executing thread to the heir thread.  The ``executing`` is a pointer to the
+ * executing thread to the heir thread. The ``executing`` is a pointer to the
  * TCB of the currently executing thread. The ``heir`` is a pointer to the TCB
- * of the heir thread.  The context switch initiated through the multitasking
+ * of the heir thread. The context switch initiated through the multitasking
  * start is not covered by the task switch extensions.
  *
  * Where the system was built with SMP support enabled, the task switch
- * extensions are invoked after the context switch to the heir thread.  The
+ * extensions are invoked after the context switch to the heir thread. The
  * ``executing`` is a pointer to the TCB of the previously executing thread.
  * Despite the name, this is not the currently executing thread. The ``heir``
  * is a pointer to the TCB of the newly executing thread. This is the currently
  * executing thread. The context switches initiated through the multitasking
  * start are covered by the task switch extensions. The reason for the
  * differences to uniprocessor configurations is that the context switch may
- * update the heir thread of the processor.  The task switch extensions are
+ * update the heir thread of the processor. The task switch extensions are
  * invoked with maskable interrupts disabled and with ownership of a
- * processor-specific SMP lock.  Task switch extensions may run in parallel on
- * multiple processors.  It is recommended to use thread-local or
- * processor-specific data structures for task switch extensions.  A global SMP
+ * processor-specific SMP lock. Task switch extensions may run in parallel on
+ * multiple processors. It is recommended to use thread-local or
+ * processor-specific data structures for task switch extensions. A global SMP
  * lock should be avoided for performance reasons, see
  * rtems_interrupt_lock_initialize().
  * @endparblock
@@ -602,8 +601,8 @@ typedef User_extensions_thread_switch_extension rtems_task_switch_extension;
  *
  * @brief Task terminate extensions are invoked when a task terminates.
  *
- * @param executing is the TCB of the executing thread.  This is the
- *   terminating thread.
+ * @param executing is the TCB of the executing thread. This is the terminating
+ *   thread.
  *
  * @par Notes
  * @parblock
@@ -611,7 +610,7 @@ typedef User_extensions_thread_switch_extension rtems_task_switch_extension;
  *
  * The task terminate extensions are invoked in the context of the terminating
  * thread right before the thread dispatch to the heir thread should take
- * place. The thread stack reflects the previous execution context.  The POSIX
+ * place. The thread stack reflects the previous execution context. The POSIX
  * cleanup and key destructors execute in this context.
  *
  * Thread restart and delete requests issued by terminate extensions lead to

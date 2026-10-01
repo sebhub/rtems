@@ -63,7 +63,7 @@ extern "C" {
  * @ingroup RTEMSAPIClassic
  *
  * @brief The Rate-Monotonic Manager provides facilities to implement tasks
- *   which execute in a periodic fashion.  Critically, it also gathers
+ *   which execute in a periodic fashion. Critically, it also gathers
  *   information about the execution of those periods and can provide important
  *   statistics to the user which can be used to analyze and tune the
  *   application.
@@ -85,7 +85,8 @@ typedef enum {
 
   /**
    * @brief This status indicates the period is on the watchdog chain, and
-   *   running.  The owner may be executing or blocked waiting on another object.
+   *   running. The owner may be executing or blocked waiting on another
+   *   object.
    */
   RATE_MONOTONIC_ACTIVE,
 
@@ -218,13 +219,13 @@ struct rtems_printer;
  *
  * @param name is the object name of the period.
  *
- * @param[out] id is the pointer to an ::rtems_id object.  When the directive
+ * @param[out] id is the pointer to an ::rtems_id object. When the directive
  *   call is successful, the identifier of the created period will be stored in
  *   this object.
  *
- * This directive creates a period which resides on the local node.  The period
+ * This directive creates a period which resides on the local node. The period
  * has the user-defined object name specified in ``name`` The assigned object
- * identifier is returned in ``id``.  This identifier is used to access the
+ * identifier is returned in ``id``. This identifier is used to access the
  * period with other rate monotonic related directives.
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
@@ -232,13 +233,13 @@ struct rtems_printer;
  * @retval ::RTEMS_INVALID_NAME The ``name`` parameter was invalid.
  *
  * @retval ::RTEMS_TOO_MANY There was no inactive object available to create a
- *   period.  The number of periods available to the application is configured
+ *   period. The number of periods available to the application is configured
  *   through the @ref CONFIGURE_MAXIMUM_PERIODS application configuration
  *   option.
  *
  * @par Notes
  * @parblock
- * The calling task is registered as the owner of the created period.  Some
+ * The calling task is registered as the owner of the created period. Some
  * directives can be only used by this task for the created period.
  *
  * For control and maintenance of the period, RTEMS allocates a PCB from the
@@ -254,7 +255,7 @@ struct rtems_printer;
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  *
  * - The number of periods available to the application is configured through
@@ -276,7 +277,7 @@ rtems_status_code rtems_rate_monotonic_create( rtems_name name, rtems_id *id );
  *
  * @param name is the object name to look up.
  *
- * @param[out] id is the pointer to an ::rtems_id object.  When the directive
+ * @param[out] id is the pointer to an ::rtems_id object. When the directive
  *   call is successful, the object identifier of an object with the specified
  *   name will be stored in this object.
  *
@@ -295,10 +296,10 @@ rtems_status_code rtems_rate_monotonic_create( rtems_name name, rtems_id *id );
  * @par Notes
  * @parblock
  * If the period name is not unique, then the period identifier will match the
- * first period with that name in the search order.  However, this period
+ * first period with that name in the search order. However, this period
  * identifier is not guaranteed to correspond to the desired period.
  *
- * The objects are searched from lowest to the highest index.  Only the local
+ * The objects are searched from lowest to the highest index. Only the local
  * node is searched.
  *
  * The period identifier is used with other rate monotonic related directives
@@ -325,7 +326,7 @@ rtems_status_code rtems_rate_monotonic_ident( rtems_name name, rtems_id *id );
  *
  * @param id is the rate monotonic period identifier.
  *
- * This directive cancels the rate monotonic period specified by ``id``.  This
+ * This directive cancels the rate monotonic period specified by ``id``. This
  * period may be reinitiated by the next invocation of
  * rtems_rate_monotonic_period().
  *
@@ -360,7 +361,7 @@ rtems_status_code rtems_rate_monotonic_cancel( rtems_id id );
  *
  * @param id is the period identifier.
  *
- * This directive deletes the period specified by ``id``.  If the period is
+ * This directive deletes the period specified by ``id``. If the period is
  * running, it is automatically canceled.
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
@@ -380,7 +381,7 @@ rtems_status_code rtems_rate_monotonic_cancel( rtems_id id );
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  *
  * - The calling task does not have to be the task that created the object.
@@ -406,18 +407,18 @@ rtems_status_code rtems_rate_monotonic_delete( rtems_id id );
  *   get the period status.
  *
  * This directive initiates the rate monotonic period specified by ``id``  with
- * a length of period ticks specified by ``length``.  If the period is running,
+ * a length of period ticks specified by ``length``. If the period is running,
  * then the calling task will block for the remainder of the period before
- * reinitiating the period with the specified period length.  If the period was
+ * reinitiating the period with the specified period length. If the period was
  * not running (either expired or never initiated), the period is immediately
- * initiated and the directive returns immediately.  If the period has expired,
+ * initiated and the directive returns immediately. If the period has expired,
  * the postponed job will be released immediately and the following calls of
  * this directive will release postponed jobs until there is no more deadline
  * miss.
  *
  * If invoked with a period length of #RTEMS_PERIOD_STATUS ticks, the current
- * state of the period will be returned.  The directive status indicates the
- * current state of the period.  This does not alter the state or period length
+ * state of the period will be returned. The directive status indicates the
+ * current state of the period. This does not alter the state or period length
  * of the period.
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
@@ -463,11 +464,11 @@ rtems_status_code rtems_rate_monotonic_period(
  * @param id is the rate monotonic period identifier.
  *
  * @param[out] status is the pointer to an rtems_rate_monotonic_period_status
- *   object.  When the directive call is successful, the detailed period status
+ *   object. When the directive call is successful, the detailed period status
  *   will be stored in this object.
  *
  * This directive returns the detailed status of the rate monotonic period
- * specified by ``id``.  The detailed status of the period will be returned in
+ * specified by ``id``. The detailed status of the period will be returned in
  * the members of the period status object referenced by ``status``:
  *
  * - The `owner` member is set to the identifier of the owner task of the
@@ -480,10 +481,10 @@ rtems_status_code rtems_rate_monotonic_period(
  *
  * - If the current state of the period is ::RATE_MONOTONIC_INACTIVE, the
  *   `since_last_period` and `executed_since_last_period` members will be set
- *   to zero.  Otherwise, both members will contain time information since the
+ *   to zero. Otherwise, both members will contain time information since the
  *   last successful invocation of the rtems_rate_monotonic_period() directive
- *   by the owner task.  More specifically, the `since_last_period` member will
- *   be set to the time elapsed since the last successful invocation.  The
+ *   by the owner task. More specifically, the `since_last_period` member will
+ *   be set to the time elapsed since the last successful invocation. The
  *   `executed_since_last_period` member will be set to the processor time
  *   consumed by the owner task since the last successful invocation.
  *
@@ -520,11 +521,11 @@ rtems_status_code rtems_rate_monotonic_get_status(
  * @param id is the rate monotonic period identifier.
  *
  * @param[out] status is the pointer to an
- *   rtems_rate_monotonic_period_statistics object.  When the directive call is
+ *   rtems_rate_monotonic_period_statistics object. When the directive call is
  *   successful, the period statistics will be stored in this object.
  *
  * This directive returns the statistics of the rate monotonic period specified
- * by ``id``.  The statistics of the period will be returned in the members of
+ * by ``id``. The statistics of the period will be returned in the members of
  * the period statistics object referenced by ``status``:
  *
  * - The `count` member is set to the number of periods executed.
@@ -618,7 +619,7 @@ rtems_status_code rtems_rate_monotonic_reset_statistics( rtems_id id );
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  * @endparblock
  */
@@ -640,7 +641,7 @@ void rtems_rate_monotonic_reset_all_statistics( void );
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  * @endparblock
  */
@@ -664,7 +665,7 @@ void rtems_rate_monotonic_report_statistics( void );
  *
  * - The directive may be called from within task context.
  *
- * - The directive may obtain and release the object allocator mutex.  This may
+ * - The directive may obtain and release the object allocator mutex. This may
  *   cause the calling task to be preempted.
  * @endparblock
  */

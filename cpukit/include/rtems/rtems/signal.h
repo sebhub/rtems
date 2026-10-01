@@ -75,17 +75,16 @@ extern "C" {
  * @param asr_handler is the handler to process an asynchronous signal set.
  *
  * @param mode_set is the task mode while an asynchronous signal set is
- *   processed by the handler.  See rtems_task_mode().
+ *   processed by the handler. See rtems_task_mode().
  *
  * This directive establishes an asynchronous signal routine (ASR) for the
- * calling task.  The ``asr_handler`` parameter specifies the entry point of
- * the ASR.  A task may have at most one handler installed at a time.  The most
- * recently installed handler is used.  When ``asr_handler`` is NULL, the ASR
- * for the calling task is invalidated and all pending signals are cleared.
- * Any signals sent to a task with an invalid ASR are discarded.  The
- * ``mode_set`` parameter specifies the execution mode for the ASR.  This
- * execution mode supersedes the task's execution mode while the ASR is
- * executing.
+ * calling task. The ``asr_handler`` parameter specifies the entry point of the
+ * ASR. A task may have at most one handler installed at a time. The most
+ * recently installed handler is used. When ``asr_handler`` is NULL, the ASR
+ * for the calling task is invalidated and all pending signals are cleared. Any
+ * signals sent to a task with an invalid ASR are discarded. The ``mode_set``
+ * parameter specifies the execution mode for the ASR. This execution mode
+ * supersedes the task's execution mode while the ASR is executing.
  *
  * @retval ::RTEMS_SUCCESSFUL The requested operation was successful.
  *
@@ -101,12 +100,12 @@ extern "C" {
  * @parblock
  * It is strongly recommended to disable ASR processing during ASR processing
  * by setting #RTEMS_NO_ASR in ``mode_set``, otherwise a recursion may happen
- * during ASR processing.  Uncontrolled recursion may lead to stack overflows.
+ * during ASR processing. Uncontrolled recursion may lead to stack overflows.
  *
  * Using the same mutex (in particular a recursive mutex) in normal task
  * context and during ASR processing may result in undefined behaviour.
  *
- * Asynchronous signal handlers can access thread-local storage (TLS).  When
+ * Asynchronous signal handlers can access thread-local storage (TLS). When
  * thread-local storage is shared between normal task context and ASR
  * processing, it may be protected by disabled interrupts.
  * @endparblock
@@ -140,9 +139,9 @@ rtems_status_code rtems_signal_catch(
  * identified by ``id``.
  *
  * If a caller sends a signal set to a task with an invalid ASR, then an error
- * code is returned to the caller.  If a caller sends a signal set to a task
+ * code is returned to the caller. If a caller sends a signal set to a task
  * whose ASR is valid but disabled, then the signal set will be caught and left
- * pending for the ASR to process when it is enabled.  If a caller sends a
+ * pending for the ASR to process when it is enabled. If a caller sends a
  * signal set to a task with an ASR that is both valid and enabled, then the
  * signal set is caught and the ASR will execute the next time the task is
  * dispatched to run.
@@ -158,7 +157,7 @@ rtems_status_code rtems_signal_catch(
  *
  * @par Notes
  * @parblock
- * Sending a signal set to a task has no effect on that task's state.  If a
+ * Sending a signal set to a task has no effect on that task's state. If a
  * signal set is sent to a blocked task, then the task will remain blocked and
  * the signals will be processed when the task becomes the running task.
  *
@@ -182,7 +181,7 @@ rtems_status_code rtems_signal_catch(
  *   cause the calling task to be preempted.
  *
  * - When the directive operates on a remote object, the directive sends a
- *   message to the remote node and waits for a reply.  This will preempt the
+ *   message to the remote node and waits for a reply. This will preempt the
  *   calling task.
  * @endparblock
  */
