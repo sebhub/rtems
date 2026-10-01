@@ -14,6 +14,6 @@ references:
   type: url
 requirement-type: non-functional
 text: |
-  The software product shall take the errata 18-2 (PCI master/initiator lockup
-  due to write burst waitstates) into account.
+  The software product shall take the errata 18-1 (SpaceWire router missing
+  first byte after EEP on links with downstream congestion) into account.
 type: requirement
