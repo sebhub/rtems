@@ -8,7 +8,6 @@ links:
   uid: terminate
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   While ${../if/terminate:/name} executes, when the system state was set, the

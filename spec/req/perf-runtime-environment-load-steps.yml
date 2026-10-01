@@ -12,7 +12,6 @@ rationale: |
   system.  Ideally, for this runtime measurement environment data traffic from
   other bus masters should be generated also, however, this would require
   specific device support.
-references: []
 requirement-type: non-functional
 text: |
   The load runtime measurement environment shall be set up with exactly one up

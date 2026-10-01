@@ -10,7 +10,6 @@ rationale: |
   Example: `if ( ${../if/predict-false:/name}( -1 == i ) ) { ... }`.
   The GNU C compiler uses this information for branch optimization.
   `builtin-expect-probability` defaults to 90%.
-references: []
 requirement-type: functional
 text: |
   When the code is compiled with the GNU C compiler,

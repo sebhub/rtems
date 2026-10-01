@@ -9,7 +9,6 @@ links:
   uid: ../if/lock-isr-disable
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   When the directive is called, the status of the maskable interrupts before

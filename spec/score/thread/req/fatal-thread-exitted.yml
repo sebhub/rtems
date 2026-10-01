@@ -9,7 +9,6 @@ links:
   uid: ../if/group
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   If a thread body function returned and the thread exitted extension

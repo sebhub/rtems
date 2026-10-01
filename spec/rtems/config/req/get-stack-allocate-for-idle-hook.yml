@@ -10,7 +10,6 @@ rationale: |
   The directive may be used to check the setting of the
   ${/acfg/if/task-stack-allocator-for-idle:/name} application configuration
   option.
-references: []
 requirement-type: functional
 text: |
   The ${../if/get-stack-allocate-for-idle-hook:/name} directive shall return

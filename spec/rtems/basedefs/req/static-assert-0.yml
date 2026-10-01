@@ -7,7 +7,6 @@ links:
 - role: interface-function
   uid: ../if/static-assert
 rationale: null
-references: []
 requirement-type: functional
 text: |
   When the argument ${../if/static-assert:/params[0]/name} after

@@ -10,5 +10,4 @@ links:
 - role: interface-ingroup
   uid: group
 name: _Stack_Allocator_free
-references: []
 type: interface

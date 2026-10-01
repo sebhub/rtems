@@ -7,7 +7,6 @@ links:
   uid: group
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   When a need for help is detected for a thread, the ask for help request shall

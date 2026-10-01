@@ -10,7 +10,6 @@ rationale: |
   Functions like malloc() and calloc() have this property but functions
   like realloc() do not have this property because the memory it returns
   may pointer to valid objects.
-references: []
 requirement-type: functional
 text: |
   When the code is compiled with the GNU C compiler,

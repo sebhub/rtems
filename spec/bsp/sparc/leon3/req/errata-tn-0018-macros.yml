@@ -7,7 +7,6 @@ links:
   uid: errata-gr712rc-20
 non-functional-type: design
 rationale: null
-references: []
 requirement-type: non-functional
 text: |
   The software product shall provide ${/glossary/assemblerlanguage:/term}

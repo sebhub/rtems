@@ -7,7 +7,6 @@ links:
   uid: group
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   While a thread to processor affinity set is a proper subset of the set of the

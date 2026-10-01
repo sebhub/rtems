@@ -7,7 +7,6 @@ links:
   uid: ../if/first
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   The ${../if/first:/name} constant shall be equal to the minimum value of all

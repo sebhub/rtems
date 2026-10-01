@@ -13,5 +13,4 @@ links:
 - role: proxy-member
   uid: load-64
 name: grlib_load_64
-references: []
 type: interface

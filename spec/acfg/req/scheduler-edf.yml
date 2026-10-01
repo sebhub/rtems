@@ -8,10 +8,11 @@ links:
   uid: ../if/scheduler-edf
 - role: requirement-refinement
   uid: group
+- role: reference
+  uid: /ref/rtems/c-user/scheduler-edf
 rationale: null
-references: []
 requirement-type: functional
 text: |
   The application configuration option shall make the
-  ${/doc/if/scheduler-edf:/name} algorithm available to the application.
+  ${/ref/rtems/c-user/scheduler-edf:/name} algorithm available to the application.
 type: requirement

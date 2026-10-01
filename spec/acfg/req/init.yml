@@ -11,7 +11,6 @@ links:
   uid: group
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   While ${../if/init:/name} is defined, while ${../if/header-confdefs:/path} is

@@ -7,7 +7,6 @@ links:
   uid: ../if/apbuart-outbyte-polled
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   The ${../if/apbuart-outbyte-polled:/name} directive shall wait until the

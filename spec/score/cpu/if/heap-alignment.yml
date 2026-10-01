@@ -10,5 +10,4 @@ links:
 - role: interface-ingroup
   uid: group
 name: CPU_HEAP_ALIGNMENT
-references: []
 type: interface

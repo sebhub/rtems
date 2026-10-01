@@ -9,11 +9,10 @@ links:
   uid: ../req/idle-task-power-down
 - role: validation
   uid: ../req/idle-task-power-down-errata
+- location: bsps/sparc/leon3/start/bspidle.S
+  role: reference
+  uid: /ref/rtems/source
 method: by-inspection
-references:
-- identifier: bsps/sparc/leon3/start/bspidle.S
-  hash: gmJydgDbHmV9_F0Ru0dQ_v78f8_UXwEKnAp5LpQVn98=
-  type: file
 text: |
   Inspection of the referenced ${/glossary/sourcecode:/term} file showed that
   the `Workaround 2` is implemented.  Contrary to the recommendation in the

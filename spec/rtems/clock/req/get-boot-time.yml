@@ -13,7 +13,6 @@ links:
   uid: /score/timecounter/req/get-coarse
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   The directive shall return a time point during system initialization which is

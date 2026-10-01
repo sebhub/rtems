@@ -10,5 +10,4 @@ links:
 - role: interface-ingroup
   uid: group
 name: BSP_IDLE_TASK_STACK_SIZE
-references: []
 type: interface

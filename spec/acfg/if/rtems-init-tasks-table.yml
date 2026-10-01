@@ -13,6 +13,8 @@ links:
   uid: domain
 - role: interface-ingroup
   uid: group-classicinit
+- role: reference
+  uid: /ref/rtems/c-user/global-construction
 name: CONFIGURE_RTEMS_INIT_TASKS_TABLE
 notes: |
   The application shall define at least one of the following configuration
@@ -27,5 +29,5 @@ notes: |
   otherwise a compile time error in the configuration file will occur.
 
   The Classic API initialization task performs the
-  ${/doc/if/global-construction:/name}.
+  ${/ref/rtems/c-user/global-construction:/name}.
 type: interface

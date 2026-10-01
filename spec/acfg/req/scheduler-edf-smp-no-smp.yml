@@ -10,7 +10,6 @@ links:
 - role: requirement-refinement
   uid: group
 rationale: null
-references: []
 requirement-type: functional
 text: |
   Using the ${../if/scheduler-edf-smp:/name} application configuration option

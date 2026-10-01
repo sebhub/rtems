@@ -9,7 +9,6 @@ links:
 rationale: |
   The use of this macro will suppress some compiler warnings
   and may permit some compiler optimizations.
-references: []
 requirement-type: functional
 text: |
   When the code is compiled with the GNU C compiler,

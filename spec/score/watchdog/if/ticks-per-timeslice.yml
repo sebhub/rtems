@@ -10,5 +10,4 @@ links:
 - role: interface-ingroup
   uid: group
 name: _Watchdog_Ticks_per_timeslice
-references: []
 type: interface

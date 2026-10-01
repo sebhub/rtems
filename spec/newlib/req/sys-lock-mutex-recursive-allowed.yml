@@ -13,7 +13,6 @@ links:
   uid: sys-lock-mutex-recursive-try-acquire
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   The mutex may be acquired recursively.

@@ -4,7 +4,7 @@ copyrights:
 - Copyright (C) 1988, 2008 On-Line Applications Research Corporation (OAR)
 description: |
   In case this configuration option is defined, then the
-  ${/doc/if/scheduler-smp-priority-affinity:/name}
+  ${/ref/rtems/c-user/scheduler-smp-priority-affinity:/name}
   algorithm is made available to the application.
 enabled-by: true
 index-entries: []
@@ -16,6 +16,10 @@ links:
   uid: group-schedgeneral
 - role: constraint
   uid: ../constraint/option-not-pre-qualified
+- role: reference
+  uid: /ref/rtems/c-user/scheduler-smp-priority-affinity
+- role: reference
+  uid: /ref/rtems/c-user/config-scheduler-clustered
 name: CONFIGURE_SCHEDULER_PRIORITY_AFFINITY_SMP
 notes: |
   This scheduler configuration option is an advanced configuration option.
@@ -24,7 +28,7 @@ notes: |
   This scheduler algorithm is only available when RTEMS is built with SMP
   support enabled.
 
-  In case no explicit ${/doc/if/config-scheduler-clustered:/name}
+  In case no explicit ${/ref/rtems/c-user/config-scheduler-clustered:/name}
   is present, then it is used as the scheduler for up to 32 processors.
 
   The memory allocated for this scheduler depends on the

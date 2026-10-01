@@ -20,7 +20,6 @@ rationale: |
 
   Under these circumstances it is at least difficult to specify
   what the actual result of this macro is.
-references: []
 requirement-type: functional
 text: |
   When the code is compiled with the GNU C compiler,

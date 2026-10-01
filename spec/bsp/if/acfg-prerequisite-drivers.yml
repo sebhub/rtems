@@ -10,5 +10,4 @@ links:
 - role: interface-ingroup
   uid: group
 name: CONFIGURE_BSP_PREREQUISITE_DRIVERS
-references: []
 type: interface

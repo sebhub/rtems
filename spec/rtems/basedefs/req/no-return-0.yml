@@ -10,7 +10,6 @@ rationale: |
   The GNU C compiler can optimize such a function without regard to what would
   happen if it ever did return. Declaring a function ${../if/no-return:/name}
   also avoids spurious warnings of uninitialized variables.
-references: []
 requirement-type: functional
 text: |
   When the code is compiled with the GNU C compiler starting at version 2.5

@@ -6,14 +6,14 @@ default-value: 255
 description: |
   For the following schedulers
 
-  * ${/doc/if/scheduler-priority:/name}, which is the default in uniprocessor
+  * ${/ref/rtems/c-user/scheduler-priority:/name}, which is the default in uniprocessor
     configurations and can be configured through the
     ${scheduler-priority:/name} configuration option,
 
-  * ${/doc/if/scheduler-smp-priority:/name} which can be configured through the
+  * ${/ref/rtems/c-user/scheduler-smp-priority:/name} which can be configured through the
     ${scheduler-priority-smp:/name} configuration option, and
 
-  * ${/doc/if/scheduler-smp-priority-affinity:/name} which can be configured through the
+  * ${/ref/rtems/c-user/scheduler-smp-priority-affinity:/name} which can be configured through the
     ${scheduler-priority-affinity-smp:/name} configuration option
 
   this configuration option specifies the maximum numeric priority of any task
@@ -32,6 +32,12 @@ links:
   uid: group-schedgeneral
 - role: constraint
   uid: ../constraint/max-priority
+- role: reference
+  uid: /ref/rtems/c-user/scheduler-priority
+- role: reference
+  uid: /ref/rtems/c-user/scheduler-smp-priority
+- role: reference
+  uid: /ref/rtems/c-user/scheduler-smp-priority-affinity
 name: CONFIGURE_MAXIMUM_PRIORITY
 notes: |
   The numerically greatest priority is the logically lowest priority in the

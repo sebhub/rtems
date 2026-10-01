@@ -10,7 +10,6 @@ rationale: |
   For example, the 64-bit integer division and modulo operations are essential
   for the timekeeping services.  On most 32-bit targets, they need a software
   implementation.
-references: []
 requirement-type: non-functional
 text: |
   Unit tests may be used to test implementations of compiler builtins.

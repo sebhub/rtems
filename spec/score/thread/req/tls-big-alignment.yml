@@ -7,7 +7,6 @@ links:
   uid: ../if/group
 functional-type: capability
 rationale: null
-references: []
 requirement-type: functional
 text: |
   The alignment of thread-local storage objects may be greater than

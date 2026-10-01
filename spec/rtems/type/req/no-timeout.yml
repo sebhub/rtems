@@ -7,7 +7,6 @@ links:
   uid: ../if/no-timeout
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   The ${../if/no-timeout:/name} constant shall be a constant expression which

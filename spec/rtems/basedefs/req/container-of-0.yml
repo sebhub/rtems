@@ -7,7 +7,6 @@ links:
 - role: interface-function
   uid: ../if/container-of
 rationale: null
-references: []
 requirement-type: functional
 text: |
   When argument ${../if/container-of:/params[0]/name} points to a

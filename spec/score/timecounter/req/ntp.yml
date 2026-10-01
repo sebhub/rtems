@@ -7,7 +7,6 @@ links:
   uid: ../if/group
 non-functional-type: design
 rationale: null
-references: []
 requirement-type: non-functional
 text: |
   The Timecounter Handler shall optionally use a handler to do time adjustments

@@ -10,5 +10,4 @@ links:
 - role: interface-ingroup
   uid: group
 name: __RTEMS_ADA__
-references: []
 type: interface

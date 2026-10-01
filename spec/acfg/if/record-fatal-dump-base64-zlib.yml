@@ -10,7 +10,7 @@ description: |
   * and ${record-per-processor-items:/name} is properly defined,
 
   then the event records are compressed by zlib and dumped in Base64 encoding
-  in a fatal error extension (see ${/doc/if/terminate:/name}).
+  in a fatal error extension (see ${/ref/rtems/c-user/terminate:/name}).
 enabled-by: true
 index-entries: []
 interface-type: appl-config-option
@@ -21,6 +21,8 @@ links:
   uid: group-eventrecord
 - role: constraint
   uid: ../constraint/option-not-pre-qualified
+- role: reference
+  uid: /ref/rtems/c-user/terminate
 name: CONFIGURE_RECORD_FATAL_DUMP_BASE64_ZLIB
 notes: |
   The zlib compression needs about 512KiB of RAM.  This extension can be used

@@ -6,8 +6,10 @@ glossary-type: term
 links:
 - role: glossary-member
   uid: group
+- role: reference
+  uid: /ref/rtems/c-user/global-construction
 term: global construction
 text: |
   In the global construction, the C++ global constructors and constructor
-  functions are invoked.  See ${/doc/if/global-construction:/name}.
+  functions are invoked.  See ${/ref/rtems/c-user/global-construction:/name}.
 type: glossary

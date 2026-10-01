@@ -20,11 +20,13 @@ links:
   uid: ../constraint/scheduler-assignments-macros
 - role: constraint
   uid: ../constraint/scheduler-assignments-count
+- role: reference
+  uid: /ref/rtems/c-user/config-scheduler-clustered
 name: CONFIGURE_SCHEDULER_ASSIGNMENTS
 notes: |
   Where the system was built with SMP support enabled, this configuration
   option is evaluated, otherwise it is ignored.
 
   This is an advanced configuration option, see
-  ${/doc/if/config-scheduler-clustered:/name}.
+  ${/ref/rtems/c-user/config-scheduler-clustered:/name}.
 type: interface

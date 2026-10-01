@@ -7,7 +7,6 @@ links:
   uid: ../if/last
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   The ${../if/last:/name} constant shall be equal to the maximum value of all

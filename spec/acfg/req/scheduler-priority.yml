@@ -8,10 +8,11 @@ links:
   uid: ../if/scheduler-priority
 - role: requirement-refinement
   uid: group
+- role: reference
+  uid: /ref/rtems/c-user/scheduler-priority
 rationale: null
-references: []
 requirement-type: functional
 text: |
   The application configuration option shall make the
-  ${/doc/if/scheduler-priority:/name} algorithm available to the application.
+  ${/ref/rtems/c-user/scheduler-priority:/name} algorithm available to the application.
 type: requirement

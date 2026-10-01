@@ -7,7 +7,6 @@ links:
   uid: ../if/id-none
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   The ${../if/id-none:/name} constant shall be a constant expression which

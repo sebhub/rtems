@@ -7,7 +7,6 @@ links:
   uid: group
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   While a thread is scheduled by the ${/glossary/scheduler-home:/term}, while

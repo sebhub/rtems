@@ -13,5 +13,4 @@ links:
 - role: proxy-member
   uid: load-16
 name: grlib_load_16
-references: []
 type: interface

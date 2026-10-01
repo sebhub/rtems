@@ -18,6 +18,8 @@ links:
   uid: domain
 - role: interface-ingroup
   uid: group-idle
+- role: reference
+  uid: /ref/rtems/c-user/global-construction
 name: CONFIGURE_IDLE_TASK_INITIALIZES_APPLICATION
 notes: |
   If you use this option be careful, the user IDLE task **cannot** block at all
@@ -43,5 +45,5 @@ notes: |
   otherwise a compile time error in the configuration file will occur.
 
   If no Classic API initialization task and no POSIX API initialization thread
-  is configured, then no ${/doc/if/global-construction:/name} is performed.
+  is configured, then no ${/ref/rtems/c-user/global-construction:/name} is performed.
 type: interface

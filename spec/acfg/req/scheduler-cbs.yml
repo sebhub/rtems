@@ -8,10 +8,11 @@ links:
   uid: ../if/scheduler-cbs
 - role: requirement-refinement
   uid: group
+- role: reference
+  uid: /ref/rtems/c-user/scheduler-cbs
 rationale: null
-references: []
 requirement-type: functional
 text: |
   The application configuration option shall make the
-  ${/doc/if/scheduler-cbs:/name} algorithm available to the application.
+  ${/ref/rtems/c-user/scheduler-cbs:/name} algorithm available to the application.
 type: requirement

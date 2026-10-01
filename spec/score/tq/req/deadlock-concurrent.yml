@@ -7,7 +7,6 @@ links:
   uid: deadlock
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   While a thread `A` tries to enqueue on a thread queue `X`, while a thread

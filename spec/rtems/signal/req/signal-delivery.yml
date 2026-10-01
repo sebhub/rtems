@@ -7,7 +7,6 @@ links:
   uid: ../if/send
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   Let {math}`J\in\{0, 1, ..., 31\}`.  While a task is able to catch signals,

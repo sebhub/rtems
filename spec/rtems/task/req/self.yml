@@ -7,7 +7,6 @@ links:
   uid: ../if/self
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   The ${../if/self:/name} directive call shall return the object identifier of

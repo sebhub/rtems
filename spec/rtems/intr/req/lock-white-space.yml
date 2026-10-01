@@ -18,7 +18,6 @@ links:
   uid: ../if/lock-destroy
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   The macro shall expand to white space only.

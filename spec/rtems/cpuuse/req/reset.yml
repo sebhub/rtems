@@ -7,7 +7,6 @@ links:
   uid: ../if/reset
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   When ${../if/reset:/name} is called, the CPU usage shall be set to zero for

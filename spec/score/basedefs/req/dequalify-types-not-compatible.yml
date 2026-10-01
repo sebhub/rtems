@@ -10,7 +10,6 @@ links:
   uid: ../if/dequalify-types-not-compatible
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   Where ${/compiler/if/gnuc:/name} is defined, calling

@@ -69,7 +69,6 @@ links:
   uid: ../if/event-31
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   Let {math}`J\in\{0, 1, ..., 31\}`.  The {math}`J`-th event number constant

@@ -1,0 +1,12 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+anchor: deterministic-priority-scheduler
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+label: SchedulerPriority
+links:
+- role: reference-location
+  uid: ../c-user
+name: Deterministic Priority Scheduler
+path: scheduling-concepts/uniprocessor-schedulers.html
+type: reference-location

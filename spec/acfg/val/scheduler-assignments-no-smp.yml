@@ -6,11 +6,10 @@ enabled-by:
 links:
 - role: validation
   uid: ../req/scheduler-assignments-no-smp
+- location: cpukit/include/rtems/confdefs/scheduler.h
+  role: reference
+  uid: /ref/rtems/source
 method: by-inspection
-references:
-- identifier: cpukit/include/rtems/confdefs/scheduler.h
-  hash: n7NtRWzAfA388_1hPYGdZ59wHBC2ZWqz2qo3Yrc5vS8=
-  type: file
 text: |
   Inspection of the referenced ${/glossary/sourcecode:/term} file showed that
   using ${../if/scheduler-assignments:/name} where ${/build-options/if/smp:/name}

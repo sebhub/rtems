@@ -7,7 +7,6 @@ links:
   uid: ../if/group
 non-functional-type: design
 rationale: null
-references: []
 requirement-type: non-functional
 text: |
   The task mode mask constants and 0xff shall have unique values.

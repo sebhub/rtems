@@ -13,5 +13,4 @@ links:
 - role: proxy-member
   uid: store-32
 name: grlib_store_32
-references: []
 type: interface

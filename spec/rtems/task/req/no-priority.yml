@@ -11,7 +11,6 @@ rationale: |
   under specific circumstances, for example ${../if/set-priority:/name} may be
   used to get the current priority.  This constant may be used as a dummy task
   priority value to document that the priority parameter is unused.
-references: []
 requirement-type: functional
 text: |
   The ${../if/no-priority:/name} constant shall expand to a constant

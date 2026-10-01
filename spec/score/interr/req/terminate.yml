@@ -9,7 +9,6 @@ links:
   uid: ../if/terminate
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   The ${../if/terminate:/name} function shall terminate the system.

@@ -6,7 +6,9 @@ glossary-type: term
 links:
 - role: glossary-member
   uid: group
+- role: reference
+  uid: /ref/std/c11
 term: C11
 text: |
-  The standard ISO/IEC 9899:2011.
+  The standard ${/ref/std/c11:/cite-long}.
 type: glossary

@@ -12,5 +12,4 @@ links:
 - role: constraint
   uid: /constraint/directive-not-pre-qualified
 name: readdir
-references: []
 type: interface

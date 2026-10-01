@@ -36,7 +36,6 @@ links:
 - role: validation
   uid: /compiler/if/user-label-prefix
 method: by-review-of-design
-references: []
 text: |
   This interface is an external interface.  It is implicitly validated by
   the ${/glossary/api:/term} elements which use this interface.

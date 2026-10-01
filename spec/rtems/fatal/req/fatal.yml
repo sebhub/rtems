@@ -9,7 +9,6 @@ links:
   uid: /score/interr/req/terminate
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   When ${../if/fatal:/name} is called, the system shall terminate with a fatal

@@ -26,10 +26,12 @@ links:
   uid: /constraint/directive-ctx-const
 - role: constraint
   uid: /constraint/directive-no-preempt
+- role: reference
+  uid: /ref/rtems/c-user/config-unlimited-objects
 name: rtems_resource_unlimited
 notes: |
   This directive should be used to configure unlimited objects, see
-  ${/doc/if/config-unlimited-objects:/name}.
+  ${/ref/rtems/c-user/config-unlimited-objects:/name}.
 params:
 - description: is the resource number to augment.
   dir: null

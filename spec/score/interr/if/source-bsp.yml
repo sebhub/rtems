@@ -10,5 +10,4 @@ links:
 - role: interface-ingroup
   uid: group
 name: RTEMS_FATAL_SOURCE_BSP
-references: []
 type: interface

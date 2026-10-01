@@ -15,6 +15,8 @@ links:
   uid: group-posixinit
 - role: constraint
   uid: ../constraint/option-not-pre-qualified
+- role: reference
+  uid: /ref/rtems/c-user/global-construction
 name: CONFIGURE_POSIX_INIT_THREAD_TABLE
 notes: |
   The application shall define at least one of the following configuration
@@ -29,5 +31,5 @@ notes: |
   otherwise a compile time error in the configuration file will occur.
 
   If no Classic API initialization task is configured, then the POSIX API
-  initialization thread performs the ${/doc/if/global-construction:/name}.
+  initialization thread performs the ${/ref/rtems/c-user/global-construction:/name}.
 type: interface

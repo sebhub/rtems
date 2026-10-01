@@ -10,5 +10,4 @@ links:
 - role: interface-ingroup
   uid: group
 name: _Objects_Maximum_per_allocation
-references: []
 type: interface

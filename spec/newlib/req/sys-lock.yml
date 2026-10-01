@@ -13,7 +13,6 @@ rationale: |
   provided by GCC, the self-contained objects ${/glossary/api:/term} provided
   by RTEMS, and the super core internal mutexes such as the objects allocator
   lock.
-references: []
 requirement-type: non-functional
 text: |
   The super core shall have a component containing the system lock mutex

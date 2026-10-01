@@ -9,7 +9,6 @@ links:
 rationale: |
   The exact rules on how this string is build are defined by the C standard
   and are too complex to be repeated in this requirement.
-references: []
 requirement-type: functional
 text: |
   The ${../if/string:/name} macro shall result in a string formed by

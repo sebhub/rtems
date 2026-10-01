@@ -9,7 +9,6 @@ links:
   uid: ../if/group
 non-functional-type: performance
 rationale: null
-references: []
 requirement-type: non-functional
 text: |
   The runtime of CPU port interfaces shall be measured.

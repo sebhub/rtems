@@ -1,0 +1,12 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+links: []
+author: Frontgrade Gaisler
+organization: Frontgrade Gaisler AB
+reference-type: manual
+title: GRLIB-TN-0009, LEON3FT Stale Cache Entry After Store with Data Tag Parity Error, Issue 1.1
+type: reference
+work-hash: s1VobjBVKwC4anYLPsssJyYKrUU5UFiO5P8U5DkJiRg=
+work-url: https://www.gaisler.com/doc/antn/GRLIB-TN-0009.pdf

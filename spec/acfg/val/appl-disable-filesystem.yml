@@ -5,11 +5,10 @@ enabled-by: true
 links:
 - role: validation
   uid: ../req/appl-disable-filesystem
+- location: cpukit/include/rtems/confdefs/libio.h
+  role: reference
+  uid: /ref/rtems/source
 method: by-inspection
-references:
-- identifier: cpukit/include/rtems/confdefs/libio.h
-  hash: 2PF8S7RMgdgdPEe68H37pgxQ94KGMIlb5DULb6N0RHA=
-  type: file
 text: |
   Defining ${../if/appl-disable-filesystem:/name} is mandatory for applications
   using only the pre-qualified feature set.  The reason is to get linker errors

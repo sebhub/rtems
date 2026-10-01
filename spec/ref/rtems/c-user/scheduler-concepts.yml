@@ -1,0 +1,12 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+anchor: scheduling-concepts
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+label: RTEMSAPIClassicScheduler
+links:
+- role: reference-location
+  uid: ../c-user
+name: Scheduling Concepts
+path: scheduling-concepts/index.html
+type: reference-location

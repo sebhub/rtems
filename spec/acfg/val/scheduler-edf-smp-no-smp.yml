@@ -6,11 +6,10 @@ enabled-by:
 links:
 - role: validation
   uid: ../req/scheduler-edf-smp-no-smp
+- location: cpukit/include/rtems/scheduler.h
+  role: reference
+  uid: /ref/rtems/source
 method: by-inspection
-references:
-- identifier: cpukit/include/rtems/scheduler.h
-  hash: jS_Dp1UFQrh0kgBrYi56gmkqmkEWrDSGV-tRxHfLbo4=
-  type: file
 text: |
   Inspection of the referenced ${/glossary/sourcecode:/term} file showed that
   using ${../if/scheduler-edf-smp:/name} where ${/build-options/if/smp:/name}

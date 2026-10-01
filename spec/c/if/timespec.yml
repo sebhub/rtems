@@ -9,8 +9,8 @@ links:
   uid: sys-impl-timespec
 - role: interface-ingroup
   uid: group
+- path: chrono/timespec
+  role: reference
+  uid: /ref/std/cppreference-c
 name: timespec
-references:
-- identifier: https://en.cppreference.com/w/c/chrono/timespec
-  type: url
 type: interface

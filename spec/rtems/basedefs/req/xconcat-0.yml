@@ -10,7 +10,6 @@ rationale: |
   All possible C pre-processor substitutions include here
   calls to the macro itself as well as none if no substitution is
   possible.
-references: []
 requirement-type: functional
 text: |
   The macro ${../if/xconcat:/name} shall apply all possible C

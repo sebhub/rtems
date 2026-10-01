@@ -11,8 +11,8 @@ links:
   uid: group
 - role: constraint
   uid: /constraint/directive-not-pre-qualified
+- path: io/getchar
+  role: reference
+  uid: /ref/std/cppreference-c
 name: getchar
-references:
-- identifier: https://en.cppreference.com/w/c/io/getchar
-  type: url
 type: interface

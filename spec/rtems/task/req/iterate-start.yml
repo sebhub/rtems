@@ -7,7 +7,6 @@ links:
   uid: ../if/iterate
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   When ${../if/iterate:/name} is called, the calling task shall obtain the

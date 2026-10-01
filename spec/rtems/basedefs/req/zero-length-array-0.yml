@@ -28,7 +28,6 @@ rationale: |
   can be statically initialized so that they are larger than declared (have more
   that 0 elements). See the documentation of the GNU C compiler
   below keyword: *arrays of length zero*.
-references: []
 requirement-type: functional
 text: |
   When the code is compiled with the GNU C compiler,

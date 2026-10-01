@@ -10,7 +10,6 @@ rationale: |
   The effect of the ${../if/packed:/name} macro is not propagated into any
   structure, union or C++ class which is member of the structure, union or
   C++ class declaration to which the macro is attached.
-references: []
 requirement-type: functional
 text: |
   When the code is compiled with the GNU C compiler,

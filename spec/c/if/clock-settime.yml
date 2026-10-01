@@ -11,8 +11,8 @@ links:
   uid: group
 - role: constraint
   uid: /constraint/directive-not-pre-qualified
+- path: functions/clock_settime.html
+  role: reference
+  uid: /ref/std/posix-2024
 name: clock_settime
-references:
-- identifier: https://pubs.opengroup.org/onlinepubs/9699919799/functions/clock_settime.html
-  type: url
 type: interface

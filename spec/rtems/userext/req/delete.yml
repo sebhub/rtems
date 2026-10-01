@@ -86,7 +86,6 @@ pre-conditions:
 
     valid_id = false;
 rationale: null
-references: []
 requirement-type: functional
 skip-reasons: {}
 test-action: |

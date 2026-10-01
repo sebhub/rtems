@@ -7,7 +7,6 @@ links:
   uid: ../if/get-local-node
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   The result of ${../if/get-local-node:/name} shall be equal to the local

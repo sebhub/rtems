@@ -9,7 +9,6 @@ links:
   uid: group
 non-functional-type: performance
 rationale: null
-references: []
 requirement-type: non-functional
 text: |
   The runtime of the ${../if/group:/name} directives shall be measured.

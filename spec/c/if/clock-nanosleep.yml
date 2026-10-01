@@ -9,8 +9,8 @@ links:
   uid: time
 - role: interface-ingroup
   uid: group
+- path: functions/clock_nanosleep.html
+  role: reference
+  uid: /ref/std/posix-2024
 name: clock_nanosleep
-references:
-- identifier: https://pubs.opengroup.org/onlinepubs/9699919799/functions/clock_nanosleep.html
-  type: url
 type: interface

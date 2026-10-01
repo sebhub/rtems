@@ -22,10 +22,12 @@ links:
   uid: ../constraint/memory-size
 - role: constraint
   uid: ../constraint/unlimited
+- role: reference
+  uid: /ref/rtems/c-user/config-unlimited-objects
 name: CONFIGURE_MAXIMUM_MESSAGE_QUEUES
 notes: |
   This object class can be configured in unlimited allocation mode, see
-  ${/doc/if/config-unlimited-objects:/name}.  You have to account for the memory used to
+  ${/ref/rtems/c-user/config-unlimited-objects:/name}.  You have to account for the memory used to
   store the messages of each message queue, see
   ${message-buffer-memory:/name}.
 type: interface

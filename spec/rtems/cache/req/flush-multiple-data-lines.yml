@@ -7,7 +7,6 @@ links:
   uid: ../if/flush-multiple-data-lines
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   Where the ${/glossary/target:/term} has a data cache, where data cache lines

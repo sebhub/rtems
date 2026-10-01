@@ -10,5 +10,4 @@ links:
 - role: interface-ingroup
   uid: ../../../if/group
 name: bsp_idle_thread
-references: []
 type: interface

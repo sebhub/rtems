@@ -7,7 +7,6 @@ links:
   uid: ../../../if/acfg-idle-task-body
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   The ${/glossary/bsp:/term} shall define

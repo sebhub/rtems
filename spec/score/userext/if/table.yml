@@ -10,5 +10,4 @@ links:
 - role: interface-ingroup
   uid: group
 name: User_extensions_Table
-references: []
 type: interface

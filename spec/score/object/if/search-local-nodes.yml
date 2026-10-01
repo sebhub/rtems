@@ -10,5 +10,4 @@ links:
 - role: interface-ingroup
   uid: group
 name: OBJECTS_SEARCH_LOCAL_NODE
-references: []
 type: interface

@@ -7,7 +7,6 @@ links:
   uid: ../if/interrupt-level
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   The ${../if/interrupt-level:/name} macro shall expand to a constant

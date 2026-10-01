@@ -6,7 +6,6 @@ links:
 - role: validation
   uid: ../req/errata-gr712rc-04
 method: by-review-of-design
-references: []
 text: |
   The errata of the ${/glossary/gr712rc:/term} is not applicable to the
   software product since it does not provide a high-level SpaceWire driver.

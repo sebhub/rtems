@@ -14,7 +14,6 @@ rationale: |
   Counting of arguments starts at 1 from the left with the
   exception of non-static C++ methods where the counting starts with
   2 due to the implicit `this` argument.
-references: []
 requirement-type: functional
 text: |
   When the code is compiled with the GNU C compiler,

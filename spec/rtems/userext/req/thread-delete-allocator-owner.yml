@@ -9,7 +9,6 @@ links:
   uid: /score/object/req/allocator-mutex
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   The thread invoking the thread delete ${/glossary/userextensions:/term} shall

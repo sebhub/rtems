@@ -12,5 +12,4 @@ links:
 - role: proxy-member
   uid: local-node
 name: _Objects_Local_node
-references: []
 type: interface

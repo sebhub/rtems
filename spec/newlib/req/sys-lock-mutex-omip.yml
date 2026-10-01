@@ -17,7 +17,6 @@ links:
   uid: sys-lock-mutex-recursive-release
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   The mutex operations shall use the ${/glossary/omip:/term} locking protocol.

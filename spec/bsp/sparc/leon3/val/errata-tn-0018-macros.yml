@@ -9,11 +9,10 @@ links:
   uid: ../req/errata-tn-0018-macro-wait-iflush
 - role: validation
   uid: ../req/errata-tn-0018-macro-write-psr
+- location: cpukit/score/cpu/sparc/include/libcpu/grlib-tn-0018.h
+  role: reference
+  uid: /ref/rtems/source
 method: by-inspection
-references:
-- identifier: cpukit/score/cpu/sparc/include/libcpu/grlib-tn-0018.h
-  hash: 2H6O61TZYKcwDpr_dKrDOe8xkMNjXz45Oh6bwL5b2vM=
-  type: file
 text: |
   The ${/glossary/sourcecode:/term} of the software product was reviewed for a
   correct implementation of the errata workaround support macros.  The macros

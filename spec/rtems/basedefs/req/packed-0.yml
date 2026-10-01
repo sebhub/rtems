@@ -9,7 +9,6 @@ links:
 rationale: |
   Note: The 4.1, 4.2 and 4.3 series of GCC ignore the packed attribute
   on bit-fields of type char.
-references: []
 requirement-type: functional
 text: |
   When the code is compiled with the GNU C compiler,

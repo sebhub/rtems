@@ -9,7 +9,6 @@ links:
   uid: max-thread-local-storage-size
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   Where the application was configured with a value not equal to zero for

@@ -1,0 +1,12 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+links: []
+author: Frontgrade Gaisler
+organization: Frontgrade Gaisler AB
+reference-type: manual
+title: GR712RC Dual-Core LEON3FT SPARC V8 Processor User's Manual, Version 2.17
+type: reference
+work-hash: rthim0xsJrp-T0Bo3IiONAJp462LKBT9fXGB2gf9Abs=
+work-url: https://download.gaisler.com/products/gr712rc/doc/gr712rc-usermanual-2_17.pdf

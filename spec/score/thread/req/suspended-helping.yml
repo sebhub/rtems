@@ -8,7 +8,6 @@ links:
 functional-type: function
 rationale: |
   This is an performance optimization.
-references: []
 requirement-type: functional
 text: |
   While a thread is suspended, the thread shall not reconsider help requests.

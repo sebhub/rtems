@@ -10,5 +10,4 @@ links:
 - role: interface-ingroup
   uid: group
 name: INTERNAL_ERROR_RTEMS_API
-references: []
 type: interface

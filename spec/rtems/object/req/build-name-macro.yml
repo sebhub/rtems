@@ -7,7 +7,6 @@ links:
   uid: ../if/build-name-macro
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   The result of ${../if/build-name-macro:/name} shall be equal to

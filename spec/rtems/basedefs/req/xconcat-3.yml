@@ -7,7 +7,6 @@ links:
 - role: interface-function
   uid: ../if/xconcat
 rationale: null
-references: []
 requirement-type: functional
 text: |
   The macro ${../if/xconcat:/name} shall make its result

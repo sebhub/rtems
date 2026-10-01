@@ -9,8 +9,8 @@ links:
   uid: stddef
 - role: interface-ingroup
   uid: group
+- path: types/NULL
+  role: reference
+  uid: /ref/std/cppreference-c
 name: 'NULL'
-references:
-- identifier: https://en.cppreference.com/w/c/types/NULL
-  type: url
 type: interface

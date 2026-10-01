@@ -15,5 +15,4 @@ links:
 - role: proxy-member
   uid: lock-release
 name: _SMP_lock_Release
-references: []
 type: interface

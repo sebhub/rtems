@@ -13,7 +13,6 @@ links:
   uid: ../if/group
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   Where the system does not need inter-processor interrupts, when a thread

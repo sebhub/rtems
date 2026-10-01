@@ -7,7 +7,6 @@ links:
   uid: root
 non-functional-type: design
 rationale: null
-references: []
 requirement-type: non-functional
 text: |
   The software product shall take ${/glossary/target:/term} errata into

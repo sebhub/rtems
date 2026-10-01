@@ -7,7 +7,6 @@ links:
   uid: idle-task-body
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   The ${../if/idle-thread:/name} function shall perform an endless loop which

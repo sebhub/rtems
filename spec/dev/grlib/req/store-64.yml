@@ -7,7 +7,6 @@ links:
   uid: ../if/store-64
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   The ${../if/store-64:/name} directive shall store the unsigned 64-bit

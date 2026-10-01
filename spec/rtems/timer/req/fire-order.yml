@@ -7,7 +7,6 @@ links:
   uid: ../if/group
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   The timer ${../glossary/scheduled:/term} at the same processor with the same

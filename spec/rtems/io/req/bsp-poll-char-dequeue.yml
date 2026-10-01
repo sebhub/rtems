@@ -7,7 +7,6 @@ links:
   uid: ../if/bsp-poll-char
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   While the ${../if/bsp-poll-char:/name} pointer references a function, while

@@ -20,6 +20,8 @@ links:
   uid: ../constraint/scheduler-table-entry-macros
 - role: constraint
   uid: ../constraint/scheduler-table-entry-count
+- role: reference
+  uid: /ref/rtems/c-user/config-scheduler-clustered
 name: CONFIGURE_SCHEDULER_TABLE_ENTRIES
 notes: |
   Schedulers registered in the scheduler table by this configuration option are
@@ -27,5 +29,5 @@ notes: |
   index of the scheduler.
 
   This is an advanced configuration option, see
-  ${/doc/if/config-scheduler-clustered:/name}.
+  ${/ref/rtems/c-user/config-scheduler-clustered:/name}.
 type: interface

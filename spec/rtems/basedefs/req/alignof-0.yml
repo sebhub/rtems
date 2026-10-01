@@ -10,7 +10,6 @@ rationale: |
   Note that if not `__STDC_VERSION__ >= 201112L` and neither
   `__cplusplus >= 201103L`, the result of this call may return a value
   which is not appropriate for alignment.
-references: []
 requirement-type: functional
 text: |
   When the code is compiled with a C compiler and

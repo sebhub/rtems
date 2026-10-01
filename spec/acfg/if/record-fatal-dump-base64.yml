@@ -12,7 +12,7 @@ description: |
   * and ${record-fatal-dump-base64-zlib:/name} is undefined,
 
   then the event records are dumped in Base64 encoding in a fatal error
-  extension (see ${/doc/if/terminate:/name}).
+  extension (see ${/ref/rtems/c-user/terminate:/name}).
 enabled-by: true
 index-entries: []
 interface-type: appl-config-option
@@ -23,6 +23,8 @@ links:
   uid: group-eventrecord
 - role: constraint
   uid: ../constraint/option-not-pre-qualified
+- role: reference
+  uid: /ref/rtems/c-user/terminate
 name: CONFIGURE_RECORD_FATAL_DUMP_BASE64
 notes: |
   This extension can be used to produce crash dumps.

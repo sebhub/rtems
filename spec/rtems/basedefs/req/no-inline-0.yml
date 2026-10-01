@@ -9,7 +9,6 @@ links:
 rationale: |
   If the function has no side effects, it may still be subject to inlining.
   To avoid this, produce an artificial side effect with `asm ("");`.
-references: []
 requirement-type: functional
 text: |
   When the code is compiled with the GNU C compiler,

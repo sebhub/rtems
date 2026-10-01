@@ -7,7 +7,6 @@ links:
   uid: ../if/construct
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   When a task is constructed, the ${/glossary/scheduler-home:/term} of the

@@ -5,6 +5,8 @@ enabled-by: true
 links:
 - role: requirement-refinement
   uid: /req/usage-constraints
+- role: reference
+  uid: /ref/rtems/c-user/config-scheduler-clustered
 rationale: null
 text: |
   The value of the application configuration option shall be a list of the
@@ -29,7 +31,7 @@ text: |
   * `RTEMS_SCHEDULER_TABLE_STRONG_APA( name, obj_name )`
 
   The `name` macro parameter shall be the name associated with the scheduler
-  data structures, see ${/doc/if/config-scheduler-clustered:/name}.
+  data structures, see ${/ref/rtems/c-user/config-scheduler-clustered:/name}.
 
   The `obj_name` macro parameter shall be the scheduler object name.  It is
   recommended to define the scheduler object name through

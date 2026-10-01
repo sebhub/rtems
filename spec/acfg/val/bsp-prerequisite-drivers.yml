@@ -5,11 +5,10 @@ enabled-by: true
 links:
 - role: validation
   uid: ../req/bsp-prerequisite-drivers
+- location: cpukit/include/rtems/confdefs/iodrivers.h
+  role: reference
+  uid: /ref/rtems/source
 method: by-inspection
-references:
-- identifier: cpukit/include/rtems/confdefs/iodrivers.h
-  hash: yz8gesoF_me3cP7VhsO_BITvVnexGuPGTh1dEs87eKs=
-  type: file
 text: |
   Inspection of the referenced ${/glossary/sourcecode:/term} file showed that
   the ${../req/bsp-prerequisite-drivers:/spec} requirement is implemented as

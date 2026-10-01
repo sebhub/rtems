@@ -5,17 +5,16 @@ enabled-by: true
 links:
 - role: validation
   uid: ../req/disable-newlib-reentrancy
+- location: cpukit/include/rtems/confdefs/extensions.h
+  role: reference
+  uid: /ref/rtems/source
+- location: cpukit/include/rtems/confdefs/newlib.h
+  role: reference
+  uid: /ref/rtems/source
+- location: cpukit/include/rtems/confdefs/threads.h
+  role: reference
+  uid: /ref/rtems/source
 method: by-inspection
-references:
-- identifier: cpukit/include/rtems/confdefs/extensions.h
-  hash: o1zTKlcoJAoVIQYziWnRhZFx8v1R7ntNmT1W7zfdA5A=
-  type: file
-- identifier: cpukit/include/rtems/confdefs/newlib.h
-  hash: wKlyOe7m5g4ThjUtsP2ujODiuZrOtK9qFBkMiCcFlxU=
-  type: file
-- identifier: cpukit/include/rtems/confdefs/threads.h
-  hash: B3GWt2DpJYAMe6qvc_kBODb4MFOOXcESQ2y4Jk4PIIY=
-  type: file
 text: |
   Defining ${../if/disable-newlib-reentrancy:/name} is mandatory for
   applications using only the pre-qualified feature set.  The reason is to get

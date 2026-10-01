@@ -7,7 +7,6 @@ links:
 - role: interface-function
   uid: ../if/default
 rationale: null
-references: []
 requirement-type: functional
 text: |
   The value of macro ${../if/default:/name} shall be equal

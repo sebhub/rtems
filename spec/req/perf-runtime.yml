@@ -7,7 +7,6 @@ links:
   uid: root
 non-functional-type: performance
 rationale: null
-references: []
 requirement-type: non-functional
 text: |
   The runtime of interface functions shall be measured.

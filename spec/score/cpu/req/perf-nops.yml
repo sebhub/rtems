@@ -13,7 +13,6 @@ rationale: |
   The runtime measurement of a fixed number of no-operation instructions may
   help to investigate runtime measurement variations which do not result from
   code generation or source code changes.
-references: []
 requirement-type: non-functional
 test-body:
   brief: |

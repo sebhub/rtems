@@ -10,7 +10,6 @@ non-functional-type: performance-runtime-environment
 rationale: |
   This runtime measurement environment is intended to get close to worst case
   execution conditions.
-references: []
 requirement-type: non-functional
 text: |
   A ${/glossary/target:/term} state in which the caches are fully loaded with

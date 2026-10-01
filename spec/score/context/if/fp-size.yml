@@ -10,5 +10,4 @@ links:
 - role: interface-ingroup
   uid: group
 name: CONTEXT_FP_SIZE
-references: []
 type: interface

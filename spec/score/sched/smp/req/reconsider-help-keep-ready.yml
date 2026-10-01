@@ -7,7 +7,6 @@ links:
   uid: group
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   While a thread is not a ${/glossary/scheduledtask:/term}, while the thread is

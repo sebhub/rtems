@@ -7,11 +7,11 @@ links:
   uid: /req/errata
 - role: requirement-refinement
   uid: ../if/group
+- location: 1.7.19
+  role: reference
+  uid: /ref/soc/gaisler/gr712rc/gr712rc-um-2-17
 non-functional-type: design
 rationale: null
-references:
-- identifier: https://www.gaisler.com/doc/gr712rc-usermanual.pdf
-  type: url
 requirement-type: non-functional
 text: |
   The software product shall take the errata 19 (Stores to ASI 0x1C may update
