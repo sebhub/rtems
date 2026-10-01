@@ -43,7 +43,7 @@
  * @ingroup RTEMSTestSuitesValidation
  *
  * @brief This general purpose test suite provides enough resources to run
- *   basic tests for all specified managers and functions.  It is intended for
+ *   basic tests for all specified managers and functions. It is intended for
  *   model based testing.
  *
  * In SMP configurations, up to three scheduler instances using the SMP EDF
