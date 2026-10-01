@@ -7,7 +7,6 @@ links:
 - role: requirement-refinement
   uid: ../if/group
 rationale: null
-references: []
 requirement-type: functional
 text: |
   The count of buffers available for use from a partition shall be exactly the

@@ -7,7 +7,6 @@ links:
   uid: ../if/lock-initializer
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   When the ${../if/lock-initializer:/name} is used to statically initialize an

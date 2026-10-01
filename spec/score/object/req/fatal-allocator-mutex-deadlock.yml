@@ -9,7 +9,6 @@ links:
   uid: allocator-mutex
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   If obtaining the object allocator mutex would result in a deadlock, then the

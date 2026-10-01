@@ -12,7 +12,6 @@ params: {}
 rationale: |
   The runtime measurement of a function which does nothing and just returns
   gives an estimate of the measurement overhead.
-references: []
 requirement-type: non-functional
 test-body:
   brief: |

@@ -7,7 +7,6 @@ links:
   uid: ../if/memset
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   The ${../if/memset:/name} function  shall be specified by

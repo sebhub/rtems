@@ -7,7 +7,6 @@ links:
   uid: ../if/lock-member
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   The ${../if/lock-member:/name} macro shall expand to structure or union

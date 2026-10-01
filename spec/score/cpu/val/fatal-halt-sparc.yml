@@ -5,14 +5,13 @@ enabled-by: sparc
 links:
 - role: validation
   uid: ../req/fatal-halt-sparc
+- location: cpukit/score/cpu/sparc/include/rtems/asm.h
+  role: reference
+  uid: /ref/rtems/source
+- location: cpukit/score/cpu/sparc/syscall.S
+  role: reference
+  uid: /ref/rtems/source
 method: by-inspection
-references:
-- identifier: cpukit/score/cpu/sparc/include/rtems/asm.h
-  hash: biIdJwey_Juwf8LH4_ftg7zV2PuUqXH3lIirQxTyW5E=
-  type: file
-- identifier: cpukit/score/cpu/sparc/syscall.S
-  hash: QDjhpRe0UrN3OhoVJEGSnJU0028ZHBGjXYFXrZsRwO4=
-  type: file
 text: |
   Inspection of the referenced ${/glossary/sourcecode:/term} files showed that
   the ${../if/fatal-halt:/name} directive is implemented as specified.  In

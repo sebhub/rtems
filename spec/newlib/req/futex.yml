@@ -13,7 +13,6 @@ rationale: |
   RTEMS.  The futex support is required by the OpenMP implementation from
   ${/glossary/gcc:/term}.  It is used for barriers which are a core
   synchronization primitive of OpenMP.
-references: []
 requirement-type: non-functional
 text: |
   The super core shall have a component containing the futex implementation

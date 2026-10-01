@@ -7,11 +7,11 @@ links:
   uid: /req/errata
 - role: requirement-refinement
   uid: ../if/group
+- location: 43.2.3
+  role: reference
+  uid: /ref/soc/gaisler/gr740/gr740-um-ds-2-10
 non-functional-type: design
 rationale: null
-references:
-- identifier: https://www.gaisler.com/doc/gr740/GR740-UM-DS-2-5.pdf
-  type: url
 requirement-type: non-functional
 text: |
   The software product shall take the errata 18-3 (L2 cache scrubber

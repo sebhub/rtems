@@ -9,7 +9,6 @@ links:
 - role: function-implementation
   uid: send-receive
 rationale: null
-references: []
 requirement-type: functional
 text: |
   The ${../if/receive:/name} directive shall receive events from the

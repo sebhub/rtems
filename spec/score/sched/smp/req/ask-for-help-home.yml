@@ -7,7 +7,6 @@ links:
   uid: group
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   While a thread is registered for help in its

@@ -9,7 +9,6 @@ functional-type: function
 rationale: |
   The directive may be used to check the setting of the
   ${/acfg/if/interrupt-stack-size:/name} application configuration option.
-references: []
 requirement-type: functional
 text: |
   The ${../if/get-interrupt-stack-size:/name} directive shall return the

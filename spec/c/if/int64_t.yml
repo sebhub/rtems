@@ -9,8 +9,8 @@ links:
   uid: stdint
 - role: interface-ingroup
   uid: group
+- path: types/integer
+  role: reference
+  uid: /ref/std/cppreference-c
 name: int64_t
-references:
-- identifier: https://en.cppreference.com/w/c/types/integer
-  type: url
 type: interface

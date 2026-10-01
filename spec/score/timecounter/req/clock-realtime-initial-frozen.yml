@@ -7,7 +7,6 @@ links:
   uid: clock-realtime
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   While no timecounter is installed, the ${/glossary/clock-realtime:/term}

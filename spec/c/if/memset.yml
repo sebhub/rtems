@@ -9,8 +9,8 @@ links:
   uid: string
 - role: interface-ingroup
   uid: group
+- path: string/byte/memset
+  role: reference
+  uid: /ref/std/cppreference-c
 name: memset
-references:
-- identifier: https://en.cppreference.com/w/c/string/byte/memset
-  type: url
 type: interface

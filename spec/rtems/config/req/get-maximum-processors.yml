@@ -12,7 +12,6 @@ rationale: |
   maximum number of processors which are actually available for use by the
   application is returned by
   ${../../scheduler/if/get-processor-maximum:/name}.
-references: []
 requirement-type: functional
 text: |
   The ${../if/get-maximum-processors:/name} directive shall return the maximum

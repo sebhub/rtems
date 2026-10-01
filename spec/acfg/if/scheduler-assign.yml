@@ -10,5 +10,4 @@ links:
 - role: interface-ingroup
   uid: group-schedgeneral
 name: RTEMS_SCHEDULER_ASSIGN
-references: []
 type: interface

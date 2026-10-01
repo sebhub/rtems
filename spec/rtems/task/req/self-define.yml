@@ -35,7 +35,6 @@ links:
   uid: ../../signal/if/send
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   While the ${../if/self-define:/name} constant is used as a task identifier

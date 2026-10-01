@@ -7,7 +7,6 @@ links:
   uid: errata-grlib-tn-0021
 non-functional-type: design
 rationale: null
-references: []
 requirement-type: non-functional
 text: |
   The bootloader shall set the L2CACCC.DBPF register field to zero.

@@ -7,7 +7,6 @@ links:
   uid: ../if/group
 non-functional-type: design
 rationale: null
-references: []
 requirement-type: non-functional
 text: |
   The Timecouter Handler shall provide the ${/glossary/clock-realtime:/term}.

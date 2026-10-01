@@ -8,7 +8,6 @@ links:
   uid: ../if/lock-needs-object
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   The ${../if/lock-needs-object:/name} constant shall expand to a constant

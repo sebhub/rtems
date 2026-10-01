@@ -6,7 +6,9 @@ glossary-type: term
 links:
 - role: glossary-member
   uid: group
+- role: reference
+  uid: /ref/std/c17
 term: C17
 text: |
-  The standard ISO/IEC 9899:2018.
+  The standard ${/ref/std/c17:/cite-long}.
 type: glossary

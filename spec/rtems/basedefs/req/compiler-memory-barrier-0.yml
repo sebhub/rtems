@@ -12,7 +12,6 @@ rationale: |
   code. Otherwise this may occur as part of compiler optimizations.
   This is a compile time only barrier. The CPU optimizations can still
   move instructions over the barrier at run-time.
-references: []
 requirement-type: functional
 text: |
   When the code is compiled with the GNU C compiler,

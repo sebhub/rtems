@@ -9,8 +9,8 @@ links:
   uid: stdlib
 - role: interface-ingroup
   uid: group
+- path: functions/posix_memalign.html
+  role: reference
+  uid: /ref/std/posix-2024
 name: posix_memalign
-references:
-- identifier: https://pubs.opengroup.org/onlinepubs/9699919799/functions/posix_memalign.html
-  type: url
 type: interface

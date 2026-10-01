@@ -10,5 +10,4 @@ links:
 - role: interface-placement
   uid: sys-lock
 name: _Futex_Wait
-references: []
 type: interface

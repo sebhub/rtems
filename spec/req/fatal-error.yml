@@ -7,7 +7,6 @@ links:
   uid: terminate
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   If the system detects a fatal error, then it shall terminate the system.

@@ -5,11 +5,10 @@ enabled-by: sparc/gr712rc
 links:
 - role: validation
   uid: ../req/errata-gr712rc-20
+- location: cpukit/score/cpu/sparc/syscall.S
+  role: reference
+  uid: /ref/rtems/source
 method: by-inspection
-references:
-- identifier: cpukit/score/cpu/sparc/syscall.S
-  hash: QDjhpRe0UrN3OhoVJEGSnJU0028ZHBGjXYFXrZsRwO4=
-  type: file
 text: |
   The `syscall` trap handler shuts down the system and never returns.
 type: validation

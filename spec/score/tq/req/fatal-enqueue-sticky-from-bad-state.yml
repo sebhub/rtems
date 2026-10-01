@@ -9,7 +9,6 @@ links:
   uid: ../if/group
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   While no deadlock was detected in a sticky thread queue enqueue, while the

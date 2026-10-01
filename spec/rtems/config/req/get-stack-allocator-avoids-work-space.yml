@@ -9,7 +9,6 @@ functional-type: function
 rationale: |
   The directive may be used to check the setting of the
   ${/acfg/if/task-stack-no-workspace:/name} application configuration option.
-references: []
 requirement-type: functional
 text: |
   The ${../if/get-stack-allocator-avoids-work-space:/name} directive shall

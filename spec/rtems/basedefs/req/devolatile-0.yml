@@ -7,7 +7,6 @@ links:
 - role: interface-function
   uid: ../if/devolatile
 rationale: null
-references: []
 requirement-type: functional
 text: |
   When ${../if/devolatile:/params[0]/name} is a non-volatile pointer type,

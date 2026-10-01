@@ -11,7 +11,6 @@ rationale: |
   This runtime measurement environment is used to measure the runtime of code
   sections while data and instructions of the code section have to be loaded
   from main memory without having to wait for the write out of dirty data.
-references: []
 requirement-type: non-functional
 text: |
   A ${/glossary/target:/term} state in which the caches are fully loaded with

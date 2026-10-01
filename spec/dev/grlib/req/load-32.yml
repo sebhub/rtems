@@ -7,7 +7,6 @@ links:
   uid: ../if/load-32
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   The ${../if/load-32:/name} directive shall load an unsigned 32-bit value

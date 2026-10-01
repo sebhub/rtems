@@ -8,7 +8,6 @@ links:
   uid: ../if/declare-global-symbol
 rationale: |
   See also ${../if/define-global-symbol:/name}.
-references: []
 requirement-type: functional
 text: |
   When the macro ${../if/declare-global-symbol:/name} appears at file scope,

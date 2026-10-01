@@ -7,7 +7,6 @@ links:
   uid: ../if/group
 non-functional-type: design
 rationale: null
-references: []
 requirement-type: non-functional
 text: |
   Each task mode mask constant except ${../if/interrupt-mask:/name} shall be a

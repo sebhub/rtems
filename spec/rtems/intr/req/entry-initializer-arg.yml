@@ -7,7 +7,6 @@ links:
   uid: ../if/entry-initializer
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   When the ${../if/entry-initializer:/name} is used to statically initialize an

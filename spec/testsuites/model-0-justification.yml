@@ -6,7 +6,6 @@ links:
 - role: validation
   uid: model-0
 method: by-review-of-design
-references: []
 text: |
   The model based validation test cases are currently not defined through
   specification items.

@@ -10,7 +10,6 @@ rationale: |
   Implementations to support data structures such as red-black trees a
   sufficiently complex to require unit tests.  Testing through the API is
   impractical.
-references: []
 requirement-type: non-functional
 text: |
   Unit tests may be used to test code which implements reusable data

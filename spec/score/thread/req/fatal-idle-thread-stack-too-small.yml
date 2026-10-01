@@ -9,7 +9,6 @@ links:
   uid: ../if/group
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   If the idle thread stack is less than the configured stack size for idle

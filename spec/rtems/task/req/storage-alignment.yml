@@ -7,7 +7,6 @@ links:
   uid: ../if/storage-alignment
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   The ${../if/storage-alignment:/name} constant shall expand to a constant

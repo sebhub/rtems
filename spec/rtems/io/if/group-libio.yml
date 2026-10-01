@@ -9,7 +9,6 @@ links:
   uid: /req/impl
 non-functional-type: design-group
 rationale: null
-references: []
 requirement-type: non-functional
 text: |
   The IO library shall be a software architecture component containing the file

@@ -7,7 +7,6 @@ links:
   uid: ../if/lock-destroy
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   When the ${../if/lock-destroy:/name} directive is called, the lock contained

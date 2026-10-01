@@ -14,7 +14,6 @@ links:
 non-functional-type: design
 rationale: |
   This compiler option enables workarounds for chip errata.
-references: []
 requirement-type: non-functional
 text: |
   The software product shall be compiled using the `-mfix-gr712rc` compiler

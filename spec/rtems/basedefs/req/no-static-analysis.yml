@@ -8,7 +8,6 @@ links:
 - role: interface-function
   uid: ../if/static-analysis
 rationale: null
-references: []
 requirement-type: functional
 text: |
   The define ${../if/static-analysis:/name} shall not be defined.

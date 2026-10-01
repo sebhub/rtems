@@ -7,7 +7,6 @@ links:
   uid: ../if/name-to-characters
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   When the call to ${../if/name-to-characters:/name} returned, the object

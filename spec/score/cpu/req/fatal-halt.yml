@@ -9,7 +9,6 @@ links:
   uid: ../if/fatal-halt
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   The ${../if/fatal-halt:/name} function shall halt or reset the

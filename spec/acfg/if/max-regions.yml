@@ -24,8 +24,10 @@ links:
   uid: ../constraint/memory-size
 - role: constraint
   uid: ../constraint/unlimited
+- role: reference
+  uid: /ref/rtems/c-user/config-unlimited-objects
 name: CONFIGURE_MAXIMUM_REGIONS
 notes: |
   This object class can be configured in unlimited allocation mode, see
-  ${/doc/if/config-unlimited-objects:/name}.
+  ${/ref/rtems/c-user/config-unlimited-objects:/name}.
 type: interface

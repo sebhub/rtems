@@ -9,9 +9,7 @@ links:
   uid: header
 - role: interface-ingroup
   uid: group
+- role: reference
+  uid: /ref/rtems/c-user/fatal-error-sources
 name: INTERNAL_ERROR_CORE
-references:
-- identifier: FatalErrorSources
-  name: c-user
-  type: document
 type: interface

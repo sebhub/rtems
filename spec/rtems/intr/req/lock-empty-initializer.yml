@@ -8,7 +8,6 @@ links:
   uid: ../if/lock-initializer
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   The ${../if/lock-initializer:/name} macro shall expand to an empty structure

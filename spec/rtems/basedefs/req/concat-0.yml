@@ -9,7 +9,6 @@ links:
 rationale: |
   The rules for nested use of the ## operator are arcane. The result of such
   nested macro calls is undefined.
-references: []
 requirement-type: functional
 text: |
   The macro shall result in both argument values

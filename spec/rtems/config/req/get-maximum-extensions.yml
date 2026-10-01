@@ -9,7 +9,6 @@ functional-type: function
 rationale: |
   The directive may be used to check the setting of the
   ${/acfg/if/max-user-extensions:/name} application configuration option.
-references: []
 requirement-type: functional
 text: |
   The ${../if/get-maximum-extensions:/name} directive shall return the maximum

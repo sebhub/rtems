@@ -7,7 +7,6 @@ links:
   uid: ../if/pending-events
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   The ${../if/pending-events:/name} constant shall be a constant expression

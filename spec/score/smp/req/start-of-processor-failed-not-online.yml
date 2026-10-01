@@ -7,7 +7,6 @@ links:
   uid: ../if/group
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   Processors which failed to start shall not be marked as online.

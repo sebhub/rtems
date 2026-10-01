@@ -7,7 +7,6 @@ links:
   uid: fatal-halt
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   The ${../if/fatal-halt:/name} directive shall cause a system error halt with

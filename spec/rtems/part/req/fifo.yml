@@ -7,7 +7,6 @@ links:
 - role: requirement-refinement
   uid: ../if/group
 rationale: null
-references: []
 requirement-type: functional
 text: |
   A partition shall maintain free buffers in FIFO order.

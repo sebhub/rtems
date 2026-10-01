@@ -21,12 +21,14 @@ links:
   uid: ../constraint/min-zero
 - role: constraint
   uid: ../constraint/max-uint32
+- role: reference
+  uid: /ref/rtems/c-user/mp-proxies
 name: CONFIGURE_MP_MAXIMUM_PROXIES
 notes: |
   Since a proxy is used to represent a remote task/thread which is blocking
   on this node. This configuration parameter reflects the maximum number of
   remote tasks/threads which can be blocked on objects on this node, see
-  ${/doc/if/mp-proxies:/name}.
+  ${/ref/rtems/c-user/mp-proxies:/name}.
 
   This configuration option is only evaluated if
   ${mp-appl:/name} is defined.

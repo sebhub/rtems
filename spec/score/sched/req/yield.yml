@@ -146,7 +146,6 @@ pre-conditions:
   test-epilogue: null
   test-prologue: null
 rationale: null
-references: []
 requirement-type: functional
 skip-reasons:
   HelpingNeedsHelping: |

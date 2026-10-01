@@ -24,10 +24,12 @@ links:
   uid: ../constraint/memory-size
 - role: constraint
   uid: ../constraint/stack-space
+- role: reference
+  uid: /ref/rtems/c-user/config-unlimited-objects
 name: CONFIGURE_MAXIMUM_POSIX_THREADS
 notes: |
   This object class can be configured in unlimited allocation mode, see
-  ${/doc/if/config-unlimited-objects:/name}.
+  ${/ref/rtems/c-user/config-unlimited-objects:/name}.
 
   This calculations for the required memory in the RTEMS Workspace for threads
   assume that each thread has a minimum stack size and has floating point

@@ -1,0 +1,12 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+anchor: clustered-scheduler-configuration
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+label: ConfigurationSchedulersClustered
+links:
+- role: reference-location
+  uid: ../c-user
+name: Clustered Scheduler Configuration
+path: config/scheduler-clustered.html
+type: reference-location

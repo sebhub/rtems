@@ -318,7 +318,6 @@ links:
 - role: validation
   uid: /rtems/userext/if/task-terminate
 method: by-analysis
-references: []
 text: |
   This interface is a data type definition.  The data type definition is placed
   in a tool generated ${/glossary/clanguage:/term} header file.  When the tool

@@ -10,5 +10,4 @@ links:
 - role: interface-ingroup
   uid: group
 name: _ISR_lock_Release_and_ISR_enable
-references: []
 type: interface

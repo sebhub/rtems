@@ -9,8 +9,8 @@ links:
   uid: strings
 - role: interface-ingroup
   uid: group
+- path: man.cgi?query=fls&sektion=3
+  role: reference
+  uid: /ref/man/freebsd
 name: flsl
-references:
-- identifier: https://www.freebsd.org/cgi/man.cgi?query=fls&sektion=3
-  type: url
 type: interface

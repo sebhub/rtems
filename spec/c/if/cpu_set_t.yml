@@ -10,5 +10,4 @@ links:
 - role: interface-ingroup
   uid: group
 name: cpu_set_t
-references: []
 type: interface

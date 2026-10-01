@@ -9,8 +9,8 @@ links:
   uid: time
 - role: interface-ingroup
   uid: group
+- path: basedefs/time.h.html
+  role: reference
+  uid: /ref/std/posix-2024
 name: TIMER_ABSTIME
-references:
-- identifier: https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/time.h.html
-  type: url
 type: interface

@@ -7,7 +7,6 @@ links:
   uid: init
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   Where ${/bsp/if/acfg-prerequisite-drivers:/name} is defined by the

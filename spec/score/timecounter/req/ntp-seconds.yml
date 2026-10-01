@@ -7,7 +7,6 @@ links:
   uid: ntp
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   While the timehand is updated, when the ${/glossary/ntp:/term} handler is

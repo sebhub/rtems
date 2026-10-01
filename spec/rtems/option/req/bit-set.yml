@@ -7,7 +7,6 @@ links:
   uid: ../if/group
 non-functional-type: design
 rationale: null
-references: []
 requirement-type: non-functional
 text: |
   Each non-default directive option constant shall be a power of two

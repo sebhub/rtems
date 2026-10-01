@@ -9,7 +9,6 @@ links:
   uid: get-coarse
 non-functional-type: design
 rationale: null
-references: []
 requirement-type: non-functional
 text: |
   The directives to get time values shall use a sequence lock to synchronize

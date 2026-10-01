@@ -8,7 +8,6 @@ links:
   uid: ../if/get-processor-macro
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   The ${../if/get-processor-macro:/name} directive call shall evaluate

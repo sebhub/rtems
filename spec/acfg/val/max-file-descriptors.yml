@@ -5,14 +5,13 @@ enabled-by: true
 links:
 - role: validation
   uid: ../req/max-file-descriptors
+- location: cpukit/include/rtems/confdefs/libio.h
+  role: reference
+  uid: /ref/rtems/source
+- location: cpukit/libcsupport/src/libiozeroiops.c
+  role: reference
+  uid: /ref/rtems/source
 method: by-inspection
-references:
-- identifier: cpukit/include/rtems/confdefs/libio.h
-  hash: 2PF8S7RMgdgdPEe68H37pgxQ94KGMIlb5DULb6N0RHA=
-  type: file
-- identifier: cpukit/libcsupport/src/libiozeroiops.c
-  hash: 87rsMIa1Z9n0hvw4xH06KrpdmUXetjWvHF25Z8hw1do=
-  type: file
 text: |
   Setting ${../if/max-file-descriptors:/name} to zero is mandatory for
   applications using only the pre-qualified feature set.  The reason is to get

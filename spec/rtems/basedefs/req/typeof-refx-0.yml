@@ -11,7 +11,6 @@ rationale: |
   The operand of ${../if/typeof-refx:/params[1]/name} is evaluated for
   its side effects if and only if it is an expression of variably
   modified type or the name of such a type.
-references: []
 requirement-type: functional
 text: |
   When the argument value of ${../if/typeof-refx:/params[0]/name} consists

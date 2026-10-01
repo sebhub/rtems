@@ -10,5 +10,4 @@ links:
 - role: interface-ingroup
   uid: group
 name: MP_PACKET_MINIMUM_PACKET_SIZE
-references: []
 type: interface

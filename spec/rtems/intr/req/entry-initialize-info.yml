@@ -7,7 +7,6 @@ links:
   uid: ../if/entry-initialize
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   When the ${../if/entry-initialize:/name} directive is called, the `info`

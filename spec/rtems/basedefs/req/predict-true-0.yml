@@ -13,7 +13,6 @@ rationale: |
   Note the misleading name: The macro tells the compiler to assume
   "the result is 1" not "the result is not 0" as one would expect for
   `true`.
-references: []
 requirement-type: functional
 text: |
   When the code is compiled with the GNU C compiler,

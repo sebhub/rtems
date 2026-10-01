@@ -7,7 +7,6 @@ links:
   uid: deadlock
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   While the owner of the thread queue is enqueued on another thread queue

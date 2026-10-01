@@ -9,9 +9,7 @@ links:
   uid: header
 - role: interface-ingroup
   uid: group
+- role: reference
+  uid: /ref/rtems/c-user/internal-errors
 name: INTERNAL_ERROR_IDLE_THREAD_STACK_TOO_SMALL
-references:
-- identifier: internal_errors
-  name: c-user
-  type: document
 type: interface

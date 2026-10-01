@@ -7,7 +7,6 @@ links:
   uid: errata-tn-0018-macros
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   The `TN0018_FIX` macro shall provide an instruction sequence for

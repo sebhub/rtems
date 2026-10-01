@@ -22,6 +22,8 @@ links:
   uid: group-general
 - role: constraint
   uid: ../constraint/option-not-pre-qualified
+- role: reference
+  uid: /ref/rtems/c-user/config-unlimited-objects
 name: CONFIGURE_UNIFIED_WORK_AREAS
 notes: |
   Having separate pools does have some advantages in the event a task blows a
@@ -30,7 +32,7 @@ notes: |
   pool is very undesirable.
 
   In high memory environments, this is desirable when you want to use the
-  ${/doc/if/config-unlimited-objects:/name} option.  You will be able to create objects
+  ${/ref/rtems/c-user/config-unlimited-objects:/name} option.  You will be able to create objects
   until you run out of all available memory rather then just until you run out
   of RTEMS Workspace.
 type: interface

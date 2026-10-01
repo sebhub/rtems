@@ -9,7 +9,6 @@ links:
   uid: ../if/group
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   If the target processor of a job is not in the initial, ready to start

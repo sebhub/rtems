@@ -9,7 +9,6 @@ links:
   uid: ../if/maximum-priority-impl
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   The ${../if/maximum-priority:/name} runtime constant shall be equal to the

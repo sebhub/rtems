@@ -9,7 +9,6 @@ links:
 rationale: |
   See also ${../if/declare-global-symbol:/name}.
   *File scope* excludes for example a placement in a function body.
-references: []
 requirement-type: functional
 text: |
   When the macro ${../if/define-global-symbol:/name} appears at file scope,

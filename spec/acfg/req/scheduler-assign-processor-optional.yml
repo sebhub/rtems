@@ -9,7 +9,6 @@ links:
 - role: requirement-refinement
   uid: scheduler-assign-attributes
 rationale: null
-references: []
 requirement-type: functional
 text: |
   When the ${../if/scheduler-assign-processor-optional:/name} define is used

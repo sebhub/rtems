@@ -7,7 +7,6 @@ links:
   uid: ../if/store-16
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   The ${../if/store-16:/name} directive shall store the unsigned 16-bit

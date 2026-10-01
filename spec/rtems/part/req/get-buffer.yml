@@ -107,7 +107,6 @@ pre-conditions:
   test-prologue: |
     rtems_status_code sc;
 rationale: null
-references: []
 requirement-type: functional
 skip-reasons: {}
 test-action: |

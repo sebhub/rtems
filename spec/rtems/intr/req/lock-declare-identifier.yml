@@ -7,7 +7,6 @@ links:
   uid: ../if/lock-declare
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   The ${../if/lock-declare:/name} macro shall expand to an object declaration

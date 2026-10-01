@@ -15,7 +15,6 @@ links:
   uid: ../if/group
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   Where the system needs inter-processor interrupts, if a thread dispatch is

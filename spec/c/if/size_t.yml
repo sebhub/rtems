@@ -9,8 +9,8 @@ links:
   uid: stddef
 - role: interface-ingroup
   uid: group
+- path: types/size_t
+  role: reference
+  uid: /ref/std/cppreference-c
 name: size_t
-references:
-- identifier: https://en.cppreference.com/w/c/types/size_t
-  type: url
 type: interface

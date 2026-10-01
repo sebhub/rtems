@@ -9,7 +9,6 @@ links:
 rationale: |
   Note that the ${../if/aligned:/name} macro can often only increases the
   alignment but under some circumstances, it can also decrease the alignment.
-references: []
 requirement-type: functional
 text: |
   When the argument ${../if/aligned:/params[0]/name} is a

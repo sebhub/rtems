@@ -9,7 +9,6 @@ links:
   uid: ../if/group
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   Where the configured scheduler does support exactly one processor, where the

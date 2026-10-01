@@ -9,8 +9,8 @@ links:
   uid: domain
 - role: interface-ingroup
   uid: group
+- path: preprocessor/replace
+  role: reference
+  uid: /ref/std/cppreference-c
 name: __STDC_VERSION__
-references:
-- identifier: https://en.cppreference.com/w/c/preprocessor/replace
-  type: url
 type: interface

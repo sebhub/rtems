@@ -7,7 +7,6 @@ links:
   uid: root
 non-functional-type: quality
 rationale: null
-references: []
 requirement-type: non-functional
 text: |
   The tests shall be executed on the ${/glossary/target:/plural}.

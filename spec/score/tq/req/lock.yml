@@ -9,7 +9,6 @@ links:
   uid: ../if/group
 non-functional-type: design
 rationale: null
-references: []
 requirement-type: non-functional
 text: |
   The state of each thread queue object shall be protected by an

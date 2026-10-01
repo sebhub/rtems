@@ -7,11 +7,10 @@ links:
   uid: /req/errata
 - role: requirement-refinement
   uid: ../if/group
+- role: reference
+  uid: /ref/ip/gaisler/grlib-tn-0021-1-3
 non-functional-type: design
 rationale: null
-references:
-- identifier: https://www.gaisler.com/doc/antn/GRLIB-TN-0021.pdf
-  type: url
 requirement-type: non-functional
 text: |
   The software product shall take the seven erratas of GRLIB-TN0021 (Level-2

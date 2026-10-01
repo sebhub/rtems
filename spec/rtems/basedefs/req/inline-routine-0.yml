@@ -16,7 +16,6 @@ rationale: |
   if you want to put an inline function definition into a header
   file, consider `extern inline` instead (see the compiler
   documentation).
-references: []
 requirement-type: functional
 text: |
   The ${../if/inline-routine:/name} macro shall evaluate

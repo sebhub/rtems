@@ -9,8 +9,8 @@ links:
   uid: stdint
 - role: interface-ingroup
   uid: group
+- path: types/limits
+  role: reference
+  uid: /ref/std/cppreference-c
 name: SIZE_MAX
-references:
-- identifier: https://en.cppreference.com/w/c/types/limits
-  type: url
 type: interface

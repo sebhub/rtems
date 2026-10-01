@@ -5,21 +5,21 @@ copyrights:
 default-value: |
   The default value is
 
-  * `"MEDF"` for the ${/doc/if/scheduler-smp-edf:/name},
+  * `"MEDF"` for the ${/ref/rtems/c-user/scheduler-smp-edf:/name},
 
-  * `"MPA "` for the ${/doc/if/scheduler-smp-priority-affinity:/name},
+  * `"MPA "` for the ${/ref/rtems/c-user/scheduler-smp-priority-affinity:/name},
 
-  * `"MPD "` for the ${/doc/if/scheduler-smp-priority:/name},
+  * `"MPD "` for the ${/ref/rtems/c-user/scheduler-smp-priority:/name},
 
-  * `"MPS "` for the ${/doc/if/scheduler-smp-priority-simple:/name},
+  * `"MPS "` for the ${/ref/rtems/c-user/scheduler-smp-priority-simple:/name},
 
-  * `"UCBS"` for the ${/doc/if/scheduler-cbs:/name},
+  * `"UCBS"` for the ${/ref/rtems/c-user/scheduler-cbs:/name},
 
-  * `"UEDF"` for the ${/doc/if/scheduler-edf:/name},
+  * `"UEDF"` for the ${/ref/rtems/c-user/scheduler-edf:/name},
 
-  * `"UPD "` for the ${/doc/if/scheduler-priority:/name}, and
+  * `"UPD "` for the ${/ref/rtems/c-user/scheduler-priority:/name}, and
 
-  * `"UPS "` for the ${/doc/if/scheduler-priority-simple:/name}.
+  * `"UPS "` for the ${/ref/rtems/c-user/scheduler-priority-simple:/name}.
 description: |
   The value of this configuration option defines the name of the default
   scheduler.
@@ -33,6 +33,22 @@ links:
   uid: group-schedgeneral
 - role: constraint
   uid: ../constraint/type-rtems-name
+- role: reference
+  uid: /ref/rtems/c-user/scheduler-smp-edf
+- role: reference
+  uid: /ref/rtems/c-user/scheduler-smp-priority-affinity
+- role: reference
+  uid: /ref/rtems/c-user/scheduler-smp-priority
+- role: reference
+  uid: /ref/rtems/c-user/scheduler-smp-priority-simple
+- role: reference
+  uid: /ref/rtems/c-user/scheduler-cbs
+- role: reference
+  uid: /ref/rtems/c-user/scheduler-edf
+- role: reference
+  uid: /ref/rtems/c-user/scheduler-priority
+- role: reference
+  uid: /ref/rtems/c-user/scheduler-priority-simple
 name: CONFIGURE_SCHEDULER_NAME
 notes: |
   This scheduler configuration option is an advanced configuration option.

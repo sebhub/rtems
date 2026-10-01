@@ -12,7 +12,6 @@ rationale: |
   safe access to processor-specific data structures.  It is used for example to
   implement the Epoch Based Reclamation in libbsd.  The libbsd is a port of
   FreeBSD kernel modules to RTEMS.
-references: []
 requirement-type: non-functional
 text: |
   Pinning of threads to a processor shall be supported.

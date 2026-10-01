@@ -28,10 +28,12 @@ links:
   uid: ../constraint/memory-size
 - role: constraint
   uid: ../constraint/unlimited
+- role: reference
+  uid: /ref/rtems/c-user/config-unlimited-objects
 name: CONFIGURE_MAXIMUM_POSIX_KEY_VALUE_PAIRS
 notes: |
   This object class can be configured in unlimited allocation mode, see
-  ${/doc/if/config-unlimited-objects:/name}.
+  ${/ref/rtems/c-user/config-unlimited-objects:/name}.
 
   A key value pair is created by ${/c/if/pthread_setspecific:/name} if the value
   is not ${/c/if/null:/name}, otherwise it is deleted.

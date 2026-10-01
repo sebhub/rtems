@@ -8,7 +8,6 @@ links:
   uid: ../if/dequalify-depthx
 rationale: |
   ${../if/dequalify-depthx:/name} checks for incompatible pointer types.
-references: []
 requirement-type: functional
 text: |
   When the argument value of ${../if/dequalify-depthx:/params[0]/name} consists

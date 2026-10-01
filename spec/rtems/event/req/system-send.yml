@@ -9,7 +9,6 @@ links:
 - role: function-implementation
   uid: send-receive
 rationale: null
-references: []
 requirement-type: functional
 text: |
   The ${../if/system-send:/name} directive shall send events to the system

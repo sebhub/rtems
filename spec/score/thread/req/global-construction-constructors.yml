@@ -7,7 +7,6 @@ links:
   uid: global-construction
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   When the ${/glossary/global-construction:/term} is done, the global

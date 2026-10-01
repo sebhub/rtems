@@ -10,7 +10,6 @@ links:
   uid: /if/group
 non-functional-type: design-group
 rationale: null
-references: []
 requirement-type: non-functional
 text: |
   The ${/glossary/api:/term} shall contain the application configuration

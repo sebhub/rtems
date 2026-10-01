@@ -9,7 +9,6 @@ links:
   uid: init-task-construct-storage-size
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   Where the application was configured to construct the RTEMS initialization

@@ -17,6 +17,8 @@ links:
   uid: group-general
 - role: constraint
   uid: ../constraint/init-userext-table
+- role: reference
+  uid: /ref/rtems/c-user/terminate
 name: CONFIGURE_INITIAL_EXTENSIONS
 notes: |
   The value of this configuration option is placed before the entries of
@@ -24,5 +26,5 @@ notes: |
   initial user extensions.
 
   It is recommended that applications provide a fatal extension to customize
-  the ${/doc/if/terminate:/name}.
+  the ${/ref/rtems/c-user/terminate:/name}.
 type: interface

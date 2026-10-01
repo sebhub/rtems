@@ -8,11 +8,12 @@ links:
   uid: ../if/scheduler-priority-affinity-smp
 - role: requirement-refinement
   uid: group
+- role: reference
+  uid: /ref/rtems/c-user/scheduler-smp-priority-affinity
 rationale: null
-references: []
 requirement-type: functional
 text: |
   The application configuration option shall make the
-  ${/doc/if/scheduler-smp-priority-affinity:/name} algorithm available to the
+  ${/ref/rtems/c-user/scheduler-smp-priority-affinity:/name} algorithm available to the
   application.
 type: requirement

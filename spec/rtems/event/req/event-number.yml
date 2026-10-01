@@ -7,7 +7,6 @@ links:
   uid: group
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   Let {math}`J\in\{0, 1, ..., 31\}`.  The event number {math}`J` shall be

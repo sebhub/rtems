@@ -5,11 +5,10 @@ enabled-by: true
 links:
 - role: validation
   uid: ../req/malloc-bsp-supports-sbrk
+- location: cpukit/include/rtems/confdefs/malloc.h
+  role: reference
+  uid: /ref/rtems/source
 method: by-inspection
-references:
-- identifier: cpukit/include/rtems/confdefs/malloc.h
-  hash: tz06hfc6SfN7RsMWx7iMUDXnHav1AZUFS-2JdD0CfUY=
-  type: file
 text: |
   Inspection of the referenced ${/glossary/sourcecode:/term} file showed that
   the ${../req/malloc-bsp-supports-sbrk:/spec} requirement is implemented as

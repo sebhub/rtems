@@ -7,7 +7,6 @@ links:
 - role: interface-function
   uid: ../if/get-ticks-per-second-macro
 rationale: null
-references: []
 requirement-type: functional
 text: |
   The directive shall return the number of configured clock ticks per second as

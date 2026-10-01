@@ -7,7 +7,6 @@ links:
   uid: global-construction
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   Where the Classic API user initialization task is configured, the

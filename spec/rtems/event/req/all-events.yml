@@ -7,7 +7,6 @@ links:
   uid: ../if/all-events
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   The ${../if/all-events:/name} constant shall be a constant expression

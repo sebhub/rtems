@@ -26,10 +26,12 @@ links:
   uid: ../constraint/unlimited
 - role: constraint
   uid: ../constraint/posix-api
+- role: reference
+  uid: /ref/rtems/c-user/config-unlimited-objects
 name: CONFIGURE_MAXIMUM_POSIX_TIMERS
 notes: |
   This object class can be configured in unlimited allocation mode, see
-  ${/doc/if/config-unlimited-objects:/name}.
+  ${/ref/rtems/c-user/config-unlimited-objects:/name}.
 
   Timers are only available if RTEMS was built with the POSIX API build
   configuration option enabled.

@@ -9,7 +9,6 @@ links:
   uid: init
 functional-type: function
 rationale: null
-references: []
 requirement-type: functional
 text: |
   Where ${/bsp/if/acfg-initial-extension:/name} is defined by the

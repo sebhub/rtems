@@ -9,7 +9,6 @@ functional-type: function
 rationale: |
   The directive may be used to check the setting of the
   ${/acfg/if/ticks-per-time-slice:/name} application configuration option.
-references: []
 requirement-type: functional
 text: |
   The ${../if/get-ticks-per-timeslice:/name} directive shall return the number

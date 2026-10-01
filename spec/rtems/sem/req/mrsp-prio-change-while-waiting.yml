@@ -19,7 +19,6 @@ rationale: |
   enqueued helps to detect application design issues.  For the implementation
   it does not matter if the ${/glossary/priority-current:/term} is higher than
   a ceiling priority.
-references: []
 requirement-type: functional
 text: |
   While a thread is waiting to obtain a MrsP semaphore, while its

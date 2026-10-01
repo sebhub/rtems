@@ -13,5 +13,4 @@ links:
 - role: proxy-member
   uid: io-header
 path: grlib/io.h
-references: []
 type: interface

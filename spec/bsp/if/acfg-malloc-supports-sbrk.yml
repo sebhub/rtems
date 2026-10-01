@@ -10,5 +10,4 @@ links:
 - role: interface-ingroup
   uid: group
 name: CONFIGURE_MALLOC_BSP_SUPPORTS_SBRK
-references: []
 type: interface
