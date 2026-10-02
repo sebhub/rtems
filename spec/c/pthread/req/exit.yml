@@ -1,0 +1,705 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: action
+links:
+- role: interface-function
+  uid: ../if/exit
+- role: reference
+  uid: /ref/std/posix-2024/pthread-exit
+- role: reference
+  uid: /ref/std/posix-2024/cancelability-states
+- role: reference
+  uid: /ref/std/posix-2024/cancellation-points
+- role: reference
+  uid: /ref/rtems/posix-users/pthread-exit
+- role: reference
+  uid: /ref/rtems/posix-users/pthread-detach
+- role: reference
+  uid: /ref/rtems/c-user/task-life-states
+- role: reference
+  uid: /ref/rtems/c-user/thread-termination-extension
+post-conditions:
+- name: FatalError
+  states:
+  - name: 'Yes'
+    test-code: |
+      T_eq_u32( ctx->fatal_extension_calls, 1 );
+    text: |
+      The fatal error with a fatal source of
+      ${/score/interr/if/internal-error-core:/name} and a fatal code of
+      ${/score/interr/if/bad-thread-dispatch-disable-level:/name} shall occur by the
+      ${../if/exit:/name} call.
+  - name: Nop
+    test-code: |
+      T_eq_u32( ctx->fatal_extension_calls, 0 );
+    text: |
+      The ${../if/exit:/name} call shall not cause a fatal error.
+  test-epilogue: null
+  test-prologue: null
+- name: TerminateExtensions
+  states:
+  - name: 'Yes'
+    test-code: |
+      T_eq_u32( ctx->terminate_extension_calls, 1 );
+    text: |
+      The thread terminate ${/glossary/userextensions:/term} shall be invoked by the
+      ${../if/exit:/name} call.
+  - name: Nop
+    test-code: |
+      T_eq_u32( ctx->terminate_extension_calls, 0 );
+    text: |
+      The thread terminate ${/glossary/userextensions:/term} shall not be invoked by
+      the ${../if/exit:/name} call.
+  test-epilogue: null
+  test-prologue: null
+- name: Restart
+  states:
+  - name: Nop
+    test-code: |
+      T_eq_u32( ctx->restarts, 0 );
+    text: |
+      The ${/glossary/executingtask:/term} shall not be restarted by the
+      ${../if/exit:/name} call.
+  test-epilogue: null
+  test-prologue: null
+- name: Thread
+  states:
+  - name: Joinable
+    test-code: |
+      T_eq_int( pthread_join( ctx->worker_thread, &ctx->exit_value ), 0 );
+      ctx->worker_reclaimed = true;
+    text: |
+      The ${/glossary/executingtask:/term} shall be a terminated
+      ${../glossary/joinable-thread:/term}.
+  - name: Reclaimed
+    test-code: |
+      T_eq_int( pthread_join( ctx->worker_thread, NULL ), ESRCH );
+      ctx->worker_reclaimed = true;
+    text: |
+      The thread identifier of the ${/glossary/executingtask:/term} shall be
+      associated with no thread.
+  - name: Nop
+    test-code: |
+      T_true( IsTaskSuspended( ctx->worker_id ) );
+    text: |
+      The ${/glossary/executingtask:/term} shall not be terminated by the
+      ${../if/exit:/name} call.
+  test-epilogue: null
+  test-prologue: null
+- name: Joiner
+  states:
+  - name: Joined
+    test-code: |
+      T_true( ctx->join_returned );
+      T_eq_int( ctx->join_status, 0 );
+      ctx->exit_value = ctx->join_value;
+    text: |
+      The thread which waits to join the ${/glossary/executingtask:/term} shall be
+      joined with that task.
+  - name: Nop
+    test-code: |
+      T_false( ctx->join_returned );
+    text: |
+      The thread which waits to join the ${/glossary/executingtask:/term} shall not
+      be joined with that task.
+  test-epilogue: null
+  test-prologue: null
+- name: ExitValue
+  states:
+  - name: Value
+    test-code: |
+      T_eq_ptr( ctx->exit_value, ctx->value );
+    text: |
+      The ${../glossary/thread-exit-value:/term} of the
+      ${/glossary/executingtask:/term} shall be the value of the
+      ${../if/exit:/params[0]/name} parameter.
+  test-epilogue: null
+  test-prologue: null
+pre-conditions:
+- name: Value
+  states:
+  - name: 'Null'
+    test-code: |
+      ctx->value = NULL;
+    text: |
+      While the ${../if/exit:/params[0]/name} parameter is equal to
+      ${/c/if/null:/name}.
+  - name: Other
+    test-code: |
+      ctx->value = &exit_object;
+    text: |
+      While the ${../if/exit:/params[0]/name} parameter is not equal to
+      ${/c/if/null:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: Joinable
+  states:
+  - name: 'Yes'
+    test-code: |
+      ctx->joinable = true;
+    text: |
+      While the ${/glossary/executingtask:/term} is a
+      ${../glossary/joinable-thread:/term}.
+  - name: 'No'
+    test-code: |
+      ctx->joinable = false;
+    text: |
+      While the ${/glossary/executingtask:/term} is a
+      ${../glossary/detached-thread:/term}.
+  test-epilogue: null
+  test-prologue: null
+- name: Joined
+  states:
+  - name: 'Yes'
+    test-code: |
+      ctx->joined = true;
+    text: |
+      While a thread waits to join the ${/glossary/executingtask:/term}.
+  - name: 'No'
+    test-code: |
+      ctx->joined = false;
+    text: |
+      While no thread waits to join the ${/glossary/executingtask:/term}.
+  test-epilogue: null
+  test-prologue: null
+- name: CancelState
+  states:
+  - name: Enable
+    test-code: |
+      ctx->cancel_state = PTHREAD_CANCEL_ENABLE;
+    text: |
+      While the ${../glossary/thread-cancel-state:/term} of the
+      ${/glossary/executingtask:/term} is ${../if/cancel-enable:/name}.
+  - name: Disable
+    test-code: |
+      ctx->cancel_state = PTHREAD_CANCEL_DISABLE;
+    text: |
+      While the ${../glossary/thread-cancel-state:/term} of the
+      ${/glossary/executingtask:/term} is ${../if/cancel-disable:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: CancelType
+  states:
+  - name: Deferred
+    test-code: |
+      ctx->cancel_type = PTHREAD_CANCEL_DEFERRED;
+    text: |
+      While the ${../glossary/thread-cancel-type:/term} of the
+      ${/glossary/executingtask:/term} is ${../if/cancel-deferred:/name}.
+  - name: Asynchronous
+    test-code: |
+      ctx->cancel_type = PTHREAD_CANCEL_ASYNCHRONOUS;
+    text: |
+      While the ${../glossary/thread-cancel-type:/term} of the
+      ${/glossary/executingtask:/term} is ${../if/cancel-asynchronous:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: CancelPending
+  states:
+  - name: 'Yes'
+    test-code: |
+      ctx->cancel_pending = true;
+    text: |
+      While a ${../glossary/thread-cancel-request:/term} is pending for the
+      ${/glossary/executingtask:/term}.
+  - name: 'No'
+    test-code: |
+      ctx->cancel_pending = false;
+    text: |
+      While no ${../glossary/thread-cancel-request:/term} is pending for the
+      ${/glossary/executingtask:/term}.
+  test-epilogue: null
+  test-prologue: null
+- name: RestartPending
+  states:
+  - name: 'Yes'
+    test-code: |
+      ctx->restart_pending = true;
+    text: |
+      While a restart of the ${/glossary/executingtask:/term} by
+      ${/rtems/task/if/restart:/name} is pending.
+  - name: 'No'
+    test-code: |
+      ctx->restart_pending = false;
+    text: |
+      While no restart of the ${/glossary/executingtask:/term} is pending.
+  test-epilogue: null
+  test-prologue: null
+- name: ThreadDispatch
+  states:
+  - name: Enabled
+    test-code: |
+      ctx->dispatch_disabled = false;
+    text: |
+      While thread dispatching is enabled for the ${/glossary/executingtask:/term}.
+  - name: Disabled
+    test-code: |
+      ctx->dispatch_disabled = true;
+    text: |
+      While thread dispatching is disabled for the ${/glossary/executingtask:/term}.
+  test-epilogue: null
+  test-prologue: null
+rationale: |
+  Dimension Value covers the ${../if/exit:/params[0]/name} parameter, 2 states.
+  ${/ref/std/posix-2024/pthread-exit:/name} makes the value available to a
+  successful join. It names no value which the call rejects.
+
+  Dimension Joinable covers whether the executing task is a
+  ${../glossary/joinable-thread:/term}, 2 states. The section
+  ${/ref/rtems/c-user/task-life-states:/name} of the RTEMS Classic API Guide
+  states that a Classic API task is created not detached. It states that
+  ${../if/detach:/name} detaches the calling task and that ${../if/exit:/name}
+  does not change the detached state.
+
+  Dimension Joined covers a thread which waits to join the executing task, 2
+  states. The section ${/ref/rtems/posix-users/pthread-exit:/name} of the RTEMS
+  POSIX API Guide states that the call makes the value available to any
+  successful join. The notes of ${../if/detach:/name} in the section
+  ${/ref/rtems/posix-users/pthread-detach:/name} state that a thread which waits
+  stays joined after a detach.
+
+  Dimension CancelState covers the ${../glossary/thread-cancel-state:/term} of
+  the executing task, 2 states. Dimension CancelType covers its
+  ${../glossary/thread-cancel-type:/term}, 2 states.
+  ${/ref/std/posix-2024/cancelability-states:/name} defines both sets of states.
+  The section ${/ref/rtems/c-user/task-life-states:/name} of the RTEMS Classic
+  API Guide states that a task with a protected life may still terminate itself.
+
+  Dimension CancelPending covers a pending
+  ${../glossary/thread-cancel-request:/term} of the executing task, 2 states.
+  ${/ref/std/posix-2024/cancellation-points:/name} does not list
+  ${../if/exit:/name} as a ${../glossary/cancellation-point:/term}. The call
+  therefore does not act upon the request, and the
+  ${../glossary/thread-exit-value:/term} is the value of the
+  ${../if/exit:/params[0]/name} parameter.
+
+  Dimension RestartPending covers a pending restart of the executing task, 2
+  states. The item /rtems/task/req/restart states that a terminating task which
+  restarts terminates.
+
+  Dimension ThreadDispatch covers thread dispatching for the executing task, 2
+  states. The call does not return, so it performs a thread dispatch. The
+  interface constraints of the call then give the fatal error.
+
+  The section ${/ref/rtems/c-user/thread-termination-extension:/name} of the
+  RTEMS Classic API Guide states that a call of ${../if/exit:/name} invokes the
+  thread terminate user extensions.
+
+  The pre-qualified library contains no function which creates a POSIX thread.
+  The calling task is therefore a Classic API task. The library contains no
+  function which installs a cancellation cleanup handler or a thread-specific
+  data destructor, so the call runs neither.
+
+  A task with the enabled state and the asynchronous type acted upon each request
+  when the request was made. The request is then never pending, so the map skips
+  these variants.
+requirement-type: functional
+skip-reasons:
+  ActedUpon: |
+    A task with the ${../if/cancel-enable:/name} state and the
+    ${../if/cancel-asynchronous:/name} type acts upon a request when the request is
+    made, so no request is pending.
+test-action: |
+  ctx->worker_id = CreateTask( "WORK", PRIO_HIGH );
+  StartTask( ctx->worker_id, Worker, ctx );
+
+  if ( ctx->joined ) {
+    ctx->joiner_id = CreateTask( "JOIN", PRIO_HIGH );
+    StartTask( ctx->joiner_id, Joiner, ctx );
+  }
+
+  ResumeTask( ctx->worker_id );
+test-brief: null
+test-cleanup: |
+  if ( ctx->joined ) {
+    DeleteTask( ctx->joiner_id );
+  }
+
+  if ( !ctx->worker_reclaimed ) {
+    DeleteTask( ctx->worker_id );
+  }
+test-context:
+- brief: |
+    This member contains the identifier of the worker task.
+  description: null
+  member: |
+    rtems_id worker_id
+- brief: |
+    This member contains the thread identifier of the worker task.
+  description: null
+  member: |
+    pthread_t worker_thread
+- brief: |
+    This member contains the identifier of the joiner task.
+  description: null
+  member: |
+    rtems_id joiner_id
+- brief: |
+    This member contains the identifier of the user extension set.
+  description: null
+  member: |
+    rtems_id extension_id
+- brief: |
+    This member contains the value of the ${../if/exit:/params[0]/name} parameter.
+  description: null
+  member: |
+    void *value
+- brief: |
+    This member is true, if the worker task shall be a
+    ${../glossary/joinable-thread:/term}.
+  description: null
+  member: |
+    bool joinable
+- brief: |
+    This member is true, if the joiner task shall wait to join the worker task.
+  description: null
+  member: |
+    bool joined
+- brief: |
+    This member contains the ${../glossary/thread-cancel-state:/term} which the
+    worker task sets before the call.
+  description: null
+  member: |
+    int cancel_state
+- brief: |
+    This member contains the ${../glossary/thread-cancel-type:/term} which the
+    worker task sets before the call.
+  description: null
+  member: |
+    int cancel_type
+- brief: |
+    This member is true, if a ${../glossary/thread-cancel-request:/term} shall be
+    pending.
+  description: null
+  member: |
+    bool cancel_pending
+- brief: |
+    This member is true, if a restart request shall be pending.
+  description: null
+  member: |
+    bool restart_pending
+- brief: |
+    This member is true, if the worker task shall disable thread dispatching before
+    the call.
+  description: null
+  member: |
+    bool dispatch_disabled
+- brief: |
+    This member is true, if the worker task started.
+  description: null
+  member: |
+    bool worker_started
+- brief: |
+    This member is true, if the test reclaimed the worker task.
+  description: null
+  member: |
+    bool worker_reclaimed
+- brief: |
+    This member contains the count of restarts of the worker task.
+  description: null
+  member: |
+    uint32_t restarts
+- brief: |
+    This member contains the count of fatal extension calls.
+  description: null
+  member: |
+    uint32_t fatal_extension_calls
+- brief: |
+    This member contains the count of thread terminate extension calls for the
+    worker task.
+  description: null
+  member: |
+    uint32_t terminate_extension_calls
+- brief: |
+    This member is true, if the ${../if/join:/name} call of the joiner task
+    returned.
+  description: null
+  member: |
+    bool join_returned
+- brief: |
+    This member contains the return value of the ${../if/join:/name} call of the
+    joiner task.
+  description: null
+  member: |
+    int join_status
+- brief: |
+    This member contains the value which the ${../if/join:/name} call of the joiner
+    task stored.
+  description: null
+  member: |
+    void *join_value
+- brief: |
+    This member contains the ${../glossary/thread-exit-value:/term} of the worker
+    task.
+  description: null
+  member: |
+    void *exit_value
+test-context-support: null
+test-description: null
+test-header: null
+test-includes:
+- errno.h
+- pthread.h
+- rtems.h
+- rtems/score/threaddispatch.h
+- rtems/score/threadimpl.h
+test-local-includes:
+- tx-support.h
+test-prepare: |
+  ctx->worker_started = false;
+  ctx->worker_reclaimed = false;
+  ctx->restarts = 0;
+  ctx->fatal_extension_calls = 0;
+  ctx->terminate_extension_calls = 0;
+  ctx->join_returned = false;
+  ctx->join_status = -1;
+  ctx->join_value = NULL;
+  ctx->exit_value = NULL;
+test-setup:
+  brief: null
+  code: |
+    rtems_status_code sc;
+
+    sc = rtems_extension_create(
+      rtems_build_name( 'T', 'E', 'S', 'T' ),
+      &extensions,
+      &ctx->extension_id
+    );
+    T_rsc_success( sc );
+
+    SetFatalHandler( Fatal, ctx );
+    SetSelfPriority( PRIO_NORMAL );
+  description: null
+test-stop: null
+test-support: |
+  typedef ${.:/test-context-type} Context;
+
+  static int exit_object;
+
+  static void Worker( rtems_task_argument arg )
+  {
+    Context *ctx;
+
+    ctx = (Context *) arg;
+
+    if ( ctx->worker_started ) {
+      ++ctx->restarts;
+      SuspendSelf();
+    }
+
+    ctx->worker_started = true;
+    ctx->worker_thread = pthread_self();
+    DisableCancelability( NULL, NULL );
+    SuspendSelf();
+
+    if ( !ctx->joinable ) {
+      T_eq_int( pthread_detach( ctx->worker_thread ), 0 );
+    }
+
+    RequestLifeChangesWithinISR(
+      ctx->worker_id,
+      ctx,
+      ctx->restart_pending,
+      ctx->cancel_pending
+    );
+    SetCancelability( ctx->cancel_state, ctx->cancel_type );
+
+    if ( ctx->dispatch_disabled ) {
+      _Thread_Dispatch_disable();
+    }
+
+    pthread_exit( ctx->value );
+  }
+
+  static void Joiner( rtems_task_argument arg )
+  {
+    Context *ctx;
+
+    ctx = (Context *) arg;
+    ctx->join_status = pthread_join( ctx->worker_thread, &ctx->join_value );
+    ctx->join_returned = true;
+    SuspendSelf();
+  }
+
+  static void Fatal(
+    rtems_fatal_source source,
+    rtems_fatal_code   code,
+    void              *arg
+  )
+  {
+    Context         *ctx;
+    Per_CPU_Control *cpu_self;
+
+    ctx = arg;
+    ++ctx->fatal_extension_calls;
+
+    T_eq_int( source, INTERNAL_ERROR_CORE );
+    T_eq_ulong( code, INTERNAL_ERROR_BAD_THREAD_DISPATCH_DISABLE_LEVEL );
+    T_assert_eq_int( ctx->fatal_extension_calls, 1 );
+
+    SuspendSelf();
+
+    _ISR_Set_level( 0 );
+    cpu_self = _Per_CPU_Get();
+    _Thread_Dispatch_unnest( cpu_self );
+    _Thread_Dispatch_direct_no_return( cpu_self );
+  }
+
+  static void ThreadTerminate( rtems_tcb *executing )
+  {
+    Context *ctx;
+
+    ctx = T_fixture_context();
+
+    if ( executing->Object.id == ctx->worker_id ) {
+      ++ctx->terminate_extension_calls;
+    }
+  }
+
+  static const rtems_extensions_table extensions = {
+    .thread_terminate = ThreadTerminate
+  };
+test-target: testsuites/validation/tc-pthread-exit.c
+test-teardown:
+  brief: null
+  code: |
+    rtems_status_code sc;
+
+    sc = rtems_extension_delete( ctx->extension_id );
+    T_rsc_success( sc );
+
+    SetFatalHandler( NULL, NULL );
+    RestoreRunnerPriority();
+  description: null
+text: |
+  ${.:text-template}
+transition-map:
+- enabled-by: true
+  post-conditions:
+    FatalError: Nop
+    TerminateExtensions: 'Yes'
+    Restart: Nop
+    Thread: Joinable
+    Joiner: N/A
+    ExitValue: Value
+  pre-conditions:
+    Value: all
+    Joinable:
+    - 'Yes'
+    Joined:
+    - 'No'
+    CancelState: all
+    CancelType: all
+    CancelPending: all
+    RestartPending: all
+    ThreadDispatch:
+    - Enabled
+- enabled-by: true
+  post-conditions:
+    FatalError: Nop
+    TerminateExtensions: 'Yes'
+    Restart: Nop
+    Thread: Reclaimed
+    Joiner: Joined
+    ExitValue: Value
+  pre-conditions:
+    Value: all
+    Joinable: all
+    Joined:
+    - 'Yes'
+    CancelState: all
+    CancelType: all
+    CancelPending: all
+    RestartPending: all
+    ThreadDispatch:
+    - Enabled
+- enabled-by: true
+  post-conditions:
+    FatalError: Nop
+    TerminateExtensions: 'Yes'
+    Restart: Nop
+    Thread: Reclaimed
+    Joiner: N/A
+    ExitValue: N/A
+  pre-conditions:
+    Value: all
+    Joinable:
+    - 'No'
+    Joined:
+    - 'No'
+    CancelState: all
+    CancelType: all
+    CancelPending: all
+    RestartPending: all
+    ThreadDispatch:
+    - Enabled
+- enabled-by: true
+  post-conditions:
+    FatalError: 'Yes'
+    TerminateExtensions: Nop
+    Restart: Nop
+    Thread: Nop
+    Joiner: Nop
+    ExitValue: N/A
+  pre-conditions:
+    Value: all
+    Joinable: all
+    Joined:
+    - 'Yes'
+    CancelState: all
+    CancelType: all
+    CancelPending: all
+    RestartPending: all
+    ThreadDispatch:
+    - Disabled
+- enabled-by: true
+  post-conditions:
+    FatalError: 'Yes'
+    TerminateExtensions: Nop
+    Restart: Nop
+    Thread: Nop
+    Joiner: N/A
+    ExitValue: N/A
+  pre-conditions:
+    Value: all
+    Joinable: all
+    Joined:
+    - 'No'
+    CancelState: all
+    CancelType: all
+    CancelPending: all
+    RestartPending: all
+    ThreadDispatch:
+    - Disabled
+- enabled-by: true
+  post-conditions: ActedUpon
+  pre-conditions:
+    Value: all
+    Joinable: all
+    Joined: all
+    CancelState:
+    - Enable
+    CancelType:
+    - Asynchronous
+    CancelPending:
+    - 'Yes'
+    RestartPending: all
+    ThreadDispatch: all
+- enabled-by: true
+  post-conditions: ActedUpon
+  pre-conditions:
+    Value: all
+    Joinable: all
+    Joined: all
+    CancelState:
+    - Enable
+    CancelType:
+    - Asynchronous
+    CancelPending:
+    - 'No'
+    RestartPending:
+    - 'Yes'
+    ThreadDispatch: all
+type: requirement
