@@ -1,0 +1,40 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Terminate the calling ${../glossary/thread:/term}.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+  default:
+    attributes: ${/rtems/basedefs/if/no-return:/name}
+    body: null
+    params:
+    - void *${.:/params[0]/name}
+    return: void
+  variants: []
+description: null
+enabled-by: true
+index-entries: []
+interface-type: function
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+- role: constraint
+  uid: /constraint/directive-ctx-task
+- role: constraint
+  uid: /constraint/directive-no-return
+- role: constraint
+  uid: /constraint/fatal-bad-thread-dispatch-disable-level
+- role: reference
+  uid: /ref/std/posix-2024/pthread-exit
+name: pthread_exit
+notes: |
+  See ${/ref/std/posix-2024/pthread-exit:/name}.
+params:
+- description: |
+    is the ${../glossary/thread-exit-value:/term} of the calling thread.
+  dir: null
+  name: value_ptr
+return: null
+type: interface
