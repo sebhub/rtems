@@ -1,6 +1,6 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 copyrights:
-- Copyright (C) 2020 embedded brains GmbH & Co. KG
+- Copyright (C) 2020, 2026 embedded brains GmbH & Co. KG
 enabled-by: true
 functional-type: action
 links:
@@ -50,30 +50,16 @@ post-conditions:
     test-code: |
       T_null( ctx->id )
     text: |
-      While the id is NULL.
+      The `id` parameter shall be ${/c/if/null:/name}.
   - name: LocalObj
     test-code: |
       T_eq_ptr( ctx->id, &ctx->id_value );
       T_eq_u32( ctx->id_value, ctx->id_local_object );
     text: |
-      The value of the object identifier referenced by the id parameter shall be the
-      identifier of a local object of the specified class with a name equal to the
-      name parameter. If more than one local object of the specified class with such
-      a name exists, then it shall be the identifier of the object with the lowest
-      object index.
-  - name: RemoteObj
-    test-code: |
-      T_eq_ptr( ctx->id, &ctx->id_value );
-      T_eq_u32( ctx->id_value, ctx->id_remote_object );
-    text: |
-      The value of the object identifier referenced by the id parameter shall be the
-      identifier of a remote object of the specified class on a eligible node defined
-      by the node parameter with a name equal to the name parameter. If more than one
-      local object of the specified class with such a name exists, then it shall be
-      the identifier of the object with the lowest object index. Otherwise, if more
-      than one object of the specified class with such a name exists on remote
-      eligible nodes, then it shall be the identifier of the object with the lowest
-      node index and the lowest object index on this node.
+      The value of the object identifier referenced by the `id` parameter shall be
+      the identifier of the object with the lowest object index of the active objects
+      of the specified class on the local node with a name equal to the `name`
+      parameter.
   test-epilogue: null
   test-prologue: null
 pre-conditions:
@@ -83,33 +69,35 @@ pre-conditions:
     test-code: |
       ctx->name = 1;
     text: |
-      While the `name` parameter is not associated with an active object of the
-      specified class .
+      While the `name` parameter is not equal to the name of an active object of the
+      specified class on the local node.
   - name: Valid
     test-code: |
       ctx->name = ctx->name_local_object;
     text: |
-      While the `name` parameter is associated with an active object of the specified
-      class .
+      While the `name` parameter is equal to the name of an active object of the
+      specified class on the local node.
   test-epilogue: null
   test-prologue: null
 - name: Node
   states:
   - name: Local
     test-code: |
-      ctx->node = 1;
+      ctx->node = rtems_object_get_local_node();
     text: |
       While the `node` parameter is the local node number.
   - name: Remote
     test-code: |
-      ctx->node = 2;
+      /* Not constructible on one node */
     text: |
-      While the `node` parameter is a remote node number.
+      While the `node` parameter is a valid node number other than the local node
+      number.
   - name: Invalid
     test-code: |
-      ctx->node = 256;
+      ctx->node = (uint32_t) _Objects_Maximum_nodes + 1;
     text: |
-      While the `node` parameter is an invalid node number.
+      While the `node` parameter is greater than the maximum node count of the
+      system.
   - name: SearchAll
     test-code: |
       ctx->node = RTEMS_SEARCH_ALL_NODES;
@@ -127,6 +115,22 @@ pre-conditions:
       While the `node` parameter is ${../object/if/search-local-node:/name}.
   test-epilogue: null
   test-prologue: null
+- name: RemoteObj
+  states:
+  - name: Absent
+    test-code: |
+      /* The system has one node */
+    text: |
+      While no object of the specified class with a name equal to the `name`
+      parameter exists on a node other than the local node.
+  - name: Exists
+    test-code: |
+      /* Not constructible on one node */
+    text: |
+      While an object of the specified class with a name equal to the `name`
+      parameter exists on a node other than the local node.
+  test-epilogue: null
+  test-prologue: null
 - name: Id
   states:
   - name: Valid
@@ -142,9 +146,47 @@ pre-conditions:
       While the `id` parameter is ${/c/if/null:/name}.
   test-epilogue: null
   test-prologue: null
-rationale: null
+rationale: |
+  The interface item of each object identification directive states the values of
+  the `node` parameter. It is a valid node number,
+  ${../object/if/search-all-nodes:/name}, ${../object/if/search-local-node:/name}
+  or ${../object/if/search-other-nodes:/name}. The notes of the interface item
+  state the search order. The interface item states
+  ${../status/if/invalid-node:/name} for an invalid node only in multiprocessing
+  configurations.
+
+  The MPCI configuration defines the valid node numbers as one up to the maximum
+  node count. A system without a multiprocessing application has one node with
+  the node number one.
+
+  Dimension Name covers whether the `name` parameter names an active object of
+  the class on the local node, 2 states.
+
+  Dimension Node covers three node number sets and the three search constants, 6
+  states. The node number sets are the local node number, the other valid node
+  numbers and the numbers above the maximum node count.
+
+  Dimension RemoteObj covers whether an object of the class with the name exists
+  on a node other than the local node, 2 states.
+
+  Dimension Id covers whether the `id` parameter is ${/c/if/null:/name}, 2
+  states.
+
+  Without multiprocessing, the maximum node count is the constant one. The Node
+  state Remote and the RemoteObj state Exists are then empty.
+
+  With multiprocessing, a system with two or more nodes has both states. The test
+  runs on a system with one node, which is a limit of the vehicle. It constructs
+  neither state.
 requirement-type: functional
-skip-reasons: {}
+skip-reasons:
+  NotExist: |
+    Without multiprocessing, the maximum node count is the constant one. The system
+    has no node other than the local node, so the pre-condition combination cannot
+    be produced and does therefore not exist.
+  OneNode: |
+    The test runs on a system with one node. Such a system has no node other than
+    the local node and no object on such a node.
 test-action: |
   ctx->status = ( *ctx->action )( ctx->name, ctx->node, ctx->id );
 test-brief: null
@@ -166,9 +208,6 @@ test-context:
 - brief: null
   description: null
   member: rtems_id id_value
-- brief: null
-  description: null
-  member: rtems_id id_remote_object
 test-context-support: null
 test-description: null
 test-header:
@@ -195,7 +234,8 @@ test-header:
     specifier: |
       rtems_status_code ( *${.:name} )( rtems_name, uint32_t, rtems_id * )
   target: testsuites/validation/tr-object-ident.h
-test-includes: []
+test-includes:
+- rtems/score/objectimpl.h
 test-local-includes:
 - tr-object-ident.h
 test-prepare: null
@@ -208,6 +248,43 @@ text: |
   When the specified object identification directive is called.
 transition-map:
 - enabled-by: true
+  post-conditions: NotExist
+  pre-conditions:
+    Name: all
+    Node:
+    - Remote
+    RemoteObj: all
+    Id: all
+- enabled-by: true
+  post-conditions: NotExist
+  pre-conditions:
+    Name: all
+    Node:
+    - Local
+    - Invalid
+    - SearchAll
+    - SearchOther
+    - SearchLocal
+    RemoteObj:
+    - Exists
+    Id: all
+- enabled-by: true
+  post-conditions:
+    Status: InvAddr
+    Id: 'Null'
+  pre-conditions:
+    Name: all
+    Node:
+    - Local
+    - Invalid
+    - SearchAll
+    - SearchOther
+    - SearchLocal
+    RemoteObj:
+    - Absent
+    Id:
+    - 'Null'
+- enabled-by: true
   post-conditions:
     Status: Ok
     Id: LocalObj
@@ -215,9 +292,11 @@ transition-map:
     Name:
     - Valid
     Node:
+    - Local
     - SearchAll
     - SearchLocal
-    - Local
+    RemoteObj:
+    - Absent
     Id:
     - Valid
 - enabled-by: true
@@ -228,9 +307,9 @@ transition-map:
     Name:
     - Valid
     Node:
-    - Invalid
     - SearchOther
-    - Remote
+    RemoteObj:
+    - Absent
     Id:
     - Valid
 - enabled-by: true
@@ -240,28 +319,58 @@ transition-map:
   pre-conditions:
     Name:
     - Invalid
-    Node: all
+    Node:
+    - Local
+    - SearchAll
+    - SearchOther
+    - SearchLocal
+    RemoteObj:
+    - Absent
     Id:
     - Valid
 - enabled-by: true
   post-conditions:
-    Status: InvAddr
-    Id: 'Null'
+    Status: InvName
+    Id: Nop
   pre-conditions:
     Name: all
-    Node: all
+    Node:
+    - Invalid
+    RemoteObj:
+    - Absent
     Id:
-    - 'Null'
+    - Valid
 - enabled-by: RTEMS_MULTIPROCESSING
   post-conditions:
-    Status: Ok
-    Id: RemoteObj
+    Status: InvNode
+    Id: Nop
   pre-conditions:
-    Name:
-    - Valid
+    Name: all
     Node:
-    - SearchOther
-    - Remote
+    - Invalid
+    RemoteObj:
+    - Absent
     Id:
     - Valid
+- enabled-by: RTEMS_MULTIPROCESSING
+  post-conditions: OneNode
+  pre-conditions:
+    Name: all
+    Node:
+    - Remote
+    RemoteObj: all
+    Id: all
+- enabled-by: RTEMS_MULTIPROCESSING
+  post-conditions: OneNode
+  pre-conditions:
+    Name: all
+    Node:
+    - Local
+    - Invalid
+    - SearchAll
+    - SearchOther
+    - SearchLocal
+    RemoteObj:
+    - Exists
+    Id: all
 type: requirement
