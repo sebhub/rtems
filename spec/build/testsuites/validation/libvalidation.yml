@@ -17,6 +17,7 @@ source:
 - testsuites/validation/tx-io-relax.c
 - testsuites/validation/tx-memory-alloc.c
 - testsuites/validation/tx-preemption-intervention.c
+- testsuites/validation/tx-register-check.c
 - testsuites/validation/tx-support.c
 - testsuites/validation/tx-thread-queue.c
 - testsuites/validation/tx-timecounter.c
