@@ -58,13 +58,6 @@ actions:
     - mrfsfsrenamelongname
 - set-test-state:
     reason: |
-      Fails because of defects of the file descriptor support.  A close()
-      returns EBUSY while a stale access holds the iop.
-    state: expected-fail
-    tests:
-    - fsclose02
-- set-test-state:
-    reason: |
       Fails because of #5070, this test seems invalid
     state: expected-fail
     tests:
