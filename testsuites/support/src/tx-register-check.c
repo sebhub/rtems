@@ -37,7 +37,7 @@
 #include "config.h"
 #endif
 
-#include "tx-register-check.h"
+#include <rtems/test-register-check.h>
 
 #include <inttypes.h>
 
