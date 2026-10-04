@@ -42,7 +42,7 @@
 /**
  * @defgroup RtemsUserextValIdent spec:/rtems/userext/val/ident
  *
- * @ingroup TestsuitesValidationNoClock0
+ * @ingroup TestsuitesValidationNoClock1
  *
  * @brief Test the rtems_extension_ident() directive.
  *
