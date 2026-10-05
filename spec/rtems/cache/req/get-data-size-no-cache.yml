@@ -8,6 +8,7 @@ enabled-by:
   - bsps/arm/xilinx-zynqmp-rpu
   - sparc/gr712rc
   - sparc/gr740
+  - sparc/gr765
 functional-type: function
 links:
 - role: interface-function
