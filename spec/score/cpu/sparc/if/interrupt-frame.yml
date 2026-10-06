@@ -1,0 +1,198 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This structure represents the interrupt frame of the SPARC CPU port.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+- default:
+    brief: |
+      This member provides the minimum stack frame. A window overflow handler and a
+      window underflow handler write to it.
+    definition: SPARC_Minimum_stack_frame ${.:name}
+    description: null
+    kind: member
+    name: Stack_frame
+  variants: []
+- default:
+    brief: |
+      This member contains the PSR of the interrupted context.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: psr
+  variants: []
+- default:
+    brief: |
+      This member contains the program counter of the interrupted context.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: pc
+  variants: []
+- default:
+    brief: |
+      This member contains the next program counter of the interrupted context.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: npc
+  variants: []
+- default:
+    brief: |
+      This member contains the SPARC global register G1.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: g1
+  variants: []
+- default:
+    brief: |
+      This member contains the SPARC global register G2.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: g2
+  variants: []
+- default:
+    brief: |
+      This member contains the SPARC global register G3.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: g3
+  variants: []
+- default:
+    brief: |
+      This member contains the SPARC global register G4.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: g4
+  variants: []
+- default:
+    brief: |
+      This member contains the SPARC global register G5.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: g5
+  variants: []
+- default:
+    brief: |
+      This member aligns the frame to a double word.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: reserved_for_alignment
+  variants: []
+- default:
+    brief: |
+      This member contains the SPARC global register G7.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: g7
+  variants: []
+- default:
+    brief: |
+      This member contains the output register O0 of the interrupted context. The
+      wrapper stores it from I0 of the trap window.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: i0
+  variants: []
+- default:
+    brief: |
+      This member contains the output register O1 of the interrupted context. The
+      wrapper stores it from I1 of the trap window.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: i1
+  variants: []
+- default:
+    brief: |
+      This member contains the output register O2 of the interrupted context. The
+      wrapper stores it from I2 of the trap window.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: i2
+  variants: []
+- default:
+    brief: |
+      This member contains the output register O3 of the interrupted context. The
+      wrapper stores it from I3 of the trap window.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: i3
+  variants: []
+- default:
+    brief: |
+      This member contains the output register O4 of the interrupted context. The
+      wrapper stores it from I4 of the trap window.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: i4
+  variants: []
+- default:
+    brief: |
+      This member contains the output register O5 of the interrupted context. The
+      wrapper stores it from I5 of the trap window.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: i5
+  variants: []
+- default:
+    brief: |
+      This member contains the stack pointer of the interrupted context, which is O6.
+      The wrapper stores it from I6 of the trap window.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: i6_fp
+  variants: []
+- default:
+    brief: |
+      This member contains the output register O7 of the interrupted context. The
+      wrapper stores it from I7 of the trap window.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: i7
+  variants: []
+- default:
+    brief: |
+      This member contains the Y register.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: y
+  variants: []
+- default:
+    brief: |
+      This member contains the program counter of the trap.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: tpc
+  variants: []
+definition-kind: typedef-only
+description: null
+enabled-by: sparc
+index-entries: []
+interface-type: struct
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+- role: proxy-member
+  uid: /score/cpu/if/interrupt-frame
+name: CPU_Interrupt_frame
+notes: null
+type: interface

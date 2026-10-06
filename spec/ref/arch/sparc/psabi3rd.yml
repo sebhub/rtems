@@ -1,0 +1,11 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+links: []
+organization: SPARC International
+reference-type: manual
+title: System V Application Binary Interface, SPARC Processor Supplement, Third Edition
+type: reference
+work-hash: GsP_-RCaOVcSVaFqNBUcRvOTNrqYA6vAYMkXQBLQzjA=
+work-url: https://sparc.org/wp-content/uploads/2014/01/psABI3rd.pdf.gz

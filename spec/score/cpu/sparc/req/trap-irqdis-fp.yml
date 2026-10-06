@@ -1,0 +1,19 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by:
+  and:
+  - sparc
+  - RTEMS_SMP
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: ../../req/registers
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  In SMP configurations, the software trap 11 shall set the PIL to 15 and PSR[EF]
+  to the EF bit of g1. It shall return the previous PSR except the CWP field in
+  g1. It shall preserve every other register.
+type: requirement

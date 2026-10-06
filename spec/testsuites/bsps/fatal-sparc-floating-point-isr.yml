@@ -1,0 +1,29 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by:
+  and:
+  - sparc
+  - not: RTEMS_SMP
+links:
+- role: requirement-refinement
+  uid: ../validation
+test-brief: |
+  This validation test suite contains a test case which triggers a fatal error in
+  an interrupt handler.
+test-code: |
+  const char rtems_test_name[] = "${.:/test-suite-name}";
+
+  #define FATAL_SYSINIT_RUN ScoreCpuSparcValFatalFloatingPointIsr_Run
+
+  #define CONFIGURE_APPLICATION_DOES_NOT_NEED_CLOCK_DRIVER
+
+  #define CONFIGURE_IDLE_TASK_BODY FatalFloatingPointIsrIdleBody
+
+  #include "ts-fatal-sysinit.h"
+test-description: null
+test-includes: []
+test-local-includes:
+- tr-fatal-sparc-floating-point-isr.h
+test-target: testsuites/validation/bsps/ts-fatal-sparc-floating-point-isr.c
+type: test-suite

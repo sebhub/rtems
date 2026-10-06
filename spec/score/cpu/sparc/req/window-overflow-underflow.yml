@@ -1,0 +1,16 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: sparc
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: ../../req/registers
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  The window overflow and the window underflow trap handler shall preserve the
+  local and the input registers of each register window. A chain of nested calls
+  may use more register windows than the processor provides.
+type: requirement

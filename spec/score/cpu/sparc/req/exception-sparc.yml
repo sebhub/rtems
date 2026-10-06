@@ -1,0 +1,18 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: sparc
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: ../../req/exception-terminate
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  The trap handler of the trap types 0x01 to 0x03, 0x07 to 0x0F, 0x20 to 0x7D,
+  0x7F, 0x81, 0x82, 0x84 to 0x88, and 0x8C to 0xFF shall by default call the
+  default exception handler. The CPU port and the BSP serve the other trap types.
+  The entry of the trap type 0x7E holds data which decodes as an illegal
+  instruction.
+type: requirement

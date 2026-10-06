@@ -1,0 +1,15 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: sparc
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: ../../req/isr-call-used-floating-point
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  Where interrupt processing dispatches a thread, it shall preserve the
+  floating-point registers and the FSR of the interrupted floating-point thread.
+type: requirement

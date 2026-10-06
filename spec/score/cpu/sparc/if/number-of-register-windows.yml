@@ -1,0 +1,23 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This constant is the number of register windows of the processor.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+  default: '8'
+  variants: []
+description: |
+  The exception frame, the window flush of the context switch and the exception
+  resume use the constant. No multilib option states the number of register
+  windows.
+enabled-by: sparc
+index-entries: []
+interface-type: define
+links:
+- role: interface-placement
+  uid: header-sparc
+- role: interface-ingroup
+  uid: group
+name: SPARC_NUMBER_OF_REGISTER_WINDOWS
+notes: null
+type: interface

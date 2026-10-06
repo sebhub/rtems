@@ -1,0 +1,25 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by:
+  and:
+  - sparc
+  - not: RTEMS_SMP
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: fp-lazy-switch
+- role: requirement-refinement
+  uid: ctx-initial-fsr
+rationale: |
+  A restart initializes the context of a thread which already exists. The
+  floating-point disabled trap handler can hold a floating-point context which it
+  saved for the thread before the restart. The restarted thread loads the FSR of
+  the context initialization at its first use of the floating-point unit.
+references: []
+requirement-type: functional
+text: |
+  In uniprocessor configurations, the context initialization shall discard the
+  floating-point context which the floating-point disabled trap handler saved for
+  the thread.
+type: requirement

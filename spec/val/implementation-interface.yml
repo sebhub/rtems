@@ -82,6 +82,8 @@ links:
 - role: validation
   uid: /score/interr/if/idle-thread-stack-too-small
 - role: validation
+  uid: /score/interr/if/illegal-use-of-floating-point-unit
+- role: validation
   uid: /score/interr/if/init-task-construct-failed
 - role: validation
   uid: /score/interr/if/internal-error-core

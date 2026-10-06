@@ -1,0 +1,16 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: sparc
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: ../../req/registers
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  The context switch shall preserve g5. The psABI reserves the register for the
+  system and marks it neither preserved nor destroyed, and the window flush uses
+  it as scratch.
+type: requirement

@@ -1,0 +1,16 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: sparc
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: ../../req/ctx-call-saved
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  The context switch shall write every register window with valid contents to the
+  stack of the running thread. A window which a restore reaches holds the
+  call-saved registers of an outer frame.
+type: requirement

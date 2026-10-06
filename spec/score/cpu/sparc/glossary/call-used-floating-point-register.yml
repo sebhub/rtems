@@ -1,0 +1,16 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: sparc
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+- location: 3-10, 3-14
+  role: reference
+  uid: /ref/arch/sparc/psabi3rd
+term: SPARC call-used floating-point register
+text: |
+  A floating-point register which a called function may destroy. These are f0 to
+  f31.
+type: glossary

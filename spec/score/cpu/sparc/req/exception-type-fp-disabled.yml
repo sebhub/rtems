@@ -1,0 +1,18 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by:
+  and:
+  - sparc
+  - RTEMS_SMP
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: exception-sparc-smp
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  The default floating-point disabled trap handler shall set the trap member of
+  the exception frame to the value four.
+type: requirement
