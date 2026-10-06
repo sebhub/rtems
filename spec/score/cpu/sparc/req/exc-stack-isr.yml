@@ -1,0 +1,16 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: sparc
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: ../../req/exc-stack
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  The default exception handler shall build the exception frame at the top of the
+  interrupt stack of its processor. A thread with an invalid stack pointer then
+  does not reach the frame.
+type: requirement

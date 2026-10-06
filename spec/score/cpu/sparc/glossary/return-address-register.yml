@@ -1,0 +1,17 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: sparc
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+- location: 3-8, 3-9
+  role: reference
+  uid: /ref/arch/sparc/psabi3rd
+term: SPARC return address register
+text: |
+  The register which holds the address a called function returns to. o7 holds the
+  address of the call instruction. It is i7 in the window of the called function.
+  A return goes to that address plus eight.
+type: glossary

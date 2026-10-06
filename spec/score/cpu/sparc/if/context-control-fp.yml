@@ -1,0 +1,155 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This structure represents the floating-point context of the SPARC CPU port.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+- default:
+    brief: |
+      This member contains the SPARC floating-point registers F0 and F1.
+    definition: double ${.:name}
+    description: null
+    kind: member
+    name: f0_f1
+  variants: []
+- default:
+    brief: |
+      This member contains the SPARC floating-point registers F2 and F3.
+    definition: double ${.:name}
+    description: null
+    kind: member
+    name: f2_f3
+  variants: []
+- default:
+    brief: |
+      This member contains the SPARC floating-point registers F4 and F5.
+    definition: double ${.:name}
+    description: null
+    kind: member
+    name: f4_f5
+  variants: []
+- default:
+    brief: |
+      This member contains the SPARC floating-point registers F6 and F7.
+    definition: double ${.:name}
+    description: null
+    kind: member
+    name: f6_f7
+  variants: []
+- default:
+    brief: |
+      This member contains the SPARC floating-point registers F8 and F9.
+    definition: double ${.:name}
+    description: null
+    kind: member
+    name: f8_f9
+  variants: []
+- default:
+    brief: |
+      This member contains the SPARC floating-point registers F10 and F11.
+    definition: double ${.:name}
+    description: null
+    kind: member
+    name: f10_f11
+  variants: []
+- default:
+    brief: |
+      This member contains the SPARC floating-point registers F12 and F13.
+    definition: double ${.:name}
+    description: null
+    kind: member
+    name: f12_f13
+  variants: []
+- default:
+    brief: |
+      This member contains the SPARC floating-point registers F14 and F15.
+    definition: double ${.:name}
+    description: null
+    kind: member
+    name: f14_f15
+  variants: []
+- default:
+    brief: |
+      This member contains the SPARC floating-point registers F16 and F17.
+    definition: double ${.:name}
+    description: null
+    kind: member
+    name: f16_f17
+  variants: []
+- default:
+    brief: |
+      This member contains the SPARC floating-point registers F18 and F19.
+    definition: double ${.:name}
+    description: null
+    kind: member
+    name: f18_f19
+  variants: []
+- default:
+    brief: |
+      This member contains the SPARC floating-point registers F20 and F21.
+    definition: double ${.:name}
+    description: null
+    kind: member
+    name: f20_f21
+  variants: []
+- default:
+    brief: |
+      This member contains the SPARC floating-point registers F22 and F23.
+    definition: double ${.:name}
+    description: null
+    kind: member
+    name: f22_f23
+  variants: []
+- default:
+    brief: |
+      This member contains the SPARC floating-point registers F24 and F25.
+    definition: double ${.:name}
+    description: null
+    kind: member
+    name: f24_f25
+  variants: []
+- default:
+    brief: |
+      This member contains the SPARC floating-point registers F26 and F27.
+    definition: double ${.:name}
+    description: null
+    kind: member
+    name: f26_f27
+  variants: []
+- default:
+    brief: |
+      This member contains the SPARC floating-point registers F28 and F29.
+    definition: double ${.:name}
+    description: null
+    kind: member
+    name: f28_f29
+  variants: []
+- default:
+    brief: |
+      This member contains the SPARC floating-point registers F30 and F31.
+    definition: double ${.:name}
+    description: null
+    kind: member
+    name: f30_f31
+  variants: []
+- default:
+    brief: |
+      This member contains the FSR.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: fsr
+  variants: []
+definition-kind: typedef-only
+description: null
+enabled-by: sparc
+index-entries: []
+interface-type: struct
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+name: Context_Control_fp
+notes: null
+type: interface

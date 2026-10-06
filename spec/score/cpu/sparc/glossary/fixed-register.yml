@@ -1,0 +1,16 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: sparc
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+- location: 3-8, 3-9, 3-10
+  role: reference
+  uid: /ref/arch/sparc/psabi3rd
+term: SPARC fixed register
+text: |
+  A register with a fixed role in every variant. g0 reads as zero and discards a
+  write. o6 is the stack pointer and i6 is the frame pointer.
+type: glossary

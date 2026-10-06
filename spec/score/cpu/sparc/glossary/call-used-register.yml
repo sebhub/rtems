@@ -1,0 +1,16 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: sparc
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+- location: 3-10
+  role: reference
+  uid: /ref/arch/sparc/psabi3rd
+term: SPARC call-used register
+text: |
+  A register which a called function may destroy. These are o0 to o5, o7, g1 and
+  y.
+type: glossary

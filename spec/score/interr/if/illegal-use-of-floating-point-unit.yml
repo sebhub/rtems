@@ -1,16 +1,13 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 copyrights:
-- Copyright (C) 2020 embedded brains GmbH & Co. KG
-enabled-by:
-  not: sparc
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
 index-entries: []
-interface-type: unspecified-typedef
+interface-type: unspecified-enumerator
 links:
 - role: interface-placement
   uid: header
 - role: interface-ingroup
   uid: group
-- role: proxy-member
-  uid: exception-frame
-name: CPU_Exception_frame
+name: INTERNAL_ERROR_ILLEGAL_USE_OF_FLOATING_POINT_UNIT
 type: interface

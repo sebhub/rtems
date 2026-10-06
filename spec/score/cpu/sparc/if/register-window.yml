@@ -1,0 +1,35 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This structure represents one register window of the SPARC CPU port.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+- default:
+    brief: |
+      This member contains the SPARC local registers L0 to L7.
+    definition: ${/c/if/uint32_t:/name} ${.:name}[ 8 ]
+    description: null
+    kind: member
+    name: local
+  variants: []
+- default:
+    brief: |
+      This member contains the SPARC input registers I0 to I7.
+    definition: ${/c/if/uint32_t:/name} ${.:name}[ 8 ]
+    description: null
+    kind: member
+    name: input
+  variants: []
+definition-kind: typedef-only
+description: null
+enabled-by: sparc
+index-entries: []
+interface-type: struct
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+name: SPARC_Register_window
+notes: null
+type: interface

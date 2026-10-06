@@ -1,0 +1,16 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This header file defines the SPARC processor interfaces of the SPARC CPU port.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: sparc
+index-entries: []
+interface-type: header-file
+links:
+- role: interface-placement
+  uid: /score/if/domain
+- role: interface-ingroup
+  uid: group
+path: rtems/score/sparc.h
+prefix: cpukit/score/cpu/sparc/include
+type: interface

@@ -1,0 +1,20 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by:
+  and:
+  - sparc
+  - not: RTEMS_SMP
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: isr-dispatch-floating-point
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  In uniprocessor configurations, the floating-point disabled trap handler shall
+  save the floating-point context of the owner of the floating-point unit. It
+  shall restore the floating-point context of the executing floating-point thread
+  and enable the floating-point unit.
+type: requirement

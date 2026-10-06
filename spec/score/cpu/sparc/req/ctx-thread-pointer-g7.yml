@@ -1,0 +1,16 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: sparc
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: ../../req/ctx-thread-pointer
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  The context switch shall restore g7 from the heir context and shall not save
+  it. \_CPU_Context_Initialize sets the register once, and the thread never
+  changes it.
+type: requirement

@@ -1,0 +1,217 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This structure represents the minimum stack frame of the SPARC ABI.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+- default:
+    brief: |
+      This member contains the SPARC local register L0.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: l0
+  variants: []
+- default:
+    brief: |
+      This member contains the SPARC local register L1.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: l1
+  variants: []
+- default:
+    brief: |
+      This member contains the SPARC local register L2.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: l2
+  variants: []
+- default:
+    brief: |
+      This member contains the SPARC local register L3.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: l3
+  variants: []
+- default:
+    brief: |
+      This member contains the SPARC local register L4.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: l4
+  variants: []
+- default:
+    brief: |
+      This member contains the SPARC local register L5.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: l5
+  variants: []
+- default:
+    brief: |
+      This member contains the SPARC local register L6.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: l6
+  variants: []
+- default:
+    brief: |
+      This member contains the SPARC local register L7.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: l7
+  variants: []
+- default:
+    brief: |
+      This member contains the SPARC input register I0.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: i0
+  variants: []
+- default:
+    brief: |
+      This member contains the SPARC input register I1.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: i1
+  variants: []
+- default:
+    brief: |
+      This member contains the SPARC input register I2.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: i2
+  variants: []
+- default:
+    brief: |
+      This member contains the SPARC input register I3.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: i3
+  variants: []
+- default:
+    brief: |
+      This member contains the SPARC input register I4.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: i4
+  variants: []
+- default:
+    brief: |
+      This member contains the SPARC input register I5.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: i5
+  variants: []
+- default:
+    brief: |
+      This member contains the frame pointer, which is I6.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: i6_fp
+  variants: []
+- default:
+    brief: |
+      This member contains the return address, which is I7.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: i7
+  variants: []
+- default:
+    brief: |
+      This member contains the address a called function returns a structure to.
+    definition: void *${.:name}
+    description: null
+    kind: member
+    name: structure_return_address
+  variants: []
+- default:
+    brief: |
+      This member provides space for a called function to save the argument register
+      I0.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: saved_arg0
+  variants: []
+- default:
+    brief: |
+      This member provides space for a called function to save the argument register
+      I1.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: saved_arg1
+  variants: []
+- default:
+    brief: |
+      This member provides space for a called function to save the argument register
+      I2.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: saved_arg2
+  variants: []
+- default:
+    brief: |
+      This member provides space for a called function to save the argument register
+      I3.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: saved_arg3
+  variants: []
+- default:
+    brief: |
+      This member provides space for a called function to save the argument register
+      I4.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: saved_arg4
+  variants: []
+- default:
+    brief: |
+      This member provides space for a called function to save the argument register
+      I5.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: saved_arg5
+  variants: []
+- default:
+    brief: |
+      This member pads the frame to a double word.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: pad0
+  variants: []
+definition-kind: typedef-only
+description: null
+enabled-by: sparc
+index-entries: []
+interface-type: struct
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+name: SPARC_Minimum_stack_frame
+notes: null
+type: interface

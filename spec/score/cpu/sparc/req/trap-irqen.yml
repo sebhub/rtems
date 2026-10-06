@@ -1,0 +1,15 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: sparc
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: ../../req/registers
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  The software trap 10 shall set the PIL to the PIL field of g1. It shall
+  preserve every register.
+type: requirement

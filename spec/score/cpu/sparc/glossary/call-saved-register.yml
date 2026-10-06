@@ -1,0 +1,17 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: sparc
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+- location: 3-10
+  role: reference
+  uid: /ref/arch/sparc/psabi3rd
+term: SPARC call-saved register
+text: |
+  A register which the ABI requires a called function to preserve. These are l0
+  to l7, i0 to i7 and o6. The register window preserves them, so a called
+  function stores none of them.
+type: glossary

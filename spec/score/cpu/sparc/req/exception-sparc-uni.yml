@@ -1,0 +1,19 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by:
+  and:
+  - sparc
+  - not: RTEMS_SMP
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: exception-sparc
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  In uniprocessor configurations, the trap handler of the trap type 0x8B shall by
+  default call the default exception handler. Only the synchronous floating-point
+  switch uses this software trap.
+type: requirement

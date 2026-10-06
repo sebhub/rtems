@@ -1,0 +1,17 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: sparc
+links:
+- role: validation
+  uid: ../../req/ctx-call-saved-floating-point
+- location: 3-10
+  role: reference
+  uid: /ref/arch/sparc/psabi3rd
+method: by-inspection
+text: |
+  Inspection of the referenced ABI document showed that the caller saves each
+  floating-point register. The ABI defines no
+  ${../glossary/call-saved-floating-point-register:/term}, so the context switch
+  has no such register to preserve.
+type: validation

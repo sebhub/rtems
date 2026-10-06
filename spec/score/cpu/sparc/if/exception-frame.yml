@@ -1,0 +1,115 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This structure represents the exception frame of the SPARC CPU port.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+- default:
+    brief: |
+      This member contains the PSR.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: psr
+  variants: []
+- default:
+    brief: |
+      This member contains the program counter.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: pc
+  variants: []
+- default:
+    brief: |
+      This member contains the next program counter.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: npc
+  variants: []
+- default:
+    brief: |
+      This member contains the trap number.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: trap
+  variants: []
+- default:
+    brief: |
+      This member contains the WIM.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: wim
+  variants: []
+- default:
+    brief: |
+      This member contains the Y register.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: y
+  variants: []
+- default:
+    brief: |
+      This member contains the SPARC global registers G0 to G7.
+    definition: ${/c/if/uint32_t:/name} ${.:name}[ 8 ]
+    description: null
+    kind: member
+    name: global
+  variants: []
+- default:
+    brief: |
+      This member contains the SPARC output registers O0 to O7.
+    definition: ${/c/if/uint32_t:/name} ${.:name}[ 8 ]
+    description: null
+    kind: member
+    name: output
+  variants: []
+- default:
+    brief: |
+      This member contains the register windows below the window which the trap
+      entered.
+    definition: SPARC_Register_window ${.:name}[ SPARC_NUMBER_OF_REGISTER_WINDOWS
+      - 1 ]
+    description: null
+    kind: member
+    name: windows
+  variants: []
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the FSR.
+      definition: ${/c/if/uint32_t:/name} ${.:name}
+      description: null
+      kind: member
+      name: fsr
+    enabled-by: (SPARC_HAS_FPU == 1)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the SPARC floating-point registers F0 to F31.
+      definition: ${/c/if/uint64_t:/name} ${.:name}[ 16 ]
+      description: null
+      kind: member
+      name: fp
+    enabled-by: (SPARC_HAS_FPU == 1)
+definition-kind: typedef-only
+description: null
+enabled-by: sparc
+index-entries: []
+interface-type: struct
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+- role: proxy-member
+  uid: /score/cpu/if/exception-frame
+name: CPU_Exception_frame
+notes: null
+type: interface

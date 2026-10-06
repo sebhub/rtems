@@ -1,0 +1,17 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: sparc
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+- location: 3-9, 3-10
+  role: reference
+  uid: /ref/arch/sparc/psabi3rd
+term: SPARC reserved register
+text: |
+  A register which the ABI reserves and marks neither preserved nor destroyed.
+  g2, g3 and g4 belong to the application. g5, g6 and g7 belong to the system.
+  RTEMS gives g6 the per-CPU control and g7 the thread pointer.
+type: glossary

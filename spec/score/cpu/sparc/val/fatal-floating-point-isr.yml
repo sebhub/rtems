@@ -1,0 +1,81 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by:
+  and:
+  - sparc
+  - not: RTEMS_SMP
+links: []
+test-actions:
+- action-brief: |
+    The idle task body FatalFloatingPointIsrIdleBody() calls a handler within an
+    interrupt. The handler executes a floating-point instruction.
+  action-code: |
+    /* Nothing to do */
+  checks:
+  - brief: |
+      Check that the expected fatal source is present.
+    code: |
+      T_step_eq_int( ${.:/step}, ctx->source, INTERNAL_ERROR_CORE );
+    links:
+    - role: validation
+      uid: ../req/fp-lazy-illegal-isr
+  - brief: |
+      Check that the expected fatal code is present.
+    code: |
+      T_step_eq_ulong(
+        ${.:/step},
+        ctx->code,
+        INTERNAL_ERROR_ILLEGAL_USE_OF_FLOATING_POINT_UNIT
+      );
+    links:
+    - role: validation
+      uid: ../req/fp-lazy-illegal-isr
+  links: []
+test-brief: |
+  Tests a fatal error.
+test-context: []
+test-context-support: null
+test-description: null
+test-header:
+  code: |
+    void *FatalFloatingPointIsrIdleBody( uintptr_t ignored );
+  freestanding: true
+  includes:
+  - rtems.h
+  local-includes: []
+  run-params:
+  - description: |
+      is fatal source.
+    dir: null
+    name: source
+    specifier: ${/rtems/userext/if/fatal-source:/name} ${.:name}
+  - description: |
+      is fatal code.
+    dir: null
+    name: code
+    specifier: ${/rtems/userext/if/fatal-code:/name} ${.:name}
+  target: testsuites/validation/bsps/tr-fatal-sparc-floating-point-isr.h
+test-includes:
+- rtems/score/interr.h
+test-local-includes:
+- tx-support.h
+- tr-fatal-sparc-floating-point-isr.h
+test-setup: null
+test-stop: null
+test-support: |
+  static void FloatingPointWithinIsr( void *arg )
+  {
+    (void) arg;
+    __asm__ volatile ( "fmovs %%f0, %%f0" : : : "f0" );
+  }
+
+  void *FatalFloatingPointIsrIdleBody( uintptr_t ignored )
+  {
+    (void) ignored;
+    CallWithinISR( FloatingPointWithinIsr, NULL );
+    rtems_fatal( RTEMS_FATAL_SOURCE_EXIT, 1 );
+  }
+test-target: testsuites/validation/bsps/tr-fatal-sparc-floating-point-isr.c
+test-teardown: null
+type: test-case

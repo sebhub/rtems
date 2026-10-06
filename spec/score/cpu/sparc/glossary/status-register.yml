@@ -1,0 +1,18 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: sparc
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+- location: 4.2, 4.3
+  role: reference
+  uid: /ref/arch/sparc/v8
+term: SPARC status register
+text: |
+  The register which holds the condition flags and the execution state. psr holds
+  the condition codes, the processor interrupt level, the trap enable and the
+  current window pointer. wim marks the invalid window. fsr holds the
+  floating-point state.
+type: glossary

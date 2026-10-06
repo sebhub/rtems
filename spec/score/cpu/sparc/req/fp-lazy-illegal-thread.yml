@@ -1,0 +1,21 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by:
+  and:
+  - sparc
+  - not: RTEMS_SMP
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: ../../req/registers
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  In uniprocessor configurations, while the executing thread is no floating-point
+  thread, when it executes a floating-point instruction, the floating-point
+  disabled trap handler shall terminate the system with the fatal source
+  ${/score/interr/if/internal-error-core:/name} and the fatal code
+  ${/score/interr/if/illegal-use-of-floating-point-unit:/name}.
+type: requirement

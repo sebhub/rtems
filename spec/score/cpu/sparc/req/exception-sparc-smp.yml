@@ -1,0 +1,19 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by:
+  and:
+  - sparc
+  - RTEMS_SMP
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: exception-sparc
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  In SMP configurations, the trap handler of the trap type 0x04 shall by default
+  call the default exception handler. The synchronous floating-point switch needs
+  no floating-point disabled trap.
+type: requirement

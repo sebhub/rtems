@@ -1,0 +1,23 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: sparc
+links:
+- role: validation
+  uid: ../req/exception-sparc
+- location: bsps/sparc/shared/start/start.S
+  role: reference
+  uid: /ref/rtems/source
+method: by-inspection
+text: |
+  Inspection of the trap table in the referenced ${/glossary/sourcecode:/term}
+  file showed that the entry of each trap type which the requirement lists uses
+  the BAD_TRAP() or the SOFT_TRAP() macro. Each such entry branches to
+  \_SPARC_Bad_trap() with the trap type in l3. The tests raise the trap types
+  0x01 to 0x03, 0x07, 0x09, 0x0A, 0x24, 0x2A, and each software trap of the list
+  except 0x81. The debug support unit of the GR740 stops the processor at the
+  breakpoint trap 0x81. No test can raise the other hardware trap types of the
+  list on the target. The entry of the trap type 0x7E holds the CLOCK_SPEED word,
+  which is below 0x00400000, and three zero words. Such a word decodes as an
+  UNIMP instruction.
+type: validation

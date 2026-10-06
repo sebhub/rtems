@@ -1,0 +1,18 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: sparc
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+- location: 4.1, 7.1
+  role: reference
+  uid: /ref/arch/sparc/v8
+term: SPARC wrapper-private register
+text: |
+  A register which the interrupt wrapper uses for its own bookkeeping. These are
+  l0 to l7 of the trap window. A trap moves the current window pointer, so the
+  wrapper receives eight local registers which the interrupted context does not
+  use.
+type: glossary
