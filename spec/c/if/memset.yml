@@ -6,11 +6,10 @@ index-entries: []
 interface-type: unspecified-function
 links:
 - role: interface-placement
-  uid: string
+  uid: /c/string/if/header
 - role: interface-ingroup
   uid: group
-- path: string/byte/memset
-  role: reference
-  uid: /ref/std/cppreference-c
+- role: reference
+  uid: /ref/std/posix-2024/memset
 name: memset
 type: interface

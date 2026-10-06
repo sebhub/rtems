@@ -1,0 +1,49 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Copy the string referenced by ${.:/params[1]/name} to the string referenced by
+  ${.:/params[0]/name} bounded by the size in bytes specified by
+  ${.:/params[2]/name}.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+  default:
+    attributes: null
+    body: null
+    params:
+    - char *restrict ${.:/params[0]/name}
+    - const char *restrict ${.:/params[1]/name}
+    - ${/c/if/size_t:/name} ${.:/params[2]/name}
+    return: ${/c/if/size_t:/name}
+  variants: []
+description: null
+enabled-by: true
+index-entries: []
+interface-type: function
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+- role: reference
+  uid: /ref/std/posix-2024/strlcpy
+name: strlcpy
+notes: |
+  See ${/ref/std/posix-2024/strlcpy:/name}.
+params:
+- description: |
+    is the pointer to the destination string.
+  dir: out
+  name: dst
+- description: |
+    is the pointer to the source string.
+  dir: in
+  name: src
+- description: |
+    is the size of the destination buffer.
+  dir: null
+  name: size
+return:
+  return: |
+    Returns the total length of the string they tried to create.
+  return-values: []
+type: interface

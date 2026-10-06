@@ -44,6 +44,8 @@ links:
 - role: validation
   uid: /c/errno/if/eproto
 - role: validation
+  uid: /c/errno/if/erange
+- role: validation
   uid: /c/errno/if/esrch
 - role: validation
   uid: /c/errno/if/etimedout

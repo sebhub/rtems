@@ -1,0 +1,71 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Get the name of the ${../glossary/thread:/term} specified by
+  ${.:/params[0]/name} and store it in the buffer referenced by
+  ${.:/params[1]/name} of size specified by ${.:/params[2]/name} in bytes.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+  default:
+    attributes: null
+    body: null
+    params:
+    - ${/c/if/pthread_t:/name} ${.:/params[0]/name}
+    - char *${.:/params[1]/name}
+    - ${/c/if/size_t:/name} ${.:/params[2]/name}
+    return: int
+  variants: []
+description: null
+enabled-by: true
+index-entries: []
+interface-type: function
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+- description: |
+    The buffer specified by ${.:/params[1]/name} is too small to hold the thread
+    name.
+  role: errno
+  uid: /c/errno/if/erange
+- description: |
+    No thread with the ID ${.:/params[0]/name} could be found.
+  role: errno
+  uid: /c/errno/if/esrch
+- path: man3/pthread_getname_np.3.html
+  role: reference
+  uid: /ref/man/linux
+name: pthread_getname_np
+notes: |
+  See
+  [FreeBSD Manual Pages, pthread_getname_np()](https://man.freebsd.org/cgi/man.cgi?query=pthread_getname_np&sektion=3).
+params:
+- description: |
+    is the thread to get the name of.
+  dir: null
+  name: thread
+- description: |
+    is the pointer to a buffer where the name will be stored.
+  dir: out
+  name: name
+- description: |
+    is the size of the buffer in bytes.
+  dir: null
+  name: len
+return:
+  return: null
+  return-values:
+  - description: |
+      The successful completion returns zero.
+    value: 0
+  - description: |
+      The buffer specified by ${.:/params[1]/name} and ${.:/params[2]/name} is too
+      small.
+    value: ${/c/errno/if/erange:/name}
+  - description: |
+      No thread could be found corresponding to that specified by the given
+      ${.:/params[0]/name} ID. Where ${.:/params[2]/name} is greater than zero, the
+      buffer contains the empty string.
+    value: ${/c/errno/if/esrch:/name}
+type: interface
