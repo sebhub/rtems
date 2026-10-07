@@ -10,7 +10,7 @@
  */
 
 /*
- * Copyright (C) 2020 embedded brains GmbH & Co. KG
+ * Copyright (C) 2020, 2026 embedded brains GmbH & Co. KG
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -176,7 +176,7 @@ struct Thread_Configured_control {
   #ifdef RTEMS_POSIX_API
   POSIX_API_Control API_POSIX;
   #endif
-  #if CONFIGURE_MAXIMUM_THREAD_NAME_SIZE > 1
+  #if CONFIGURE_MAXIMUM_THREAD_NAME_SIZE > 0
   char name[ CONFIGURE_MAXIMUM_THREAD_NAME_SIZE ];
   #endif
   #if defined( _CONFIGURE_ENABLE_NEWLIB_REENTRANCY ) && \
@@ -199,7 +199,7 @@ const Thread_Control_add_on _Thread_Control_add_ons[] = {
   { offsetof( Thread_Configured_control, Control.libc_reent ),
     offsetof( Thread_Configured_control, Newlib ) }
   #endif
-  #if CONFIGURE_MAXIMUM_THREAD_NAME_SIZE > 1
+  #if CONFIGURE_MAXIMUM_THREAD_NAME_SIZE > 0
   ,
   { offsetof( Thread_Configured_control, Control.Join_queue.Queue.name ),
     offsetof( Thread_Configured_control, name ) }
