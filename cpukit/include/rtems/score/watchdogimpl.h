@@ -93,15 +93,15 @@ typedef enum {
  * @see _Watchdog_Preinitialize().
  */
 #if defined( RTEMS_SMP )
-  #define WATCHDOG_INITIALIZER( routine )            \
-  { { { { NULL, NULL, NULL, WATCHDOG_INACTIVE } } }, \
-    &_Per_CPU_Information[ 0 ].per_cpu,              \
-    ( routine ),                                     \
-    0,                                               \
+  #define WATCHDOG_INITIALIZER( routine )        \
+  { { { NULL, NULL, NULL, WATCHDOG_INACTIVE } }, \
+    &_Per_CPU_Information[ 0 ].per_cpu,          \
+    ( routine ),                                 \
+    0,                                           \
     0 }
 #else
   #define WATCHDOG_INITIALIZER( routine ) \
-  { { { { NULL, NULL, NULL, WATCHDOG_INACTIVE } } }, ( routine ), 0, 0 }
+  { { { NULL, NULL, NULL, WATCHDOG_INACTIVE } }, ( routine ), 0, 0 }
 #endif
 
 /**
