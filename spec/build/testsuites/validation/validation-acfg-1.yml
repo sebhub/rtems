@@ -14,6 +14,7 @@ ldflags:
 links: []
 source:
 - testsuites/validation/tc-acfg-disabled-bsp-settings.c
+- testsuites/validation/tc-acfg-max-thread-name-size.c
 - testsuites/validation/tc-pthread-getname-np.c
 - testsuites/validation/tc-pthread-setname-np.c
 - testsuites/validation/ts-validation-acfg-1.c

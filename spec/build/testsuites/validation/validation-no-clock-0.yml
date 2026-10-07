@@ -2,7 +2,7 @@ SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 build-type: test-program
 cflags: []
 copyrights:
-- Copyright (C) 2021 embedded brains GmbH & Co. KG
+- Copyright (C) 2021, 2026 embedded brains GmbH & Co. KG
 cppflags:
 - -D_GNU_SOURCE
 cxxflags: []
@@ -25,6 +25,7 @@ links:
 - role: build-dependency
   uid: objnobuiltin
 source:
+- testsuites/validation/tc-acfg-max-thread-name-size.c
 - testsuites/validation/tc-acfg.c
 - testsuites/validation/tc-attr.c
 - testsuites/validation/tc-barrier-create.c
