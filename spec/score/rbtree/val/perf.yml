@@ -1,0 +1,283 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+links:
+- role: validation
+  uid: ../req/perf-runtime
+params:
+  sample-count: 100
+  tree-count: 16
+test-brief: |
+  This test case provides a context to run red-black tree performance tests.
+test-cleanup: null
+test-context:
+- brief: |
+    This member provides the trees.
+  description: null
+  member: |
+    Tree trees[ TREE_COUNT ]
+- brief: |
+    This member contains the node count of each tree.
+  description: null
+  member: |
+    uint32_t node_count
+- brief: |
+    This member contains the index of the next pseudo-random position.
+  description: null
+  member: |
+    uint32_t sample
+test-context-support: |
+  #define NODE_COUNT_MAX 233
+
+  #define TREE_COUNT ${.:/params/tree-count}
+
+  typedef struct {
+    RBTree_Node node;
+    uint32_t    key;
+  } Node;
+
+  typedef struct {
+    RBTree_Control tree;
+    Node           nodes[ NODE_COUNT_MAX + 1 ];
+    Node           spare;
+    Node          *node;
+    RBTree_Node   *result;
+  } Tree;
+test-description: null
+test-includes:
+- rtems/score/rbtreeimpl.h
+test-local-includes: []
+test-prepare: null
+test-setup: null
+test-stop: null
+test-support: |
+  typedef ${.:/test-context-type} Context;
+
+  /* clang-format off */
+
+  static const uint8_t random_index[] = {
+    147, 21, 128, 74, 3, 222, 137, 76, 165, 10, 94, 192, 184, 72, 153, 42, 4,
+    120, 246, 152, 204, 232, 124, 104, 215, 217, 143, 187, 111, 27, 90, 240, 23,
+    247, 179, 211, 78, 18, 6, 125, 43, 133, 35, 169, 142, 191, 171, 185, 189,
+    167, 162, 116, 227, 199, 31, 81, 175, 244, 126, 230, 201, 20, 209, 203, 188,
+    15, 206, 214, 0, 89, 151, 106, 59, 85, 9, 205, 196, 29, 101, 16, 118, 200,
+    181, 19, 223, 8, 56, 251, 148, 62, 195, 33, 87, 86, 41, 220, 176, 113, 119,
+    26, 52, 53, 58, 156, 55, 177, 61, 17, 157, 237, 68, 93, 44, 149, 69, 60, 134,
+    122, 168, 131, 24, 117, 180, 109, 63, 11, 234, 135, 70, 110, 40, 79, 155,
+    202, 212, 25, 213, 238, 127, 159, 95, 47, 242, 145, 51, 112, 164, 186, 115,
+    132, 121, 178, 207, 174, 92, 84, 193, 236, 7, 160, 241, 239, 114, 28, 66,
+    182, 170, 190, 150, 219, 14, 48, 80, 83, 161, 154, 22, 98, 249, 252, 38, 105,
+    226, 130, 146, 103, 245, 36, 123, 194, 65, 97, 248, 73, 64, 231, 34, 5, 255,
+    102, 37, 221, 140, 77, 108, 136, 218, 46, 254, 208, 91, 144, 30, 100, 163,
+    96, 107, 210, 12, 139, 45, 39, 229, 32, 198, 99, 50, 183, 88, 158, 216, 172,
+    228, 235, 82, 233, 49, 129, 1, 75, 13, 166, 141, 67, 71, 54, 173, 2, 224,
+    253, 225, 138, 250, 197, 57, 243,
+  };
+
+  /* clang-format on */
+
+  static bool Less( const void *left, const RBTree_Node *right )
+  {
+    const uint32_t *key;
+    const Node     *node;
+
+    key = left;
+    node = RTEMS_CONTAINER_OF( right, Node, node );
+
+    return *key < node->key;
+  }
+
+  static void Insert( Tree *tree, Node *node )
+  {
+    (void) _RBTree_Insert_inline( &tree->tree, &node->node, &node->key, Less );
+  }
+
+  static void Extract( Tree *tree, Node *node )
+  {
+    _RBTree_Extract( &tree->tree, &node->node );
+  }
+
+  static uint32_t NextIndex( Context *ctx )
+  {
+    uint32_t index;
+
+    index = random_index[ ctx->sample % RTEMS_ARRAY_SIZE( random_index ) ];
+    ++ctx->sample;
+
+    return index;
+  }
+
+  /*
+   * Node i of each tree has the key 2 * i + 2.  A key with the value 2 * j + 1
+   * for 0 <= j <= n lies at position j of a tree of n nodes.  All trees have the
+   * same shape.
+   */
+  static void PrepareTree( Context *ctx, uint32_t node_count, bool ascending )
+  {
+    size_t k;
+
+    ctx->node_count = node_count;
+    ctx->sample = 0;
+
+    for ( k = 0; k < TREE_COUNT; ++k ) {
+      Tree    *tree;
+      uint32_t i;
+
+      tree = &ctx->trees[ k ];
+      _RBTree_Initialize_empty( &tree->tree );
+
+      for ( i = 0; i <= NODE_COUNT_MAX; ++i ) {
+        _RBTree_Initialize_node( &tree->nodes[ i ].node );
+        tree->nodes[ i ].key = 2 * i + 2;
+      }
+
+      _RBTree_Initialize_node( &tree->spare.node );
+
+      if ( ascending ) {
+        for ( i = 0; i < node_count; ++i ) {
+          Insert( tree, &tree->nodes[ i ] );
+        }
+      } else {
+        for ( i = 0; i < RTEMS_ARRAY_SIZE( random_index ); ++i ) {
+          uint32_t j;
+
+          j = random_index[ i ];
+
+          if ( j < node_count ) {
+            Insert( tree, &tree->nodes[ j ] );
+          }
+        }
+      }
+    }
+  }
+
+  static void SetupInsert( Context *ctx, bool ascending )
+  {
+    size_t k;
+
+    for ( k = 0; k < TREE_COUNT; ++k ) {
+      Tree *tree;
+      Node *node;
+
+      tree = &ctx->trees[ k ];
+      node = &tree->nodes[ ctx->node_count ];
+      tree->node = node;
+
+      if ( ascending ) {
+        node->key = 2 * ctx->node_count + 3;
+      } else {
+        node->key = 2 * ( NextIndex( ctx ) % ( ctx->node_count + 1 ) ) + 1;
+      }
+    }
+  }
+
+  static void SetupRandomNode( Context *ctx )
+  {
+    size_t k;
+
+    for ( k = 0; k < TREE_COUNT; ++k ) {
+      Tree *tree;
+
+      tree = &ctx->trees[ k ];
+      tree->node = &tree->nodes[ NextIndex( ctx ) % ctx->node_count ];
+    }
+  }
+
+  static void SetupMinimumNode( Context *ctx )
+  {
+    size_t k;
+
+    for ( k = 0; k < TREE_COUNT; ++k ) {
+      Tree *tree;
+
+      tree = &ctx->trees[ k ];
+      tree->node = RTEMS_CONTAINER_OF(
+        _RBTree_Minimum( &tree->tree ),
+        Node,
+        node
+      );
+    }
+  }
+
+  #if defined( RTEMS_SMP )
+  static void SetupReplace( Context *ctx )
+  {
+    size_t k;
+
+    SetupRandomNode( ctx );
+
+    for ( k = 0; k < TREE_COUNT; ++k ) {
+      Tree *tree;
+
+      tree = &ctx->trees[ k ];
+      tree->spare.key = tree->node->key;
+    }
+  }
+  #endif
+
+  static void InsertAll( Context *ctx )
+  {
+    size_t k;
+
+    for ( k = 0; k < TREE_COUNT; ++k ) {
+      Insert( &ctx->trees[ k ], ctx->trees[ k ].node );
+    }
+  }
+
+  static void ExtractAll( Context *ctx )
+  {
+    size_t k;
+
+    for ( k = 0; k < TREE_COUNT; ++k ) {
+      Extract( &ctx->trees[ k ], ctx->trees[ k ].node );
+    }
+  }
+
+  static void MinimumAll( Context *ctx )
+  {
+    size_t k;
+
+    for ( k = 0; k < TREE_COUNT; ++k ) {
+      ctx->trees[ k ].result = _RBTree_Minimum( &ctx->trees[ k ].tree );
+    }
+  }
+
+  static void SuccessorAll( Context *ctx )
+  {
+    size_t k;
+
+    for ( k = 0; k < TREE_COUNT; ++k ) {
+      ctx->trees[ k ].result = _RBTree_Successor( &ctx->trees[ k ].node->node );
+    }
+  }
+
+  #if defined( RTEMS_SMP )
+  static void ReplaceAll( Context *ctx, bool spare )
+  {
+    size_t k;
+
+    for ( k = 0; k < TREE_COUNT; ++k ) {
+      Tree *tree;
+
+      tree = &ctx->trees[ k ];
+
+      if ( spare ) {
+        _RBTree_Replace_node(
+          &tree->tree,
+          &tree->node->node,
+          &tree->spare.node
+        );
+      } else {
+        _RBTree_Replace_node(
+          &tree->tree,
+          &tree->spare.node,
+          &tree->node->node
+        );
+      }
+    }
+  }
+  #endif
+test-target: testsuites/validation/tc-score-rbtree-performance.c
+test-teardown: null
+type: runtime-measurement-test

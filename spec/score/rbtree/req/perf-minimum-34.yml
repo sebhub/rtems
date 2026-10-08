@@ -1,0 +1,42 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+links:
+- role: requirement-refinement
+  uid: perf-runtime
+- role: runtime-measurement-request
+  uid: ../val/perf
+non-functional-type: performance-runtime
+params: {}
+rationale: |
+  The thread queues and the schedulers get the minimum node of red-black trees.
+references: []
+requirement-type: non-functional
+test-body:
+  brief: |
+    Get the minimum node of each tree.
+  code: |
+    MinimumAll( ctx );
+  description: null
+test-cleanup: null
+test-prepare:
+  brief: |
+    Prepare each tree with 34 nodes.
+  code: |
+    PrepareTree( ctx, 34, false );
+  description: null
+test-setup: null
+test-teardown:
+  brief: |
+    Discard samples interrupted by a clock tick.
+  code: |
+    return tic == toc;
+  description: null
+text: |
+  While the execution environment is ${.:/environment}, while each of
+  ${../val/perf:/params/tree-count} red-black trees has exactly 34 nodes, while
+  the measurement sample is the runtime of a search of the node with the minimum
+  key in each of these trees, when exactly ${../val/perf:/params/sample-count}
+  samples are collected, the ${.:/limit-kind} shall be ${.:/limit-condition}.
+type: requirement
