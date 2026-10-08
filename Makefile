@@ -63,8 +63,18 @@ all: work-tools work-rtems $(WORK_MAKEFILE) work
 # The package configuration of each BSP provides the package targets.
 PKG_MAKEFILE = config-bsps/$(PKG_ARCH)/$(PKG_BSP)/package.mk
 
+# The workspace keeps the package summary of the previous build.  A build
+# which fails before it writes the summary leaves that summary in place, and it
+# then reads as the result of the failed build.
 pkg: | prepare
-	$(MAKE) -f $(PKG_MAKEFILE) pkg
+	start="$$(mktemp)"
+	trap 'rm -f "$$start"' EXIT
+	if ! $(MAKE) -f $(PKG_MAKEFILE) pkg; then
+	  if ! test workspace/package-summary.md -nt "$$start"; then
+	    rm -f workspace/package-summary.md
+	  fi
+	  exit 1
+	fi
 
 # Update the target items from the test logs of the last package build.
 pkg-update: | prepare
