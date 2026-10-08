@@ -1453,7 +1453,7 @@ timeouts:
     ts-fatal-too-large-tls-size.exe:
     - 0.17209371399803786
     ts-performance-no-clock-0.exe:
-    - 43.27486834300362
+    - 76.41087120698649
     ts-terminate.exe:
     - 0.19122283400065498
     ts-unit-no-clock-0.exe:
