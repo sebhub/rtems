@@ -319,7 +319,6 @@ source:
 - cpukit/libcrypt/crypt-sha512.c
 - cpukit/libcrypt/crypt.c
 - cpukit/libcrypt/misc.c
-- cpukit/libcsupport/src/__assert.c
 - cpukit/libcsupport/src/__getpid.c
 - cpukit/libcsupport/src/__gettod.c
 - cpukit/libcsupport/src/__times.c

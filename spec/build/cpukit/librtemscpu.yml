@@ -333,6 +333,7 @@ source:
 - contrib/cpukit/musl/src/time/gmtime_r.c
 - contrib/cpukit/musl/src/time/timegm.c
 - cpukit/dev/iorelax.c
+- cpukit/libcsupport/src/__assert.c
 - cpukit/libcsupport/src/getchark.c
 - cpukit/libcsupport/src/print_printf.c
 - cpukit/libcsupport/src/printk.c
