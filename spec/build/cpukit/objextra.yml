@@ -1073,7 +1073,6 @@ source:
 - cpukit/score/src/schedulersimpleschedule.c
 - cpukit/score/src/schedulersimpleunblock.c
 - cpukit/score/src/schedulersimpleyield.c
-- cpukit/score/src/semaphore.c
 - cpukit/score/src/smpbarrierwait.c
 - cpukit/score/src/stackallocator.c
 - cpukit/score/src/stackallocatorforidlewkspace.c

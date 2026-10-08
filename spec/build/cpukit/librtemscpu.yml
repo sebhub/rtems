@@ -531,6 +531,7 @@ source:
 - cpukit/score/src/schedulerpriorityunblock.c
 - cpukit/score/src/schedulerpriorityyield.c
 - cpukit/score/src/schedulersetaffinity.c
+- cpukit/score/src/semaphore.c
 - cpukit/score/src/stackallocatorforidle.c
 - cpukit/score/src/thread.c
 - cpukit/score/src/threadchangepriority.c
