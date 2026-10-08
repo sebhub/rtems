@@ -3,7 +3,7 @@ copyrights:
 - Copyright (C) 2026 embedded brains GmbH & Co. KG
 enabled-by: true
 links: []
-time-of-last-update: '2026-09-15T16:58:29.688393+00:00'
+time-of-last-update: '2026-10-08T10:00:17.819129+00:00'
 timeouts:
   coverage:
     ts-fatal-extension.exe:
@@ -1705,4 +1705,7 @@ timeouts:
     - 1.5304140179941896
     whetstone.exe:
     - 16.15572678699391
+  smp:
+    ts-performance-no-clock-0.exe:
+    - 264.301006813
 type: test-timeouts

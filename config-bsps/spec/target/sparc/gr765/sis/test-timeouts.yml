@@ -3,7 +3,7 @@ copyrights:
 - Copyright (C) 2026 embedded brains GmbH & Co. KG
 enabled-by: true
 links: []
-time-of-last-update: '2026-09-29T09:13:34.710985+00:00'
+time-of-last-update: '2026-10-08T10:00:17.819129+00:00'
 timeouts:
   coverage:
     ts-fatal-extension.exe:
@@ -2895,6 +2895,7 @@ timeouts:
     - 0.003706522998982109
     ts-performance-no-clock-0.exe:
     - 158.3118344300019
+    - 263.338081801
     ts-terminate.exe:
     - 0.006913015000463929
     ts-unit-no-clock-0.exe:
