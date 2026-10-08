@@ -257,6 +257,7 @@ static void SetupMinimumNode( Context *ctx )
   }
 }
 
+#if defined( RTEMS_SMP )
 static void SetupReplace( Context *ctx )
 {
   size_t k;
@@ -270,6 +271,7 @@ static void SetupReplace( Context *ctx )
     tree->spare.key = tree->node->key;
   }
 }
+#endif
 
 static void InsertAll( Context *ctx )
 {
@@ -307,6 +309,7 @@ static void SuccessorAll( Context *ctx )
   }
 }
 
+#if defined( RTEMS_SMP )
 static void ReplaceAll( Context *ctx, bool spare )
 {
   size_t k;
@@ -331,6 +334,7 @@ static void ReplaceAll( Context *ctx, bool spare )
     }
   }
 }
+#endif
 
 static void ScoreRbtreeValPerf_Setup_Context( ScoreRbtreeValPerf_Context *ctx )
 {
@@ -3531,6 +3535,7 @@ static bool ScoreRbtreeReqPerfMinimum89_Teardown_Wrap(
 
 /** @} */
 
+#if defined( RTEMS_SMP )
 /**
  * @defgroup ScoreRbtreeReqPerfReplace233 \
  *   spec:/score/rbtree/req/perf-replace-233
@@ -3616,6 +3621,7 @@ static bool ScoreRbtreeReqPerfReplace233_Teardown_Wrap(
 }
 
 /** @} */
+#endif
 
 /**
  * @defgroup ScoreRbtreeReqPerfSuccessor233 \
@@ -3986,12 +3992,14 @@ T_TEST_CASE_FIXTURE( ScoreRbtreeValPerf, &ScoreRbtreeValPerf_Fixture )
   ctx->request.teardown = ScoreRbtreeReqPerfMinimum89_Teardown_Wrap;
   T_measure_runtime( ctx->context, &ctx->request );
 
+  #if defined( RTEMS_SMP )
   ScoreRbtreeReqPerfReplace233_Prepare( ctx );
   ctx->request.name = "ScoreRbtreeReqPerfReplace233";
   ctx->request.setup = ScoreRbtreeReqPerfReplace233_Setup_Wrap;
   ctx->request.body = ScoreRbtreeReqPerfReplace233_Body_Wrap;
   ctx->request.teardown = ScoreRbtreeReqPerfReplace233_Teardown_Wrap;
   T_measure_runtime( ctx->context, &ctx->request );
+  #endif
 
   ScoreRbtreeReqPerfSuccessor233_Prepare( ctx );
   ctx->request.name = "ScoreRbtreeReqPerfSuccessor233";
