@@ -10,7 +10,7 @@ command:
 - -machine
 - petalogix-s3adsp1800,endianness=little
 - -icount
-- shift=4
+- shift=4,sleep=off
 - -cpu
 - microblaze-cpu
 - -global

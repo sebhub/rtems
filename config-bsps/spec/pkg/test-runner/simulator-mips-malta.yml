@@ -10,7 +10,7 @@ command:
 - -cpu
 - 24Kf
 - -icount
-- shift=4
+- shift=4,sleep=off
 - -m
 - 256M
 - -kernel

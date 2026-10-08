@@ -12,7 +12,7 @@ command:
 - -machine
 - xilinx-zynq-a9
 - -icount
-- shift=4
+- shift=4,sleep=off
 - enabled-by: RTEMS_SMP
   value:
   - -smp

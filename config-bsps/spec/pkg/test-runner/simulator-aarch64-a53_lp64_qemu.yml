@@ -10,7 +10,7 @@ command:
 - -machine
 - virt,gic-version=3
 - -icount
-- shift=4
+- shift=4,sleep=off
 - -cpu
 - cortex-a53
 - -m

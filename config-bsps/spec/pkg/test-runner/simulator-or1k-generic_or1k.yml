@@ -10,7 +10,7 @@ command:
 - -machine
 - virt
 - -icount
-- shift=4
+- shift=4,sleep=off
 - -cpu
 - or1200
 - -m
@@ -25,10 +25,11 @@ description: |
   timer in host time, so the emulated system cannot keep up with a tick
   below a few milliseconds and a test which configures one overruns.  The
   virtual clock comes from the instruction count, which removes the
-  dependency on the speed of the host.  The virt machine has a SiFive
-  test finisher, which lets the BSP power Qemu off.  The or1k-sim machine
-  has no such device, so Qemu keeps running after the system terminated
-  and every test hits its timeout.
+  dependency on the speed of the host.  While the system is idle, the
+  virtual clock advances to the next timer deadline.  The virt machine has
+  a SiFive test finisher, which lets the BSP power Qemu off.  The or1k-sim
+  machine has no such device, so Qemu keeps running after the system
+  terminated and every test hits its timeout.
 discard-patterns: []
 do-not-run: []
 enabled-by: or1k/generic_or1k
