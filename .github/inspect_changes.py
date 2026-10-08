@@ -499,14 +499,15 @@ def _check_base(worktree: Path, base_ref: str, paths: list[str],
 
 
 def _check_head(worktree: Path, base_ref: str, head_ref: str, paths: list[str],
-                findings: _Findings) -> _TreeResult:
-    """ Checks the tree after the last commit of the change set. """
+                findings: _Findings, name: str) -> _TreeResult:
+    """ Checks the tree after the last commit of the change set.  The name
+    denotes the head in the report. """
     _git("checkout", "--detach", head_ref, cwd=worktree)
     result = _check_tree(worktree, _get_head_items(base_ref, head_ref), True,
                          paths)
     if not result.clean:
         findings.error(
-            f"After the last commit `{head_ref}` of the change set, the tree "
+            f"After the last commit `{name}` of the change set, the tree "
             "is not clean:", "\n".join(result.details))
     return result
 
@@ -598,9 +599,10 @@ def _check_deleted(worktree: Path, commit: str, findings: _Findings,
 
 
 def _check_extractable(repository: Path, upstream_ref: str,
-                       commits: list[tuple[str, str]],
-                       categories: dict[str, list[str]],
-                       findings: _Findings) -> None:
+                       commits: list[tuple[str,
+                                           str]], categories: dict[str,
+                                                                   list[str]],
+                       originals: dict[str, str], findings: _Findings) -> None:
     """ Checks that the upstreamable commits apply to the upstream branch. """
     source = [
         commit for commit, _ in commits
@@ -628,10 +630,10 @@ def _check_extractable(repository: Path, upstream_ref: str,
                     # The rtems.org baseline is frozen, so the result is a
                     # note for a later upstream submission.
                     findings.warning(
-                        f"The commit `{commit[:10]}` does not apply to "
+                        f"The commit `{originals.get(commit, commit)[:10]}` "
+                        "does not apply to "
                         f"`{upstream_ref}`.  A submission to the rtems.org "
-                        "repository would conflict in:",
-                        "\n".join(conflicts))
+                        "repository would conflict in:", "\n".join(conflicts))
                     return
                 # A runner of the CI has no committer identity.  The commit
                 # exists only in the temporary worktree.
@@ -711,6 +713,91 @@ def _get_repository_path() -> Path:
     return repository
 
 
+def _is_update_merge(merge: str, base_ref: str) -> bool:
+    """ Is true, if the merge brings in nothing but commits of the base, as the
+    branch update of a pull request does. """
+    parents = _git("rev-list", "--parents", "-n", "1", merge).split()[2:]
+    return all(
+        _git_ok("merge-base", "--is-ancestor", parent, base_ref)
+        for parent in parents)
+
+
+def _rebase_change_set(repository: Path, base_ref: str, head_ref: str,
+                       findings: _Findings) -> tuple[str, dict[str, str]]:
+    """ Rebases the commits of a change set onto the base if each of its merges
+    only updates the branch.  Returns the head to inspect and the original
+    commit of each rebased commit.  Another merge, such as a merge of
+    Harmonia, keeps the change set as it is. """
+    merges = _lines(_git("rev-list", "--merges", f"{base_ref}..{head_ref}"))
+    if not merges or not all(_is_update_merge(m, base_ref) for m in merges):
+        return head_ref, {}
+    commits = _lines(
+        _git("rev-list", "--reverse", "--topo-order", "--no-merges",
+             f"{base_ref}..{head_ref}"))
+    originals: dict[str, str] = {}
+    skipped: list[str] = []
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        worktree = Path(tmp_dir) / "rebase"
+        _git("worktree",
+             "add",
+             "--detach",
+             str(worktree),
+             base_ref,
+             cwd=repository)
+        try:
+            for commit in commits:
+                if not _git_ok(
+                        "cherry-pick", "--no-commit", commit, cwd=worktree):
+                    conflicts = _lines(
+                        _git("diff",
+                             "--name-only",
+                             "--diff-filter=U",
+                             cwd=worktree))
+                    findings.error(
+                        f"The commit `{commit[:10]}` does not apply to the "
+                        f"base `{base_ref}`.  Rebase the change set onto the "
+                        "base.  It conflicts in:", "\n".join(conflicts))
+                    return head_ref, {}
+                if _git_ok("diff", "--cached", "--quiet", cwd=worktree):
+                    skipped.append(commit)
+                    continue
+                # A runner of the CI has no committer identity.  The commit
+                # exists only in the object store of the repository.
+                _git("-c",
+                     "user.name=inspect_changes",
+                     "-c",
+                     "user.email=inspect_changes@invalid",
+                     "commit",
+                     "--no-edit",
+                     "--no-verify",
+                     "-C",
+                     commit,
+                     cwd=worktree)
+                rebased = _git("rev-parse", "HEAD", cwd=worktree).strip()
+                originals[rebased] = commit
+            head = _git("rev-parse", "HEAD", cwd=worktree).strip()
+        finally:
+            subprocess.run(["git", "cherry-pick", "--quit"],
+                           cwd=worktree,
+                           check=False,
+                           capture_output=True)
+            subprocess.run(
+                ["git", "worktree", "remove", "--force",
+                 str(worktree)],
+                cwd=repository,
+                check=False,
+                capture_output=True)
+    findings.warning(
+        "The merges of the change set only bring in the base.  The inspection "
+        f"checks the commits of the change set rebased onto `{base_ref}`.")
+    if skipped:
+        findings.warning(
+            "These commits change nothing on top of the base:",
+            "\n".join(f"{c[:10]} {_git('log', '-1', '--format=%s', c).strip()}"
+                      for c in skipped))
+    return head, originals
+
+
 def main(argv: list[str]) -> int:
     """ Inspects the change set of a pull request. """
 
@@ -755,18 +842,24 @@ def main(argv: list[str]) -> int:
             f"The upstream reference `{args.upstream_ref}` does not exist.  "
             "The category invariant and the extractability check are skipped.")
     exclude_ref = args.upstream_ref if has_upstream else None
-    commits = _get_commits(base_ref, head_ref, exclude_ref)
-    commit_rows = _get_rows(base_ref, head_ref, exclude_ref)
+    inspect_ref, originals = _rebase_change_set(repository, base_ref, head_ref,
+                                                findings)
+    commits = _get_commits(base_ref, inspect_ref, exclude_ref)
+    commit_rows = _get_rows(base_ref, inspect_ref, exclude_ref)
     logging.info("inspect %d commits in %s..%s", len(commit_rows), base_ref,
-                 head_ref)
+                 inspect_ref)
     rows = [["Subject", "Category", "Format", "Export", "Sources", "Status"]]
     categories = {commit: _get_categories(commit) for commit, _ in commits}
     # The export covers the items which the change set touches and the files
     # which they affect.
-    changed = _lines(_git("diff", "--name-only", base_ref, head_ref))
+    changed = _lines(_git("diff", "--name-only", base_ref, inspect_ref))
     with tempfile.TemporaryDirectory() as tmp_dir:
         worktree = Path(tmp_dir) / "inspect"
-        _git("worktree", "add", "--detach", str(worktree), head_ref,
+        _git("worktree",
+             "add",
+             "--detach",
+             str(worktree),
+             inspect_ref,
              cwd=repository)
         pending: _PendingExport | None = None
         pending_row: list[str] = []
@@ -779,7 +872,7 @@ def main(argv: list[str]) -> int:
             base_row = rows[-1]
             dirty_base = not base.clean
             for commit, is_merge, subject in commit_rows:
-                commit_url = f"{url}/commit/{commit}"
+                commit_url = f"{url}/commit/{originals.get(commit, commit)}"
                 errors_before = findings.error_count
                 _git("checkout", "--detach", commit, cwd=worktree)
                 if is_merge:
@@ -819,7 +912,8 @@ def main(argv: list[str]) -> int:
                     f"tree, and no commit follows which provides the "
                     f"{missing}:", pending.result.describe())
             errors_before = findings.error_count
-            head = _check_head(worktree, base_ref, head_ref, changed, findings)
+            head = _check_head(worktree, base_ref, inspect_ref, changed,
+                               findings, head_ref)
             rows.append([
                 f"Head `{head_ref}`", "", head.fmt, head.export, _SKIP,
                 _OK if findings.error_count == errors_before else _ERROR
@@ -833,7 +927,7 @@ def main(argv: list[str]) -> int:
                 capture_output=True)
     if has_upstream:
         _check_extractable(repository, args.upstream_ref, commits, categories,
-                           findings)
+                           originals, findings)
     content = CommonMarkContent(context="CC-BY-SA-4.0")
     content.add_simple_table(rows)
     content.add(findings.content)
