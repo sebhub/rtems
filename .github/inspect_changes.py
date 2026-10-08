@@ -698,6 +698,10 @@ def main(argv: list[str]) -> int:
     args = get_arguments(argv[1:],
                          description=sys.modules[__name__].__doc__,
                          add_arguments=(_add_arguments, ))
+    if args.output:
+        # A run which stops before the end writes no report.  A report of a
+        # previous run then reads as the result of this run.
+        Path(args.output).unlink(missing_ok=True)
     repository = _get_repository_path()
     base_ref = args.base_ref[0]
     head_ref = args.head_ref[0]
