@@ -127,11 +127,11 @@ static int uart_read_polled(int minor)
 
   unsigned char lsr;
 
- /* Get a character when avaiable */
-  do {
-       lsr = OR1K_REG(OR1K_BSP_UART_REG_LINE_STATUS);
-  } while ((lsr & OR1K_BSP_UART_REG_LINE_STATUS_DR)
-           != OR1K_BSP_UART_REG_LINE_STATUS_DR);
+  lsr = OR1K_REG(OR1K_BSP_UART_REG_LINE_STATUS);
+
+  if ((lsr & OR1K_BSP_UART_REG_LINE_STATUS_DR) == 0) {
+    return -1;
+  }
 
   return OR1K_REG(OR1K_BSP_UART_REG_RX);
 }
