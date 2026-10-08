@@ -9,7 +9,7 @@ links:
 rationale: null
 requirement-type: functional
 text: |
-  When the argument ${../if/alloc-size:/params[0]/name} evaluates to an value of
+  When the argument ${../if/array-size:/params[0]/name} evaluates to an value of
   a C one-dimensional array type, and the evaluation of that argument has no side
   effects, the macro ${../if/array-size:/name} shall result in the number of
   elements with which that array has been defined.
