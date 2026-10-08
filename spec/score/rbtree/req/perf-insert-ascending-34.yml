@@ -1,0 +1,51 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+links:
+- role: requirement-refinement
+  uid: perf-runtime
+- role: runtime-measurement-request
+  uid: ../val/perf
+non-functional-type: performance-runtime
+params: {}
+rationale: |
+  The thread queues, the schedulers and the watchdogs insert nodes into red-black
+  trees.
+references: []
+requirement-type: non-functional
+test-body:
+  brief: |
+    Insert the node into each tree.
+  code: |
+    InsertAll( ctx );
+  description: null
+test-cleanup: null
+test-prepare:
+  brief: |
+    Prepare each tree with 34 nodes.
+  code: |
+    PrepareTree( ctx, 34, true );
+  description: null
+test-setup:
+  brief: |
+    Select the node to insert and its key in each tree.
+  code: |
+    SetupInsert( ctx, true );
+  description: null
+test-teardown:
+  brief: |
+    Extract the nodes. Discard samples interrupted by a clock tick.
+  code: |
+    ExtractAll( ctx );
+
+    return tic == toc;
+  description: null
+text: |
+  While the execution environment is ${.:/environment}, while each of
+  ${../val/perf:/params/tree-count} red-black trees has exactly 34 nodes, while
+  the measurement sample is the runtime of an insert of a node with a key greater
+  than each key of the tree in each of these trees, when exactly
+  ${../val/perf:/params/sample-count} samples are collected, the ${.:/limit-kind}
+  shall be ${.:/limit-condition}.
+type: requirement

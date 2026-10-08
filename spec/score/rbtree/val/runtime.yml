@@ -1,0 +1,28 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+links:
+- role: validation
+  uid: ../req/insert
+- role: validation
+  uid: ../req/extract
+- role: validation
+  uid: ../req/minimum
+- role: validation
+  uid: ../req/successor
+- role: validation
+  uid: ../req/replace
+method: by-analysis
+references: []
+text: |
+  A red-black tree of n nodes has a height of at most 2 log2(n + 1). The insert
+  walks down the tree once to find the parent of the new node. Its rebalance
+  walks up at most once to the root and performs at most two rotations. The
+  extract walks down at most once to find the successor of a node with two
+  children. Its rebalance walks up at most once to the root and performs at most
+  three rotations. The minimum walks down the left spine once. The successor
+  walks down the right subtree or up to an ancestor at most once. The replace
+  changes the links of one node and its neighbors. Each step of these walks takes
+  a constant runtime, so each operation has a runtime of at most O(log n).
+type: validation

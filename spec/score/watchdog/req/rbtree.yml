@@ -1,0 +1,21 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+links:
+- role: requirement-refinement
+  uid: /req/ordered-insert
+- role: requirement-refinement
+  uid: /req/ordered-extract
+- role: requirement-refinement
+  uid: /req/ordered-successor
+- role: requirement-refinement
+  uid: ../if/group
+non-functional-type: design
+rationale: null
+references: []
+requirement-type: non-functional
+text: |
+  The watchdog header shall order the scheduled watchdogs by expiration time in a
+  red-black tree.
+type: requirement

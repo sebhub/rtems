@@ -1,0 +1,19 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+links:
+- role: requirement-refinement
+  uid: root
+non-functional-type: design
+rationale: |
+  A real-time operating system needs operations with a bounded runtime. An
+  operation with a runtime of at most O(log n) keeps the bound low for a large
+  element count.
+references: []
+requirement-type: non-functional
+text: |
+  A data structure of the super core with a variable count of totally ordered
+  elements shall provide an operation to get the minimum element with a runtime
+  of at most O(log n), where n is the element count.
+type: requirement

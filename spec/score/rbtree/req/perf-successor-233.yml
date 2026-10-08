@@ -1,0 +1,48 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+links:
+- role: requirement-refinement
+  uid: perf-runtime
+- role: runtime-measurement-request
+  uid: ../val/perf
+non-functional-type: performance-runtime
+params: {}
+rationale: |
+  The watchdogs get the successor of the first node of red-black trees.
+references: []
+requirement-type: non-functional
+test-body:
+  brief: |
+    Get the successor of the node in each tree.
+  code: |
+    SuccessorAll( ctx );
+  description: null
+test-cleanup: null
+test-prepare:
+  brief: |
+    Prepare each tree with 233 nodes.
+  code: |
+    PrepareTree( ctx, 233, false );
+  description: null
+test-setup:
+  brief: |
+    Select the node of which to get the successor in each tree.
+  code: |
+    SetupRandomNode( ctx );
+  description: null
+test-teardown:
+  brief: |
+    Discard samples interrupted by a clock tick.
+  code: |
+    return tic == toc;
+  description: null
+text: |
+  While the execution environment is ${.:/environment}, while each of
+  ${../val/perf:/params/tree-count} red-black trees has exactly 233 nodes, while
+  the measurement sample is the runtime of a search of the successor of a node at
+  a pseudo-random position in each of these trees, when exactly
+  ${../val/perf:/params/sample-count} samples are collected, the ${.:/limit-kind}
+  shall be ${.:/limit-condition}.
+type: requirement
