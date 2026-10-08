@@ -86,8 +86,15 @@ specview: | prepare
 	$(MAKE) -f $(PKG_MAKEFILE) specview
 .PHONY: specview
 
+# With --do-not-use-git, the package build creates the workspace repository
+# and commits nothing to it.  Such a repository has no tracked file to restore.
 pkg-clean:
-	if test -d workspace/.git ; then cd workspace && git clean -xdf . && git checkout -- . ; fi
+	if test -d workspace/.git ; then
+	  cd workspace && git clean -xdf . || exit 1
+	  if git rev-parse -q --verify HEAD >/dev/null ; then
+	    git checkout -- .
+	  fi
+	fi
 
 # The build directory is reused, so a build after a change compiles the
 # changed sources only.  The aarch64 tools provide no ILP32 multilib, so
