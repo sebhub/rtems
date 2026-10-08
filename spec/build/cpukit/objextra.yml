@@ -896,7 +896,6 @@ source:
 - cpukit/posix/src/waitpid.c
 - cpukit/rtems/src/clockgetsecondssinceepoch.c
 - cpukit/rtems/src/clockgettodtimeval.c
-- cpukit/rtems/src/clockgetuptimenanoseconds.c
 - cpukit/rtems/src/clockgetuptimeseconds.c
 - cpukit/rtems/src/clockgetuptimetimeval.c
 - cpukit/rtems/src/clocktick.c
@@ -1094,7 +1093,6 @@ source:
 - cpukit/score/src/timespecaddto.c
 - cpukit/score/src/timespecdivide.c
 - cpukit/score/src/timespecfromticks.c
-- cpukit/score/src/timespecgetasnanoseconds.c
 - cpukit/score/src/timespecisnonnegative.c
 - cpukit/score/src/timespecisvalid.c
 - cpukit/score/src/timespeclessthan.c
