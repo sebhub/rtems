@@ -48,6 +48,9 @@ _SKIP = ":heavy_minus_sign:"
 # clang-format style of the repository.
 _EXPORT_OPTIONS = ("--format-code", "--no-documentation")
 
+_NO_EXPORT_TOOL = ("The specwareexport or the clang-format tool is not "
+                   "available.")
+
 # The change set categories.  Only CATEGORY_SOURCE is upstreamable to the
 # rtems.org repository.
 CATEGORY_SOURCE = "source"
@@ -340,10 +343,17 @@ class _ExportResult:
 
 def _export(worktree: Path) -> _ExportResult | None:
     """ Exports all items and returns the result, or None if the export tool
-    is not available.  The documentation lives in another repository and is
-    not exported. """
+    or the clang-format tool is not available.  The documentation lives in
+    another repository and is not exported. """
+    clang_format = shutil.which("clang-format")
+    if clang_format is None:
+        return None
     try:
-        result = subprocess.run(["specwareexport", *_EXPORT_OPTIONS],
+        result = subprocess.run([
+            "specwareexport", *_EXPORT_OPTIONS,
+            f"--clang-format-path={clang_format}",
+            "--clang-format-style=file:_clang-format"
+        ],
                                 cwd=worktree,
                                 check=False,
                                 capture_output=True,
@@ -433,7 +443,7 @@ def _check_tree(worktree: Path, items: list[str],
     if _has_export_configuration(worktree):
         exported = _export(worktree)
         if exported is None:
-            details.append("The specwareexport tool is not available.")
+            details.append(_NO_EXPORT_TOOL)
             export = _ERROR
         elif exported.clean:
             export = _OK
@@ -485,7 +495,7 @@ def _check_export(worktree: Path, category: list[str],
     specification commit. """
     result = _export(worktree)
     if result is None:
-        findings.error("The specwareexport tool is not available.")
+        findings.error(_NO_EXPORT_TOOL)
         return _ERROR, None
     status = _OK
     if pending is not None:
@@ -529,7 +539,7 @@ def _check_merge(worktree: Path, pending: _PendingExport | None,
         return (_SKIP if pending is None else _ERROR), None
     result = _export(worktree)
     if result is None:
-        findings.error("The specwareexport tool is not available.")
+        findings.error(_NO_EXPORT_TOOL)
         return _ERROR, None
     status = _OK if pending is None else _ERROR
     if result.clean:
