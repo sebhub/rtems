@@ -479,9 +479,10 @@ def _check_export(worktree: Path, category: list[str],
                   pending: _PendingExport | None, findings: _Findings,
                   url: str) -> tuple[str, _PendingExport | None]:
     """ Checks that the export reproduces the tree of the commit.  A
-    specification commit may leave the generated files to the next commit,
-    which has to be a source commit.  A merge may leave the items to the next
-    commit, which has to be a specification commit. """
+    specification commit may leave the generated files to the next commit
+    which is no build-qual commit, and that commit has to be a source commit.
+    A merge may leave the items to the next commit, which has to be a
+    specification commit. """
     result = _export(worktree)
     if result is None:
         findings.error("The specwareexport tool is not available.")
@@ -652,10 +653,11 @@ def _check_commit(
     ]
     fmt = _check_spec_format(worktree, items, findings, f"In {url}")
     export = _SKIP
-    if _has_export_configuration(worktree) and (
-            pending is not None or any(
-                f.startswith("spec/") or f.endswith(_C_SUFFIXES)
-                for f in files)):
+    # A change of the build items of the pre-qualified build changes no
+    # generated file, so a pending export passes such a commit unchanged.
+    exports = found != [CATEGORY_BUILD_QUAL] and (pending is not None or any(
+        f.startswith("spec/") or f.endswith(_C_SUFFIXES) for f in files))
+    if exports and _has_export_configuration(worktree):
         export, pending = _check_export(worktree, found, pending, findings,
                                         url)
     deleted = _check_deleted(worktree, commit, findings, url)
