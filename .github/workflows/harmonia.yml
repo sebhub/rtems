@@ -18,6 +18,7 @@ permissions:
 env:
   REPORT_NAME: harmonia-report.txt
   MESSAGE_NAME: harmonia-message.txt
+  REQUEST_NAME: harmonia-request.txt
 jobs:
   merge:
     name: Harmonia
@@ -40,33 +41,47 @@ jobs:
         # 'pull-requests: write' in the eb repository.
         GH_TOKEN: ${{ github.token }}
       # An open pull request may carry conflict resolutions pushed by a
-      # maintainer.  Never touch its branch.
+      # maintainer.  Harmonia adds a merge to its branch and never rewrites
+      # it.
       run: |
         number="$(gh pr list --head "${BRANCH}" --base "${TARGET}" --state open \
           --json number --jq '.[0].number // empty')"
         echo "number=${number}" >>"${GITHUB_OUTPUT}"
         if test -n "${number}"; then
-          echo "Pull request #${number} is still open; nothing to do."
+          echo "Pull request #${number} is open; Harmonia merges into its branch."
         fi
     - name: Check for pending commits
       id: pending
-      if: ${{ steps.open.outputs.number == '' }}
+      env:
+        NUMBER: ${{ steps.open.outputs.number }}
       run: |
         if ! git rev-parse --verify --quiet "${SOURCE}" >/dev/null; then
           echo "The ${SOURCE} branch does not exist."
           exit 1
         fi
-        count="$(git rev-list --count "${SOURCE}" "^${TARGET}")"
-        echo "count=${count}" >>"${GITHUB_OUTPUT}"
-        echo "${count} commits to merge"
+        base="${TARGET}"
+        if test -n "${NUMBER}"; then
+          base="origin/${BRANCH}"
+        fi
+        count="$(git rev-list --count "${SOURCE}" "^${base}")"
+        total="$(git rev-list --count "${SOURCE}" "^${TARGET}")"
+        {
+          echo "base=${base}"
+          echo "count=${count}"
+          echo "total=${total}"
+        } >>"${GITHUB_OUTPUT}"
+        echo "${count} commits to merge into ${base}"
     - name: Merge
-      if: ${{ steps.open.outputs.number == '' && steps.pending.outputs.count != '0' }}
+      if: ${{ steps.pending.outputs.count != '0' }}
       env:
+        BASE: ${{ steps.pending.outputs.base }}
         COUNT: ${{ steps.pending.outputs.count }}
+        TOTAL: ${{ steps.pending.outputs.total }}
       # GitHub builds the message of the merge commit from the title and the
       # body of the pull request, so both are written as a commit message:
       # plain text wrapped at 72 columns, no markup.  The same text is the
-      # message of the merge commit of this branch.
+      # message of the merge commit of this branch, except for the number of
+      # merged commits.
       #
       # The merge is left uncommitted until the checks have run, so their
       # report goes into that message.
@@ -79,7 +94,7 @@ jobs:
         tools="${RUNNER_TEMP}/tools"
         mkdir -p "${tools}"
         cp ./.github/resolve_merge.py ./.github/check_sources.py "${tools}/"
-        git checkout -B "${BRANCH}" "${TARGET}"
+        git checkout -B "${BRANCH}" "${BASE}"
         report="${RUNNER_TEMP}/${REPORT_NAME}"
         # Only the report may reach the message, so the scripts write anything
         # else to the standard error stream, which is kept for the summary.
@@ -121,16 +136,17 @@ jobs:
           git merge --abort
           exit 1
         fi
-        commits="${COUNT} commits"
-        if test "${COUNT}" -eq 1; then
-          commits='1 commit'
-        fi
         # A pending commit with the patch of a commit of the target branch is a
         # copy, which a rebase merge of a pull request created.
         copies="$(git log --cherry-mark --right-only --no-merges \
           --format='%m %h %s' "${TARGET}...${SOURCE}" | sed -n 's/^= //p')"
-        message="${RUNNER_TEMP}/${MESSAGE_NAME}"
-        {
+        # The merge commit counts the commits it merges into its branch.  The
+        # pull request counts all commits it merges into the target branch.
+        write_message() {
+          commits="$1 commits"
+          if test "$1" -eq 1; then
+            commits='1 commit'
+          fi
           echo "Merge ${SOURCE_NAME} into ${TARGET}"
           echo
           echo "Merge ${commits} of ${SOURCE_NAME}.  Harmonia merges every"
@@ -150,7 +166,10 @@ jobs:
           echo 'subset until a maintainer decides otherwise, which is a'
           echo 'change of its own.  This merge moves nothing into or out of'
           echo 'that subset.'
-        } >"${message}"
+        }
+        message="${RUNNER_TEMP}/${MESSAGE_NAME}"
+        write_message "${COUNT}" >"${message}"
+        write_message "${TOTAL}" >"${RUNNER_TEMP}/${REQUEST_NAME}"
         git commit -F "${message}"
         cat "${message}"
         {
@@ -162,12 +181,14 @@ jobs:
           cat "${message}"
           echo '```'
         } >>"${GITHUB_STEP_SUMMARY}"
-    - name: Open the pull request
-      if: ${{ steps.open.outputs.number == '' && steps.pending.outputs.count != '0' }}
+    - name: Open or update the pull request
+      if: ${{ steps.pending.outputs.count != '0' }}
       env:
         GH_TOKEN: ${{ github.token }}
-      # The branch has no open pull request, so it carries no work of anyone
-      # else and may be replaced.
+        NUMBER: ${{ steps.open.outputs.number }}
+      # Without an open pull request, the branch carries no work of anyone
+      # else and may be replaced.  With one, the push adds the merge commit
+      # and fails if the branch moved since the checkout.
       #
       # The pull request merges only through a merge commit, which keeps the
       # commits of the source branch as ancestors of the target branch.
@@ -175,16 +196,22 @@ jobs:
       # It needs the repository setting 'Allow auto-merge' and required status
       # checks on the target branch.
       run: |
-        git push --force origin "${BRANCH}"
-        message="${RUNNER_TEMP}/${MESSAGE_NAME}"
+        request="${RUNNER_TEMP}/${REQUEST_NAME}"
         body="${RUNNER_TEMP}/harmonia-body.txt"
-        subject="$(head -n 1 "${message}")"
-        tail -n +3 "${message}" >"${body}"
-        url="$(gh pr create \
-          --base "${TARGET}" \
-          --head "${BRANCH}" \
-          --title "${subject}" \
-          --body-file "${body}")"
+        subject="$(head -n 1 "${request}")"
+        tail -n +3 "${request}" >"${body}"
+        if test -z "${NUMBER}"; then
+          git push --force origin "${BRANCH}"
+          url="$(gh pr create \
+            --base "${TARGET}" \
+            --head "${BRANCH}" \
+            --title "${subject}" \
+            --body-file "${body}")"
+        else
+          git push origin "${BRANCH}"
+          url="$(gh pr view "${NUMBER}" --json url --jq .url)"
+          gh pr edit "${url}" --title "${subject}" --body-file "${body}"
+        fi
         echo "${url}"
         gh pr merge "${url}" \
           --auto \
