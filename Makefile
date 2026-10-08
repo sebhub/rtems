@@ -40,6 +40,9 @@ endef
 
 TEST_REPORT ?= test-report.md
 
+# The optimization flags of every BSP which bsps and config-tests build.
+TEST_OPTIMIZATION_FLAGS ?= -O2
+
 # A scaler overrides the scaler of the measured test durations in the test
 # runner items.  Empty keeps the scaler of the items.
 TIMEOUT_SCALER ?=
@@ -84,7 +87,7 @@ bsps: | prepare
 	set -e
 	./waf bsplist "--rtems-bsps=$(subst $(eval) ,$(comma),$(ARCHS:%=%/.*))" | \
 	    grep -v '_ilp32' | \
-	    python3 ./run_tests.py config --default OPTIMIZATION_FLAGS=-O2 \
+	    python3 ./run_tests.py config --default "OPTIMIZATION_FLAGS=$(TEST_OPTIMIZATION_FLAGS)" \
 	        --all-bsps $$(for arch in $(ARCHS); do python3 ./run_tests.py list $$arch; done | cut -f1) \
 	        >config.ini
 	./waf configure "--rtems-tools=$(TOOLS_PREFIX)"
@@ -111,7 +114,8 @@ config-tests: | prepare
 	set -e
 	bsp="$$(python3 ./run_tests.py configurations | awk -v name="$(CONFIG)" '$$1 == name { print $$2 }')"
 	if test -z "$$bsp"; then echo "error: no special configuration $(CONFIG)" >&2; exit 2; fi
-	python3 ./run_tests.py config --configuration "$(CONFIG)" >config-$(CONFIG).ini
+	python3 ./run_tests.py config --configuration "$(CONFIG)" \
+	    --default "OPTIMIZATION_FLAGS=$(TEST_OPTIMIZATION_FLAGS)" >config-$(CONFIG).ini
 	./waf configure "--rtems-tools=$(TOOLS_PREFIX)" "--rtems-config=config-$(CONFIG).ini" "--out=build-$(CONFIG)"
 	./waf
 	python3 ./run_tests.py run --reuse $(RUN_OPTIONS) --configuration "$(CONFIG)" \
