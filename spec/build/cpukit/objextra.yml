@@ -937,7 +937,6 @@ source:
 - cpukit/rtems/src/schedulermapfromposix.c
 - cpukit/rtems/src/schedulermaptoposix.c
 - cpukit/rtems/src/statustoerrno.c
-- cpukit/rtems/src/taskinitusers.c
 - cpukit/rtems/src/timergetinfo.c
 - cpukit/rtems/src/workspace.c
 - cpukit/rtems/src/workspacegreedy.c
