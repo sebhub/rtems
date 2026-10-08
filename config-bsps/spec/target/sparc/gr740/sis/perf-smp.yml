@@ -667,9 +667,9 @@ links:
       min-lower-bound: 1.36e-06
     Load/1:
       max-upper-bound: 1.136e-05
-      median-lower-bound: 2.8e-06
+      median-lower-bound: 2.4479999999999997e-06
       median-upper-bound: 1.12e-05
-      min-lower-bound: 2.76e-06
+      min-lower-bound: 2.4479999999999997e-06
     Load/2:
       max-upper-bound: 1.136e-05
       median-lower-bound: 2.484e-06
