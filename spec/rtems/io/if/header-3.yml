@@ -12,8 +12,6 @@ links:
 - role: interface-ingroup
   uid: group-3
 - role: placement-order
-  uid: ../req/group-kernel-char-io
-- role: placement-order
   uid: group-3
 path: rtems/bspIo.h
 prefix: cpukit/include
