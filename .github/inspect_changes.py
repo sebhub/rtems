@@ -25,7 +25,9 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
+import json
 import logging
+import os
 from pathlib import Path
 import re
 import shutil
@@ -50,6 +52,13 @@ _EXPORT_OPTIONS = ("--format-code", "--no-documentation")
 
 _NO_EXPORT_TOOL = ("The specwareexport or the clang-format tool is not "
                    "available.")
+
+# The export results of whole trees, one file per commit.  The CI restores a
+# result which Themis saved with the same name.  The format version is part of
+# the name, so a result of another format is a miss.
+_TREE_EXPORT_DIRECTORY = Path("tmp/inspect-changes")
+
+_TREE_EXPORT_FORMAT = "v1"
 
 # The change set categories.  Only CATEGORY_SOURCE is upstreamable to the
 # rtems.org repository.
@@ -345,6 +354,26 @@ class _ExportResult:
         """ Returns the error message or the list of changed files. """
         return self.message if not self.ok else "\n".join(self.stale)
 
+    def to_json(self) -> str:
+        """ Returns the result in JSON format. """
+        return json.dumps(
+            {
+                "ok": self.ok,
+                "stale": self.stale,
+                "message": self.message
+            },
+            indent=2)
+
+    @classmethod
+    def from_json(cls, text: str) -> "_ExportResult":
+        """ Returns the result of the JSON format. """
+        data = json.loads(text)
+        return cls(data["ok"], data["stale"], data["message"])
+
+
+class _ExportError(Exception):
+    """ Indicates that the export of a tree could not run. """
+
 
 def _get_export_items(worktree: Path, paths: list[str]) -> list[str]:
     """ Returns the specification item files of the paths which exist in the
@@ -357,11 +386,18 @@ def _get_export_items(worktree: Path, paths: list[str]) -> list[str]:
 
 def _export(worktree: Path, paths: list[str]) -> _ExportResult | None:
     """ Exports the specification items of the paths and returns the result,
-    or None if the export tool or the clang-format tool is not available.  The
-    documentation lives in another repository and is not exported. """
+    or None if the export tool or the clang-format tool is not available. """
     items = _get_export_items(worktree, paths)
     if not items:
         return _ExportResult(True, [], "", exported=False)
+    return _run_export(worktree, items)
+
+
+def _run_export(worktree: Path, items: list[str]) -> _ExportResult | None:
+    """ Exports the items, or all items if there are none, and returns the
+    result, or None if the export tool or the clang-format tool is not
+    available.  The documentation lives in another repository and is not
+    exported. """
     clang_format = shutil.which("clang-format")
     if clang_format is None:
         return None
@@ -389,6 +425,77 @@ def _has_export_configuration(worktree: Path) -> bool:
     """ A tree without the export configuration, such as eb/main, generates
     no files. """
     return (worktree / "specitems.yml").exists()
+
+
+def _export_with_own_tools(repository: Path, commit: str) -> _ExportResult:
+    """ Exports all items of the commit with the tools which its lock file
+    pins. """
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        tmp = Path(tmp_dir)
+        project = tmp / "project"
+        project.mkdir()
+        for name in ("pyproject.toml", "uv.lock", "README.md"):
+            (project / name).write_text(_git("show",
+                                             f"{commit}:{name}",
+                                             cwd=repository),
+                                        encoding="utf-8")
+        worktree = tmp / "tree"
+        _git("worktree",
+             "add",
+             "--detach",
+             str(worktree),
+             commit,
+             cwd=repository)
+        env = dict(os.environ, UV_PROJECT_ENVIRONMENT=str(tmp / "venv"))
+        env.pop("VIRTUAL_ENV", None)
+        try:
+            result = subprocess.run([
+                "uv", "run", "--frozen", f"--project={project}",
+                f"--python={sys.executable}", "python3",
+                str(Path(__file__).resolve()), f"--export-worktree={worktree}"
+            ],
+                                    cwd=repository,
+                                    env=env,
+                                    check=False,
+                                    capture_output=True,
+                                    encoding="utf-8")
+        except FileNotFoundError as err:
+            raise _ExportError("The uv tool is not available.") from err
+        finally:
+            subprocess.run(
+                ["git", "worktree", "remove", "--force",
+                 str(worktree)],
+                cwd=repository,
+                check=False,
+                capture_output=True)
+    if result.returncode != 0:
+        raise _ExportError(
+            f"The export of all items of `{commit}` with its own tools "
+            f"failed:\n{(result.stderr or result.stdout).strip()}")
+    return _ExportResult.from_json(result.stdout)
+
+
+def _get_tree_export(repository: Path, commit: str) -> _ExportResult | None:
+    """ Returns the export result of all items of the commit, or None if the
+    commit has no export configuration.  A commit determines its result, so
+    a stored result is never stale. """
+    commit = _git("rev-parse",
+                  "--verify",
+                  f"{commit}^{{commit}}",
+                  cwd=repository).strip()
+    if not _git_ok("cat-file", "-e", f"{commit}:specitems.yml",
+                   cwd=repository):
+        return None
+    path = (repository / _TREE_EXPORT_DIRECTORY /
+            f"export-{_TREE_EXPORT_FORMAT}-{commit}.json")
+    if path.is_file():
+        logging.info("use the export result %s", path)
+        return _ExportResult.from_json(path.read_text(encoding="utf-8"))
+    logging.info("export all items of %s", commit)
+    result = _export_with_own_tools(repository, commit)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(result.to_json(), encoding="utf-8")
+    return result
 
 
 class _PendingExport:
@@ -484,17 +591,31 @@ def _check_tree(worktree: Path, items: list[str], verify: bool,
     return _TreeResult(fmt, export, details)
 
 
-def _check_base(worktree: Path, base_ref: str, paths: list[str],
+def _check_base(worktree: Path, repository: Path, base_ref: str,
                 findings: _Findings) -> _TreeResult:
-    """ Checks that the change set starts from a clean state.  A dirty base is
-    a warning.  The first commit of the change set has to make the tree
-    clean. """
+    """ Checks that the change set starts from a clean state.  The export of
+    all items has to reproduce the tree of the base.  A dirty base is a
+    warning.  The first commit of the change set has to make the tree clean
+    in the scope of the change set. """
     _git("checkout", "--detach", base_ref, cwd=worktree)
-    result = _check_tree(worktree, [], False, paths)
+    try:
+        exported = _get_tree_export(repository, base_ref)
+    except _ExportError as err:
+        findings.error(str(err))
+        return _TreeResult(_SKIP, _ERROR, [str(err)])
+    if exported is None:
+        result = _check_tree(worktree, [], False, [])
+    elif exported.clean:
+        result = _TreeResult(_SKIP, _OK, [])
+    else:
+        result = _TreeResult(_SKIP, _ERROR, [
+            "The export of all items does not reproduce the tree:\n"
+            f"{exported.describe()}"
+        ])
     if not result.clean:
         findings.warning(
-            f"The base `{base_ref}` of the change set is not clean.  The first "
-            "commit has to make the tree clean:", "\n".join(result.details))
+            f"The base `{base_ref}` of the change set is not clean:",
+            "\n".join(result.details))
     return result
 
 
@@ -798,10 +919,50 @@ def _rebase_change_set(repository: Path, base_ref: str, head_ref: str,
     return head, originals
 
 
+def _export_worktree(worktree: Path) -> int:
+    """ Exports all items of the worktree and writes the result in JSON format
+    to the standard output. """
+    result = _run_export(worktree, [])
+    if result is None:
+        sys.stderr.write(f"{_NO_EXPORT_TOOL}\n")
+        return 1
+    sys.stdout.write(result.to_json())
+    return 0
+
+
+def _export_only(commit: str) -> int:
+    """ Exports all items of the commit with its own tools and stores the
+    result.  Returns 1 if the export does not reproduce the tree. """
+    try:
+        result = _get_tree_export(_get_repository_path(), commit)
+    except _ExportError as err:
+        sys.stderr.write(f"{err}\n")
+        return 1
+    if result is None:
+        sys.stdout.write(f"The commit {commit} has no export configuration.\n")
+        return 0
+    if result.clean:
+        sys.stdout.write(f"The export of all items reproduces {commit}.\n")
+        return 0
+    sys.stdout.write(f"The export of all items does not reproduce {commit}:\n"
+                     f"{result.describe()}\n")
+    return 1
+
+
 def main(argv: list[str]) -> int:
     """ Inspects the change set of a pull request. """
 
     def _add_arguments(parser):
+        parser.add_argument("--export-only",
+                            metavar="COMMIT",
+                            help="export all items of the commit with its "
+                            "own tools, store the result, and inspect "
+                            "nothing else")
+        parser.add_argument("--export-worktree",
+                            metavar="DIRECTORY",
+                            help="export all items of the worktree with the "
+                            "tools of this environment and write the result "
+                            "in JSON format to the standard output")
         parser.add_argument("--upstream-ref",
                             help="the reference of the rtems.org repository "
                             "mirror (default: rtems.org/main)",
@@ -811,28 +972,35 @@ def main(argv: list[str]) -> int:
                             "the standard output")
         parser.add_argument("url",
                             metavar="URL",
-                            nargs=1,
+                            nargs="?",
                             help="the repository URL")
         parser.add_argument("base_ref",
                             metavar="BASE_REF",
-                            nargs=1,
+                            nargs="?",
                             help="the base Git reference")
         parser.add_argument("head_ref",
                             metavar="HEAD_REF",
-                            nargs=1,
+                            nargs="?",
                             help="the head Git reference")
 
     args = get_arguments(argv[1:],
                          description=sys.modules[__name__].__doc__,
                          add_arguments=(_add_arguments, ))
+    if args.export_worktree:
+        return _export_worktree(Path(args.export_worktree))
+    if args.export_only:
+        return _export_only(args.export_only)
+    if args.head_ref is None:
+        sys.stderr.write("URL, BASE_REF and HEAD_REF are required\n")
+        return 2
     if args.output:
         # A run which stops before the end writes no report.  A report of a
         # previous run then reads as the result of this run.
         Path(args.output).unlink(missing_ok=True)
     repository = _get_repository_path()
-    base_ref = args.base_ref[0]
-    head_ref = args.head_ref[0]
-    url = args.url[0]
+    base_ref = args.base_ref
+    head_ref = args.head_ref
+    url = args.url
     findings = _Findings()
     has_upstream = _git_ok("rev-parse", "--verify", f"{args.upstream_ref}^{{commit}}")
     if has_upstream:
@@ -864,10 +1032,15 @@ def main(argv: list[str]) -> int:
         pending: _PendingExport | None = None
         pending_row: list[str] = []
         try:
-            base = _check_base(worktree, base_ref, changed, findings)
+            errors_before = findings.error_count
+            base = _check_base(worktree, repository, base_ref, findings)
+            if findings.error_count != errors_before:
+                base_status = _ERROR
+            else:
+                base_status = _OK if base.clean else _WARNING
             rows.append([
                 f"Base `{base_ref}`", "", base.fmt, base.export, _SKIP,
-                _OK if base.clean else _WARNING
+                base_status
             ])
             base_row = rows[-1]
             dirty_base = not base.clean

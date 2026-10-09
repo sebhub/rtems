@@ -64,18 +64,31 @@ jobs:
         version: 0.11.9
     - name: Install the tools
       run: uv sync --frozen
-    - name: Inspect the changes
+    - name: Determine the base
+      id: base
       # A value of the event is bound to the environment and never expanded
       # into the script.  A branch name may hold a backtick or a dollar sign,
       # which the shell would act on where the template put it.
       env:
         BASE_SHA: ${{ github.event.pull_request.base.sha }}
-        REPOSITORY_URL: ${{ github.event.repository.html_url }}
       run: |
         base="$(git merge-base "${BASE_SHA}" HEAD)"
         echo "base commit: ${base}"
+        echo "sha=${base}" >>"${GITHUB_OUTPUT}"
+    - name: Restore the export result of the base
+      # Themis saves the entry.  On a miss, the inspection exports all items
+      # of the base with the tools which the base pins.
+      uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25 # v5.1.0
+      with:
+        path: tmp/inspect-changes/export-v1-${{ steps.base.outputs.sha }}.json
+        key: inspect-export-v1-${{ steps.base.outputs.sha }}
+    - name: Inspect the changes
+      env:
+        BASE: ${{ steps.base.outputs.sha }}
+        REPOSITORY_URL: ${{ github.event.repository.html_url }}
+      run: |
         make check-commits \
-          BASE="${base}" \
+          BASE="${BASE}" \
           REPOSITORY_URL="${REPOSITORY_URL}" \
           INSPECT_OPTIONS=--output=inspect-changes.md
     - name: Report
