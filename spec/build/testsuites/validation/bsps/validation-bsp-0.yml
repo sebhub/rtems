@@ -27,6 +27,8 @@ links:
   uid: objsparcleon3irq
 - role: build-dependency
   uid: objsparcleon3irqmap
+- role: build-dependency
+  uid: objsparcleon3mpirq
 source:
 - testsuites/validation/bsps/ts-validation-bsp-0.c
 stlib: []

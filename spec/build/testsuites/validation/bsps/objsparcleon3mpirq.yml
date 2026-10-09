@@ -1,0 +1,22 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+build-type: objects
+cflags: []
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+cppflags: []
+cxxflags: []
+enabled-by:
+  and:
+  - or:
+    - sparc/gr712rc
+    - sparc/gr740
+    - sparc/gr765
+  - or:
+    - RTEMS_SMP
+    - RTEMS_MULTIPROCESSING
+includes: []
+install: []
+links: []
+source:
+- testsuites/validation/bsps/tc-sparc-leon3-mp-irq.c
+type: build
