@@ -332,14 +332,15 @@ jobs:
       # The test reports of a workspace are worth nothing after a change of
       # the tools, so the tools key is part of the key.  The package reuses
       # the report of an unchanged executable even if the report records a
-      # timeout, so the key also covers the test timeouts of the BSP.
+      # timeout, so the key also covers the test timeouts and the test
+      # runner of the BSP.
       uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25 # v5.1.0
       with:
         path: workspace
-        key: workspace-${{ env.BRANCH }}-zerberus-${{ matrix.bsp }}-${{ hashFiles('build_tools.py', 'spec-pkg-tools/**/*.yml') }}-${{ hashFiles(format('config-bsps/spec/target/{0}/{1}/*/test-timeouts.yml', matrix.arch, matrix.bsp)) }}-${{ github.sha }}
+        key: workspace-${{ env.BRANCH }}-zerberus-${{ matrix.bsp }}-${{ hashFiles('build_tools.py', 'spec-pkg-tools/**/*.yml') }}-${{ hashFiles(format('config-bsps/spec/target/{0}/{1}/*/test-timeouts.yml', matrix.arch, matrix.bsp), format('config-bsps/spec/pkg/test-runner/simulator-{0}-{1}.yml', matrix.arch, matrix.bsp)) }}-${{ github.sha }}
         restore-keys: |
-          workspace-${{ env.BRANCH }}-zerberus-${{ matrix.bsp }}-${{ hashFiles('build_tools.py', 'spec-pkg-tools/**/*.yml') }}-${{ hashFiles(format('config-bsps/spec/target/{0}/{1}/*/test-timeouts.yml', matrix.arch, matrix.bsp)) }}-
-          workspace-eb/main-zerberus-${{ matrix.bsp }}-${{ hashFiles('build_tools.py', 'spec-pkg-tools/**/*.yml') }}-${{ hashFiles(format('config-bsps/spec/target/{0}/{1}/*/test-timeouts.yml', matrix.arch, matrix.bsp)) }}-
+          workspace-${{ env.BRANCH }}-zerberus-${{ matrix.bsp }}-${{ hashFiles('build_tools.py', 'spec-pkg-tools/**/*.yml') }}-${{ hashFiles(format('config-bsps/spec/target/{0}/{1}/*/test-timeouts.yml', matrix.arch, matrix.bsp), format('config-bsps/spec/pkg/test-runner/simulator-{0}-{1}.yml', matrix.arch, matrix.bsp)) }}-
+          workspace-eb/main-zerberus-${{ matrix.bsp }}-${{ hashFiles('build_tools.py', 'spec-pkg-tools/**/*.yml') }}-${{ hashFiles(format('config-bsps/spec/target/{0}/{1}/*/test-timeouts.yml', matrix.arch, matrix.bsp), format('config-bsps/spec/pkg/test-runner/simulator-{0}-{1}.yml', matrix.arch, matrix.bsp)) }}-
     - name: Make
       timeout-minutes: 270
       run: |
@@ -405,7 +406,7 @@ jobs:
       uses: ./.github/actions/save-latest-cache
       with:
         path: workspace
-        key: workspace-${{ env.BRANCH }}-zerberus-${{ matrix.bsp }}-${{ hashFiles('build_tools.py', 'spec-pkg-tools/**/*.yml') }}-${{ hashFiles(format('config-bsps/spec/target/{0}/{1}/*/test-timeouts.yml', matrix.arch, matrix.bsp)) }}-${{ github.sha }}
+        key: workspace-${{ env.BRANCH }}-zerberus-${{ matrix.bsp }}-${{ hashFiles('build_tools.py', 'spec-pkg-tools/**/*.yml') }}-${{ hashFiles(format('config-bsps/spec/target/{0}/{1}/*/test-timeouts.yml', matrix.arch, matrix.bsp), format('config-bsps/spec/pkg/test-runner/simulator-{0}-{1}.yml', matrix.arch, matrix.bsp)) }}-${{ github.sha }}
         prefix: workspace-${{ env.BRANCH }}-zerberus-${{ matrix.bsp }}-
 
   sisyphos:
@@ -520,11 +521,10 @@ jobs:
         overwrite: true
     - name: Phase 2, run the simulator tests
       # An architecture without a simulator BSP runs nothing and passes.
-      # The runner is slower than the host which measured the test
-      # durations, so the timeouts get twice the margin of the items.
+      # The test runner items give the timeouts the margin of the runner.
       timeout-minutes: 180
       run: |
-        make tests TIMEOUT_SCALER=4.0 >log-tests.txt 2>&1
+        make tests >log-tests.txt 2>&1
     - name: Test report
       if: ${{ always() && hashFiles('test-report.md') != '' }}
       run: |
@@ -658,10 +658,9 @@ jobs:
       run: |
         printf '[version]\nrevision = 7.0.0-%s\n' "${REVISION}" >VERSION
     - name: Phase 2, build and run the special configuration
-      # The timeouts get twice the margin of the items, see Sisyphos.
       timeout-minutes: 270
       run: |
-        make config-tests TIMEOUT_SCALER=4.0 >log-config.txt 2>&1
+        make config-tests >log-config.txt 2>&1
     - name: Test report
       if: ${{ always() && hashFiles('test-report.md') != '' }}
       run: |
