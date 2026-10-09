@@ -68,6 +68,14 @@ links:
 - role: validation
   uid: /score/cpu/if/uint32ptr
 - role: validation
+  uid: /score/cpu/sparc/if/context-control
+- role: validation
+  uid: /score/cpu/sparc/if/context-control-fp
+- role: validation
+  uid: /score/cpu/sparc/if/minimum-stack-frame
+- role: validation
+  uid: /score/cpu/sparc/if/register-window
+- role: validation
   uid: /score/heap/if/information-block
 - role: validation
   uid: /score/interr/if/bad-thread-dispatch-disable-level
