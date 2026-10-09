@@ -1,0 +1,15 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: sparc/gr765
+links:
+- role: validation
+  uid: /req/errata
+- role: reference
+  uid: /ref/soc/gaisler/gr765/gr765-dsum-0-11/errata
+method: by-analysis
+text: |
+  The GR765 is a pre-production device. The errata chapter
+  ${/ref/soc/gaisler/gr765/gr765-dsum-0-11/errata:/name} lists no erratum. There
+  is no erratum of the GR765 which the software product has to take into account.
+type: validation
