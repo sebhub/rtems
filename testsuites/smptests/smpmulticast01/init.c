@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: BSD-2-Clause */
 
 /*
- * Copyright (C) 2019 embedded brains GmbH & Co. KG
+ * Copyright (C) 2019, 2026 embedded brains GmbH & Co. KG
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -51,6 +51,7 @@ static const T_config config = {
 typedef struct {
   rtems_test_parallel_context base;
   Atomic_Uint                 id[ CPU_COUNT ][ CPU_COUNT ];
+  uint32_t                    broadcasts[ CPU_COUNT ];
 } test_context;
 
 static test_context test_instance;
@@ -284,9 +285,13 @@ static rtems_interval test_broadcast_init(
   size_t                       active_workers
 )
 {
-  (void) base;
+  test_context *ctx;
+
   (void) arg;
   (void) active_workers;
+
+  ctx = (test_context *) base;
+  memset( &ctx->broadcasts[ 0 ], 0, sizeof( ctx->broadcasts ) );
 
   return test_duration();
 }
@@ -312,6 +317,7 @@ static void test_broadcast_body(
     cpu_self = _Thread_Dispatch_disable();
     _SMP_Broadcast_action( action, &ctx->id[ worker_index ][ 0 ] );
     _Thread_Dispatch_enable( cpu_self );
+    ++ctx->broadcasts[ worker_index ];
   }
 }
 
@@ -321,11 +327,37 @@ static void test_broadcast_fini(
   size_t                       active_workers
 )
 {
-  (void) base;
-  (void) arg;
-  (void) active_workers;
+  test_context *ctx;
+  uint32_t      n;
+  size_t        worker_index;
 
-  /* Do nothing */
+  (void) arg;
+
+  ctx = (test_context *) base;
+  n = rtems_scheduler_get_processor_maximum();
+  T_gt_u32( ctx->broadcasts[ 0 ], 0 );
+
+  /*
+   * A broadcast returns after the action ran on all processors, so the
+   * identifiers of the last broadcast of a worker are complete.
+   */
+  for ( worker_index = 0; worker_index < active_workers; ++worker_index ) {
+    uint32_t j;
+
+    if ( ctx->broadcasts[ worker_index ] == 0 ) {
+      continue;
+    }
+
+    for ( j = 0; j < n; ++j ) {
+      unsigned id;
+
+      id = _Atomic_Load_uint(
+        &ctx->id[ worker_index ][ j ],
+        ATOMIC_ORDER_RELAXED
+      );
+      T_quiet_eq_uint( j + 1, id );
+    }
+  }
 }
 
 static const rtems_test_parallel_job test_jobs[] = {
