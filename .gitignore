@@ -9,6 +9,7 @@
 !/test-logs/empty.json
 /test-logs-*
 /test-report.md
+/tmp
 /.specitems
 /tools
 /tools-dist

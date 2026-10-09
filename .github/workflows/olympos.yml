@@ -12,9 +12,17 @@ on:
     branches:
     - eb/main
     - eb/qual
+    # A change of the base is an edit of the pull request.
+    types:
+    - opened
+    - synchronize
+    - reopened
+    - edited
   workflow_dispatch:
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  # The run of an edit which keeps the base skips all its jobs.  It has a
+  # group of its own, so it cancels no run.
+  group: ${{ github.workflow }}-${{ github.ref }}${{ github.event.action == 'edited' && !github.event.changes.base && format('-nop-{0}', github.run_id) || '' }}
   cancel-in-progress: true
 permissions:
   contents: read
@@ -32,7 +40,7 @@ env:
 jobs:
   argos:
     name: Argos
-    if: ${{ github.event_name == 'pull_request' }}
+    if: ${{ github.event_name == 'pull_request' && (github.event.action != 'edited' || github.event.changes.base) }}
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
@@ -64,18 +72,31 @@ jobs:
         version: 0.11.9
     - name: Install the tools
       run: uv sync --frozen
-    - name: Inspect the changes
+    - name: Determine the base
+      id: base
       # A value of the event is bound to the environment and never expanded
       # into the script.  A branch name may hold a backtick or a dollar sign,
       # which the shell would act on where the template put it.
       env:
         BASE_SHA: ${{ github.event.pull_request.base.sha }}
-        REPOSITORY_URL: ${{ github.event.repository.html_url }}
       run: |
         base="$(git merge-base "${BASE_SHA}" HEAD)"
         echo "base commit: ${base}"
+        echo "sha=${base}" >>"${GITHUB_OUTPUT}"
+    - name: Restore the export result of the base
+      # Themis saves the entry.  On a miss, the inspection exports all items
+      # of the base with the tools which the base pins.
+      uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25 # v5.1.0
+      with:
+        path: tmp/inspect-changes/export-v1-${{ steps.base.outputs.sha }}.json
+        key: inspect-export-v1-${{ steps.base.outputs.sha }}
+    - name: Inspect the changes
+      env:
+        BASE: ${{ steps.base.outputs.sha }}
+        REPOSITORY_URL: ${{ github.event.repository.html_url }}
+      run: |
         make check-commits \
-          BASE="${base}" \
+          BASE="${BASE}" \
           REPOSITORY_URL="${REPOSITORY_URL}" \
           INSPECT_OPTIONS=--output=inspect-changes.md
     - name: Report
@@ -93,8 +114,9 @@ jobs:
   hephaistos:
     name: Hephaistos
     needs: argos
-    # Argos is skipped for pushes.  Only an Argos failure stops the forge.
-    if: ${{ !cancelled() && (needs.argos.result == 'success' || needs.argos.result == 'skipped') }}
+    # Argos runs only for a pull request.  A pull request run needs its
+    # success.
+    if: ${{ !cancelled() && (needs.argos.result == 'success' || github.event_name != 'pull_request') }}
     runs-on: ubuntu-24.04
     permissions:
       contents: read
@@ -174,7 +196,7 @@ jobs:
       timeout-minutes: 270
       run: |
         sudo apt-get update
-        sudo apt-get -y install binutils-multiarch build-essential git gnutls-dev meson libglib2.0-dev libpixman-1-dev libssl-dev ninja-build
+        sudo apt-get -y install binutils-multiarch bison build-essential cmake flex git gnutls-dev meson libglib2.0-dev libpixman-1-dev libssl-dev ninja-build
         make tools TOOLS_OPTIONS=--distribution-directory=tools-dist >log-tools.txt 2>&1
     - name: Tools log tail
       if: ${{ always() && hashFiles('log-tools.txt') != '' }}
@@ -256,7 +278,7 @@ jobs:
     needs: [argos, hephaistos]
     # Run whenever the sparc toolchain exists.  A toolchain failure for an
     # unrelated architecture must not hide a package test regression.
-    if: ${{ !cancelled() && (needs.argos.result == 'success' || needs.argos.result == 'skipped') && needs.hephaistos.result != 'cancelled' }}
+    if: ${{ !cancelled() && (needs.argos.result == 'success' || github.event_name != 'pull_request') && needs.hephaistos.result != 'cancelled' }}
     runs-on: ubuntu-24.04
     permissions:
       # The save of a cache entry deletes the entry which it replaces.
@@ -333,6 +355,19 @@ jobs:
       timeout-minutes: 270
       run: |
         make pkg >log-pkg.txt 2>&1
+    - name: Check the link hub
+      # The link hub maps each Doxygen file and group of the pre-qualified
+      # sources to a specification item.  A branch which holds no
+      # specitems.yml has no specification to map.
+      if: ${{ !cancelled() && matrix.bsp == 'gr765' && hashFiles('specitems.yml') != '' }}
+      timeout-minutes: 15
+      run: |
+        if ! make linkhub >log-linkhub.txt 2>&1; then
+          tail -n 50 log-linkhub.txt
+          error="$(grep -m 1 '^[A-Za-z]*Error: ' log-linkhub.txt || true)"
+          echo "::error::The link hub of ${PKG_BSP} failed: ${error}"
+          exit 1
+        fi
     - name: Check the package summary
       # The summary fails on an unexpected test failure, an unjustified
       # coverage gap, a stale gap item and a pre-qualified functional
@@ -363,6 +398,7 @@ jobs:
       with:
         name: log-pkg-${{ matrix.bsp }}
         path: |
+          log-linkhub.txt
           log-pkg.txt
           workspace/package-summary.md
         overwrite: true
@@ -385,7 +421,7 @@ jobs:
   sisyphos:
     name: Sisyphos
     needs: [argos, hephaistos]
-    if: ${{ !cancelled() && (needs.argos.result == 'success' || needs.argos.result == 'skipped') && needs.hephaistos.result != 'cancelled' }}
+    if: ${{ !cancelled() && (needs.argos.result == 'success' || github.event_name != 'pull_request') && needs.hephaistos.result != 'cancelled' }}
     runs-on: ubuntu-24.04
     permissions:
       # The save of a cache entry deletes the entry which it replaces.
@@ -548,7 +584,7 @@ jobs:
     needs: [argos, hephaistos]
     # Phase 2 of the special configurations.  Each configuration builds one
     # BSP with its options and runs its tests.
-    if: ${{ !cancelled() && (needs.argos.result == 'success' || needs.argos.result == 'skipped') && needs.hephaistos.result != 'cancelled' }}
+    if: ${{ !cancelled() && (needs.argos.result == 'success' || github.event_name != 'pull_request') && needs.hephaistos.result != 'cancelled' }}
     runs-on: ubuntu-24.04
     permissions:
       # The save of a cache entry deletes the entry which it replaces.

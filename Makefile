@@ -86,6 +86,12 @@ specview: | prepare
 	$(MAKE) -f $(PKG_MAKEFILE) specview
 .PHONY: specview
 
+# Check that the Doxygen files and groups of the package map to specification
+# items.
+linkhub: | prepare
+	$(MAKE) -f $(PKG_MAKEFILE) linkhub
+.PHONY: linkhub
+
 # With --do-not-use-git, the package build creates the workspace repository
 # and commits nothing to it.  Such a repository has no tracked file to restore.
 pkg-clean:

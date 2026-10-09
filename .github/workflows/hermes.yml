@@ -56,10 +56,13 @@ jobs:
         # file of this repository in a job which may write pull requests.
         path: zerberus
     - name: Assemble the comment
+      id: comment
       if: ${{ steps.pr.outputs.pr != '0' }}
       # Both reports are produced by the workflow run of the pull request,
       # from the tree of the pull request.  They are shown, not believed, and
       # the comment says so: this job cannot tell a report from a forgery.
+      env:
+        CONCLUSION: ${{ github.event.workflow_run.conclusion }}
       run: |
         {
           if test -f argos/inspect-changes.md; then
@@ -79,6 +82,13 @@ jobs:
           done
         } >comment.md
         if ! test -s comment.md; then
+          # Every pull request run which ends in success has the report of
+          # Argos.  A successful run without it skipped all its jobs and
+          # keeps the comment of the run before it.
+          if test "${CONCLUSION}" != failure; then
+            echo 'post=false' >>"${GITHUB_OUTPUT}"
+            exit 0
+          fi
           {
             echo 'No report was produced by this run.'
             echo
@@ -92,7 +102,7 @@ jobs:
             'relying on a verdict here.*'
         } >>comment.md
     - name: Post comment
-      if: ${{ steps.pr.outputs.pr != '0' }}
+      if: ${{ steps.pr.outputs.pr != '0' && steps.comment.outputs.post != 'false' }}
       uses: marocchino/sticky-pull-request-comment@5770ad5eb8f42dd2c4f34da00c94c5381e49af88 # v3.0.5
       with:
         number: ${{ steps.pr.outputs.pr }}

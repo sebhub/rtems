@@ -49,8 +49,9 @@ _KEEP = {
     "moxie": ("/pkg/deployment/gdb-sim", ),
     "or1k": ("/pkg/deployment/qemu", ),
     "powerpc": ("/pkg/deployment/gdb-sim", ),
-    "riscv": ("/pkg/deployment/qemu", "/pkg/deployment/sis"),
-    "sparc": ("/pkg/deployment/sis", ),
+    "riscv": ("/pkg/deployment/doxygen", "/pkg/deployment/qemu",
+              "/pkg/deployment/sis"),
+    "sparc": ("/pkg/deployment/doxygen", "/pkg/deployment/sis"),
     "x86_64": ("/pkg/deployment/qemu", ),
 }
 
