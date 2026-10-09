@@ -12,9 +12,17 @@ on:
     branches:
     - eb/main
     - eb/qual
+    # A change of the base is an edit of the pull request.
+    types:
+    - opened
+    - synchronize
+    - reopened
+    - edited
   workflow_dispatch:
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  # The run of an edit which keeps the base skips all its jobs.  It has a
+  # group of its own, so it cancels no run.
+  group: ${{ github.workflow }}-${{ github.ref }}${{ github.event.action == 'edited' && !github.event.changes.base && format('-nop-{0}', github.run_id) || '' }}
   cancel-in-progress: true
 permissions:
   contents: read
@@ -32,7 +40,7 @@ env:
 jobs:
   argos:
     name: Argos
-    if: ${{ github.event_name == 'pull_request' }}
+    if: ${{ github.event_name == 'pull_request' && (github.event.action != 'edited' || github.event.changes.base) }}
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
@@ -106,8 +114,9 @@ jobs:
   hephaistos:
     name: Hephaistos
     needs: argos
-    # Argos is skipped for pushes.  Only an Argos failure stops the forge.
-    if: ${{ !cancelled() && (needs.argos.result == 'success' || needs.argos.result == 'skipped') }}
+    # Argos runs only for a pull request.  A pull request run needs its
+    # success.
+    if: ${{ !cancelled() && (needs.argos.result == 'success' || github.event_name != 'pull_request') }}
     runs-on: ubuntu-24.04
     permissions:
       contents: read
@@ -269,7 +278,7 @@ jobs:
     needs: [argos, hephaistos]
     # Run whenever the sparc toolchain exists.  A toolchain failure for an
     # unrelated architecture must not hide a package test regression.
-    if: ${{ !cancelled() && (needs.argos.result == 'success' || needs.argos.result == 'skipped') && needs.hephaistos.result != 'cancelled' }}
+    if: ${{ !cancelled() && (needs.argos.result == 'success' || github.event_name != 'pull_request') && needs.hephaistos.result != 'cancelled' }}
     runs-on: ubuntu-24.04
     permissions:
       # The save of a cache entry deletes the entry which it replaces.
@@ -412,7 +421,7 @@ jobs:
   sisyphos:
     name: Sisyphos
     needs: [argos, hephaistos]
-    if: ${{ !cancelled() && (needs.argos.result == 'success' || needs.argos.result == 'skipped') && needs.hephaistos.result != 'cancelled' }}
+    if: ${{ !cancelled() && (needs.argos.result == 'success' || github.event_name != 'pull_request') && needs.hephaistos.result != 'cancelled' }}
     runs-on: ubuntu-24.04
     permissions:
       # The save of a cache entry deletes the entry which it replaces.
@@ -575,7 +584,7 @@ jobs:
     needs: [argos, hephaistos]
     # Phase 2 of the special configurations.  Each configuration builds one
     # BSP with its options and runs its tests.
-    if: ${{ !cancelled() && (needs.argos.result == 'success' || needs.argos.result == 'skipped') && needs.hephaistos.result != 'cancelled' }}
+    if: ${{ !cancelled() && (needs.argos.result == 'success' || github.event_name != 'pull_request') && needs.hephaistos.result != 'cancelled' }}
     runs-on: ubuntu-24.04
     permissions:
       # The save of a cache entry deletes the entry which it replaces.
