@@ -15,8 +15,11 @@ links:
   uid: /c/sys/types/if/header
 - role: interface-ingroup
   uid: /c/sys/types/if/group
+- role: reference
+  uid: /ref/std/posix-2024/sys-types-h
 name: pthread_t
-notes: null
+notes: |
+  See ${/ref/std/posix-2024/sys-types-h:/name}.
 params: []
 return: null
 type: interface
