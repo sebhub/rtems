@@ -40,5 +40,5 @@ name: Qemu [malta 24Kf]
 params: {}
 pkg-type: test-runner
 test-runner-type: subprocess
-timeout-scaler: 2.0
+timeout-scaler: 4.0
 type: pkg

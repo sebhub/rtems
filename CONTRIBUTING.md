@@ -127,9 +127,11 @@ the virtual environment. The inspection uses `uv` to export all items of the
 base with the tools which the base pins. It stores the result in
 `tmp/inspect-changes/`, so the next inspection of the same base reuses it.
 
-`python3 run_tests.py configurations` lists the special configurations. The CI
-runs the tests with `TIMEOUT_SCALER=4.0`, which gives the test timeouts twice
-the margin of the test runner items.
+`python3 run_tests.py configurations` lists the special configurations. The
+test runner items scale the measured test durations by four. The CI runner is
+slower than the host which measured them, and the package build and the
+simulator tests share this margin. `TIMEOUT_SCALER` overrides it for a local
+run.
 
 ## CI report
 
