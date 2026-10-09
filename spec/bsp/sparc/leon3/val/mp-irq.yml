@@ -1,0 +1,45 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by:
+  and:
+  - or:
+    - sparc/gr712rc
+    - sparc/gr740
+    - sparc/gr765
+  - or:
+    - RTEMS_SMP
+    - RTEMS_MULTIPROCESSING
+links: []
+test-actions:
+- action-brief: |
+    Read the value of ${../if/mp-irq:/name}. The test program defines no
+    ${../if/mp-irq:/name} constant.
+  action-code: |
+    unsigned char bus_line;
+
+    bus_line = LEON3_mp_irq;
+  checks:
+  - brief: |
+      Check that the value is the value of the BSP option LEON3_IPI_BUS_LINE.
+    code: |
+      T_eq_uint( bus_line, LEON3_IPI_BUS_LINE );
+    links:
+    - role: validation
+      uid: ../req/mp-irq
+  links: []
+test-brief: |
+  Tests the default value of ${../if/mp-irq:/name}.
+test-context: []
+test-context-support: null
+test-description: null
+test-header: null
+test-includes:
+- bsp.h
+test-local-includes: []
+test-setup: null
+test-stop: null
+test-support: null
+test-target: testsuites/validation/bsps/tc-sparc-leon3-mp-irq.c
+test-teardown: null
+type: test-case

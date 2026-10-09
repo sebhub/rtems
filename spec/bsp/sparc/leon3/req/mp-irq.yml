@@ -1,0 +1,20 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by:
+  and:
+  - bsps/sparc/leon3
+  - or:
+    - RTEMS_SMP
+    - RTEMS_MULTIPROCESSING
+functional-type: function
+links:
+- role: interface-function
+  uid: ../if/mp-irq
+rationale: null
+requirement-type: functional
+text: |
+  Where the ${/glossary/application:/term} defines no ${../if/mp-irq:/name}
+  constant, the value of ${../if/mp-irq:/name} shall be equal to the value of the
+  BSP option LEON3_IPI_BUS_LINE.
+type: requirement
