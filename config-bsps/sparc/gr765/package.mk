@@ -21,3 +21,8 @@ specview:
 	  --enabled=sparc/gr765,sparc,bsps/sparc/leon3,target/simulator,RTEMS_QUAL
 	. $(VENV)/bin/activate && specwareview --validated=no \
 	  --enabled=sparc/gr765,sparc,bsps/sparc/leon3,target/simulator,RTEMS_QUAL,RTEMS_SMP
+
+linkhub:
+	. $(VENV)/bin/activate && specbuild $(GIT_OPTIONS) \
+	  --only '/pkg/sparc/gr765/*/link-hub' \
+	  spec config-bsps/spec config-bsps/linkhub config-bsps/$(PKG_ARCH)/$(PKG_BSP)

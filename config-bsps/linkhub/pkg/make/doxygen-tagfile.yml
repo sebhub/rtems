@@ -1,0 +1,25 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+actions:
+- action: directory-state-discard-and-clear
+  enabled-by: true
+  output-name: build
+- action: mkdir
+  enabled-by: true
+  exist-ok: true
+  parents: true
+  path: ${.:/output/tagfile/file:dirname}
+- action: subprocess
+  command:
+  - ${.:/input/tools/directory}/bin/doxygen
+  - ${.:/input/config/file}
+  enabled-by: true
+  env: []
+  expected-return-code: 0
+  working-directory: ${.:/input/config/directory}
+copyrights:
+- Copyright (C) 2022, 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+links: []
+params: {}
+pkg-type: run-actions
+type: pkg
