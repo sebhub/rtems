@@ -10,7 +10,7 @@
  */
 
 /*
- * Copyright (C) 2020, 2026 embedded brains GmbH & Co. KG
+ * Copyright (C) 2020, 2021 embedded brains GmbH & Co. KG
  * Copyright (C) 2015 On-Line Applications Research Corporation (OAR)
  *
  * Redistribution and use in source and binary forms, with or without
@@ -51,17 +51,6 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-/* Find related documentation with spec:/rtems/io/req/group-kernel-char-io */
-
-/**
- * @defgroup RTEMSImplKernelCharIO Kernel Character Input and Output
- *
- * @ingroup RTEMSImpl
- *
- * @brief This group contains the kernel character input and output
- *   implementation.
- */
 
 /* Find related documentation with spec:/rtems/io/if/group-3 */
 
