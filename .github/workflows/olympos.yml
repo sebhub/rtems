@@ -187,7 +187,7 @@ jobs:
       timeout-minutes: 270
       run: |
         sudo apt-get update
-        sudo apt-get -y install binutils-multiarch build-essential git gnutls-dev meson libglib2.0-dev libpixman-1-dev libssl-dev ninja-build
+        sudo apt-get -y install binutils-multiarch bison build-essential cmake flex git gnutls-dev meson libglib2.0-dev libpixman-1-dev libssl-dev ninja-build
         make tools TOOLS_OPTIONS=--distribution-directory=tools-dist >log-tools.txt 2>&1
     - name: Tools log tail
       if: ${{ always() && hashFiles('log-tools.txt') != '' }}
