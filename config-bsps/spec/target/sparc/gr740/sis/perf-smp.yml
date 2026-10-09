@@ -684,7 +684,7 @@ links:
       max-upper-bound: 1.136e-05
       median-lower-bound: 2.484e-06
       median-upper-bound: 1.12e-05
-      min-lower-bound: 2.76e-06
+      min-lower-bound: 2.448e-06
   role: performance-runtime-limits
   uid: /rtems/part/req/perf-get-no-buffer
 - limits:
