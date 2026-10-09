@@ -1,0 +1,21 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+acceptable-test-errors:
+- no-end-of-test-message
+- unexpected-failed-steps-count
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+links:
+- role: verification-member
+  uid: /target/microblaze/petalogix_s3adsp1800/qemu/target
+- role: verification
+  uid: /build/testsuites/sptests/spcpucounter01
+text: |
+  The test busy waits exactly one clock tick period and checks that a tick
+  elapsed, so it has no timing margin.  The CPU counter of this BSP is a
+  register of the AXI timer, and the busy wait reads that register in a
+  loop.  Qemu takes the tick interrupt later out of such a loop than out of
+  the poll loop which the test synchronizes with.  The difference is larger
+  than the margin.
+type: verification
+verification-type: test-failure

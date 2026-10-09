@@ -42,18 +42,22 @@ _Data = dict[str, Any]
 # the items where they lie, so an item UID is the path below this directory.
 _SPEC_DIRECTORY = Path("config-bsps/spec")
 
+# The specification item root of the RTEMS sources with the build items.
+_SPEC_ROOT = Path("spec")
+
 # The directory with the test runner specification items.  They are ordinary
 # package items and are used unchanged by a package build.
 _RUNNER_DIRECTORY = _SPEC_DIRECTORY / "pkg/test-runner"
 
+# The directory with the verification items of the known failures.  A failure
+# which the simulator causes is a property of our tooling.  A failure which is
+# a property of the BSP belongs into a set-test-state action of
+# spec/build/bsps, which is upstreamed.
+_KNOWN_FAILURES_DIRECTORY = Path("config-bsps/known-failures")
+
 # The directory with the target specification items.  One target is one
 # machine, so a simulator is a target of its own beside the board.
 _TARGET_DIRECTORY = _SPEC_DIRECTORY / "target"
-
-# The test states which the test itself prints.  A test in one of them is not
-# expected to pass, so a failure is not a regression.
-_TOLERATED_STATES = frozenset(
-    ("EXPECTED_FAIL", "USER_INPUT", "INDETERMINATE", "BENCHMARK"))
 
 # The substitution variables of the simulator deployment directories.  Each
 # test runner item refers to the package which provides its simulator.
@@ -90,8 +94,7 @@ class Target:
     def __init__(self,
                  simulator: str = "qemu",
                  options: dict[str, str] | None = None,
-                 do_not_run: tuple[str, ...] = (),
-                 known_failures: dict[str, str] | None = None) -> None:
+                 do_not_run: tuple[str, ...] = ()) -> None:
         # The last element of the target UID.  It names the deployment which
         # provides the simulator, so a BSP which gains a second simulator
         # gains a target of its own for it.
@@ -99,11 +102,6 @@ class Target:
         self.options = {"BUILD_TESTS": "True"}
         self.options.update(options or {})
         self.do_not_run = do_not_run
-        # Failures caused by the simulator rather than by the BSP.  They stay
-        # here because they are a property of our tooling.  A failure which is
-        # a property of the BSP belongs into a set-test-state action of
-        # spec/build/bsps, which is upstreamed.
-        self.known_failures = known_failures or {}
 
 
 def _runner(bsp: str) -> str:
@@ -138,17 +136,7 @@ TARGETS: dict[str, Target] = {
             "USE_COM1_AS_CONSOLE": "True",
         }),
     "microblaze/petalogix_s3adsp1800":
-    Target(
-        known_failures={
-            # The test busy waits exactly one clock tick period and
-            # asserts that a tick elapsed, so it has no timing margin.
-            # The CPU counter of this BSP is a register of the AXI timer
-            # and the busy wait reads that register in a loop.  Qemu
-            # takes the tick interrupt later out of such a loop than out
-            # of the poll loop which the test synchronizes with, and the
-            # difference is larger than the margin.
-            "spcpucounter01.exe": "QEMU_TICK_LATENCY",
-        }),
+    Target(),
     "mips/jmr3904":
     Target("gdb-sim"),
     "mips/malta":
@@ -433,53 +421,127 @@ def _enabled_by_build(build_directory: str, bsp: str) -> list[str]:
     return list(namespace.get("ENABLE", []))
 
 
-def _states_by_executable(test_log: _Data) -> dict[str, str]:
-    """ Get the test state which each executable printed. """
-    states: dict[str, str] = {}
-    for report in test_log.get("reports", []):
-        info = report.get("info", {})
-        state = info.get("state", "")
-        if state:
-            states[os.path.basename(report["executable"])] = state.strip()
-    return states
+def _get_verifications(bsp: str, target: Target) -> dict[str, Any]:
+    """
+    Get the verifications of the known failures by test program name.
+
+    The verification items of a target lie below the known failures
+    directory.  A simulator has no target item, so the item cache of the
+    verifications gets one.  A stub of each verified build item provides
+    the name of the test program.
+    """
+    # pylint: disable=import-outside-toplevel
+    from specitems import EmptyItemCache, load_data
+    from specmake.testaggregator import get_test_error_verifications
+
+    directory = _KNOWN_FAILURES_DIRECTORY / bsp / target.simulator
+    paths = sorted(directory.glob("*.yml"))
+    if not paths:
+        return {}
+    cache = EmptyItemCache()
+    target_uid = _target_uid(bsp, target)
+    cache.add_item(target_uid, {
+        "enabled-by": True,
+        "links": [],
+        "type": "target"
+    })
+    for path in paths:
+        data = load_data(str(path))
+        for link in data["links"]:
+            uid = link["uid"]
+            if link["role"] == "verification" and uid not in cache:
+                build = load_data(str(_SPEC_ROOT / f"{uid[1:]}.yml"))
+                cache.add_item(
+                    uid, {
+                        "enabled-by": True,
+                        "links": [],
+                        "target": build["target"],
+                        "type": "build"
+                    })
+        relative = path.relative_to(_KNOWN_FAILURES_DIRECTORY).with_suffix("")
+        cache.add_item(f"/{relative}", data)
+    return {
+        os.path.basename(cache[uid]["target"]): cache[verification_uid]
+        for uid, verification_uid in get_test_error_verifications(
+            cache[target_uid]).items()
+    }
 
 
-def _reconcile(test_log: _Data,
-               target: Target) -> tuple[list[str], list[str], list[str], int]:
+def _get_errors(report: _Data) -> list[str]:
+    """ Get the errors of a test program with the rules of the package. """
+    # pylint: disable=import-outside-toplevel
+    from specmake.testanalysis import get_count_errors, get_outcome_errors
+
+    errors = get_outcome_errors(report)
+    test_suite = report.get("test-suite", None)
+    if test_suite is not None:
+        errors.extend(get_count_errors(test_suite))
+        for test_case in test_suite["test-cases"]:
+            errors.extend(get_count_errors(test_case))
+    return errors
+
+
+class _Run:
+    """ Holds the test programs of a test log and their errors. """
+
+    def __init__(self, test_log: _Data) -> None:
+        # pylint: disable=import-outside-toplevel
+        from specmake.ctrf import report_to_ctrf_tests
+        from specmake.testanalysis import get_test_state
+
+        self.states: dict[str, str] = {}
+        self.ran: set[str] = set()
+        self.errors: dict[str, list[str]] = {}
+        self.total = 0
+        for report in test_log.get("reports", []):
+            self.total += len(report_to_ctrf_tests(report))
+            name = os.path.basename(report["executable"])
+            state = get_test_state(report)
+            if state:
+                self.states[name] = state
+            # A test program which did not run has no command line list.
+            if not isinstance(report.get("command-line", None), list):
+                continue
+            self.ran.add(name)
+            errors = _get_errors(report)
+            if errors:
+                self.errors.setdefault(name, []).extend(errors)
+
+
+def _reconcile(
+    test_log: _Data, verifications: dict[str, Any]
+) -> tuple[list[str], list[str], list[str], int]:
     """
     Judge the run.
 
-    A failure is a regression unless the test printed a state which says that
-    it is not expected to pass, or unless it is a known failure of the
-    simulator.  A test which passes although it is expected to fail is
+    The rules of the package build judge each test program which ran and
+    decide whether its errors are expected.  A verification of a known
+    failure decides first.  Without a verification, the state which the test
+    program prints decides.  A failure is a regression unless it is
+    expected.  A test which passes although it is expected to fail is
     reported too, because that is the moment to remove the expectation.
     """
-    from specmake.ctrf import (  # pylint: disable=import-outside-toplevel
-        CTRF_FAILED, report_to_ctrf_tests)
+    # pylint: disable=import-outside-toplevel
+    from specmake.testanalysis import expect
 
-    states = _states_by_executable(test_log)
-    failed_names: set[str] = set()
-    total = 0
-    for report in test_log.get("reports", []):
-        for test in report_to_ctrf_tests(report):
-            total += 1
-            if test["status"] == CTRF_FAILED:
-                failed_names.add(test["filePath"])
+    run = _Run(test_log)
     regressions: list[str] = []
     tolerated: list[str] = []
-    for name in sorted(failed_names):
-        state = states.get(name, "")
-        if state in _TOLERATED_STATES:
-            tolerated.append(f"{name} ({state})")
-        elif name in target.known_failures:
-            tolerated.append(f"{name} ({target.known_failures[name]})")
+    for name, errors in sorted(run.errors.items()):
+        verification = verifications.get(name, None)
+        state = run.states.get(name, "")
+        if all(
+                expect(error, verification, state).expected
+                for error in errors):
+            reason = state if verification is None else verification.uid
+            tolerated.append(f"{name} ({reason})")
         else:
             regressions.append(name)
-    unexpected_passes = [
-        name for name, state in sorted(states.items())
-        if state == "EXPECTED_FAIL" and name not in failed_names
-    ]
-    return regressions, tolerated, unexpected_passes, total
+    unexpected_passes = sorted(
+        name for name in run.ran if name not in run.errors and (
+            name in verifications
+            or run.states.get(name, "") == "EXPECTED_FAIL"))
+    return regressions, tolerated, unexpected_passes, run.total
 
 
 def _report(bsp: str, regressions: list[str], tolerated: list[str],
@@ -532,8 +594,7 @@ def _run(args: argparse.Namespace) -> int:
                 f"the special configuration '{args.configuration}' builds "
                 f"{configuration.bsp}, not {bsp}")
         target = Target(target.simulator, target.options,
-                        target.do_not_run + configuration.do_not_run,
-                        target.known_failures)
+                        target.do_not_run + configuration.do_not_run)
     directory = Path(args.build_directory) / bsp
     if not directory.is_dir():
         raise RunTestsError(
@@ -592,7 +653,8 @@ def _run(args: argparse.Namespace) -> int:
     key_file.write_text(f"{tools_key}\n", encoding="utf-8")
     with open(test_log, "r", encoding="utf-8") as src:
         data = json.load(src)
-    regressions, tolerated, passes, total = _reconcile(data, target)
+    regressions, tolerated, passes, total = _reconcile(
+        data, _get_verifications(bsp, target))
     _report(bsp, regressions, tolerated, passes, total)
     return 1 if regressions else 0
 
