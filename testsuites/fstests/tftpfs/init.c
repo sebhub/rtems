@@ -14,7 +14,7 @@
  */
 
 /*
- * Copyright (C) 2022 embedded brains GmbH & Co. KG
+ * Copyright (C) 2022, 2026 embedded brains GmbH & Co. KG
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -717,6 +717,7 @@ T_TEST_CASE( tftp_initialize_net_config )
 T_TEST_CASE( tftp_initialize_net_config_null )
 {
   tftp_initialize_net_config( NULL );
+  T_true( true, "tftp_initialize_net_config( NULL ) returned" );
 }
 
 /*
