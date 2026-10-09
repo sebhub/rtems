@@ -340,17 +340,6 @@ jobs:
         restore-keys: |
           workspace-${{ env.BRANCH }}-zerberus-${{ matrix.bsp }}-${{ hashFiles('build_tools.py', 'spec-pkg-tools/**/*.yml') }}-${{ hashFiles(format('config-bsps/spec/target/{0}/{1}/*/test-timeouts.yml', matrix.arch, matrix.bsp)) }}-
           workspace-eb/main-zerberus-${{ matrix.bsp }}-${{ hashFiles('build_tools.py', 'spec-pkg-tools/**/*.yml') }}-${{ hashFiles(format('config-bsps/spec/target/{0}/{1}/*/test-timeouts.yml', matrix.arch, matrix.bsp)) }}-
-    - name: View the specification
-      # A branch which holds no specitems.yml has no specification to
-      # view.  A substitution which names no item fails the view.  The
-      # package summary reports the requirements which are not validated.
-      if: ${{ hashFiles('specitems.yml') != '' }}
-      run: |
-        if ! make specview >log-specview.txt 2>&1; then
-          tail -n 50 log-specview.txt
-          echo "::error::specwareview failed for ${PKG_BSP}."
-          exit 1
-        fi
     - name: Make
       timeout-minutes: 270
       run: |
@@ -369,9 +358,10 @@ jobs:
           exit 1
         fi
     - name: Check the package summary
-      # The summary fails on an unexpected test failure, an unjustified
-      # coverage gap, a stale gap item and a pre-qualified functional
-      # requirement which is not validated.  A missing summary fails as well.
+      # The package build judges the test results, the coverage, the
+      # validation of the specification and the substitution of the item
+      # texts.  Its summary fails on each cause which it lists.  A missing
+      # summary fails as well.
       if: ${{ !cancelled() }}
       run: |
         summary=workspace/package-summary.md
