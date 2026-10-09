@@ -1,0 +1,16 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: function
+links:
+- role: interface-function
+  uid: ../if/printk-printer
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  The ${../if/printk-printer:/name} directive shall return the value which
+  ${../if/vprintk:/name} returns for the ${../if/printk-printer:/params[1]/name}
+  and ${../if/printk-printer:/params[2]/name} parameters.
+type: requirement

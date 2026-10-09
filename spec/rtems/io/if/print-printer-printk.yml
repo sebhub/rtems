@@ -1,0 +1,39 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Initializes the printer to output through ${printk-printer:/name}.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+- Copyright (C) 2016 Chris Johns
+- Copyright (C) 1989, 2007 On-Line Applications Research Corporation (OAR)
+definition:
+  default:
+    attributes: null
+    body: null
+    params:
+    - ${printer:/name} *${.:/params[0]/name}
+    return: void
+  variants: []
+description: null
+enabled-by: true
+index-entries: []
+interface-type: function
+links:
+- role: interface-placement
+  uid: header-5
+- role: interface-ingroup
+  uid: group-print-support-rtems
+- role: constraint
+  uid: /constraint/directive-ctx-any
+- role: constraint
+  uid: /constraint/directive-no-preempt
+name: rtems_print_printer_printk
+notes: null
+params:
+- description: |
+    is the printer to initialize.
+  dir: out
+  name: printer
+return:
+  return: null
+  return-values: []
+type: interface

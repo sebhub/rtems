@@ -1,0 +1,16 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: function
+links:
+- role: interface-function
+  uid: ../if/print-printer-printk
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  The ${../if/print-printer-printk:/name} directive shall initialize the printer
+  specified by the ${../if/print-printer-printk:/params[0]/name} parameter to use
+  ${../if/printk-printer:/name}.
+type: requirement

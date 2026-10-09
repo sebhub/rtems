@@ -1,0 +1,140 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+links: []
+test-actions:
+- action-brief: |
+    Call ${../if/printk-printer:/name} and ${../if/vprintk:/name} with the same
+    format string and the same arguments. Capture the output of each call.
+  action-code: |
+    Output printer_output;
+    Output vprintk_output;
+    int    printer_rv;
+    int    vprintk_rv;
+
+    printer_rv = CallPrintkPrinter( &printer_output, FORMAT, 12, "ab" );
+    vprintk_rv = CallVprintk( &vprintk_output, FORMAT, 12, "ab" );
+  checks:
+  - brief: |
+      Check that ${../if/printk-printer:/name} printed the characters which
+      ${../if/vprintk:/name} printed.
+    code: |
+      T_gt_sz( vprintk_output.size, 0 );
+      T_eq_sz( printer_output.size, vprintk_output.size );
+      T_eq_mem( printer_output.buf, vprintk_output.buf, vprintk_output.size );
+    links:
+    - role: validation
+      uid: ../req/printk-printer-output
+  - brief: |
+      Check that ${../if/printk-printer:/name} returned the value which
+      ${../if/vprintk:/name} returned.
+    code: |
+      T_eq_int( printer_rv, vprintk_rv );
+    links:
+    - role: validation
+      uid: ../req/printk-printer-return
+  links: []
+- action-brief: |
+    Call ${../if/print-printer-printk:/name} for a printer with a handler which is
+    not ${../if/printk-printer:/name}.
+  action-code: |
+    rtems_printer printer;
+
+    rtems_print_printer_empty( &printer );
+    printer.printer = Unused;
+    rtems_print_printer_printk( &printer );
+  checks:
+  - brief: |
+      Check that the handler of the printer is ${../if/printk-printer:/name}.
+    code: |
+      T_eq_ptr( printer.printer, rtems_printk_printer );
+    links:
+    - role: validation
+      uid: ../req/print-printer-printk
+  links: []
+test-brief: |
+  Tests the ${../if/printk-printer:/name} and ${../if/print-printer-printk:/name}
+  directives.
+test-context: []
+test-context-support: null
+test-description: null
+test-header: null
+test-includes:
+- rtems/bspIo.h
+- rtems/printer.h
+- stdarg.h
+- string.h
+test-local-includes: []
+test-setup: null
+test-stop: null
+test-support: |
+  #define FORMAT "%i:%s\n"
+
+  typedef struct {
+    char   buf[ 32 ];
+    size_t size;
+  } Output;
+
+  static Output *current_output;
+
+  static void PutChar( char c )
+  {
+    Output *output;
+
+    output = current_output;
+
+    if ( output->size < sizeof( output->buf ) ) {
+      output->buf[ output->size ] = c;
+      ++output->size;
+    }
+  }
+
+  static int Unused( void *context, const char *format, va_list ap )
+  {
+    (void) context;
+    (void) format;
+    (void) ap;
+
+    return 0;
+  }
+
+  static int CallPrintkPrinter( Output *output, const char *format, ... )
+  {
+    BSP_output_char_function_type output_char;
+    va_list                       ap;
+    int                           context;
+    int                           rv;
+
+    memset( output, 0, sizeof( *output ) );
+    current_output = output;
+    output_char = BSP_output_char;
+    BSP_output_char = PutChar;
+    va_start( ap, format );
+    rv = rtems_printk_printer( &context, format, ap );
+    va_end( ap );
+    BSP_output_char = output_char;
+
+    return rv;
+  }
+
+  static int CallVprintk( Output *output, const char *format, ... )
+  {
+    BSP_output_char_function_type output_char;
+    va_list                       ap;
+    int                           rv;
+
+    memset( output, 0, sizeof( *output ) );
+    current_output = output;
+    output_char = BSP_output_char;
+    BSP_output_char = PutChar;
+    va_start( ap, format );
+    rv = vprintk( format, ap );
+    va_end( ap );
+    BSP_output_char = output_char;
+
+    return rv;
+  }
+test-target: testsuites/validation/tc-io-printk-printer.c
+test-teardown: null
+type: test-case
