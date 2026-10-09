@@ -72,7 +72,7 @@ definition:
     brief: |
       This member contains the register windows below the window which the trap
       entered.
-    definition: SPARC_Register_window ${.:name}[ SPARC_NUMBER_OF_REGISTER_WINDOWS
+    definition: ${register-window:/name} ${.:name}[ ${number-of-register-windows:/name}
       - 1 ]
     description: null
     kind: member
