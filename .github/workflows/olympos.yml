@@ -346,6 +346,19 @@ jobs:
       timeout-minutes: 270
       run: |
         make pkg >log-pkg.txt 2>&1
+    - name: Check the link hub
+      # The link hub maps each Doxygen file and group of the pre-qualified
+      # sources to a specification item.  A branch which holds no
+      # specitems.yml has no specification to map.
+      if: ${{ !cancelled() && matrix.bsp == 'gr765' && hashFiles('specitems.yml') != '' }}
+      timeout-minutes: 15
+      run: |
+        if ! make linkhub >log-linkhub.txt 2>&1; then
+          tail -n 50 log-linkhub.txt
+          error="$(grep -m 1 '^[A-Za-z]*Error: ' log-linkhub.txt || true)"
+          echo "::error::The link hub of ${PKG_BSP} failed: ${error}"
+          exit 1
+        fi
     - name: Check the package summary
       # The summary fails on an unexpected test failure, an unjustified
       # coverage gap, a stale gap item and a pre-qualified functional
@@ -376,6 +389,7 @@ jobs:
       with:
         name: log-pkg-${{ matrix.bsp }}
         path: |
+          log-linkhub.txt
           log-pkg.txt
           workspace/package-summary.md
         overwrite: true
