@@ -123,9 +123,13 @@ These commands run the checks of the CI on your machine:
 | `python .github/inspect_changes.py <URL> <base> <head>` | inspects the commits of a change set                    |
 
 The inspection needs the tools of `.venv/bin` in `PATH`. `make prepare` creates
-the virtual environment. `python3 run_tests.py configurations` lists the
-special configurations. The CI runs the tests with `TIMEOUT_SCALER=4.0`, which
-gives the test timeouts twice the margin of the test runner items.
+the virtual environment. The inspection uses `uv` to export all items of the
+base with the tools which the base pins. It stores the result in
+`tmp/inspect-changes/`, so the next inspection of the same base reuses it.
+
+`python3 run_tests.py configurations` lists the special configurations. The CI
+runs the tests with `TIMEOUT_SCALER=4.0`, which gives the test timeouts twice
+the margin of the test runner items.
 
 ## CI report
 
@@ -139,6 +143,11 @@ these jobs:
 | Sisyphos   | builds all BSPs of each architecture and runs their test suites                        |
 | Daidalos   | builds each special configuration and runs its test suites                             |
 | Zerberus   | builds the packages of the gr712rc, gr740 and gr765 BSPs                               |
+
+After each push to `eb/qual`, the workflow Themis exports all items of the tip.
+It fails if the export does not reproduce the tree. Argos restores the result
+for the base of a pull request, because Argos exports only the items of the
+change set.
 
 The workflow Hermes posts the report of Argos and the package summaries of
 Zerberus as a comment on the pull request. It updates the comment after each
