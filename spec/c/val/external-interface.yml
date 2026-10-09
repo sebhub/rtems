@@ -10,6 +10,16 @@ links:
 - role: validation
   uid: /c/if/caddr_t
 - role: validation
+  uid: /c/pthread/if/cancel-asynchronous
+- role: validation
+  uid: /c/pthread/if/cancel-deferred
+- role: validation
+  uid: /c/pthread/if/cancel-disable
+- role: validation
+  uid: /c/pthread/if/cancel-enable
+- role: validation
+  uid: /c/pthread/if/canceled
+- role: validation
   uid: /c/time/if/clock-monotonic
 - role: validation
   uid: /c/time/if/clock-realtime
@@ -22,11 +32,19 @@ links:
 - role: validation
   uid: /c/errno/if/ebusy
 - role: validation
+  uid: /c/errno/if/edeadlk
+- role: validation
   uid: /c/errno/if/einval
 - role: validation
   uid: /c/errno/if/enomem
 - role: validation
   uid: /c/errno/if/enotsup
+- role: validation
+  uid: /c/errno/if/eoverflow
+- role: validation
+  uid: /c/errno/if/eproto
+- role: validation
+  uid: /c/errno/if/esrch
 - role: validation
   uid: /c/errno/if/etimedout
 - role: validation
@@ -48,6 +66,8 @@ links:
 - role: validation
   uid: /c/if/offsetof
 - role: validation
+  uid: /c/if/pthread_t
+- role: validation
   uid: /c/if/size_max
 - role: validation
   uid: /c/if/size_t
@@ -59,6 +79,8 @@ links:
   uid: /c/if/timespec
 - role: validation
   uid: /c/if/timeval
+- role: validation
+  uid: /c/time/if/tm
 - role: validation
   uid: /c/if/true
 - role: validation
