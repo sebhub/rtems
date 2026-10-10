@@ -53,8 +53,8 @@
  *
  * This test case performs the following actions:
  *
- * - Call rtems_scheduler_get_processor() on all online processors and check
- *   the returned value.
+ * - Call rtems_scheduler_get_processor() on each processor which has a
+ *   scheduler and check the returned value.
  *
  * - Call rtems_scheduler_get_processor_maximum() and check the returned value.
  *
@@ -88,8 +88,8 @@
  */
 
 /**
- * @brief Call rtems_scheduler_get_processor() on all online processors and
- *   check the returned value.
+ * @brief Call rtems_scheduler_get_processor() on each processor which has a
+ *   scheduler and check the returned value.
  */
 static void RtemsSchedulerValSmpOnly_Action_0( void )
 {
@@ -108,6 +108,12 @@ static void RtemsSchedulerValSmpOnly_Action_0( void )
     rtems_id          id;
 
     sc = rtems_scheduler_ident_by_processor( cpu_index, &id );
+
+    if ( sc == RTEMS_INCORRECT_STATE ) {
+      /* The processor has no scheduler */
+      continue;
+    }
+
     T_quiet_rsc_success( sc );
 
     SetSelfScheduler( id, priority );
