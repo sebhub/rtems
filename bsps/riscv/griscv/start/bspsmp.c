@@ -25,6 +25,7 @@
 
 #include <bsp/bootcard.h>
 #include <bsp/irq.h>
+#include <bsp/irq-generic.h>
 #include <amba.h>
 
 #include <rtems/score/riscv-utility.h>
@@ -81,6 +82,7 @@ void _CPU_SMP_Finalize_initialization(uint32_t cpu_count)
 {
   (void) cpu_count;
 //  set_csr(mie, MIP_MSIP);
+  bsp_interrupt_set_affinity(GRLIB_mp_irq, _SMP_Get_online_processors());
 }
 
 void _CPU_SMP_Prepare_start_multitasking(void)

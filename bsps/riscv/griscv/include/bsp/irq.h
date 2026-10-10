@@ -41,17 +41,17 @@
 
 #include <bsp.h>
 
-#define RISCV_INTERRUPT_VECTOR_SOFTWARE 0
+/*
+ * The interrupt vector number is the interrupt line of the IRQ(A)MP.  The
+ * interrupt dispatch supports the standard interrupt lines 1 to 15.
+ */
+#define BSP_INTERRUPT_VECTOR_MAX_STD 15
 
-#define RISCV_INTERRUPT_VECTOR_TIMER 1
+#define BSP_INTERRUPT_VECTOR_COUNT (BSP_INTERRUPT_VECTOR_MAX_STD + 1)
 
-#define RISCV_INTERRUPT_VECTOR_EXTERNAL(x) ((x) + 2)
+#define BSP_INTERRUPT_CUSTOM_VALID_VECTOR
 
-#define RISCV_INTERRUPT_VECTOR_IS_EXTERNAL(x) ((x) >= 2)
-
-#define RISCV_INTERRUPT_VECTOR_EXTERNAL_TO_INDEX(x) ((x) - 2)
-
-#define BSP_INTERRUPT_VECTOR_COUNT RISCV_INTERRUPT_VECTOR_EXTERNAL(RISCV_MAXIMUM_EXTERNAL_INTERRUPTS)
+#define RISCV_INTERRUPT_VECTOR_EXTERNAL(x) (x)
 
 #endif /* ASM */
 

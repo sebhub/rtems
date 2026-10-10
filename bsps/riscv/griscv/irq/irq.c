@@ -43,26 +43,8 @@
 #include <rtems/score/smpimpl.h>
 
 #if defined(RTEMS_SMP)
-/* Interrupt to CPU map. Default to CPU0 since in BSS. */
-const unsigned char GRLIB_irq_to_cpu[32] __attribute__((weak));
-
-/* On SMP use map table above relative to SMP Boot CPU (normally CPU0) */
-static inline int bsp_irq_cpu(int irq)
-{
-  /* protect from bad user configuration, default to boot cpu */
-  if (rtems_configuration_get_maximum_processors() <= GRLIB_irq_to_cpu[irq])
-    return GRLIB_Cpu_Index;
-  else
-    return GRLIB_Cpu_Index + GRLIB_irq_to_cpu[irq];
-}
-#else
-/* when not SMP the local CPU is returned */
-static inline int bsp_irq_cpu(int irq)
-{
-  (void) irq;
-
-  return read_csr(mhartid);
-}
+/* The affinity of each interrupt line which the next enable applies */
+static Processor_mask griscv_interrupt_affinities[BSP_INTERRUPT_VECTOR_COUNT];
 #endif
 
 void _RISCV_Interrupt_dispatch(uintptr_t mcause, Per_CPU_Control *cpu_self)
@@ -80,6 +62,16 @@ void _RISCV_Interrupt_dispatch(uintptr_t mcause, Per_CPU_Control *cpu_self)
 
 void bsp_interrupt_facility_initialize(void)
 {
+#if defined(RTEMS_SMP)
+  Processor_mask affinity;
+  size_t i;
+
+  _Processor_mask_From_index(&affinity, rtems_scheduler_get_processor());
+
+  for (i = 0; i < RTEMS_ARRAY_SIZE(griscv_interrupt_affinities); ++i) {
+    griscv_interrupt_affinities[i] = affinity;
+  }
+#endif
 
   /*
    * External M-mode interrupts on secondary processors are enabled in
@@ -88,14 +80,34 @@ void bsp_interrupt_facility_initialize(void)
   set_csr(mie, MIP_MEIP);
 }
 
+bool bsp_interrupt_is_valid_vector(rtems_vector_number vector)
+{
+  return vector != 0 && vector < BSP_INTERRUPT_VECTOR_COUNT;
+}
+
+static inline uint32_t bsp_irq_current_cpu(void)
+{
+  return read_csr(mhartid);
+}
+
 rtems_status_code bsp_interrupt_get_attributes(
   rtems_vector_number         vector,
   rtems_interrupt_attributes *attributes
 )
 {
   (void) vector;
-  (void) attributes;
 
+  attributes->is_maskable = true;
+  attributes->can_enable = true;
+  attributes->maybe_enable = true;
+  attributes->can_disable = true;
+  attributes->maybe_disable = true;
+  attributes->can_raise = true;
+  attributes->can_raise_on = true;
+  attributes->can_clear = true;
+  attributes->cleared_by_acknowledge = true;
+  attributes->can_get_affinity = true;
+  attributes->can_set_affinity = true;
   return RTEMS_SUCCESSFUL;
 }
 
@@ -104,20 +116,42 @@ rtems_status_code bsp_interrupt_is_pending(
   bool               *pending
 )
 {
-  (void) vector;
+  rtems_interrupt_level level;
+  uint32_t bit;
 
   bsp_interrupt_assert(bsp_interrupt_is_valid_vector(vector));
   bsp_interrupt_assert(pending != NULL);
-  *pending = false;
-  return RTEMS_UNSATISFIED;
+
+  bit = 1U << vector;
+  rtems_interrupt_local_disable(level);
+  *pending = (GRLIB_IrqCtrl_Regs->ipend & bit) != 0 ||
+    (GRLIB_IrqCtrl_Regs->piforce[bsp_irq_current_cpu()] & bit) != 0;
+  rtems_interrupt_local_enable(level);
+  return RTEMS_SUCCESSFUL;
 }
 
 rtems_status_code bsp_interrupt_raise(rtems_vector_number vector)
 {
-  (void) vector;
+  uint32_t bit;
+#if defined(RTEMS_SMP)
+  uint32_t cpu_count;
+  uint32_t cpu_index;
+#endif
 
   bsp_interrupt_assert(bsp_interrupt_is_valid_vector(vector));
-  return RTEMS_UNSATISFIED;
+
+  bit = 1U << vector;
+#if defined(RTEMS_SMP)
+  cpu_count = rtems_scheduler_get_processor_maximum();
+
+  for (cpu_index = 0; cpu_index < cpu_count; ++cpu_index) {
+    GRLIB_IrqCtrl_Regs->piforce[cpu_index] = bit;
+  }
+#else
+  GRLIB_IrqCtrl_Regs->piforce[bsp_irq_current_cpu()] = bit;
+#endif
+
+  return RTEMS_SUCCESSFUL;
 }
 
 #if defined(RTEMS_SMP)
@@ -126,20 +160,24 @@ rtems_status_code bsp_interrupt_raise_on(
   uint32_t            cpu_index
 )
 {
-  (void) vector;
-  (void) cpu_index;
-
   bsp_interrupt_assert(bsp_interrupt_is_valid_vector(vector));
-  return RTEMS_UNSATISFIED;
+  bsp_interrupt_assert(cpu_index < rtems_scheduler_get_processor_maximum());
+
+  GRLIB_IrqCtrl_Regs->piforce[cpu_index] = 1U << vector;
+  return RTEMS_SUCCESSFUL;
 }
 #endif
 
 rtems_status_code bsp_interrupt_clear(rtems_vector_number vector)
 {
-  (void) vector;
+  uint32_t bit;
 
   bsp_interrupt_assert(bsp_interrupt_is_valid_vector(vector));
-  return RTEMS_UNSATISFIED;
+
+  bit = 1U << vector;
+  GRLIB_IrqCtrl_Regs->iclear = bit;
+  GRLIB_IrqCtrl_Regs->piforce[bsp_irq_current_cpu()] = bit << 16;
+  return RTEMS_SUCCESSFUL;
 }
 
 rtems_status_code bsp_interrupt_vector_is_enabled(
@@ -147,27 +185,85 @@ rtems_status_code bsp_interrupt_vector_is_enabled(
   bool               *enabled
 )
 {
-  (void) vector;
-
   bsp_interrupt_assert(bsp_interrupt_is_valid_vector(vector));
   bsp_interrupt_assert(enabled != NULL);
-  *enabled = false;
-  return RTEMS_UNSATISFIED;
+
+  *enabled = !BSP_Cpu_Is_interrupt_masked(vector, bsp_irq_current_cpu());
+  return RTEMS_SUCCESSFUL;
 }
+
+#if defined(RTEMS_SMP)
+static void griscv_interrupt_vector_enable(rtems_vector_number vector)
+{
+  const Processor_mask *affinity;
+  uint32_t cpu_count;
+  uint32_t cpu_index;
+  uint32_t bit;
+  uint32_t unmasked;
+
+  affinity = &griscv_interrupt_affinities[vector];
+  cpu_count = rtems_scheduler_get_processor_maximum();
+  bit = 1U << vector;
+  unmasked = 0;
+
+  for (cpu_index = 0; cpu_index < cpu_count; ++cpu_index) {
+    if (_Processor_mask_Is_set(affinity, cpu_index)) {
+      GRLIB_IrqCtrl_Regs->pimask[cpu_index] |= bit;
+      ++unmasked;
+    } else {
+      GRLIB_IrqCtrl_Regs->pimask[cpu_index] &= ~bit;
+    }
+  }
+
+  if (unmasked > 1) {
+    GRLIB_IrqCtrl_Regs->brdcst |= bit;
+  } else {
+    GRLIB_IrqCtrl_Regs->brdcst &= ~bit;
+  }
+}
+#endif
 
 rtems_status_code bsp_interrupt_vector_enable(rtems_vector_number vector)
 {
-  int irq = (int)vector;
+  rtems_interrupt_lock_context lock_context;
+
   bsp_interrupt_assert(bsp_interrupt_is_valid_vector(vector));
-  GRLIB_Cpu_Unmask_interrupt(irq, bsp_irq_cpu(irq));
+
+  GRLIB_IRQCTRL_ACQUIRE(&lock_context);
+#if defined(RTEMS_SMP)
+  griscv_interrupt_vector_enable(vector);
+#else
+  GRLIB_IrqCtrl_Regs->pimask[bsp_irq_current_cpu()] |= 1U << vector;
+#endif
+  GRLIB_IRQCTRL_RELEASE(&lock_context);
   return RTEMS_SUCCESSFUL;
 }
 
 rtems_status_code bsp_interrupt_vector_disable(rtems_vector_number vector)
 {
-  int irq = (int)vector;
+  rtems_interrupt_lock_context lock_context;
+  uint32_t bit;
+#if defined(RTEMS_SMP)
+  uint32_t cpu_count;
+  uint32_t cpu_index;
+#endif
+
   bsp_interrupt_assert(bsp_interrupt_is_valid_vector(vector));
-  GRLIB_Cpu_Mask_interrupt(irq, bsp_irq_cpu(irq));
+
+  bit = 1U << vector;
+  GRLIB_IRQCTRL_ACQUIRE(&lock_context);
+#if defined(RTEMS_SMP)
+  cpu_count = rtems_scheduler_get_processor_maximum();
+
+  for (cpu_index = 0; cpu_index < cpu_count; ++cpu_index) {
+    GRLIB_IrqCtrl_Regs->pimask[cpu_index] &= ~bit;
+  }
+
+  GRLIB_IrqCtrl_Regs->brdcst &= ~bit;
+#else
+  GRLIB_IrqCtrl_Regs->pimask[bsp_irq_current_cpu()] &= ~bit;
+#endif
+  GRLIB_IRQCTRL_RELEASE(&lock_context);
   return RTEMS_SUCCESSFUL;
 }
 
@@ -196,22 +292,16 @@ rtems_status_code bsp_interrupt_get_priority(
   return RTEMS_UNSATISFIED;
 }
 
+#if defined(RTEMS_SMP)
 rtems_status_code bsp_interrupt_get_affinity(
   rtems_vector_number vector,
   Processor_mask *affinity
 )
 {
-  uint32_t cpu_count = rtems_scheduler_get_processor_maximum();
-  uint32_t cpu_index;
+  bsp_interrupt_assert(bsp_interrupt_is_valid_vector(vector));
+  bsp_interrupt_assert(affinity != NULL);
 
-  _Processor_mask_Zero(affinity);
-
-  for (cpu_index = 0; cpu_index < cpu_count; ++cpu_index) {
-    if (!BSP_Cpu_Is_interrupt_masked(vector, cpu_index)) {
-      _Processor_mask_Set(affinity, cpu_index);
-    }
-  }
-
+  *affinity = griscv_interrupt_affinities[vector];
   return RTEMS_SUCCESSFUL;
 }
 
@@ -220,22 +310,32 @@ rtems_status_code bsp_interrupt_set_affinity(
   const Processor_mask *affinity
 )
 {
-  uint32_t unmasked = 0;
-  uint32_t cpu_count = rtems_scheduler_get_processor_maximum();
+  rtems_interrupt_lock_context lock_context;
+  uint32_t cpu_count;
   uint32_t cpu_index;
+  uint32_t bit;
 
+  bsp_interrupt_assert(bsp_interrupt_is_valid_vector(vector));
+  bsp_interrupt_assert(affinity != NULL);
+
+  cpu_count = rtems_scheduler_get_processor_maximum();
+  bit = 1U << vector;
+
+  GRLIB_IRQCTRL_ACQUIRE(&lock_context);
+  griscv_interrupt_affinities[vector] = *affinity;
+
+  /*
+   * If the interrupt is enabled on at least one processor, then enable it
+   * again with the new affinity.
+   */
   for (cpu_index = 0; cpu_index < cpu_count; ++cpu_index) {
-    if (_Processor_mask_Is_set(affinity, cpu_index)) {
-      GRLIB_Cpu_Unmask_interrupt(vector, cpu_index);
-      ++unmasked;
+    if ((GRLIB_IrqCtrl_Regs->pimask[cpu_index] & bit) != 0) {
+      griscv_interrupt_vector_enable(vector);
+      break;
     }
   }
 
-  if (unmasked > 1) {
-    GRLIB_Enable_interrupt_broadcast(vector);
-  } else {
-    GRLIB_Disable_interrupt_broadcast(vector);
-  }
-
+  GRLIB_IRQCTRL_RELEASE(&lock_context);
   return RTEMS_SUCCESSFUL;
 }
+#endif

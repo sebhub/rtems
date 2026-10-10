@@ -5,7 +5,7 @@
  *
  * @ingroup RTEMSBSPsRISCVGRLIB
  *
- * @brief This header file includes the generic tm27 support implementation.
+ * @brief This header file provides the tm27 support implementation.
  */
 
 /*
@@ -33,4 +33,64 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <rtems/tm27-default.h>
+#ifndef _RTEMS_TMTEST27
+#error "This is an RTEMS internal file you must not include directly."
+#endif
+
+#ifndef __tm27_h
+#define __tm27_h
+
+#include <bsp/irq-generic.h>
+#include <rtems/score/isrlevel.h>
+
+#if defined( RTEMS_SMP )
+#include <rtems/score/smpimpl.h>
+#endif
+
+#define MUST_WAIT_FOR_INTERRUPT 1
+
+/* No device of the GRISCV drives this interrupt line of the IRQ(A)MP */
+#define TM27_INTERRUPT_VECTOR_DEFAULT 5
+
+static inline void Install_tm27_vector( rtems_interrupt_handler handler )
+{
+  static rtems_interrupt_entry entry;
+
+#if defined( RTEMS_SMP )
+  (void) bsp_interrupt_set_affinity(
+    TM27_INTERRUPT_VECTOR_DEFAULT,
+    _SMP_Get_online_processors()
+  );
+#endif
+
+  rtems_interrupt_entry_initialize( &entry, handler, NULL, "tm27" );
+  (void) rtems_interrupt_entry_install(
+    TM27_INTERRUPT_VECTOR_DEFAULT,
+    RTEMS_INTERRUPT_SHARED,
+    &entry
+  );
+}
+
+static inline void Cause_tm27_intr( void )
+{
+#if defined( RTEMS_SMP )
+  (void) rtems_interrupt_raise_on(
+    TM27_INTERRUPT_VECTOR_DEFAULT,
+    rtems_scheduler_get_processor()
+  );
+#else
+  (void) rtems_interrupt_raise( TM27_INTERRUPT_VECTOR_DEFAULT );
+#endif
+}
+
+static inline void Clear_tm27_intr( void )
+{
+  (void) rtems_interrupt_clear( TM27_INTERRUPT_VECTOR_DEFAULT );
+}
+
+static inline void Lower_tm27_intr( void )
+{
+  _ISR_Set_level( 0 );
+}
+
+#endif /* __tm27_h */
