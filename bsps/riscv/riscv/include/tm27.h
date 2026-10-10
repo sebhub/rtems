@@ -46,11 +46,27 @@
 #include <rtems/score/riscv-utility.h>
 #include <rtems/score/percpu.h>
 
+#ifdef RTEMS_SMP
+#include <rtems/score/smpimpl.h>
+#endif
+
 #define MUST_WAIT_FOR_INTERRUPT 1
 
 static bool riscv_tm27_can_use_mtime;
 
 static rtems_interrupt_entry riscv_tm27_interrupt_entry;
+
+#if defined( RTEMS_SMP ) && !defined( RISCV_USE_S_MODE )
+static inline void riscv_tm27_enable_mtime( void *arg )
+{
+  Per_CPU_Control *cpu_self;
+
+  (void) arg;
+  cpu_self = _Per_CPU_Get();
+  cpu_self->cpu_per_cpu.clint_mtimecmp->val_64 = UINT64_MAX;
+  set_csr( mie, MIP_MTIP );
+}
+#endif
 
 static inline void Install_tm27_vector( rtems_interrupt_handler handler )
 {
@@ -84,6 +100,21 @@ static inline void Install_tm27_vector( rtems_interrupt_handler handler )
     RTEMS_INTERRUPT_SHARED,
     &riscv_tm27_interrupt_entry
   );
+
+#if defined( RTEMS_SMP ) && !defined( RISCV_USE_S_MODE )
+  /*
+   * Cause_tm27_intr() raises the interrupt on the current processor.  The
+   * interrupt vector enable affects only the processor which installs the
+   * entry.
+   */
+  if ( riscv_tm27_can_use_mtime ) {
+    _SMP_Multicast_action(
+      _SMP_Get_online_processors(),
+      riscv_tm27_enable_mtime,
+      NULL
+    );
+  }
+#endif
 }
 
 static inline void Cause_tm27_intr( void )
