@@ -7,7 +7,20 @@ build-type: option
 copyrights:
 - Copyright (C) 2023 embedded brains GmbH & Co. KG
 default:
-- enabled-by: microblaze
+- enabled-by:
+  - microblaze
+  - riscv/frdme310arty
+  - riscv/grv32i
+  - riscv/grv32im
+  - riscv/grv32imac
+  - riscv/noelmcl32
+  - riscv/noelmcl64
+  - riscv/rv32i
+  - riscv/rv32iac
+  - riscv/rv32im
+  - riscv/rv32imac
+  - riscv/rv32imafc
+  - riscv/rv64imac
   value:
   - -u__extendsfdf2
 - enabled-by: true
