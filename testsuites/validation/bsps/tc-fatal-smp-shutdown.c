@@ -53,7 +53,7 @@
  *
  * - Check the effects of the BSP-specific fatal extension.
  *
- *   - Wait until the second processor is idle.
+ *   - Wait until the second processor is idle after the shutdown response.
  *
  *   - Check that the RTEMS_FATAL_SOURCE_SMP with SMP_FATAL_SHUTDOWN_RESPONSE
  *     fatal error occurred exactly once.
@@ -61,10 +61,14 @@
  *   - Check that the RTEMS_FATAL_SOURCE_SMP with SMP_FATAL_SHUTDOWN_RESPONSE
  *     fatal error occurred on the second processor.
  *
+ *   - Check that each call of the fatal handler had a NULL argument.
+ *
  * @{
  */
 
 static Atomic_Uint shutdown_response_counter;
+
+static Atomic_Uint non_null_argument_counter;
 
 static uint32_t shutdown_response_cpu_index = UINT32_MAX;
 
@@ -79,7 +83,10 @@ static void ShutdownFatalHandler(
   void              *arg
 )
 {
-  T_null( arg );
+  /* The handler of the second processor may run during the test case */
+  if ( arg != NULL ) {
+    (void) Add( &non_null_argument_counter, 1 );
+  }
 
   if (
     source == RTEMS_FATAL_SOURCE_SMP && code == SMP_FATAL_SHUTDOWN_RESPONSE
@@ -108,7 +115,10 @@ void *__wrap__CPU_Thread_Idle_body( void *arg );
 
 void *__wrap__CPU_Thread_Idle_body( void *arg )
 {
-  (void) Add( &idle_counter, 1 );
+  if ( Add( &shutdown_response_counter, 0 ) != 0 ) {
+    (void) Add( &idle_counter, 1 );
+  }
+
   return __real__CPU_Thread_Idle_body( arg );
 }
 
@@ -120,11 +130,11 @@ static void BspValFatalSmpShutdown_Action_0( void )
   unsigned int counter;
 
   /*
-   * Wait until the second processor is idle.
+   * Wait until the second processor is idle after the shutdown response.
    */
   do {
     counter = _Atomic_Load_uint( &idle_counter, ATOMIC_ORDER_RELAXED );
-  } while ( counter != 2U );
+  } while ( counter == 0 );
 
   /*
    * Check that the RTEMS_FATAL_SOURCE_SMP with SMP_FATAL_SHUTDOWN_RESPONSE
@@ -138,6 +148,12 @@ static void BspValFatalSmpShutdown_Action_0( void )
    * fatal error occurred on the second processor.
    */
   T_step_eq_u32( 1, shutdown_response_cpu_index, 1 );
+
+  /*
+   * Check that each call of the fatal handler had a NULL argument.
+   */
+  counter = Add( &non_null_argument_counter, 0 );
+  T_step_eq_uint( 2, counter, 0 );
 }
 
 /**
@@ -145,7 +161,7 @@ static void BspValFatalSmpShutdown_Action_0( void )
  */
 T_TEST_CASE( BspValFatalSmpShutdown )
 {
-  T_plan( 2 );
+  T_plan( 3 );
 
   BspValFatalSmpShutdown_Action_0();
 }
