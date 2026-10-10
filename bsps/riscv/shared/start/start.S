@@ -210,12 +210,15 @@ RISCV_Start_on_processor:
 #else
 	mv	t0, a0
 	mv	t1, t2
+	beqz	t0, .Ladd_done
 
 .Ladd_more:
 
 	add	t2, t2, t1
 	addi	t0, t0, -1
 	bnez	t0, .Ladd_more
+
+.Ladd_done:
 #endif
 	add	sp, sp, t2
 
