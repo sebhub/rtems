@@ -459,8 +459,12 @@ static void RemoveWithHelpingOnly( Context *ctx )
 
   /* Clean up all used resources */
   SetSelfPriority( PRIO_NORMAL );
-  SendEvents( ctx->worker_id[ WORKER_A ], EVENT_RELEASE );
-  T_busy( 100000 );
+  SendEvents(
+    ctx->worker_id[ WORKER_A ],
+    EVENT_RELEASE | EVENT_SYNC_RUNNER_LATE
+  );
+  ReceiveAllEvents( EVENT_SYNC_RUNNER );
+  WaitForExecutionStop( ctx->worker_id[ WORKER_A ] );
 }
 
 static void Worker( rtems_task_argument arg, WorkerIndex worker )
