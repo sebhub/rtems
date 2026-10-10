@@ -142,14 +142,10 @@ BSP_output_char_function_type BSP_output_char = bsp_out_char;
 
 static int bsp_in_char(void)
 {
-  int tmp;
-
   if (grlib_debug_uart == NULL)
     return EOF;
 
-  while ((tmp = apbuart_inbyte_nonblocking(grlib_debug_uart)) < 0)
-    ;
-  return tmp;
+  return apbuart_inbyte_nonblocking(grlib_debug_uart);
 }
 
 BSP_polling_getchar_function_type BSP_poll_char = bsp_in_char;
