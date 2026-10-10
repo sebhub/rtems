@@ -5,8 +5,8 @@ enabled-by: RTEMS_SMP
 links: []
 test-actions:
 - action-brief: |
-    Call ${../if/get-processor:/name} on all online processors and check the
-    returned value.
+    Call ${../if/get-processor:/name} on each processor which has a scheduler and
+    check the returned value.
   action-code: |
     rtems_id            scheduler_id;
     rtems_task_priority priority;
@@ -23,6 +23,12 @@ test-actions:
       rtems_id          id;
 
       sc = rtems_scheduler_ident_by_processor( cpu_index, &id );
+
+      if ( sc == RTEMS_INCORRECT_STATE ) {
+        /* The processor has no scheduler */
+        continue;
+      }
+
       T_quiet_rsc_success( sc );
 
       SetSelfScheduler( id, priority );
