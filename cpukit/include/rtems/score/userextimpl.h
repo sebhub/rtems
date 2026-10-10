@@ -531,6 +531,7 @@ static inline void _User_extensions_Destroy_iterators(
     iter = iter->previous;
   }
 
+  the_thread->last_user_extensions_iterator = NULL;
   _User_extensions_Release( &lock_context );
 }
 
