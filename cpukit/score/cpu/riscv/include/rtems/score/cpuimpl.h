@@ -148,7 +148,7 @@
 
 #endif /* __riscv_flen */
 
-#define RISCV_EXCEPTION_FRAME_X( x ) ( CPU_INTERRUPT_FRAME_SIZE + 4 * x )
+#define RISCV_EXCEPTION_FRAME_X( x ) ( 4 * x )
 
 #elif __riscv_xlen == 64
 
@@ -226,7 +226,7 @@
 
 #endif /* __riscv_flen */
 
-#define RISCV_EXCEPTION_FRAME_X( x ) ( CPU_INTERRUPT_FRAME_SIZE + 8 * x )
+#define RISCV_EXCEPTION_FRAME_X( x ) ( 8 * x )
 
 #endif /* __riscv_xlen */
 
@@ -300,7 +300,21 @@
 #define RISCV_EXCEPTION_FRAME_FS10 RISCV_EXCEPTION_FRAME_F( 10 )
 #define RISCV_EXCEPTION_FRAME_FS11 RISCV_EXCEPTION_FRAME_F( 11 )
 
+#define RISCV_EXCEPTION_FRAME_END RISCV_EXCEPTION_FRAME_F( 12 )
+
+#else /* __riscv_flen */
+
+#define RISCV_EXCEPTION_FRAME_END RISCV_EXCEPTION_FRAME_X( 14 )
+
 #endif /* __riscv_flen */
+
+/* The interrupt frame is the last member of the exception frame */
+#define RISCV_EXCEPTION_FRAME_INTERRUPT_FRAME \
+  ( ( RISCV_EXCEPTION_FRAME_END + CPU_STACK_ALIGNMENT - 1 ) & \
+    ~( CPU_STACK_ALIGNMENT - 1 ) )
+
+#define RISCV_EXCEPTION_FRAME_SIZE \
+  ( RISCV_EXCEPTION_FRAME_INTERRUPT_FRAME + CPU_INTERRUPT_FRAME_SIZE )
 
 #ifndef ASM
 

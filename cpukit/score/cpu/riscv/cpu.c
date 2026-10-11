@@ -177,9 +177,21 @@ RISCV_ASSERT_EXCEPTION_FRAME_OFFSET( fs11, FS11 );
 
 #endif /* __riscv_flen */
 
+RISCV_ASSERT_EXCEPTION_FRAME_OFFSET( Interrupt_frame, INTERRUPT_FRAME );
+
 RTEMS_STATIC_ASSERT(
   sizeof( CPU_Interrupt_frame ) % CPU_STACK_ALIGNMENT == 0,
+  riscv_interrupt_frame_alignment
+);
+
+RTEMS_STATIC_ASSERT(
+  sizeof( CPU_Interrupt_frame ) == CPU_INTERRUPT_FRAME_SIZE,
   riscv_interrupt_frame_size
+);
+
+RTEMS_STATIC_ASSERT(
+  sizeof( CPU_Exception_frame ) == RISCV_EXCEPTION_FRAME_SIZE,
+  riscv_exception_frame_size
 );
 
 /**

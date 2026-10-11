@@ -320,8 +320,10 @@ SYM(_RISCV_Vector_table):
 
 .Lsynchronous_exception:
 
+	/* The interrupt frame is the last member of the exception frame */
+	addi	sp, sp, -RISCV_EXCEPTION_FRAME_INTERRUPT_FRAME
 	SREG	a0, RISCV_EXCEPTION_FRAME_CAUSE(sp)
-	addi	a0, sp, CPU_INTERRUPT_FRAME_SIZE
+	addi	a0, sp, RISCV_EXCEPTION_FRAME_SIZE
 	SREG	a0, RISCV_EXCEPTION_FRAME_SP(sp)
 	SREG	gp, RISCV_EXCEPTION_FRAME_GP(sp)
 	SREG	tp, RISCV_EXCEPTION_FRAME_TP(sp)

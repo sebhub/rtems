@@ -344,8 +344,7 @@ typedef struct {
 } RTEMS_ALIGNED( CPU_STACK_ALIGNMENT ) CPU_Interrupt_frame;
 
 typedef struct {
-  CPU_Interrupt_frame Interrupt_frame;
-  uintptr_t           cause;
+  uintptr_t cause;
   uintptr_t sp;
   uintptr_t gp;
   uintptr_t tp;
@@ -373,6 +372,7 @@ typedef struct {
   RISCV_Float fs10;
   RISCV_Float fs11;
 #endif
+  CPU_Interrupt_frame Interrupt_frame;
 } CPU_Exception_frame;
 
 /**
