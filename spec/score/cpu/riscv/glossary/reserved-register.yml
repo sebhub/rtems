@@ -1,0 +1,16 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: riscv
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+- location: '1.1'
+  role: reference
+  uid: /ref/arch/riscv/psabi
+term: RISC-V reserved register
+text: |
+  A register which the ABI reserves. gp is x3 and tp is x4, and the ABI forbids a
+  procedure to modify either. A signal handler may rely on the value.
+type: glossary

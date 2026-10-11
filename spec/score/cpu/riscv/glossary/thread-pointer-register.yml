@@ -1,0 +1,16 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: riscv
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+- location: '8.5'
+  role: reference
+  uid: /ref/arch/riscv/psabi
+term: RISC-V thread pointer register
+text: |
+  The register which addresses the thread-local storage. This is tp, which is x4.
+  It holds the address one past the end of the thread control block.
+type: glossary

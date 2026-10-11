@@ -1,0 +1,12 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+date: '2022-11-08'
+enabled-by: true
+links: []
+organization: RISC-V International
+reference-type: manual
+title: RISC-V ABIs Specification, Version 1.0, released 2022-11-08
+type: reference
+work-hash: qNBr3KqCpqRWehkE3CfvHKEEPrqh9SNVjJJ6nXK8I9k=
+work-url: https://github.com/riscv-non-isa/riscv-elf-psabi-doc/releases/download/v1.0/riscv-abi.pdf

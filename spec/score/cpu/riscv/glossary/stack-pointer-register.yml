@@ -1,0 +1,17 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: riscv
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+- location: '2.1'
+  role: reference
+  uid: /ref/arch/riscv/psabi
+term: RISC-V stack pointer register
+text: |
+  The register which holds the address of the stack of the executing thread. This
+  is sp, which is x2. The psABI requires an alignment of 16 bytes of the address
+  at the entry of a procedure.
+type: glossary

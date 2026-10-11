@@ -1,0 +1,16 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: riscv
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+- location: '1.1'
+  role: reference
+  uid: /ref/arch/riscv/psabi
+term: RISC-V user-visible register
+text: |
+  An integer register which the instruction set makes visible to a program. These
+  are x1 to x31. x0 reads as zero and holds no state. The set holds 31 registers.
+type: glossary

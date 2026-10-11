@@ -1,0 +1,16 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: riscv
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+- location: '1.3'
+  role: reference
+  uid: /ref/arch/riscv/psabi
+term: RISC-V vector register
+text: |
+  A register of a vector unit. These are v0 to v31, and not one of them is
+  preserved across a call. Neither are vl, vtype, vxrm and vxsat.
+type: glossary
