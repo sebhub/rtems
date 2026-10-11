@@ -17,7 +17,9 @@ ldflags:
 - -Wl,--wrap=mips_vector_isr_handlers
 - -Wl,--wrap=_RISCV_Interrupt_dispatch
 - -Wl,--wrap=_SPARC_Interrupt_dispatch
-links: []
+links:
+- role: build-dependency
+  uid: bsps/objriscvplic
 source:
 - testsuites/validation/tc-bsp-interrupt-handler-dispatch-unchecked.c
 - testsuites/validation/tc-intr-clear.c
