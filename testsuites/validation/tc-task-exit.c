@@ -7,7 +7,7 @@
  */
 
 /*
- * Copyright (C) 2021 embedded brains GmbH & Co. KG
+ * Copyright (C) 2021, 2026 embedded brains GmbH & Co. KG
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -78,6 +78,15 @@ typedef enum {
 } RtemsTaskReqExit_Pre_ThreadDispatch;
 
 typedef enum {
+  RtemsTaskReqExit_Pre_UserExtIter_None,
+  RtemsTaskReqExit_Pre_UserExtIter_Begin,
+  RtemsTaskReqExit_Pre_UserExtIter_Exitted,
+  RtemsTaskReqExit_Pre_UserExtIter_Restart,
+  RtemsTaskReqExit_Pre_UserExtIter_Terminate,
+  RtemsTaskReqExit_Pre_UserExtIter_NA
+} RtemsTaskReqExit_Pre_UserExtIter;
+
+typedef enum {
   RtemsTaskReqExit_Post_FatalError_Yes,
   RtemsTaskReqExit_Post_FatalError_Nop,
   RtemsTaskReqExit_Post_FatalError_NA
@@ -117,12 +126,19 @@ typedef enum {
   RtemsTaskReqExit_Post_Delete_NA
 } RtemsTaskReqExit_Post_Delete;
 
+typedef enum {
+  RtemsTaskReqExit_Post_UserExtIter_End,
+  RtemsTaskReqExit_Post_UserExtIter_Nop,
+  RtemsTaskReqExit_Post_UserExtIter_NA
+} RtemsTaskReqExit_Post_UserExtIter;
+
 typedef struct {
   uint32_t Skip : 1;
   uint32_t Pre_Restarting_NA : 1;
   uint32_t Pre_Terminating_NA : 1;
   uint32_t Pre_Protected_NA : 1;
   uint32_t Pre_ThreadDispatch_NA : 1;
+  uint32_t Pre_UserExtIter_NA : 1;
   uint32_t Post_FatalError : 2;
   uint32_t Post_DeleteExtensions : 1;
   uint32_t Post_RestartExtensions : 1;
@@ -130,7 +146,16 @@ typedef struct {
   uint32_t Post_Zombie : 2;
   uint32_t Post_ID : 2;
   uint32_t Post_Delete : 2;
+  uint32_t Post_UserExtIter : 2;
 } RtemsTaskReqExit_Entry;
+
+typedef enum {
+  USER_EXT_ITER_NONE,
+  USER_EXT_ITER_BEGIN,
+  USER_EXT_ITER_EXITTED,
+  USER_EXT_ITER_RESTART,
+  USER_EXT_ITER_TERMINATE
+} UserExtIter;
 
 /**
  * @brief Test context for spec:/rtems/task/req/exit test case.
@@ -150,6 +175,47 @@ typedef struct {
    * @brief This member contains the identifier of the worker task.
    */
   rtems_id worker_id;
+
+  /**
+   * @brief This member references the TCB of the worker task.
+   */
+  rtems_tcb *worker_tcb;
+
+  /**
+   * @brief This member specifies the iteration of the user extensions in
+   *   progress for the worker before the rtems_task_exit() call.
+   */
+  UserExtIter userext_iter;
+
+  /**
+   * @brief If this member is true, then the worker entered the iteration of
+   *   the user extensions specified by `userext_iter`.
+   */
+  bool userext_iter_hooked;
+
+  /**
+   * @brief If this member is true, then the extension which entered the
+   *   iteration returned.
+   */
+  bool userext_iter_returned;
+
+  /**
+   * @brief If this member is true, then a thread life change of the worker may
+   *   set `userext_iter_ended`.
+   */
+  bool userext_iter_check_end;
+
+  /**
+   * @brief If this member is true, then a thread life change of the worker
+   *   ended the iteration.
+   */
+  bool userext_iter_ended;
+
+  /**
+   * @brief If this member is true, then the thread life action handler
+   *   protects the thread life of the worker during the iteration.
+   */
+  bool life_protected_by_handler;
 
   /**
    * @brief This member contains the identifier of the deleter task.
@@ -219,7 +285,7 @@ typedef struct {
     /**
      * @brief This member defines the pre-condition states for the next action.
      */
-    size_t pcs[ 4 ];
+    size_t pcs[ 5 ];
 
     /**
      * @brief If this member is true, then the test action loop is executed.
@@ -258,11 +324,15 @@ static const char *const RtemsTaskReqExit_PreDesc_Protected[] =
 static const char *const RtemsTaskReqExit_PreDesc_ThreadDispatch[] =
   { "Enabled", "Disabled", "NA" };
 
+static const char *const RtemsTaskReqExit_PreDesc_UserExtIter[] =
+  { "None", "Begin", "Exitted", "Restart", "Terminate", "NA" };
+
 static const char *const *const RtemsTaskReqExit_PreDesc[] = {
   RtemsTaskReqExit_PreDesc_Restarting,
   RtemsTaskReqExit_PreDesc_Terminating,
   RtemsTaskReqExit_PreDesc_Protected,
   RtemsTaskReqExit_PreDesc_ThreadDispatch,
+  RtemsTaskReqExit_PreDesc_UserExtIter,
   NULL
 };
 
@@ -311,12 +381,9 @@ static void Deleter( rtems_task_argument arg )
   SuspendSelf();
 }
 
-static void Worker( rtems_task_argument arg )
+static void WorkerSetup( Context *ctx )
 {
-  Context          *ctx;
   rtems_status_code sc;
-
-  ctx = (Context *) arg;
 
   sc = rtems_signal_catch( Signal, RTEMS_NO_ASR );
   T_rsc_success( sc );
@@ -326,7 +393,69 @@ static void Worker( rtems_task_argument arg )
     ctx->allocator_locked = true;
   }
 
-  Yield();
+  if ( ctx->userext_iter == USER_EXT_ITER_TERMINATE ) {
+    /* The deleter raised the priority of the worker */
+    (void) ReceiveAnyEvents();
+  } else {
+    Yield();
+  }
+}
+
+static void UserExtIterCheckEnd( Context *ctx, const rtems_tcb *thread )
+{
+  if (
+    thread == ctx->worker_tcb && ctx->userext_iter_check_end &&
+    ctx->userext_iter_hooked && !ctx->userext_iter_returned
+  ) {
+    ctx->userext_iter_ended = true;
+  }
+}
+
+static bool UserExtIterHook(
+  Context         *ctx,
+  UserExtIter      kind,
+  const rtems_tcb *thread
+)
+{
+  if (
+    thread != ctx->worker_tcb || ctx->userext_iter != kind ||
+    ctx->userext_iter_hooked
+  ) {
+    return false;
+  }
+
+  ctx->userext_iter_hooked = true;
+  WorkerSetup( ctx );
+  ctx->userext_iter_returned = true;
+  return true;
+}
+
+static void ThreadBegin( rtems_tcb *executing )
+{
+  (void)
+    UserExtIterHook( T_fixture_context(), USER_EXT_ITER_BEGIN, executing );
+}
+
+static void ThreadExitted( rtems_tcb *executing )
+{
+  if (
+    UserExtIterHook( T_fixture_context(), USER_EXT_ITER_EXITTED, executing )
+  ) {
+    rtems_task_exit();
+  }
+}
+
+static void Worker( rtems_task_argument arg )
+{
+  Context *ctx;
+
+  ctx = (Context *) arg;
+
+  if ( ctx->userext_iter == USER_EXT_ITER_NONE ) {
+    WorkerSetup( ctx );
+  } else if ( ctx->userext_iter == USER_EXT_ITER_RESTART ) {
+    (void) rtems_task_restart( RTEMS_SELF, arg );
+  }
 }
 
 static void UnlockAllocator( Context *ctx )
@@ -382,13 +511,15 @@ static void ThreadDelete( rtems_tcb *executing, rtems_tcb *deleted )
 
 static void ThreadRestart( rtems_tcb *executing, rtems_tcb *restarted )
 {
-  (void) executing;
-  (void) restarted;
-
   Context *ctx;
+
+  (void) executing;
 
   ctx = T_fixture_context();
   ++ctx->restart_extension_calls;
+
+  UserExtIterCheckEnd( ctx, restarted );
+  (void) UserExtIterHook( ctx, USER_EXT_ITER_RESTART, restarted );
 }
 
 static void ThreadTerminate( rtems_tcb *executing )
@@ -401,10 +532,14 @@ static void ThreadTerminate( rtems_tcb *executing )
   T_eq_u32( executing->Object.id, ctx->worker_id );
 
   UnlockAllocator( ctx );
+  UserExtIterCheckEnd( ctx, executing );
+  (void) UserExtIterHook( ctx, USER_EXT_ITER_TERMINATE, executing );
 }
 
 static const rtems_extensions_table extensions = {
+  .thread_begin = ThreadBegin,
   .thread_delete = ThreadDelete,
+  .thread_exitted = ThreadExitted,
   .thread_restart = ThreadRestart,
   .thread_terminate = ThreadTerminate
 };
@@ -517,6 +652,62 @@ static void RtemsTaskReqExit_Pre_ThreadDispatch_Prepare(
   }
 }
 
+static void RtemsTaskReqExit_Pre_UserExtIter_Prepare(
+  RtemsTaskReqExit_Context        *ctx,
+  RtemsTaskReqExit_Pre_UserExtIter state
+)
+{
+  switch ( state ) {
+    case RtemsTaskReqExit_Pre_UserExtIter_None: {
+      /*
+       * While no iteration of the user extensions is in progress for the
+       * calling task.
+       */
+      ctx->userext_iter = USER_EXT_ITER_NONE;
+      break;
+    }
+
+    case RtemsTaskReqExit_Pre_UserExtIter_Begin: {
+      /*
+       * While the user extensions are iterated to invoke the thread begin
+       * extensions for the calling task.
+       */
+      ctx->userext_iter = USER_EXT_ITER_BEGIN;
+      break;
+    }
+
+    case RtemsTaskReqExit_Pre_UserExtIter_Exitted: {
+      /*
+       * While the user extensions are iterated to invoke the thread exitted
+       * extensions for the calling task.
+       */
+      ctx->userext_iter = USER_EXT_ITER_EXITTED;
+      break;
+    }
+
+    case RtemsTaskReqExit_Pre_UserExtIter_Restart: {
+      /*
+       * While the user extensions are iterated to invoke the thread restart
+       * extensions for the calling task.
+       */
+      ctx->userext_iter = USER_EXT_ITER_RESTART;
+      break;
+    }
+
+    case RtemsTaskReqExit_Pre_UserExtIter_Terminate: {
+      /*
+       * While the user extensions are iterated to invoke the thread terminate
+       * extensions for the calling task.
+       */
+      ctx->userext_iter = USER_EXT_ITER_TERMINATE;
+      break;
+    }
+
+    case RtemsTaskReqExit_Pre_UserExtIter_NA:
+      break;
+  }
+}
+
 static void RtemsTaskReqExit_Post_FatalError_Check(
   RtemsTaskReqExit_Context        *ctx,
   RtemsTaskReqExit_Post_FatalError state
@@ -597,7 +788,7 @@ static void RtemsTaskReqExit_Post_TerminateExtensions_Check(
        * The thread terminate user extensions shall be invoked by the
        * rtems_task_exit() call.
        */
-      if ( ctx->protected ) {
+      if ( ctx->protected && !ctx->life_protected_by_handler ) {
         T_eq_u32( ctx->terminate_extension_calls, 2 );
       } else {
         T_eq_u32( ctx->terminate_extension_calls, 1 );
@@ -743,6 +934,37 @@ static void RtemsTaskReqExit_Post_Delete_Check(
   DeleteTask( id );
 }
 
+static void RtemsTaskReqExit_Post_UserExtIter_Check(
+  RtemsTaskReqExit_Context         *ctx,
+  RtemsTaskReqExit_Post_UserExtIter state
+)
+{
+  switch ( state ) {
+    case RtemsTaskReqExit_Post_UserExtIter_End: {
+      /*
+       * The rtems_task_exit() call shall end the iteration of the user
+       * extensions in progress for the calling task.
+       */
+      T_true( ctx->userext_iter_hooked );
+      T_true( ctx->userext_iter_ended );
+      break;
+    }
+
+    case RtemsTaskReqExit_Post_UserExtIter_Nop: {
+      /*
+       * The rtems_task_exit() call shall not end the iteration of the user
+       * extensions in progress for the calling task.
+       */
+      T_true( ctx->userext_iter_hooked );
+      T_false( ctx->userext_iter_ended );
+      break;
+    }
+
+    case RtemsTaskReqExit_Post_UserExtIter_NA:
+      break;
+  }
+}
+
 static void RtemsTaskReqExit_Setup( RtemsTaskReqExit_Context *ctx )
 {
   rtems_status_code sc;
@@ -801,11 +1023,31 @@ static void RtemsTaskReqExit_Action( RtemsTaskReqExit_Context *ctx )
   ctx->delete_worker_expected = false;
   ctx->worker_id = CreateTask( "WORK", PRIO_NORMAL );
   ctx->delete_worker_expected = true;
+  ctx->worker_tcb = GetThread( ctx->worker_id );
+  ctx->userext_iter_hooked = false;
+  ctx->userext_iter_returned = false;
+  ctx->userext_iter_ended = false;
+  ctx->userext_iter_check_end = true;
+  ctx->life_protected_by_handler = ctx->userext_iter ==
+                                     USER_EXT_ITER_RESTART ||
+                                   ctx->userext_iter ==
+                                     USER_EXT_ITER_TERMINATE;
 
   StartTask( ctx->worker_id, Worker, ctx );
 
-  /* Let the worker catch signals and set the thread life protection state */
-  Yield();
+  if ( ctx->userext_iter == USER_EXT_ITER_TERMINATE ) {
+    /* Let the deleter terminate the worker */
+    sc = rtems_task_restart( ctx->deleter_id, (rtems_task_argument) ctx );
+    T_rsc_success( sc );
+  } else {
+    /* Let the worker catch signals and set the thread life protection state */
+    Yield();
+
+    if ( ctx->userext_iter == USER_EXT_ITER_RESTART ) {
+      /* The self restart of the worker moved it behind the runner */
+      Yield();
+    }
+  }
 
   sc = rtems_signal_send( ctx->worker_id, RTEMS_SIGNAL_0 );
   T_rsc_success( sc );
@@ -815,7 +1057,9 @@ static void RtemsTaskReqExit_Action( RtemsTaskReqExit_Context *ctx )
     T_rsc_success( sc );
   }
 
-  if ( ctx->terminating ) {
+  if ( ctx->userext_iter == USER_EXT_ITER_TERMINATE ) {
+    SendEvents( ctx->worker_id, RTEMS_EVENT_0 );
+  } else if ( ctx->terminating ) {
     sc = rtems_task_restart( ctx->deleter_id, (rtems_task_argument) ctx );
     T_rsc_success( sc );
   } else {
@@ -841,23 +1085,52 @@ static void RtemsTaskReqExit_Cleanup( RtemsTaskReqExit_Context *ctx )
 
 static const RtemsTaskReqExit_Entry
 RtemsTaskReqExit_Entries[] = {
-  { 0, 0, 0, 0, 0, RtemsTaskReqExit_Post_FatalError_Nop,
+  { 0, 0, 0, 0, 0, 0, RtemsTaskReqExit_Post_FatalError_Nop,
     RtemsTaskReqExit_Post_DeleteExtensions_Nop,
     RtemsTaskReqExit_Post_RestartExtensions_Nop,
     RtemsTaskReqExit_Post_TerminateExtensions_Yes,
     RtemsTaskReqExit_Post_Zombie_Yes, RtemsTaskReqExit_Post_ID_Invalid,
-    RtemsTaskReqExit_Post_Delete_NextAllocate },
-  { 0, 0, 0, 0, 0, RtemsTaskReqExit_Post_FatalError_Yes,
+    RtemsTaskReqExit_Post_Delete_NextAllocate,
+    RtemsTaskReqExit_Post_UserExtIter_End },
+  { 0, 0, 0, 0, 0, 0, RtemsTaskReqExit_Post_FatalError_Yes,
     RtemsTaskReqExit_Post_DeleteExtensions_Nop,
     RtemsTaskReqExit_Post_RestartExtensions_Nop,
     RtemsTaskReqExit_Post_TerminateExtensions_Nop,
     RtemsTaskReqExit_Post_Zombie_No, RtemsTaskReqExit_Post_ID_Valid,
-    RtemsTaskReqExit_Post_Delete_Nop }
+    RtemsTaskReqExit_Post_Delete_Nop, RtemsTaskReqExit_Post_UserExtIter_Nop },
+  { 1, 0, 0, 0, 0, 0, RtemsTaskReqExit_Post_FatalError_NA,
+    RtemsTaskReqExit_Post_DeleteExtensions_NA,
+    RtemsTaskReqExit_Post_RestartExtensions_NA,
+    RtemsTaskReqExit_Post_TerminateExtensions_NA,
+    RtemsTaskReqExit_Post_Zombie_NA, RtemsTaskReqExit_Post_ID_NA,
+    RtemsTaskReqExit_Post_Delete_NA, RtemsTaskReqExit_Post_UserExtIter_NA },
+  { 1, 0, 0, 0, 0, 0, RtemsTaskReqExit_Post_FatalError_NA,
+    RtemsTaskReqExit_Post_DeleteExtensions_NA,
+    RtemsTaskReqExit_Post_RestartExtensions_NA,
+    RtemsTaskReqExit_Post_TerminateExtensions_NA,
+    RtemsTaskReqExit_Post_Zombie_NA, RtemsTaskReqExit_Post_ID_NA,
+    RtemsTaskReqExit_Post_Delete_NA, RtemsTaskReqExit_Post_UserExtIter_NA },
+  { 0, 0, 0, 0, 0, 0, RtemsTaskReqExit_Post_FatalError_Nop,
+    RtemsTaskReqExit_Post_DeleteExtensions_Nop,
+    RtemsTaskReqExit_Post_RestartExtensions_Nop,
+    RtemsTaskReqExit_Post_TerminateExtensions_Yes,
+    RtemsTaskReqExit_Post_Zombie_Yes, RtemsTaskReqExit_Post_ID_Invalid,
+    RtemsTaskReqExit_Post_Delete_NextAllocate,
+    RtemsTaskReqExit_Post_UserExtIter_NA },
+  { 0, 0, 0, 0, 0, 0, RtemsTaskReqExit_Post_FatalError_Yes,
+    RtemsTaskReqExit_Post_DeleteExtensions_Nop,
+    RtemsTaskReqExit_Post_RestartExtensions_Nop,
+    RtemsTaskReqExit_Post_TerminateExtensions_Nop,
+    RtemsTaskReqExit_Post_Zombie_No, RtemsTaskReqExit_Post_ID_Valid,
+    RtemsTaskReqExit_Post_Delete_Nop, RtemsTaskReqExit_Post_UserExtIter_NA }
 };
 
 static const uint8_t
 RtemsTaskReqExit_Map[] = {
-  0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1
+  4, 0, 0, 0, 0, 5, 1, 1, 1, 1, 4, 0, 0, 2, 3, 5, 1, 1, 2, 3, 4, 0, 0, 0, 3, 5,
+  1, 1, 1, 3, 4, 0, 0, 2, 3, 5, 1, 1, 2, 3, 4, 0, 0, 2, 0, 5, 1, 1, 2, 1, 4, 0,
+  0, 2, 3, 5, 1, 1, 2, 3, 4, 0, 0, 2, 3, 5, 1, 1, 2, 3, 4, 0, 0, 2, 3, 5, 1, 1,
+  2, 3
 };
 
 /* clang-format on */
@@ -900,6 +1173,7 @@ static void RtemsTaskReqExit_TestVariant( RtemsTaskReqExit_Context *ctx )
   RtemsTaskReqExit_Pre_Terminating_Prepare( ctx, ctx->Map.pcs[ 1 ] );
   RtemsTaskReqExit_Pre_Protected_Prepare( ctx, ctx->Map.pcs[ 2 ] );
   RtemsTaskReqExit_Pre_ThreadDispatch_Prepare( ctx, ctx->Map.pcs[ 3 ] );
+  RtemsTaskReqExit_Pre_UserExtIter_Prepare( ctx, ctx->Map.pcs[ 4 ] );
   RtemsTaskReqExit_Action( ctx );
   RtemsTaskReqExit_Post_FatalError_Check(
     ctx,
@@ -920,6 +1194,10 @@ static void RtemsTaskReqExit_TestVariant( RtemsTaskReqExit_Context *ctx )
   RtemsTaskReqExit_Post_Zombie_Check( ctx, ctx->Map.entry.Post_Zombie );
   RtemsTaskReqExit_Post_ID_Check( ctx, ctx->Map.entry.Post_ID );
   RtemsTaskReqExit_Post_Delete_Check( ctx, ctx->Map.entry.Post_Delete );
+  RtemsTaskReqExit_Post_UserExtIter_Check(
+    ctx,
+    ctx->Map.entry.Post_UserExtIter
+  );
 }
 
 /**
@@ -953,9 +1231,20 @@ T_TEST_CASE_FIXTURE( RtemsTaskReqExit, &RtemsTaskReqExit_Fixture )
           ctx->Map.pcs[ 3 ] < RtemsTaskReqExit_Pre_ThreadDispatch_NA;
           ++ctx->Map.pcs[ 3 ]
         ) {
-          ctx->Map.entry = RtemsTaskReqExit_PopEntry( ctx );
-          RtemsTaskReqExit_TestVariant( ctx );
-          RtemsTaskReqExit_Cleanup( ctx );
+          for (
+            ctx->Map.pcs[ 4 ] = RtemsTaskReqExit_Pre_UserExtIter_None;
+            ctx->Map.pcs[ 4 ] < RtemsTaskReqExit_Pre_UserExtIter_NA;
+            ++ctx->Map.pcs[ 4 ]
+          ) {
+            ctx->Map.entry = RtemsTaskReqExit_PopEntry( ctx );
+
+            if ( ctx->Map.entry.Skip ) {
+              continue;
+            }
+
+            RtemsTaskReqExit_TestVariant( ctx );
+            RtemsTaskReqExit_Cleanup( ctx );
+          }
         }
       }
     }
