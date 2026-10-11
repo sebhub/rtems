@@ -14,6 +14,7 @@ install:
   - bsps/riscv/include/bsp/linker-symbols-arch.h
   - bsps/riscv/include/bsp/riscv-fdt-irq.h
   - bsps/riscv/include/bsp/riscv-fdt.h
+  - bsps/riscv/include/bsp/start.h
 ldflags: []
 links: []
 type: build
