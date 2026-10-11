@@ -1,6 +1,6 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 copyrights:
-- Copyright (C) 2021 embedded brains GmbH & Co. KG
+- Copyright (C) 2021, 2026 embedded brains GmbH & Co. KG
 enabled-by: true
 functional-type: action
 links:
@@ -48,7 +48,7 @@ post-conditions:
   states:
   - name: 'Yes'
     test-code: |
-      if ( ctx->protected ) {
+      if ( ctx->protected && !ctx->life_protected_by_handler ) {
         T_eq_u32( ctx->terminate_extension_calls, 2 );
       } else {
         T_eq_u32( ctx->terminate_extension_calls, 1 );
@@ -144,6 +144,24 @@ post-conditions:
     rtems_id id;
 
     id = CreateTask( "TEMP", PRIO_LOW );
+- name: UserExtIter
+  states:
+  - name: End
+    test-code: |
+      T_true( ctx->userext_iter_hooked );
+      T_true( ctx->userext_iter_ended );
+    text: |
+      The ${../if/exit:/name} call shall end the iteration of the
+      ${/glossary/userextensions:/term} in progress for the calling task.
+  - name: Nop
+    test-code: |
+      T_true( ctx->userext_iter_hooked );
+      T_false( ctx->userext_iter_ended );
+    text: |
+      The ${../if/exit:/name} call shall not end the iteration of the
+      ${/glossary/userextensions:/term} in progress for the calling task.
+  test-epilogue: null
+  test-prologue: null
 pre-conditions:
 - name: Restarting
   states:
@@ -201,20 +219,85 @@ pre-conditions:
       While thread dispatching is disabled for the calling task.
   test-epilogue: null
   test-prologue: null
-rationale: null
+- name: UserExtIter
+  states:
+  - name: None
+    test-code: |
+      ctx->userext_iter = USER_EXT_ITER_NONE;
+    text: |
+      While no iteration of the ${/glossary/userextensions:/term} is in progress for
+      the calling task.
+  - name: Begin
+    test-code: |
+      ctx->userext_iter = USER_EXT_ITER_BEGIN;
+    text: |
+      While the ${/glossary/userextensions:/term} are iterated to invoke the thread
+      begin extensions for the calling task.
+  - name: Exitted
+    test-code: |
+      ctx->userext_iter = USER_EXT_ITER_EXITTED;
+    text: |
+      While the ${/glossary/userextensions:/term} are iterated to invoke the thread
+      exitted extensions for the calling task.
+  - name: Restart
+    test-code: |
+      ctx->userext_iter = USER_EXT_ITER_RESTART;
+    text: |
+      While the ${/glossary/userextensions:/term} are iterated to invoke the thread
+      restart extensions for the calling task.
+  - name: Terminate
+    test-code: |
+      ctx->userext_iter = USER_EXT_ITER_TERMINATE;
+    text: |
+      While the ${/glossary/userextensions:/term} are iterated to invoke the thread
+      terminate extensions for the calling task.
+  test-epilogue: null
+  test-prologue: null
+rationale: |
+  Dimension UserExtIter covers the iteration of the
+  ${/glossary/userextensions:/term} in progress for the task, 5 states. The
+  thread restart and thread terminate extensions run while the thread life of the
+  task is protected. The restart iteration needs a pending restart and the
+  terminate iteration a pending termination. An exit with thread dispatching
+  disabled ends in a fatal error and ends no iteration.
 requirement-type: functional
-skip-reasons: {}
+skip-reasons:
+  UserExtIterRestartNeedsRestartingProtected: |
+    The thread restart extensions are invoked only while the thread is restarting
+    and the thread life is protected.
+  UserExtIterTerminateNeedsTerminatingProtected: |
+    The thread terminate extensions are invoked only while the thread is
+    terminating and the thread life is protected.
 test-action: |
   rtems_status_code sc;
 
   ctx->delete_worker_expected = false;
   ctx->worker_id = CreateTask( "WORK", PRIO_NORMAL );
   ctx->delete_worker_expected = true;
+  ctx->worker_tcb = GetThread( ctx->worker_id );
+  ctx->userext_iter_hooked = false;
+  ctx->userext_iter_returned = false;
+  ctx->userext_iter_ended = false;
+  ctx->userext_iter_check_end = true;
+  ctx->life_protected_by_handler =
+    ctx->userext_iter == USER_EXT_ITER_RESTART ||
+    ctx->userext_iter == USER_EXT_ITER_TERMINATE;
 
   StartTask( ctx->worker_id, Worker, ctx );
 
-  /* Let the worker catch signals and set the thread life protection state */
-  Yield();
+  if ( ctx->userext_iter == USER_EXT_ITER_TERMINATE ) {
+    /* Let the deleter terminate the worker */
+    sc = rtems_task_restart( ctx->deleter_id, (rtems_task_argument) ctx );
+    T_rsc_success( sc );
+  } else {
+    /* Let the worker catch signals and set the thread life protection state */
+    Yield();
+
+    if ( ctx->userext_iter == USER_EXT_ITER_RESTART ) {
+      /* The self restart of the worker moved it behind the runner */
+      Yield();
+    }
+  }
 
   sc = rtems_signal_send( ctx->worker_id, RTEMS_SIGNAL_0 );
   T_rsc_success( sc );
@@ -224,7 +307,9 @@ test-action: |
     T_rsc_success( sc );
   }
 
-  if ( ctx->terminating ) {
+  if ( ctx->userext_iter == USER_EXT_ITER_TERMINATE ) {
+    SendEvents( ctx->worker_id, RTEMS_EVENT_0 );
+  } else if ( ctx->terminating ) {
     sc = rtems_task_restart( ctx->deleter_id, (rtems_task_argument) ctx );
     T_rsc_success( sc );
   } else {
@@ -258,6 +343,47 @@ test-context:
   description: null
   member: |
     rtems_id worker_id
+- brief: |
+    This member references the TCB of the worker task.
+  description: null
+  member: |
+    rtems_tcb *worker_tcb
+- brief: |
+    This member specifies the iteration of the ${/glossary/userextensions:/term} in
+    progress for the worker before the ${../if/exit:/name} call.
+  description: null
+  member: |
+    UserExtIter userext_iter
+- brief: |
+    If this member is true, then the worker entered the iteration of the
+    ${/glossary/userextensions:/term} specified by `userext_iter`.
+  description: null
+  member: |
+    bool userext_iter_hooked
+- brief: |
+    If this member is true, then the extension which entered the iteration
+    returned.
+  description: null
+  member: |
+    bool userext_iter_returned
+- brief: |
+    If this member is true, then a thread life change of the worker may set
+    `userext_iter_ended`.
+  description: null
+  member: |
+    bool userext_iter_check_end
+- brief: |
+    If this member is true, then a thread life change of the worker ended the
+    iteration.
+  description: null
+  member: |
+    bool userext_iter_ended
+- brief: |
+    If this member is true, then the thread life action handler protects the thread
+    life of the worker during the iteration.
+  description: null
+  member: |
+    bool life_protected_by_handler
 - brief: |
     This member contains the identifier of the deleter task.
   description: null
@@ -322,7 +448,14 @@ test-context:
   description: null
   member: |
     bool delete_worker_expected
-test-context-support: null
+test-context-support: |
+  typedef enum {
+    USER_EXT_ITER_NONE,
+    USER_EXT_ITER_BEGIN,
+    USER_EXT_ITER_EXITTED,
+    USER_EXT_ITER_RESTART,
+    USER_EXT_ITER_TERMINATE
+  } UserExtIter;
 test-description: null
 test-header: null
 test-includes:
@@ -401,12 +534,9 @@ test-support: |
     SuspendSelf();
   }
 
-  static void Worker( rtems_task_argument arg )
+  static void WorkerSetup( Context *ctx )
   {
-    Context          *ctx;
     rtems_status_code sc;
-
-    ctx = (Context *) arg;
 
     sc = rtems_signal_catch( Signal, RTEMS_NO_ASR );
     T_rsc_success( sc );
@@ -416,7 +546,69 @@ test-support: |
       ctx->allocator_locked = true;
     }
 
-    Yield();
+    if ( ctx->userext_iter == USER_EXT_ITER_TERMINATE ) {
+      /* The deleter raised the priority of the worker */
+      (void) ReceiveAnyEvents();
+    } else {
+      Yield();
+    }
+  }
+
+  static void UserExtIterCheckEnd( Context *ctx, const rtems_tcb *thread )
+  {
+    if (
+      thread == ctx->worker_tcb && ctx->userext_iter_check_end &&
+      ctx->userext_iter_hooked && !ctx->userext_iter_returned
+    ) {
+      ctx->userext_iter_ended = true;
+    }
+  }
+
+  static bool UserExtIterHook(
+    Context         *ctx,
+    UserExtIter      kind,
+    const rtems_tcb *thread
+  )
+  {
+    if (
+      thread != ctx->worker_tcb || ctx->userext_iter != kind ||
+      ctx->userext_iter_hooked
+    ) {
+      return false;
+    }
+
+    ctx->userext_iter_hooked = true;
+    WorkerSetup( ctx );
+    ctx->userext_iter_returned = true;
+    return true;
+  }
+
+  static void ThreadBegin( rtems_tcb *executing )
+  {
+    (void)
+      UserExtIterHook( T_fixture_context(), USER_EXT_ITER_BEGIN, executing );
+  }
+
+  static void ThreadExitted( rtems_tcb *executing )
+  {
+    if (
+      UserExtIterHook( T_fixture_context(), USER_EXT_ITER_EXITTED, executing )
+    ) {
+      rtems_task_exit();
+    }
+  }
+
+  static void Worker( rtems_task_argument arg )
+  {
+    Context *ctx;
+
+    ctx = (Context *) arg;
+
+    if ( ctx->userext_iter == USER_EXT_ITER_NONE ) {
+      WorkerSetup( ctx );
+    } else if ( ctx->userext_iter == USER_EXT_ITER_RESTART ) {
+      (void) rtems_task_restart( RTEMS_SELF, arg );
+    }
   }
 
   static void UnlockAllocator( Context *ctx )
@@ -472,13 +664,15 @@ test-support: |
 
   static void ThreadRestart( rtems_tcb *executing, rtems_tcb *restarted )
   {
-    (void) executing;
-    (void) restarted;
-
     Context *ctx;
+
+    (void) executing;
 
     ctx = T_fixture_context();
     ++ctx->restart_extension_calls;
+
+    UserExtIterCheckEnd( ctx, restarted );
+    (void) UserExtIterHook( ctx, USER_EXT_ITER_RESTART, restarted );
   }
 
   static void ThreadTerminate( rtems_tcb *executing )
@@ -491,10 +685,14 @@ test-support: |
     T_eq_u32( executing->Object.id, ctx->worker_id );
 
     UnlockAllocator( ctx );
+    UserExtIterCheckEnd( ctx, executing );
+    (void) UserExtIterHook( ctx, USER_EXT_ITER_TERMINATE, executing );
   }
 
   static const rtems_extensions_table extensions = {
+    .thread_begin = ThreadBegin,
     .thread_delete = ThreadDelete,
+    .thread_exitted = ThreadExitted,
     .thread_restart = ThreadRestart,
     .thread_terminate = ThreadTerminate
   };
@@ -524,12 +722,72 @@ transition-map:
     Zombie: 'Yes'
     ID: Invalid
     Delete: NextAllocate
+    UserExtIter:
+    - if:
+        pre-conditions:
+          UserExtIter: None
+      then: N/A
+    - else: End
   pre-conditions:
     Restarting: all
     Terminating: all
     Protected: all
     ThreadDispatch:
     - Enabled
+    UserExtIter:
+    - None
+    - Begin
+    - Exitted
+- enabled-by: true
+  post-conditions:
+    FatalError: Nop
+    DeleteExtensions: Nop
+    RestartExtensions: Nop
+    TerminateExtensions: 'Yes'
+    Zombie: 'Yes'
+    ID: Invalid
+    Delete: NextAllocate
+    UserExtIter:
+    - if:
+        pre-conditions:
+          UserExtIter: None
+      then: N/A
+    - else: End
+  pre-conditions:
+    Restarting:
+    - 'Yes'
+    Terminating: all
+    Protected:
+    - 'Yes'
+    ThreadDispatch:
+    - Enabled
+    UserExtIter:
+    - Restart
+- enabled-by: true
+  post-conditions:
+    FatalError: Nop
+    DeleteExtensions: Nop
+    RestartExtensions: Nop
+    TerminateExtensions: 'Yes'
+    Zombie: 'Yes'
+    ID: Invalid
+    Delete: NextAllocate
+    UserExtIter:
+    - if:
+        pre-conditions:
+          UserExtIter: None
+      then: N/A
+    - else: End
+  pre-conditions:
+    Restarting: all
+    Terminating:
+    - 'Yes'
+    Protected:
+    - 'Yes'
+    ThreadDispatch:
+    - Enabled
+    UserExtIter:
+    - Terminate
 - enabled-by: true
   post-conditions:
     FatalError: 'Yes'
@@ -539,10 +797,112 @@ transition-map:
     Zombie: 'No'
     ID: Valid
     Delete: Nop
+    UserExtIter:
+    - if:
+        pre-conditions:
+          UserExtIter: None
+      then: N/A
+    - else: Nop
   pre-conditions:
     Restarting: all
     Terminating: all
     Protected: all
     ThreadDispatch:
     - Disabled
+    UserExtIter:
+    - None
+    - Begin
+    - Exitted
+- enabled-by: true
+  post-conditions:
+    FatalError: 'Yes'
+    DeleteExtensions: Nop
+    RestartExtensions: Nop
+    TerminateExtensions: Nop
+    Zombie: 'No'
+    ID: Valid
+    Delete: Nop
+    UserExtIter:
+    - if:
+        pre-conditions:
+          UserExtIter: None
+      then: N/A
+    - else: Nop
+  pre-conditions:
+    Restarting:
+    - 'Yes'
+    Terminating: all
+    Protected:
+    - 'Yes'
+    ThreadDispatch:
+    - Disabled
+    UserExtIter:
+    - Restart
+- enabled-by: true
+  post-conditions:
+    FatalError: 'Yes'
+    DeleteExtensions: Nop
+    RestartExtensions: Nop
+    TerminateExtensions: Nop
+    Zombie: 'No'
+    ID: Valid
+    Delete: Nop
+    UserExtIter:
+    - if:
+        pre-conditions:
+          UserExtIter: None
+      then: N/A
+    - else: Nop
+  pre-conditions:
+    Restarting: all
+    Terminating:
+    - 'Yes'
+    Protected:
+    - 'Yes'
+    ThreadDispatch:
+    - Disabled
+    UserExtIter:
+    - Terminate
+- enabled-by: true
+  post-conditions: UserExtIterRestartNeedsRestartingProtected
+  pre-conditions:
+    Restarting:
+    - 'No'
+    Terminating: all
+    Protected: all
+    ThreadDispatch: all
+    UserExtIter:
+    - Restart
+- enabled-by: true
+  post-conditions: UserExtIterRestartNeedsRestartingProtected
+  pre-conditions:
+    Restarting:
+    - 'Yes'
+    Terminating: all
+    Protected:
+    - 'No'
+    ThreadDispatch: all
+    UserExtIter:
+    - Restart
+- enabled-by: true
+  post-conditions: UserExtIterTerminateNeedsTerminatingProtected
+  pre-conditions:
+    Restarting: all
+    Terminating:
+    - 'No'
+    Protected: all
+    ThreadDispatch: all
+    UserExtIter:
+    - Terminate
+- enabled-by: true
+  post-conditions: UserExtIterTerminateNeedsTerminatingProtected
+  pre-conditions:
+    Restarting: all
+    Terminating:
+    - 'Yes'
+    Protected:
+    - 'No'
+    ThreadDispatch: all
+    UserExtIter:
+    - Terminate
 type: requirement

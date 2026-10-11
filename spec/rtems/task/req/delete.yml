@@ -1,6 +1,6 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 copyrights:
-- Copyright (C) 2021 embedded brains GmbH & Co. KG
+- Copyright (C) 2021, 2026 embedded brains GmbH & Co. KG
 enabled-by: true
 functional-type: action
 links:
@@ -231,6 +231,26 @@ post-conditions:
       parameter shall be inactive after the ${../if/delete:/name} call.
   test-epilogue: null
   test-prologue: null
+- name: UserExtIter
+  states:
+  - name: End
+    test-code: |
+      T_true( ctx->userext_iter_hooked );
+      T_true( ctx->userext_iter_ended );
+    text: |
+      The ${../if/delete:/name} call shall end the iteration of the
+      ${/glossary/userextensions:/term} in progress for the task specified by the
+      ${../if/delete:/params[0]/name} parameter.
+  - name: Nop
+    test-code: |
+      T_true( ctx->userext_iter_hooked );
+      T_false( ctx->userext_iter_ended );
+    text: |
+      The ${../if/delete:/name} call shall not end the iteration of the
+      ${/glossary/userextensions:/term} in progress for the task specified by the
+      ${../if/delete:/params[0]/name} parameter.
+  test-epilogue: null
+  test-prologue: null
 pre-conditions:
 - name: Id
   states:
@@ -422,7 +442,52 @@ pre-conditions:
       parameter is active.
   test-epilogue: null
   test-prologue: null
-rationale: null
+- name: UserExtIter
+  states:
+  - name: None
+    test-code: |
+      ctx->userext_iter = USER_EXT_ITER_NONE;
+    text: |
+      While no iteration of the ${/glossary/userextensions:/term} is in progress for
+      the task specified by the ${../if/delete:/params[0]/name} parameter.
+  - name: Begin
+    test-code: |
+      ctx->userext_iter = USER_EXT_ITER_BEGIN;
+    text: |
+      While the ${/glossary/userextensions:/term} are iterated to invoke the thread
+      begin extensions for the task specified by the ${../if/delete:/params[0]/name}
+      parameter.
+  - name: Exitted
+    test-code: |
+      ctx->userext_iter = USER_EXT_ITER_EXITTED;
+    text: |
+      While the ${/glossary/userextensions:/term} are iterated to invoke the thread
+      exitted extensions for the task specified by the
+      ${../if/delete:/params[0]/name} parameter.
+  - name: Restart
+    test-code: |
+      ctx->userext_iter = USER_EXT_ITER_RESTART;
+    text: |
+      While the ${/glossary/userextensions:/term} are iterated to invoke the thread
+      restart extensions for the task specified by the
+      ${../if/delete:/params[0]/name} parameter.
+  - name: Terminate
+    test-code: |
+      ctx->userext_iter = USER_EXT_ITER_TERMINATE;
+    text: |
+      While the ${/glossary/userextensions:/term} are iterated to invoke the thread
+      terminate extensions for the task specified by the
+      ${../if/delete:/params[0]/name} parameter.
+  test-epilogue: null
+  test-prologue: null
+rationale: |
+  Dimension UserExtIter covers the iteration of the
+  ${/glossary/userextensions:/term} in progress for the task, 5 states. The
+  thread restart and thread terminate extensions run while the thread life of the
+  task is protected. A deletion by the executing task ends the iteration. The
+  thread life protection defers a deletion by another task during the restart and
+  terminate iterations, so these iterations continue. A call in interrupt context
+  deletes no task and ends no iteration.
 requirement-type: functional
 skip-reasons:
   ExecutingIsNotBlocked: |
@@ -434,15 +499,36 @@ skip-reasons:
   ThreadDispatchDisabled: |
     While ISRs or nested requests are processed, the thread dispatching is
     disabled.
+  UserExtIterRestartNeedsRestartingProtected: |
+    The thread restart extensions are invoked only while the thread is restarting
+    and the thread life is protected.
+  UserExtIterTerminateNeedsTerminatingProtected: |
+    The thread terminate extensions are invoked only while the thread is
+    terminating and the thread life is protected.
 test-action: |
   rtems_status_code sc;
+
+  ctx->life_protected_by_handler =
+    ( ctx->userext_iter == USER_EXT_ITER_RESTART ||
+      ctx->userext_iter == USER_EXT_ITER_TERMINATE );
 
   if ( ctx->id != INVALID_ID && !ctx->dormant ) {
     ctx->worker_is_mutex_owner = false;
     StartTask( ctx->worker_id, Worker, ctx );
 
-    /* Let the worker catch signals and set the thread life protection state */
-    Yield();
+    if ( ctx->userext_iter == USER_EXT_ITER_TERMINATE ) {
+      /* Let the deleter terminate the worker */
+      sc = rtems_task_restart( ctx->deleter_id, (rtems_task_argument) ctx );
+      T_rsc_success( sc );
+    } else {
+      /* Let the worker catch signals and set the thread life protection state */
+      Yield();
+
+      if ( ctx->userext_iter == USER_EXT_ITER_RESTART ) {
+        /* The self restart of the worker moved it behind the runner */
+        Yield();
+      }
+    }
 
     sc = rtems_signal_send( ctx->worker_id, RTEMS_SIGNAL_0 );
     T_rsc_success( sc );
@@ -452,7 +538,9 @@ test-action: |
       T_rsc_success( sc );
     }
 
-    if ( ctx->terminating ) {
+    if ( ctx->userext_iter == USER_EXT_ITER_TERMINATE ) {
+      SendEvents( ctx->worker_id, RTEMS_EVENT_0 );
+    } else if ( ctx->terminating ) {
       sc = rtems_task_restart( ctx->deleter_id, (rtems_task_argument) ctx );
       T_rsc_success( sc );
     } else {
@@ -549,6 +637,42 @@ test-context:
   description: null
   member: |
     rtems_task_priority worker_priority
+- brief: |
+    This member specifies the iteration of the ${/glossary/userextensions:/term} in
+    progress for the worker before the ${../if/delete:/name} call.
+  description: null
+  member: |
+    UserExtIter userext_iter
+- brief: |
+    If this member is true, then the worker entered the iteration of the
+    ${/glossary/userextensions:/term} specified by `userext_iter`.
+  description: null
+  member: |
+    bool userext_iter_hooked
+- brief: |
+    If this member is true, then the extension which entered the iteration
+    returned.
+  description: null
+  member: |
+    bool userext_iter_returned
+- brief: |
+    If this member is true, then a thread life change of the worker may set
+    `userext_iter_ended`.
+  description: null
+  member: |
+    bool userext_iter_check_end
+- brief: |
+    If this member is true, then a thread life change of the worker ended the
+    iteration.
+  description: null
+  member: |
+    bool userext_iter_ended
+- brief: |
+    If this member is true, then the thread life action handler protects the thread
+    life of the worker during the iteration.
+  description: null
+  member: |
+    bool life_protected_by_handler
 - brief: |
     This member contains the identifier of the deleter task.
   description: null
@@ -675,7 +799,14 @@ test-context:
   description: null
   member: |
     rtems_id id
-test-context-support: null
+test-context-support: |
+  typedef enum {
+    USER_EXT_ITER_NONE,
+    USER_EXT_ITER_BEGIN,
+    USER_EXT_ITER_EXITTED,
+    USER_EXT_ITER_RESTART,
+    USER_EXT_ITER_TERMINATE
+  } UserExtIter;
 test-description: null
 test-header: null
 test-includes:
@@ -691,6 +822,10 @@ test-local-includes:
 - tx-support.h
 test-prepare: |
   ctx->status = RTEMS_NOT_IMPLEMENTED;
+  ctx->userext_iter_hooked = false;
+  ctx->userext_iter_returned = false;
+  ctx->userext_iter_ended = false;
+  ctx->userext_iter_check_end = true;
   ctx->restart_counter = 0;
 
   ctx->delete_worker_expected = false;
@@ -884,6 +1019,11 @@ test-support: |
     DeleteAndJumpBack( ctx );
     CaptureWorkerState( ctx );
 
+    if ( ctx->status == RTEMS_CALLED_FROM_ISR ) {
+      /* A thread life change after a call without effect does not count */
+      ctx->userext_iter_check_end = false;
+    }
+
     if ( ctx->dispatch_disabled ) {
       _Thread_Dispatch_enable( _Per_CPU_Get() );
     }
@@ -972,7 +1112,7 @@ test-support: |
       }
     }
 
-    if ( ctx->protected ) {
+    if ( ctx->protected && !ctx->life_protected_by_handler ) {
       _Thread_Set_life_protection( 0 );
     }
   }
@@ -1012,23 +1152,85 @@ test-support: |
     SuspendSelf();
   }
 
+  static void WorkerSetup( Context *ctx )
+  {
+    rtems_status_code sc;
+
+    sc = rtems_signal_catch( Signal, RTEMS_NO_ASR );
+    T_rsc_success( sc );
+
+    if ( ctx->protected ) {
+      _Thread_Set_life_protection( THREAD_LIFE_PROTECTED );
+    }
+
+    if ( ctx->userext_iter == USER_EXT_ITER_TERMINATE ) {
+      /* The deleter raised the priority of the worker */
+      (void) ReceiveAnyEvents();
+    } else {
+      Yield();
+    }
+  }
+
+  static void UserExtIterCheckEnd( Context *ctx, const rtems_tcb *thread )
+  {
+    if (
+      thread == ctx->worker_tcb && ctx->userext_iter_check_end &&
+      ctx->userext_iter_hooked && !ctx->userext_iter_returned
+    ) {
+      ctx->userext_iter_ended = true;
+    }
+  }
+
+  static bool UserExtIterHook(
+    Context         *ctx,
+    UserExtIter      kind,
+    const rtems_tcb *thread
+  )
+  {
+    if (
+      thread != ctx->worker_tcb || ctx->userext_iter != kind ||
+      ctx->userext_iter_hooked
+    ) {
+      return false;
+    }
+
+    ctx->userext_iter_hooked = true;
+    WorkerSetup( ctx );
+    ctx->userext_iter_returned = true;
+    return true;
+  }
+
+  static void ThreadBegin( rtems_tcb *executing )
+  {
+    (void)
+      UserExtIterHook( T_fixture_context(), USER_EXT_ITER_BEGIN, executing );
+  }
+
+  static void ThreadExitted( rtems_tcb *executing )
+  {
+    if (
+      UserExtIterHook( T_fixture_context(), USER_EXT_ITER_EXITTED, executing )
+    ) {
+      rtems_task_exit();
+    }
+  }
+
   static void Worker( rtems_task_argument arg )
   {
     Context *ctx;
 
     ctx = T_fixture_context();
 
-    if ( arg != 0 ) {
-      rtems_status_code sc;
-
-      sc = rtems_signal_catch( Signal, RTEMS_NO_ASR );
-      T_rsc_success( sc );
-
-      if ( ctx->protected ) {
-        _Thread_Set_life_protection( THREAD_LIFE_PROTECTED );
-      }
-
-      Yield();
+    if ( ctx->userext_iter == USER_EXT_ITER_NONE ) {
+      WorkerSetup( ctx );
+    } else if (
+      ctx->userext_iter == USER_EXT_ITER_RESTART && !ctx->userext_iter_hooked
+    ) {
+      (void) rtems_task_restart( RTEMS_SELF, arg );
+    } else if (
+      ctx->userext_iter == USER_EXT_ITER_EXITTED && !ctx->userext_iter_hooked
+    ) {
+      return;
     }
 
     if ( IsMutexOwner( ctx->mutex_id ) ) {
@@ -1054,13 +1256,15 @@ test-support: |
 
   static void ThreadRestart( rtems_tcb *executing, rtems_tcb *restarted )
   {
-    (void) executing;
-    (void) restarted;
-
     Context *ctx;
+
+    (void) executing;
 
     ctx = T_fixture_context();
     ++ctx->calls.thread_restart;
+
+    UserExtIterCheckEnd( ctx, restarted );
+    (void) UserExtIterHook( ctx, USER_EXT_ITER_RESTART, restarted );
   }
 
   static void ThreadTerminate( rtems_tcb *executing )
@@ -1075,6 +1279,9 @@ test-support: |
     if ( IsMutexOwner( ctx->mutex_id ) ) {
       ReleaseMutex( ctx->mutex_id );
     }
+
+    UserExtIterCheckEnd( ctx, executing );
+    (void) UserExtIterHook( ctx, USER_EXT_ITER_TERMINATE, executing );
   }
 
   static void Cleanup( Context *ctx )
@@ -1094,9 +1301,13 @@ test-support: |
       }
     }
 
+    /* A deletion by the cleanup does not count */
+    ctx->userext_iter_check_end = false;
+
     if (
       ctx->id == INVALID_ID ||
       ( ctx->calls.thread_terminate == 0 &&
+        ctx->userext_iter != USER_EXT_ITER_TERMINATE &&
         !( ctx->dormant && ctx->status != RTEMS_CALLED_FROM_ISR ) )
     ) {
       DeleteTask( ctx->worker_id );
@@ -1106,7 +1317,9 @@ test-support: |
   }
 
   static const rtems_extensions_table extensions = {
+    .thread_begin = ThreadBegin,
     .thread_delete = ThreadDelete,
+    .thread_exitted = ThreadExitted,
     .thread_restart = ThreadRestart,
     .thread_terminate = ThreadTerminate
   };
@@ -1133,20 +1346,20 @@ text: |
 transition-map:
 - enabled-by: true
   post-conditions:
-    Status:
+    Status: &id001
     - if:
         pre-conditions:
           Context: Interrupt
       then: CalledFromISR
     - else: NoReturn
-    FatalError:
+    FatalError: &id002
     - if:
         pre-conditions:
           Context: Task
           ThreadDispatch: Disabled
       then: 'Yes'
     - else: Nop
-    Zombie:
+    Zombie: &id003
     - if:
         pre-conditions:
           Context: Interrupt
@@ -1162,7 +1375,7 @@ transition-map:
     - else: 'Yes'
     TaskPriority: Nop
     RestartExtensions: Nop
-    TerminateExtensions:
+    TerminateExtensions: &id004
     - if:
         pre-conditions:
           Context: Task
@@ -1171,17 +1384,17 @@ transition-map:
       then: 'Yes'
     - else: Nop
     Dormant: 'No'
-    Suspended:
+    Suspended: &id005
     - specified-by: Suspended
-    Restarting:
+    Restarting: &id006
     - specified-by: Restarting
-    Terminating:
+    Terminating: &id007
     - if:
         pre-conditions:
           Context: Interrupt
       then-specified-by: Terminating
     - else: 'Yes'
-    Protected:
+    Protected: &id008
     - if:
         pre-conditions:
           Context: Task
@@ -1189,21 +1402,38 @@ transition-map:
           ThreadDispatch: Enabled
       then: 'Yes'
     - specified-by: Protected
-    State:
+    State: &id009
     - specified-by: State
-    Timer:
+    Timer: &id010
     - if:
         pre-conditions:
           Context: Interrupt
       then-specified-by: Timer
     - else: Inactive
+    UserExtIter: &id011
+    - if:
+        pre-conditions:
+          UserExtIter: None
+      then: N/A
+    - if:
+        pre-conditions:
+          Context: Interrupt
+      then: Nop
+    - if:
+        pre-conditions:
+          Id: Other
+          UserExtIter:
+          - Restart
+          - Terminate
+      then: Nop
+    - else: End
   pre-conditions:
-    Id:
+    Id: &id012
     - Executing
     Context: all
     ThreadDispatch: all
     CallerPriority: N/A
-    Dormant:
+    Dormant: &id013
     - 'No'
     Suspended: all
     Restarting: all
@@ -1211,9 +1441,77 @@ transition-map:
     Protected: all
     State: all
     Timer: all
+    UserExtIter:
+    - None
+    - Begin
+    - Exitted
 - enabled-by: true
   post-conditions:
-    Status:
+    Status: *id001
+    FatalError: *id002
+    Zombie: *id003
+    TaskPriority: Nop
+    RestartExtensions: Nop
+    TerminateExtensions: *id004
+    Dormant: 'No'
+    Suspended: *id005
+    Restarting: *id006
+    Terminating: *id007
+    Protected: *id008
+    State: *id009
+    Timer: *id010
+    UserExtIter: *id011
+  pre-conditions:
+    Id: *id012
+    Context: all
+    ThreadDispatch: all
+    CallerPriority: N/A
+    Dormant: *id013
+    Suspended: all
+    Restarting:
+    - 'Yes'
+    Terminating: all
+    Protected:
+    - 'Yes'
+    State: all
+    Timer: all
+    UserExtIter:
+    - Restart
+- enabled-by: true
+  post-conditions:
+    Status: *id001
+    FatalError: *id002
+    Zombie: *id003
+    TaskPriority: Nop
+    RestartExtensions: Nop
+    TerminateExtensions: *id004
+    Dormant: 'No'
+    Suspended: *id005
+    Restarting: *id006
+    Terminating: *id007
+    Protected: *id008
+    State: *id009
+    Timer: *id010
+    UserExtIter: *id011
+  pre-conditions:
+    Id: *id012
+    Context: all
+    ThreadDispatch: all
+    CallerPriority: N/A
+    Dormant: *id013
+    Suspended: all
+    Restarting: all
+    Terminating:
+    - 'Yes'
+    Protected:
+    - 'Yes'
+    State: all
+    Timer: all
+    UserExtIter:
+    - Terminate
+- enabled-by: true
+  post-conditions:
+    Status: &id014
     - if:
         pre-conditions:
           Context: Interrupt
@@ -1223,7 +1521,7 @@ transition-map:
           ThreadDispatch: Disabled
       then: NoReturn
     - else: Ok
-    FatalError:
+    FatalError: &id015
     - if:
         pre-conditions:
           Context: Task
@@ -1231,7 +1529,7 @@ transition-map:
       then: 'Yes'
     - else: Nop
     Zombie: 'No'
-    TaskPriority:
+    TaskPriority: &id016
     - if:
         pre-conditions:
           CallerPriority: Vital
@@ -1239,26 +1537,26 @@ transition-map:
       then: Raise
     - else: Nop
     RestartExtensions: Nop
-    TerminateExtensions:
+    TerminateExtensions: &id017
     - else: Nop
     Dormant: 'No'
-    Suspended:
+    Suspended: &id018
     - if:
         pre-conditions:
           Context: Interrupt
       then-specified-by: Suspended
     - else: 'No'
-    Restarting:
+    Restarting: &id019
     - specified-by: Restarting
-    Terminating:
+    Terminating: &id020
     - if:
         pre-conditions:
           Context: Task
       then: 'Yes'
     - specified-by: Terminating
-    Protected:
+    Protected: &id021
     - specified-by: Protected
-    State:
+    State: &id022
     - if:
         pre-conditions:
           Context: Interrupt
@@ -1268,7 +1566,7 @@ transition-map:
           Protected: 'Yes'
       then-specified-by: State
     - else: Ready
-    Timer:
+    Timer: &id023
     - if:
         pre-conditions:
           Context: Interrupt
@@ -1278,13 +1576,14 @@ transition-map:
           Protected: 'Yes'
       then-specified-by: Timer
     - else: Inactive
+    UserExtIter: *id011
   pre-conditions:
-    Id:
+    Id: &id024
     - Other
     Context: all
     ThreadDispatch: all
     CallerPriority: all
-    Dormant:
+    Dormant: &id025
     - 'No'
     Suspended: all
     Restarting: all
@@ -1292,6 +1591,74 @@ transition-map:
     Protected: all
     State: all
     Timer: all
+    UserExtIter:
+    - None
+    - Begin
+    - Exitted
+- enabled-by: true
+  post-conditions:
+    Status: *id014
+    FatalError: *id015
+    Zombie: 'No'
+    TaskPriority: *id016
+    RestartExtensions: Nop
+    TerminateExtensions: *id017
+    Dormant: 'No'
+    Suspended: *id018
+    Restarting: *id019
+    Terminating: *id020
+    Protected: *id021
+    State: *id022
+    Timer: *id023
+    UserExtIter: *id011
+  pre-conditions:
+    Id: *id024
+    Context: all
+    ThreadDispatch: all
+    CallerPriority: all
+    Dormant: *id025
+    Suspended: all
+    Restarting:
+    - 'Yes'
+    Terminating: all
+    Protected:
+    - 'Yes'
+    State: all
+    Timer: all
+    UserExtIter:
+    - Restart
+- enabled-by: true
+  post-conditions:
+    Status: *id014
+    FatalError: *id015
+    Zombie: 'No'
+    TaskPriority: *id016
+    RestartExtensions: Nop
+    TerminateExtensions: *id017
+    Dormant: 'No'
+    Suspended: *id018
+    Restarting: *id019
+    Terminating: *id020
+    Protected: *id021
+    State: *id022
+    Timer: *id023
+    UserExtIter: *id011
+  pre-conditions:
+    Id: *id024
+    Context: all
+    ThreadDispatch: all
+    CallerPriority: all
+    Dormant: *id025
+    Suspended: all
+    Restarting: all
+    Terminating:
+    - 'Yes'
+    Protected:
+    - 'Yes'
+    State: all
+    Timer: all
+    UserExtIter:
+    - Terminate
 - enabled-by: true
   post-conditions:
     Status: InvId
@@ -1307,6 +1674,7 @@ transition-map:
     Protected: N/A
     State: N/A
     Timer: N/A
+    UserExtIter: N/A
   pre-conditions:
     Id:
     - Invalid
@@ -1320,6 +1688,7 @@ transition-map:
     Protected: N/A
     State: N/A
     Timer: N/A
+    UserExtIter: N/A
 - enabled-by: true
   post-conditions:
     Status:
@@ -1351,6 +1720,7 @@ transition-map:
     Protected: 'No'
     State: Ready
     Timer: Inactive
+    UserExtIter: N/A
   pre-conditions:
     Id:
     - Other
@@ -1365,6 +1735,7 @@ transition-map:
     Protected: N/A
     State: N/A
     Timer: N/A
+    UserExtIter: N/A
 - enabled-by: true
   post-conditions: ExecutingIsNotDormant
   pre-conditions:
@@ -1381,6 +1752,7 @@ transition-map:
     Protected: all
     State: all
     Timer: all
+    UserExtIter: all
 - enabled-by: true
   post-conditions: ExecutingIsNotBlocked
   pre-conditions:
@@ -1400,6 +1772,7 @@ transition-map:
     - Blocked
     - Enqueued
     Timer: all
+    UserExtIter: all
 - enabled-by: true
   post-conditions: NotBlockedHasInactiveTimer
   pre-conditions:
@@ -1419,6 +1792,7 @@ transition-map:
     - Ready
     Timer:
     - Active
+    UserExtIter: all
 - enabled-by: true
   post-conditions: ThreadDispatchDisabled
   pre-conditions:
@@ -1435,4 +1809,87 @@ transition-map:
     Protected: all
     State: all
     Timer: all
+    UserExtIter: all
+- enabled-by: true
+  post-conditions: UserExtIterRestartNeedsRestartingProtected
+  pre-conditions:
+    Id:
+    - Executing
+    - Other
+    Context: all
+    ThreadDispatch: all
+    CallerPriority: all
+    Dormant:
+    - 'No'
+    Suspended: all
+    Restarting:
+    - 'No'
+    Terminating: all
+    Protected: all
+    State: all
+    Timer: all
+    UserExtIter:
+    - Restart
+- enabled-by: true
+  post-conditions: UserExtIterRestartNeedsRestartingProtected
+  pre-conditions:
+    Id:
+    - Executing
+    - Other
+    Context: all
+    ThreadDispatch: all
+    CallerPriority: all
+    Dormant:
+    - 'No'
+    Suspended: all
+    Restarting:
+    - 'Yes'
+    Terminating: all
+    Protected:
+    - 'No'
+    State: all
+    Timer: all
+    UserExtIter:
+    - Restart
+- enabled-by: true
+  post-conditions: UserExtIterTerminateNeedsTerminatingProtected
+  pre-conditions:
+    Id:
+    - Executing
+    - Other
+    Context: all
+    ThreadDispatch: all
+    CallerPriority: all
+    Dormant:
+    - 'No'
+    Suspended: all
+    Restarting: all
+    Terminating:
+    - 'No'
+    Protected: all
+    State: all
+    Timer: all
+    UserExtIter:
+    - Terminate
+- enabled-by: true
+  post-conditions: UserExtIterTerminateNeedsTerminatingProtected
+  pre-conditions:
+    Id:
+    - Executing
+    - Other
+    Context: all
+    ThreadDispatch: all
+    CallerPriority: all
+    Dormant:
+    - 'No'
+    Suspended: all
+    Restarting: all
+    Terminating:
+    - 'Yes'
+    Protected:
+    - 'No'
+    State: all
+    Timer: all
+    UserExtIter:
+    - Terminate
 type: requirement
