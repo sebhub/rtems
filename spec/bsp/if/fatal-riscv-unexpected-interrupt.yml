@@ -1,0 +1,15 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by:
+- bsps/riscv/noel
+- bsps/riscv/riscv
+index-entries: []
+interface-type: unspecified-enumerator
+links:
+- role: interface-placement
+  uid: fatal-header
+- role: interface-ingroup
+  uid: group-fatal
+name: RISCV_FATAL_UNEXPECTED_INTERRUPT_EXCEPTION
+type: interface

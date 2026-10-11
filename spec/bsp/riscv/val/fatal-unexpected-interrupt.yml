@@ -1,0 +1,92 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by:
+- bsps/riscv/noel
+- bsps/riscv/riscv
+links: []
+test-actions:
+- action-brief: |
+    The test action is carried out by the DispatchUnexpectedInterrupt() system
+    initialization handler.
+  action-code: |
+    /* Nothing to do */
+  checks:
+  - brief: |
+      Check that the expected fatal source is present.
+    code: |
+      T_step_eq_int( ${.:/step}, ctx->source, RTEMS_FATAL_SOURCE_BSP );
+    links:
+    - role: validation
+      uid: ../req/fatal-unexpected-interrupt
+  - brief: |
+      Check that the expected fatal code is present.
+    code: |
+      T_step_eq_ulong(
+        ${.:/step},
+        ctx->code,
+        RISCV_FATAL_UNEXPECTED_INTERRUPT_EXCEPTION
+      );
+    links:
+    - role: validation
+      uid: ../req/fatal-unexpected-interrupt
+  links: []
+test-brief: |
+  Tests a fatal error.
+test-context: []
+test-context-support: null
+test-description: null
+test-header:
+  code: null
+  freestanding: true
+  includes:
+  - rtems.h
+  local-includes: []
+  run-params:
+  - description: |
+      is fatal source.
+    dir: null
+    name: source
+    specifier: ${/rtems/userext/if/fatal-source:/name} ${.:name}
+  - description: |
+      is fatal code.
+    dir: null
+    name: code
+    specifier: ${/rtems/userext/if/fatal-code:/name} ${.:name}
+  target: testsuites/validation/bsps/tr-fatal-riscv-unexpected-interrupt.h
+test-includes:
+- rtems.h
+- rtems/sysinit.h
+- bsp.h
+- bsp/fatal.h
+- rtems/score/cpuimpl.h
+- rtems/score/percpu.h
+test-local-includes:
+- tr-fatal-riscv-unexpected-interrupt.h
+test-setup: null
+test-stop: null
+test-support: |
+  static void DispatchUnexpectedInterrupt( void )
+  {
+    rtems_interrupt_level level;
+    uintptr_t             cause;
+
+    /*
+     * The interrupt cause zero is the user software interrupt.  No processor
+     * mode of the BSP handles it.
+     */
+    cause = (uintptr_t) 1 << ( 8 * sizeof( uintptr_t ) - 1 );
+
+    rtems_interrupt_local_disable( level );
+    _RISCV_Interrupt_dispatch( cause, _Per_CPU_Get() );
+    rtems_interrupt_local_enable( level );
+  }
+
+  RTEMS_SYSINIT_ITEM(
+    DispatchUnexpectedInterrupt,
+    RTEMS_SYSINIT_DEVICE_DRIVERS,
+    RTEMS_SYSINIT_ORDER_FIRST
+  );
+test-target: testsuites/validation/bsps/tr-fatal-riscv-unexpected-interrupt.c
+test-teardown: null
+type: test-case

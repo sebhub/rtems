@@ -1,0 +1,20 @@
+SPDX-License-Identifier: CC-BY-SA-4.0
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by:
+- bsps/riscv/noel
+- bsps/riscv/riscv
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: /req/fatal-error
+- role: requirement-refinement
+  uid: ../if/group
+rationale: null
+requirement-type: functional
+text: |
+  If the interrupt dispatch receives an interrupt cause other than the timer, the
+  external and the software interrupt of the processor mode of the BSP, then the
+  system shall terminate with the ${/score/interr/if/source-bsp:/name} fatal
+  source and the ${/bsp/if/fatal-riscv-unexpected-interrupt:/name} fatal code.
+type: requirement
