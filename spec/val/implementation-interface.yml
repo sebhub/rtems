@@ -20,6 +20,10 @@ links:
 - role: validation
   uid: /bsp/if/fatal-leon3-invalid-cache-config-secondary-processor
 - role: validation
+  uid: /bsp/if/fatal-riscv-clock-irq-install
+- role: validation
+  uid: /bsp/if/fatal-riscv-unexpected-interrupt
+- role: validation
   uid: /bsp/sparc/leon3/if/idle-thread
 - role: validation
   uid: /rtems/io/if/mount
