@@ -1,0 +1,1411 @@
+/* SPDX-License-Identifier: BSD-2-Clause */
+
+/**
+ * @file
+ *
+ * @ingroup ScoreCpuRiscvValContext
+ */
+
+/*
+ * Copyright (C) 2026 embedded brains GmbH & Co. KG
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
+#include <rtems.h>
+#include <stdint.h>
+#include <string.h>
+#include <rtems/score/cpuimpl.h>
+
+#include "tx-register-check.h"
+#include "tx-support.h"
+
+#include <rtems/test.h>
+
+/**
+ * @defgroup ScoreCpuRiscvValContext spec:/score/cpu/riscv/val/context
+ *
+ * @ingroup TestsuitesValidationNoClock0
+ *
+ * @brief Checks that the context switch saves and restores every call-saved
+ *   register, the floating-point environment, the return address and the
+ *   thread pointer.
+ *
+ * The action calls the switch directly. A call through the operating system
+ * runs a chain of functions. A function of the chain may preserve a register
+ * on its own stack. This hides a defect of the switch in that register.
+ *
+ * This test case performs the following actions:
+ *
+ * - Load a distinct pattern into every call-saved register, into fcsr and into
+ *   the thread pointer of the context. Call the context switch directly. The
+ *   heir records its thread pointer and its stack pointer and switches back.
+ *   Record the registers after the switch back. Run this once for each value
+ *   with the pattern of that value inverted, then once unchanged.
+ *
+ *   - Check that the switch saved the RISC-V register s0.
+ *
+ *   - Check that the switch restored the RISC-V register s0.
+ *
+ *   - Check that the switch saved the RISC-V register s1.
+ *
+ *   - Check that the switch restored the RISC-V register s1.
+ *
+ *   - Check that the switch saved the RISC-V register s2.
+ *
+ *   - Check that the switch restored the RISC-V register s2.
+ *
+ *   - Check that the switch saved the RISC-V register s3.
+ *
+ *   - Check that the switch restored the RISC-V register s3.
+ *
+ *   - Check that the switch saved the RISC-V register s4.
+ *
+ *   - Check that the switch restored the RISC-V register s4.
+ *
+ *   - Check that the switch saved the RISC-V register s5.
+ *
+ *   - Check that the switch restored the RISC-V register s5.
+ *
+ *   - Check that the switch saved the RISC-V register s6.
+ *
+ *   - Check that the switch restored the RISC-V register s6.
+ *
+ *   - Check that the switch saved the RISC-V register s7.
+ *
+ *   - Check that the switch restored the RISC-V register s7.
+ *
+ *   - Check that the switch saved the RISC-V register s8.
+ *
+ *   - Check that the switch restored the RISC-V register s8.
+ *
+ *   - Check that the switch saved the RISC-V register s9.
+ *
+ *   - Check that the switch restored the RISC-V register s9.
+ *
+ *   - Check that the switch saved the RISC-V register s10.
+ *
+ *   - Check that the switch restored the RISC-V register s10.
+ *
+ *   - Check that the switch saved the RISC-V register s11.
+ *
+ *   - Check that the switch restored the RISC-V register s11.
+ *
+ *   - Check that the switch saved the RISC-V stack pointer register sp.
+ *
+ *   - Check that the switch restored the RISC-V stack pointer register sp.
+ *
+ *   - Check that the heir received the stack pointer of its context.
+ *
+ *   - Check that the switch saved the return address of its call in the
+ *     context.
+ *
+ *   - Check that the switch restored the RISC-V return address register ra,
+ *     and returned to it.
+ *
+ *   - Check that the switch back restored the RISC-V thread pointer register
+ *     tp from the context, and that the switch did not overwrite tp in the
+ *     context.
+ *
+ *   - Check that the heir received the thread pointer of its context.
+ *
+ *   - Check that the switch saved the RISC-V floating-point register fs0.
+ *
+ *   - Check that the switch restored the RISC-V floating-point register fs0.
+ *
+ *   - Check that the switch saved the RISC-V floating-point register fs1.
+ *
+ *   - Check that the switch restored the RISC-V floating-point register fs1.
+ *
+ *   - Check that the switch saved the RISC-V floating-point register fs2.
+ *
+ *   - Check that the switch restored the RISC-V floating-point register fs2.
+ *
+ *   - Check that the switch saved the RISC-V floating-point register fs3.
+ *
+ *   - Check that the switch restored the RISC-V floating-point register fs3.
+ *
+ *   - Check that the switch saved the RISC-V floating-point register fs4.
+ *
+ *   - Check that the switch restored the RISC-V floating-point register fs4.
+ *
+ *   - Check that the switch saved the RISC-V floating-point register fs5.
+ *
+ *   - Check that the switch restored the RISC-V floating-point register fs5.
+ *
+ *   - Check that the switch saved the RISC-V floating-point register fs6.
+ *
+ *   - Check that the switch restored the RISC-V floating-point register fs6.
+ *
+ *   - Check that the switch saved the RISC-V floating-point register fs7.
+ *
+ *   - Check that the switch restored the RISC-V floating-point register fs7.
+ *
+ *   - Check that the switch saved the RISC-V floating-point register fs8.
+ *
+ *   - Check that the switch restored the RISC-V floating-point register fs8.
+ *
+ *   - Check that the switch saved the RISC-V floating-point register fs9.
+ *
+ *   - Check that the switch restored the RISC-V floating-point register fs9.
+ *
+ *   - Check that the switch saved the RISC-V floating-point register fs10.
+ *
+ *   - Check that the switch restored the RISC-V floating-point register fs10.
+ *
+ *   - Check that the switch saved the RISC-V floating-point register fs11.
+ *
+ *   - Check that the switch restored the RISC-V floating-point register fs11.
+ *
+ *   - Check that the switch saved the rounding mode and the exception flags of
+ *     the RISC-V register fcsr.
+ *
+ *   - Check that the switch restored the rounding mode and the exception flags
+ *     of the RISC-V register fcsr.
+ *
+ *   - Check that each run with a changed value flagged exactly the checks of
+ *     that value, and that each run recorded every check.
+ *
+ * @{
+ */
+
+#define WORD ( (uint64_t) UINTPTR_MAX )
+
+#if __riscv_flen == 64
+#define FWORD  UINT64_MAX
+#define FLOAD  "fld"
+#define FSTORE "fsd"
+#elif __riscv_flen == 32
+#define FWORD  UINT64_C( 0xffffffff )
+#define FLOAD  "flw"
+#define FSTORE "fsw"
+#endif
+
+/*
+ * The mask covers the rounding mode and the exception flags of fcsr.  The
+ * pattern sets the rounding mode three, and the inverted pattern sets the
+ * rounding mode four.  Both are valid.
+ */
+#define FCSR_MASK UINT64_C( 0xff )
+
+/* The runner stores ra behind the values of every source */
+#define CONTEXT_RA_INDEX 28
+
+#if __riscv_xlen == 64
+#define LREG "ld"
+#define SREG "sd"
+#else
+#define LREG "lw"
+#define SREG "sw"
+#endif
+
+typedef enum {
+  SOURCE_S0,
+  SOURCE_S1,
+  SOURCE_S2,
+  SOURCE_S3,
+  SOURCE_S4,
+  SOURCE_S5,
+  SOURCE_S6,
+  SOURCE_S7,
+  SOURCE_S8,
+  SOURCE_S9,
+  SOURCE_S10,
+  SOURCE_S11,
+  SOURCE_SP,
+  SOURCE_EXEC_TP,
+  SOURCE_HEIR_TP,
+#if __riscv_flen > 0
+  SOURCE_FS0,
+  SOURCE_FS1,
+  SOURCE_FS2,
+  SOURCE_FS3,
+  SOURCE_FS4,
+  SOURCE_FS5,
+  SOURCE_FS6,
+  SOURCE_FS7,
+  SOURCE_FS8,
+  SOURCE_FS9,
+  SOURCE_FS10,
+  SOURCE_FS11,
+  SOURCE_FCSR,
+#endif
+  SOURCE_RA,
+  SOURCE_HEIR_SP,
+  SOURCE_MAX
+} Source;
+
+typedef enum {
+  SLOT_SAVED_S0,
+  SLOT_AFTER_S0,
+  SLOT_SAVED_S1,
+  SLOT_AFTER_S1,
+  SLOT_SAVED_S2,
+  SLOT_AFTER_S2,
+  SLOT_SAVED_S3,
+  SLOT_AFTER_S3,
+  SLOT_SAVED_S4,
+  SLOT_AFTER_S4,
+  SLOT_SAVED_S5,
+  SLOT_AFTER_S5,
+  SLOT_SAVED_S6,
+  SLOT_AFTER_S6,
+  SLOT_SAVED_S7,
+  SLOT_AFTER_S7,
+  SLOT_SAVED_S8,
+  SLOT_AFTER_S8,
+  SLOT_SAVED_S9,
+  SLOT_AFTER_S9,
+  SLOT_SAVED_S10,
+  SLOT_AFTER_S10,
+  SLOT_SAVED_S11,
+  SLOT_AFTER_S11,
+  SLOT_SAVED_SP,
+  SLOT_AFTER_SP,
+  SLOT_HEIR_SP,
+  SLOT_SAVED_RA,
+  SLOT_AFTER_RA,
+  SLOT_EXEC_TP,
+  SLOT_HEIR_TP,
+#if __riscv_flen > 0
+  SLOT_SAVED_FS0,
+  SLOT_AFTER_FS0,
+  SLOT_SAVED_FS1,
+  SLOT_AFTER_FS1,
+  SLOT_SAVED_FS2,
+  SLOT_AFTER_FS2,
+  SLOT_SAVED_FS3,
+  SLOT_AFTER_FS3,
+  SLOT_SAVED_FS4,
+  SLOT_AFTER_FS4,
+  SLOT_SAVED_FS5,
+  SLOT_AFTER_FS5,
+  SLOT_SAVED_FS6,
+  SLOT_AFTER_FS6,
+  SLOT_SAVED_FS7,
+  SLOT_AFTER_FS7,
+  SLOT_SAVED_FS8,
+  SLOT_AFTER_FS8,
+  SLOT_SAVED_FS9,
+  SLOT_AFTER_FS9,
+  SLOT_SAVED_FS10,
+  SLOT_AFTER_FS10,
+  SLOT_SAVED_FS11,
+  SLOT_AFTER_FS11,
+  SLOT_SAVED_FCSR,
+  SLOT_AFTER_FCSR,
+#endif
+  SLOT_MAX
+} Slot;
+
+/*
+ * The runner loads each value from the byte offset eight times its source.
+ * It stores the registers after the switch at the same offsets.
+ */
+RTEMS_STATIC_ASSERT( SOURCE_S0 == 0, source_s0 );
+RTEMS_STATIC_ASSERT( SOURCE_SP == 12, source_sp );
+RTEMS_STATIC_ASSERT( SOURCE_EXEC_TP == 13, source_exec_tp );
+
+#if __riscv_flen > 0
+RTEMS_STATIC_ASSERT( SOURCE_FS0 == 15, source_fs0 );
+RTEMS_STATIC_ASSERT( SOURCE_FCSR == 27, source_fcsr );
+#endif
+
+static const RegisterCheckSource context_sources[ SOURCE_MAX ] = {
+  { "s0", REGISTER_CHECK_INITIAL, WORD },
+  { "s1", REGISTER_CHECK_INITIAL, WORD },
+  { "s2", REGISTER_CHECK_INITIAL, WORD },
+  { "s3", REGISTER_CHECK_INITIAL, WORD },
+  { "s4", REGISTER_CHECK_INITIAL, WORD },
+  { "s5", REGISTER_CHECK_INITIAL, WORD },
+  { "s6", REGISTER_CHECK_INITIAL, WORD },
+  { "s7", REGISTER_CHECK_INITIAL, WORD },
+  { "s8", REGISTER_CHECK_INITIAL, WORD },
+  { "s9", REGISTER_CHECK_INITIAL, WORD },
+  { "s10", REGISTER_CHECK_INITIAL, WORD },
+  { "s11", REGISTER_CHECK_INITIAL, WORD },
+  { "sp", REGISTER_CHECK_INITIAL, WORD },
+  { "executing tp", REGISTER_CHECK_INITIAL, WORD },
+  { "heir tp", REGISTER_CHECK_INITIAL, WORD },
+#if __riscv_flen > 0
+  { "fs0", REGISTER_CHECK_INITIAL, FWORD },
+  { "fs1", REGISTER_CHECK_INITIAL, FWORD },
+  { "fs2", REGISTER_CHECK_INITIAL, FWORD },
+  { "fs3", REGISTER_CHECK_INITIAL, FWORD },
+  { "fs4", REGISTER_CHECK_INITIAL, FWORD },
+  { "fs5", REGISTER_CHECK_INITIAL, FWORD },
+  { "fs6", REGISTER_CHECK_INITIAL, FWORD },
+  { "fs7", REGISTER_CHECK_INITIAL, FWORD },
+  { "fs8", REGISTER_CHECK_INITIAL, FWORD },
+  { "fs9", REGISTER_CHECK_INITIAL, FWORD },
+  { "fs10", REGISTER_CHECK_INITIAL, FWORD },
+  { "fs11", REGISTER_CHECK_INITIAL, FWORD },
+  { "fcsr", REGISTER_CHECK_INITIAL, FCSR_MASK },
+#endif
+  { "ra", REGISTER_CHECK_EXPECTED, WORD },
+  { "heir sp", REGISTER_CHECK_EXPECTED, WORD },
+};
+
+static const RegisterCheckSlot context_slots[ SLOT_MAX ] = {
+  { "saved s0", SOURCE_S0, WORD },
+  { "after s0", SOURCE_S0, WORD },
+  { "saved s1", SOURCE_S1, WORD },
+  { "after s1", SOURCE_S1, WORD },
+  { "saved s2", SOURCE_S2, WORD },
+  { "after s2", SOURCE_S2, WORD },
+  { "saved s3", SOURCE_S3, WORD },
+  { "after s3", SOURCE_S3, WORD },
+  { "saved s4", SOURCE_S4, WORD },
+  { "after s4", SOURCE_S4, WORD },
+  { "saved s5", SOURCE_S5, WORD },
+  { "after s5", SOURCE_S5, WORD },
+  { "saved s6", SOURCE_S6, WORD },
+  { "after s6", SOURCE_S6, WORD },
+  { "saved s7", SOURCE_S7, WORD },
+  { "after s7", SOURCE_S7, WORD },
+  { "saved s8", SOURCE_S8, WORD },
+  { "after s8", SOURCE_S8, WORD },
+  { "saved s9", SOURCE_S9, WORD },
+  { "after s9", SOURCE_S9, WORD },
+  { "saved s10", SOURCE_S10, WORD },
+  { "after s10", SOURCE_S10, WORD },
+  { "saved s11", SOURCE_S11, WORD },
+  { "after s11", SOURCE_S11, WORD },
+  { "saved sp", SOURCE_SP, WORD },
+  { "after sp", SOURCE_SP, WORD },
+  { "heir sp", SOURCE_HEIR_SP, WORD },
+  { "saved ra", SOURCE_RA, WORD },
+  { "after ra", SOURCE_RA, WORD },
+  { "executing tp", SOURCE_EXEC_TP, WORD },
+  { "heir tp", SOURCE_HEIR_TP, WORD },
+#if __riscv_flen > 0
+  { "saved fs0", SOURCE_FS0, FWORD },
+  { "after fs0", SOURCE_FS0, FWORD },
+  { "saved fs1", SOURCE_FS1, FWORD },
+  { "after fs1", SOURCE_FS1, FWORD },
+  { "saved fs2", SOURCE_FS2, FWORD },
+  { "after fs2", SOURCE_FS2, FWORD },
+  { "saved fs3", SOURCE_FS3, FWORD },
+  { "after fs3", SOURCE_FS3, FWORD },
+  { "saved fs4", SOURCE_FS4, FWORD },
+  { "after fs4", SOURCE_FS4, FWORD },
+  { "saved fs5", SOURCE_FS5, FWORD },
+  { "after fs5", SOURCE_FS5, FWORD },
+  { "saved fs6", SOURCE_FS6, FWORD },
+  { "after fs6", SOURCE_FS6, FWORD },
+  { "saved fs7", SOURCE_FS7, FWORD },
+  { "after fs7", SOURCE_FS7, FWORD },
+  { "saved fs8", SOURCE_FS8, FWORD },
+  { "after fs8", SOURCE_FS8, FWORD },
+  { "saved fs9", SOURCE_FS9, FWORD },
+  { "after fs9", SOURCE_FS9, FWORD },
+  { "saved fs10", SOURCE_FS10, FWORD },
+  { "after fs10", SOURCE_FS10, FWORD },
+  { "saved fs11", SOURCE_FS11, FWORD },
+  { "after fs11", SOURCE_FS11, FWORD },
+  { "saved fcsr", SOURCE_FCSR, FCSR_MASK },
+  { "after fcsr", SOURCE_FCSR, FCSR_MASK },
+#endif
+};
+
+static uint64_t GetPattern( size_t source )
+{
+#if __riscv_flen > 0
+  if ( source == SOURCE_FCSR ) {
+    return UINT64_C( 0x75 );
+  }
+
+  if ( source >= SOURCE_FS0 ) {
+    return ( UINT64_C( 0x8182838485868788 ) +
+             UINT64_C( 0x0101010101010101 ) * source ) &
+           FWORD;
+  }
+#endif
+
+  return ( UINT64_C( 0x1112131415161718 ) +
+           UINT64_C( 0x0101010101010101 ) * source ) &
+         WORD;
+}
+
+uint64_t context_initial[ SOURCE_MAX ];
+
+/* The registers after the switch back, at the offsets of their sources */
+uint64_t context_after[ CONTEXT_RA_INDEX + 1 ];
+
+/* The registers of the caller of the runner */
+uint64_t context_saved[ CONTEXT_RA_INDEX + 1 ];
+
+/* The tp and the sp which the heir received */
+uint64_t context_heir_seen[ 2 ];
+
+Context_Control context_executing;
+
+Context_Control context_heir;
+
+#define CONTEXT_HEIR_STACK_WORDS 64
+
+static uint64_t context_heir_stack[ CONTEXT_HEIR_STACK_WORDS ];
+
+extern const char context_return_label[];
+
+void ContextHeirEntry( void );
+
+void ContextRunSwitch( void );
+
+/*
+ * The heir switches straight back.  It is assembly, so no prologue saves a
+ * register of the context under test.
+ */
+/* clang-format off */
+__asm__ (
+  "  .globl ContextHeirEntry\n"
+  "ContextHeirEntry:\n"
+  "  la t0, context_heir_seen\n"
+  "  " SREG " tp, 0(t0)\n"
+  "  " SREG " sp, 8(t0)\n"
+  "  la a0, context_heir\n"
+  "  la a1, context_executing\n"
+  "  call _CPU_Context_switch\n"
+  "  unimp\n"
+);
+/* clang-format on */
+
+/*
+ * The runner saves the registers of its caller.  It loads each value from the
+ * table of initial values and calls the switch directly.  The heir switches
+ * back, and the runner stores the registers after the switch.  It then loads
+ * the registers of its caller.  The switch back loads tp from the context, so
+ * the runner loads no tp before the switch.
+ */
+/* clang-format off */
+__asm__ (
+  "  .globl ContextRunSwitch\n"
+  "ContextRunSwitch:\n"
+  "  la t0, context_saved\n"
+  "  " SREG " s0, 0(t0)\n"
+  "  " SREG " s1, 8(t0)\n"
+  "  " SREG " s2, 16(t0)\n"
+  "  " SREG " s3, 24(t0)\n"
+  "  " SREG " s4, 32(t0)\n"
+  "  " SREG " s5, 40(t0)\n"
+  "  " SREG " s6, 48(t0)\n"
+  "  " SREG " s7, 56(t0)\n"
+  "  " SREG " s8, 64(t0)\n"
+  "  " SREG " s9, 72(t0)\n"
+  "  " SREG " s10, 80(t0)\n"
+  "  " SREG " s11, 88(t0)\n"
+  "  " SREG " sp, 96(t0)\n"
+  "  " SREG " tp, 104(t0)\n"
+  "  " SREG " ra, 224(t0)\n"
+#if __riscv_flen > 0
+  "  " FSTORE " fs0, 120(t0)\n"
+  "  " FSTORE " fs1, 128(t0)\n"
+  "  " FSTORE " fs2, 136(t0)\n"
+  "  " FSTORE " fs3, 144(t0)\n"
+  "  " FSTORE " fs4, 152(t0)\n"
+  "  " FSTORE " fs5, 160(t0)\n"
+  "  " FSTORE " fs6, 168(t0)\n"
+  "  " FSTORE " fs7, 176(t0)\n"
+  "  " FSTORE " fs8, 184(t0)\n"
+  "  " FSTORE " fs9, 192(t0)\n"
+  "  " FSTORE " fs10, 200(t0)\n"
+  "  " FSTORE " fs11, 208(t0)\n"
+  "  frcsr t1\n"
+  "  sw t1, 216(t0)\n"
+#endif
+  "  la t0, context_initial\n"
+#if __riscv_flen > 0
+  "  " FLOAD " fs0, 120(t0)\n"
+  "  " FLOAD " fs1, 128(t0)\n"
+  "  " FLOAD " fs2, 136(t0)\n"
+  "  " FLOAD " fs3, 144(t0)\n"
+  "  " FLOAD " fs4, 152(t0)\n"
+  "  " FLOAD " fs5, 160(t0)\n"
+  "  " FLOAD " fs6, 168(t0)\n"
+  "  " FLOAD " fs7, 176(t0)\n"
+  "  " FLOAD " fs8, 184(t0)\n"
+  "  " FLOAD " fs9, 192(t0)\n"
+  "  " FLOAD " fs10, 200(t0)\n"
+  "  " FLOAD " fs11, 208(t0)\n"
+  "  lw t1, 216(t0)\n"
+  "  fscsr t1\n"
+#endif
+  "  " LREG " s0, 0(t0)\n"
+  "  " LREG " s1, 8(t0)\n"
+  "  " LREG " s2, 16(t0)\n"
+  "  " LREG " s3, 24(t0)\n"
+  "  " LREG " s4, 32(t0)\n"
+  "  " LREG " s5, 40(t0)\n"
+  "  " LREG " s6, 48(t0)\n"
+  "  " LREG " s7, 56(t0)\n"
+  "  " LREG " s8, 64(t0)\n"
+  "  " LREG " s9, 72(t0)\n"
+  "  " LREG " s10, 80(t0)\n"
+  "  " LREG " s11, 88(t0)\n"
+  "  " LREG " sp, 96(t0)\n"
+  "  la a0, context_executing\n"
+  "  la a1, context_heir\n"
+  "  call _CPU_Context_switch\n"
+  "  .globl context_return_label\n"
+  "context_return_label:\n"
+  "  la t0, context_after\n"
+  "  " SREG " s0, 0(t0)\n"
+  "  " SREG " s1, 8(t0)\n"
+  "  " SREG " s2, 16(t0)\n"
+  "  " SREG " s3, 24(t0)\n"
+  "  " SREG " s4, 32(t0)\n"
+  "  " SREG " s5, 40(t0)\n"
+  "  " SREG " s6, 48(t0)\n"
+  "  " SREG " s7, 56(t0)\n"
+  "  " SREG " s8, 64(t0)\n"
+  "  " SREG " s9, 72(t0)\n"
+  "  " SREG " s10, 80(t0)\n"
+  "  " SREG " s11, 88(t0)\n"
+  "  " SREG " sp, 96(t0)\n"
+  "  " SREG " tp, 104(t0)\n"
+  "  " SREG " ra, 224(t0)\n"
+#if __riscv_flen > 0
+  "  " FSTORE " fs0, 120(t0)\n"
+  "  " FSTORE " fs1, 128(t0)\n"
+  "  " FSTORE " fs2, 136(t0)\n"
+  "  " FSTORE " fs3, 144(t0)\n"
+  "  " FSTORE " fs4, 152(t0)\n"
+  "  " FSTORE " fs5, 160(t0)\n"
+  "  " FSTORE " fs6, 168(t0)\n"
+  "  " FSTORE " fs7, 176(t0)\n"
+  "  " FSTORE " fs8, 184(t0)\n"
+  "  " FSTORE " fs9, 192(t0)\n"
+  "  " FSTORE " fs10, 200(t0)\n"
+  "  " FSTORE " fs11, 208(t0)\n"
+  "  frcsr t1\n"
+  "  sw t1, 216(t0)\n"
+#endif
+  "  la t0, context_saved\n"
+  "  " LREG " s0, 0(t0)\n"
+  "  " LREG " s1, 8(t0)\n"
+  "  " LREG " s2, 16(t0)\n"
+  "  " LREG " s3, 24(t0)\n"
+  "  " LREG " s4, 32(t0)\n"
+  "  " LREG " s5, 40(t0)\n"
+  "  " LREG " s6, 48(t0)\n"
+  "  " LREG " s7, 56(t0)\n"
+  "  " LREG " s8, 64(t0)\n"
+  "  " LREG " s9, 72(t0)\n"
+  "  " LREG " s10, 80(t0)\n"
+  "  " LREG " s11, 88(t0)\n"
+  "  " LREG " sp, 96(t0)\n"
+  "  " LREG " tp, 104(t0)\n"
+  "  " LREG " ra, 224(t0)\n"
+#if __riscv_flen > 0
+  "  " FLOAD " fs0, 120(t0)\n"
+  "  " FLOAD " fs1, 128(t0)\n"
+  "  " FLOAD " fs2, 136(t0)\n"
+  "  " FLOAD " fs3, 144(t0)\n"
+  "  " FLOAD " fs4, 152(t0)\n"
+  "  " FLOAD " fs5, 160(t0)\n"
+  "  " FLOAD " fs6, 168(t0)\n"
+  "  " FLOAD " fs7, 176(t0)\n"
+  "  " FLOAD " fs8, 184(t0)\n"
+  "  " FLOAD " fs9, 192(t0)\n"
+  "  " FLOAD " fs10, 200(t0)\n"
+  "  " FLOAD " fs11, 208(t0)\n"
+  "  lw t1, 216(t0)\n"
+  "  fscsr t1\n"
+#endif
+  "  ret\n"
+);
+/* clang-format on */
+
+#if __riscv_flen > 0
+static uint64_t GetFloat( const RISCV_Float *value )
+{
+#if __riscv_flen == 64
+  uint64_t bits;
+#else
+  uint32_t bits;
+#endif
+
+  memcpy( &bits, value, sizeof( bits ) );
+  return bits;
+}
+#endif
+
+static void ContextRun( RegisterCheck *self, void *arg )
+{
+  rtems_interrupt_level level;
+
+  (void) arg;
+  memset( context_after, 0, sizeof( context_after ) );
+  memset( context_heir_seen, 0, sizeof( context_heir_seen ) );
+  memset( &context_executing, 0, sizeof( context_executing ) );
+  memset( &context_heir, 0, sizeof( context_heir ) );
+  context_executing.tp = (uintptr_t) context_initial[ SOURCE_EXEC_TP ];
+  context_heir.ra = (uintptr_t) ContextHeirEntry;
+  context_heir.sp =
+    (uintptr_t) &context_heir_stack[ CONTEXT_HEIR_STACK_WORDS ];
+  context_heir.tp = (uintptr_t) context_initial[ SOURCE_HEIR_TP ];
+
+  /*
+   * The sp and the tp hold values of the test until the runner loads the
+   * registers of its caller, so no interrupt may arrive in between.
+   */
+  rtems_interrupt_local_disable( level );
+  ContextRunSwitch();
+  rtems_interrupt_local_enable( level );
+
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_S0,
+    context_executing.s0,
+    GetPattern( SOURCE_S0 )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_AFTER_S0,
+    context_after[ SOURCE_S0 ],
+    GetPattern( SOURCE_S0 )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_S1,
+    context_executing.s1,
+    GetPattern( SOURCE_S1 )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_AFTER_S1,
+    context_after[ SOURCE_S1 ],
+    GetPattern( SOURCE_S1 )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_S2,
+    context_executing.s2,
+    GetPattern( SOURCE_S2 )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_AFTER_S2,
+    context_after[ SOURCE_S2 ],
+    GetPattern( SOURCE_S2 )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_S3,
+    context_executing.s3,
+    GetPattern( SOURCE_S3 )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_AFTER_S3,
+    context_after[ SOURCE_S3 ],
+    GetPattern( SOURCE_S3 )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_S4,
+    context_executing.s4,
+    GetPattern( SOURCE_S4 )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_AFTER_S4,
+    context_after[ SOURCE_S4 ],
+    GetPattern( SOURCE_S4 )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_S5,
+    context_executing.s5,
+    GetPattern( SOURCE_S5 )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_AFTER_S5,
+    context_after[ SOURCE_S5 ],
+    GetPattern( SOURCE_S5 )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_S6,
+    context_executing.s6,
+    GetPattern( SOURCE_S6 )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_AFTER_S6,
+    context_after[ SOURCE_S6 ],
+    GetPattern( SOURCE_S6 )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_S7,
+    context_executing.s7,
+    GetPattern( SOURCE_S7 )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_AFTER_S7,
+    context_after[ SOURCE_S7 ],
+    GetPattern( SOURCE_S7 )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_S8,
+    context_executing.s8,
+    GetPattern( SOURCE_S8 )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_AFTER_S8,
+    context_after[ SOURCE_S8 ],
+    GetPattern( SOURCE_S8 )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_S9,
+    context_executing.s9,
+    GetPattern( SOURCE_S9 )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_AFTER_S9,
+    context_after[ SOURCE_S9 ],
+    GetPattern( SOURCE_S9 )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_S10,
+    context_executing.s10,
+    GetPattern( SOURCE_S10 )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_AFTER_S10,
+    context_after[ SOURCE_S10 ],
+    GetPattern( SOURCE_S10 )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_S11,
+    context_executing.s11,
+    GetPattern( SOURCE_S11 )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_AFTER_S11,
+    context_after[ SOURCE_S11 ],
+    GetPattern( SOURCE_S11 )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_SP,
+    context_executing.sp,
+    GetPattern( SOURCE_SP )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_AFTER_SP,
+    context_after[ SOURCE_SP ],
+    GetPattern( SOURCE_SP )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_HEIR_SP,
+    context_heir_seen[ 1 ],
+    (uintptr_t) &context_heir_stack[ CONTEXT_HEIR_STACK_WORDS ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_RA,
+    context_executing.ra,
+    (uintptr_t) context_return_label
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_AFTER_RA,
+    context_after[ CONTEXT_RA_INDEX ],
+    (uintptr_t) context_return_label
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_EXEC_TP,
+    context_after[ SOURCE_EXEC_TP ],
+    GetPattern( SOURCE_EXEC_TP )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_HEIR_TP,
+    context_heir_seen[ 0 ],
+    GetPattern( SOURCE_HEIR_TP )
+  );
+#if __riscv_flen > 0
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_FS0,
+    GetFloat( &context_executing.fs0 ),
+    GetPattern( SOURCE_FS0 )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_AFTER_FS0,
+    context_after[ SOURCE_FS0 ],
+    GetPattern( SOURCE_FS0 )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_FS1,
+    GetFloat( &context_executing.fs1 ),
+    GetPattern( SOURCE_FS1 )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_AFTER_FS1,
+    context_after[ SOURCE_FS1 ],
+    GetPattern( SOURCE_FS1 )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_FS2,
+    GetFloat( &context_executing.fs2 ),
+    GetPattern( SOURCE_FS2 )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_AFTER_FS2,
+    context_after[ SOURCE_FS2 ],
+    GetPattern( SOURCE_FS2 )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_FS3,
+    GetFloat( &context_executing.fs3 ),
+    GetPattern( SOURCE_FS3 )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_AFTER_FS3,
+    context_after[ SOURCE_FS3 ],
+    GetPattern( SOURCE_FS3 )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_FS4,
+    GetFloat( &context_executing.fs4 ),
+    GetPattern( SOURCE_FS4 )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_AFTER_FS4,
+    context_after[ SOURCE_FS4 ],
+    GetPattern( SOURCE_FS4 )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_FS5,
+    GetFloat( &context_executing.fs5 ),
+    GetPattern( SOURCE_FS5 )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_AFTER_FS5,
+    context_after[ SOURCE_FS5 ],
+    GetPattern( SOURCE_FS5 )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_FS6,
+    GetFloat( &context_executing.fs6 ),
+    GetPattern( SOURCE_FS6 )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_AFTER_FS6,
+    context_after[ SOURCE_FS6 ],
+    GetPattern( SOURCE_FS6 )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_FS7,
+    GetFloat( &context_executing.fs7 ),
+    GetPattern( SOURCE_FS7 )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_AFTER_FS7,
+    context_after[ SOURCE_FS7 ],
+    GetPattern( SOURCE_FS7 )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_FS8,
+    GetFloat( &context_executing.fs8 ),
+    GetPattern( SOURCE_FS8 )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_AFTER_FS8,
+    context_after[ SOURCE_FS8 ],
+    GetPattern( SOURCE_FS8 )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_FS9,
+    GetFloat( &context_executing.fs9 ),
+    GetPattern( SOURCE_FS9 )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_AFTER_FS9,
+    context_after[ SOURCE_FS9 ],
+    GetPattern( SOURCE_FS9 )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_FS10,
+    GetFloat( &context_executing.fs10 ),
+    GetPattern( SOURCE_FS10 )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_AFTER_FS10,
+    context_after[ SOURCE_FS10 ],
+    GetPattern( SOURCE_FS10 )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_FS11,
+    GetFloat( &context_executing.fs11 ),
+    GetPattern( SOURCE_FS11 )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_AFTER_FS11,
+    context_after[ SOURCE_FS11 ],
+    GetPattern( SOURCE_FS11 )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_FCSR,
+    context_executing.fcsr,
+    GetPattern( SOURCE_FCSR )
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_AFTER_FCSR,
+    context_after[ SOURCE_FCSR ],
+    GetPattern( SOURCE_FCSR )
+  );
+#endif
+}
+
+static RegisterCheck context_check = {
+  .sources = context_sources,
+  .source_count = SOURCE_MAX,
+  .slots = context_slots,
+  .slot_count = SLOT_MAX,
+  .initial = context_initial,
+  .run = ContextRun
+};
+
+static void ContextPrepare( void )
+{
+  size_t i;
+
+  for ( i = 0; i < SOURCE_MAX; ++i ) {
+    context_initial[ i ] = GetPattern( i );
+  }
+}
+
+/**
+ * @brief Load a distinct pattern into every call-saved register, into fcsr and
+ *   into the thread pointer of the context. Call the context switch directly.
+ *   The heir records its thread pointer and its stack pointer and switches
+ *   back. Record the registers after the switch back. Run this once for each
+ *   value with the pattern of that value inverted, then once unchanged.
+ */
+static void ScoreCpuRiscvValContext_Action_0( void )
+{
+  ContextPrepare();
+  RegisterCheckRun( &context_check );
+
+  /*
+   * Check that the switch saved the RISC-V register s0.
+   */
+  RegisterCheckVerify( &context_check, SLOT_SAVED_S0 );
+
+  /*
+   * Check that the switch restored the RISC-V register s0.
+   */
+  RegisterCheckVerify( &context_check, SLOT_AFTER_S0 );
+
+  /*
+   * Check that the switch saved the RISC-V register s1.
+   */
+  RegisterCheckVerify( &context_check, SLOT_SAVED_S1 );
+
+  /*
+   * Check that the switch restored the RISC-V register s1.
+   */
+  RegisterCheckVerify( &context_check, SLOT_AFTER_S1 );
+
+  /*
+   * Check that the switch saved the RISC-V register s2.
+   */
+  RegisterCheckVerify( &context_check, SLOT_SAVED_S2 );
+
+  /*
+   * Check that the switch restored the RISC-V register s2.
+   */
+  RegisterCheckVerify( &context_check, SLOT_AFTER_S2 );
+
+  /*
+   * Check that the switch saved the RISC-V register s3.
+   */
+  RegisterCheckVerify( &context_check, SLOT_SAVED_S3 );
+
+  /*
+   * Check that the switch restored the RISC-V register s3.
+   */
+  RegisterCheckVerify( &context_check, SLOT_AFTER_S3 );
+
+  /*
+   * Check that the switch saved the RISC-V register s4.
+   */
+  RegisterCheckVerify( &context_check, SLOT_SAVED_S4 );
+
+  /*
+   * Check that the switch restored the RISC-V register s4.
+   */
+  RegisterCheckVerify( &context_check, SLOT_AFTER_S4 );
+
+  /*
+   * Check that the switch saved the RISC-V register s5.
+   */
+  RegisterCheckVerify( &context_check, SLOT_SAVED_S5 );
+
+  /*
+   * Check that the switch restored the RISC-V register s5.
+   */
+  RegisterCheckVerify( &context_check, SLOT_AFTER_S5 );
+
+  /*
+   * Check that the switch saved the RISC-V register s6.
+   */
+  RegisterCheckVerify( &context_check, SLOT_SAVED_S6 );
+
+  /*
+   * Check that the switch restored the RISC-V register s6.
+   */
+  RegisterCheckVerify( &context_check, SLOT_AFTER_S6 );
+
+  /*
+   * Check that the switch saved the RISC-V register s7.
+   */
+  RegisterCheckVerify( &context_check, SLOT_SAVED_S7 );
+
+  /*
+   * Check that the switch restored the RISC-V register s7.
+   */
+  RegisterCheckVerify( &context_check, SLOT_AFTER_S7 );
+
+  /*
+   * Check that the switch saved the RISC-V register s8.
+   */
+  RegisterCheckVerify( &context_check, SLOT_SAVED_S8 );
+
+  /*
+   * Check that the switch restored the RISC-V register s8.
+   */
+  RegisterCheckVerify( &context_check, SLOT_AFTER_S8 );
+
+  /*
+   * Check that the switch saved the RISC-V register s9.
+   */
+  RegisterCheckVerify( &context_check, SLOT_SAVED_S9 );
+
+  /*
+   * Check that the switch restored the RISC-V register s9.
+   */
+  RegisterCheckVerify( &context_check, SLOT_AFTER_S9 );
+
+  /*
+   * Check that the switch saved the RISC-V register s10.
+   */
+  RegisterCheckVerify( &context_check, SLOT_SAVED_S10 );
+
+  /*
+   * Check that the switch restored the RISC-V register s10.
+   */
+  RegisterCheckVerify( &context_check, SLOT_AFTER_S10 );
+
+  /*
+   * Check that the switch saved the RISC-V register s11.
+   */
+  RegisterCheckVerify( &context_check, SLOT_SAVED_S11 );
+
+  /*
+   * Check that the switch restored the RISC-V register s11.
+   */
+  RegisterCheckVerify( &context_check, SLOT_AFTER_S11 );
+
+  /*
+   * Check that the switch saved the RISC-V stack pointer register sp.
+   */
+  RegisterCheckVerify( &context_check, SLOT_SAVED_SP );
+
+  /*
+   * Check that the switch restored the RISC-V stack pointer register sp.
+   */
+  RegisterCheckVerify( &context_check, SLOT_AFTER_SP );
+
+  /*
+   * Check that the heir received the stack pointer of its context.
+   */
+  RegisterCheckVerify( &context_check, SLOT_HEIR_SP );
+
+  /*
+   * Check that the switch saved the return address of its call in the context.
+   */
+  RegisterCheckVerify( &context_check, SLOT_SAVED_RA );
+
+  /*
+   * Check that the switch restored the RISC-V return address register ra, and
+   * returned to it.
+   */
+  RegisterCheckVerify( &context_check, SLOT_AFTER_RA );
+
+  /*
+   * Check that the switch back restored the RISC-V thread pointer register tp
+   * from the context, and that the switch did not overwrite tp in the context.
+   */
+  RegisterCheckVerify( &context_check, SLOT_EXEC_TP );
+
+  /*
+   * Check that the heir received the thread pointer of its context.
+   */
+  RegisterCheckVerify( &context_check, SLOT_HEIR_TP );
+
+  /*
+   * Check that the switch saved the RISC-V floating-point register fs0.
+   */
+  #if __riscv_flen > 0
+  RegisterCheckVerify( &context_check, SLOT_SAVED_FS0 );
+  #endif
+
+  /*
+   * Check that the switch restored the RISC-V floating-point register fs0.
+   */
+  #if __riscv_flen > 0
+  RegisterCheckVerify( &context_check, SLOT_AFTER_FS0 );
+  #endif
+
+  /*
+   * Check that the switch saved the RISC-V floating-point register fs1.
+   */
+  #if __riscv_flen > 0
+  RegisterCheckVerify( &context_check, SLOT_SAVED_FS1 );
+  #endif
+
+  /*
+   * Check that the switch restored the RISC-V floating-point register fs1.
+   */
+  #if __riscv_flen > 0
+  RegisterCheckVerify( &context_check, SLOT_AFTER_FS1 );
+  #endif
+
+  /*
+   * Check that the switch saved the RISC-V floating-point register fs2.
+   */
+  #if __riscv_flen > 0
+  RegisterCheckVerify( &context_check, SLOT_SAVED_FS2 );
+  #endif
+
+  /*
+   * Check that the switch restored the RISC-V floating-point register fs2.
+   */
+  #if __riscv_flen > 0
+  RegisterCheckVerify( &context_check, SLOT_AFTER_FS2 );
+  #endif
+
+  /*
+   * Check that the switch saved the RISC-V floating-point register fs3.
+   */
+  #if __riscv_flen > 0
+  RegisterCheckVerify( &context_check, SLOT_SAVED_FS3 );
+  #endif
+
+  /*
+   * Check that the switch restored the RISC-V floating-point register fs3.
+   */
+  #if __riscv_flen > 0
+  RegisterCheckVerify( &context_check, SLOT_AFTER_FS3 );
+  #endif
+
+  /*
+   * Check that the switch saved the RISC-V floating-point register fs4.
+   */
+  #if __riscv_flen > 0
+  RegisterCheckVerify( &context_check, SLOT_SAVED_FS4 );
+  #endif
+
+  /*
+   * Check that the switch restored the RISC-V floating-point register fs4.
+   */
+  #if __riscv_flen > 0
+  RegisterCheckVerify( &context_check, SLOT_AFTER_FS4 );
+  #endif
+
+  /*
+   * Check that the switch saved the RISC-V floating-point register fs5.
+   */
+  #if __riscv_flen > 0
+  RegisterCheckVerify( &context_check, SLOT_SAVED_FS5 );
+  #endif
+
+  /*
+   * Check that the switch restored the RISC-V floating-point register fs5.
+   */
+  #if __riscv_flen > 0
+  RegisterCheckVerify( &context_check, SLOT_AFTER_FS5 );
+  #endif
+
+  /*
+   * Check that the switch saved the RISC-V floating-point register fs6.
+   */
+  #if __riscv_flen > 0
+  RegisterCheckVerify( &context_check, SLOT_SAVED_FS6 );
+  #endif
+
+  /*
+   * Check that the switch restored the RISC-V floating-point register fs6.
+   */
+  #if __riscv_flen > 0
+  RegisterCheckVerify( &context_check, SLOT_AFTER_FS6 );
+  #endif
+
+  /*
+   * Check that the switch saved the RISC-V floating-point register fs7.
+   */
+  #if __riscv_flen > 0
+  RegisterCheckVerify( &context_check, SLOT_SAVED_FS7 );
+  #endif
+
+  /*
+   * Check that the switch restored the RISC-V floating-point register fs7.
+   */
+  #if __riscv_flen > 0
+  RegisterCheckVerify( &context_check, SLOT_AFTER_FS7 );
+  #endif
+
+  /*
+   * Check that the switch saved the RISC-V floating-point register fs8.
+   */
+  #if __riscv_flen > 0
+  RegisterCheckVerify( &context_check, SLOT_SAVED_FS8 );
+  #endif
+
+  /*
+   * Check that the switch restored the RISC-V floating-point register fs8.
+   */
+  #if __riscv_flen > 0
+  RegisterCheckVerify( &context_check, SLOT_AFTER_FS8 );
+  #endif
+
+  /*
+   * Check that the switch saved the RISC-V floating-point register fs9.
+   */
+  #if __riscv_flen > 0
+  RegisterCheckVerify( &context_check, SLOT_SAVED_FS9 );
+  #endif
+
+  /*
+   * Check that the switch restored the RISC-V floating-point register fs9.
+   */
+  #if __riscv_flen > 0
+  RegisterCheckVerify( &context_check, SLOT_AFTER_FS9 );
+  #endif
+
+  /*
+   * Check that the switch saved the RISC-V floating-point register fs10.
+   */
+  #if __riscv_flen > 0
+  RegisterCheckVerify( &context_check, SLOT_SAVED_FS10 );
+  #endif
+
+  /*
+   * Check that the switch restored the RISC-V floating-point register fs10.
+   */
+  #if __riscv_flen > 0
+  RegisterCheckVerify( &context_check, SLOT_AFTER_FS10 );
+  #endif
+
+  /*
+   * Check that the switch saved the RISC-V floating-point register fs11.
+   */
+  #if __riscv_flen > 0
+  RegisterCheckVerify( &context_check, SLOT_SAVED_FS11 );
+  #endif
+
+  /*
+   * Check that the switch restored the RISC-V floating-point register fs11.
+   */
+  #if __riscv_flen > 0
+  RegisterCheckVerify( &context_check, SLOT_AFTER_FS11 );
+  #endif
+
+  /*
+   * Check that the switch saved the rounding mode and the exception flags of
+   * the RISC-V register fcsr.
+   */
+  #if __riscv_flen > 0
+  RegisterCheckVerify( &context_check, SLOT_SAVED_FCSR );
+  #endif
+
+  /*
+   * Check that the switch restored the rounding mode and the exception flags
+   * of the RISC-V register fcsr.
+   */
+  #if __riscv_flen > 0
+  RegisterCheckVerify( &context_check, SLOT_AFTER_FCSR );
+  #endif
+
+  /*
+   * Check that each run with a changed value flagged exactly the checks of
+   * that value, and that each run recorded every check.
+   */
+  RegisterCheckReport( &context_check );
+}
+
+/**
+ * @fn void T_case_body_ScoreCpuRiscvValContext( void )
+ */
+T_TEST_CASE( ScoreCpuRiscvValContext )
+{
+  ScoreCpuRiscvValContext_Action_0();
+}
+
+/** @} */
