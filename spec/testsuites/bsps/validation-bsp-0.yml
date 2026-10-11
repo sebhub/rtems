@@ -3,6 +3,7 @@ copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
 enabled-by:
 - bsps/arm/xilinx-zynqmp-rpu
+- bsps/riscv/noel
 - bsps/sparc/leon3
 links:
 - role: requirement-refinement
