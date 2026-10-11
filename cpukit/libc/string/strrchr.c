@@ -1,52 +1,35 @@
+/* SPDX-License-Identifier: MIT */
+
 /*
-FUNCTION
-	<<strrchr>>---reverse search for character in string
-
-INDEX
-	strrchr
-
-SYNOPSIS
-	#include <string.h>
-	char * strrchr(const char *<[string]>, int <[c]>);
-
-DESCRIPTION
-	This function finds the last occurence of <[c]> (converted to
-	a char) in the string pointed to by <[string]> (including the
-	terminating null character).
-
-RETURNS
-	Returns a pointer to the located character, or a null pointer
-	if <[c]> does not occur in <[string]>.
-
-PORTABILITY
-<<strrchr>> is ANSI C.
-
-<<strrchr>> requires no supporting OS subroutines.
-
-QUICKREF
-	strrchr ansi pure
-*/
+ * Copyright (C) 2005-2020 Rich Felker, et al.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+ * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+ * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+ * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
 
 #include <string.h>
 
-char *
-strrchr (const char *s,
-	int i)
-{
-  const char *last = NULL;
+#ifdef __rtems__
+void *__memrchr(const void *, int, size_t);
+#endif /* __rtems__ */
 
-  if (i)
-    {
-      while ((s=strchr(s, i)))
-	{
-	  last = s;
-	  s++;
-	}
-    }
-  else
-    {
-      last = strchr(s, i);
-    }
-		  
-  return (char *) last;
+char *strrchr(const char *s, int c)
+{
+	return __memrchr(s, c, strlen(s) + 1);
 }
