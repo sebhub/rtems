@@ -102,6 +102,8 @@ links:
 - role: build-dependency
   uid: bsps/fatal-sparc-leon3-ipi-invalid-vector
 - role: build-dependency
+  uid: bsps/riscv-memory-ram-end
+- role: build-dependency
   uid: bsps/validation-bsp-0
 type: build
 use-after:

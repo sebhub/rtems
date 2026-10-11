@@ -21,6 +21,8 @@ links:
 - role: build-dependency
   uid: objgrlibirqamp
 - role: build-dependency
+  uid: objriscvnoel
+- role: build-dependency
   uid: objsparcleon3extirq
 - role: build-dependency
   uid: objsparcgr712rc
