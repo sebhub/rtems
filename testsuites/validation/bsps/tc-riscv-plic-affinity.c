@@ -55,6 +55,12 @@
  *
  *   - Check that the directive call was successful.
  *
+ * - Get the affinity of the external interrupt vector.
+ *
+ *   - Check that the directive call was successful.
+ *
+ *   - Check that the affinity is the set of the online processors.
+ *
  * - Enable the external interrupt vector.
  *
  *   - Check that the directive call was successful.
@@ -69,9 +75,25 @@
  *   - Check that the interrupt source is disabled in the PLIC context of each
  *     processor which has a PLIC context.
  *
- * - Set the affinity of the external interrupt vector to the first processor.
+ * - Set the affinity of the external interrupt vector to the first two
+ *   processors.
+ *
+ *   - Check that the directive call failed. The first two processors are
+ *     neither one nor all online processors.
+ *
+ * - Set the affinity of the external interrupt vector to the second processor
+ *   and get the affinity.
  *
  *   - Check that the directive call was successful.
+ *
+ *   - Check that the affinity contains only the second processor.
+ *
+ * - Set the affinity of the external interrupt vector to the first processor
+ *   and get the affinity.
+ *
+ *   - Check that the directive call was successful.
+ *
+ *   - Check that the affinity contains only the first processor.
  *
  * @{
  */
@@ -83,6 +105,27 @@
 #define INDEX 63
 
 #define VECTOR RISCV_INTERRUPT_VECTOR_EXTERNAL( INDEX )
+
+static bool IsOnlineSet( const cpu_set_t *set )
+{
+  uint32_t cpu_index;
+
+  for (
+    cpu_index = 0; cpu_index < _SMP_Get_processor_maximum(); ++cpu_index
+  ) {
+    bool online;
+
+    online = _Per_CPU_Is_processor_online(
+      _Per_CPU_Get_by_index( cpu_index )
+    );
+
+    if ( online != ( CPU_ISSET( (int) cpu_index, set ) != 0 ) ) {
+      return false;
+    }
+  }
+
+  return true;
+}
 
 static uint32_t CountContexts( void )
 {
@@ -145,9 +188,30 @@ static void BspRiscvValPlicAffinity_Action_0( void )
 }
 
 /**
- * @brief Enable the external interrupt vector.
+ * @brief Get the affinity of the external interrupt vector.
  */
 static void BspRiscvValPlicAffinity_Action_1( void )
+{
+  rtems_status_code sc;
+  cpu_set_t         set;
+
+  sc = rtems_interrupt_get_affinity( VECTOR, sizeof( set ), &set );
+
+  /*
+   * Check that the directive call was successful.
+   */
+  T_step_rsc_success( 1, sc );
+
+  /*
+   * Check that the affinity is the set of the online processors.
+   */
+  T_step_true( 2, IsOnlineSet( &set ) );
+}
+
+/**
+ * @brief Enable the external interrupt vector.
+ */
+static void BspRiscvValPlicAffinity_Action_2( void )
 {
   rtems_status_code sc;
 
@@ -156,19 +220,19 @@ static void BspRiscvValPlicAffinity_Action_1( void )
   /*
    * Check that the directive call was successful.
    */
-  T_step_rsc_success( 1, sc );
+  T_step_rsc_success( 3, sc );
 
   /*
    * Check that the interrupt source is enabled in the PLIC context of each
    * processor which has a PLIC context.
    */
-  T_step_eq_u32( 2, CountEnabled(), CountContexts() );
+  T_step_eq_u32( 4, CountEnabled(), CountContexts() );
 }
 
 /**
  * @brief Disable the external interrupt vector.
  */
-static void BspRiscvValPlicAffinity_Action_2( void )
+static void BspRiscvValPlicAffinity_Action_3( void )
 {
   rtems_status_code sc;
 
@@ -177,20 +241,70 @@ static void BspRiscvValPlicAffinity_Action_2( void )
   /*
    * Check that the directive call was successful.
    */
-  T_step_rsc_success( 3, sc );
+  T_step_rsc_success( 5, sc );
 
   /*
    * Check that the interrupt source is disabled in the PLIC context of each
    * processor which has a PLIC context.
    */
-  T_step_eq_u32( 4, CountEnabled(), 0 );
+  T_step_eq_u32( 6, CountEnabled(), 0 );
+}
+
+/**
+ * @brief Set the affinity of the external interrupt vector to the first two
+ *   processors.
+ */
+static void BspRiscvValPlicAffinity_Action_4( void )
+{
+  rtems_status_code sc;
+  cpu_set_t         set;
+
+  CPU_ZERO( &set );
+  CPU_SET( 0, &set );
+  CPU_SET( 1, &set );
+  sc = rtems_interrupt_set_affinity( VECTOR, sizeof( set ), &set );
+
+  /*
+   * Check that the directive call failed. The first two processors are neither
+   * one nor all online processors.
+   */
+  T_step_rsc( 7, sc, RTEMS_INVALID_NUMBER );
+}
+
+/**
+ * @brief Set the affinity of the external interrupt vector to the second
+ *   processor and get the affinity.
+ */
+static void BspRiscvValPlicAffinity_Action_5( void )
+{
+  rtems_status_code sc;
+  cpu_set_t         set;
+
+  CPU_ZERO( &set );
+  CPU_SET( 1, &set );
+  sc = rtems_interrupt_set_affinity( VECTOR, sizeof( set ), &set );
+  T_quiet_rsc_success( sc );
+
+  CPU_ZERO( &set );
+  sc = rtems_interrupt_get_affinity( VECTOR, sizeof( set ), &set );
+
+  /*
+   * Check that the directive call was successful.
+   */
+  T_step_rsc_success( 8, sc );
+
+  /*
+   * Check that the affinity contains only the second processor.
+   */
+  T_step_eq_int( 9, CPU_COUNT( &set ), 1 );
+  T_step_true( 10, CPU_ISSET( 1, &set ) );
 }
 
 /**
  * @brief Set the affinity of the external interrupt vector to the first
- *   processor.
+ *   processor and get the affinity.
  */
-static void BspRiscvValPlicAffinity_Action_3( void )
+static void BspRiscvValPlicAffinity_Action_6( void )
 {
   rtems_status_code sc;
   cpu_set_t         set;
@@ -198,11 +312,21 @@ static void BspRiscvValPlicAffinity_Action_3( void )
   CPU_ZERO( &set );
   CPU_SET( 0, &set );
   sc = rtems_interrupt_set_affinity( VECTOR, sizeof( set ), &set );
+  T_quiet_rsc_success( sc );
+
+  CPU_ZERO( &set );
+  sc = rtems_interrupt_get_affinity( VECTOR, sizeof( set ), &set );
 
   /*
    * Check that the directive call was successful.
    */
-  T_step_rsc_success( 5, sc );
+  T_step_rsc_success( 11, sc );
+
+  /*
+   * Check that the affinity contains only the first processor.
+   */
+  T_step_eq_int( 12, CPU_COUNT( &set ), 1 );
+  T_step_true( 13, CPU_ISSET( 0, &set ) );
 }
 
 /**
@@ -210,12 +334,15 @@ static void BspRiscvValPlicAffinity_Action_3( void )
  */
 T_TEST_CASE( BspRiscvValPlicAffinity )
 {
-  T_plan( 6 );
+  T_plan( 14 );
 
   BspRiscvValPlicAffinity_Action_0();
   BspRiscvValPlicAffinity_Action_1();
   BspRiscvValPlicAffinity_Action_2();
   BspRiscvValPlicAffinity_Action_3();
+  BspRiscvValPlicAffinity_Action_4();
+  BspRiscvValPlicAffinity_Action_5();
+  BspRiscvValPlicAffinity_Action_6();
 }
 
 /** @} */
