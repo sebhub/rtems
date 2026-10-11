@@ -1,0 +1,149 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by:
+  and:
+  - RTEMS_SMP
+  - or:
+    - bsps/riscv/noel
+    - bsps/riscv/riscv
+links: []
+test-actions:
+- action-brief: |
+    Set the affinity of the external interrupt vector to all processors.
+  action-code: |
+    rtems_status_code sc;
+    cpu_set_t         set;
+
+    CPU_FILL( &set );
+    sc = rtems_interrupt_set_affinity( VECTOR, sizeof( set ), &set );
+  checks:
+  - brief: |
+      Check that the directive call was successful.
+    code: |
+      T_step_rsc_success( ${.:/step}, sc );
+    links: []
+  links: []
+- action-brief: |
+    Enable the external interrupt vector.
+  action-code: |
+    rtems_status_code sc;
+
+    sc = rtems_interrupt_vector_enable( VECTOR );
+  checks:
+  - brief: |
+      Check that the directive call was successful.
+    code: |
+      T_step_rsc_success( ${.:/step}, sc );
+    links: []
+  - brief: |
+      Check that the interrupt source is enabled in the PLIC context of each
+      processor which has a PLIC context.
+    code: |
+      T_step_eq_u32( ${.:/step}, CountEnabled(), CountContexts() );
+    links:
+    - role: validation
+      uid: ../req/plic-enable-all
+  links: []
+- action-brief: |
+    Disable the external interrupt vector.
+  action-code: |
+    rtems_status_code sc;
+
+    sc = rtems_interrupt_vector_disable( VECTOR );
+  checks:
+  - brief: |
+      Check that the directive call was successful.
+    code: |
+      T_step_rsc_success( ${.:/step}, sc );
+    links: []
+  - brief: |
+      Check that the interrupt source is disabled in the PLIC context of each
+      processor which has a PLIC context.
+    code: |
+      T_step_eq_u32( ${.:/step}, CountEnabled(), 0 );
+    links:
+    - role: validation
+      uid: ../req/plic-disable-all
+  links: []
+- action-brief: |
+    Set the affinity of the external interrupt vector to the first processor.
+  action-code: |
+    rtems_status_code sc;
+    cpu_set_t         set;
+
+    CPU_ZERO( &set );
+    CPU_SET( 0, &set );
+    sc = rtems_interrupt_set_affinity( VECTOR, sizeof( set ), &set );
+  checks:
+  - brief: |
+      Check that the directive call was successful.
+    code: |
+      T_step_rsc_success( ${.:/step}, sc );
+    links: []
+  links: []
+test-brief: |
+  Tests the routing of an external interrupt to all processors through the PLIC.
+test-context: []
+test-context-support: null
+test-description: null
+test-header: null
+test-includes:
+- rtems.h
+- bsp/irq.h
+- rtems/score/percpu.h
+test-local-includes: []
+test-setup: null
+test-stop: null
+test-support: |
+  /*
+   * The interrupt line 63 of the GR765 serves a CAN FD controller.  The
+   * simulator models no CAN FD controller, so the line stays inactive.
+   */
+  #define INDEX 63
+
+  #define VECTOR RISCV_INTERRUPT_VECTOR_EXTERNAL( INDEX )
+
+  static uint32_t CountContexts( void )
+  {
+    uint32_t count;
+    uint32_t cpu_index;
+
+    count = 0;
+
+    for ( cpu_index = 0; cpu_index < _SMP_Get_processor_maximum();
+          ++cpu_index ) {
+      if ( _Per_CPU_Get_by_index( cpu_index )->cpu_per_cpu.plic_m_ie != NULL ) {
+        ++count;
+      }
+    }
+
+    return count;
+  }
+
+  static uint32_t CountEnabled( void )
+  {
+    uint32_t count;
+    uint32_t cpu_index;
+
+    count = 0;
+
+    for ( cpu_index = 0; cpu_index < _SMP_Get_processor_maximum();
+          ++cpu_index ) {
+      volatile uint32_t *enable;
+
+      enable = _Per_CPU_Get_by_index( cpu_index )->cpu_per_cpu.plic_m_ie;
+
+      if (
+        enable != NULL &&
+        ( enable[ INDEX / 32 ] & ( UINT32_C( 1 ) << ( INDEX % 32 ) ) ) != 0
+      ) {
+        ++count;
+      }
+    }
+
+    return count;
+  }
+test-target: testsuites/validation/bsps/tc-riscv-plic-affinity.c
+test-teardown: null
+type: test-case
