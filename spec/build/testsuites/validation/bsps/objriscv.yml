@@ -11,4 +11,5 @@ install: []
 links: []
 source:
 - testsuites/validation/bsps/tc-riscv-context.c
+- testsuites/validation/bsps/tc-riscv-interrupt.c
 type: build
