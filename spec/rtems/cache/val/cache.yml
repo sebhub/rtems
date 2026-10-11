@@ -273,7 +273,13 @@ test-actions:
   - role: validation
     uid: ../req/get-data-line-size
   - role: validation
+    uid: ../req/get-data-line-size-no-cache
+  - role: validation
     uid: ../req/get-instruction-line-size
+  - role: validation
+    uid: ../req/get-instruction-line-size-no-cache
+  - role: validation
+    uid: ../req/get-maximal-line-size-no-cache
 - action-brief: |
     Call the ${../if/get-data-line-size:/name},
     ${../if/get-instruction-line-size:/name}, and the
