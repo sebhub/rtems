@@ -1,0 +1,171 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: action
+links:
+- role: interface-function
+  uid: ../if/strlen
+- role: reference
+  uid: /ref/std/posix-2024/strlen
+post-conditions:
+- name: Result
+  states:
+  - name: Length
+    test-code: |
+      T_eq_sz( ctx->retval, ctx->position - ctx->offset );
+    text: |
+      The return value of ${../if/strlen:/name} shall be the count of characters
+      which precede the terminating null character of the string referenced by the
+      ${../if/strlen:/params[0]/name} parameter.
+  test-epilogue: null
+  test-prologue: null
+pre-conditions:
+- name: Alignment
+  states:
+  - name: Aligned
+    test-code: |
+      ctx->offset = 0;
+    text: |
+      While the string referenced by the ${../if/strlen:/params[0]/name} parameter
+      starts at an address which is aligned to the size of type long.
+  - name: Unaligned
+    test-code: |
+      ctx->offset = 1;
+    text: |
+      While the string referenced by the ${../if/strlen:/params[0]/name} parameter
+      starts at an address which is not aligned to the size of type long.
+  test-epilogue: null
+  test-prologue: null
+- name: Position
+  states:
+  - name: Prefix
+    test-code: |
+      ctx->position = ctx->offset + 1;
+    text: |
+      While the terminating null character of the string is located before the first
+      address aligned to the size of type long.
+  - name: FirstBlock
+    test-code: |
+      ctx->position = AlignUp( ctx->offset );
+    text: |
+      While the terminating null character of the string is located at the start of
+      the first block of the size of type long which starts at an aligned address.
+  - name: SecondBlock
+    test-code: |
+      ctx->position = AlignUp( ctx->offset ) + sizeof( long ) + 1;
+    text: |
+      While the terminating null character of the string is located in the second
+      block of the size of type long which starts at an aligned address, but not at
+      the start of this block.
+  test-epilogue: null
+  test-prologue: null
+rationale: |
+  The implementation of the pre-qualified library checks the bytes before the
+  first aligned address, then one block of the size of type long at a time, then
+  the bytes of the block which contains the null character. Dimension Alignment
+  decides whether the string has an unaligned prefix. Dimension Position places
+  the terminating null character in the prefix, at the start of the first block
+  or after the start of the second block. The last two states select the two
+  exits of the byte loop of the last block.
+references: []
+requirement-type: functional
+skip-reasons:
+  AlignedHasNoPrefix: |
+    A string which starts at an aligned address has no prefix.
+test-action: |
+  Arrange( ctx );
+  ctx->retval = strlen( ctx->s );
+test-brief: null
+test-cleanup: null
+test-context:
+- brief: |
+    This member specifies the ${../if/strlen:/params[0]/name} parameter value.
+  description: null
+  member: |
+    const char *s
+- brief: |
+    This member contains the return value.
+  description: null
+  member: |
+    size_t retval
+- brief: |
+    This member specifies the offset of the string in the buffer.
+  description: null
+  member: |
+    size_t offset
+- brief: |
+    This member specifies the position of the terminating null character in the
+    buffer.
+  description: null
+  member: |
+    size_t position
+- brief: |
+    This member provides the buffer of the string, aligned to the size of type
+    long.
+  description: null
+  member: |
+    long buf[ 16 ]
+test-context-support: null
+test-description: null
+test-header: null
+test-includes:
+- string.h
+test-local-includes: []
+test-prepare: |
+  ctx->retval = 0;
+  ctx->offset = 0;
+  ctx->position = 0;
+test-setup: null
+test-stop: null
+test-support: |
+  typedef ${.:/test-context-type} Context;
+
+  static size_t AlignUp( size_t offset )
+  {
+    return ( offset + sizeof( long ) - 1 ) & ~( sizeof( long ) - 1 );
+  }
+
+  static void Arrange( Context *ctx )
+  {
+    char  *b;
+    size_t i;
+
+    b = (char *) ctx->buf;
+
+    for ( i = 0; i < sizeof( ctx->buf ); ++i ) {
+      b[ i ] = (char) ( 'A' + i % 26 );
+    }
+
+    b[ ctx->position ] = '\0';
+    ctx->s = b + ctx->offset;
+  }
+test-target: testsuites/validation/tc-string-strlen.c
+test-teardown: null
+text: |
+  ${.:text-template}
+transition-map:
+- enabled-by: true
+  post-conditions:
+    Result: Length
+  pre-conditions:
+    Alignment:
+    - Unaligned
+    Position: all
+- enabled-by: true
+  post-conditions:
+    Result: Length
+  pre-conditions:
+    Alignment:
+    - Aligned
+    Position:
+    - FirstBlock
+    - SecondBlock
+- enabled-by: true
+  post-conditions: AlignedHasNoPrefix
+  pre-conditions:
+    Alignment:
+    - Aligned
+    Position:
+    - Prefix
+type: requirement
