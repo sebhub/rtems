@@ -4,6 +4,8 @@ copyrights:
 enabled-by: true
 links:
 - role: validation
+  uid: /bsp/if/acfg-idle-task-body
+- role: validation
   uid: /bsp/if/acfg-idle-task-stack-size
 - role: validation
   uid: /bsp/if/acfg-interrupt-stack-size
