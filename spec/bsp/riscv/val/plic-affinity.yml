@@ -25,6 +25,27 @@ test-actions:
     links: []
   links: []
 - action-brief: |
+    Get the affinity of the external interrupt vector.
+  action-code: |
+    rtems_status_code sc;
+    cpu_set_t         set;
+
+    sc = rtems_interrupt_get_affinity( VECTOR, sizeof( set ), &set );
+  checks:
+  - brief: |
+      Check that the directive call was successful.
+    code: |
+      T_step_rsc_success( ${.:/step}, sc );
+    links: []
+  - brief: |
+      Check that the affinity is the set of the online processors.
+    code: |
+      T_step_true( ${.:/step}, IsOnlineSet( &set ) );
+    links:
+    - role: validation
+      uid: ../req/plic-affinity-get-all
+  links: []
+- action-brief: |
     Enable the external interrupt vector.
   action-code: |
     rtems_status_code sc;
@@ -67,7 +88,57 @@ test-actions:
       uid: ../req/plic-disable-all
   links: []
 - action-brief: |
-    Set the affinity of the external interrupt vector to the first processor.
+    Set the affinity of the external interrupt vector to the first two processors.
+  action-code: |
+    rtems_status_code sc;
+    cpu_set_t         set;
+
+    CPU_ZERO( &set );
+    CPU_SET( 0, &set );
+    CPU_SET( 1, &set );
+    sc = rtems_interrupt_set_affinity( VECTOR, sizeof( set ), &set );
+  checks:
+  - brief: |
+      Check that the directive call failed. The first two processors are neither one
+      nor all online processors.
+    code: |
+      T_step_rsc( ${.:/step}, sc, RTEMS_INVALID_NUMBER );
+    links:
+    - role: validation
+      uid: ../req/plic-affinity-reject
+  links: []
+- action-brief: |
+    Set the affinity of the external interrupt vector to the second processor and
+    get the affinity.
+  action-code: |
+    rtems_status_code sc;
+    cpu_set_t         set;
+
+    CPU_ZERO( &set );
+    CPU_SET( 1, &set );
+    sc = rtems_interrupt_set_affinity( VECTOR, sizeof( set ), &set );
+    T_quiet_rsc_success( sc );
+
+    CPU_ZERO( &set );
+    sc = rtems_interrupt_get_affinity( VECTOR, sizeof( set ), &set );
+  checks:
+  - brief: |
+      Check that the directive call was successful.
+    code: |
+      T_step_rsc_success( ${.:/step}, sc );
+    links: []
+  - brief: |
+      Check that the affinity contains only the second processor.
+    code: |
+      T_step_eq_int( ${.:/step}, CPU_COUNT( &set ), 1 );
+      T_step_true( ${.:/step}, CPU_ISSET( 1, &set ) );
+    links:
+    - role: validation
+      uid: ../req/plic-affinity-get-one
+  links: []
+- action-brief: |
+    Set the affinity of the external interrupt vector to the first processor and
+    get the affinity.
   action-code: |
     rtems_status_code sc;
     cpu_set_t         set;
@@ -75,12 +146,24 @@ test-actions:
     CPU_ZERO( &set );
     CPU_SET( 0, &set );
     sc = rtems_interrupt_set_affinity( VECTOR, sizeof( set ), &set );
+    T_quiet_rsc_success( sc );
+
+    CPU_ZERO( &set );
+    sc = rtems_interrupt_get_affinity( VECTOR, sizeof( set ), &set );
   checks:
   - brief: |
       Check that the directive call was successful.
     code: |
       T_step_rsc_success( ${.:/step}, sc );
     links: []
+  - brief: |
+      Check that the affinity contains only the first processor.
+    code: |
+      T_step_eq_int( ${.:/step}, CPU_COUNT( &set ), 1 );
+      T_step_true( ${.:/step}, CPU_ISSET( 0, &set ) );
+    links:
+    - role: validation
+      uid: ../req/plic-affinity-get-one
   links: []
 test-brief: |
   Tests the routing of an external interrupt to all processors through the PLIC.
@@ -103,6 +186,26 @@ test-support: |
   #define INDEX 63
 
   #define VECTOR RISCV_INTERRUPT_VECTOR_EXTERNAL( INDEX )
+
+  static bool IsOnlineSet( const cpu_set_t *set )
+  {
+    uint32_t cpu_index;
+
+    for ( cpu_index = 0; cpu_index < _SMP_Get_processor_maximum();
+          ++cpu_index ) {
+      bool online;
+
+      online = _Per_CPU_Is_processor_online(
+        _Per_CPU_Get_by_index( cpu_index )
+      );
+
+      if ( online != ( CPU_ISSET( (int) cpu_index, set ) != 0 ) ) {
+        return false;
+      }
+    }
+
+    return true;
+  }
 
   static uint32_t CountContexts( void )
   {

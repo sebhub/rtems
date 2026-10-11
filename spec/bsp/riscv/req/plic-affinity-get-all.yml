@@ -1,0 +1,19 @@
+SPDX-License-Identifier: CC-BY-SA-4.0
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by:
+  and:
+  - RTEMS_SMP
+  - or:
+    - bsps/riscv/noel
+    - bsps/riscv/riscv
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: ../if/group
+rationale: null
+requirement-type: functional
+text: |
+  While an external interrupt vector is routed to all online processors, the
+  affinity of the vector shall be the set of the online processors.
+type: requirement

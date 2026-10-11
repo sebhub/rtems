@@ -1,0 +1,20 @@
+SPDX-License-Identifier: CC-BY-SA-4.0
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by:
+  and:
+  - RTEMS_SMP
+  - or:
+    - bsps/riscv/noel
+    - bsps/riscv/riscv
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: ../if/group
+rationale: null
+requirement-type: functional
+text: |
+  If the affinity of an external interrupt vector is set to a processor set which
+  contains more than one and not all online processors, then the directive shall
+  return the RTEMS_INVALID_NUMBER status.
+type: requirement
