@@ -1,0 +1,47 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: bsps/riscv/noel
+links: []
+test-actions:
+- action-brief: |
+    Get the end of the memory area of the BSP. The ClearStackPointer() system
+    initialization handler set the stack pointer of the boot processor at the start
+    entry to zero before the BSP initialized the memory area.
+  action-code: |
+    const void *end;
+
+    end = _Memory_Get_end( _Memory_Get_area( _Memory_Get(), 0 ) );
+  checks:
+  - brief: |
+      Check that the memory area ends at the end of the RAM which the linker command
+      file defines.
+    code: |
+      T_step_eq_ptr( ${.:/step}, end, ram_end );
+    links:
+    - role: validation
+      uid: ../req/memory-end-ram-end
+  links: []
+test-brief: |
+  Tests the memory area of the BSP if the stack pointer of the boot processor at
+  the start entry is zero.
+test-context: []
+test-context-support: null
+test-description: null
+test-header: null
+test-includes:
+- rtems/score/memory.h
+test-local-includes: []
+test-setup: null
+test-stop: null
+test-support: |
+  extern char RamEnd[];
+
+  /*
+   * The linker command file defines RamEnd as an absolute symbol, which may be
+   * out of the range of a PC-relative address.
+   */
+  static char *volatile ram_end = RamEnd;
+test-target: testsuites/validation/bsps/tc-riscv-memory-ram-end.c
+test-teardown: null
+type: test-case

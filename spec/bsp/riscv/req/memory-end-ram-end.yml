@@ -1,0 +1,15 @@
+SPDX-License-Identifier: CC-BY-SA-4.0
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: bsps/riscv/noel
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: ../if/group
+rationale: null
+requirement-type: functional
+text: |
+  If the stack pointer of the boot processor at the start entry is zero, then the
+  memory area of the BSP shall end at the end of the RAM which the linker command
+  file defines.
+type: requirement

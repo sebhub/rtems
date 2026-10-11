@@ -1,0 +1,43 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: bsps/riscv/noel
+links: []
+test-actions:
+- action-brief: |
+    Get the end of the memory area of the BSP.
+  action-code: |
+    const void *end;
+
+    end = _Memory_Get_end( _Memory_Get_area( _Memory_Get(), 0 ) );
+  checks:
+  - brief: |
+      Check that the stack pointer of the boot processor at the start entry is not
+      zero.
+    code: |
+      T_step_ne_uptr( ${.:/step}, riscv_start_stack_pointer, 0 );
+    links: []
+  - brief: |
+      Check that the memory area ends at this stack pointer.
+    code: |
+      T_step_eq_ptr( ${.:/step}, end, (void *) riscv_start_stack_pointer );
+    links:
+    - role: validation
+      uid: ../req/memory-end-stack-pointer
+  links: []
+test-brief: |
+  Tests the memory area of the BSP.
+test-context: []
+test-context-support: null
+test-description: null
+test-header: null
+test-includes:
+- bsp/start.h
+- rtems/score/memory.h
+test-local-includes: []
+test-setup: null
+test-stop: null
+test-support: null
+test-target: testsuites/validation/bsps/tc-riscv-memory.c
+test-teardown: null
+type: test-case

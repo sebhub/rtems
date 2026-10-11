@@ -1,0 +1,33 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: bsps/riscv/noel
+links:
+- role: requirement-refinement
+  uid: ../validation
+test-brief: |
+  This validation test suite contains a test case which runs after a system
+  initialization handler set the stack pointer of the boot processor at the start
+  entry to zero.
+test-code: |
+  const char rtems_test_name[] = "${.:/test-suite-name}";
+
+  static void ClearStackPointer( void )
+  {
+    riscv_start_stack_pointer = 0;
+  }
+
+  RTEMS_SYSINIT_ITEM(
+    ClearStackPointer,
+    RTEMS_SYSINIT_BSP_EARLY,
+    RTEMS_SYSINIT_ORDER_FIRST
+  );
+
+  #include "ts-default.h"
+test-description: null
+test-includes:
+- bsp/start.h
+- rtems/sysinit.h
+test-local-includes: []
+test-target: testsuites/validation/bsps/ts-riscv-memory-ram-end.c
+type: test-suite

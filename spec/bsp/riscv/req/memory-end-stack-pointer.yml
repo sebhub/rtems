@@ -1,0 +1,15 @@
+SPDX-License-Identifier: CC-BY-SA-4.0
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: bsps/riscv/noel
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: ../if/group
+rationale: |
+  The boot loader passes the end of the RAM in the stack pointer, as GRMON does.
+requirement-type: functional
+text: |
+  If the stack pointer of the boot processor at the start entry is not zero, then
+  the memory area of the BSP shall end at this stack pointer.
+type: requirement
