@@ -5,12 +5,13 @@ copyrights:
 - Copyright (C) 2021 embedded brains GmbH & Co. KG
 cppflags: []
 cxxflags: []
-enabled-by: bsps/sparc/leon3
+enabled-by:
+- bsps/riscv/noel
+- bsps/sparc/leon3
 includes: []
 install: []
 links: []
 source:
 - testsuites/validation/tc-dev-grlib-apbuart-inbyte-nonblocking.c
 - testsuites/validation/tc-dev-grlib-io.c
-- testsuites/validation/tc-dev-grlib-irqamp-get-timestamp.c
 type: build
