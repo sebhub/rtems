@@ -4,6 +4,7 @@ copyrights:
 enabled-by:
   not:
   - mips
+  - riscv
   - sparc
 index-entries: []
 interface-type: unspecified-typedef

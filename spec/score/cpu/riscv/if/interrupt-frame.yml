@@ -1,0 +1,392 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This structure represents the interrupt frame of the RISC-V CPU port.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+- default:
+    brief: |
+      This member contains the register mstatus or sstatus of the interrupted
+      context.
+    definition: ${/c/if/uintptr_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: status
+  variants: []
+- default:
+    brief: |
+      This member contains the register mepc or sepc of the interrupted context.
+    definition: ${/c/if/uintptr_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: epc
+  variants: []
+- default:
+    brief: |
+      This member contains the register a2.
+    definition: ${/c/if/uintptr_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: a2
+  variants: []
+- default:
+    brief: |
+      This member contains the register s0.
+    definition: ${/c/if/uintptr_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: s0
+  variants: []
+- default:
+    brief: |
+      This member contains the register s1.
+    definition: ${/c/if/uintptr_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: s1
+  variants: []
+- default:
+    brief: |
+      This member contains the register ra.
+    definition: ${/c/if/uintptr_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: ra
+  variants: []
+- default:
+    brief: |
+      This member contains the register a3.
+    definition: ${/c/if/uintptr_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: a3
+  variants: []
+- default:
+    brief: |
+      This member contains the register a4.
+    definition: ${/c/if/uintptr_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: a4
+  variants: []
+- default:
+    brief: |
+      This member contains the register a5.
+    definition: ${/c/if/uintptr_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: a5
+  variants: []
+- default:
+    brief: |
+      This member contains the register a6.
+    definition: ${/c/if/uintptr_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: a6
+  variants: []
+- default:
+    brief: |
+      This member contains the register a7.
+    definition: ${/c/if/uintptr_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: a7
+  variants: []
+- default:
+    brief: |
+      This member contains the register t0.
+    definition: ${/c/if/uintptr_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: t0
+  variants: []
+- default:
+    brief: |
+      This member contains the register t1.
+    definition: ${/c/if/uintptr_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: t1
+  variants: []
+- default:
+    brief: |
+      This member contains the register t2.
+    definition: ${/c/if/uintptr_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: t2
+  variants: []
+- default:
+    brief: |
+      This member contains the register t3.
+    definition: ${/c/if/uintptr_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: t3
+  variants: []
+- default:
+    brief: |
+      This member contains the register t4.
+    definition: ${/c/if/uintptr_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: t4
+  variants: []
+- default:
+    brief: |
+      This member contains the register t5.
+    definition: ${/c/if/uintptr_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: t5
+  variants: []
+- default:
+    brief: |
+      This member contains the register t6.
+    definition: ${/c/if/uintptr_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: t6
+  variants: []
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the register fcsr.
+      definition: ${/c/if/uint32_t:/name} ${.:name}
+      description: null
+      kind: member
+      name: fcsr
+    enabled-by: (( __riscv_flen > 0 ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the register ft0.
+      definition: RISCV_Float ${.:name}
+      description: null
+      kind: member
+      name: ft0
+    enabled-by: (( __riscv_flen > 0 ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the register ft1.
+      definition: RISCV_Float ${.:name}
+      description: null
+      kind: member
+      name: ft1
+    enabled-by: (( __riscv_flen > 0 ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the register ft2.
+      definition: RISCV_Float ${.:name}
+      description: null
+      kind: member
+      name: ft2
+    enabled-by: (( __riscv_flen > 0 ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the register ft3.
+      definition: RISCV_Float ${.:name}
+      description: null
+      kind: member
+      name: ft3
+    enabled-by: (( __riscv_flen > 0 ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the register ft4.
+      definition: RISCV_Float ${.:name}
+      description: null
+      kind: member
+      name: ft4
+    enabled-by: (( __riscv_flen > 0 ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the register ft5.
+      definition: RISCV_Float ${.:name}
+      description: null
+      kind: member
+      name: ft5
+    enabled-by: (( __riscv_flen > 0 ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the register ft6.
+      definition: RISCV_Float ${.:name}
+      description: null
+      kind: member
+      name: ft6
+    enabled-by: (( __riscv_flen > 0 ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the register ft7.
+      definition: RISCV_Float ${.:name}
+      description: null
+      kind: member
+      name: ft7
+    enabled-by: (( __riscv_flen > 0 ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the register ft8.
+      definition: RISCV_Float ${.:name}
+      description: null
+      kind: member
+      name: ft8
+    enabled-by: (( __riscv_flen > 0 ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the register ft9.
+      definition: RISCV_Float ${.:name}
+      description: null
+      kind: member
+      name: ft9
+    enabled-by: (( __riscv_flen > 0 ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the register ft10.
+      definition: RISCV_Float ${.:name}
+      description: null
+      kind: member
+      name: ft10
+    enabled-by: (( __riscv_flen > 0 ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the register ft11.
+      definition: RISCV_Float ${.:name}
+      description: null
+      kind: member
+      name: ft11
+    enabled-by: (( __riscv_flen > 0 ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the register fa0.
+      definition: RISCV_Float ${.:name}
+      description: null
+      kind: member
+      name: fa0
+    enabled-by: (( __riscv_flen > 0 ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the register fa1.
+      definition: RISCV_Float ${.:name}
+      description: null
+      kind: member
+      name: fa1
+    enabled-by: (( __riscv_flen > 0 ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the register fa2.
+      definition: RISCV_Float ${.:name}
+      description: null
+      kind: member
+      name: fa2
+    enabled-by: (( __riscv_flen > 0 ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the register fa3.
+      definition: RISCV_Float ${.:name}
+      description: null
+      kind: member
+      name: fa3
+    enabled-by: (( __riscv_flen > 0 ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the register fa4.
+      definition: RISCV_Float ${.:name}
+      description: null
+      kind: member
+      name: fa4
+    enabled-by: (( __riscv_flen > 0 ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the register fa5.
+      definition: RISCV_Float ${.:name}
+      description: null
+      kind: member
+      name: fa5
+    enabled-by: (( __riscv_flen > 0 ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the register fa6.
+      definition: RISCV_Float ${.:name}
+      description: null
+      kind: member
+      name: fa6
+    enabled-by: (( __riscv_flen > 0 ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the register fa7.
+      definition: RISCV_Float ${.:name}
+      description: null
+      kind: member
+      name: fa7
+    enabled-by: (( __riscv_flen > 0 ))
+- default:
+    brief: |
+      This member contains the register a0.
+    definition: ${/c/if/uintptr_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: a0
+  variants: []
+- default:
+    brief: |
+      This member contains the register a1.
+    definition: ${/c/if/uintptr_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: a1
+  variants: []
+definition-kind: typedef-only
+description: null
+enabled-by: riscv
+index-entries: []
+interface-type: struct
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+- role: proxy-member
+  uid: /score/cpu/if/interrupt-frame
+name: CPU_Interrupt_frame
+notes: null
+type: interface

@@ -1,0 +1,293 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This structure represents the context of the RISC-V CPU port.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+- default:
+    brief: |
+      This member is reserved.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: reserved
+  variants:
+  - definition:
+      brief: |
+        This member indicates that a processor executes the context.
+      definition: volatile ${/c/if/uint32_t:/name} ${.:name}
+      description: null
+      kind: member
+      name: is_executing
+    enabled-by: RTEMS_SMP
+- default:
+    brief: |
+      This member contains the ISR dispatch disable indicator of the context.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: isr_dispatch_disable
+  variants: []
+- default:
+    brief: |
+      This member contains the register ra.
+    definition: ${/c/if/uintptr_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: ra
+  variants: []
+- default:
+    brief: |
+      This member contains the register sp.
+    definition: ${/c/if/uintptr_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: sp
+  variants: []
+- default:
+    brief: |
+      This member contains the register tp.
+    definition: ${/c/if/uintptr_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: tp
+  variants: []
+- default:
+    brief: |
+      This member contains the register s0.
+    definition: ${/c/if/uintptr_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: s0
+  variants: []
+- default:
+    brief: |
+      This member contains the register s1.
+    definition: ${/c/if/uintptr_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: s1
+  variants: []
+- default:
+    brief: |
+      This member contains the register s2.
+    definition: ${/c/if/uintptr_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: s2
+  variants: []
+- default:
+    brief: |
+      This member contains the register s3.
+    definition: ${/c/if/uintptr_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: s3
+  variants: []
+- default:
+    brief: |
+      This member contains the register s4.
+    definition: ${/c/if/uintptr_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: s4
+  variants: []
+- default:
+    brief: |
+      This member contains the register s5.
+    definition: ${/c/if/uintptr_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: s5
+  variants: []
+- default:
+    brief: |
+      This member contains the register s6.
+    definition: ${/c/if/uintptr_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: s6
+  variants: []
+- default:
+    brief: |
+      This member contains the register s7.
+    definition: ${/c/if/uintptr_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: s7
+  variants: []
+- default:
+    brief: |
+      This member contains the register s8.
+    definition: ${/c/if/uintptr_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: s8
+  variants: []
+- default:
+    brief: |
+      This member contains the register s9.
+    definition: ${/c/if/uintptr_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: s9
+  variants: []
+- default:
+    brief: |
+      This member contains the register s10.
+    definition: ${/c/if/uintptr_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: s10
+  variants: []
+- default:
+    brief: |
+      This member contains the register s11.
+    definition: ${/c/if/uintptr_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: s11
+  variants: []
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the register fcsr.
+      definition: ${/c/if/uint32_t:/name} ${.:name}
+      description: null
+      kind: member
+      name: fcsr
+    enabled-by: (( __riscv_flen > 0 ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the register fs0.
+      definition: RISCV_Float ${.:name}
+      description: null
+      kind: member
+      name: fs0
+    enabled-by: (( __riscv_flen > 0 ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the register fs1.
+      definition: RISCV_Float ${.:name}
+      description: null
+      kind: member
+      name: fs1
+    enabled-by: (( __riscv_flen > 0 ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the register fs2.
+      definition: RISCV_Float ${.:name}
+      description: null
+      kind: member
+      name: fs2
+    enabled-by: (( __riscv_flen > 0 ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the register fs3.
+      definition: RISCV_Float ${.:name}
+      description: null
+      kind: member
+      name: fs3
+    enabled-by: (( __riscv_flen > 0 ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the register fs4.
+      definition: RISCV_Float ${.:name}
+      description: null
+      kind: member
+      name: fs4
+    enabled-by: (( __riscv_flen > 0 ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the register fs5.
+      definition: RISCV_Float ${.:name}
+      description: null
+      kind: member
+      name: fs5
+    enabled-by: (( __riscv_flen > 0 ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the register fs6.
+      definition: RISCV_Float ${.:name}
+      description: null
+      kind: member
+      name: fs6
+    enabled-by: (( __riscv_flen > 0 ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the register fs7.
+      definition: RISCV_Float ${.:name}
+      description: null
+      kind: member
+      name: fs7
+    enabled-by: (( __riscv_flen > 0 ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the register fs8.
+      definition: RISCV_Float ${.:name}
+      description: null
+      kind: member
+      name: fs8
+    enabled-by: (( __riscv_flen > 0 ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the register fs9.
+      definition: RISCV_Float ${.:name}
+      description: null
+      kind: member
+      name: fs9
+    enabled-by: (( __riscv_flen > 0 ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the register fs10.
+      definition: RISCV_Float ${.:name}
+      description: null
+      kind: member
+      name: fs10
+    enabled-by: (( __riscv_flen > 0 ))
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the register fs11.
+      definition: RISCV_Float ${.:name}
+      description: null
+      kind: member
+      name: fs11
+    enabled-by: (( __riscv_flen > 0 ))
+definition-kind: typedef-only
+description: null
+enabled-by: riscv
+index-entries: []
+interface-type: struct
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+name: Context_Control
+notes: null
+type: interface
