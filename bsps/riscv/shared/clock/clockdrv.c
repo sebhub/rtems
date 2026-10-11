@@ -106,16 +106,22 @@ static uint64_t riscv_clock_read_mtime(volatile RISCV_CLINT_timer_reg *mtime)
 }
 #endif /* !RISCV_USE_S_MODE */
 
+static rtems_interrupt_entry riscv_clock_interrupt_entry;
+
 static void riscv_clock_handler_install(rtems_interrupt_handler handler)
 {
   rtems_status_code sc;
 
-  sc = rtems_interrupt_handler_install(
-    RISCV_INTERRUPT_VECTOR_TIMER,
-    "Clock",
-    RTEMS_INTERRUPT_UNIQUE,
+  rtems_interrupt_entry_initialize(
+    &riscv_clock_interrupt_entry,
     handler,
-    &riscv_clock_tc
+    &riscv_clock_tc,
+    "Clock"
+  );
+  sc = rtems_interrupt_entry_install(
+    RISCV_INTERRUPT_VECTOR_TIMER,
+    RTEMS_INTERRUPT_UNIQUE,
+    &riscv_clock_interrupt_entry
   );
   if (sc != RTEMS_SUCCESSFUL) {
     bsp_fatal(RISCV_FATAL_CLOCK_IRQ_INSTALL);
