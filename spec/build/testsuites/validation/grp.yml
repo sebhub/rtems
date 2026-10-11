@@ -88,6 +88,8 @@ links:
 - role: build-dependency
   uid: bsps/fatal-riscv-clock-irq-install
 - role: build-dependency
+  uid: bsps/fatal-riscv-unexpected-interrupt
+- role: build-dependency
   uid: bsps/fatal-sparc-floating-point-isr
 - role: build-dependency
   uid: bsps/fatal-sparc-leon3-cache-snooping-disabled-boot
