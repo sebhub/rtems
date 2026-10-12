@@ -1,0 +1,24 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+bsp: gr765
+bsp-family: noel
+component-type: rtems
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+enabled-set:
+- RTEMS_SMP
+- target/simulator
+enabled-set-actions: []
+enabled-set-feedback-mapping: {}
+links:
+- role: use-package-component-template
+  uid: /pkg/template/bsp/component
+- role: glossary
+  uid: /req/glossary
+- hash: null
+  name: component
+  role: input
+  uid: ../../component
+pkg-type: workspace
+type: pkg
+workspace-type: component

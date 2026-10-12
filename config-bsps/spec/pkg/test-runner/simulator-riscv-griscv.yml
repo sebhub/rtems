@@ -1,0 +1,35 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+command:
+- ${../deployment/sis:/directory}/bin/sis
+- -griscv
+- -dumbio
+- -r
+- enabled-by: RTEMS_SMP
+  value:
+  - -m
+  - '4'
+- ${.:/test-executable}
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+default-timeout-in-seconds: 180.0
+description: |
+  Run the tests of the griscv BSP on the ${/glossary/sis:/term}.  The
+  -griscv mode of SIS models a NOEL-V system with an IRQ(A)MP and RAM at
+  0x40000000.  An SMP test runs on four processors.
+discard-patterns: []
+do-not-run: []
+enabled-by: riscv/griscv
+links:
+- role: proxy-member
+  uid: simulator
+- role: weak-package-build-dependency
+  uid: ../deployment/sis
+max-process-count: 1
+max-retry-count-per-executable: 1
+min-timeout-in-seconds: 20.0
+name: SPARC/RISCV Instruction Simulator [-griscv]
+params: {}
+pkg-type: test-runner
+test-runner-type: subprocess
+timeout-scaler: 4.0
+type: pkg

@@ -1,0 +1,33 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+archive-file: ${.:/component/workspace-directory}/src/doxygen-1.17.0.src.tar.gz
+archive-hash: 2srdx0kZlB-C7HyAu3pJJnytNPDcyY9Bu1VjplN1MLVmkUXhQoVQg8-sM1tDs-MGNwEJI2ZEClerXHYjEJlrIA==
+archive-patches: []
+archive-url: https://github.com/doxygen/doxygen/releases/download/Release_1_17_0/doxygen-1.17.0.src.tar.gz
+copyrights:
+- Copyright (C) 2020, 2026 embedded brains GmbH & Co. KG
+description: |
+  Doxygen sources.
+destination-directory: ${.:/component/deployment-directory}/src
+enabled-by:
+- pkg.arch.riscv
+- pkg.arch.sparc
+license-files:
+  description: |
+    The Doxygen sources are used to provide host tools to generate software
+    documentation.
+  files:
+  - LICENSE
+license-info: []
+links:
+- hash: null
+  name: component
+  role: input
+  uid: ../component
+- hash: null
+  name: member
+  role: input-to
+  uid: ../deployment/archive
+pkg-type: workspace
+symbolic-links: []
+type: pkg
+workspace-type: archive
