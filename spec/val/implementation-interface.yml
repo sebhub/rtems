@@ -74,6 +74,8 @@ links:
 - role: validation
   uid: /score/cpu/if/uint32ptr
 - role: validation
+  uid: /score/cpu/riscv/if/context-control
+- role: validation
   uid: /score/cpu/sparc/if/context-control
 - role: validation
   uid: /score/cpu/sparc/if/context-control-fp
