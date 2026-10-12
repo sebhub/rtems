@@ -1,0 +1,743 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by:
+  not: RTEMS_SMP
+links:
+- limits:
+    DirtyCache:
+      max-upper-bound: 3.7180000000000002e-06
+      median-lower-bound: 2.988e-06
+      median-upper-bound: 3.6520000000000004e-06
+      min-lower-bound: 2.988e-06
+    FullCache:
+      max-upper-bound: 3.564e-06
+      median-lower-bound: 2.844e-06
+      median-upper-bound: 3.4760000000000003e-06
+      min-lower-bound: 2.7720000000000003e-06
+    HotCache:
+      max-upper-bound: 3.52e-06
+      median-lower-bound: 2.88e-06
+      median-upper-bound: 3.52e-06
+      min-lower-bound: 2.88e-06
+    Load/1:
+      max-upper-bound: 3.608e-06
+      median-lower-bound: 2.952e-06
+      median-upper-bound: 3.608e-06
+      min-lower-bound: 2.934e-06
+  role: performance-runtime-limits
+  uid: /rtems/barrier/req/perf-release-auto
+- limits:
+    DirtyCache:
+      max-upper-bound: 1.6720000000000003e-05
+      median-lower-bound: 1.3644e-05
+      median-upper-bound: 1.6676e-05
+      min-lower-bound: 1.3572e-05
+    FullCache:
+      max-upper-bound: 1.4322000000000001e-05
+      median-lower-bound: 1.1718e-05
+      median-upper-bound: 1.4322000000000001e-05
+      min-lower-bound: 1.1574000000000001e-05
+    HotCache:
+      max-upper-bound: 1.4146000000000001e-05
+      median-lower-bound: 1.1574000000000001e-05
+      median-upper-bound: 1.4146000000000001e-05
+      min-lower-bound: 1.1574000000000001e-05
+    Load/1:
+      max-upper-bound: 1.6676e-05
+      median-lower-bound: 1.3607999999999999e-05
+      median-upper-bound: 1.6632e-05
+      min-lower-bound: 1.3572e-05
+  role: performance-runtime-limits
+  uid: /rtems/barrier/req/perf-release-manual
+- limits:
+    DirtyCache:
+      max-upper-bound: 3.0558e-05
+      median-lower-bound: 2.493e-05
+      median-upper-bound: 3.047e-05
+      min-lower-bound: 2.4912e-05
+    FullCache:
+      max-upper-bound: 2.926e-05
+      median-lower-bound: 2.3922e-05
+      median-upper-bound: 2.9238e-05
+      min-lower-bound: 2.3922e-05
+    HotCache:
+      max-upper-bound: 2.9194000000000002e-05
+      median-lower-bound: 2.3886e-05
+      median-upper-bound: 2.9194000000000002e-05
+      min-lower-bound: 2.3886e-05
+    Load/1:
+      max-upper-bound: 3.0514e-05
+      median-lower-bound: 2.4965999999999998e-05
+      median-upper-bound: 3.0514e-05
+      min-lower-bound: 2.484e-05
+  role: performance-runtime-limits
+  uid: /rtems/barrier/req/perf-release-manual-preempt
+- limits:
+    DirtyCache:
+      max-upper-bound: 3.5772e-05
+      median-lower-bound: 2.9160000000000002e-05
+      median-upper-bound: 3.5640000000000004e-05
+      min-lower-bound: 2.8979999999999997e-05
+    FullCache:
+      max-upper-bound: 3.5772e-05
+      median-lower-bound: 2.9160000000000002e-05
+      median-upper-bound: 3.5640000000000004e-05
+      min-lower-bound: 2.8979999999999997e-05
+    HotCache:
+      max-upper-bound: 3.5640000000000004e-05
+      median-lower-bound: 2.9160000000000002e-05
+      median-upper-bound: 3.5640000000000004e-05
+      min-lower-bound: 2.9160000000000002e-05
+    Load/1:
+      max-upper-bound: 3.5772e-05
+      median-lower-bound: 2.9160000000000002e-05
+      median-upper-bound: 3.5640000000000004e-05
+      min-lower-bound: 2.8979999999999997e-05
+  role: performance-runtime-limits
+  uid: /rtems/event/req/perf-isr-preempt
+- limits:
+    DirtyCache:
+      max-upper-bound: 1.43e-05
+      median-lower-bound: 1.17e-05
+      median-upper-bound: 1.43e-05
+      min-lower-bound: 1.17e-05
+    FullCache:
+      max-upper-bound: 1.2100000000000001e-05
+      median-lower-bound: 9.9e-06
+      median-upper-bound: 1.2100000000000001e-05
+      min-lower-bound: 9.9e-06
+    HotCache:
+      max-upper-bound: 1.2188000000000001e-05
+      median-lower-bound: 9.972e-06
+      median-upper-bound: 1.2188000000000001e-05
+      min-lower-bound: 9.9e-06
+    Load/1:
+      max-upper-bound: 1.4520000000000002e-05
+      median-lower-bound: 1.1880000000000001e-05
+      median-upper-bound: 1.4520000000000002e-05
+      min-lower-bound: 1.1880000000000001e-05
+  role: performance-runtime-limits
+  uid: /rtems/event/req/perf-other
+- limits:
+    DirtyCache:
+      max-upper-bound: 3.6960000000000003e-06
+      median-lower-bound: 2.952e-06
+      median-upper-bound: 3.608e-06
+      min-lower-bound: 2.952e-06
+    FullCache:
+      max-upper-bound: 3.4980000000000002e-06
+      median-lower-bound: 2.826e-06
+      median-upper-bound: 3.4540000000000003e-06
+      min-lower-bound: 2.826e-06
+    HotCache:
+      max-upper-bound: 3.4980000000000002e-06
+      median-lower-bound: 2.8620000000000003e-06
+      median-upper-bound: 3.4980000000000002e-06
+      min-lower-bound: 2.79e-06
+    Load/1:
+      max-upper-bound: 3.74e-06
+      median-lower-bound: 2.952e-06
+      median-upper-bound: 3.608e-06
+      min-lower-bound: 2.952e-06
+  role: performance-runtime-limits
+  uid: /rtems/event/req/perf-other-not-satisfied
+- limits:
+    DirtyCache:
+      max-upper-bound: 2.7786e-05
+      median-lower-bound: 2.2590000000000002e-05
+      median-upper-bound: 2.761e-05
+      min-lower-bound: 2.25e-05
+    FullCache:
+      max-upper-bound: 2.6554e-05
+      median-lower-bound: 2.1582e-05
+      median-upper-bound: 2.6378000000000004e-05
+      min-lower-bound: 2.1510000000000002e-05
+    HotCache:
+      max-upper-bound: 2.6334000000000002e-05
+      median-lower-bound: 2.1546e-05
+      median-upper-bound: 2.6334000000000002e-05
+      min-lower-bound: 2.1546e-05
+    Load/1:
+      max-upper-bound: 2.7742e-05
+      median-lower-bound: 2.2554e-05
+      median-upper-bound: 2.7566000000000003e-05
+      min-lower-bound: 2.2482000000000003e-05
+  role: performance-runtime-limits
+  uid: /rtems/event/req/perf-other-preempt
+- limits:
+    DirtyCache:
+      max-upper-bound: 3.3440000000000005e-06
+      median-lower-bound: 2.628e-06
+      median-upper-bound: 3.2120000000000003e-06
+      min-lower-bound: 2.628e-06
+    FullCache:
+      max-upper-bound: 3.1680000000000004e-06
+      median-lower-bound: 2.52e-06
+      median-upper-bound: 3.08e-06
+      min-lower-bound: 2.43e-06
+    HotCache:
+      max-upper-bound: 3.0360000000000002e-06
+      median-lower-bound: 2.484e-06
+      median-upper-bound: 3.0360000000000002e-06
+      min-lower-bound: 2.484e-06
+    Load/1:
+      max-upper-bound: 3.3440000000000005e-06
+      median-lower-bound: 2.736e-06
+      median-upper-bound: 3.3440000000000005e-06
+      min-lower-bound: 2.556e-06
+  role: performance-runtime-limits
+  uid: /rtems/message/req/perf-receive-try
+- limits:
+    DirtyCache:
+      max-upper-bound: 3.1394000000000005e-05
+      median-lower-bound: 2.5398e-05
+      median-upper-bound: 3.1042000000000005e-05
+      min-lower-bound: 2.5362000000000002e-05
+    FullCache:
+      max-upper-bound: 2.9942000000000002e-05
+      median-lower-bound: 2.4426000000000003e-05
+      median-upper-bound: 2.9854000000000002e-05
+      min-lower-bound: 2.4318e-05
+    HotCache:
+      max-upper-bound: 2.9898000000000004e-05
+      median-lower-bound: 2.4462e-05
+      median-upper-bound: 2.9898000000000004e-05
+      min-lower-bound: 2.4462e-05
+    Load/1:
+      max-upper-bound: 3.1262e-05
+      median-lower-bound: 2.5470000000000002e-05
+      median-upper-bound: 3.113e-05
+      min-lower-bound: 2.5362000000000002e-05
+  role: performance-runtime-limits
+  uid: /rtems/message/req/perf-receive-wait-forever
+- limits:
+    DirtyCache:
+      max-upper-bound: 3.3616000000000005e-05
+      median-lower-bound: 2.7504e-05
+      median-upper-bound: 3.3616000000000005e-05
+      min-lower-bound: 2.7504e-05
+    FullCache:
+      max-upper-bound: 3.2384e-05
+      median-lower-bound: 2.6496e-05
+      median-upper-bound: 3.2384e-05
+      min-lower-bound: 2.6496e-05
+    HotCache:
+      max-upper-bound: 3.2472000000000004e-05
+      median-lower-bound: 2.6568e-05
+      median-upper-bound: 3.2472000000000004e-05
+      min-lower-bound: 2.6424e-05
+    Load/1:
+      max-upper-bound: 3.3484e-05
+      median-lower-bound: 2.7396e-05
+      median-upper-bound: 3.3484e-05
+      min-lower-bound: 2.7396e-05
+  role: performance-runtime-limits
+  uid: /rtems/message/req/perf-receive-wait-timed
+- limits:
+    DirtyCache:
+      max-upper-bound: 5.6100000000000005e-06
+      median-lower-bound: 4.536e-06
+      median-upper-bound: 5.544000000000001e-06
+      min-lower-bound: 4.536e-06
+    FullCache:
+      max-upper-bound: 5.566000000000001e-06
+      median-lower-bound: 4.518000000000001e-06
+      median-upper-bound: 5.522000000000001e-06
+      min-lower-bound: 4.392e-06
+    HotCache:
+      max-upper-bound: 5.39e-06
+      median-lower-bound: 4.41e-06
+      median-upper-bound: 5.39e-06
+      min-lower-bound: 4.41e-06
+    Load/1:
+      max-upper-bound: 5.6320000000000005e-06
+      median-lower-bound: 4.59e-06
+      median-upper-bound: 5.6100000000000005e-06
+      min-lower-bound: 4.536e-06
+  role: performance-runtime-limits
+  uid: /rtems/message/req/perf-send
+- limits:
+    DirtyCache:
+      max-upper-bound: 1.914e-05
+      median-lower-bound: 1.566e-05
+      median-upper-bound: 1.914e-05
+      min-lower-bound: 1.5516000000000002e-05
+    FullCache:
+      max-upper-bound: 1.683e-05
+      median-lower-bound: 1.377e-05
+      median-upper-bound: 1.683e-05
+      min-lower-bound: 1.377e-05
+    HotCache:
+      max-upper-bound: 1.683e-05
+      median-lower-bound: 1.377e-05
+      median-upper-bound: 1.683e-05
+      min-lower-bound: 1.3554e-05
+    Load/1:
+      max-upper-bound: 1.9228e-05
+      median-lower-bound: 1.5731999999999998e-05
+      median-upper-bound: 1.9228e-05
+      min-lower-bound: 1.5516000000000002e-05
+  role: performance-runtime-limits
+  uid: /rtems/message/req/perf-send-other
+- limits:
+    DirtyCache:
+      max-upper-bound: 3.0426000000000003e-05
+      median-lower-bound: 2.4678e-05
+      median-upper-bound: 3.0162e-05
+      min-lower-bound: 2.4426000000000003e-05
+    FullCache:
+      max-upper-bound: 2.9326e-05
+      median-lower-bound: 2.385e-05
+      median-upper-bound: 2.9150000000000004e-05
+      min-lower-bound: 2.3526e-05
+    HotCache:
+      max-upper-bound: 2.9062000000000004e-05
+      median-lower-bound: 2.3778000000000002e-05
+      median-upper-bound: 2.9062000000000004e-05
+      min-lower-bound: 2.3778000000000002e-05
+    Load/1:
+      max-upper-bound: 3.047e-05
+      median-lower-bound: 2.4642e-05
+      median-upper-bound: 3.0118000000000002e-05
+      min-lower-bound: 2.4462e-05
+  role: performance-runtime-limits
+  uid: /rtems/message/req/perf-send-preempt
+- limits:
+    DirtyCache:
+      max-upper-bound: 3.08e-06
+      median-lower-bound: 2.52e-06
+      median-upper-bound: 3.08e-06
+      min-lower-bound: 2.34e-06
+    FullCache:
+      max-upper-bound: 2.838e-06
+      median-lower-bound: 2.2140000000000003e-06
+      median-upper-bound: 2.7060000000000004e-06
+      min-lower-bound: 2.2140000000000003e-06
+    HotCache:
+      max-upper-bound: 2.926e-06
+      median-lower-bound: 2.394e-06
+      median-upper-bound: 2.926e-06
+      min-lower-bound: 2.394e-06
+    Load/1:
+      max-upper-bound: 3.08e-06
+      median-lower-bound: 2.52e-06
+      median-upper-bound: 3.08e-06
+      min-lower-bound: 2.34e-06
+  role: performance-runtime-limits
+  uid: /rtems/part/req/perf-get-buffer
+- limits:
+    DirtyCache:
+      max-upper-bound: 2.684e-06
+      median-lower-bound: 2.1060000000000002e-06
+      median-upper-bound: 2.5740000000000003e-06
+      min-lower-bound: 2.034e-06
+    FullCache:
+      max-upper-bound: 2.442e-06
+      median-lower-bound: 1.998e-06
+      median-upper-bound: 2.442e-06
+      min-lower-bound: 1.998e-06
+    HotCache:
+      max-upper-bound: 2.486e-06
+      median-lower-bound: 2.034e-06
+      median-upper-bound: 2.486e-06
+      min-lower-bound: 2.034e-06
+    Load/1:
+      max-upper-bound: 2.7060000000000004e-06
+      median-lower-bound: 2.142e-06
+      median-upper-bound: 2.618e-06
+      min-lower-bound: 1.998e-06
+  role: performance-runtime-limits
+  uid: /rtems/part/req/perf-get-no-buffer
+- limits:
+    DirtyCache:
+      max-upper-bound: 4.2900000000000004e-06
+      median-lower-bound: 3.438e-06
+      median-upper-bound: 4.202000000000001e-06
+      min-lower-bound: 3.3300000000000003e-06
+    FullCache:
+      max-upper-bound: 4.048e-06
+      median-lower-bound: 3.312e-06
+      median-upper-bound: 4.048e-06
+      min-lower-bound: 3.312e-06
+    HotCache:
+      max-upper-bound: 4.048e-06
+      median-lower-bound: 3.312e-06
+      median-upper-bound: 4.048e-06
+      min-lower-bound: 3.312e-06
+    Load/1:
+      max-upper-bound: 4.2900000000000004e-06
+      median-lower-bound: 3.51e-06
+      median-upper-bound: 4.2900000000000004e-06
+      min-lower-bound: 3.3300000000000003e-06
+  role: performance-runtime-limits
+  uid: /rtems/part/req/perf-return-buffer
+- limits:
+    DirtyCache:
+      max-upper-bound: 3.2120000000000003e-06
+      median-lower-bound: 2.628e-06
+      median-upper-bound: 3.2120000000000003e-06
+      min-lower-bound: 2.52e-06
+    FullCache:
+      max-upper-bound: 3.058e-06
+      median-lower-bound: 2.43e-06
+      median-upper-bound: 2.9700000000000004e-06
+      min-lower-bound: 2.43e-06
+    HotCache:
+      max-upper-bound: 3.0140000000000003e-06
+      median-lower-bound: 2.466e-06
+      median-upper-bound: 3.0140000000000003e-06
+      min-lower-bound: 2.466e-06
+    Load/1:
+      max-upper-bound: 3.2120000000000003e-06
+      median-lower-bound: 2.628e-06
+      median-upper-bound: 3.2120000000000003e-06
+      min-lower-bound: 2.592e-06
+  role: performance-runtime-limits
+  uid: /rtems/sem/req/perf-mtx-pi-obtain
+- limits:
+    DirtyCache:
+      max-upper-bound: 3.08e-06
+      median-lower-bound: 2.4479999999999997e-06
+      median-upper-bound: 2.992e-06
+      min-lower-bound: 2.4479999999999997e-06
+    FullCache:
+      max-upper-bound: 3.0140000000000003e-06
+      median-lower-bound: 2.394e-06
+      median-upper-bound: 2.926e-06
+      min-lower-bound: 2.322e-06
+    HotCache:
+      max-upper-bound: 2.926e-06
+      median-lower-bound: 2.394e-06
+      median-upper-bound: 2.926e-06
+      min-lower-bound: 2.394e-06
+    Load/1:
+      max-upper-bound: 3.1680000000000004e-06
+      median-lower-bound: 2.52e-06
+      median-upper-bound: 3.08e-06
+      min-lower-bound: 2.52e-06
+  role: performance-runtime-limits
+  uid: /rtems/sem/req/perf-mtx-pi-release
+- limits:
+    DirtyCache:
+      max-upper-bound: 1.7709999999999998e-05
+      median-lower-bound: 1.4489999999999998e-05
+      median-upper-bound: 1.7709999999999998e-05
+      min-lower-bound: 1.4489999999999998e-05
+    FullCache:
+      max-upper-bound: 1.5334000000000003e-05
+      median-lower-bound: 1.2546e-05
+      median-upper-bound: 1.5334000000000003e-05
+      min-lower-bound: 1.2546e-05
+    HotCache:
+      max-upper-bound: 1.5378e-05
+      median-lower-bound: 1.2582e-05
+      median-upper-bound: 1.5378e-05
+      min-lower-bound: 1.251e-05
+    Load/1:
+      max-upper-bound: 1.7534000000000002e-05
+      median-lower-bound: 1.4346e-05
+      median-upper-bound: 1.7534000000000002e-05
+      min-lower-bound: 1.4346e-05
+  role: performance-runtime-limits
+  uid: /rtems/sem/req/perf-mtx-pi-release-one
+- limits:
+    DirtyCache:
+      max-upper-bound: 3.9578e-05
+      median-lower-bound: 3.2381999999999996e-05
+      median-upper-bound: 3.9578e-05
+      min-lower-bound: 3.2381999999999996e-05
+    FullCache:
+      max-upper-bound: 3.847800000000001e-05
+      median-lower-bound: 3.1482e-05
+      median-upper-bound: 3.847800000000001e-05
+      min-lower-bound: 3.1482e-05
+    HotCache:
+      max-upper-bound: 3.8522e-05
+      median-lower-bound: 3.1518e-05
+      median-upper-bound: 3.8522e-05
+      min-lower-bound: 3.1518e-05
+    Load/1:
+      max-upper-bound: 3.9446e-05
+      median-lower-bound: 3.2274e-05
+      median-upper-bound: 3.9446e-05
+      min-lower-bound: 3.2274e-05
+  role: performance-runtime-limits
+  uid: /rtems/sem/req/perf-mtx-pi-release-preempt
+- limits:
+    DirtyCache:
+      max-upper-bound: 3.52e-06
+      median-lower-bound: 2.844e-06
+      median-upper-bound: 3.4760000000000003e-06
+      min-lower-bound: 2.844e-06
+    FullCache:
+      max-upper-bound: 3.322e-06
+      median-lower-bound: 2.628e-06
+      median-upper-bound: 3.2120000000000003e-06
+      min-lower-bound: 2.628e-06
+    HotCache:
+      max-upper-bound: 3.3440000000000005e-06
+      median-lower-bound: 2.6640000000000002e-06
+      median-upper-bound: 3.2560000000000003e-06
+      min-lower-bound: 2.6640000000000002e-06
+    Load/1:
+      max-upper-bound: 3.4760000000000003e-06
+      median-lower-bound: 2.808e-06
+      median-upper-bound: 3.4320000000000003e-06
+      min-lower-bound: 2.808e-06
+  role: performance-runtime-limits
+  uid: /rtems/sem/req/perf-mtx-pi-try
+- limits:
+    DirtyCache:
+      max-upper-bound: 4.433e-05
+      median-lower-bound: 3.627e-05
+      median-upper-bound: 4.433e-05
+      min-lower-bound: 3.5982e-05
+    FullCache:
+      max-upper-bound: 4.3054000000000005e-05
+      median-lower-bound: 3.5226000000000005e-05
+      median-upper-bound: 4.3054000000000005e-05
+      min-lower-bound: 3.501e-05
+    HotCache:
+      max-upper-bound: 4.301e-05
+      median-lower-bound: 3.519e-05
+      median-upper-bound: 4.301e-05
+      min-lower-bound: 3.4974e-05
+    Load/1:
+      max-upper-bound: 4.4242e-05
+      median-lower-bound: 3.6198e-05
+      median-upper-bound: 4.4242e-05
+      min-lower-bound: 3.5982e-05
+  role: performance-runtime-limits
+  uid: /rtems/sem/req/perf-mtx-pi-wait-forever
+- limits:
+    DirtyCache:
+      max-upper-bound: 4.6596000000000006e-05
+      median-lower-bound: 3.8088000000000005e-05
+      median-upper-bound: 4.6552000000000004e-05
+      min-lower-bound: 3.7872e-05
+    FullCache:
+      max-upper-bound: 4.5452e-05
+      median-lower-bound: 3.708e-05
+      median-upper-bound: 4.532e-05
+      min-lower-bound: 3.69e-05
+    HotCache:
+      max-upper-bound: 4.5100000000000005e-05
+      median-lower-bound: 3.69e-05
+      median-upper-bound: 4.5100000000000005e-05
+      min-lower-bound: 3.69e-05
+    Load/1:
+      max-upper-bound: 4.664000000000001e-05
+      median-lower-bound: 3.8016e-05
+      median-upper-bound: 4.646400000000001e-05
+      min-lower-bound: 3.7836e-05
+  role: performance-runtime-limits
+  uid: /rtems/sem/req/perf-mtx-pi-wait-timed
+- limits:
+    DirtyCache:
+      max-upper-bound: 4.609000000000001e-05
+      median-lower-bound: 3.771e-05
+      median-upper-bound: 4.609000000000001e-05
+      min-lower-bound: 3.771e-05
+    FullCache:
+      max-upper-bound: 4.6420000000000006e-05
+      median-lower-bound: 3.7548e-05
+      median-upper-bound: 4.589200000000001e-05
+      min-lower-bound: 3.7512e-05
+    HotCache:
+      max-upper-bound: 4.589200000000001e-05
+      median-lower-bound: 3.7548e-05
+      median-upper-bound: 4.589200000000001e-05
+      min-lower-bound: 3.7548e-05
+    Load/1:
+      max-upper-bound: 4.609000000000001e-05
+      median-lower-bound: 3.771e-05
+      median-upper-bound: 4.609000000000001e-05
+      min-lower-bound: 3.7674000000000006e-05
+  role: performance-runtime-limits
+  uid: /rtems/task/req/perf-construct
+- limits:
+    DirtyCache:
+      max-upper-bound: 2.9898000000000004e-05
+      median-lower-bound: 2.4174e-05
+      median-upper-bound: 2.9546e-05
+      min-lower-bound: 2.3958e-05
+    FullCache:
+      max-upper-bound: 2.7852000000000004e-05
+      median-lower-bound: 2.214e-05
+      median-upper-bound: 2.7060000000000005e-05
+      min-lower-bound: 2.1996e-05
+    HotCache:
+      max-upper-bound: 2.7104000000000003e-05
+      median-lower-bound: 2.2176000000000002e-05
+      median-upper-bound: 2.7104000000000003e-05
+      min-lower-bound: 2.2176000000000002e-05
+    Load/1:
+      max-upper-bound: 2.9678000000000003e-05
+      median-lower-bound: 2.4138e-05
+      median-upper-bound: 2.9502000000000003e-05
+      min-lower-bound: 2.2914e-05
+  role: performance-runtime-limits
+  uid: /rtems/task/req/perf-restart
+- limits:
+    DirtyCache:
+      max-upper-bound: 5.7486000000000005e-05
+      median-lower-bound: 4.7016000000000005e-05
+      median-upper-bound: 5.7464000000000004e-05
+      min-lower-bound: 4.6818e-05
+    FullCache:
+      max-upper-bound: 5.625400000000001e-05
+      median-lower-bound: 4.6026e-05
+      median-upper-bound: 5.625400000000001e-05
+      min-lower-bound: 4.5738e-05
+    HotCache:
+      max-upper-bound: 5.5946e-05
+      median-lower-bound: 4.5774e-05
+      median-upper-bound: 5.5946e-05
+      min-lower-bound: 4.5702e-05
+    Load/1:
+      max-upper-bound: 5.7442e-05
+      median-lower-bound: 4.6944e-05
+      median-upper-bound: 5.737600000000001e-05
+      min-lower-bound: 4.6782e-05
+  role: performance-runtime-limits
+  uid: /rtems/task/req/perf-restart-preempt
+- limits:
+    DirtyCache:
+      max-upper-bound: 5.6210000000000006e-05
+      median-lower-bound: 4.5990000000000005e-05
+      median-upper-bound: 5.6210000000000006e-05
+      min-lower-bound: 4.5990000000000005e-05
+    FullCache:
+      max-upper-bound: 5.5902e-05
+      median-lower-bound: 4.5738e-05
+      median-upper-bound: 5.5902e-05
+      min-lower-bound: 4.5738e-05
+    HotCache:
+      max-upper-bound: 5.5902e-05
+      median-lower-bound: 4.5738e-05
+      median-upper-bound: 5.5902e-05
+      min-lower-bound: 4.5594e-05
+    Load/1:
+      max-upper-bound: 5.5902e-05
+      median-lower-bound: 4.5738e-05
+      median-upper-bound: 5.5902e-05
+      min-lower-bound: 4.5738e-05
+  role: performance-runtime-limits
+  uid: /rtems/task/req/perf-restart-self
+- limits:
+    DirtyCache:
+      max-upper-bound: 1.111e-05
+      median-lower-bound: 9.09e-06
+      median-upper-bound: 1.111e-05
+      min-lower-bound: 9.09e-06
+    FullCache:
+      max-upper-bound: 1.0912000000000002e-05
+      median-lower-bound: 8.874e-06
+      median-upper-bound: 1.0846000000000001e-05
+      min-lower-bound: 8.874e-06
+    HotCache:
+      max-upper-bound: 1.1066e-05
+      median-lower-bound: 9.054e-06
+      median-upper-bound: 1.1066e-05
+      min-lower-bound: 8.910000000000001e-06
+    Load/1:
+      max-upper-bound: 1.1242000000000002e-05
+      median-lower-bound: 9.054e-06
+      median-upper-bound: 1.1066e-05
+      min-lower-bound: 9.018e-06
+  role: performance-runtime-limits
+  uid: /rtems/task/req/perf-set-scheduler-nop
+- limits:
+    DirtyCache:
+      max-upper-bound: 1.8964000000000003e-05
+      median-lower-bound: 1.5516000000000002e-05
+      median-upper-bound: 1.8964000000000003e-05
+      min-lower-bound: 1.5516000000000002e-05
+    FullCache:
+      max-upper-bound: 1.6654000000000004e-05
+      median-lower-bound: 1.3626000000000001e-05
+      median-upper-bound: 1.6654000000000004e-05
+      min-lower-bound: 1.3626000000000001e-05
+    HotCache:
+      max-upper-bound: 1.6654000000000004e-05
+      median-lower-bound: 1.3626000000000001e-05
+      median-upper-bound: 1.6654000000000004e-05
+      min-lower-bound: 1.3482e-05
+    Load/1:
+      max-upper-bound: 1.8964000000000003e-05
+      median-lower-bound: 1.5516000000000002e-05
+      median-upper-bound: 1.8964000000000003e-05
+      min-lower-bound: 1.5444e-05
+  role: performance-runtime-limits
+  uid: /rtems/task/req/perf-start
+- limits:
+    DirtyCache:
+      max-upper-bound: 3.6124e-05
+      median-lower-bound: 2.9556e-05
+      median-upper-bound: 3.6124e-05
+      min-lower-bound: 2.9412e-05
+    FullCache:
+      max-upper-bound: 3.4892000000000004e-05
+      median-lower-bound: 2.8548000000000002e-05
+      median-upper-bound: 3.4892000000000004e-05
+      min-lower-bound: 2.8476000000000003e-05
+    HotCache:
+      max-upper-bound: 3.498e-05
+      median-lower-bound: 2.862e-05
+      median-upper-bound: 3.498e-05
+      min-lower-bound: 2.8548000000000002e-05
+    Load/1:
+      max-upper-bound: 3.6212000000000005e-05
+      median-lower-bound: 2.9628000000000005e-05
+      median-upper-bound: 3.6212000000000005e-05
+      min-lower-bound: 2.9412e-05
+  role: performance-runtime-limits
+  uid: /rtems/task/req/perf-start-preempt
+- limits:
+    DirtyCache:
+      max-upper-bound: 5.94e-07
+      median-lower-bound: 4.86e-07
+      median-upper-bound: 5.94e-07
+      min-lower-bound: 4.86e-07
+    FullCache:
+      max-upper-bound: 4.4e-07
+      median-lower-bound: 3.6e-07
+      median-upper-bound: 4.4e-07
+      min-lower-bound: 3.6e-07
+    HotCache:
+      max-upper-bound: 4.4e-07
+      median-lower-bound: 3.6e-07
+      median-upper-bound: 4.4e-07
+      min-lower-bound: 3.6e-07
+    Load/1:
+      max-upper-bound: 5.94e-07
+      median-lower-bound: 4.86e-07
+      median-upper-bound: 5.94e-07
+      min-lower-bound: 4.86e-07
+  role: performance-runtime-limits
+  uid: /score/cpu/req/perf-empty
+- limits:
+    DirtyCache:
+      max-upper-bound: 2.2594e-05
+      median-lower-bound: 1.8486e-05
+      median-upper-bound: 2.2594e-05
+      min-lower-bound: 1.8486e-05
+    FullCache:
+      max-upper-bound: 2.2440000000000002e-05
+      median-lower-bound: 1.836e-05
+      median-upper-bound: 2.2440000000000002e-05
+      min-lower-bound: 1.836e-05
+    HotCache:
+      max-upper-bound: 2.2440000000000002e-05
+      median-lower-bound: 1.836e-05
+      median-upper-bound: 2.2440000000000002e-05
+      min-lower-bound: 1.836e-05
+    Load/1:
+      max-upper-bound: 2.2594e-05
+      median-lower-bound: 1.8486e-05
+      median-upper-bound: 2.2594e-05
+      min-lower-bound: 1.8486e-05
+  role: performance-runtime-limits
+  uid: /score/cpu/req/perf-nops
+type: performance-runtime-limits-provider

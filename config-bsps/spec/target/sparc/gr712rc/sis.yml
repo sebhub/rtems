@@ -19,7 +19,15 @@ links:
 - role: test-timeouts
   uid: sis/test-timeouts
 - role: performance-runtime-limits-provider
-  uid: sis/perf-none
+  uid: sis/perf-default
+- role: performance-runtime-limits-provider
+  uid: sis/perf-smp
+- role: verification-by
+  uid: /verification/code-coverage-gap/thread-queue-enqueue
+- role: verification-by
+  uid: /verification/code-coverage-gap/thread-scheduler-process-requests
+- role: verification-provider
+  uid: /verification/test-failures/default
 name: SIS configured to simulate the GR712RC
 non-functional-type: design-target
 rationale: null
