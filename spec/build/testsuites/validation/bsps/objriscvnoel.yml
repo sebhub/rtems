@@ -11,4 +11,5 @@ install: []
 links: []
 source:
 - testsuites/validation/bsps/tc-riscv-memory.c
+- testsuites/validation/bsps/tc-riscv-reset.c
 type: build
