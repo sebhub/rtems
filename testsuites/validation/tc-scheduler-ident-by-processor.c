@@ -413,6 +413,8 @@ static void RtemsSchedulerReqIdentByProcessor_Action(
 
 static const RtemsSchedulerReqIdentByProcessor_Entry
 RtemsSchedulerReqIdentByProcessor_Entries[] = {
+  { 1, 0, 0, 0, RtemsSchedulerReqIdentByProcessor_Post_Status_NA,
+    RtemsSchedulerReqIdentByProcessor_Post_IdVar_NA },
   { 0, 1, 0, 0, RtemsSchedulerReqIdentByProcessor_Post_Status_InvName,
     RtemsSchedulerReqIdentByProcessor_Post_IdVar_Nop },
   { 0, 1, 0, 0, RtemsSchedulerReqIdentByProcessor_Post_Status_InvAddr,
@@ -439,7 +441,7 @@ RtemsSchedulerReqIdentByProcessor_Entries[] = {
 
 static const uint8_t
 RtemsSchedulerReqIdentByProcessor_Map[] = {
-  0, 1, 2, 3, 0, 1, 4, 5
+  1, 2, 3, 4, 0, 0, 5, 6
 };
 
 /* clang-format on */

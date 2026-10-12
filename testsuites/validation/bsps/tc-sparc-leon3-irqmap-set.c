@@ -922,25 +922,17 @@ static void BspSparcLeon3ReqIrqmapSet_Cleanup(
 
 static const BspSparcLeon3ReqIrqmapSet_Entry
 BspSparcLeon3ReqIrqmapSet_Entries[] = {
-  { 0, 0, 0, 1, 1, 1, 0, 0, BspSparcLeon3ReqIrqmapSet_Post_Status_InvNum,
-    BspSparcLeon3ReqIrqmapSet_Post_MapEntry_NA,
-    BspSparcLeon3ReqIrqmapSet_Post_OtherEntries_Nop,
-    BspSparcLeon3ReqIrqmapSet_Post_LineState_Nop },
-  { 0, 0, 0, 1, 1, 1, 0, 0, BspSparcLeon3ReqIrqmapSet_Post_Status_InvNum,
+  { 1, 0, 0, 0, 0, 0, 0, 0, BspSparcLeon3ReqIrqmapSet_Post_Status_NA,
     BspSparcLeon3ReqIrqmapSet_Post_MapEntry_NA,
     BspSparcLeon3ReqIrqmapSet_Post_OtherEntries_NA,
-    BspSparcLeon3ReqIrqmapSet_Post_LineState_Nop },
+    BspSparcLeon3ReqIrqmapSet_Post_LineState_NA },
   { 0, 0, 0, 0, 0, 0, 0, 0, BspSparcLeon3ReqIrqmapSet_Post_Status_Unsat,
     BspSparcLeon3ReqIrqmapSet_Post_MapEntry_NA,
     BspSparcLeon3ReqIrqmapSet_Post_OtherEntries_NA,
     BspSparcLeon3ReqIrqmapSet_Post_LineState_Nop },
-  { 0, 0, 0, 0, 1, 0, 0, 0, BspSparcLeon3ReqIrqmapSet_Post_Status_IncStat,
-    BspSparcLeon3ReqIrqmapSet_Post_MapEntry_Nop,
-    BspSparcLeon3ReqIrqmapSet_Post_OtherEntries_Nop,
-    BspSparcLeon3ReqIrqmapSet_Post_LineState_Nop },
-  { 0, 0, 0, 0, 1, 0, 0, 0, BspSparcLeon3ReqIrqmapSet_Post_Status_IncStat,
+  { 0, 0, 0, 1, 1, 1, 0, 0, BspSparcLeon3ReqIrqmapSet_Post_Status_InvNum,
     BspSparcLeon3ReqIrqmapSet_Post_MapEntry_NA,
-    BspSparcLeon3ReqIrqmapSet_Post_OtherEntries_NA,
+    BspSparcLeon3ReqIrqmapSet_Post_OtherEntries_Nop,
     BspSparcLeon3ReqIrqmapSet_Post_LineState_Nop },
   { 0, 0, 0, 0, 0, 0, 0, 0, BspSparcLeon3ReqIrqmapSet_Post_Status_IncStat,
     BspSparcLeon3ReqIrqmapSet_Post_MapEntry_Nop,
@@ -950,7 +942,24 @@ BspSparcLeon3ReqIrqmapSet_Entries[] = {
     BspSparcLeon3ReqIrqmapSet_Post_MapEntry_Nop,
     BspSparcLeon3ReqIrqmapSet_Post_OtherEntries_Nop,
     BspSparcLeon3ReqIrqmapSet_Post_LineState_Nop },
+  { 0, 0, 0, 1, 1, 1, 0, 0, BspSparcLeon3ReqIrqmapSet_Post_Status_InvNum,
+    BspSparcLeon3ReqIrqmapSet_Post_MapEntry_NA,
+    BspSparcLeon3ReqIrqmapSet_Post_OtherEntries_NA,
+    BspSparcLeon3ReqIrqmapSet_Post_LineState_Nop },
   { 0, 0, 0, 0, 0, 0, 0, 0, BspSparcLeon3ReqIrqmapSet_Post_Status_InvNum,
+    BspSparcLeon3ReqIrqmapSet_Post_MapEntry_NA,
+    BspSparcLeon3ReqIrqmapSet_Post_OtherEntries_NA,
+    BspSparcLeon3ReqIrqmapSet_Post_LineState_Nop },
+  { 0, 0, 0, 0, 1, 0, 0, 0, BspSparcLeon3ReqIrqmapSet_Post_Status_IncStat,
+    BspSparcLeon3ReqIrqmapSet_Post_MapEntry_Nop,
+    BspSparcLeon3ReqIrqmapSet_Post_OtherEntries_Nop,
+    BspSparcLeon3ReqIrqmapSet_Post_LineState_Nop },
+  { 0, 0, 0, 0, 0, 0, 0, 0,
+    BspSparcLeon3ReqIrqmapSet_Post_Status_CalledFromIsr,
+    BspSparcLeon3ReqIrqmapSet_Post_MapEntry_Nop,
+    BspSparcLeon3ReqIrqmapSet_Post_OtherEntries_Nop,
+    BspSparcLeon3ReqIrqmapSet_Post_LineState_Nop },
+  { 0, 0, 0, 0, 1, 0, 0, 0, BspSparcLeon3ReqIrqmapSet_Post_Status_IncStat,
     BspSparcLeon3ReqIrqmapSet_Post_MapEntry_NA,
     BspSparcLeon3ReqIrqmapSet_Post_OtherEntries_NA,
     BspSparcLeon3ReqIrqmapSet_Post_LineState_Nop },
@@ -961,20 +970,6 @@ BspSparcLeon3ReqIrqmapSet_Entries[] = {
     BspSparcLeon3ReqIrqmapSet_Post_LineState_Nop },
   { 0, 0, 0, 0, 1, 0, 0, 0, BspSparcLeon3ReqIrqmapSet_Post_Status_Ok,
     BspSparcLeon3ReqIrqmapSet_Post_MapEntry_Set,
-    BspSparcLeon3ReqIrqmapSet_Post_OtherEntries_Nop,
-    BspSparcLeon3ReqIrqmapSet_Post_LineState_Nop },
-  { 0, 0, 0, 0, 1, 0, 0, 0,
-    BspSparcLeon3ReqIrqmapSet_Post_Status_CalledFromIsr,
-    BspSparcLeon3ReqIrqmapSet_Post_MapEntry_NA,
-    BspSparcLeon3ReqIrqmapSet_Post_OtherEntries_NA,
-    BspSparcLeon3ReqIrqmapSet_Post_LineState_Nop },
-  { 0, 0, 0, 0, 1, 0, 0, 0, BspSparcLeon3ReqIrqmapSet_Post_Status_Ok,
-    BspSparcLeon3ReqIrqmapSet_Post_MapEntry_NA,
-    BspSparcLeon3ReqIrqmapSet_Post_OtherEntries_NA,
-    BspSparcLeon3ReqIrqmapSet_Post_LineState_Nop },
-  { 0, 0, 0, 0, 0, 0, 0, 0,
-    BspSparcLeon3ReqIrqmapSet_Post_Status_CalledFromIsr,
-    BspSparcLeon3ReqIrqmapSet_Post_MapEntry_Nop,
     BspSparcLeon3ReqIrqmapSet_Post_OtherEntries_Nop,
     BspSparcLeon3ReqIrqmapSet_Post_LineState_Nop },
   { 0, 0, 0, 0, 0, 0, 0, 0, BspSparcLeon3ReqIrqmapSet_Post_Status_InUse,
@@ -984,23 +979,32 @@ BspSparcLeon3ReqIrqmapSet_Entries[] = {
   { 0, 0, 0, 0, 0, 0, 0, 0, BspSparcLeon3ReqIrqmapSet_Post_Status_Ok,
     BspSparcLeon3ReqIrqmapSet_Post_MapEntry_Set,
     BspSparcLeon3ReqIrqmapSet_Post_OtherEntries_Nop,
+    BspSparcLeon3ReqIrqmapSet_Post_LineState_Nop },
+  { 0, 0, 0, 0, 1, 0, 0, 0,
+    BspSparcLeon3ReqIrqmapSet_Post_Status_CalledFromIsr,
+    BspSparcLeon3ReqIrqmapSet_Post_MapEntry_NA,
+    BspSparcLeon3ReqIrqmapSet_Post_OtherEntries_NA,
+    BspSparcLeon3ReqIrqmapSet_Post_LineState_Nop },
+  { 0, 0, 0, 0, 1, 0, 0, 0, BspSparcLeon3ReqIrqmapSet_Post_Status_Ok,
+    BspSparcLeon3ReqIrqmapSet_Post_MapEntry_NA,
+    BspSparcLeon3ReqIrqmapSet_Post_OtherEntries_NA,
     BspSparcLeon3ReqIrqmapSet_Post_LineState_Nop }
 };
 
 static const uint8_t
 BspSparcLeon3ReqIrqmapSet_Map[] = {
+  2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 11, 7,
+  7, 10, 11, 7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 12, 3, 3,
+  8, 13, 3, 3, 8, 12, 3, 3, 8, 13, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 2, 2, 2, 2, 0,
   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 9, 3, 3,
-  8, 9, 3, 3, 8, 9, 3, 3, 8, 9, 3, 3, 8, 9, 3, 3, 8, 9, 3, 3, 12, 13, 5, 5, 12,
-  14, 5, 5, 12, 13, 5, 5, 12, 14, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 0, 0, 0, 0, 0,
   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 10, 11, 4, 4, 10, 11, 4, 4, 10, 11, 4,
-  4, 10, 11, 4, 4, 10, 11, 4, 4, 10, 11, 4, 4, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-  2, 2, 2, 2, 2, 7, 7, 7, 7, 7, 7, 7, 7, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-  1, 1, 1, 1, 1, 1, 1, 1, 1
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 14, 15, 9, 9, 14, 15, 9, 9, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+  1, 1, 1, 6, 6, 6, 6, 6, 6, 6, 6, 5, 5, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0
 };
 
 /* clang-format on */
@@ -1205,6 +1209,11 @@ T_TEST_CASE_FIXTURE(
                 ++ctx->Map.pci[ 6 ]
               ) {
                 ctx->Map.entry = BspSparcLeon3ReqIrqmapSet_PopEntry( ctx );
+
+                if ( ctx->Map.entry.Skip ) {
+                  continue;
+                }
+
                 BspSparcLeon3ReqIrqmapSet_SetPreConditionStates( ctx );
                 BspSparcLeon3ReqIrqmapSet_TestVariant( ctx );
                 BspSparcLeon3ReqIrqmapSet_Cleanup( ctx );

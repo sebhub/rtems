@@ -532,19 +532,21 @@ static const RtemsIntrReqIsPending_Entry
 RtemsIntrReqIsPending_Entries[] = {
   { 0, 0, 0, 0, RtemsIntrReqIsPending_Post_Status_InvAddr,
     RtemsIntrReqIsPending_Post_IsPending_Nop },
-  { 0, 0, 0, 1, RtemsIntrReqIsPending_Post_Status_InvId,
-    RtemsIntrReqIsPending_Post_IsPending_Nop },
-  { 0, 0, 0, 1, RtemsIntrReqIsPending_Post_Status_InvAddr,
-    RtemsIntrReqIsPending_Post_IsPending_Nop },
+  { 1, 0, 0, 0, RtemsIntrReqIsPending_Post_Status_NA,
+    RtemsIntrReqIsPending_Post_IsPending_NA },
   { 0, 0, 0, 0, RtemsIntrReqIsPending_Post_Status_Ok,
     RtemsIntrReqIsPending_Post_IsPending_Yes },
   { 0, 0, 0, 0, RtemsIntrReqIsPending_Post_Status_Ok,
-    RtemsIntrReqIsPending_Post_IsPending_No }
+    RtemsIntrReqIsPending_Post_IsPending_No },
+  { 0, 0, 0, 1, RtemsIntrReqIsPending_Post_Status_InvId,
+    RtemsIntrReqIsPending_Post_IsPending_Nop },
+  { 0, 0, 0, 1, RtemsIntrReqIsPending_Post_Status_InvAddr,
+    RtemsIntrReqIsPending_Post_IsPending_Nop }
 };
 
 static const uint8_t
 RtemsIntrReqIsPending_Map[] = {
-  3, 4, 0, 0, 1, 1, 2, 2
+  2, 3, 0, 0, 4, 1, 5, 1
 };
 
 /* clang-format on */
@@ -637,6 +639,11 @@ T_TEST_CASE_FIXTURE( RtemsIntrReqIsPending, &RtemsIntrReqIsPending_Fixture )
         ++ctx->Map.pci[ 2 ]
       ) {
         ctx->Map.entry = RtemsIntrReqIsPending_PopEntry( ctx );
+
+        if ( ctx->Map.entry.Skip ) {
+          continue;
+        }
+
         RtemsIntrReqIsPending_SetPreConditionStates( ctx );
         RtemsIntrReqIsPending_TestVariant( ctx );
       }

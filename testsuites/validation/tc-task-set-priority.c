@@ -613,36 +613,39 @@ static void RtemsTaskReqSetPriority_Cleanup(
 
 static const RtemsTaskReqSetPriority_Entry
 RtemsTaskReqSetPriority_Entries[] = {
-  { 0, 0, 1, 0, 1, 0, RtemsTaskReqSetPriority_Post_Status_InvId,
-    RtemsTaskReqSetPriority_Post_Priority_Nop,
-    RtemsTaskReqSetPriority_Post_OldPriorityObj_Nop },
-  { 0, 0, 1, 0, 1, 0, RtemsTaskReqSetPriority_Post_Status_InvAddr,
-    RtemsTaskReqSetPriority_Post_Priority_Nop,
-    RtemsTaskReqSetPriority_Post_OldPriorityObj_Nop },
-  { 0, 0, 0, 0, 1, 0, RtemsTaskReqSetPriority_Post_Status_Ok,
-    RtemsTaskReqSetPriority_Post_Priority_Nop,
-    RtemsTaskReqSetPriority_Post_OldPriorityObj_Set },
-  { 0, 0, 0, 0, 1, 0, RtemsTaskReqSetPriority_Post_Status_InvAddr,
-    RtemsTaskReqSetPriority_Post_Priority_Nop,
-    RtemsTaskReqSetPriority_Post_OldPriorityObj_Nop },
+  { 1, 0, 0, 0, 0, 0, RtemsTaskReqSetPriority_Post_Status_NA,
+    RtemsTaskReqSetPriority_Post_Priority_NA,
+    RtemsTaskReqSetPriority_Post_OldPriorityObj_NA },
   { 0, 0, 0, 0, 0, 0, RtemsTaskReqSetPriority_Post_Status_InvAddr,
     RtemsTaskReqSetPriority_Post_Priority_Nop,
     RtemsTaskReqSetPriority_Post_OldPriorityObj_Nop },
   { 0, 0, 0, 0, 0, 0, RtemsTaskReqSetPriority_Post_Status_Ok,
     RtemsTaskReqSetPriority_Post_Priority_Set,
     RtemsTaskReqSetPriority_Post_OldPriorityObj_Set },
+  { 0, 0, 0, 0, 1, 0, RtemsTaskReqSetPriority_Post_Status_Ok,
+    RtemsTaskReqSetPriority_Post_Priority_Nop,
+    RtemsTaskReqSetPriority_Post_OldPriorityObj_Set },
+  { 0, 0, 0, 0, 1, 0, RtemsTaskReqSetPriority_Post_Status_InvAddr,
+    RtemsTaskReqSetPriority_Post_Priority_Nop,
+    RtemsTaskReqSetPriority_Post_OldPriorityObj_Nop },
   { 0, 0, 0, 0, 0, 0, RtemsTaskReqSetPriority_Post_Status_InvPrio,
     RtemsTaskReqSetPriority_Post_Priority_Nop,
-    RtemsTaskReqSetPriority_Post_OldPriorityObj_Set }
+    RtemsTaskReqSetPriority_Post_OldPriorityObj_Set },
+  { 0, 0, 1, 0, 1, 0, RtemsTaskReqSetPriority_Post_Status_InvId,
+    RtemsTaskReqSetPriority_Post_Priority_Nop,
+    RtemsTaskReqSetPriority_Post_OldPriorityObj_Nop },
+  { 0, 0, 1, 0, 1, 0, RtemsTaskReqSetPriority_Post_Status_InvAddr,
+    RtemsTaskReqSetPriority_Post_Priority_Nop,
+    RtemsTaskReqSetPriority_Post_OldPriorityObj_Nop }
 };
 
 static const uint8_t
 RtemsTaskReqSetPriority_Map[] = {
-  0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1,
-  0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1,
-  0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 2, 3, 2, 3, 2, 3, 2, 3, 5, 4, 5, 4, 5, 4,
-  6, 4, 2, 3, 2, 3, 2, 3, 2, 3, 5, 4, 5, 4, 5, 4, 6, 4, 2, 3, 2, 3, 2, 3, 2, 3,
-  5, 4, 5, 4, 5, 4, 6, 4, 2, 3, 2, 3, 2, 3, 2, 3, 5, 4, 5, 4, 5, 4, 6, 4
+  6, 7, 0, 0, 0, 0, 0, 0, 6, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 4, 0, 0, 0, 0, 0, 0, 2, 1, 2, 1, 2, 1,
+  5, 1, 3, 4, 0, 0, 0, 0, 0, 0, 2, 1, 2, 1, 2, 1, 5, 1, 3, 4, 0, 0, 0, 0, 0, 0,
+  2, 1, 2, 1, 2, 1, 5, 1, 3, 4, 0, 0, 0, 0, 0, 0, 2, 1, 2, 1, 2, 1, 5, 1
 };
 
 /* clang-format on */
@@ -769,6 +772,11 @@ T_TEST_CASE_FIXTURE(
             ++ctx->Map.pci[ 4 ]
           ) {
             ctx->Map.entry = RtemsTaskReqSetPriority_PopEntry( ctx );
+
+            if ( ctx->Map.entry.Skip ) {
+              continue;
+            }
+
             RtemsTaskReqSetPriority_SetPreConditionStates( ctx );
             RtemsTaskReqSetPriority_Prepare( ctx );
             RtemsTaskReqSetPriority_TestVariant( ctx );

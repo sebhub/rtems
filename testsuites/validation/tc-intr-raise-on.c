@@ -583,8 +583,6 @@ static void RtemsIntrReqRaiseOn_Action( RtemsIntrReqRaiseOn_Context *ctx )
 
 static const RtemsIntrReqRaiseOn_Entry
 RtemsIntrReqRaiseOn_Entries[] = {
-  { 0, 0, 0, 1, RtemsIntrReqRaiseOn_Post_Status_InvId,
-    RtemsIntrReqRaiseOn_Post_Pending_NA },
 #if defined(RTEMS_SMP)
   { 0, 0, 0, 0, RtemsIntrReqRaiseOn_Post_Status_IncStat,
     RtemsIntrReqRaiseOn_Post_Pending_No },
@@ -594,6 +592,10 @@ RtemsIntrReqRaiseOn_Entries[] = {
 #endif
   { 0, 0, 0, 0, RtemsIntrReqRaiseOn_Post_Status_NotConf,
     RtemsIntrReqRaiseOn_Post_Pending_No },
+  { 0, 0, 0, 1, RtemsIntrReqRaiseOn_Post_Status_InvId,
+    RtemsIntrReqRaiseOn_Post_Pending_NA },
+  { 1, 0, 0, 0, RtemsIntrReqRaiseOn_Post_Status_NA,
+    RtemsIntrReqRaiseOn_Post_Pending_NA },
 #if defined(RTEMS_SMP)
   { 0, 0, 0, 1, RtemsIntrReqRaiseOn_Post_Status_InvId,
     RtemsIntrReqRaiseOn_Post_Pending_NA },
@@ -609,7 +611,7 @@ RtemsIntrReqRaiseOn_Entries[] = {
 
 static const uint8_t
 RtemsIntrReqRaiseOn_Map[] = {
-  4, 5, 1, 1, 2, 2, 0, 0, 3, 3, 0, 0
+  5, 6, 0, 0, 1, 1, 2, 3, 4, 4, 2, 3
 };
 
 /* clang-format on */

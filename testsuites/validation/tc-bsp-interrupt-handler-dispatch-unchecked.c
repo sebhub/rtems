@@ -485,9 +485,6 @@ static void BspReqInterruptHandlerDispatchUnchecked_Action(
 
 static const BspReqInterruptHandlerDispatchUnchecked_Entry
 BspReqInterruptHandlerDispatchUnchecked_Entries[] = {
-  { 0, 0, 1, BspReqInterruptHandlerDispatchUnchecked_Post_Result_Dispatch,
-    BspReqInterruptHandlerDispatchUnchecked_Post_FatalSource_NA,
-    BspReqInterruptHandlerDispatchUnchecked_Post_FatalCode_NA },
 #if defined(RTEMS_SMP)
   { 0, 0, 0, BspReqInterruptHandlerDispatchUnchecked_Post_Result_FatalError,
     BspReqInterruptHandlerDispatchUnchecked_Post_FatalSource_SpuriousInterrupt,
@@ -500,17 +497,23 @@ BspReqInterruptHandlerDispatchUnchecked_Entries[] = {
 #if defined(RTEMS_SMP)
   { 0, 0, 0, BspReqInterruptHandlerDispatchUnchecked_Post_Result_Dispatch,
     BspReqInterruptHandlerDispatchUnchecked_Post_FatalSource_NA,
-    BspReqInterruptHandlerDispatchUnchecked_Post_FatalCode_NA }
+    BspReqInterruptHandlerDispatchUnchecked_Post_FatalCode_NA },
 #else
   { 0, 0, 1, BspReqInterruptHandlerDispatchUnchecked_Post_Result_FatalError,
     BspReqInterruptHandlerDispatchUnchecked_Post_FatalSource_SpuriousInterrupt,
-    BspReqInterruptHandlerDispatchUnchecked_Post_FatalCode_Vector }
+    BspReqInterruptHandlerDispatchUnchecked_Post_FatalCode_Vector },
 #endif
+  { 0, 0, 1, BspReqInterruptHandlerDispatchUnchecked_Post_Result_Dispatch,
+    BspReqInterruptHandlerDispatchUnchecked_Post_FatalSource_NA,
+    BspReqInterruptHandlerDispatchUnchecked_Post_FatalCode_NA },
+  { 1, 0, 0, BspReqInterruptHandlerDispatchUnchecked_Post_Result_NA,
+    BspReqInterruptHandlerDispatchUnchecked_Post_FatalSource_NA,
+    BspReqInterruptHandlerDispatchUnchecked_Post_FatalCode_NA }
 };
 
 static const uint8_t
 BspReqInterruptHandlerDispatchUnchecked_Map[] = {
-  1, 2, 0, 0
+  0, 1, 2, 3
 };
 
 /* clang-format on */
@@ -628,6 +631,11 @@ T_TEST_CASE_FIXTURE(
       ++ctx->Map.pci[ 1 ]
     ) {
       ctx->Map.entry = BspReqInterruptHandlerDispatchUnchecked_PopEntry( ctx );
+
+      if ( ctx->Map.entry.Skip ) {
+        continue;
+      }
+
       BspReqInterruptHandlerDispatchUnchecked_SetPreConditionStates( ctx );
       BspReqInterruptHandlerDispatchUnchecked_TestVariant( ctx );
     }

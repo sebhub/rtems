@@ -563,6 +563,8 @@ static const RtemsIntrReqGetAffinity_Entry
 RtemsIntrReqGetAffinity_Entries[] = {
   { 0, 0, 0, 0, 0, RtemsIntrReqGetAffinity_Post_Status_InvAddr,
     RtemsIntrReqGetAffinity_Post_CPUSetObj_Nop },
+  { 1, 0, 0, 0, 0, RtemsIntrReqGetAffinity_Post_Status_NA,
+    RtemsIntrReqGetAffinity_Post_CPUSetObj_NA },
   { 0, 0, 0, 0, 1, RtemsIntrReqGetAffinity_Post_Status_InvId,
     RtemsIntrReqGetAffinity_Post_CPUSetObj_Zero },
   { 0, 0, 0, 0, 1, RtemsIntrReqGetAffinity_Post_Status_InvAddr,
@@ -579,7 +581,7 @@ RtemsIntrReqGetAffinity_Entries[] = {
 
 static const uint8_t
 RtemsIntrReqGetAffinity_Map[] = {
-  5, 3, 0, 0, 6, 3, 0, 0, 4, 4, 0, 0, 1, 1, 2, 2, 1, 1, 2, 2, 1, 1, 2, 2
+  6, 4, 0, 0, 7, 4, 0, 0, 5, 5, 0, 0, 2, 1, 3, 1, 2, 1, 3, 1, 2, 1, 3, 1
 };
 
 /* clang-format on */
@@ -687,6 +689,11 @@ T_TEST_CASE_FIXTURE(
           ++ctx->Map.pci[ 3 ]
         ) {
           ctx->Map.entry = RtemsIntrReqGetAffinity_PopEntry( ctx );
+
+          if ( ctx->Map.entry.Skip ) {
+            continue;
+          }
+
           RtemsIntrReqGetAffinity_SetPreConditionStates( ctx );
           RtemsIntrReqGetAffinity_TestVariant( ctx );
         }

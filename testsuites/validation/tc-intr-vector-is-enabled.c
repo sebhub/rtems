@@ -554,19 +554,21 @@ static const RtemsIntrReqVectorIsEnabled_Entry
 RtemsIntrReqVectorIsEnabled_Entries[] = {
   { 0, 0, 0, 0, RtemsIntrReqVectorIsEnabled_Post_Status_InvAddr,
     RtemsIntrReqVectorIsEnabled_Post_IsEnabled_Nop },
-  { 0, 0, 0, 1, RtemsIntrReqVectorIsEnabled_Post_Status_InvId,
-    RtemsIntrReqVectorIsEnabled_Post_IsEnabled_Nop },
-  { 0, 0, 0, 1, RtemsIntrReqVectorIsEnabled_Post_Status_InvAddr,
-    RtemsIntrReqVectorIsEnabled_Post_IsEnabled_Nop },
+  { 1, 0, 0, 0, RtemsIntrReqVectorIsEnabled_Post_Status_NA,
+    RtemsIntrReqVectorIsEnabled_Post_IsEnabled_NA },
   { 0, 0, 0, 0, RtemsIntrReqVectorIsEnabled_Post_Status_Ok,
     RtemsIntrReqVectorIsEnabled_Post_IsEnabled_Yes },
   { 0, 0, 0, 0, RtemsIntrReqVectorIsEnabled_Post_Status_Ok,
-    RtemsIntrReqVectorIsEnabled_Post_IsEnabled_No }
+    RtemsIntrReqVectorIsEnabled_Post_IsEnabled_No },
+  { 0, 0, 0, 1, RtemsIntrReqVectorIsEnabled_Post_Status_InvId,
+    RtemsIntrReqVectorIsEnabled_Post_IsEnabled_Nop },
+  { 0, 0, 0, 1, RtemsIntrReqVectorIsEnabled_Post_Status_InvAddr,
+    RtemsIntrReqVectorIsEnabled_Post_IsEnabled_Nop }
 };
 
 static const uint8_t
 RtemsIntrReqVectorIsEnabled_Map[] = {
-  3, 4, 0, 0, 1, 1, 2, 2
+  2, 3, 0, 0, 4, 1, 5, 1
 };
 
 /* clang-format on */
@@ -676,6 +678,11 @@ T_TEST_CASE_FIXTURE(
         ++ctx->Map.pci[ 2 ]
       ) {
         ctx->Map.entry = RtemsIntrReqVectorIsEnabled_PopEntry( ctx );
+
+        if ( ctx->Map.entry.Skip ) {
+          continue;
+        }
+
         RtemsIntrReqVectorIsEnabled_SetPreConditionStates( ctx );
         RtemsIntrReqVectorIsEnabled_TestVariant( ctx );
       }

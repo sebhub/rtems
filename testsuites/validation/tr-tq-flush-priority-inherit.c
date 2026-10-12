@@ -425,13 +425,15 @@ ScoreTqReqFlushPriorityInherit_Entries[] = {
     ScoreTqReqFlushPriorityInherit_Post_PriorityUpdate_No },
   { 0, 0, 0, ScoreTqReqFlushPriorityInherit_Post_Extract_All,
     ScoreTqReqFlushPriorityInherit_Post_PriorityUpdate_Yes },
+  { 1, 0, 0, ScoreTqReqFlushPriorityInherit_Post_Extract_NA,
+    ScoreTqReqFlushPriorityInherit_Post_PriorityUpdate_NA },
   { 0, 0, 0, ScoreTqReqFlushPriorityInherit_Post_Extract_All,
     ScoreTqReqFlushPriorityInherit_Post_PriorityUpdate_No }
 };
 
 static const uint8_t
 ScoreTqReqFlushPriorityInherit_Map[] = {
-  0, 1, 0, 2
+  0, 1, 2, 3
 };
 
 /* clang-format on */
@@ -543,6 +545,11 @@ void ScoreTqReqFlushPriorityInherit_Run( TQContext *tq_ctx )
       ++ctx->Map.pci[ 1 ]
     ) {
       ctx->Map.entry = ScoreTqReqFlushPriorityInherit_PopEntry( ctx );
+
+      if ( ctx->Map.entry.Skip ) {
+        continue;
+      }
+
       ScoreTqReqFlushPriorityInherit_SetPreConditionStates( ctx );
       ScoreTqReqFlushPriorityInherit_TestVariant( ctx );
     }

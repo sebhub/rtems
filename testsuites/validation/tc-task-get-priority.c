@@ -432,6 +432,8 @@ static void RtemsTaskReqGetPriority_Action(
 
 static const RtemsTaskReqGetPriority_Entry
 RtemsTaskReqGetPriority_Entries[] = {
+  { 1, 0, 0, 0, 0, RtemsTaskReqGetPriority_Post_Status_NA,
+    RtemsTaskReqGetPriority_Post_PriorityObj_NA },
   { 0, 0, 0, 1, 0, RtemsTaskReqGetPriority_Post_Status_InvId,
     RtemsTaskReqGetPriority_Post_PriorityObj_Nop },
   { 0, 0, 0, 1, 0, RtemsTaskReqGetPriority_Post_Status_InvAddr,
@@ -458,7 +460,7 @@ RtemsTaskReqGetPriority_Entries[] = {
 
 static const uint8_t
 RtemsTaskReqGetPriority_Map[] = {
-  0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 2, 3, 4, 5
+  1, 2, 0, 0, 1, 2, 0, 0, 1, 2, 0, 0, 3, 4, 5, 6
 };
 
 /* clang-format on */

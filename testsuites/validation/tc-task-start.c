@@ -681,10 +681,10 @@ RtemsTaskReqStart_Entries[] = {
     RtemsTaskReqStart_Post_EntryPoint_Nop, RtemsTaskReqStart_Post_Argument_Nop,
     RtemsTaskReqStart_Post_Unblock_Nop,
     RtemsTaskReqStart_Post_StartExtensions_Nop },
-  { 0, 0, 0, 0, 1, 1, RtemsTaskReqStart_Post_Status_InvId,
-    RtemsTaskReqStart_Post_EntryPoint_Nop, RtemsTaskReqStart_Post_Argument_Nop,
-    RtemsTaskReqStart_Post_Unblock_Nop,
-    RtemsTaskReqStart_Post_StartExtensions_Nop },
+  { 1, 0, 0, 0, 0, 0, RtemsTaskReqStart_Post_Status_NA,
+    RtemsTaskReqStart_Post_EntryPoint_NA, RtemsTaskReqStart_Post_Argument_NA,
+    RtemsTaskReqStart_Post_Unblock_NA,
+    RtemsTaskReqStart_Post_StartExtensions_NA },
   { 0, 0, 0, 0, 0, 0, RtemsTaskReqStart_Post_Status_Ok,
     RtemsTaskReqStart_Post_EntryPoint_Set, RtemsTaskReqStart_Post_Argument_Set,
     RtemsTaskReqStart_Post_Unblock_Yes,
@@ -692,12 +692,16 @@ RtemsTaskReqStart_Entries[] = {
   { 0, 0, 0, 0, 0, 0, RtemsTaskReqStart_Post_Status_IncStat,
     RtemsTaskReqStart_Post_EntryPoint_Nop, RtemsTaskReqStart_Post_Argument_Nop,
     RtemsTaskReqStart_Post_Unblock_Nop,
+    RtemsTaskReqStart_Post_StartExtensions_Nop },
+  { 0, 0, 0, 0, 1, 1, RtemsTaskReqStart_Post_Status_InvId,
+    RtemsTaskReqStart_Post_EntryPoint_Nop, RtemsTaskReqStart_Post_Argument_Nop,
+    RtemsTaskReqStart_Post_Unblock_Nop,
     RtemsTaskReqStart_Post_StartExtensions_Nop }
 };
 
 static const uint8_t
 RtemsTaskReqStart_Map[] = {
-  1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 3, 3, 2, 2, 3, 3, 0, 0,
+  4, 1, 1, 1, 4, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 3, 3, 2, 2, 3, 3, 0, 0,
   0, 0, 0, 0, 0, 0
 };
 
@@ -814,6 +818,11 @@ T_TEST_CASE_FIXTURE( RtemsTaskReqStart, &RtemsTaskReqStart_Fixture )
             ++ctx->Map.pci[ 4 ]
           ) {
             ctx->Map.entry = RtemsTaskReqStart_PopEntry( ctx );
+
+            if ( ctx->Map.entry.Skip ) {
+              continue;
+            }
+
             RtemsTaskReqStart_SetPreConditionStates( ctx );
             RtemsTaskReqStart_Prepare( ctx );
             RtemsTaskReqStart_TestVariant( ctx );

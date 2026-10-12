@@ -296,13 +296,14 @@ static void RtemsTaskReqResume_Action( RtemsTaskReqResume_Context *ctx )
 static const RtemsTaskReqResume_Entry
 RtemsTaskReqResume_Entries[] = {
   { 0, 0, 1, RtemsTaskReqResume_Post_Status_InvId },
+  { 1, 0, 0, RtemsTaskReqResume_Post_Status_NA },
   { 0, 0, 0, RtemsTaskReqResume_Post_Status_Ok },
   { 0, 0, 0, RtemsTaskReqResume_Post_Status_IncStat }
 };
 
 static const uint8_t
 RtemsTaskReqResume_Map[] = {
-  0, 0, 1, 2
+  0, 1, 2, 3
 };
 
 /* clang-format on */
@@ -382,6 +383,11 @@ T_TEST_CASE_FIXTURE( RtemsTaskReqResume, &RtemsTaskReqResume_Fixture )
       ++ctx->Map.pci[ 1 ]
     ) {
       ctx->Map.entry = RtemsTaskReqResume_PopEntry( ctx );
+
+      if ( ctx->Map.entry.Skip ) {
+        continue;
+      }
+
       RtemsTaskReqResume_SetPreConditionStates( ctx );
       RtemsTaskReqResume_TestVariant( ctx );
     }

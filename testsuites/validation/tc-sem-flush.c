@@ -480,10 +480,10 @@ static void RtemsSemReqFlush_Cleanup( RtemsSemReqFlush_Context *ctx )
 
 static const RtemsSemReqFlush_Entry
 RtemsSemReqFlush_Entries[] = {
-  { 0, 1, 1, 0, RtemsSemReqFlush_Post_Action_InvId },
+  { 1, 0, 0, 0, RtemsSemReqFlush_Post_Action_NA },
   { 0, 0, 0, 0, RtemsSemReqFlush_Post_Action_FlushFIFO },
   { 0, 0, 0, 0, RtemsSemReqFlush_Post_Action_FlushPriority },
-  { 1, 0, 0, 0, RtemsSemReqFlush_Post_Action_NA },
+  { 0, 1, 1, 0, RtemsSemReqFlush_Post_Action_InvId },
   { 0, 0, 0, 0, RtemsSemReqFlush_Post_Action_FlushPriorityCeiling },
   { 0, 0, 0, 0, RtemsSemReqFlush_Post_Action_FlushPriorityInherit },
 #if defined(RTEMS_SMP)
@@ -495,7 +495,7 @@ RtemsSemReqFlush_Entries[] = {
 
 static const uint8_t
 RtemsSemReqFlush_Map[] = {
-  1, 0, 2, 0, 1, 0, 2, 0, 1, 0, 2, 0, 3, 0, 4, 0, 3, 0, 5, 0, 3, 0, 6, 0
+  1, 3, 2, 0, 1, 0, 2, 0, 1, 0, 2, 0, 0, 0, 4, 0, 0, 0, 5, 0, 0, 0, 6, 0
 };
 
 /* clang-format on */

@@ -572,19 +572,21 @@ static void RtemsIntrReqVectorEnable_Action(
 
 static const RtemsIntrReqVectorEnable_Entry
 RtemsIntrReqVectorEnable_Entries[] = {
-  { 0, 0, 1, 1, RtemsIntrReqVectorEnable_Post_Status_InvId,
+  { 1, 0, 0, 0, RtemsIntrReqVectorEnable_Post_Status_NA,
     RtemsIntrReqVectorEnable_Post_IsEnabled_NA },
   { 0, 0, 0, 0, RtemsIntrReqVectorEnable_Post_Status_Ok,
     RtemsIntrReqVectorEnable_Post_IsEnabled_Yes },
   { 0, 0, 0, 0, RtemsIntrReqVectorEnable_Post_Status_Ok,
     RtemsIntrReqVectorEnable_Post_IsEnabled_Maybe },
   { 0, 0, 0, 0, RtemsIntrReqVectorEnable_Post_Status_Unsat,
-    RtemsIntrReqVectorEnable_Post_IsEnabled_Nop }
+    RtemsIntrReqVectorEnable_Post_IsEnabled_Nop },
+  { 0, 0, 1, 1, RtemsIntrReqVectorEnable_Post_Status_InvId,
+    RtemsIntrReqVectorEnable_Post_IsEnabled_NA }
 };
 
 static const uint8_t
 RtemsIntrReqVectorEnable_Map[] = {
-  1, 2, 3, 1, 2, 3, 0, 0, 0, 0, 0, 0
+  1, 2, 3, 1, 2, 3, 4, 0, 0, 0, 0, 0
 };
 
 /* clang-format on */
@@ -693,6 +695,11 @@ T_TEST_CASE_FIXTURE(
         ++ctx->Map.pci[ 2 ]
       ) {
         ctx->Map.entry = RtemsIntrReqVectorEnable_PopEntry( ctx );
+
+        if ( ctx->Map.entry.Skip ) {
+          continue;
+        }
+
         RtemsIntrReqVectorEnable_SetPreConditionStates( ctx );
         RtemsIntrReqVectorEnable_TestVariant( ctx );
       }

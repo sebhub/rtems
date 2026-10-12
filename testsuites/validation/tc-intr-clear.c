@@ -498,17 +498,19 @@ static void RtemsIntrReqClear_Action( RtemsIntrReqClear_Context *ctx )
 
 static const RtemsIntrReqClear_Entry
 RtemsIntrReqClear_Entries[] = {
-  { 0, 0, 1, RtemsIntrReqClear_Post_Status_InvId,
-    RtemsIntrReqClear_Post_Cleared_NA },
   { 0, 0, 0, RtemsIntrReqClear_Post_Status_Ok,
     RtemsIntrReqClear_Post_Cleared_Yes },
   { 0, 0, 0, RtemsIntrReqClear_Post_Status_Unsat,
-    RtemsIntrReqClear_Post_Cleared_No }
+    RtemsIntrReqClear_Post_Cleared_No },
+  { 0, 0, 1, RtemsIntrReqClear_Post_Status_InvId,
+    RtemsIntrReqClear_Post_Cleared_NA },
+  { 1, 0, 0, RtemsIntrReqClear_Post_Status_NA,
+    RtemsIntrReqClear_Post_Cleared_NA }
 };
 
 static const uint8_t
 RtemsIntrReqClear_Map[] = {
-  1, 2, 0, 0
+  0, 1, 2, 3
 };
 
 /* clang-format on */
@@ -589,6 +591,11 @@ T_TEST_CASE_FIXTURE( RtemsIntrReqClear, &RtemsIntrReqClear_Fixture )
       ++ctx->Map.pci[ 1 ]
     ) {
       ctx->Map.entry = RtemsIntrReqClear_PopEntry( ctx );
+
+      if ( ctx->Map.entry.Skip ) {
+        continue;
+      }
+
       RtemsIntrReqClear_SetPreConditionStates( ctx );
       RtemsIntrReqClear_TestVariant( ctx );
     }

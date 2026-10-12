@@ -304,13 +304,14 @@ static void RtemsTaskReqIsSuspended_Action(
 static const RtemsTaskReqIsSuspended_Entry
 RtemsTaskReqIsSuspended_Entries[] = {
   { 0, 0, 1, RtemsTaskReqIsSuspended_Post_Status_InvId },
+  { 1, 0, 0, RtemsTaskReqIsSuspended_Post_Status_NA },
   { 0, 0, 0, RtemsTaskReqIsSuspended_Post_Status_AlrdySus },
   { 0, 0, 0, RtemsTaskReqIsSuspended_Post_Status_Ok }
 };
 
 static const uint8_t
 RtemsTaskReqIsSuspended_Map[] = {
-  0, 0, 1, 2
+  0, 1, 2, 3
 };
 
 /* clang-format on */
@@ -401,6 +402,11 @@ T_TEST_CASE_FIXTURE(
       ++ctx->Map.pci[ 1 ]
     ) {
       ctx->Map.entry = RtemsTaskReqIsSuspended_PopEntry( ctx );
+
+      if ( ctx->Map.entry.Skip ) {
+        continue;
+      }
+
       RtemsTaskReqIsSuspended_SetPreConditionStates( ctx );
       RtemsTaskReqIsSuspended_TestVariant( ctx );
     }

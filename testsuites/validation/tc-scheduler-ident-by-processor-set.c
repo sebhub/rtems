@@ -522,6 +522,8 @@ static void RtemsSchedulerReqIdentByProcessorSet_Action(
 
 static const RtemsSchedulerReqIdentByProcessorSet_Entry
 RtemsSchedulerReqIdentByProcessorSet_Entries[] = {
+  { 1, 0, 0, 0, 0, 0, RtemsSchedulerReqIdentByProcessorSet_Post_Status_NA,
+    RtemsSchedulerReqIdentByProcessorSet_Post_IdVar_NA },
   { 0, 1, 0, 0, 0, 0, RtemsSchedulerReqIdentByProcessorSet_Post_Status_InvAddr,
     RtemsSchedulerReqIdentByProcessorSet_Post_IdVar_Nop },
   { 0, 0, 0, 0, 0, 0, RtemsSchedulerReqIdentByProcessorSet_Post_Status_InvAddr,
@@ -559,8 +561,8 @@ RtemsSchedulerReqIdentByProcessorSet_Entries[] = {
 
 static const uint8_t
 RtemsSchedulerReqIdentByProcessorSet_Map[] = {
-  3, 0, 0, 0, 4, 0, 0, 0, 5, 1, 1, 1, 6, 1, 1, 1, 3, 0, 0, 0, 4, 0, 0, 0, 7, 2,
-  2, 2, 8, 2, 2, 2
+  4, 1, 1, 1, 5, 1, 1, 1, 6, 2, 2, 2, 7, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 8, 3,
+  3, 3, 9, 3, 3, 3
 };
 
 /* clang-format on */

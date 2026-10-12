@@ -603,26 +603,20 @@ static const ScoreMtxReqSeizeTry_Entry
 ScoreMtxReqSeizeTry_Entries[] = {
   { 1, 0, 0, 0, 0, 0, ScoreMtxReqSeizeTry_Post_Status_NA,
     ScoreMtxReqSeizeTry_Post_Owner_NA, ScoreMtxReqSeizeTry_Post_Priority_NA },
-  { 0, 0, 0, 0, 0, 1, ScoreMtxReqSeizeTry_Post_Status_Ok,
-    ScoreMtxReqSeizeTry_Post_Owner_Caller,
-    ScoreMtxReqSeizeTry_Post_Priority_Nop },
   { 0, 0, 0, 0, 0, 0, ScoreMtxReqSeizeTry_Post_Status_Unavailable,
-    ScoreMtxReqSeizeTry_Post_Owner_Other, ScoreMtxReqSeizeTry_Post_Priority_Nop },
-  { 0, 0, 0, 0, 0, 1, ScoreMtxReqSeizeTry_Post_Status_Unavailable,
     ScoreMtxReqSeizeTry_Post_Owner_Other, ScoreMtxReqSeizeTry_Post_Priority_Nop },
   { 0, 0, 0, 0, 0, 0, ScoreMtxReqSeizeTry_Post_Status_Ok,
     ScoreMtxReqSeizeTry_Post_Owner_Caller,
     ScoreMtxReqSeizeTry_Post_Priority_Ceiling },
+  { 0, 0, 0, 0, 0, 1, ScoreMtxReqSeizeTry_Post_Status_Ok,
+    ScoreMtxReqSeizeTry_Post_Owner_Caller,
+    ScoreMtxReqSeizeTry_Post_Priority_Nop },
   { 0, 0, 0, 0, 0, 0, ScoreMtxReqSeizeTry_Post_Status_MutexCeilingViolated,
     ScoreMtxReqSeizeTry_Post_Owner_None, ScoreMtxReqSeizeTry_Post_Priority_Nop },
   { 1, 0, 0, 0, 0, 0, ScoreMtxReqSeizeTry_Post_Status_NA,
     ScoreMtxReqSeizeTry_Post_Owner_NA, ScoreMtxReqSeizeTry_Post_Priority_NA },
   { 0, 0, 0, 0, 0, 1, ScoreMtxReqSeizeTry_Post_Status_Unavailable,
-    ScoreMtxReqSeizeTry_Post_Owner_Caller,
-    ScoreMtxReqSeizeTry_Post_Priority_Nop },
-  { 0, 0, 0, 0, 0, 1, ScoreMtxReqSeizeTry_Post_Status_Deadlock,
-    ScoreMtxReqSeizeTry_Post_Owner_Caller,
-    ScoreMtxReqSeizeTry_Post_Priority_Nop },
+    ScoreMtxReqSeizeTry_Post_Owner_Other, ScoreMtxReqSeizeTry_Post_Priority_Nop },
   { 0, 0, 0, 0, 0, 0, ScoreMtxReqSeizeTry_Post_Status_Ok,
     ScoreMtxReqSeizeTry_Post_Owner_Caller,
     ScoreMtxReqSeizeTry_Post_Priority_Nop },
@@ -631,18 +625,24 @@ ScoreMtxReqSeizeTry_Entries[] = {
     ScoreMtxReqSeizeTry_Post_Priority_Nop },
   { 0, 0, 0, 0, 0, 0, ScoreMtxReqSeizeTry_Post_Status_Deadlock,
     ScoreMtxReqSeizeTry_Post_Owner_Caller,
+    ScoreMtxReqSeizeTry_Post_Priority_Nop },
+  { 0, 0, 0, 0, 0, 1, ScoreMtxReqSeizeTry_Post_Status_Unavailable,
+    ScoreMtxReqSeizeTry_Post_Owner_Caller,
+    ScoreMtxReqSeizeTry_Post_Priority_Nop },
+  { 0, 0, 0, 0, 0, 1, ScoreMtxReqSeizeTry_Post_Status_Deadlock,
+    ScoreMtxReqSeizeTry_Post_Owner_Caller,
     ScoreMtxReqSeizeTry_Post_Priority_Nop }
 };
 
 static const uint8_t
 ScoreMtxReqSeizeTry_Map[] = {
   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 5, 4, 4, 9, 9, 6, 2, 2, 2, 5, 4, 4, 10, 10, 6, 2, 2, 2, 5, 4, 4, 11, 11,
-  6, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 5, 4, 4, 9, 9, 6, 2, 2, 2, 5, 4, 4, 10, 10, 6, 2, 2, 2, 5, 4,
-  4, 11, 11, 6, 2, 2, 2, 1, 1, 1, 1, 1, 1, 3, 3, 3, 1, 1, 1, 7, 7, 7, 3, 3, 3,
-  1, 1, 1, 8, 8, 8, 3, 3, 3, 1, 1, 1, 1, 1, 1, 3, 3, 3, 1, 1, 1, 7, 7, 7, 3, 3,
-  3, 1, 1, 1, 8, 8, 8, 3, 3, 3
+  0, 4, 2, 2, 7, 7, 5, 1, 1, 1, 4, 2, 2, 8, 8, 5, 1, 1, 1, 4, 2, 2, 9, 9, 5, 1,
+  1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 4, 2, 2, 7, 7, 5, 1, 1, 1, 4, 2, 2, 8, 8, 5, 1, 1, 1, 4, 2, 2, 9, 9,
+  5, 1, 1, 1, 3, 0, 0, 3, 0, 0, 6, 0, 0, 3, 0, 0, 10, 0, 0, 6, 0, 0, 3, 0, 0,
+  11, 0, 0, 6, 0, 0, 3, 0, 0, 3, 0, 0, 6, 0, 0, 3, 0, 0, 10, 0, 0, 6, 0, 0, 3,
+  0, 0, 11, 0, 0, 6, 0, 0
 };
 
 /* clang-format on */

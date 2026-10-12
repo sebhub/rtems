@@ -486,17 +486,17 @@ static void RtemsBarrierReqWait_Action( RtemsBarrierReqWait_Context *ctx )
 
 static const RtemsBarrierReqWait_Entry
 RtemsBarrierReqWait_Entries[] = {
-  { 0, 0, 1, 1, RtemsBarrierReqWait_Post_Status_InvId },
+  { 1, 0, 0, 0, RtemsBarrierReqWait_Post_Status_NA },
   { 0, 0, 0, 0, RtemsBarrierReqWait_Post_Status_Ok },
   { 0, 0, 0, 0, RtemsBarrierReqWait_Post_Status_ObjDel },
   { 0, 0, 0, 0, RtemsBarrierReqWait_Post_Status_Timeout },
-  { 1, 0, 0, 0, RtemsBarrierReqWait_Post_Status_NA },
-  { 0, 0, 0, 0, RtemsBarrierReqWait_Post_Status_NoReturn }
+  { 0, 0, 0, 0, RtemsBarrierReqWait_Post_Status_NoReturn },
+  { 0, 0, 1, 1, RtemsBarrierReqWait_Post_Status_InvId }
 };
 
 static const uint8_t
 RtemsBarrierReqWait_Map[] = {
-  0, 0, 0, 0, 0, 0, 0, 0, 3, 4, 1, 2, 5, 4, 1, 2, 3, 1, 1, 2, 5, 1, 1, 2
+  5, 0, 0, 0, 0, 0, 0, 0, 3, 0, 1, 2, 4, 0, 1, 2, 3, 1, 1, 2, 4, 1, 1, 2
 };
 
 /* clang-format on */

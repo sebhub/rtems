@@ -594,6 +594,14 @@ static void BspSparcLeon3ReqIrqmapGet_Cleanup(
 
 static const BspSparcLeon3ReqIrqmapGet_Entry
 BspSparcLeon3ReqIrqmapGet_Entries[] = {
+  { 1, 0, 0, 0, 0, BspSparcLeon3ReqIrqmapGet_Post_Status_NA,
+    BspSparcLeon3ReqIrqmapGet_Post_ControllerLine_NA,
+    BspSparcLeon3ReqIrqmapGet_Post_Map_NA,
+    BspSparcLeon3ReqIrqmapGet_Post_MapRegisters_NA },
+  { 0, 0, 0, 0, 0, BspSparcLeon3ReqIrqmapGet_Post_Status_Ok,
+    BspSparcLeon3ReqIrqmapGet_Post_ControllerLine_Entry,
+    BspSparcLeon3ReqIrqmapGet_Post_Map_Nop,
+    BspSparcLeon3ReqIrqmapGet_Post_MapRegisters_Nop },
   { 0, 0, 0, 0, 1, BspSparcLeon3ReqIrqmapGet_Post_Status_InvAddr,
     BspSparcLeon3ReqIrqmapGet_Post_ControllerLine_Nop,
     BspSparcLeon3ReqIrqmapGet_Post_Map_Nop,
@@ -602,10 +610,6 @@ BspSparcLeon3ReqIrqmapGet_Entries[] = {
     BspSparcLeon3ReqIrqmapGet_Post_ControllerLine_Nop,
     BspSparcLeon3ReqIrqmapGet_Post_Map_NA,
     BspSparcLeon3ReqIrqmapGet_Post_MapRegisters_NA },
-  { 0, 0, 0, 0, 0, BspSparcLeon3ReqIrqmapGet_Post_Status_Ok,
-    BspSparcLeon3ReqIrqmapGet_Post_ControllerLine_Entry,
-    BspSparcLeon3ReqIrqmapGet_Post_Map_Nop,
-    BspSparcLeon3ReqIrqmapGet_Post_MapRegisters_Nop },
   { 0, 0, 0, 0, 1, BspSparcLeon3ReqIrqmapGet_Post_Status_Ok,
     BspSparcLeon3ReqIrqmapGet_Post_ControllerLine_BusLine,
     BspSparcLeon3ReqIrqmapGet_Post_Map_NA,
@@ -622,9 +626,9 @@ BspSparcLeon3ReqIrqmapGet_Entries[] = {
 
 static const uint8_t
 BspSparcLeon3ReqIrqmapGet_Map[] = {
-  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 5, 5, 5, 5, 1, 1, 1, 1,
-  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 5, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0,
+  0, 0, 2, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0, 6, 0, 0, 0, 3, 0, 0, 0,
+  3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0
 };
 
 /* clang-format on */
@@ -783,6 +787,11 @@ T_TEST_CASE_FIXTURE(
           ++ctx->Map.pci[ 3 ]
         ) {
           ctx->Map.entry = BspSparcLeon3ReqIrqmapGet_PopEntry( ctx );
+
+          if ( ctx->Map.entry.Skip ) {
+            continue;
+          }
+
           BspSparcLeon3ReqIrqmapGet_SetPreConditionStates( ctx );
           BspSparcLeon3ReqIrqmapGet_TestVariant( ctx );
           BspSparcLeon3ReqIrqmapGet_Cleanup( ctx );

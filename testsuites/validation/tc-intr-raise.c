@@ -484,17 +484,19 @@ static void RtemsIntrReqRaise_Action( RtemsIntrReqRaise_Context *ctx )
 
 static const RtemsIntrReqRaise_Entry
 RtemsIntrReqRaise_Entries[] = {
-  { 0, 0, 1, RtemsIntrReqRaise_Post_Status_InvId,
-    RtemsIntrReqRaise_Post_Pending_NA },
   { 0, 0, 0, RtemsIntrReqRaise_Post_Status_Ok,
     RtemsIntrReqRaise_Post_Pending_Yes },
   { 0, 0, 0, RtemsIntrReqRaise_Post_Status_Unsat,
-    RtemsIntrReqRaise_Post_Pending_No }
+    RtemsIntrReqRaise_Post_Pending_No },
+  { 0, 0, 1, RtemsIntrReqRaise_Post_Status_InvId,
+    RtemsIntrReqRaise_Post_Pending_NA },
+  { 1, 0, 0, RtemsIntrReqRaise_Post_Status_NA,
+    RtemsIntrReqRaise_Post_Pending_NA }
 };
 
 static const uint8_t
 RtemsIntrReqRaise_Map[] = {
-  1, 2, 0, 0
+  0, 1, 2, 3
 };
 
 /* clang-format on */
@@ -575,6 +577,11 @@ T_TEST_CASE_FIXTURE( RtemsIntrReqRaise, &RtemsIntrReqRaise_Fixture )
       ++ctx->Map.pci[ 1 ]
     ) {
       ctx->Map.entry = RtemsIntrReqRaise_PopEntry( ctx );
+
+      if ( ctx->Map.entry.Skip ) {
+        continue;
+      }
+
       RtemsIntrReqRaise_SetPreConditionStates( ctx );
       RtemsIntrReqRaise_TestVariant( ctx );
     }

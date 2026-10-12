@@ -302,13 +302,14 @@ static void RtemsTaskReqStorageSize_Action(
 static const RtemsTaskReqStorageSize_Entry
 RtemsTaskReqStorageSize_Entries[] = {
   { 0, 0, 1, RtemsTaskReqStorageSize_Post_Status_InvId },
+  { 1, 0, 0, RtemsTaskReqStorageSize_Post_Status_NA },
   { 0, 0, 0, RtemsTaskReqStorageSize_Post_Status_AlrdySus },
   { 0, 0, 0, RtemsTaskReqStorageSize_Post_Status_Ok }
 };
 
 static const uint8_t
 RtemsTaskReqStorageSize_Map[] = {
-  0, 0, 1, 2
+  0, 1, 2, 3
 };
 
 /* clang-format on */
@@ -399,6 +400,11 @@ T_TEST_CASE_FIXTURE(
       ++ctx->Map.pci[ 1 ]
     ) {
       ctx->Map.entry = RtemsTaskReqStorageSize_PopEntry( ctx );
+
+      if ( ctx->Map.entry.Skip ) {
+        continue;
+      }
+
       RtemsTaskReqStorageSize_SetPreConditionStates( ctx );
       RtemsTaskReqStorageSize_TestVariant( ctx );
     }

@@ -1069,17 +1069,17 @@ static void RtemsEventReqSendReceive_Cleanup(
 
 static const RtemsEventReqSendReceive_Entry
 RtemsEventReqSendReceive_Entries[] = {
-  { 0, 0, 1, 1, 1, RtemsEventReqSendReceive_Post_SendStatus_InvId,
-    RtemsEventReqSendReceive_Post_ReceiveStatus_None,
-    RtemsEventReqSendReceive_Post_SenderPreemption_No },
-  { 0, 0, 0, 0, 1, RtemsEventReqSendReceive_Post_SendStatus_Ok,
-    RtemsEventReqSendReceive_Post_ReceiveStatus_Pending,
-    RtemsEventReqSendReceive_Post_SenderPreemption_No },
+  { 1, 0, 0, 0, 0, RtemsEventReqSendReceive_Post_SendStatus_NA,
+    RtemsEventReqSendReceive_Post_ReceiveStatus_NA,
+    RtemsEventReqSendReceive_Post_SenderPreemption_NA },
   { 0, 0, 0, 0, 0, RtemsEventReqSendReceive_Post_SendStatus_Ok,
     RtemsEventReqSendReceive_Post_ReceiveStatus_Blocked,
     RtemsEventReqSendReceive_Post_SenderPreemption_No },
   { 0, 0, 0, 0, 0, RtemsEventReqSendReceive_Post_SendStatus_Ok,
     RtemsEventReqSendReceive_Post_ReceiveStatus_Satisfied,
+    RtemsEventReqSendReceive_Post_SenderPreemption_No },
+  { 0, 0, 0, 0, 1, RtemsEventReqSendReceive_Post_SendStatus_Ok,
+    RtemsEventReqSendReceive_Post_ReceiveStatus_Pending,
     RtemsEventReqSendReceive_Post_SenderPreemption_No },
   { 0, 0, 0, 0, 0, RtemsEventReqSendReceive_Post_SendStatus_Ok,
     RtemsEventReqSendReceive_Post_ReceiveStatus_Timeout,
@@ -1102,25 +1102,28 @@ RtemsEventReqSendReceive_Entries[] = {
 #if defined(RTEMS_SMP)
   { 0, 0, 0, 0, 0, RtemsEventReqSendReceive_Post_SendStatus_Ok,
     RtemsEventReqSendReceive_Post_ReceiveStatus_Satisfied,
-    RtemsEventReqSendReceive_Post_SenderPreemption_No }
+    RtemsEventReqSendReceive_Post_SenderPreemption_No },
 #else
   { 1, 0, 0, 0, 0, RtemsEventReqSendReceive_Post_SendStatus_NA,
     RtemsEventReqSendReceive_Post_ReceiveStatus_NA,
-    RtemsEventReqSendReceive_Post_SenderPreemption_NA }
+    RtemsEventReqSendReceive_Post_SenderPreemption_NA },
 #endif
+  { 0, 0, 1, 1, 1, RtemsEventReqSendReceive_Post_SendStatus_InvId,
+    RtemsEventReqSendReceive_Post_ReceiveStatus_None,
+    RtemsEventReqSendReceive_Post_SenderPreemption_No }
 };
 
 static const uint8_t
 RtemsEventReqSendReceive_Map[] = {
+  9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 1, 1, 1, 1, 5, 5, 4, 4, 2, 2, 2, 2, 2, 2, 6, 6, 2, 2, 1, 1, 1, 1,
-  5, 5, 4, 4, 2, 2, 2, 2, 2, 2, 6, 6, 2, 2, 1, 1, 1, 1, 5, 3, 4, 4, 2, 3, 2, 3,
-  2, 7, 6, 8, 2, 3, 1, 1, 1, 1, 3, 3, 4, 4, 3, 3, 3, 3, 7, 7, 8, 8, 3, 3, 1, 1,
-  1, 1, 5, 3, 4, 4, 2, 3, 2, 3, 2, 7, 6, 8, 2, 3, 1, 1, 1, 1, 3, 3, 4, 4, 3, 3,
-  3, 3, 7, 7, 8, 8, 3, 3
+  0, 0, 0, 0, 3, 0, 3, 0, 5, 5, 4, 4, 1, 1, 1, 1, 1, 1, 6, 6, 1, 1, 3, 0, 3, 0,
+  5, 5, 4, 4, 1, 1, 1, 1, 1, 1, 6, 6, 1, 1, 3, 0, 3, 0, 5, 2, 4, 4, 1, 2, 1, 2,
+  1, 7, 6, 8, 1, 2, 3, 0, 3, 0, 2, 2, 4, 4, 2, 2, 2, 2, 7, 7, 8, 8, 2, 2, 3, 0,
+  3, 0, 5, 2, 4, 4, 1, 2, 1, 2, 1, 7, 6, 8, 1, 2, 3, 0, 3, 0, 2, 2, 4, 4, 2, 2,
+  2, 2, 7, 7, 8, 8, 2, 2
 };
 
 /* clang-format on */

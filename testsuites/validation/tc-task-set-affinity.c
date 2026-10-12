@@ -498,26 +498,28 @@ static void RtemsTaskReqSetAffinity_Action(
 
 static const RtemsTaskReqSetAffinity_Entry
 RtemsTaskReqSetAffinity_Entries[] = {
+  { 1, 0, 0, 0, 0, 0, RtemsTaskReqSetAffinity_Post_Status_NA,
+    RtemsTaskReqSetAffinity_Post_SetAffinity_NA },
   { 0, 0, 0, 1, 1, 0, RtemsTaskReqSetAffinity_Post_Status_InvAddr,
-    RtemsTaskReqSetAffinity_Post_SetAffinity_Nop },
-  { 0, 0, 0, 1, 1, 0, RtemsTaskReqSetAffinity_Post_Status_InvId,
     RtemsTaskReqSetAffinity_Post_SetAffinity_Nop },
   { 0, 0, 0, 0, 1, 0, RtemsTaskReqSetAffinity_Post_Status_InvNum,
     RtemsTaskReqSetAffinity_Post_SetAffinity_Nop },
+  { 0, 0, 0, 1, 1, 0, RtemsTaskReqSetAffinity_Post_Status_InvId,
+    RtemsTaskReqSetAffinity_Post_SetAffinity_Nop },
   { 0, 0, 0, 1, 0, 0, RtemsTaskReqSetAffinity_Post_Status_InvId,
     RtemsTaskReqSetAffinity_Post_SetAffinity_Nop },
-  { 0, 0, 0, 0, 1, 0, RtemsTaskReqSetAffinity_Post_Status_Ok,
-    RtemsTaskReqSetAffinity_Post_SetAffinity_Set },
   { 0, 0, 0, 0, 0, 0, RtemsTaskReqSetAffinity_Post_Status_Ok,
     RtemsTaskReqSetAffinity_Post_SetAffinity_Set },
   { 0, 0, 0, 0, 0, 0, RtemsTaskReqSetAffinity_Post_Status_InvNum,
-    RtemsTaskReqSetAffinity_Post_SetAffinity_Nop }
+    RtemsTaskReqSetAffinity_Post_SetAffinity_Nop },
+  { 0, 0, 0, 0, 1, 0, RtemsTaskReqSetAffinity_Post_Status_Ok,
+    RtemsTaskReqSetAffinity_Post_SetAffinity_Set }
 };
 
 static const uint8_t
 RtemsTaskReqSetAffinity_Map[] = {
-  1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 3, 0, 3, 0, 3, 0, 3, 0, 2, 0,
-  2, 0, 2, 0, 2, 0, 4, 0, 4, 0, 2, 0, 2, 0, 5, 0, 5, 0, 6, 0, 6, 0
+  3, 1, 0, 0, 0, 0, 0, 0, 3, 1, 0, 0, 0, 0, 0, 0, 4, 1, 4, 0, 0, 0, 0, 0, 2, 1,
+  0, 0, 2, 0, 0, 0, 7, 1, 0, 0, 2, 0, 0, 0, 5, 1, 5, 0, 6, 0, 6, 0
 };
 
 /* clang-format on */
@@ -639,6 +641,11 @@ T_TEST_CASE_FIXTURE(
             ++ctx->Map.pci[ 4 ]
           ) {
             ctx->Map.entry = RtemsTaskReqSetAffinity_PopEntry( ctx );
+
+            if ( ctx->Map.entry.Skip ) {
+              continue;
+            }
+
             RtemsTaskReqSetAffinity_SetPreConditionStates( ctx );
             RtemsTaskReqSetAffinity_Prepare( ctx );
             RtemsTaskReqSetAffinity_TestVariant( ctx );

@@ -763,13 +763,6 @@ static void RtemsRatemonReqTimeout_Cleanup( void )
 
 static const RtemsRatemonReqTimeout_Entry
 RtemsRatemonReqTimeout_Entries[] = {
-  { 0, 0, 1, 0, RtemsRatemonReqTimeout_Post_PostponedJobs_PlusOne,
-    RtemsRatemonReqTimeout_Post_ReleaseJob_No,
-    RtemsRatemonReqTimeout_Post_Unblock_No,
-    RtemsRatemonReqTimeout_Post_PeriodState_Expired,
-    RtemsRatemonReqTimeout_Post_Timer_Active,
-    RtemsRatemonReqTimeout_Post_Uptime_Nop,
-    RtemsRatemonReqTimeout_Post_CPUUsage_Nop },
   { 1, 0, 0, 0, RtemsRatemonReqTimeout_Post_PostponedJobs_NA,
     RtemsRatemonReqTimeout_Post_ReleaseJob_NA,
     RtemsRatemonReqTimeout_Post_Unblock_NA,
@@ -777,6 +770,13 @@ RtemsRatemonReqTimeout_Entries[] = {
     RtemsRatemonReqTimeout_Post_Timer_NA,
     RtemsRatemonReqTimeout_Post_Uptime_NA,
     RtemsRatemonReqTimeout_Post_CPUUsage_NA },
+  { 0, 0, 1, 0, RtemsRatemonReqTimeout_Post_PostponedJobs_PlusOne,
+    RtemsRatemonReqTimeout_Post_ReleaseJob_No,
+    RtemsRatemonReqTimeout_Post_Unblock_No,
+    RtemsRatemonReqTimeout_Post_PeriodState_Expired,
+    RtemsRatemonReqTimeout_Post_Timer_Active,
+    RtemsRatemonReqTimeout_Post_Uptime_Nop,
+    RtemsRatemonReqTimeout_Post_CPUUsage_Nop },
   { 0, 0, 1, 0, RtemsRatemonReqTimeout_Post_PostponedJobs_Nop,
     RtemsRatemonReqTimeout_Post_ReleaseJob_No,
     RtemsRatemonReqTimeout_Post_Unblock_No,
@@ -802,7 +802,7 @@ RtemsRatemonReqTimeout_Entries[] = {
 
 static const uint8_t
 RtemsRatemonReqTimeout_Map[] = {
-  3, 1, 1, 4, 1, 1, 0, 0, 2, 0, 0, 2, 0, 0, 2, 0, 0, 2
+  3, 0, 0, 4, 0, 0, 1, 1, 2, 0, 0, 0, 1, 1, 2, 0, 0, 0
 };
 
 /* clang-format on */

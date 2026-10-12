@@ -430,17 +430,19 @@ static void RtemsBarrierReqRelease_Action(
 
 static const RtemsBarrierReqRelease_Entry
 RtemsBarrierReqRelease_Entries[] = {
-  { 0, 0, 0, 1, RtemsBarrierReqRelease_Post_Status_InvAddr,
-    RtemsBarrierReqRelease_Post_ReleasedVar_Nop },
+  { 1, 0, 0, 0, RtemsBarrierReqRelease_Post_Status_NA,
+    RtemsBarrierReqRelease_Post_ReleasedVar_NA },
   { 0, 0, 0, 0, RtemsBarrierReqRelease_Post_Status_Ok,
     RtemsBarrierReqRelease_Post_ReleasedVar_Set },
+  { 0, 0, 0, 1, RtemsBarrierReqRelease_Post_Status_InvAddr,
+    RtemsBarrierReqRelease_Post_ReleasedVar_Nop },
   { 0, 0, 0, 1, RtemsBarrierReqRelease_Post_Status_InvId,
     RtemsBarrierReqRelease_Post_ReleasedVar_Nop }
 };
 
 static const uint8_t
 RtemsBarrierReqRelease_Map[] = {
-  2, 2, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0
+  3, 0, 2, 0, 1, 1, 2, 0, 1, 1, 2, 0
 };
 
 /* clang-format on */
@@ -533,6 +535,11 @@ T_TEST_CASE_FIXTURE( RtemsBarrierReqRelease, &RtemsBarrierReqRelease_Fixture )
         ++ctx->Map.pci[ 2 ]
       ) {
         ctx->Map.entry = RtemsBarrierReqRelease_PopEntry( ctx );
+
+        if ( ctx->Map.entry.Skip ) {
+          continue;
+        }
+
         RtemsBarrierReqRelease_SetPreConditionStates( ctx );
         RtemsBarrierReqRelease_TestVariant( ctx );
       }

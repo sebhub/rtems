@@ -481,15 +481,15 @@ static void ScoreTqReqFlushFifo_Action( ScoreTqReqFlushFifo_Context *ctx )
 
 static const ScoreTqReqFlushFifo_Entry
 ScoreTqReqFlushFifo_Entries[] = {
-  { 0, 0, 0, 1, 1, ScoreTqReqFlushFifo_Post_Operation_Nop },
+  { 1, 0, 0, 0, 0, ScoreTqReqFlushFifo_Post_Operation_NA },
   { 0, 0, 0, 0, 0, ScoreTqReqFlushFifo_Post_Operation_ExtractAll },
-  { 0, 0, 0, 0, 0, ScoreTqReqFlushFifo_Post_Operation_ExtractPartial },
-  { 1, 0, 0, 0, 0, ScoreTqReqFlushFifo_Post_Operation_NA }
+  { 0, 0, 0, 1, 1, ScoreTqReqFlushFifo_Post_Operation_Nop },
+  { 0, 0, 0, 0, 0, ScoreTqReqFlushFifo_Post_Operation_ExtractPartial }
 };
 
 static const uint8_t
 ScoreTqReqFlushFifo_Map[] = {
-  0, 0, 0, 0, 2, 2, 1, 1, 0, 0, 0, 0, 3, 3, 1, 1
+  2, 0, 0, 0, 3, 3, 1, 1, 2, 0, 0, 0, 0, 0, 1, 1
 };
 
 /* clang-format on */
