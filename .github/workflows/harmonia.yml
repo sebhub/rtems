@@ -1,0 +1,220 @@
+# SPDX-License-Identifier: BSD-2-Clause
+
+# Copyright (C) 2026 embedded brains GmbH & Co. KG
+
+name: Harmonia
+on:
+  # A push to eb/main merges it into eb/qual.
+  push:
+    branches:
+    - eb/main
+  workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+permissions:
+  contents: write
+  pull-requests: write
+env:
+  REPORT_NAME: harmonia-report.txt
+  MESSAGE_NAME: harmonia-message.txt
+  REQUEST_NAME: harmonia-request.txt
+jobs:
+  merge:
+    name: Harmonia
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      BRANCH: harmonia/main
+      SOURCE_NAME: eb/main
+      SOURCE: origin/eb/main
+      TARGET: eb/qual
+    steps:
+    - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      with:
+        ref: eb/qual
+        fetch-depth: 0
+    - name: Check for an open merge pull request
+      id: open
+      env:
+        # The GitHub Actions token, scoped to 'contents: write' and
+        # 'pull-requests: write' in the eb repository.
+        GH_TOKEN: ${{ github.token }}
+      # An open pull request may carry conflict resolutions pushed by a
+      # maintainer.  Harmonia adds a merge to its branch and never rewrites
+      # it.
+      run: |
+        number="$(gh pr list --head "${BRANCH}" --base "${TARGET}" --state open \
+          --json number --jq '.[0].number // empty')"
+        echo "number=${number}" >>"${GITHUB_OUTPUT}"
+        if test -n "${number}"; then
+          echo "Pull request #${number} is open; Harmonia merges into its branch."
+        fi
+    - name: Check for pending commits
+      id: pending
+      env:
+        NUMBER: ${{ steps.open.outputs.number }}
+      run: |
+        if ! git rev-parse --verify --quiet "${SOURCE}" >/dev/null; then
+          echo "The ${SOURCE} branch does not exist."
+          exit 1
+        fi
+        base="${TARGET}"
+        if test -n "${NUMBER}"; then
+          base="origin/${BRANCH}"
+        fi
+        count="$(git rev-list --count "${SOURCE}" "^${base}")"
+        total="$(git rev-list --count "${SOURCE}" "^${TARGET}")"
+        {
+          echo "base=${base}"
+          echo "count=${count}"
+          echo "total=${total}"
+        } >>"${GITHUB_OUTPUT}"
+        echo "${count} commits to merge into ${base}"
+    - name: Merge
+      if: ${{ steps.pending.outputs.count != '0' }}
+      env:
+        BASE: ${{ steps.pending.outputs.base }}
+        COUNT: ${{ steps.pending.outputs.count }}
+        TOTAL: ${{ steps.pending.outputs.total }}
+      # GitHub builds the message of the merge commit from the title and the
+      # body of the pull request, so both are written as a commit message:
+      # plain text wrapped at 72 columns, no markup.  The same text is the
+      # message of the merge commit of this branch, except for the number of
+      # merged commits.
+      #
+      # The merge is left uncommitted until the checks have run, so their
+      # report goes into that message.
+      run: |
+        git config user.name 'github-actions[bot]'
+        git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+        # Copy the scripts out of the tree before the merge brings the commits
+        # of another branch into it.  What runs after a merge must not be
+        # something the merge could have written.
+        tools="${RUNNER_TEMP}/tools"
+        mkdir -p "${tools}"
+        cp ./.github/resolve_merge.py ./.github/check_sources.py "${tools}/"
+        git checkout -B "${BRANCH}" "${BASE}"
+        report="${RUNNER_TEMP}/${REPORT_NAME}"
+        # Only the report may reach the message, so the scripts write anything
+        # else to the standard error stream, which is kept for the summary.
+        errors="${RUNNER_TEMP}/harmonia-errors.txt"
+        : >"${errors}"
+        failed=
+        # A conflict whose 'ours' side is empty is mechanical: the eb
+        # repository deleted that region and an upstream build change must not
+        # enter the pre-qualified set by itself.  Anything else is a
+        # qualification scope decision for a human.
+        if git merge --no-commit --no-ff "${SOURCE}"; then
+          echo 'The merge was clean.' >"${report}"
+        else
+          python3 "${tools}/resolve_merge.py" >"${report}" 2>"${errors}" \
+            || failed=yes
+        fi
+        # The rtems.org repository relocates sources.  A build item of this
+        # repository which still lists the old path merges without a conflict
+        # and leaves the build specification pointing at a file which is gone.
+        if test -z "${failed}"; then
+          echo >>"${report}"
+          python3 "${tools}/check_sources.py" "${TARGET}" >>"${report}" \
+            2>>"${errors}" || failed=yes
+        fi
+        cat "${errors}"
+        if test -n "${failed}"; then
+          cat "${report}"
+          {
+            echo '## Harmonia'
+            echo
+            echo "Harmonia could not finish the merge of \`${SOURCE_NAME}\` into"
+            echo "\`${TARGET}\`.  Resolve it locally; no pull request was"
+            echo 'created.'
+            echo
+            echo '```'
+            cat "${errors}" "${report}"
+            echo '```'
+          } >>"${GITHUB_STEP_SUMMARY}"
+          git merge --abort
+          exit 1
+        fi
+        # A pending commit with the patch of a commit of the target branch is a
+        # copy, which a rebase merge of a pull request created.
+        copies="$(git log --cherry-mark --right-only --no-merges \
+          --format='%m %h %s' "${TARGET}...${SOURCE}" | sed -n 's/^= //p')"
+        # The merge commit counts the commits it merges into its branch.  The
+        # pull request counts all commits it merges into the target branch.
+        write_message() {
+          commits="$1 commits"
+          if test "$1" -eq 1; then
+            commits='1 commit'
+          fi
+          echo "Merge ${SOURCE_NAME} into ${TARGET}"
+          echo
+          echo "Merge ${commits} of ${SOURCE_NAME}.  Harmonia merges every"
+          echo "change of ${SOURCE_NAME} into ${TARGET}, so the two branches do"
+          echo 'not drift apart.'
+          echo
+          cat "${report}"
+          if test -n "${copies}"; then
+            echo
+            echo "${TARGET} holds copies of these commits with other object"
+            echo 'names.  A pull request was merged without a merge commit:'
+            echo
+            echo "${copies}"
+          fi
+          echo
+          echo 'A source which eb/main added is built outside the qualified'
+          echo 'subset until a maintainer decides otherwise, which is a'
+          echo 'change of its own.  This merge moves nothing into or out of'
+          echo 'that subset.'
+        }
+        message="${RUNNER_TEMP}/${MESSAGE_NAME}"
+        write_message "${COUNT}" >"${message}"
+        write_message "${TOTAL}" >"${RUNNER_TEMP}/${REQUEST_NAME}"
+        git commit -F "${message}"
+        cat "${message}"
+        {
+          echo '## Harmonia'
+          echo
+          echo 'The message of the merge commit:'
+          echo
+          echo '```'
+          cat "${message}"
+          echo '```'
+        } >>"${GITHUB_STEP_SUMMARY}"
+    - name: Open or update the pull request
+      if: ${{ steps.pending.outputs.count != '0' }}
+      env:
+        GH_TOKEN: ${{ github.token }}
+        NUMBER: ${{ steps.open.outputs.number }}
+      # Without an open pull request, the branch carries no work of anyone
+      # else and may be replaced.  With one, the push adds the merge commit
+      # and fails if the branch moved since the checkout.
+      #
+      # The pull request merges only through a merge commit, which keeps the
+      # commits of the source branch as ancestors of the target branch.
+      # Auto-merge merges once the required checks of the target branch pass.
+      # It needs the repository setting 'Allow auto-merge' and required status
+      # checks on the target branch.
+      run: |
+        request="${RUNNER_TEMP}/${REQUEST_NAME}"
+        body="${RUNNER_TEMP}/harmonia-body.txt"
+        subject="$(head -n 1 "${request}")"
+        tail -n +3 "${request}" >"${body}"
+        if test -z "${NUMBER}"; then
+          git push --force origin "${BRANCH}"
+          url="$(gh pr create \
+            --base "${TARGET}" \
+            --head "${BRANCH}" \
+            --title "${subject}" \
+            --body-file "${body}")"
+        else
+          git push origin "${BRANCH}"
+          url="$(gh pr view "${NUMBER}" --json url --jq .url)"
+          gh pr edit "${url}" --title "${subject}" --body-file "${body}"
+        fi
+        echo "${url}"
+        gh pr merge "${url}" \
+          --auto \
+          --merge \
+          --subject "${subject}" \
+          --body-file "${body}"
