@@ -1,0 +1,58 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+attribute-actions: []
+attributes:
+  enabled-by: RTEMS_QUAL
+  links:
+  - hash: null
+    name: component
+    role: input
+    uid: component
+  - role: link-hub
+    uid: component
+  - hash: null
+    name: spec
+    role: input
+    uid: rtems-item-cache
+  - hash: null
+    name: tagfile
+    role: input
+    uid: link-hub-tagfile
+  - path: .
+    resource-key: icd
+    role: resource
+    uid: link-hub-documents
+  - path: .
+    resource-key: sdd
+    role: resource
+    uid: link-hub-documents
+  - path: .
+    resource-key: srs
+    role: resource
+    uid: link-hub-documents
+  - path: .
+    resource-key: suitp
+    role: resource
+    uid: link-hub-documents
+  - path: .
+    resource-key: svr
+    role: resource
+    uid: link-hub-documents
+  - path: .
+    resource-key: svs
+    role: resource
+    uid: link-hub-documents
+  - path: .
+    resource-key: source
+    role: resource
+    uid: rtems-qual-only
+  pkg-type: link-hub
+  type: pkg
+copyrights:
+- Copyright (C) 2022, 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+links:
+- role: add-package-template
+  uid: component
+pkg-type: template
+template-type: inline-item
+type: pkg

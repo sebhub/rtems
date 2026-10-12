@@ -1,0 +1,20 @@
+# SPDX-License-Identifier: BSD-2-Clause
+
+# Copyright (C) 2020, 2026 embedded brains GmbH & Co. KG
+
+# The options which are not set take the default of Doxygen 1.17.0.
+
+OUTPUT_DIRECTORY       = "${.:/output-directory}"
+STRIP_FROM_PATH        = ${.:/strip-from-path}
+STRIP_FROM_INC_PATH    = ${.:/include-path}
+EXTRACT_ALL            = YES
+EXTRACT_STATIC         = YES
+SORT_GROUP_NAMES       = YES
+INPUT                  = ${.:/input}
+RECURSIVE              = YES
+GENERATE_HTML          = ${.:/generate-html}
+GENERATE_LATEX         = ${.:/generate-latex}
+MACRO_EXPANSION        = YES
+INCLUDE_PATH           = ${.:/include-path}
+PREDEFINED             = __GNUC__ __asm__(x)= __attribute__(x)= __rtems__ "T_TEST_CASE(x)=void T_case_body_##x(void)" __STDC_VERSION__=201112L "RB_ENTRY(x)=struct { struct x *rbe_left; struct x *rbe_right; struct x *rbe_parent; int rbe_color; }"
+GENERATE_TAGFILE       = "${.:/tagfile}"

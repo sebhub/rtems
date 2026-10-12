@@ -1,0 +1,156 @@
+# Contributing
+
+This repository holds the pre-qualified RTEMS of embedded brains. The
+[Software Development Handbook](https://embedded-brains.github.io/rtems-docs-ecss/doc/technical-notes/sdh/index.html)
+states the rules for the code, the specification items and the documentation.
+
+## Issues
+
+Report an issue in the
+[issue tracker](https://github.com/embedded-brains/rtems/issues) of this
+repository. Name the branch, the BSP and the configuration. Attach the test
+output where a test fails.
+
+## Branches
+
+| Branch    | Content                                                                                          | Changes enter through            |
+| --------- | ------------------------------------------------------------------------------------------------ | -------------------------------- |
+| `eb/main` | the baseline, the fixes of the regression test runs, and the build and CI infrastructure         | a pull request against `eb/main` |
+| `eb/qual` | `eb/main` plus the specification items in `spec/` and the pre-qualified RTEMS, ready for an ISVV | a pull request against `eb/qual` |
+
+The workflow Harmonia merges every change of `eb/main` into `eb/qual` through a
+pull request. The pull request merges by auto-merge with a merge commit. Never
+merge it with "Rebase and merge" or "Squash and merge". These copy the commits
+of `eb/main` into `eb/qual`, and the next Harmonia pull request offers the same
+changes again.
+
+A change takes the branch of its content:
+
+| Change                                                 | Branch    |
+| ------------------------------------------------------ | --------- |
+| a kernel or BSP fix, a build item, the CI, the tooling | `eb/main` |
+| a generated validation test and its build item         | `eb/main` |
+| a specification item outside `spec/build/`             | `eb/qual` |
+
+A kernel fix enters before the validation test which checks it.
+
+### Linearize eb/qual
+
+After the end of a project, a maintainer rebases `eb/qual` onto `eb/main`. The
+rebase drops the merge commits of Harmonia, so the history becomes linear.
+
+1. Make sure that no pull request against `eb/qual` is open.
+
+2. Merge all changes of `eb/main` into `eb/qual` through Harmonia.
+
+3. Update the local branches `eb/main` and `eb/qual`, then rebase:
+
+   ```sh
+   git switch -c linearize eb/qual
+   git rebase eb/main
+   ```
+
+4. Where the rebase stops on a copy of an `eb/main` commit, run
+   `git rebase --skip`. Resolve any other stop.
+
+5. Do the checks below.
+
+6. Push with a lease on the old tip:
+
+   ```sh
+   git push --force-with-lease=eb/qual:<old tip> <remote> linearize:eb/qual
+   ```
+
+7. Tell the owners of branches and worktrees on `eb/qual` to rebase them.
+
+| Check                      | Command                                                     | Expected result                                                       |
+| -------------------------- | ----------------------------------------------------------- | --------------------------------------------------------------------- |
+| no change of the tree      | `git diff eb/qual linearize`                                | no output                                                             |
+| no lost commit             | `git range-diff eb/main..eb/qual eb/main..linearize`        | each commit which only `eb/qual` has is a copy of an `eb/main` commit |
+| delivered commits are kept | `python3 .github/check_delivered_spec.py linearize eb/main` | exit status 0                                                         |
+
+A difference in the tree means a lost conflict resolution of a merge commit.
+
+## Commit messages
+
+A commit holds the files of one category. The category gives the form of the
+subject:
+
+| Category     | Paths                                                                     | Subject                 |
+| ------------ | ------------------------------------------------------------------------- | ----------------------- |
+| `source`     | the RTEMS source tree, which exists in the rtems.org repository           | `<scope>: <Summary>`    |
+| `spec`       | `spec/` outside `spec/build/`                                             | `spec: <Summary>`       |
+| `build-qual` | the items in `spec/build/` whose name ends in `extra.yml` or `qual.yml`   | `build-qual: <Summary>` |
+| `pkg`        | the package files, for example `Makefile`, `spec-pkg-bsps/` and this file | `pkg: <Summary>`        |
+| `ci`         | `.github/`                                                                | `ci: <Summary>`         |
+
+The table `_CATEGORIES` and the pattern `_BUILD_QUAL` in
+`.github/inspect_changes.py` assign the category of a path. A commit of another
+category does not use the prefix `spec:`, `build-qual:`, `pkg:` or `ci:`. A
+`spec` commit may leave its generated files to the next commit, which must be a
+`source` commit.
+
+The scope of a `source` subject names the area of the change, as the
+[commit header guidance](https://docs.rtems.org/docs/main/eng/vc-users.html#commit-header)
+of RTEMS describes. An example is
+`bsps/aarch64/raspberrypi: Add framebuffer driver`. The subject has at most 50
+characters. The second line is blank. The body wraps at 72 columns.
+
+The body states the problem, then the solution in the imperative. Reference an
+issue with `Closes #NNNN`.
+
+An assisted commit carries `Assisted-by:` immediately before `Signed-off-by:`:
+
+```
+Assisted-by: Claude:claude-opus-5-5 claude-code
+Signed-off-by: Jane Doe <jane.doe@example.com>
+```
+
+`Signed-off-by:` certifies the [Developer Certificate of Origin](DCO.txt). Add
+it with `git commit -s`. Use your own name, never the name of an assistant.
+
+## Local checks
+
+These commands run the checks of the CI on your machine:
+
+| Command                                                 | Check                                                   |
+| ------------------------------------------------------- | ------------------------------------------------------- |
+| `make tools TOOLS_ARCH=<arch>`                          | builds the tools of an architecture                     |
+| `make bsps TOOLS_ARCH=<arch>`                           | builds all BSPs of an architecture                      |
+| `make tests TOOLS_ARCH=<arch>`                          | runs the test suites on the simulators                  |
+| `make config-tests CONFIG=<name>`                       | builds a special configuration and runs its test suites |
+| `make pkg TOOLS_ARCH=sparc PKG_BSP=<bsp>`               | builds a package                                        |
+| `python .github/inspect_changes.py <URL> <base> <head>` | inspects the commits of a change set                    |
+
+The inspection needs the tools of `.venv/bin` in `PATH`. `make prepare` creates
+the virtual environment. The inspection uses `uv` to export all items of the
+base with the tools which the base pins. It stores the result in
+`tmp/inspect-changes/`, so the next inspection of the same base reuses it.
+
+`python3 run_tests.py configurations` lists the special configurations. The
+test runner items scale the measured test durations by four. The CI runner is
+slower than the host which measured them, and the package build and the
+simulator tests share this margin. `TIMEOUT_SCALER` overrides it for a local
+run.
+
+## CI report
+
+The workflow Olympos checks a push and a pull request of each branch. It runs
+these jobs:
+
+| Job        | Check                                                                                  |
+| ---------- | -------------------------------------------------------------------------------------- |
+| Argos      | inspects the category, the item format and the export of each commit of a pull request |
+| Hephaistos | builds the tools of each architecture                                                  |
+| Sisyphos   | builds all BSPs of each architecture and runs their test suites                        |
+| Daidalos   | builds each special configuration and runs its test suites                             |
+| Zerberus   | builds the packages of the gr712rc, gr740 and gr765 BSPs                               |
+
+After each push to `eb/qual`, the workflow Themis exports all items of the tip.
+It fails if the export does not reproduce the tree. Argos restores the result
+for the base of a pull request, because Argos exports only the items of the
+change set.
+
+The workflow Hermes posts the report of Argos and the package summaries of
+Zerberus as a comment on the pull request. It updates the comment after each
+push.
