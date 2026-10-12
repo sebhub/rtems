@@ -498,9 +498,37 @@ test-actions:
     - role: validation
       uid: ../req/ctx-thread-pointer-tp
   links: []
+- action-brief: |
+    Set fcsr to a pattern and initialize a context. Set fcsr to the inverted
+    pattern and initialize a second context. Restore fcsr.
+  action-code: |
+    #if __riscv_flen > 0
+      ContextInitializeTwice();
+    #endif
+  checks:
+  - brief: |
+      Check that the first context received the pattern in fcsr.
+    code: |
+      #if __riscv_flen > 0
+        T_eq_u32( context_initialized[ 0 ].fcsr & 0xff, 0x75 );
+      #endif
+    links:
+    - role: validation
+      uid: ../req/ctx-initial-fcsr
+  - brief: |
+      Check that the second context received the inverted pattern in fcsr.
+    code: |
+      #if __riscv_flen > 0
+        T_eq_u32( context_initialized[ 1 ].fcsr & 0xff, 0x8a );
+      #endif
+    links:
+    - role: validation
+      uid: ../req/ctx-initial-fcsr
+  links: []
 test-brief: |
   Checks that the context switch saves and restores every call-saved register,
   the floating-point environment, the return address and the thread pointer.
+  Checks the initial floating-point environment of a context.
 test-context: []
 test-context-support: null
 test-description: |
@@ -1080,6 +1108,41 @@ test-support: |
       context_initial[ i ] = GetPattern( i );
     }
   }
+
+  #if __riscv_flen > 0
+  static Context_Control context_initialized[ 2 ];
+
+  static void WriteFCSR( uint32_t fcsr )
+  {
+    /* clang-format off */
+    __asm__ volatile ( "fscsr %0" : : "r" ( fcsr ) );
+    /* clang-format on */
+  }
+
+  static void ContextInitialize( Context_Control *context, uint32_t fcsr )
+  {
+    WriteFCSR( fcsr );
+    _CPU_Context_Initialize(
+      context,
+      context_heir_stack,
+      sizeof( context_heir_stack ),
+      0,
+      ContextHeirEntry,
+      true,
+      NULL
+    );
+  }
+
+  static void ContextInitializeTwice( void )
+  {
+    uint32_t fcsr;
+
+    fcsr = _RISCV_Read_FCSR();
+    ContextInitialize( &context_initialized[ 0 ], 0x75 );
+    ContextInitialize( &context_initialized[ 1 ], 0x8a );
+    WriteFCSR( fcsr );
+  }
+  #endif
 test-target: testsuites/validation/bsps/tc-riscv-context.c
 test-teardown: null
 type: test-case

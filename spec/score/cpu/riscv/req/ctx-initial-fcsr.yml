@@ -1,0 +1,22 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: riscv
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: ../../req/ctx-initial-floating-point-environment
+- location: '1.2'
+  role: reference
+  uid: /ref/arch/riscv/psabi
+rationale: |
+  The F and the D extensions raise no trap, and they provide no mode which
+  flushes a denormalised result to zero. The psABI gives fcsr the thread storage
+  duration of C11 section 7.6. That section gives a new thread the floating-point
+  environment of the thread which creates it.
+references: []
+requirement-type: functional
+text: |
+  Where the multilib provides a floating-point unit, the context initialization
+  shall give the context the fcsr of the thread which initializes it.
+type: requirement
