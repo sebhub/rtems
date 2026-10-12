@@ -52,7 +52,8 @@
  *
  * @brief Checks that the context switch saves and restores every call-saved
  *   register, the floating-point environment, the return address and the
- *   thread pointer.
+ *   thread pointer. Checks the initial floating-point environment of a
+ *   context.
  *
  * The action calls the switch directly. A call through the operating system
  * runs a chain of functions. A function of the chain may preserve a register
@@ -188,6 +189,13 @@
  *
  *   - Check that each run with a changed value flagged exactly the checks of
  *     that value, and that each run recorded every check.
+ *
+ * - Set fcsr to a pattern and initialize a context. Set fcsr to the inverted
+ *   pattern and initialize a second context. Restore fcsr.
+ *
+ *   - Check that the first context received the pattern in fcsr.
+ *
+ *   - Check that the second context received the inverted pattern in fcsr.
  *
  * @{
  */
@@ -1040,6 +1048,41 @@ static void ContextPrepare( void )
   }
 }
 
+#if __riscv_flen > 0
+static Context_Control context_initialized[ 2 ];
+
+static void WriteFCSR( uint32_t fcsr )
+{
+  /* clang-format off */
+  __asm__ volatile ( "fscsr %0" : : "r" ( fcsr ) );
+  /* clang-format on */
+}
+
+static void ContextInitialize( Context_Control *context, uint32_t fcsr )
+{
+  WriteFCSR( fcsr );
+  _CPU_Context_Initialize(
+    context,
+    context_heir_stack,
+    sizeof( context_heir_stack ),
+    0,
+    ContextHeirEntry,
+    true,
+    NULL
+  );
+}
+
+static void ContextInitializeTwice( void )
+{
+  uint32_t fcsr;
+
+  fcsr = _RISCV_Read_FCSR();
+  ContextInitialize( &context_initialized[ 0 ], 0x75 );
+  ContextInitialize( &context_initialized[ 1 ], 0x8a );
+  WriteFCSR( fcsr );
+}
+#endif
+
 /**
  * @brief Load a distinct pattern into every call-saved register, into fcsr and
  *   into the thread pointer of the context. Call the context switch directly.
@@ -1401,11 +1444,37 @@ static void ScoreCpuRiscvValContext_Action_0( void )
 }
 
 /**
+ * @brief Set fcsr to a pattern and initialize a context. Set fcsr to the
+ *   inverted pattern and initialize a second context. Restore fcsr.
+ */
+static void ScoreCpuRiscvValContext_Action_1( void )
+{
+  #if __riscv_flen > 0
+  ContextInitializeTwice();
+  #endif
+
+  /*
+   * Check that the first context received the pattern in fcsr.
+   */
+  #if __riscv_flen > 0
+  T_eq_u32( context_initialized[ 0 ].fcsr & 0xff, 0x75 );
+  #endif
+
+  /*
+   * Check that the second context received the inverted pattern in fcsr.
+   */
+  #if __riscv_flen > 0
+  T_eq_u32( context_initialized[ 1 ].fcsr & 0xff, 0x8a );
+  #endif
+}
+
+/**
  * @fn void T_case_body_ScoreCpuRiscvValContext( void )
  */
 T_TEST_CASE( ScoreCpuRiscvValContext )
 {
   ScoreCpuRiscvValContext_Action_0();
+  ScoreCpuRiscvValContext_Action_1();
 }
 
 /** @} */
