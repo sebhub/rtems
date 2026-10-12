@@ -89,6 +89,8 @@
 
 #define MUST_WAIT_FOR_INTERRUPT 1
 
+#define TM27_INTERRUPT_VECTOR_DEFAULT TEST_INTERRUPT_SOURCE
+
 static inline void Install_tm27_vector( rtems_interrupt_handler handler )
 {
   (void) rtems_interrupt_handler_install(
