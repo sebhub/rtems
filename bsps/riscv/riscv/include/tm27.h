@@ -3,7 +3,7 @@
 /**
  * @file
  *
- * @ingroup RTEMSBSPsRISCVGeneric
+ * @ingroup RTEMSBSPsRISCVShared
  *
  * @brief This header file contains the generic RISC-V tm27 support
  *   implementation.
