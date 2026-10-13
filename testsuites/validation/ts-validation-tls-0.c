@@ -52,6 +52,8 @@ const char rtems_test_name[] = "TestsuitesValidationTls0";
 
 #define MAX_TLS_SIZE 1024
 
+#define CONFIGURE_STACK_CHECKER_ENABLED
+
 #include "ts-default.h"
 
 /** @} */

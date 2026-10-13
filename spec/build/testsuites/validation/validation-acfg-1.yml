@@ -17,6 +17,7 @@ source:
 - testsuites/validation/tc-acfg-max-thread-name-size.c
 - testsuites/validation/tc-pthread-getname-np.c
 - testsuites/validation/tc-pthread-setname-np.c
+- testsuites/validation/tc-userext-create.c
 - testsuites/validation/ts-validation-acfg-1.c
 stlib: []
 target: testsuites/validation/ts-validation-acfg-1.exe

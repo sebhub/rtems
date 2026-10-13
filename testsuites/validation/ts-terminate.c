@@ -62,6 +62,8 @@ const char rtems_test_name[] = "TestsuitesTerminate";
 
 #define CONFIGURE_DISABLE_BSP_SETTINGS
 
+#define CONFIGURE_STACK_CHECKER_ENABLED
+
 #include "ts-default.h"
 
 /** @} */

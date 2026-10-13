@@ -56,6 +56,8 @@ const char rtems_test_name[] = "TestsuitesValidationSmpOnly0";
 
 #define CONFIGURE_MAXIMUM_PROCESSORS 5
 
+#define CONFIGURE_STACK_CHECKER_ENABLED
+
 #include "ts-default.h"
 
 /** @} */

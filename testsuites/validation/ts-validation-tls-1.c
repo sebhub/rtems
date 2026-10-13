@@ -52,6 +52,8 @@ const char rtems_test_name[] = "TestsuitesValidationTls1";
 
 #define CONFIGURE_IDLE_TASK_STORAGE_SIZE ( RTEMS_MINIMUM_STACK_SIZE + 4096 )
 
+#define CONFIGURE_STACK_CHECKER_ENABLED
+
 #include "ts-idle.h"
 
 /** @} */

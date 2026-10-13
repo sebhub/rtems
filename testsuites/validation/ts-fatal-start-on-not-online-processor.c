@@ -62,6 +62,8 @@ const char rtems_test_name[] = "TestsuitesFatalStartOnNotOnlineProcessor";
 
 #define CONFIGURE_MAXIMUM_PROCESSORS 2
 
+#define CONFIGURE_STACK_CHECKER_ENABLED
+
 #include "ts-fatal-sysinit.h"
 
 /** @} */

@@ -97,6 +97,8 @@ static void Init( rtems_task_argument arg )
 
 #define CONFIGURE_RTEMS_INIT_TASKS_TABLE
 
+#define CONFIGURE_STACK_CHECKER_ENABLED
+
 #define CONFIGURE_IDLE_TASK_STORAGE_SIZE RTEMS_MINIMUM_STACK_SIZE
 
 static rtems_fatal_source fatal_error_test_source;

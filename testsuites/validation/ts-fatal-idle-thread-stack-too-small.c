@@ -75,6 +75,8 @@ static void Init( rtems_task_argument arg )
 
 #define CONFIGURE_RTEMS_INIT_TASKS_TABLE
 
+#define CONFIGURE_STACK_CHECKER_ENABLED
+
 #include "ts-fatal-sysinit.h"
 
 /** @} */

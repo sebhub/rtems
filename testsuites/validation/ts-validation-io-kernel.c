@@ -126,6 +126,8 @@ static void *IdleBody( uintptr_t ignored )
 
 #define CONFIGURE_IDLE_TASK_BODY IdleBody
 
+#define CONFIGURE_STACK_CHECKER_ENABLED
+
 #define CONFIGURE_INIT
 
 #include <rtems/confdefs.h>

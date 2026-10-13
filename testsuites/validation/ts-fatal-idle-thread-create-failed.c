@@ -68,6 +68,8 @@ static bool CreateTask( rtems_tcb *executing, rtems_tcb *created )
 
 #define FATAL_SYSINIT_INITIAL_EXTENSION { .thread_create = CreateTask }
 
+#define CONFIGURE_STACK_CHECKER_ENABLED
+
 #include "ts-fatal-sysinit.h"
 
 /** @} */

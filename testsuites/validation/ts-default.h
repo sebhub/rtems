@@ -184,10 +184,12 @@ void *test_task_stack_allocate( size_t size )
 
 void test_task_stack_deallocate( void *stack )
 {
-  rtems_chain_append_unprotected(
-    &free_task_storage,
-    (rtems_chain_node *) stack
-  );
+  rtems_chain_node *node;
+
+  /* The stack checker overwrites the start of the stack area */
+  node = stack;
+  rtems_chain_set_off_chain( node );
+  rtems_chain_append_unprotected( &free_task_storage, node );
 }
 
 #if !defined( CONFIGURE_APPLICATION_DOES_NOT_NEED_CLOCK_DRIVER )
