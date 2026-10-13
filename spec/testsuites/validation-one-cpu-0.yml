@@ -16,6 +16,8 @@ test-code: |
 
   #define CONFIGURE_MAXIMUM_PROCESSORS 1
 
+  #define CONFIGURE_STACK_CHECKER_ENABLED
+
   #include "ts-default.h"
 test-description: |
   Two test suites of this configuration are provided to limit test run duration.

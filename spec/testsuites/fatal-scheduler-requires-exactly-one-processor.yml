@@ -33,6 +33,8 @@ test-code: |
     RTEMS_SCHEDULER_ASSIGN( 0, RTEMS_SCHEDULER_ASSIGN_PROCESSOR_MANDATORY ), \
       RTEMS_SCHEDULER_ASSIGN( 0, RTEMS_SCHEDULER_ASSIGN_PROCESSOR_MANDATORY )
 
+  #define CONFIGURE_STACK_CHECKER_ENABLED
+
   #include "ts-fatal-sysinit.h"
 test-description: null
 test-includes: []

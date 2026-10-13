@@ -21,6 +21,8 @@ test-code: |
 
   #define CONFIGURE_DISABLE_BSP_SETTINGS
 
+  #define CONFIGURE_STACK_CHECKER_ENABLED
+
   #include "ts-default.h"
 test-description: null
 test-includes: []
