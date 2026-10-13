@@ -1,0 +1,582 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: action
+links:
+- role: interface-function
+  uid: ../if/iterate
+post-conditions:
+- name: Id
+  states:
+  - name: Thread
+    test-code: |
+      T_eq_u32( ctx->info.id, ctx->task_id );
+    text: |
+      The ${../if/info:/definition[0]/default/name} member of the stack information
+      shall be the object identifier of the thread.
+  - name: Processor
+    test-code: |
+      T_eq_u32( ctx->info.id, 0 );
+    text: |
+      The ${../if/info:/definition[0]/default/name} member of the stack information
+      shall be the index of the processor of the ${/glossary/interruptstack:/term}.
+  test-epilogue: null
+  test-prologue: null
+- name: Name
+  states:
+  - name: Thread
+    test-code: |
+      T_eq_str( ctx->name, "STCK" );
+    text: |
+      The ${../if/info:/definition[1]/default/name} member of the stack information
+      shall reference the name of the thread.
+  - name: Interrupt
+    test-code: |
+      T_eq_str( ctx->name, "Interrupt Stack" );
+    text: |
+      The ${../if/info:/definition[1]/default/name} member of the stack information
+      shall reference the string `Interrupt Stack`.
+  test-epilogue: null
+  test-prologue: null
+- name: Area
+  states:
+  - name: Allocated
+    test-code: |
+      uintptr_t begin;
+      uintptr_t end;
+
+      begin = (uintptr_t) ctx->info.begin;
+      end = begin + ctx->info.size;
+      #if CPU_STACK_GROWS_UP == TRUE
+      T_eq_uptr( begin, ctx->area_begin );
+      T_lt_uptr( end, ctx->area_end );
+      #else
+      T_gt_uptr( begin, ctx->area_begin );
+      T_eq_uptr( end, ctx->area_end );
+      #endif
+    text: |
+      The ${../if/info:/definition[2]/default/name} and
+      ${../if/info:/definition[3]/default/name} members of the stack information
+      shall reference the ${/glossary/allocatedstackarea:/term} of the stack without
+      the ${/glossary/stackcheckerpatternarea:/term}.
+  test-epilogue: null
+  test-prologue: null
+- name: StackPointer
+  states:
+  - name: Context
+    test-code: |
+      T_eq_uptr( (uintptr_t) ctx->info.current, ctx->stack_pointer );
+    text: |
+      The ${../if/info:/definition[4]/default/name} member of the stack information
+      shall be the ${/glossary/stackpointer:/term} of the saved context of the
+      thread.
+  - name: 'Null'
+    test-code: |
+      T_null( ctx->info.current );
+    text: |
+      The ${../if/info:/definition[4]/default/name} member of the stack information
+      shall be ${/c/if/null:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: Used
+  states:
+  - name: Zero
+    test-code: |
+      T_eq_uptr( ctx->info.used, 0 );
+    text: |
+      The ${../if/info:/definition[5]/default/name} member of the stack information
+      shall be zero.
+  - name: InRange
+    test-code: |
+      T_gt_uptr( ctx->info.used, 0 );
+      T_le_uptr( ctx->info.used, ctx->info.size );
+    text: |
+      The ${../if/info:/definition[5]/default/name} member of the stack information
+      shall be greater than zero and less than or equal to the
+      ${../if/info:/definition[3]/default/name} member.
+  - name: Unknown
+    test-code: |
+      T_eq_uptr( ctx->info.used, UINTPTR_MAX );
+    text: |
+      The ${../if/info:/definition[5]/default/name} member of the stack information
+      shall be ${/c/if/uintptr_max:/name}.
+  test-epilogue: null
+  test-prologue: null
+pre-conditions:
+- name: Enabled
+  states:
+  - name: 'Yes'
+    test-code: |
+      if ( !IsStackCheckerEnabled() ) {
+        ${.:skip}
+      }
+    text: |
+      Where the application configuration enables the stack checker.
+  - name: 'No'
+    test-code: |
+      if ( IsStackCheckerEnabled() ) {
+        ${.:skip}
+      }
+    text: |
+      Where the application configuration does not enable the stack checker.
+  test-epilogue: null
+  test-prologue: null
+- name: Kind
+  states:
+  - name: Thread
+    test-code: |
+      ctx->kind = KIND_THREAD;
+    text: |
+      While the stack is the stack of a thread.
+  - name: ISR
+    test-code: |
+      ctx->kind = KIND_ISR;
+    text: |
+      While the stack is the ${/glossary/interruptstack:/term} of a processor.
+  test-epilogue: null
+  test-prologue: null
+- name: HasExecuted
+  states:
+  - name: 'Yes'
+    test-code: |
+      ctx->execute = true;
+    text: |
+      While the owner of the stack executed on the stack.
+  - name: 'No'
+    test-code: |
+      ctx->execute = false;
+    text: |
+      While the owner of the stack never executed on the stack.
+  test-epilogue: null
+  test-prologue: null
+- name: StackPointer
+  states:
+  - name: Below
+    test-code: |
+      ctx->position = POSITION_BELOW;
+    text: |
+      While the ${/glossary/stackpointer:/term} of the saved context of the thread is
+      below the begin address of the ${/glossary/allocatedstackarea:/term} of the
+      thread.
+  - name: Inside
+    test-code: |
+      ctx->position = POSITION_INSIDE;
+    text: |
+      While the ${/glossary/stackpointer:/term} of the saved context of the thread is
+      inside the ${/glossary/allocatedstackarea:/term} of the thread.
+  - name: Above
+    test-code: |
+      ctx->position = POSITION_ABOVE;
+    text: |
+      While the ${/glossary/stackpointer:/term} of the saved context of the thread is
+      above the end address of the ${/glossary/allocatedstackarea:/term} of the
+      thread.
+  test-epilogue: null
+  test-prologue: null
+rationale: |
+  Dimension Enabled covers whether the application configuration enables the
+  stack checker, 2 states. The interface item of the stack information states the
+  used member of a stack checker which is not initialized. Only the create
+  extension of the stack checker initializes it.
+
+  Dimension Kind covers the kinds of stacks which the stack checker visits, 2
+  states. Dimension HasExecuted covers the execution history of the owner of the
+  stack, 2 states. The owner of the stack of a thread is the thread. The owner of
+  an interrupt stack is the interrupt processing of its processor.
+
+  Dimension StackPointer covers the position of the stack pointer of the saved
+  context of a thread relative to its allocated stack area, 3 states. The
+  directive reports this stack pointer and does not check it. On SMP
+  configurations a thread which overran its stack and blocked keeps a saved stack
+  pointer outside its allocated stack area. The dimension does not apply to an
+  interrupt stack.
+
+  The interface item of the stack information states its members.
+references: []
+requirement-type: functional
+skip-reasons:
+  InterruptStackNotVisited: |
+    Where the application configuration does not enable the stack checker, no begin
+    extension gives an ${/glossary/interruptstack:/term} its
+    ${/glossary/allocatedstackarea:/term}. The stack checker therefore visits no
+    ${/glossary/interruptstack:/term}.
+  InterruptStackUnused: |
+    The stack checker visits the interrupt stack of a processor after the start of
+    the multitasking. At that time the processor served interrupts on its interrupt
+    stack.
+test-action: |
+  ctx->executed = false;
+  ctx->task_id = CreateTask( "STCK", PRIO_HIGH );
+
+  if ( ctx->kind == KIND_THREAD ) {
+    const Stack_Control *stack;
+
+    stack = &GetThread( ctx->task_id )->Start.Initial_stack;
+    ctx->area_begin = (uintptr_t) stack->area;
+    ctx->area_end = ctx->area_begin + stack->size;
+
+    if ( ctx->execute ) {
+      StartTask( ctx->task_id, Worker, ctx );
+
+      while ( !ctx->executed ) {
+        /* Wait */
+      }
+    }
+
+    ArrangeStackPointer( ctx );
+  } else {
+    const Per_CPU_Control *cpu;
+
+    cpu = _Per_CPU_Get_by_index( 0 );
+    ctx->area_begin = (uintptr_t) cpu->interrupt_stack_low;
+    ctx->area_end = (uintptr_t) cpu->interrupt_stack_high;
+
+    if ( ctx->execute ) {
+      ArrangeInterruptStackUse();
+    }
+  }
+
+  ctx->visits = 0;
+  rtems_stack_checker_iterate( Visit, ctx );
+  T_eq_u32( ctx->visits, 1 );
+
+  if ( ctx->kind == KIND_THREAD ) {
+    SetSavedStackPointer( ctx, ctx->saved_stack_pointer );
+  }
+test-brief: null
+test-cleanup: |
+  DeleteTask( ctx->task_id );
+test-context:
+- brief: |
+    This member specifies the kind of the visited stack.
+  description: null
+  member: |
+    Kind kind
+- brief: |
+    This member is true, if the test task shall execute.
+  description: null
+  member: |
+    bool execute
+- brief: |
+    This member specifies the position of the stack pointer of the saved context of
+    the test task.
+  description: null
+  member: |
+    Position position
+- brief: |
+    This member is true, if the test task executed.
+  description: null
+  member: |
+    volatile bool executed
+- brief: |
+    This member contains the identifier of the test task.
+  description: null
+  member: |
+    rtems_id task_id
+- brief: |
+    This member contains the begin address of the allocated stack area of the
+    visited stack.
+  description: null
+  member: |
+    uintptr_t area_begin
+- brief: |
+    This member contains the end address of the allocated stack area of the visited
+    stack.
+  description: null
+  member: |
+    uintptr_t area_end
+- brief: |
+    This member contains the count of visits of the selected stack.
+  description: null
+  member: |
+    uint32_t visits
+- brief: |
+    This member contains the stack information of the selected stack.
+  description: null
+  member: |
+    rtems_stack_checker_info info
+- brief: |
+    This member contains a copy of the name in the stack information.
+  description: null
+  member: |
+    char name[ 16 ]
+- brief: |
+    This member contains the stack pointer of the saved context of the test task
+    during the call.
+  description: null
+  member: |
+    uintptr_t stack_pointer
+- brief: |
+    This member contains the stack pointer of the saved context of the test task
+    before the arrangement.
+  description: null
+  member: |
+    uintptr_t saved_stack_pointer
+test-context-support: |
+  typedef enum { KIND_THREAD, KIND_ISR } Kind;
+
+  typedef enum { POSITION_BELOW, POSITION_INSIDE, POSITION_ABOVE } Position;
+test-description: |
+  The configuration of the test suite decides whether it enables the stack
+  checker, so the test skips the variants of the other state.
+
+  The processor of some architectures serves interrupts on the stack of the
+  interrupted thread and never executes on its interrupt stack. The test
+  therefore establishes the execution on the interrupt stack of processor 0
+  itself. It writes zero to the word of the interrupt stack which the processor
+  uses first, if this word still holds the fill pattern of the stack checker.
+
+  The member of the stack pointer in a saved context depends on the architecture
+  and on some architectures also on the address of the context. The test locates
+  the member in the context of the test task.
+test-header: null
+test-includes:
+- rtems.h
+- string.h
+- rtems/stackchk.h
+- rtems/stackchkimpl.h
+- rtems/score/percpu.h
+- rtems/score/threadimpl.h
+- rtems/score/userextdata.h
+test-local-includes:
+- tx-support.h
+test-prepare: |
+  ctx->task_id = 0;
+test-setup:
+  brief: null
+  code: |
+    SetSelfPriority( PRIO_NORMAL );
+  description: null
+test-stop: null
+test-support: |
+  typedef ${.:/test-context-type} Context;
+
+  static bool IsStackCheckerEnabled( void )
+  {
+    size_t i;
+
+    for ( i = 0; i < _User_extensions_Initial_count; ++i ) {
+      if (
+        _User_extensions_Initial_extensions[ i ].thread_create ==
+        rtems_stack_checker_create_extension
+      ) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  static void Worker( rtems_task_argument arg )
+  {
+    Context *ctx;
+
+    ctx = (Context *) arg;
+    ctx->executed = true;
+
+    while ( true ) {
+      (void) ReceiveAnyEvents();
+    }
+  }
+
+  static void SetSavedStackPointer( Context *ctx, uintptr_t stack_pointer )
+  {
+    Context_Control *context;
+    Context_Control  saved;
+    size_t           i;
+
+    context = &GetThread( ctx->task_id )->Registers;
+    saved = *context;
+
+    /*
+     * The member of the stack pointer in the context depends on the
+     * architecture and on some architectures also on the address of the
+     * context.  Each byte of the context which _CPU_Context_Get_SP() reads
+     * receives the corresponding byte of the stack pointer.
+     */
+    for ( i = 0; i < sizeof( *context ); ++i ) {
+      uintptr_t value;
+      size_t    shift;
+
+      memset( context, 0, sizeof( *context ) );
+      ( (uint8_t *) context )[ i ] = 0xff;
+      value = _CPU_Context_Get_SP( context );
+
+      for ( shift = 0; shift < 8 * sizeof( value ); shift += 8 ) {
+        if ( ( ( value >> shift ) & 0xff ) == 0xff ) {
+          ( (uint8_t *) &saved )[ i ] = (uint8_t) ( stack_pointer >> shift );
+          break;
+        }
+      }
+    }
+
+    *context = saved;
+  }
+
+  /* The stack checker fills each stack with this value */
+  #define STACK_FILL_PATTERN 0xa5a5a5a5U
+
+  static void ArrangeInterruptStackUse( void )
+  {
+    Per_CPU_Control      *cpu;
+    uint32_t             *word;
+    rtems_interrupt_level level;
+
+    cpu = _Per_CPU_Get_by_index( 0 );
+  #if CPU_STACK_GROWS_UP == TRUE
+    word = (uint32_t *) cpu->interrupt_stack_low + 1;
+  #else
+    word = (uint32_t *) cpu->interrupt_stack_high - 1;
+  #endif
+
+    rtems_interrupt_local_disable( level );
+
+    if ( *word == STACK_FILL_PATTERN ) {
+      *word = 0;
+    }
+
+    rtems_interrupt_local_enable( level );
+  }
+
+  /*
+   * The test task does not execute until the action restores the stack pointer
+   * of its saved context.
+   */
+  static void ArrangeStackPointer( Context *ctx )
+  {
+    uintptr_t stack_pointer;
+
+    ctx->saved_stack_pointer = (uintptr_t) _CPU_Context_Get_SP(
+      &GetThread( ctx->task_id )->Registers
+    );
+
+    switch ( ctx->position ) {
+      case POSITION_BELOW:
+        stack_pointer = ctx->area_begin - CPU_STACK_ALIGNMENT;
+        break;
+      case POSITION_ABOVE:
+        stack_pointer = ctx->area_end + CPU_STACK_ALIGNMENT;
+        break;
+      default:
+        stack_pointer = RTEMS_ALIGN_DOWN(
+          ctx->area_begin + ( ctx->area_end - ctx->area_begin ) / 2,
+          CPU_STACK_ALIGNMENT
+        );
+        break;
+    }
+
+    SetSavedStackPointer( ctx, stack_pointer );
+    ctx->stack_pointer = stack_pointer;
+  }
+
+  static void Visit( const rtems_stack_checker_info *info, void *arg )
+  {
+    Context *ctx;
+    bool     selected;
+
+    ctx = arg;
+
+    if ( ctx->kind == KIND_THREAD ) {
+      selected = info->id == ctx->task_id;
+    } else {
+      /* The identifier of an interrupt stack is a processor index */
+      selected = rtems_object_id_get_api( info->id ) == 0 && info->id == 0;
+    }
+
+    if ( selected ) {
+      ++ctx->visits;
+      ctx->info = *info;
+      strlcpy( ctx->name, info->name, sizeof( ctx->name ) );
+    }
+  }
+test-target: testsuites/validation/tc-stackchk-visit.c
+test-teardown:
+  brief: null
+  code: |
+    RestoreRunnerPriority();
+  description: null
+text: |
+  When the stack checker invokes the visitor routine specified by the
+  ${../if/iterate:/params[0]/name} parameter of a ${../if/iterate:/name} call for
+  a stack, the stack information shall be as specified by the transition map.
+transition-map:
+- enabled-by: true
+  post-conditions:
+    Id: Thread
+    Name: Thread
+    Area: Allocated
+    StackPointer: Context
+    Used: InRange
+  pre-conditions:
+    Enabled:
+    - 'Yes'
+    Kind:
+    - Thread
+    HasExecuted:
+    - 'Yes'
+    StackPointer: all
+- enabled-by: true
+  post-conditions:
+    Id: Thread
+    Name: Thread
+    Area: Allocated
+    StackPointer: Context
+    Used: Zero
+  pre-conditions:
+    Enabled:
+    - 'Yes'
+    Kind:
+    - Thread
+    HasExecuted:
+    - 'No'
+    StackPointer: all
+- enabled-by: true
+  post-conditions:
+    Id: Processor
+    Name: Interrupt
+    Area: Allocated
+    StackPointer: 'Null'
+    Used: InRange
+  pre-conditions:
+    Enabled:
+    - 'Yes'
+    Kind:
+    - ISR
+    HasExecuted:
+    - 'Yes'
+    StackPointer: N/A
+- enabled-by: true
+  post-conditions: InterruptStackUnused
+  pre-conditions:
+    Enabled:
+    - 'Yes'
+    Kind:
+    - ISR
+    HasExecuted:
+    - 'No'
+    StackPointer: N/A
+- enabled-by: true
+  post-conditions:
+    Id: Thread
+    Name: Thread
+    Area: Allocated
+    StackPointer: Context
+    Used: Unknown
+  pre-conditions:
+    Enabled:
+    - 'No'
+    Kind:
+    - Thread
+    HasExecuted: all
+    StackPointer: all
+- enabled-by: true
+  post-conditions: InterruptStackNotVisited
+  pre-conditions:
+    Enabled:
+    - 'No'
+    Kind:
+    - ISR
+    HasExecuted: all
+    StackPointer: N/A
+type: requirement
