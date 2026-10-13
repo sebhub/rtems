@@ -29,10 +29,13 @@ A change takes the branch of its content:
 | Change                                                 | Branch    |
 | ------------------------------------------------------ | --------- |
 | a kernel or BSP fix, a build item, the CI, the tooling | `eb/main` |
-| a generated validation test and its build item         | `eb/main` |
 | a specification item outside `spec/build/`             | `eb/qual` |
+| a `build-qual` item                                    | `eb/qual` |
 
-A kernel fix enters before the validation test which checks it.
+A change of a specification item enters `eb/qual` in one pull request. The pull
+request holds the item, the generated files and the build items of the
+generated tests. A kernel fix which the tests need enters `eb/main` first.
+Harmonia merges it into `eb/qual` before the pull request of the item.
 
 ### Linearize eb/qual
 
@@ -66,7 +69,7 @@ rebase drops the merge commits of Harmonia, so the history becomes linear.
 | Check                      | Command                                                     | Expected result                                                       |
 | -------------------------- | ----------------------------------------------------------- | --------------------------------------------------------------------- |
 | no change of the tree      | `git diff eb/qual linearize`                                | no output                                                             |
-| no lost commit             | `git range-diff eb/main..eb/qual eb/main..linearize`        | each commit which only `eb/qual` has is a copy of an `eb/main` commit |
+| no lost commit             | `git range-diff eb/main..eb/qual eb/main..linearize`        | each commit which the rebase dropped is a copy of an `eb/main` commit |
 | delivered commits are kept | `python3 .github/check_delivered_spec.py linearize eb/main` | exit status 0                                                         |
 
 A difference in the tree means a lost conflict resolution of a merge commit.
@@ -87,8 +90,8 @@ subject:
 The table `_CATEGORIES` and the pattern `_BUILD_QUAL` in
 `.github/inspect_changes.py` assign the category of a path. A commit of another
 category does not use the prefix `spec:`, `build-qual:`, `pkg:` or `ci:`. A
-`spec` commit may leave its generated files to the next commit, which must be a
-`source` commit.
+`spec` commit may leave its generated files to the next commit which is no
+`build-qual` commit. That commit must be a `source` commit.
 
 The scope of a `source` subject names the area of the change, as the
 [commit header guidance](https://docs.rtems.org/docs/main/eng/vc-users.html#commit-header)

@@ -81,15 +81,17 @@ options of `gr740` and adds the SMP configuration.
    `ts-validation-no-clock-0`. The step is done when the test case reports
    `F:0` in both runs and `git status` is clean after the export.
 
-6. Split the commits. The item goes to a branch of `eb/qual`. The generated
-   test and its line in the build item of the suite go to a branch of
-   `eb/main`. A kernel fix which the test needs goes there first. A commit
+6. Order the commits on one branch of `eb/qual`. The item, the generated test
+   and its line in the build item of the suite enter `eb/qual` together. A
+   kernel fix which the test needs goes to a pull request against `eb/main`.
+   Harmonia merges it into `eb/qual` before the branch of the item. A commit
    holds one category: `source`, `spec`, `build-qual`, `pkg` or `ci`. The
    category gives the subject prefix, see [CONTRIBUTING.md](CONTRIBUTING.md). A
-   `spec` commit may leave its generated files to the next commit, a `source`
-   commit.
+   `spec` commit may leave its generated files to the next commit which is no
+   `build-qual` commit. That commit must be a `source` commit.
 
-7. Inspect each branch:
+7. Inspect the branch. `<base>` is the commit of `eb/qual` on which the branch
+   starts:
 
    ```sh
    PATH=$PWD/.venv/bin:$PATH python .github/inspect_changes.py \
