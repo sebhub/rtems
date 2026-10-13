@@ -1,0 +1,16 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: function
+links:
+- role: interface-function
+  uid: ../if/report-usage-with-plugin
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  The ${../if/report-usage-with-plugin:/name} directive shall print one stack
+  usage line for each stack which ${../if/iterate:/name} visits, in the order of
+  the visits.
+type: requirement
