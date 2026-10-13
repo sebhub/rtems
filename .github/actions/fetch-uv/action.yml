@@ -1,0 +1,143 @@
+# SPDX-License-Identifier: BSD-2-Clause
+
+# Copyright (C) 2026 embedded brains GmbH & Co. KG
+
+name: Fetch uv
+description: |
+  Installs uv and the Python packages of the `uv.lock` of each commit from
+  the uv package of ghcr.io.  A package version holds the uv binary and a uv
+  cache which `uv sync --frozen --all-groups` filled.  If a version exists for
+  each lock file, uv runs offline.  Otherwise the step sets up uv from Astral,
+  and uv installs the packages of the missing lock files from PyPI.  The job
+  requires the `packages: read` permission.
+inputs:
+  commits:
+    description: |
+      Defines the commits whose `uv.lock` the job installs.
+    required: false
+    default: HEAD
+  publish:
+    description: |
+      Publishes the package version of the `uv.lock` of HEAD if it does not
+      exist.  The job requires the `packages: write` permission for it.
+    required: false
+    default: "false"
+  version:
+    description: |
+      Defines the version of uv.
+    required: false
+    default: 0.11.9
+runs:
+  using: composite
+  steps:
+    - name: Fetch the uv package versions
+      id: fetch
+      shell: bash
+      env:
+        COMMITS: ${{ inputs.commits }}
+        PACKAGE: ghcr.io/${{ github.repository_owner }}/rtems-uv
+        TOKEN: ${{ github.token }}
+        UV_VERSION: ${{ inputs.version }}
+      run: |
+        set -euo pipefail
+        root="${RUNNER_TEMP}/uv"
+        mkdir -p "${root}"
+        # A wheel of the cache belongs to one Python version.  uv uses the
+        # version of the tag.
+        python="$(python3 -c 'import sys; print("%d.%d" % sys.version_info[:2])')"
+        found=0
+        missing=0
+        tags=" "
+        found_tags=" "
+        head=""
+        for commit in ${COMMITS}; do
+          if ! git cat-file -e "${commit}:uv.lock" 2>/dev/null; then
+            continue
+          fi
+          lock="$(git show "${commit}:uv.lock" | sha256sum | cut -d' ' -f1)"
+          tag="${ImageOS}-uv${UV_VERSION}-py${python}-${lock}"
+          if test "${commit}" = HEAD; then
+            head="${tag}"
+          fi
+          case "${tags}" in
+            *" ${tag} "*) continue ;;
+          esac
+          tags="${tags}${tag} "
+          status=0
+          python3 .github/registry.py fetch "${PACKAGE}:${tag}" uv.tar.zst \
+            "${RUNNER_TEMP}/uv.tar.zst" || status=$?
+          case "${status}" in
+            0)
+              zstd --decompress --stdout "${RUNNER_TEMP}/uv.tar.zst" |
+                tar -C "${root}" -xf -
+              rm "${RUNNER_TEMP}/uv.tar.zst"
+              found=$((found + 1))
+              found_tags="${found_tags}${tag} "
+              ;;
+            2)
+              echo "::warning::The uv package version ${tag} for the uv.lock of ${commit} does not exist.  uv installs its packages from PyPI."
+              missing=$((missing + 1))
+              ;;
+            *)
+              exit 1
+              ;;
+          esac
+        done
+        if test -n "${head}"; then
+          echo "tag=${head}" >>"${GITHUB_OUTPUT}"
+          case "${found_tags}" in
+            *" ${head} "*) echo "head-found=true" >>"${GITHUB_OUTPUT}" ;;
+          esac
+        fi
+        echo "UV_PYTHON=${python}" >>"${GITHUB_ENV}"
+        echo "UV_PYTHON_DOWNLOADS=never" >>"${GITHUB_ENV}"
+        if test "${found}" -gt 0; then
+          echo "${root}/bin" >>"${GITHUB_PATH}"
+          echo "UV_CACHE_DIR=${root}/cache" >>"${GITHUB_ENV}"
+          echo "found=true" >>"${GITHUB_OUTPUT}"
+        fi
+        if test "${found}" -gt 0 && test "${missing}" -eq 0; then
+          echo "UV_OFFLINE=1" >>"${GITHUB_ENV}"
+        fi
+    - name: Set up uv from Astral
+      if: ${{ steps.fetch.outputs.found != 'true' }}
+      uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
+      with:
+        enable-cache: false
+        version: ${{ inputs.version }}
+    - name: Build the uv package version
+      if: ${{ inputs.publish == 'true' && steps.fetch.outputs.head-found != 'true' }}
+      shell: bash
+      run: |
+        set -euo pipefail
+        build="${RUNNER_TEMP}/uv-package"
+        project="${build}/project"
+        mkdir -p "${project}" "${build}/bin"
+        for name in pyproject.toml uv.lock README.md; do
+          git show "HEAD:${name}" >"${project}/${name}"
+        done
+        UV_CACHE_DIR="${build}/cache" UV_PROJECT_ENVIRONMENT="${build}/venv" \
+          uv sync --frozen --all-groups --project "${project}"
+        cp "$(command -v uv)" "$(command -v uvx)" "${build}/bin"
+        tar -C "${build}" -cf - bin cache |
+          zstd -19 -T0 --quiet -o "${build}/uv.tar.zst"
+    - name: Set up ORAS
+      if: ${{ inputs.publish == 'true' && steps.fetch.outputs.head-found != 'true' }}
+      uses: oras-project/setup-oras@005458ad77f1c8facd38a094e4af2e69e5607ff4 # v2.0.2
+      with:
+        version: 1.3.4
+    - name: Publish the uv package version
+      # The source annotation links the package to the repository.
+      if: ${{ inputs.publish == 'true' && steps.fetch.outputs.head-found != 'true' }}
+      shell: bash
+      working-directory: ${{ runner.temp }}/uv-package
+      env:
+        REFERENCE: ghcr.io/${{ github.repository_owner }}/rtems-uv:${{ steps.fetch.outputs.tag }}
+        SOURCE: ${{ github.server_url }}/${{ github.repository }}
+        TOKEN: ${{ github.token }}
+      run: |
+        oras login ghcr.io --username "${GITHUB_ACTOR}" --password-stdin \
+          <<<"${TOKEN}"
+        oras push "${REFERENCE}" \
+          --annotation "org.opencontainers.image.source=${SOURCE}" \
+          uv.tar.zst:application/zstd
