@@ -18,6 +18,7 @@ source:
 - testsuites/validation/tc-mem-rtems-malloc.c
 - testsuites/validation/tc-stackchk-is-blown.c
 - testsuites/validation/tc-stackchk-iterate.c
+- testsuites/validation/tc-stackchk-report-usage-with-plugin.c
 - testsuites/validation/tc-stackchk-visit.c
 - testsuites/validation/tc-thread-idle-body-no-return.c
 - testsuites/validation/tr-event-send-receive.c
