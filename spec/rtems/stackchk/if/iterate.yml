@@ -1,0 +1,56 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Iterates over the stacks of the threads and the interrupt stacks and invokes
+  the visitor routine for each stack.
+copyrights:
+- Copyright (C) 2022, 2026 embedded brains GmbH & Co. KG
+- Copyright (C) 2024 Mohamed Hassan
+- Copyright (C) 2007 On-Line Applications Research Corporation (OAR)
+definition:
+  default:
+    attributes: null
+    body: null
+    params:
+    - ${visitor:/name} ${.:/params[0]/name}
+    - void *${.:/params[1]/name}
+    return: void
+  variants: []
+description: |
+  The directive invokes the visitor routine specified by ${.:/params[0]/name} for
+  the stack of each thread. It then invokes the visitor routine for the
+  ${/glossary/interruptstack:/term} of each configured processor. It skips a
+  stack which has no ${/glossary/allocatedstackarea:/term}. The
+  ${/glossary/interruptstack:/term} of a processor has its
+  ${/glossary/allocatedstackarea:/term} after the first thread started on that
+  processor.
+enabled-by: true
+index-entries: []
+interface-type: function
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+- role: constraint
+  uid: /constraint/directive-ctx-devinit
+- role: constraint
+  uid: /constraint/directive-ctx-task
+- role: constraint
+  uid: /constraint/object-allocator
+name: rtems_stack_checker_iterate
+notes: |
+  The directive holds the object allocator lock while it invokes the visitor
+  routine for the stacks of the threads.
+params:
+- description: |
+    is the visitor routine invoked for each stack.
+  dir: null
+  name: visit
+- description: |
+    is the argument passed to each visitor routine invocation.
+  dir: null
+  name: arg
+return:
+  return: null
+  return-values: []
+type: interface

@@ -178,6 +178,10 @@ links:
 - role: validation
   uid: /rtems/signal/if/set
 - role: validation
+  uid: /rtems/stackchk/if/info
+- role: validation
+  uid: /rtems/stackchk/if/visitor
+- role: validation
   uid: /rtems/status/if/already-suspended
 - role: validation
   uid: /rtems/status/if/called-from-isr

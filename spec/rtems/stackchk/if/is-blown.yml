@@ -1,0 +1,50 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Checks the stack of the executing thread.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+- Copyright (C) 2007 On-Line Applications Research Corporation (OAR)
+definition:
+  default:
+    attributes: null
+    body: null
+    params: []
+    return: ${/c/if/bool:/name}
+  variants: []
+description: |
+  The directive checks that the ${/glossary/stackpointer:/term} of the caller is
+  inside the ${/glossary/allocatedstackarea:/term} of the executing thread. It
+  checks that the ${/glossary/stackcheckerpatternarea:/term} of this stack and
+  the ${/glossary/stackcheckerpatternarea:/term} of the
+  ${/glossary/interruptstack:/term} of the current processor hold the pattern.
+enabled-by: true
+index-entries: []
+interface-type: function
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+- role: constraint
+  uid: /constraint/directive-ctx-devinit
+- role: constraint
+  uid: /constraint/directive-ctx-task
+name: rtems_stack_checker_is_blown
+notes: |
+  The directive checks the stack of the executing thread before the
+  ${/glossary/interruptstack:/term}. A check of the stack of the executing thread
+  which fails terminates the system with the fatal source
+  ${/score/interr/if/source-stack-checker:/name} and the object name of the
+  executing thread as the fatal code. A check of the
+  ${/glossary/interruptstack:/term} which fails terminates the system with the
+  fatal source ${/score/interr/if/source-stack-checker:/name} and the object name
+  built from the characters `INTR` as the fatal code. The directive therefore
+  returns only when all checks pass.
+params: []
+return:
+  return: null
+  return-values:
+  - description: |
+      The checks passed.
+    value: ${/c/if/false:/name}
+type: interface
