@@ -16,6 +16,7 @@ actions:
     tests:
     - capture01
     - crypt01
+    - dhrystone
     - exit03
     - fatal-idle-thread-stack-too-small
     - fatal-too-large-tls-size
