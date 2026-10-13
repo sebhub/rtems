@@ -36,6 +36,7 @@
 #endif
 
 #include <bsp.h>
+#include <rtems/test-support.h>
 
 #include "ts-acfg.h"
 
@@ -66,6 +67,31 @@ static void FatalExtension(
   ( *bsp.fatal )( source, always_set_to_false, code );
 }
 
+static RTEMS_ALIGNED( RTEMS_TASK_STORAGE_ALIGNMENT ) char task_storage
+  [ RTEMS_TASK_STORAGE_SIZE(
+    TEST_MINIMUM_STACK_SIZE + 1024,
+    RTEMS_FLOATING_POINT
+  ) ];
+
+static bool task_storage_in_use;
+
+static void *AllocateTaskStack( size_t size )
+{
+  if ( task_storage_in_use || size > sizeof( task_storage ) ) {
+    return NULL;
+  }
+
+  task_storage_in_use = true;
+
+  return task_storage;
+}
+
+static void FreeTaskStack( void *stack )
+{
+  (void) stack;
+  task_storage_in_use = false;
+}
+
 static void Init( rtems_task_argument arg )
 {
   (void) arg;
@@ -78,7 +104,13 @@ static void Init( rtems_task_argument arg )
 
 #define CONFIGURE_IDLE_TASK_STORAGE_SIZE RTEMS_MINIMUM_STACK_SIZE
 
-#define CONFIGURE_MAXIMUM_TASKS 1
+#define CONFIGURE_MAXIMUM_TASKS 2
+
+#define CONFIGURE_TASK_STACK_ALLOCATOR_AVOIDS_WORK_SPACE
+
+#define CONFIGURE_TASK_STACK_ALLOCATOR AllocateTaskStack
+
+#define CONFIGURE_TASK_STACK_DEALLOCATOR FreeTaskStack
 
 #define CONFIGURE_MAXIMUM_SEMAPHORES 1
 
@@ -87,6 +119,8 @@ static void Init( rtems_task_argument arg )
 #define CONFIGURE_MAXIMUM_USER_EXTENSIONS 1
 
 #define CONFIGURE_RTEMS_INIT_TASKS_TABLE
+
+#define CONFIGURE_INIT_TASK_INITIAL_MODES RTEMS_DEFAULT_MODES
 
 #define CONFIGURE_INIT_TASK_CONSTRUCT_STORAGE_SIZE \
   RTEMS_TASK_STORAGE_SIZE( RTEMS_MINIMUM_STACK_SIZE, RTEMS_DEFAULT_ATTRIBUTES )
