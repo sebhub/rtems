@@ -1,0 +1,17 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: function
+links:
+- role: interface-function
+  uid: ../if/report-usage-with-plugin
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  The format of the LOW field of a stack usage line of the
+  ${../if/report-usage-with-plugin:/name} directive shall be `0x` followed by the
+  ${../if/info:/definition[2]/default/name} member of the stack information in
+  hexadecimal digits, padded on the left with zeros to eight digits.
+type: requirement
