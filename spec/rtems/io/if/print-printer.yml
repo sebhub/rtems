@@ -6,13 +6,21 @@ copyrights:
 definition:
   default: int ( *${.:/name} )( void *, const char *, ${/c/if/va_list:/name} )
   variants: []
-description: null
+description: |
+  Functions of this type can be plugged in to certain reporting routines to
+  redirect the output.
+
+  Use the RTEMS Print interface to call these functions. Do not directly use
+  them.
+
+  If the user provides their own printer, then they may redirect those reports as
+  they see fit.
 enabled-by: true
 index-entries: []
 interface-type: typedef
 links:
 - role: interface-placement
-  uid: header-4
+  uid: header-5
 - role: interface-ingroup
   uid: group-print-support-rtems
 name: rtems_print_printer

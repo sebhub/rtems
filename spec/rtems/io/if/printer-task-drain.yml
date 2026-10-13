@@ -1,0 +1,42 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Drains the work queue of the printer task.
+copyrights:
+- Copyright (C) 2016, 2026 embedded brains GmbH & Co. KG
+definition:
+  default:
+    attributes: null
+    body: null
+    params:
+    - ${printer-task-context:/name} *${.:/params[0]/name}
+    return: void
+  variants: []
+description: |
+  The directive waits until the printer task wrote all output buffers of the work
+  queue at the time of the call to the file descriptor and an fsync() completed.
+enabled-by: true
+index-entries: []
+interface-type: function
+links:
+- role: interface-placement
+  uid: header-5
+- role: interface-ingroup
+  uid: group-print-support-rtems
+- role: constraint
+  uid: /constraint/directive-not-pre-qualified
+- role: constraint
+  uid: /constraint/directive-ctx-task
+name: rtems_printer_task_drain
+notes: |
+  The printer task shall be successfully started through
+  ${print-printer-task:/name} before the directive is called. Otherwise, the
+  behaviour is undefined.
+params:
+- description: |
+    is the printer task context of a successfully started printer task.
+  dir: in
+  name: context
+return:
+  return: null
+  return-values: []
+type: interface

@@ -10,7 +10,7 @@ definition:
     attributes: null
     body: null
     params:
-    - ${printer:/name} *${.:/params[0]/name}
+    - ${printer-type:/name} *${.:/params[0]/name}
     return: void
   variants: []
 description: null

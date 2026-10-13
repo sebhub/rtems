@@ -1,0 +1,45 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Sets the file descriptor of the printer task context.
+copyrights:
+- Copyright (C) 2016, 2026 embedded brains GmbH & Co. KG
+definition:
+  default:
+    attributes: null
+    body: |
+      ${.:/params[0]/name}->fd = ${.:/params[1]/name};
+    params:
+    - ${printer-task-context:/name} *${.:/params[0]/name}
+    - int ${.:/params[1]/name}
+    return: void
+  variants: []
+description: null
+enabled-by: true
+index-entries: []
+interface-type: function
+links:
+- role: interface-placement
+  uid: header-5
+- role: interface-ingroup
+  uid: group-print-support-rtems
+- role: constraint
+  uid: /constraint/directive-not-pre-qualified
+- role: constraint
+  uid: /constraint/directive-ctx-any
+- role: constraint
+  uid: /constraint/directive-no-preempt
+name: rtems_printer_task_set_file_descriptor
+notes: null
+params:
+- description: |
+    is the printer task context.
+  dir: out
+  name: context
+- description: |
+    is the file descriptor to which the printer task writes the output.
+  dir: in
+  name: fd
+return:
+  return: null
+  return-values: []
+type: interface

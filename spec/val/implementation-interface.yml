@@ -28,11 +28,11 @@ links:
 - role: validation
   uid: /bsp/sparc/leon3/if/idle-thread
 - role: validation
+  uid: /rtems/chain/if/control
+- role: validation
   uid: /rtems/io/if/mount
 - role: validation
-  uid: /rtems/io/if/print-printer
-- role: validation
-  uid: /rtems/io/if/printer
+  uid: /rtems/io/if/printer-type
 - role: validation
   uid: /rtems/io/if/unmount
 - role: validation

@@ -1,0 +1,49 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Initializes the printer task context.
+copyrights:
+- Copyright (C) 2016, 2026 embedded brains GmbH & Co. KG
+definition:
+  default:
+    attributes: null
+    body: |
+      /*
+       * Some C++ compiler think that the structure is complex enough to need a
+       * proper constructor. Cast to void * to silence a warning.
+       */
+      ${/c/if/memset:/name}(
+        (void *) ${.:/params[0]/name},
+        0,
+        sizeof( *${.:/params[0]/name} )
+      );
+    params:
+    - ${printer-task-context:/name} *${.:/params[0]/name}
+    return: void
+  variants: []
+description: null
+enabled-by: true
+index-entries: []
+interface-type: function
+links:
+- role: interface-placement
+  uid: header-5
+- role: interface-ingroup
+  uid: group-print-support-rtems
+- role: constraint
+  uid: /constraint/directive-not-pre-qualified
+- role: constraint
+  uid: /constraint/directive-ctx-any
+- role: constraint
+  uid: /constraint/directive-no-preempt
+name: rtems_printer_task_initialize
+notes: |
+  The directive sets all members of the context to zero.
+params:
+- description: |
+    is the printer task context to initialize.
+  dir: out
+  name: context
+return:
+  return: null
+  return-values: []
+type: interface

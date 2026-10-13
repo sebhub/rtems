@@ -1,0 +1,45 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Checks if the printer is valid.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+- Copyright (C) 2016 Chris Johns
+definition:
+  default:
+    attributes: null
+    body: |
+      return ${.:/params[0]/name} != ${/c/if/null:/name} &&
+             ${.:/params[0]/name}->${printer:/definition[1]/default/name} !=
+               ${/c/if/null:/name};
+    params:
+    - const ${printer-type:/name} *${.:/params[0]/name}
+    return: ${/c/if/bool:/name}
+  variants: []
+description: null
+enabled-by: true
+index-entries: []
+interface-type: function
+links:
+- role: interface-placement
+  uid: header-5
+- role: interface-ingroup
+  uid: group-print-support-rtems
+- role: constraint
+  uid: /constraint/directive-not-pre-qualified
+- role: constraint
+  uid: /constraint/directive-ctx-any
+- role: constraint
+  uid: /constraint/directive-no-preempt
+name: rtems_print_printer_valid
+notes: null
+params:
+- description: |
+    is the printer to check.
+  dir: in
+  name: printer
+return:
+  return: |
+    Returns true, if the printer is not ${/c/if/null:/name} and the printer handler
+    of the printer is not ${/c/if/null:/name}, otherwise false.
+  return-values: []
+type: interface

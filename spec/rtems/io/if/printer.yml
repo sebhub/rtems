@@ -27,7 +27,7 @@ index-entries: []
 interface-type: struct
 links:
 - role: interface-placement
-  uid: header-4
+  uid: header-5
 - role: interface-ingroup
   uid: group-print-support-rtems
 name: rtems_printer
