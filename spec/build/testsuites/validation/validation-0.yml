@@ -16,6 +16,7 @@ source:
 - testsuites/validation/tc-mem-posix-memalign.c
 - testsuites/validation/tc-mem-rtems-calloc.c
 - testsuites/validation/tc-mem-rtems-malloc.c
+- testsuites/validation/tc-stackchk-is-blown.c
 - testsuites/validation/tc-thread-idle-body-no-return.c
 - testsuites/validation/tr-event-send-receive.c
 - testsuites/validation/ts-validation-0.c
