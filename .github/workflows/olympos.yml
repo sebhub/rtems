@@ -32,7 +32,7 @@ env:
   BRANCH: ${{ github.event.pull_request.base.ref || github.ref_name }}
   # A push writes the build, test log and workspace entries of its branch.
   SAVE_BRANCH_CACHE: ${{ github.event_name == 'push' }}
-  # Only a push to eb/main writes the uv cache entry and tools packages.
+  # Only a push to eb/main writes the uv and tools packages.
   SAVE_CACHE: ${{ github.event_name == 'push' && github.ref == 'refs/heads/eb/main' }}
   TOOLS_PACKAGE: ghcr.io/${{ github.repository_owner }}/rtems-tools
   # Each architecture keeps this number of tools package versions.
@@ -42,6 +42,9 @@ jobs:
     name: Argos
     if: ${{ github.event_name == 'pull_request' && (github.event.action != 'edited' || github.event.changes.base) }}
     runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: read
     timeout-minutes: 15
     steps:
     - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
@@ -64,14 +67,6 @@ jobs:
       uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
       with:
         python-version: "3.12"
-    - name: Set up uv
-      uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
-      with:
-        enable-cache: true
-        save-cache: false
-        version: 0.11.9
-    - name: Install the tools
-      run: uv sync --frozen
     - name: Determine the base
       id: base
       # A value of the event is bound to the environment and never expanded
@@ -83,6 +78,13 @@ jobs:
         base="$(git merge-base "${BASE_SHA}" HEAD)"
         echo "base commit: ${base}"
         echo "sha=${base}" >>"${GITHUB_OUTPUT}"
+    - name: Set up uv
+      # The export of all items of the base uses the lock file of the base.
+      uses: ./.github/actions/fetch-uv
+      with:
+        commits: HEAD ${{ steps.base.outputs.sha }}
+    - name: Install the tools
+      run: uv sync --frozen
     - name: Restore the export result of the base
       # Themis saves the entry.  On a miss, the inspection exports all items
       # of the base with the tools which the base pins.
@@ -151,14 +153,6 @@ jobs:
       uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
       with:
         python-version: "3.12"
-    - name: Set up uv
-      # All jobs share one uv cache key.  One job saves the cache, so the
-      # parallel jobs do not compete for the key.
-      uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
-      with:
-        enable-cache: true
-        save-cache: ${{ matrix.arch == 'sparc' && env.SAVE_CACHE == 'true' }}
-        version: 0.11.9
     - name: Identify the tools
       id: tools
       # The tag names the operating system of the runner image, the
@@ -184,6 +178,13 @@ jobs:
           2) echo "found=false" >>"${GITHUB_OUTPUT}" ;;
           *) exit 1 ;;
         esac
+    - name: Set up uv
+      # The tools build needs uv.  The sparc job of a push to eb/main
+      # publishes the uv package version.
+      if: ${{ steps.lookup.outputs.found != 'true' || (matrix.arch == 'sparc' && env.SAVE_CACHE == 'true') }}
+      uses: ./.github/actions/fetch-uv
+      with:
+        publish: ${{ matrix.arch == 'sparc' && env.SAVE_CACHE == 'true' }}
     - name: Build tools
       # A step which exceeds its timeout fails, while a job which exceeds its
       # timeout is cancelled.  The step timeouts of all jobs stay below the
@@ -316,11 +317,7 @@ jobs:
       with:
         python-version: "3.12"
     - name: Set up uv
-      uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
-      with:
-        enable-cache: true
-        save-cache: false
-        version: 0.11.9
+      uses: ./.github/actions/fetch-uv
     - name: Identify the tools
       id: tools
       # As in Hephaistos.
@@ -456,11 +453,7 @@ jobs:
       with:
         python-version: "3.12"
     - name: Set up uv
-      uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
-      with:
-        enable-cache: true
-        save-cache: false
-        version: 0.11.9
+      uses: ./.github/actions/fetch-uv
     - name: Identify the tools
       id: tools
       # As in Hephaistos.
@@ -622,11 +615,7 @@ jobs:
       with:
         python-version: "3.12"
     - name: Set up uv
-      uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
-      with:
-        enable-cache: true
-        save-cache: false
-        version: 0.11.9
+      uses: ./.github/actions/fetch-uv
     - name: Identify the tools
       id: tools
       # As in Hephaistos.
