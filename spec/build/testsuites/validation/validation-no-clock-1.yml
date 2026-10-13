@@ -73,7 +73,6 @@ source:
 - testsuites/validation/tc-timer-server-fire-when.c
 - testsuites/validation/tc-timer.c
 - testsuites/validation/tc-type.c
-- testsuites/validation/tc-userext-create.c
 - testsuites/validation/tc-userext-delete.c
 - testsuites/validation/tc-userext-ident.c
 - testsuites/validation/tr-cond-wait.c

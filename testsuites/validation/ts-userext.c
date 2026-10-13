@@ -89,6 +89,8 @@ const char rtems_test_name[] = "TestsuitesUserext";
 
 #define CONFIGURE_IDLE_TASK_BODY IdleBody
 
+#define CONFIGURE_STACK_CHECKER_ENABLED
+
 #include "ts-default.h"
 
 /** @} */

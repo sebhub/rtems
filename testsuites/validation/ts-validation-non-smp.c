@@ -52,6 +52,8 @@ const char rtems_test_name[] = "TestsuitesValidationNonSmp";
 
 #define CONFIGURE_MAXIMUM_PROCESSORS 1
 
+#define CONFIGURE_STACK_CHECKER_ENABLED
+
 #include "ts-default.h"
 
 /** @} */

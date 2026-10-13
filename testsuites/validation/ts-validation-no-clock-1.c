@@ -65,6 +65,8 @@ const char rtems_test_name[] = "TestsuitesValidationNoClock1";
 
 #define CONFIGURE_INIT_TASK_STACK_SIZE TEST_INIT_TASK_STACK_SIZE
 
+#define CONFIGURE_STACK_CHECKER_ENABLED
+
 #include "ts-default.h"
 
 /** @} */

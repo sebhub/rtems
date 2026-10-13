@@ -60,6 +60,8 @@ const char rtems_test_name[] = "TestsuitesFatalTooLargeTlsSize";
 #define CONFIGURE_MAXIMUM_THREAD_LOCAL_STORAGE_SIZE \
   RTEMS_TASK_STORAGE_ALIGNMENT
 
+#define CONFIGURE_STACK_CHECKER_ENABLED
+
 #include "ts-fatal-sysinit.h"
 
 /** @} */

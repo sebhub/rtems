@@ -55,6 +55,8 @@ const char rtems_test_name[] = "TestsuitesValidationCache";
 
 #define CONFIGURE_MAXIMUM_PROCESSORS 4
 
+#define CONFIGURE_STACK_CHECKER_ENABLED
+
 #include "ts-default.h"
 
 /** @} */

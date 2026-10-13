@@ -59,6 +59,8 @@ const char rtems_test_name[] = "TestsuitesValidationNoClock0";
 
 #define CONFIGURE_APPLICATION_DOES_NOT_NEED_CLOCK_DRIVER
 
+#define CONFIGURE_STACK_CHECKER_ENABLED
+
 #include "ts-default.h"
 
 /** @} */
