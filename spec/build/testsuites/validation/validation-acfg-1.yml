@@ -18,6 +18,7 @@ source:
 - testsuites/validation/tc-pthread-getname-np.c
 - testsuites/validation/tc-pthread-setname-np.c
 - testsuites/validation/tc-stackchk-iterate.c
+- testsuites/validation/tc-stackchk-report-usage-with-plugin.c
 - testsuites/validation/tc-stackchk-visit.c
 - testsuites/validation/tc-userext-create.c
 - testsuites/validation/ts-validation-acfg-1.c
