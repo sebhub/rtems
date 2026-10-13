@@ -1,0 +1,15 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+term: used stack area
+text: |
+  The used stack area of a ${stack:/term} is the part of the
+  ${allocatedstackarea:/term} from its begin to the current
+  ${stackpointer:/term}. The begin is the end of the ${allocatedstackarea:/term}
+  opposite to the direction of stack growth.
+type: glossary

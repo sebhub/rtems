@@ -1,0 +1,15 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+term: free stack area
+text: |
+  The free stack area of a ${stack:/term} is the part of the
+  ${allocatedstackarea:/term} from the current ${stackpointer:/term} to the end
+  of the ${allocatedstackarea:/term} in the direction of stack growth. It
+  excludes the ${stackcheckerpatternarea:/term}.
+type: glossary

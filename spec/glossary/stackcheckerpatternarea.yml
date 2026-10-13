@@ -1,0 +1,16 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+term: stack checker pattern area
+text: |
+  The stack checker pattern area of a ${stack:/term} is the end of the
+  ${allocatedstackarea:/term} in the direction of stack growth. The stack checker
+  writes a pattern to it. A stack checker pattern area which no longer holds the
+  pattern indicates a stack overflow. The area exists only where the application
+  configuration option ${/acfg/if/stack-checker-enabled:/name} is defined.
+type: glossary

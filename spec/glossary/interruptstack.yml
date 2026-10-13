@@ -1,0 +1,13 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+term: interrupt stack
+text: |
+  The interrupt stack of a processor is the ${stack:/term} which the processor
+  uses for interrupt processing.
+type: glossary
