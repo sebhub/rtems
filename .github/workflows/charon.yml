@@ -42,6 +42,7 @@ concurrency:
   cancel-in-progress: false
 permissions:
   contents: write
+  packages: read
   pull-requests: write
 env:
   LABEL: rtems.org ready
@@ -130,34 +131,39 @@ jobs:
       uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
       with:
         python-version: "3.12"
+    - name: Determine the base
+      id: base
+      run: |
+        echo "sha=$(git merge-base "origin/${PR_BASE}" charon-head)" >>"${GITHUB_OUTPUT}"
     - name: Set up uv
-      uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
+      # The export of all items of the base uses the lock file of the base.
+      uses: ./.github/actions/fetch-uv
       with:
-        enable-cache: true
-        version: 0.11.9
+        commits: HEAD ${{ steps.base.outputs.sha }}
     - name: Install the tools
       run: uv sync --frozen
     - name: Inspect the changes
       # Inspect again rather than trust the earlier Olympos run: that run
       # inspected the head as it was then.
       env:
+        BASE_SHA: ${{ steps.base.outputs.sha }}
         REPOSITORY_URL: ${{ github.event.repository.html_url }}
       run: |
-        base="$(git merge-base "origin/${PR_BASE}" charon-head)"
         make check-commits \
-          BASE="${base}" \
+          BASE="${BASE_SHA}" \
           HEAD_REF=charon-head \
           REPOSITORY_URL="${REPOSITORY_URL}" \
           INSPECT_OPTIONS="--upstream-ref=${MIRROR} --output=${RUNNER_TEMP}/${REPORT_NAME}"
     - name: Extract the upstreamable commits
       id: extract
+      env:
+        BASE_SHA: ${{ steps.base.outputs.sha }}
       run: |
-        base="$(git merge-base "origin/${PR_BASE}" charon-head)"
         uv run ./.github/extract_changes.py \
           --upstream-ref="${MIRROR}" \
           --branch="rtems.org/pr-${PR}" \
           --output="${RUNNER_TEMP}/${REPORT_NAME}" \
-          "${base}" charon-head
+          "${BASE_SHA}" charon-head
     - name: Push the upstreaming branch
       env:
         GH_TOKEN: ${{ github.token }}
