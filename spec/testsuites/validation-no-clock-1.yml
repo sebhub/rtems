@@ -22,6 +22,8 @@ test-code: |
 
   #define CONFIGURE_INIT_TASK_STACK_SIZE TEST_INIT_TASK_STACK_SIZE
 
+  #define CONFIGURE_STACK_CHECKER_ENABLED
+
   #include "ts-default.h"
 test-description: |
   In SMP configurations, up to three scheduler instances using the SMP EDF

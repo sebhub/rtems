@@ -26,6 +26,8 @@ test-code: |
 
   #define FATAL_SYSINIT_INITIAL_EXTENSION { .thread_create = CreateTask }
 
+  #define CONFIGURE_STACK_CHECKER_ENABLED
+
   #include "ts-fatal-sysinit.h"
 test-description: null
 test-includes: []

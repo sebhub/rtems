@@ -68,6 +68,8 @@ test-support: |
 
   #define CONFIGURE_RTEMS_INIT_TASKS_TABLE
 
+  #define CONFIGURE_STACK_CHECKER_ENABLED
+
   #define CONFIGURE_IDLE_TASK_STORAGE_SIZE RTEMS_MINIMUM_STACK_SIZE
 test-target: testsuites/validation/ts-fatal-init-task-create-failed.c
 text: |
