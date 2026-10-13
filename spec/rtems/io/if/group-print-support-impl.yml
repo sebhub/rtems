@@ -1,0 +1,20 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This group contains the print support implementation.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+description: null
+enabled-by: true
+identifier: RTEMSImplPrintSupport
+index-entries: []
+interface-type: group
+links:
+- role: interface-placement
+  uid: header-5
+- role: interface-ingroup
+  uid: /req/impl
+name: Print Support
+text: |
+  The ${group-print-support-impl:/name} shall provide an interface group
+  containing the print support implementation.
+type: interface

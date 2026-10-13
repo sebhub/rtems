@@ -1,14 +1,35 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 brief: |
-  This header file defines the printer API.
+  This header file provides the printer interfaces of the user print support.
 copyrights:
 - Copyright (C) 2026 embedded brains GmbH & Co. KG
+- Copyright (C) 2016 Chris Johns
+description: |
+  This include file defines the user interface to kernel print methods.
 enabled-by: true
 index-entries: []
 interface-type: header-file
 links:
 - role: interface-placement
-  uid: /score/if/domain
+  uid: /if/domain
+- enabled-by: true
+  role: interface-include
+  uid: header-4
+- enabled-by: true
+  role: interface-include
+  uid: /rtems/chain/if/header
+- enabled-by: true
+  role: interface-include
+  uid: /rtems/intr/if/header
+- enabled-by: true
+  role: interface-include
+  uid: /rtems/task/if/header
+- enabled-by: true
+  role: interface-include
+  uid: /c/if/stdio
+- enabled-by: true
+  role: interface-include
+  uid: /c/string/if/header
 - role: interface-ingroup
   uid: group-print-support-rtems
 path: rtems/printer.h

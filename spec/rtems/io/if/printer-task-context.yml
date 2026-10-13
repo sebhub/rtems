@@ -1,0 +1,104 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This structure provides the context of a printer task.
+copyrights:
+- Copyright (C) 2016, 2026 embedded brains GmbH & Co. KG
+definition:
+- default:
+    brief: |
+      This member contains the identifier of the printer task.
+    definition: ${/rtems/type/if/id:/name} ${.:name}
+    description: null
+    kind: member
+    name: task
+  variants: []
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member provides the lock which protects the buffer chains.
+      definition: ${/rtems/intr/if/lock:/name} ${.:name}
+      description: null
+      kind: member
+      name: lock
+    enabled-by: ${/score/isr/if/lock-needs-object:/name}
+- default:
+    brief: |
+      This member contains the chain of free buffers.
+    definition: ${/rtems/chain/if/control:/name} ${.:name}
+    description: null
+    kind: member
+    name: free_buffers
+  variants: []
+- default:
+    brief: |
+      This member contains the work queue of buffers which the printer task writes.
+    definition: ${/rtems/chain/if/control:/name} ${.:name}
+    description: null
+    kind: member
+    name: todo_buffers
+  variants: []
+- default:
+    brief: |
+      This member contains the task stack size of the printer task.
+    definition: ${/c/if/size_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: task_stack_size
+  variants: []
+- default:
+    brief: |
+      This member contains the task priority of the printer task.
+    definition: ${/rtems/type/if/priority:/name} ${.:name}
+    description: null
+    kind: member
+    name: task_priority
+  variants: []
+- default:
+    brief: |
+      This member contains the file descriptor to which the printer task writes the
+      output.
+    definition: int ${.:name}
+    description: null
+    kind: member
+    name: fd
+  variants: []
+- default:
+    brief: |
+      This member references the begin of the buffer table.
+    definition: void *${.:name}
+    description: null
+    kind: member
+    name: buffer_table
+  variants: []
+- default:
+    brief: |
+      This member contains the count of buffers in the buffer table.
+    definition: ${/c/if/size_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: buffer_count
+  variants: []
+- default:
+    brief: |
+      This member contains the size in bytes of one buffer.
+    definition: ${/c/if/size_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: buffer_size
+  variants: []
+definition-kind: typedef-only
+description: |
+  Use ${printer-task-initialize:/name} and the setter directives to set up the
+  context.
+enabled-by: true
+index-entries: []
+interface-type: struct
+links:
+- role: interface-placement
+  uid: header-5
+- role: interface-ingroup
+  uid: group-print-support-rtems
+name: rtems_printer_task_context
+notes: null
+type: interface

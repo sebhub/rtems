@@ -1,0 +1,45 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Sets the task priority of the printer task context.
+copyrights:
+- Copyright (C) 2016, 2026 embedded brains GmbH & Co. KG
+definition:
+  default:
+    attributes: null
+    body: |
+      ${.:/params[0]/name}->task_priority = ${.:/params[1]/name};
+    params:
+    - ${printer-task-context:/name} *${.:/params[0]/name}
+    - ${/rtems/type/if/priority:/name} ${.:/params[1]/name}
+    return: void
+  variants: []
+description: null
+enabled-by: true
+index-entries: []
+interface-type: function
+links:
+- role: interface-placement
+  uid: header-5
+- role: interface-ingroup
+  uid: group-print-support-rtems
+- role: constraint
+  uid: /constraint/directive-not-pre-qualified
+- role: constraint
+  uid: /constraint/directive-ctx-any
+- role: constraint
+  uid: /constraint/directive-no-preempt
+name: rtems_printer_task_set_priority
+notes: null
+params:
+- description: |
+    is the printer task context.
+  dir: out
+  name: context
+- description: |
+    is the task priority of the printer task.
+  dir: in
+  name: priority
+return:
+  return: null
+  return-values: []
+type: interface

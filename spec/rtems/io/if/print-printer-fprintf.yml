@@ -1,0 +1,45 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Initializes the printer to print through fprintf() to the file stream.
+copyrights:
+- Copyright (C) 2017, 2026 embedded brains GmbH & Co. KG
+- Copyright (C) 2016 Chris Johns
+definition:
+  default:
+    attributes: null
+    body: null
+    params:
+    - ${printer-type:/name} *${.:/params[0]/name}
+    - ${/c/if/file:/name} *${.:/params[1]/name}
+    return: void
+  variants: []
+description: null
+enabled-by: true
+index-entries: []
+interface-type: function
+links:
+- role: interface-placement
+  uid: header-5
+- role: interface-ingroup
+  uid: group-print-support-rtems
+- role: constraint
+  uid: /constraint/directive-not-pre-qualified
+- role: constraint
+  uid: /constraint/directive-ctx-any
+- role: constraint
+  uid: /constraint/directive-no-preempt
+name: rtems_print_printer_fprintf
+notes: null
+params:
+- description: |
+    is the printer to initialize.
+  dir: out
+  name: printer
+- description: |
+    is the file stream of the output.
+  dir: in
+  name: file
+return:
+  return: null
+  return-values: []
+type: interface
