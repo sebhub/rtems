@@ -120,6 +120,8 @@ links:
 - role: validation
   uid: /score/interr/if/source-spurious-interrupt
 - role: validation
+  uid: /score/interr/if/source-stack-checker
+- role: validation
   uid: /score/interr/if/thread-exitted
 - role: validation
   uid: /score/interr/if/thread-queue-deadlock

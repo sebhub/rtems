@@ -1,0 +1,78 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This structure provides the information of a stack.
+copyrights:
+- Copyright (C) 2022, 2026 embedded brains GmbH & Co. KG
+- Copyright (C) 2024 Mohamed Hassan
+definition:
+- default:
+    brief: |
+      This member contains the object identifier of the thread which uses the stack.
+    definition: ${/rtems/type/if/id:/name} ${.:name}
+    description: |
+      For an interrupt stack, the member contains the processor index.
+    kind: member
+    name: id
+  variants: []
+- default:
+    brief: |
+      This member references the name of the object which uses the stack.
+    definition: const char *${.:name}
+    description: |
+      For an interrupt stack, the member references the string "Interrupt Stack".
+    kind: member
+    name: name
+  variants: []
+- default:
+    brief: |
+      This member references the begin of the ${/glossary/allocatedstackarea:/term}
+      without the ${/glossary/stackcheckerpatternarea:/term}.
+    definition: const void *${.:name}
+    description: null
+    kind: member
+    name: begin
+  variants: []
+- default:
+    brief: |
+      This member contains the size in bytes of the
+      ${/glossary/allocatedstackarea:/term} without the
+      ${/glossary/stackcheckerpatternarea:/term}.
+    definition: ${/c/if/uintptr_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: size
+  variants: []
+- default:
+    brief: |
+      This member references the ${/glossary/stackpointer:/term} of the stack.
+    definition: const void *${.:name}
+    description: |
+      For a thread, the member contains the stack pointer of the saved thread
+      context. For an interrupt stack, the member is ${/c/if/null:/name}.
+    kind: member
+    name: current
+  variants: []
+- default:
+    brief: |
+      This member contains the maximum size in bytes which the
+      ${/glossary/usedstackarea:/term} reached.
+    definition: ${/c/if/uintptr_t:/name} ${.:name}
+    description: |
+      In case the stack checker is not initialized, the member is
+      ${/c/if/uintptr_max:/name}.
+    kind: member
+    name: used
+  variants: []
+definition-kind: typedef-only
+description: null
+enabled-by: true
+index-entries: []
+interface-type: struct
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+name: rtems_stack_checker_info
+notes: null
+type: interface

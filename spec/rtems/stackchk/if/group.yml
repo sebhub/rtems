@@ -1,0 +1,21 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  The stack checker directives can be used to check the stack of the executing
+  thread and to report the stack usage of the threads and the interrupt stacks.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+description: null
+enabled-by: true
+identifier: RTEMSAPIStackChecker
+index-entries: []
+interface-type: group
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: /rtems/if/group
+name: Stack Checker
+text: |
+  The ${group:/name} shall provide an interface group containing functions to
+  check the stack of the executing thread and to report the stack usage.
+type: interface

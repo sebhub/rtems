@@ -1,0 +1,79 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Reports the stack usage of the threads and the interrupt stacks using the
+  printer plugin.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+- Copyright (C) 2016 Chris Johns
+- Copyright (C) 2007, 2008 On-Line Applications Research Corporation (OAR)
+definition:
+  default:
+    attributes: null
+    body: null
+    params:
+    - const ${/rtems/io/if/printer-type:/name} *${.:/params[0]/name}
+    return: void
+  variants: []
+description: |
+  The directive outputs the report through the printer. Each line of the report
+  ends with a newline character. The first line holds the title of the report.
+  The second line holds the column titles ID, NAME, LOW, HIGH, CURRENT, AVAIL and
+  USED.
+
+  Each further line describes one stack which ${iterate:/name} visits, in the
+  order of the visits. One space character separates two fields of the line. The
+  fields are the following:
+
+  - the ${info:/definition[0]/default/name} member as `0x` followed by
+    hexadecimal digits padded on the left with zeros to eight digits,
+
+  - the ${info:/definition[1]/default/name} member padded on the right with space
+    characters to 21 characters,
+
+  - the ${info:/definition[2]/default/name} member as `0x` followed by
+    hexadecimal digits padded on the left with zeros to eight digits,
+
+  - the address of the last byte of the area which the
+    ${info:/definition[2]/default/name} and ${info:/definition[3]/default/name}
+    members describe as `0x` followed by hexadecimal digits padded on the left
+    with zeros to eight digits,
+
+  - the ${info:/definition[4]/default/name} member as `0x` followed by
+    hexadecimal digits padded on the left with zeros to eight digits,
+
+  - the ${info:/definition[3]/default/name} member as a decimal number padded
+    with space characters to six characters, and
+
+  - the ${info:/definition[5]/default/name} member as a decimal number padded
+    with space characters to six characters, or `N/A` where the member is
+    ${/c/if/uintptr_max:/name}.
+
+  A hexadecimal digit is a digit or a lower case letter. A decimal number is
+  padded on the left. A field of a member which exceeds the size takes the digits
+  or characters which it needs.
+enabled-by: true
+index-entries: []
+interface-type: function
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+- role: constraint
+  uid: /constraint/directive-ctx-devinit
+- role: constraint
+  uid: /constraint/directive-ctx-task
+- role: constraint
+  uid: /constraint/object-allocator
+name: rtems_stack_checker_report_usage_with_plugin
+notes: |
+  See also ${report-usage:/name}.
+params:
+- description: |
+    is the printer plugin to output the report.
+  dir: null
+  name: printer
+return:
+  return: null
+  return-values: []
+type: interface
