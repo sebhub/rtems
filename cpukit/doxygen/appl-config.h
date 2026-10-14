@@ -3723,12 +3723,6 @@
  * If this configuration option is undefined, then the described feature is not
  * enabled.
  *
- * @par Constraints
- * The configuration option is not included in the pre-qualified feature set of
- * RTEMS. Applications which are restricted to only use interfaces of the
- * pre-qualified feature set of RTEMS shall not use the application
- * configuration option.
- *
  * @par Notes
  * @parblock
  * The stack checker performs run-time stack bounds checking. This increases

@@ -26,6 +26,7 @@ links:
   uid: objnobuiltin
 source:
 - testsuites/validation/tc-acfg-max-thread-name-size.c
+- testsuites/validation/tc-acfg-stack-checker-enabled.c
 - testsuites/validation/tc-acfg.c
 - testsuites/validation/tc-attr.c
 - testsuites/validation/tc-barrier-create.c
