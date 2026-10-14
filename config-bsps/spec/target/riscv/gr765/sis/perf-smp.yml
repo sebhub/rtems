@@ -365,17 +365,17 @@ links:
       max-upper-bound: 3.3e-06
       median-lower-bound: 2.7e-06
       median-upper-bound: 3.3e-06
-      min-lower-bound: 2.7e-06
+      min-lower-bound: 1.8e-06
     Load/2:
       max-upper-bound: 3.3e-06
       median-lower-bound: 2.7e-06
       median-upper-bound: 3.3e-06
-      min-lower-bound: 2.7e-06
+      min-lower-bound: 1.8e-06
     Load/3:
       max-upper-bound: 3.3e-06
       median-lower-bound: 2.7e-06
       median-upper-bound: 3.3e-06
-      min-lower-bound: 2.7e-06
+      min-lower-bound: 1.8e-06
     Load/4:
       max-upper-bound: 3.3e-06
       median-lower-bound: 2.7e-06
