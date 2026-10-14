@@ -1,0 +1,112 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+links: []
+test-actions:
+- action-brief: |
+    Visit the stacks of the threads and the ${/glossary/interruptstack:/term} of
+    each processor owned by a scheduler.
+  action-code: |
+    Visitor visitor;
+
+    memset( &visitor, 0, sizeof( visitor ) );
+    visitor.self = rtems_task_self();
+    rtems_stack_checker_iterate( Visit, &visitor );
+  checks:
+  - brief: |
+      Check that the stack usage of the executing thread is known.
+    code: |
+      T_step_eq_sz( ${.:/step}, visitor.self_count, 1 );
+      T_step_gt_uptr( ${.:/step}, visitor.self_used, 0 );
+      T_step_le_uptr( ${.:/step}, visitor.self_used, visitor.self_size );
+    links:
+    - role: validation
+      uid: ../req/stack-checker-enabled
+  - brief: |
+      Check that the ${/glossary/interruptstack:/term} of each processor owned by a
+      scheduler was visited.
+    code: |
+      T_step_eq_u32( ${.:/step}, visitor.interrupt_count, CountOwnedProcessors() );
+    links:
+    - role: validation
+      uid: ../req/stack-checker-enabled
+  links: []
+- action-brief: |
+    Check the stack of the executing thread.
+  action-code: |
+    bool blown;
+
+    blown = rtems_stack_checker_is_blown();
+  checks:
+  - brief: |
+      Check that the stack checker found no problem.
+    code: |
+      T_step_false( ${.:/step}, blown );
+    links:
+    - role: validation
+      uid: ../req/stack-checker-enabled
+  links: []
+test-brief: |
+  Tests the effect of the ${../if/stack-checker-enabled:/name} application
+  configuration option.
+test-context: []
+test-context-support: null
+test-description: null
+test-header: null
+test-includes:
+- rtems.h
+- rtems/stackchk.h
+- string.h
+test-local-includes: []
+test-setup: null
+test-stop: null
+test-support: |
+  typedef struct {
+    rtems_id  self;
+    size_t    self_count;
+    uintptr_t self_used;
+    size_t    self_size;
+    uint32_t  interrupt_count;
+  } Visitor;
+
+  static uint32_t CountOwnedProcessors( void )
+  {
+    uint32_t cpu_index;
+    uint32_t cpu_max;
+    uint32_t count;
+
+    cpu_max = rtems_scheduler_get_processor_maximum();
+    count = 0;
+
+    for ( cpu_index = 0; cpu_index < cpu_max; ++cpu_index ) {
+      rtems_status_code sc;
+      rtems_id          id;
+
+      sc = rtems_scheduler_ident_by_processor( cpu_index, &id );
+
+      if ( sc == RTEMS_SUCCESSFUL ) {
+        ++count;
+      }
+    }
+
+    return count;
+  }
+
+  static void Visit( const rtems_stack_checker_info *info, void *arg )
+  {
+    Visitor *visitor;
+
+    visitor = arg;
+
+    if ( info->current == NULL ) {
+      ++visitor->interrupt_count;
+    } else if ( info->id == visitor->self ) {
+      ++visitor->self_count;
+      visitor->self_used = info->used;
+      visitor->self_size = info->size;
+    }
+  }
+test-target: testsuites/validation/tc-acfg-stack-checker-enabled.c
+test-teardown: null
+type: test-case

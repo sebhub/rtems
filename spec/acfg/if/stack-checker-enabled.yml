@@ -13,8 +13,6 @@ links:
   uid: domain
 - role: interface-ingroup
   uid: group-general
-- role: constraint
-  uid: ../constraint/option-not-pre-qualified
 name: CONFIGURE_STACK_CHECKER_ENABLED
 notes: |
   The stack checker performs run-time stack bounds checking. This increases the
