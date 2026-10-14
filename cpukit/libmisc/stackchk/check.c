@@ -51,6 +51,7 @@
 #include <rtems/bspIo.h>
 #include <rtems/printer.h>
 #include <rtems/stackchk.h>
+#include <rtems/stackchkimpl.h>
 #include <rtems/sysinit.h>
 #include <rtems/score/address.h>
 #include <rtems/score/percpu.h>

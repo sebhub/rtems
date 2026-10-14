@@ -89,6 +89,7 @@ install:
   - cpukit/include/rtems/seterr.h
   - cpukit/include/rtems/scheduler.h
   - cpukit/include/rtems/stackchk.h
+  - cpukit/include/rtems/stackchkimpl.h
   - cpukit/include/rtems/sysinit.h
   - cpukit/include/rtems/timecounter.h
   - cpukit/include/rtems/thread.h
