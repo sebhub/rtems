@@ -97,7 +97,7 @@
 #endif
 
 #ifdef CONFIGURE_STACK_CHECKER_ENABLED
-  #include <rtems/stackchk.h>
+  #include <rtems/stackchkimpl.h>
 #endif
 
 #ifdef CONFIGURE_EXCEPTION_TO_SIGNAL_MAPPING

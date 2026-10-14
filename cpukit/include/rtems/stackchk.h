@@ -51,14 +51,6 @@ extern "C" {
 #endif
 
 /**
- * @defgroup RTEMSImplStackChecker Stack Checker
- *
- * @ingroup RTEMSImpl
- *
- * @brief This group contains the stack checker implementation.
- */
-
-/**
  * @brief Checks if current task is blown its stack.
  *
  * This method is used to determine if the current stack pointer
@@ -171,117 +163,6 @@ void rtems_stack_checker_iterate(
   rtems_stack_checker_visitor visit,
   void                       *arg
 );
-
-/*************************************************************
- *************************************************************
- **  Prototyped only so the user extension can be installed **
- *************************************************************
- *************************************************************/
-
-/**
- * @brief Stack Checker Task Create Extension
- *
- * This method is the task create extension for the stack checker.
- *
- * @param[in] running points to the currently executing task
- *
- * @param[in] the_thread points to the newly created task
- *
- * @note If this this the first task created, the stack checker
- *       will automatically intialize itself.
- */
-bool rtems_stack_checker_create_extension(
-  rtems_tcb *running,
-  rtems_tcb *the_thread
-);
-
-void rtems_stack_checker_begin_extension( rtems_tcb *executing );
-
-/**
- * @brief Stack Checker Task Context Switch Extension
- *
- * This method is the task context switch extension for the stack checker.
- *
- * @param[in] running points to the currently executing task which
- *                    is being context switched out
- *
- * @param[in] heir points to the heir task which we are switching to
- *
- * @note This is called from the internal method _Thread_Dispatch.
- */
-void rtems_stack_checker_switch_extension(
-  rtems_tcb *running,
-  rtems_tcb *heir
-);
-
-/**
- * @brief A Quiet Version of Stack Checker Reporter.
- *
- * @param[in] running running points to the currently executing thread which
- *                    is being context switched out.
- *
- * @param[in] pattern_ok bool variable to check if the pattern is
- *                       still valid or not
- */
-
-void rtems_stack_checker_reporter_quiet(
-  const rtems_tcb *running,
-  bool             pattern_ok
-);
-
-/**
- * @brief The Default Function to Report a Blown Stack.
- *
- * @param[in] running running points to the currently executing thread which
- *                    is being context switched out.
- *
- * @param[in] pattern_ok bool variable to check if the pattern is
- *                       still valid or not
- */
-void rtems_stack_checker_reporter_print_details(
-  const rtems_tcb *running,
-  bool             pattern_ok
-);
-
-/**
- *  @brief Stack Checker Extension Set Definition
- *
- *  This macro defines the user extension handler set for the stack
- *  checker. This macro is normally only used by confdefs.h.
- */
-#define RTEMS_STACK_CHECKER_EXTENSION                              \
-  {                                                                \
-    rtems_stack_checker_create_extension, /* rtems_task_create  */ \
-    0,                                    /* rtems_task_start   */ \
-    0,                                    /* rtems_task_restart */ \
-    0,                                    /* rtems_task_delete  */ \
-    rtems_stack_checker_switch_extension, /* task_switch  */       \
-    rtems_stack_checker_begin_extension,  /* task_begin   */       \
-    0,                                    /* task_exitted */       \
-    0,                                    /* fatal        */       \
-    0                                     /* terminate    */       \
-  }
-
-/**
- * @brief The Stack Checker Reporter Initialization Handler.
- *
- * @param[in] running running points to the currently executing thread which
- *                    is being context switched out.
- *
- * @param[in] pattern_ok bool variable to check if the pattern is
- *                       still valid or not.
- */
-typedef void ( *Stack_checker_Reporter_handler )(
-  const rtems_tcb *running,
-  bool             pattern_ok
-);
-
-/**
- * @brief The Stack Checker Reporter Initialization Handler.
- *
- * Application provided via <rtems/confdefs.h>
- */
-extern const Stack_checker_Reporter_handler Stack_checker_Reporter;
 
 #ifdef __cplusplus
 }
