@@ -1,0 +1,160 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: fatal-error
+links:
+- role: requirement-refinement
+  uid: /testsuites/validation
+- role: requirement-refinement
+  uid: /req/fatal-error
+- role: requirement-refinement
+  uid: stack-checker-enabled
+- role: interface-function
+  uid: ../if/stack-checker-enabled
+- role: interface-function
+  uid: /score/interr/if/source-stack-checker
+rationale: |
+  The stack checker writes the pattern into the
+  ${/glossary/stackcheckerpatternarea:/term} of each
+  ${/glossary/interruptstack:/term} during the system initialization. It checks
+  the pattern of a processor for the first time when the first thread begins on
+  that processor.
+requirement-type: functional
+test-brief: |
+  This validation test suite contains a test case which triggers the fatal error
+  of the ${/score/interr/if/source-stack-checker:/name} fatal source with the
+  object name built from the characters `INTR` as the fatal code.
+test-case-code: |
+  const Thread_Control *executing;
+  uintptr_t             stack_address;
+  uintptr_t             stack_begin;
+
+  T_eq_int( source, ${/score/interr/if/source-stack-checker:/name} );
+  T_eq_ulong( code, rtems_build_name( 'I', 'N', 'T', 'R' ) );
+
+  executing = _Thread_Get_executing();
+  T_eq_u32(
+    executing->Object.name.name_u32,
+    rtems_build_name( 'T', 'A', 'S', 'K' )
+  );
+
+  stack_address = (uintptr_t) &stack_address;
+  stack_begin = (uintptr_t) executing->Start.Initial_stack.area;
+  T_ge_uptr( stack_address, stack_begin );
+  T_lt_uptr(
+    stack_address,
+    stack_begin + executing->Start.Initial_stack.size
+  );
+test-description: |
+  The first system initialization handler damages the
+  ${/glossary/stackcheckerpatternarea:/term} of the
+  ${/glossary/interruptstack:/term} of processor 0. The second handler starts and
+  suspends a task and raises an interrupt which resumes the task. The interrupt
+  arrives before a thread begins on processor 0. The task preempts the idle
+  thread, so the task is the first thread which begins on processor 0. In
+  uniprocessor configurations, a thread switch from the idle thread to the task
+  precedes this begin. The test case checks that this fatal error occurs in the
+  task and on the stack of the task. The thread switch to the task runs on the
+  stack of the idle thread. The begin extensions of the task run on the stack of
+  the task.
+test-includes:
+- rtems/test-support.h
+- rtems/score/percpu.h
+- rtems/score/threadimpl.h
+test-local-includes: []
+test-support: |
+  static void DamageInterruptStackPattern( void )
+  {
+    const Per_CPU_Control *cpu;
+    uint8_t               *pattern;
+
+    cpu = _Per_CPU_Get_by_index( 0 );
+
+  #if CPU_STACK_GROWS_UP == TRUE
+    pattern = (uint8_t *) cpu->interrupt_stack_high - 1;
+  #else
+    pattern = cpu->interrupt_stack_low;
+  #endif
+
+    *pattern = (uint8_t) ~*pattern;
+  }
+
+  RTEMS_SYSINIT_ITEM(
+    DamageInterruptStackPattern,
+    RTEMS_SYSINIT_IDLE_THREADS,
+    RTEMS_SYSINIT_ORDER_LAST
+  );
+
+  static RTEMS_ALIGNED( RTEMS_TASK_STORAGE_ALIGNMENT ) char task_storage
+    [ RTEMS_TASK_STORAGE_SIZE(
+      RTEMS_MINIMUM_STACK_SIZE,
+      RTEMS_DEFAULT_ATTRIBUTES
+    ) ];
+
+  static const rtems_task_config task_config = {
+    .name = rtems_build_name( 'T', 'A', 'S', 'K' ),
+    .initial_priority = 1,
+    .storage_area = task_storage,
+    .storage_size = sizeof( task_storage ),
+    .maximum_thread_local_storage_size = 0,
+    .initial_modes = RTEMS_DEFAULT_MODES,
+    .attributes = RTEMS_DEFAULT_ATTRIBUTES
+  };
+
+  static rtems_id task_id;
+
+  static CallWithinISRRequest resume_request;
+
+  static void TaskBody( rtems_task_argument arg )
+  {
+    (void) arg;
+  }
+
+  static void Resume( void *arg )
+  {
+    (void) arg;
+    (void) rtems_task_resume( task_id );
+  }
+
+  static void PrepareThreadSwitch( void )
+  {
+    rtems_status_code sc;
+
+    sc = rtems_task_construct( &task_config, &task_id );
+    T_quiet_rsc_success( sc );
+
+    sc = rtems_task_start( task_id, TaskBody, 0 );
+    T_quiet_rsc_success( sc );
+
+    sc = rtems_task_suspend( task_id );
+    T_quiet_rsc_success( sc );
+
+    resume_request.handler = Resume;
+    CallWithinISRSubmit( &resume_request );
+  }
+
+  RTEMS_SYSINIT_ITEM(
+    PrepareThreadSwitch,
+    RTEMS_SYSINIT_LAST,
+    RTEMS_SYSINIT_ORDER_MIDDLE
+  );
+
+  #define CONFIGURE_APPLICATION_DOES_NOT_NEED_CLOCK_DRIVER
+
+  #define CONFIGURE_STACK_CHECKER_ENABLED
+
+  #define CONFIGURE_MAXIMUM_TASKS 1
+
+  #define CONFIGURE_MINIMUM_TASKS_WITH_USER_PROVIDED_STORAGE 1
+
+  #define CONFIGURE_IDLE_TASK_STORAGE_SIZE RTEMS_MINIMUM_STACK_SIZE
+test-target: testsuites/validation/ts-fatal-stack-checker-interrupt-stack.c
+text: |
+  Where the application was configured with ${../if/stack-checker-enabled:/name},
+  while the ${/glossary/stackcheckerpatternarea:/term} of the
+  ${/glossary/interruptstack:/term} of a processor does not hold the pattern, if
+  the first thread begins on the processor, then the system shall terminate with
+  the ${/score/interr/if/source-stack-checker:/name} fatal source and the object
+  name built from the characters `INTR` as the fatal code.
+type: requirement
