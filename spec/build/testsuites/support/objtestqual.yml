@@ -28,9 +28,6 @@ source:
 - cpukit/posix/src/pspininit.c
 - cpukit/posix/src/pspinlock.c
 - cpukit/posix/src/pspinunlock.c
-- cpukit/sapi/src/cpucounterconverter.c
-- cpukit/sapi/src/delaynano.c
-- cpukit/sapi/src/delayticks.c
 - cpukit/sapi/src/getbuildlabel.c
 - cpukit/sapi/src/version.c
 - cpukit/score/src/hash.c
