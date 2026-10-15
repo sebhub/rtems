@@ -39,6 +39,7 @@
 #define _RTEMS_STACKCHKIMPL_H
 
 #include <rtems.h>
+#include <rtems/score/cpu.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -54,6 +55,45 @@ extern "C" {
  *
  * @{
  */
+
+#if !defined( CPU_STACK_CHECK_PATTERN_INITIALIZER )
+/**
+ * @brief This define provides the initializer of the pattern which marks the
+ *   end of a stack.
+ *
+ * A CPU port may define its own pattern.  The pattern area is a multiple of
+ * four words.
+ */
+#define CPU_STACK_CHECK_PATTERN_INITIALIZER \
+  {                                         \
+    0xFEEDF00D,                             \
+    0x0BAD0D06, /* FEED FOOD to  BAD DOG */ \
+    0xDEADF00D,                             \
+    0x600D0D06 /* DEAD FOOD but GOOD DOG */ \
+  }
+#endif
+
+/**
+ * @brief This define provides the size in bytes of the pattern area.
+ */
+#define STACK_CHECK_PATTERN_SIZE \
+  sizeof( (const uint32_t[]) CPU_STACK_CHECK_PATTERN_INITIALIZER )
+
+/**
+ * @brief Gets the begin of the pattern area of the stack.
+ *
+ * @param _the_stack is the stack control.
+ *
+ * @return Returns the begin of the pattern area.
+ */
+#if CPU_STACK_GROWS_UP == TRUE
+#define _Stack_check_Get_pattern( _the_stack )             \
+  ( (char *) ( _the_stack )->area + ( _the_stack )->size - \
+    STACK_CHECK_PATTERN_SIZE )
+#else
+#define _Stack_check_Get_pattern( _the_stack ) \
+  ( (char *) ( _the_stack )->area )
+#endif
 
 /**
  * @brief Stack Checker Task Create Extension
