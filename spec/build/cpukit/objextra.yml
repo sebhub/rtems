@@ -945,9 +945,6 @@ source:
 - cpukit/sapi/src/chaingetwait.c
 - cpukit/sapi/src/chainprependnotify.c
 - cpukit/sapi/src/chainprotected.c
-- cpukit/sapi/src/cpucounterconverter.c
-- cpukit/sapi/src/delaynano.c
-- cpukit/sapi/src/delayticks.c
 - cpukit/sapi/src/exshutdown.c
 - cpukit/sapi/src/fatal.c
 - cpukit/sapi/src/fatalsrctext.c
