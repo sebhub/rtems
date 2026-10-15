@@ -4,8 +4,6 @@ copyrights:
 enabled-by: bsps/sparc/leon3
 links:
 - role: validation
-  uid: ../req/errata-gr712rc-08
-- role: validation
   uid: ../req/idle-task-power-down
 - role: validation
   uid: ../req/idle-task-power-down-errata

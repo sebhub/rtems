@@ -4,7 +4,7 @@ copyrights:
 enabled-by: sparc/gr712rc
 links:
 - role: requirement-refinement
-  uid: errata-gr712rc-20
+  uid: errata-gr712rc
 non-functional-type: design
 rationale: null
 requirement-type: non-functional

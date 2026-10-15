@@ -4,9 +4,12 @@ copyrights:
 enabled-by: sparc/gr712rc
 links:
 - role: validation
-  uid: ../req/errata-gr712rc-07
+  uid: ../req/errata-gr712rc
+- role: errata-resolution
+  uid: /errata/gaisler/gr712rc/9
 method: by-review-of-design
 text: |
   The errata of the ${/glossary/gr712rc:/term} is not applicable to the software
-  product since it is not responsible to configure the SRAM or PROM memory.
+  product since it assumes that the boot loader correctly configured the memory
+  controller.
 type: validation

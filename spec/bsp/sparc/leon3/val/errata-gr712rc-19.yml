@@ -4,7 +4,9 @@ copyrights:
 enabled-by: sparc/gr712rc
 links:
 - role: validation
-  uid: ../req/errata-gr712rc-19
+  uid: ../req/errata-gr712rc
+- role: errata-resolution
+  uid: /errata/gaisler/gr712rc/19
 - location: bsps/sparc/leon3/include/bsp/leon3.h
   role: reference
   uid: /ref/rtems/source

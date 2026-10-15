@@ -1,6 +1,6 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 copyrights:
-- Copyright (C) 2023 embedded brains GmbH & Co. KG
+- Copyright (C) 2023, 2026 embedded brains GmbH & Co. KG
 enabled-by: sparc/gr740
 links: []
 test-actions:
@@ -9,10 +9,12 @@ test-actions:
   action-code: |
     l2cache *regs;
     uint32_t accc;
+    uint32_t cc;
     uint32_t err;
 
     regs = (l2cache *) LEON3_L2CACHE_BASE;
     accc = grlib_load_32( &regs->l2caccc );
+    cc = grlib_load_32( &regs->l2cc );
     err = grlib_load_32( &regs->l2cerr );
   checks:
   - brief: |
@@ -22,6 +24,10 @@ test-actions:
     links:
     - role: validation
       uid: ../req/l2c-accc-128wf
+    - role: validation
+      uid: ../req/errata-gr740
+    - role: errata-resolution
+      uid: /errata/gaisler/gr740/23-3
   - brief: |
       Check that the bootloader did clear the L2CACCC.DBPF register field.
     code: |
@@ -29,6 +35,21 @@ test-actions:
     links:
     - role: validation
       uid: ../req/l2c-accc-dbpf
+    - role: validation
+      uid: ../req/errata-gr740
+    - role: errata-resolution
+      uid: /errata/gaisler/gr740/23-3
+  - brief: |
+      Check that the bootloader did clear the L2CACCC.FLINE register field.
+    code: |
+      T_eq_u32( accc & L2CACHE_L2CACCC_FLINE, 0 );
+    links:
+    - role: validation
+      uid: ../req/l2c-accc-fline
+    - role: validation
+      uid: ../req/errata-gr740
+    - role: errata-resolution
+      uid: /errata/gaisler/gr740/gr740-um-ds-43-2-15
   - brief: |
       Check that the bootloader did set the L2CACCC.SPLIT register field.
     code: |
@@ -36,6 +57,10 @@ test-actions:
     links:
     - role: validation
       uid: ../req/l2c-accc-split
+    - role: validation
+      uid: ../req/errata-gr740
+    - role: errata-resolution
+      uid: /errata/gaisler/gr740/23-3
   - brief: |
       Check that the bootloader did clear the L2CERR.COMP register field.
     code: |
@@ -43,6 +68,21 @@ test-actions:
     links:
     - role: validation
       uid: ../req/l2c-err-comp
+    - role: validation
+      uid: ../req/errata-gr740
+    - role: errata-resolution
+      uid: /errata/gaisler/gr740/23-3
+  - brief: |
+      Check that the bootloader did set the L2CC.EN register field.
+    code: |
+      T_ne_u32( cc & L2CACHE_L2CC_EN, 0 );
+    links:
+    - role: validation
+      uid: ../req/l2c-cc-en
+    - role: validation
+      uid: ../req/errata-gr740
+    - role: errata-resolution
+      uid: /errata/gaisler/gr740/gr740-um-ds-43-2-16
   links: []
 test-brief: |
   This test case collection provides validation test cases for the `sparc/gr740`

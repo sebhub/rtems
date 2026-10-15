@@ -1,0 +1,18 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: sparc/gr712rc
+links:
+- role: validation
+  uid: ../req/errata-gr712rc
+- role: errata-resolution
+  uid: /errata/gaisler/gr712rc/8
+- location: bsps/sparc/leon3/start/bspidle.S
+  role: reference
+  uid: /ref/rtems/source
+method: by-inspection
+text: |
+  The ${../if/idle-thread:/name} function implements `Workaround 2` of the
+  erratum. Its power-down loop loads from the stack pointer before each write to
+  `%asr19`.
+type: validation
