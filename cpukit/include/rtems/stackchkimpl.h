@@ -51,7 +51,7 @@ extern "C" {
  * @ingroup RTEMSImpl
  *
  * @brief This group contains the implementation of
- *   @ref libmisc_stackchk.
+ *   @ref RTEMSAPIStackChecker.
  *
  * @{
  */
