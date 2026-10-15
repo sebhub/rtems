@@ -1,0 +1,11 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+identifier: 24-1
+links:
+- location: section 43.2.11
+  role: reference
+  uid: /ref/soc/gaisler/gr740/gr740-um-ds-2-10
+title: SDRAM refresh rate calculation formula documentation error
+type: errata

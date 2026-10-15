@@ -1,0 +1,11 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+identifier: 43.2.16
+links:
+- location: section 43.2.16
+  role: reference
+  uid: /ref/soc/gaisler/gr740/gr740-um-ds-2-10
+title: L2 cache incorrect memory data with SPLIT responses enabled and cache disabled
+type: errata

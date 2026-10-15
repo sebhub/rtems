@@ -1,0 +1,14 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+identifier: '16'
+links:
+- location: section 1.7.16
+  role: reference
+  uid: /ref/soc/gaisler/gr712rc/gr712rc-um-2-17
+- role: reference
+  uid: /ref/ip/gaisler/grlib-tn-0012-1-3
+title: Technical Note on GR712RC Incorrect Annulation of Floating-point Operation
+  on Instruction Cache Parity Error
+type: errata
