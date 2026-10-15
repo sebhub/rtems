@@ -1,0 +1,15 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: sparc/gr740
+links:
+- role: validation
+  uid: ../req/errata-gr740
+- role: errata-resolution
+  uid: /errata/gaisler/gr740/24-1
+method: by-analysis
+text: |
+  The software product does not write the SDRAM refresh period. The oscillator
+  and the memory module of the board determine it. The erratum is therefore not
+  applicable to the software product.
+type: validation

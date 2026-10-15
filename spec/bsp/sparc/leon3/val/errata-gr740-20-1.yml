@@ -4,7 +4,9 @@ copyrights:
 enabled-by: sparc/gr740
 links:
 - role: validation
-  uid: ../req/errata-gr740-20-1
+  uid: ../req/errata-gr740
+- role: errata-resolution
+  uid: /errata/gaisler/gr740/20-1
 method: by-analysis
 text: |
   The errata of the ${/glossary/gr740:/term} is not applicable to the software

@@ -1,19 +1,18 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 copyrights:
-- Copyright (C) 2021 embedded brains GmbH & Co. KG
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
 enabled-by: sparc/gr712rc
 links:
 - role: requirement-refinement
   uid: /req/errata
 - role: requirement-refinement
   uid: ../if/group
-- location: 1.7.1
-  role: reference
+- role: reference
   uid: /ref/soc/gaisler/gr712rc/gr712rc-um-2-17
-non-functional-type: design
+non-functional-type: errata-group
 rationale: null
 requirement-type: non-functional
 text: |
-  The software product shall take the errata 1 (FTAHBRAM: On-chip Memory not
-  cacheable) into account.
+  The software product shall take the errata of the ${/glossary/gr712rc:/term}
+  into account.
 type: requirement

@@ -4,13 +4,7 @@ copyrights:
 enabled-by: sparc/gr712rc
 links:
 - role: requirement-refinement
-  uid: errata-gr712rc-13
-- role: requirement-refinement
-  uid: errata-gr712rc-16
-- role: requirement-refinement
-  uid: errata-gr712rc-17
-- role: requirement-refinement
-  uid: errata-gr712rc-20
+  uid: errata-gr712rc
 non-functional-type: design
 rationale: |
   This compiler option enables workarounds for chip errata.

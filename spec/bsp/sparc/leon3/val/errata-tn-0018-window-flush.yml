@@ -4,7 +4,9 @@ copyrights:
 enabled-by: sparc/gr712rc
 links:
 - role: validation
-  uid: ../req/errata-gr712rc-20
+  uid: ../req/errata-gr712rc
+- role: errata-resolution
+  uid: /errata/gaisler/gr712rc/20
 - location: cpukit/score/cpu/sparc/window.S
   role: reference
   uid: /ref/rtems/source

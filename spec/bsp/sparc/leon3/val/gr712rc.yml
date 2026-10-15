@@ -18,6 +18,16 @@ test-actions:
     links:
     - role: validation
       uid: ../req/errata-gr712rc-compiler-fix
+    - role: validation
+      uid: ../req/errata-gr712rc
+    - role: errata-resolution
+      uid: /errata/gaisler/gr712rc/13
+    - role: errata-resolution
+      uid: /errata/gaisler/gr712rc/16
+    - role: errata-resolution
+      uid: /errata/gaisler/gr712rc/17
+    - role: errata-resolution
+      uid: /errata/gaisler/gr712rc/20
   - brief: |
       Check that the compiler built-in define `__FIX_LEON3FT_TN0018` is defined.
     code: |
@@ -27,6 +37,16 @@ test-actions:
     links:
     - role: validation
       uid: ../req/errata-gr712rc-compiler-fix
+    - role: validation
+      uid: ../req/errata-gr712rc
+    - role: errata-resolution
+      uid: /errata/gaisler/gr712rc/13
+    - role: errata-resolution
+      uid: /errata/gaisler/gr712rc/16
+    - role: errata-resolution
+      uid: /errata/gaisler/gr712rc/17
+    - role: errata-resolution
+      uid: /errata/gaisler/gr712rc/20
   - brief: |
       Check that the `SPARC_LEON3FT_B2BST_NOP` define expands to a `nop` instruction.
     code: |
@@ -35,6 +55,10 @@ test-actions:
     links:
     - role: validation
       uid: ../req/errata-b2bst-nop
+    - role: validation
+      uid: ../req/errata-gr712rc
+    - role: errata-resolution
+      uid: /errata/gaisler/gr712rc/13
   links: []
 test-brief: |
   This test case collection provides validation test cases for the

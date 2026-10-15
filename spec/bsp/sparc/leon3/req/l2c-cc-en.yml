@@ -1,0 +1,13 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: sparc/gr740
+links:
+- role: requirement-refinement
+  uid: errata-gr740
+non-functional-type: design
+rationale: null
+requirement-type: non-functional
+text: |
+  The bootloader shall set the L2CC.EN register field to one.
+type: requirement

@@ -1,0 +1,15 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: sparc/gr712rc
+links:
+- role: validation
+  uid: ../req/errata-gr712rc
+- role: errata-resolution
+  uid: /errata/gaisler/gr712rc/24
+method: by-analysis
+text: |
+  The erratum is not applicable to the software product since the memory
+  allocation is a task of the application. The application decides through its
+  linker command file which memory holds the data.
+type: validation

@@ -4,7 +4,9 @@ copyrights:
 enabled-by: sparc/gr712rc
 links:
 - role: validation
-  uid: ../req/errata-gr712rc-20
+  uid: ../req/errata-gr712rc
+- role: errata-resolution
+  uid: /errata/gaisler/gr712rc/20
 method: by-analysis
 text: |
   There is no errata workaround necessary for the window overflow trap, since the

@@ -4,7 +4,9 @@ copyrights:
 enabled-by: sparc/gr712rc
 links:
 - role: validation
-  uid: ../req/errata-gr712rc-11
+  uid: ../req/errata-gr712rc
+- role: errata-resolution
+  uid: /errata/gaisler/gr712rc/11
 method: by-review-of-design
 text: |
   The errata of the ${/glossary/gr712rc:/term} is not applicable to the software
