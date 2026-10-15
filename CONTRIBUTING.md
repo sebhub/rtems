@@ -90,8 +90,16 @@ subject:
 The table `_CATEGORIES` and the pattern `_BUILD_QUAL` in
 `.github/inspect_changes.py` assign the category of a path. A commit of another
 category does not use the prefix `spec:`, `build-qual:`, `pkg:` or `ci:`. A
-`spec` commit may leave its generated files to the next commit which is no
-`build-qual` commit. That commit must be a `source` commit.
+`spec` commit may leave its generated files to the `source` commits which
+follow it. A `build-qual` commit between them does not end this run. The last
+`source` commit of the run must provide the generated files.
+
+Two cases combine the categories `source` and `build-qual`:
+
+| Commit                                                                                      | Category               | Subject                 |
+| ------------------------------------------------------------------------------------------- | ---------------------- | ----------------------- |
+| moves only list entries between a `source` build item and a `build-qual` build item         | `build-qual`           | `build-qual: <Summary>` |
+| registers the files which it adds or deletes in a build item whose name ends in `extra.yml` | `source`, `build-qual` | `<scope>: <Summary>`    |
 
 The scope of a `source` subject names the area of the change, as the
 [commit header guidance](https://docs.rtems.org/docs/main/eng/vc-users.html#commit-header)
