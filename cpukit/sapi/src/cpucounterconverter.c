@@ -42,21 +42,104 @@ RTEMS_STATIC_ASSERT(
   type
 );
 
-static uint64_t to_ns_scaler;
-
-static uint64_t from_ns_scaler;
-
-static uint64_t to_sbt_scaler;
-
-static uint64_t from_sbt_scaler;
-
-/*
- * Returns the product of the value and the scaler shifted right by the shift
- * value.  The product of the 32-bit value and the 64-bit scaler has 96 bits.
- * The two partial products fit into 64 bits each.  The shift value is at
- * most 32.
+/**
+ * @brief This constant defines the counter frequency in Hz which the converter
+ *   uses before the first call of rtems_counter_initialize_converter().
  */
-static uint64_t rtems_counter_scale(
+#define COUNTER_DEFAULT_FREQUENCY UINT32_C( 100000000 )
+
+/**
+ * @brief Gets the scaler of the conversion of counter ticks into nanoseconds.
+ *
+ * @param frequency is the counter frequency in Hz.  The frequency shall be
+ *   greater than zero.
+ *
+ * @return Returns 10**9 multiplied by 2**32 and divided by the frequency,
+ *   rounded up.
+ */
+#define COUNTER_TO_NS_SCALER( frequency ) \
+  ( ( ( UINT64_C( 1000000000 ) << 32 ) + ( frequency ) - 1 ) / ( frequency ) )
+
+/**
+ * @brief Gets the scaler of the conversion of nanoseconds into counter ticks.
+ *
+ * @param frequency is the counter frequency in Hz.
+ *
+ * @return Returns the frequency multiplied by 2**32 and divided by 10**9,
+ *   rounded up.
+ */
+#define COUNTER_FROM_NS_SCALER( frequency )                          \
+  ( ( ( (uint64_t) ( frequency ) << 32 ) + UINT64_C( 999999999 ) ) / \
+    UINT64_C( 1000000000 ) )
+
+/**
+ * @brief Gets the scaler of the conversion of counter ticks into signed binary
+ *   time.
+ *
+ * @param frequency is the counter frequency in Hz.  The frequency shall be
+ *   greater than zero.
+ *
+ * @return Returns 2**63 divided by the frequency, rounded up.
+ */
+#define COUNTER_TO_SBT_SCALER( frequency ) \
+  ( ( ( UINT64_C( 1 ) << 63 ) + ( frequency ) - 1 ) / ( frequency ) )
+
+/**
+ * @brief This structure contains the state of the counter value converter.
+ */
+typedef struct {
+  /**
+   * @brief This member contains the scaler of the conversion of counter ticks
+   *   into nanoseconds.
+   */
+  uint64_t to_ns_scaler;
+
+  /**
+   * @brief This member contains the scaler of the conversion of nanoseconds
+   *   into counter ticks.
+   */
+  uint64_t from_ns_scaler;
+
+  /**
+   * @brief This member contains the scaler of the conversion of counter ticks
+   *   into signed binary time.
+   */
+  uint64_t to_sbt_scaler;
+
+  /**
+   * @brief This member contains the scaler of the conversion of signed binary
+   *   time into counter ticks.  The scaler is the counter frequency in Hz.
+   */
+  uint32_t from_sbt_scaler;
+} Counter_Converter;
+
+/**
+ * @brief This object contains the state of the counter value converter.
+ */
+static Counter_Converter _Counter_Converter = {
+  .to_ns_scaler = COUNTER_TO_NS_SCALER( COUNTER_DEFAULT_FREQUENCY ),
+  .from_ns_scaler = COUNTER_FROM_NS_SCALER( COUNTER_DEFAULT_FREQUENCY ),
+  .to_sbt_scaler = COUNTER_TO_SBT_SCALER( COUNTER_DEFAULT_FREQUENCY ),
+  .from_sbt_scaler = COUNTER_DEFAULT_FREQUENCY
+};
+
+/**
+ * @brief Scales the value.
+ *
+ * The product of the 32-bit value and the 64-bit scaler has 96 bits.  The two
+ * partial products fit into 64 bits each.  The product shifted right by the
+ * shift value shall be less than 2**64.
+ *
+ * @param value is the value to scale.
+ *
+ * @param scaler is the scaler.
+ *
+ * @param shift is the shift value.  The shift value shall be at most 32.
+ *
+ * @return Returns the product of the value and the scaler shifted right by
+ *   the shift value.
+ */
+static uint64_t _Counter_Scale(
   uint32_t     value,
   uint64_t     scaler,
   unsigned int shift
@@ -73,44 +156,77 @@ static uint64_t rtems_counter_scale(
 
 uint64_t rtems_counter_ticks_to_nanoseconds( rtems_counter_ticks ticks )
 {
-  return rtems_counter_scale( ticks, to_ns_scaler, 32 );
+  return _Counter_Scale( ticks, _Counter_Converter.to_ns_scaler, 32 );
 }
 
 rtems_counter_ticks rtems_counter_nanoseconds_to_ticks( uint32_t nanoseconds )
 {
-  return (rtems_counter_ticks) ( ( nanoseconds * from_ns_scaler ) >> 32 );
+  uint64_t ticks;
+
+  ticks = _Counter_Scale( nanoseconds, _Counter_Converter.from_ns_scaler, 32 );
+
+  if ( ticks > UINT32_MAX ) {
+    return UINT32_MAX;
+  }
+
+  return (rtems_counter_ticks) ticks;
 }
 
 int64_t rtems_counter_ticks_to_sbintime( rtems_counter_ticks ticks )
 {
-  return (int64_t) rtems_counter_scale( ticks, to_sbt_scaler, 31 );
+  uint64_t sbt;
+
+  sbt = _Counter_Scale( ticks, _Counter_Converter.to_sbt_scaler, 31 );
+
+  if ( sbt > INT64_MAX ) {
+    return INT64_MAX;
+  }
+
+  return (int64_t) sbt;
 }
 
 rtems_counter_ticks rtems_counter_sbintime_to_ticks( int64_t sbt )
 {
-  return (rtems_counter_ticks) ( ( (uint64_t) sbt * from_sbt_scaler ) >> 32 );
+  uint64_t value;
+  uint64_t frequency;
+  uint64_t ticks;
+
+  if ( sbt < 0 ) {
+    return 0;
+  }
+
+  value = (uint64_t) sbt;
+  frequency = _Counter_Converter.from_sbt_scaler;
+
+  /* The high partial product is less than 2**63 */
+  ticks = ( value >> 32 ) * frequency +
+          ( ( ( value & UINT32_MAX ) * frequency ) >> 32 );
+
+  if ( ticks > UINT32_MAX ) {
+    return UINT32_MAX;
+  }
+
+  return (rtems_counter_ticks) ticks;
 }
 
 void rtems_counter_initialize_converter( uint32_t frequency )
 {
-  uint64_t ns_per_s = UINT64_C( 1000000000 );
-  uint64_t bin_per_s = UINT64_C( 1 ) << 32;
-  uint64_t bin_freq = (uint64_t) frequency << 32;
-
-  to_ns_scaler = ( ( ns_per_s << 32 ) + frequency - 1 ) / frequency;
-  from_ns_scaler = ( bin_freq + ns_per_s - 1 ) / ns_per_s;
-
-  to_sbt_scaler = ( ( bin_per_s << 31 ) + frequency - 1 ) / frequency;
-  from_sbt_scaler = ( bin_freq + bin_per_s - 1 ) / bin_per_s;
+  _Counter_Converter.to_ns_scaler = COUNTER_TO_NS_SCALER( frequency );
+  _Counter_Converter.from_ns_scaler = COUNTER_FROM_NS_SCALER( frequency );
+  _Counter_Converter.to_sbt_scaler = COUNTER_TO_SBT_SCALER( frequency );
+  _Counter_Converter.from_sbt_scaler = frequency;
 }
 
-static void rtems_counter_sysinit( void )
+/**
+ * @brief Initializes the counter value converter with the counter frequency.
+ */
+static void _Counter_Initialize_converter( void )
 {
   rtems_counter_initialize_converter( rtems_counter_frequency() );
 }
 
 RTEMS_SYSINIT_ITEM(
-  rtems_counter_sysinit,
+  _Counter_Initialize_converter,
   RTEMS_SYSINIT_CPU_COUNTER,
   RTEMS_SYSINIT_ORDER_LAST_BUT_5
 );
