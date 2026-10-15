@@ -7,7 +7,7 @@
  */
 
 /*
- * Copyright (C) 2023 embedded brains GmbH & Co. KG
+ * Copyright (C) 2023, 2026 embedded brains GmbH & Co. KG
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -59,9 +59,13 @@
  *
  *   - Check that the bootloader did clear the L2CACCC.DBPF register field.
  *
+ *   - Check that the bootloader did clear the L2CACCC.FLINE register field.
+ *
  *   - Check that the bootloader did set the L2CACCC.SPLIT register field.
  *
  *   - Check that the bootloader did clear the L2CERR.COMP register field.
+ *
+ *   - Check that the bootloader did set the L2CC.EN register field.
  *
  * @{
  */
@@ -73,10 +77,12 @@ static void BspSparcLeon3ValGr740_Action_0( void )
 {
   l2cache *regs;
   uint32_t accc;
+  uint32_t cc;
   uint32_t err;
 
   regs = (l2cache *) LEON3_L2CACHE_BASE;
   accc = grlib_load_32( &regs->l2caccc );
+  cc = grlib_load_32( &regs->l2cc );
   err = grlib_load_32( &regs->l2cerr );
 
   /*
@@ -90,6 +96,11 @@ static void BspSparcLeon3ValGr740_Action_0( void )
   T_eq_u32( accc & L2CACHE_L2CACCC_DBPF, 0 );
 
   /*
+   * Check that the bootloader did clear the L2CACCC.FLINE register field.
+   */
+  T_eq_u32( accc & L2CACHE_L2CACCC_FLINE, 0 );
+
+  /*
    * Check that the bootloader did set the L2CACCC.SPLIT register field.
    */
   T_ne_u32( accc & L2CACHE_L2CACCC_SPLIT, 0 );
@@ -98,6 +109,11 @@ static void BspSparcLeon3ValGr740_Action_0( void )
    * Check that the bootloader did clear the L2CERR.COMP register field.
    */
   T_eq_u32( err & L2CACHE_L2CERR_COMP, 0 );
+
+  /*
+   * Check that the bootloader did set the L2CC.EN register field.
+   */
+  T_ne_u32( cc & L2CACHE_L2CC_EN, 0 );
 }
 
 /**
