@@ -27961,6 +27961,21 @@ archive-patches:
     +    printf (\"gdb_sp_write: 0x%08x\\n\", mem);\n+  return 1;\n }\n \n static\
     \ void\n-- \n2.53.0\n\n"
   type: inline
+- enabled-by: true
+  patch: "From 3237d3838bec84b8015200daf12bfbda65b44155 Mon Sep 17 00:00:00 2001\n\
+    From: Sebastian Huber <sebastian.huber@embedded-brains.de>\nDate: Thu, 15 Oct\
+    \ 2026 14:45:19 +0200\nSubject: [PATCH 89/89] l2c: Report the cache enabled\n\n\
+    The control register of the L2 cache read zero.  A GR740 test which\nchecks that\
+    \ the boot loader enabled the cache failed on the simulator.\n\nAnswer the control\
+    \ register with the enable bit set, as the boot loader\nof a GR740 leaves it.\n\
+    \nAssisted-by: Claude:claude-opus-5-5 claude-code\nSigned-off-by: Sebastian Huber\
+    \ <sebastian.huber@embedded-brains.de>\n---\n grlib.c | 4 ++++\n 1 file changed,\
+    \ 4 insertions(+)\n\ndiff --git a/grlib.c b/grlib.c\nindex 47dfcb0..8f5d935 100644\n\
+    --- a/grlib.c\n+++ b/grlib.c\n@@ -259,6 +259,10 @@ grlib_l2c_read (uint32 addr,\
+    \ uint32 *data)\n \n   switch (addr & 0xFC)\n     {\n+    case 0:\n+      /* Control\
+    \ (EN=1) */\n+      res = 0x80000000;\n+      break;\n     case 4:\n       /*\
+    \ Status */\n       res = 0x00502803;\n-- \n2.53.0\n\n"
+  type: inline
 archive-url: https://gitlab.rtems.org/rtems/tools/rtems-sis/-/archive/551bdcd4bcda1d1795b3a19a8cbe192c960d7b84/sis-551bdcd4bcda1d1795b3a19a8cbe192c960d7b84.tar.bz2
 copyrights:
 - Copyright (C) 2020, 2026 embedded brains GmbH & Co. KG
