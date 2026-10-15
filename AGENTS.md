@@ -87,8 +87,10 @@ options of `gr740` and adds the SMP configuration.
    Harmonia merges it into `eb/qual` before the branch of the item. A commit
    holds one category: `source`, `spec`, `build-qual`, `pkg` or `ci`. The
    category gives the subject prefix, see [CONTRIBUTING.md](CONTRIBUTING.md). A
-   `spec` commit may leave its generated files to the next commit which is no
-   `build-qual` commit. That commit must be a `source` commit.
+   `spec` commit may leave its generated files to the `source` commits which
+   follow it. The last `source` commit of this run must provide them. A
+   `source` commit may register its new files in a build item whose name ends
+   in `extra.yml`, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 7. Inspect the branch. `<base>` is the commit of `eb/qual` on which the branch
    starts:
