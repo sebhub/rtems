@@ -56,13 +56,6 @@ jobs:
         # This job installs the packages a pull request asks for and runs
         # tools over its tree.  Do not leave the token in .git/config.
         persist-credentials: false
-    - name: Fetch the rtems.org mirror
-      # The category invariant and the extractability check compare against
-      # the frozen baseline, which the rtems.org/main branch of this
-      # repository holds.
-      run: |
-        git fetch --no-tags --depth=1 origin \
-          rtems.org/main:refs/heads/rtems.org/main
     - name: Set up Python
       uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
       with:
