@@ -675,6 +675,7 @@ source:
 - cpukit/libmisc/regulator/regulator.c
 - cpukit/libmisc/rtems-fdt/rtems-fdt-shell.c
 - cpukit/libmisc/rtems-fdt/rtems-fdt.c
+- cpukit/libmisc/stackchk/stackchkprintdetails.c
 - cpukit/libmisc/stringto/stringtodouble.c
 - cpukit/libmisc/stringto/stringtofloat.c
 - cpukit/libmisc/stringto/stringtoint.c

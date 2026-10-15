@@ -48,7 +48,6 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include <rtems/bspIo.h>
 #include <rtems/printer.h>
 #include <rtems/stackchk.h>
 #include <rtems/stackchkimpl.h>
@@ -57,22 +56,6 @@
 #include <rtems/score/percpu.h>
 #include <rtems/score/smp.h>
 #include <rtems/score/threadimpl.h>
-
-/*
- *  This structure is used to fill in and compare the "end of stack"
- *  marker pattern.
- *  pattern area must be a multiple of 4 words.
- */
-
-#if !defined( CPU_STACK_CHECK_PATTERN_INITIALIZER )
-#define CPU_STACK_CHECK_PATTERN_INITIALIZER \
-  {                                         \
-    0xFEEDF00D,                             \
-    0x0BAD0D06, /* FEED FOOD to  BAD DOG */ \
-    0xDEADF00D,                             \
-    0x600D0D06 /* DEAD FOOD but GOOD DOG */ \
-  }
-#endif
 
 /*
  *  The pattern used to fill the entire stack.
@@ -91,8 +74,6 @@ static bool Stack_check_Initialized;
  */
 static const uint32_t
   Stack_check_Sanity_pattern[] = CPU_STACK_CHECK_PATTERN_INITIALIZER;
-
-#define SANITY_PATTERN_SIZE_BYTES sizeof( Stack_check_Sanity_pattern )
 
 #define SANITY_PATTERN_SIZE_WORDS \
   RTEMS_ARRAY_SIZE( Stack_check_Sanity_pattern )
@@ -127,24 +108,17 @@ static inline bool Stack_check_Frame_pointer_in_range(
  *  whether the stack grow to the high or low area of the memory.
  */
 #if ( CPU_STACK_GROWS_UP == TRUE )
-  #define Stack_check_Get_pattern( _the_stack )            \
-  ( (char *) ( _the_stack )->area + ( _the_stack )->size - \
-    SANITY_PATTERN_SIZE_BYTES )
-
   #define Stack_check_Calculate_used( _low, _size, _high_water ) \
   ( (char *) ( _high_water ) - (char *) ( _low ) )
 
   #define Stack_check_Usable_stack_start( _the_stack ) ( ( _the_stack )->area )
 
 #else
-  #define Stack_check_Get_pattern( _the_stack ) \
-  ( (char *) ( _the_stack )->area )
-
   #define Stack_check_Calculate_used( _low, _size, _high_water ) \
   ( ( (char *) ( _low ) + ( _size ) ) - (char *) ( _high_water ) )
 
   #define Stack_check_Usable_stack_start( _the_stack ) \
-  ( (char *) ( _the_stack )->area + SANITY_PATTERN_SIZE_BYTES )
+  ( (char *) ( _the_stack )->area + STACK_CHECK_PATTERN_SIZE )
 
 #endif
 
@@ -153,7 +127,7 @@ static inline bool Stack_check_Frame_pointer_in_range(
  *  is too close. This defines the usable stack memory.
  */
 #define Stack_check_Usable_stack_size( _the_stack ) \
-  ( ( _the_stack )->size - SANITY_PATTERN_SIZE_BYTES )
+  ( ( _the_stack )->size - STACK_CHECK_PATTERN_SIZE )
 
 #if defined( RTEMS_SMP )
 static Stack_Control Stack_check_Interrupt_stack[ CPU_MAXIMUM_PROCESSORS ];
@@ -177,18 +151,18 @@ static void Stack_check_Dope_stack( Stack_Control *stack )
 static void Stack_check_Add_sanity_pattern( Stack_Control *stack )
 {
   memcpy(
-    Stack_check_Get_pattern( stack ),
+    _Stack_check_Get_pattern( stack ),
     Stack_check_Sanity_pattern,
-    SANITY_PATTERN_SIZE_BYTES
+    STACK_CHECK_PATTERN_SIZE
   );
 }
 
 static bool Stack_check_Is_sanity_pattern_valid( const Stack_Control *stack )
 {
   return memcmp(
-           Stack_check_Get_pattern( stack ),
+           _Stack_check_Get_pattern( stack ),
            Stack_check_Sanity_pattern,
-           SANITY_PATTERN_SIZE_BYTES
+           STACK_CHECK_PATTERN_SIZE
          ) == 0;
 }
 
@@ -255,59 +229,6 @@ void rtems_stack_checker_begin_extension( Thread_Control *executing )
 #if defined( RTEMS_SMP )
   _Thread_Dispatch_enable( cpu_self );
 #endif
-}
-
-/*
- *  rtems_stack_checker_reporter_print_details
- *
- *  Report a blown stack. Needs to be a separate routine
- *  so that interrupt handlers can use this too.
- *
- *  NOTE: The system is in a questionable state... we may not get
- *        the following message out.
- */
-void rtems_stack_checker_reporter_print_details(
-  const Thread_Control *running,
-  bool                  pattern_ok
-)
-{
-  const Stack_Control *stack = &running->Start.Initial_stack;
-  void                *pattern_area = Stack_check_Get_pattern( stack );
-  char                 name[ 2 * THREAD_DEFAULT_MAXIMUM_NAME_SIZE ];
-
-  printk( "BLOWN STACK!!!\n" );
-  printk( "task control block: 0x%08" PRIxPTR "\n", (intptr_t) running );
-  printk( "task ID: 0x%08lx\n", (unsigned long) running->Object.id );
-  printk( "task name: 0x%08" PRIx32 "\n", running->Object.name.name_u32 );
-  _Thread_Get_name( running, name, sizeof( name ) );
-  printk( "task name string: %s\n", name );
-  printk(
-    "task stack area (%lu Bytes): 0x%08" PRIxPTR " .. 0x%08" PRIxPTR "\n",
-    (unsigned long) stack->size,
-    (intptr_t) stack->area,
-    (intptr_t) ( (char *) stack->area + stack->size )
-  );
-  if ( !pattern_ok ) {
-    printk(
-      "damaged pattern area (%lu Bytes): 0x%08" PRIxPTR " .. 0x%08" PRIxPTR
-      "\n",
-      (unsigned long) SANITY_PATTERN_SIZE_BYTES,
-      (intptr_t) pattern_area,
-      (intptr_t) ( pattern_area + SANITY_PATTERN_SIZE_BYTES )
-    );
-  }
-
-  #if defined( RTEMS_MULTIPROCESSING )
-  printk(
-    "node: 0x%08" PRIxPTR "\n",
-    (intptr_t) rtems_configuration_get_user_multiprocessing_table()->node
-  );
-  #endif
-
-  rtems_fatal(
-    RTEMS_FATAL_SOURCE_STACK_CHECKER,
-    running->Object.name.name_u32
-  );
 }
 
 void rtems_stack_checker_reporter_quiet(
