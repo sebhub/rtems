@@ -965,8 +965,9 @@ def main(argv: list[str]) -> int:
                             "in JSON format to the standard output")
         parser.add_argument("--upstream-ref",
                             help="the reference of the rtems.org repository "
-                            "mirror (default: rtems.org/main)",
-                            default="rtems.org/main")
+                            "mirror.  Without it, the category invariant, the "
+                            "exclusion of upstream commits and the "
+                            "extractability check do not run.")
         parser.add_argument("--output",
                             help="write the report to this file instead of "
                             "the standard output")
@@ -1002,10 +1003,11 @@ def main(argv: list[str]) -> int:
     head_ref = args.head_ref
     url = args.url
     findings = _Findings()
-    has_upstream = _git_ok("rev-parse", "--verify", f"{args.upstream_ref}^{{commit}}")
+    has_upstream = args.upstream_ref is not None and _git_ok(
+        "rev-parse", "--verify", f"{args.upstream_ref}^{{commit}}")
     if has_upstream:
         _check_invariant(args.upstream_ref, findings)
-    else:
+    elif args.upstream_ref is not None:
         findings.warning(
             f"The upstream reference `{args.upstream_ref}` does not exist.  "
             "The category invariant and the extractability check are skipped.")
