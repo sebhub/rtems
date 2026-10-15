@@ -108,6 +108,10 @@ typedef int ( *rtems_print_printer )( void *, const char *, va_list );
  * @parblock
  * The following constraints apply to this directive:
  *
+ * - The directive is not included in the pre-qualified feature set of RTEMS.
+ *   Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the directive.
+ *
  * - The directive may be called from within any runtime context.
  *
  * - The directive will not cause the calling task to be preempted.
@@ -129,6 +133,10 @@ void rtems_print_printer_fprintf( rtems_printer *printer, FILE *file );
  * @parblock
  * The following constraints apply to this directive:
  *
+ * - The directive is not included in the pre-qualified feature set of RTEMS.
+ *   Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the directive.
+ *
  * - The directive may be called from within any runtime context.
  *
  * - The directive will not cause the calling task to be preempted.
@@ -148,6 +156,10 @@ void rtems_print_printer_fprintf_putc( rtems_printer *printer );
  * @par Constraints
  * @parblock
  * The following constraints apply to this directive:
+ *
+ * - The directive is not included in the pre-qualified feature set of RTEMS.
+ *   Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the directive.
  *
  * - The directive may be called from within any runtime context.
  *
@@ -213,6 +225,10 @@ struct rtems_printer {
  * @parblock
  * The following constraints apply to this directive:
  *
+ * - The directive is not included in the pre-qualified feature set of RTEMS.
+ *   Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the directive.
+ *
  * - The directive may be called from within any runtime context.
  *
  * - The directive will not cause the calling task to be preempted.
@@ -239,6 +255,10 @@ static inline void rtems_print_printer_empty( rtems_printer *printer )
  * @par Constraints
  * @parblock
  * The following constraints apply to this directive:
+ *
+ * - The directive is not included in the pre-qualified feature set of RTEMS.
+ *   Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the directive.
  *
  * - The directive may be called from within any runtime context.
  *
@@ -340,6 +360,10 @@ typedef struct {
  * @parblock
  * The following constraints apply to this directive:
  *
+ * - The directive is not included in the pre-qualified feature set of RTEMS.
+ *   Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the directive.
+ *
  * - The directive may be called from within task context.
  * @endparblock
  */
@@ -371,6 +395,10 @@ int rtems_print_printer_task(
  * @parblock
  * The following constraints apply to this directive:
  *
+ * - The directive is not included in the pre-qualified feature set of RTEMS.
+ *   Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the directive.
+ *
  * - The directive may be called from within task context.
  * @endparblock
  */
@@ -391,6 +419,10 @@ void rtems_printer_task_drain( rtems_printer_task_context *context );
  * @par Constraints
  * @parblock
  * The following constraints apply to this directive:
+ *
+ * - The directive is not included in the pre-qualified feature set of RTEMS.
+ *   Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the directive.
  *
  * - The directive may be called from within any runtime context.
  *
@@ -423,6 +455,10 @@ static inline void rtems_printer_task_initialize(
  * @parblock
  * The following constraints apply to this directive:
  *
+ * - The directive is not included in the pre-qualified feature set of RTEMS.
+ *   Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the directive.
+ *
  * - The directive may be called from within any runtime context.
  *
  * - The directive will not cause the calling task to be preempted.
@@ -451,6 +487,10 @@ static inline void rtems_printer_task_set_buffer_count(
  * @parblock
  * The following constraints apply to this directive:
  *
+ * - The directive is not included in the pre-qualified feature set of RTEMS.
+ *   Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the directive.
+ *
  * - The directive may be called from within any runtime context.
  *
  * - The directive will not cause the calling task to be preempted.
@@ -478,6 +518,10 @@ static inline void rtems_printer_task_set_buffer_size(
  * @par Constraints
  * @parblock
  * The following constraints apply to this directive:
+ *
+ * - The directive is not included in the pre-qualified feature set of RTEMS.
+ *   Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the directive.
  *
  * - The directive may be called from within any runtime context.
  *
@@ -508,6 +552,10 @@ static inline void rtems_printer_task_set_buffer_table(
  * @parblock
  * The following constraints apply to this directive:
  *
+ * - The directive is not included in the pre-qualified feature set of RTEMS.
+ *   Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the directive.
+ *
  * - The directive may be called from within any runtime context.
  *
  * - The directive will not cause the calling task to be preempted.
@@ -536,6 +584,10 @@ static inline void rtems_printer_task_set_file_descriptor(
  * @parblock
  * The following constraints apply to this directive:
  *
+ * - The directive is not included in the pre-qualified feature set of RTEMS.
+ *   Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the directive.
+ *
  * - The directive may be called from within any runtime context.
  *
  * - The directive will not cause the calling task to be preempted.
@@ -563,6 +615,10 @@ static inline void rtems_printer_task_set_priority(
  * @par Constraints
  * @parblock
  * The following constraints apply to this directive:
+ *
+ * - The directive is not included in the pre-qualified feature set of RTEMS.
+ *   Applications which are restricted to only use interfaces of the
+ *   pre-qualified feature set of RTEMS shall not use the directive.
  *
  * - The directive may be called from within any runtime context.
  *
