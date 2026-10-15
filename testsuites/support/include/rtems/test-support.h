@@ -225,6 +225,17 @@ typedef enum {
 #define OBJECT_NAME rtems_build_name( 'T', 'E', 'S', 'T' )
 
 /**
+ * @brief Prints the message and terminates the system with a test failure.
+ *
+ * The function prints the message through printk().  It terminates the system
+ * with the RTEMS_FATAL_SOURCE_EXIT fatal source and the exit code one.  The
+ * function needs no active test framework.
+ *
+ * @param msg is the message which describes the failure.
+ */
+RTEMS_NO_RETURN void ExitWithFailure( const char *msg );
+
+/**
  * @brief Creates a task with the name and the priority.
  *
  * The first four characters of the name form the task name.  The macro calls

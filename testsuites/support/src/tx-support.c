@@ -10,7 +10,7 @@
  */
 
 /*
- * Copyright (C) 2021, 2024 embedded brains GmbH & Co. KG
+ * Copyright (C) 2021, 2026 embedded brains GmbH & Co. KG
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -40,6 +40,7 @@
 
 #include <rtems/test-support.h>
 
+#include <rtems/bspIo.h>
 #include <rtems/test.h>
 #include <rtems/score/isrlevel.h>
 #include <rtems/score/objectimpl.h>
@@ -54,6 +55,12 @@
 #include <setjmp.h>
 #include <string.h>
 #include <sys/time.h>
+
+void ExitWithFailure( const char *msg )
+{
+  printk( "*** EXIT WITH FAILURE: %s\n", msg );
+  rtems_fatal( RTEMS_FATAL_SOURCE_EXIT, 1 );
+}
 
 rtems_id DoCreateTask( rtems_name name, rtems_task_priority priority )
 {
