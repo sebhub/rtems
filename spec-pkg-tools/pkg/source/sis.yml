@@ -27975,6 +27975,7 @@ archive-patches:
     \ uint32 *data)\n \n   switch (addr & 0xFC)\n     {\n+    case 0:\n+      /* Control\
     \ (EN=1) */\n+      res = 0x80000000;\n+      break;\n     case 4:\n       /*\
     \ Status */\n       res = 0x00502803;\n-- \n2.53.0\n\n"
+  type: inline
 archive-url: https://gitlab.rtems.org/rtems/tools/rtems-sis/-/archive/551bdcd4bcda1d1795b3a19a8cbe192c960d7b84/sis-551bdcd4bcda1d1795b3a19a8cbe192c960d7b84.tar.bz2
 copyrights:
 - Copyright (C) 2020, 2026 embedded brains GmbH & Co. KG
