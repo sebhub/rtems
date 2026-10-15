@@ -46,6 +46,10 @@ _ERROR = ":x:"
 
 _SKIP = ":heavy_minus_sign:"
 
+# The export of a source commit inside a run of source commits after a
+# specification commit does not have to reproduce the tree.
+_PENDING = ":hourglass_flowing_sand:"
+
 # The options of the export check.  All generated code is committed in the
 # clang-format style of the repository.
 _EXPORT_OPTIONS = ("--format-code", "--no-documentation")
@@ -76,6 +80,16 @@ CATEGORY_UNKNOWN = "unknown"
 
 # A merge commit has no category.  The table shows this name instead.
 _MERGE = "merge"
+
+# A source commit which registers the files it adds or deletes in a build item
+# of the builds without RTEMS_QUAL has these categories.
+_MIXED = [CATEGORY_SOURCE, CATEGORY_BUILD_QUAL]
+
+# The build items of the builds without RTEMS_QUAL.
+_EXTRA_LIST = re.compile(r"spec/build/.*extra\.yml")
+
+# An entry of a list of a build item, for example of its source list.
+_LIST_ENTRY = re.compile(r"\s*- (\S+)")
 
 # Maps a path prefix to a category.  A prefix ending with a slash matches a
 # directory and everything below it, otherwise it matches a file exactly.  The
@@ -634,13 +648,17 @@ def _check_head(worktree: Path, base_ref: str, head_ref: str, paths: list[str],
 
 
 def _check_export(worktree: Path, category: list[str], files: list[str],
-                  pending: _PendingExport | None, findings: _Findings,
+                  pending: _PendingExport | None, continues: bool,
+                  findings: _Findings,
                   url: str) -> tuple[str, _PendingExport | None]:
     """ Checks that the export reproduces the tree of the commit.  A
     specification commit may leave the generated files to the next commit
     which is no build-qual commit, and that commit has to be a source commit.
-    A merge may leave the items to the next commit, which has to be a
-    specification commit. """
+    A run of source commits may provide the generated files.  The last source
+    commit of the run has to provide them.  A merge may leave the items to the
+    next commit, which has to be a specification commit. """
+    # pylint: disable=too-many-arguments
+    # pylint: disable=too-many-positional-arguments
     paths = sorted(set(files) | set(pending.paths if pending else []))
     result = _export(worktree, paths)
     if result is None:
@@ -651,19 +669,23 @@ def _check_export(worktree: Path, category: list[str], files: list[str],
         if pending.merge:
             expected = CATEGORY_SPEC
             missing = "the items"
+            accepted = category == [CATEGORY_SPEC]
         else:
             expected = CATEGORY_SOURCE
             missing = "the generated files"
-        if category != [expected]:
+            accepted = _is_source(category)
+        if not accepted:
             findings.error(
                 f"In {pending.url}, the export does not reproduce the tree, "
                 f"and the next commit {url} is no `{expected}` commit "
                 f"which provides {missing}:", pending.result.describe())
             status = _ERROR
         elif not result.clean:
+            if not pending.merge and continues:
+                return _PENDING, _PendingExport(pending.url, result, paths)
             findings.error(
                 f"In {url}, the export does not reproduce the tree, so the "
-                f"commit does not provide {missing} of the preceding commit "
+                f"commit does not provide {missing} of the commit "
                 f"{pending.url}:", result.describe())
             return _ERROR, None
     if result.clean:
@@ -778,8 +800,102 @@ def _check_extractable(repository: Path, upstream_ref: str,
                 capture_output=True)
 
 
+def _get_list_changes(commit: str, path: str) -> dict[str, int] | None:
+    """ Returns the net number of list entries per file name which the commit
+    adds to the build item.  Returns None, if the commit changes another line
+    of the build item. """
+    counts: dict[str, int] = {}
+    diff = _git("diff-tree", "-p", "-U0", "--no-commit-id", "--no-renames",
+                commit, "--", path)
+    for line in diff.splitlines():
+        if line.startswith(("+++", "---")) or line[:1] not in ("+", "-"):
+            continue
+        match = _LIST_ENTRY.fullmatch(line[1:])
+        if match is None:
+            return None
+        name = match.group(1)
+        counts[name] = counts.get(name, 0) + (1 if line[0] == "+" else -1)
+    return {name: count for name, count in counts.items() if count != 0}
+
+
+def _add_list_changes(total: dict[str, int], changes: dict[str, int]) -> None:
+    for name, count in changes.items():
+        total[name] = total.get(name, 0) + count
+
+
+def _is_build_move(commit: str, files: list[str]) -> bool:
+    """ Returns true, if the commit only moves list entries between build items
+    of the category source and build items of the category build-qual. """
+    source: dict[str, int] = {}
+    qual: dict[str, int] = {}
+    for path in files:
+        if not path.startswith("spec/build/") or not path.endswith(".yml"):
+            return False
+        changes = _get_list_changes(commit, path)
+        if changes is None:
+            return False
+        if get_category(path) == CATEGORY_BUILD_QUAL:
+            _add_list_changes(qual, changes)
+        else:
+            _add_list_changes(source, changes)
+    source = {name: count for name, count in source.items() if count != 0}
+    qual = {name: -count for name, count in qual.items() if count != 0}
+    return bool(source) and source == qual
+
+
+def _is_mixed(commit: str, files: list[str]) -> bool:
+    """ Returns true, if the build items of the category build-qual which the
+    commit changes are build items of the builds without RTEMS_QUAL, and if the
+    commit registers in them only the files which it adds or deletes. """
+    status = _lines(
+        _git("diff-tree", "--no-commit-id", "--name-status", "--no-renames",
+             "-r", commit))
+    added = {line.split()[1] for line in status if line.startswith("A")}
+    deleted = {line.split()[1] for line in status if line.startswith("D")}
+    entries: dict[str, int] = {}
+    for path in files:
+        if get_category(path) != CATEGORY_BUILD_QUAL:
+            continue
+        if not _EXTRA_LIST.fullmatch(path):
+            return False
+        changes = _get_list_changes(commit, path)
+        if changes is None:
+            return False
+        _add_list_changes(entries, changes)
+    for name, count in entries.items():
+        if count > 0 and name not in added:
+            return False
+        if count < 0 and name not in deleted:
+            return False
+    return True
+
+
 def _get_categories(commit: str) -> list[str]:
-    return sorted({get_category(f) for f in _get_files(commit)})
+    files = _get_files(commit)
+    found = sorted({get_category(f) for f in files})
+    if found == sorted(_MIXED):
+        if _is_build_move(commit, files):
+            return [CATEGORY_BUILD_QUAL]
+        if _is_mixed(commit, files):
+            return list(_MIXED)
+    return found
+
+
+def _is_source(found: list[str]) -> bool:
+    return found in ([CATEGORY_SOURCE], _MIXED)
+
+
+def _continues_run(commit_rows: list[tuple[str, bool, str]],
+                   categories: dict[str, list[str]], index: int) -> bool:
+    """ Returns true, if a source commit follows the commit of the index.  A
+    commit of the category build-qual in between does not end the run. """
+    for commit, is_merge, _ in commit_rows[index + 1:]:
+        if is_merge:
+            return False
+        found = categories[commit]
+        if found != [CATEGORY_BUILD_QUAL]:
+            return _is_source(found)
+    return False
 
 
 def _check_subject(subject: str, found: list[str], findings: _Findings,
@@ -797,16 +913,23 @@ def _check_subject(subject: str, found: list[str], findings: _Findings,
 
 def _check_commit(
         worktree: Path, commit: str, subject: str, found: list[str],
-        pending: _PendingExport | None, findings: _Findings,
+        pending: _PendingExport | None, continues: bool, findings: _Findings,
         url: str) -> tuple[str, str, str, _PendingExport | None]:
     """ Checks a commit which is no merge.  The commit is checked out. """
     # pylint: disable=too-many-arguments
     # pylint: disable=too-many-positional-arguments
     files = _get_files(commit)
-    if len(found) != 1 or CATEGORY_UNKNOWN in found:
+    if found != _MIXED and (len(found) != 1 or CATEGORY_UNKNOWN in found):
+        hint = ""
+        if found == sorted(_MIXED):
+            hint = ("  A commit of both categories may only register the "
+                    "files which it adds or deletes in a build item which "
+                    "ends in `extra.yml`, or only move list entries between "
+                    "build items.")
         findings.error(
             f"In {url}, the change set belongs to more than one category: "
-            f"{', '.join(found)}.  Split it into one commit per category.")
+            f"{', '.join(found)}.  Split it into one commit per category."
+            f"{hint}")
     _check_subject(subject, found, findings, url)
     existing = _get_existing_files(commit, files)
     items = [
@@ -820,7 +943,7 @@ def _check_commit(
         f.startswith("spec/") or f.endswith(_C_SUFFIXES) for f in files))
     if exports and _has_export_configuration(worktree):
         export, pending = _check_export(worktree, found, files, pending,
-                                        findings, url)
+                                        continues, findings, url)
     deleted = _check_deleted(worktree, commit, findings, url)
     return fmt, export, deleted, pending
 
@@ -1046,7 +1169,7 @@ def main(argv: list[str]) -> int:
             ])
             base_row = rows[-1]
             dirty_base = not base.clean
-            for commit, is_merge, subject in commit_rows:
+            for index, (commit, is_merge, subject) in enumerate(commit_rows):
                 commit_url = f"{url}/commit/{originals.get(commit, commit)}"
                 errors_before = findings.error_count
                 _git("checkout", "--detach", commit, cwd=worktree)
@@ -1059,8 +1182,9 @@ def main(argv: list[str]) -> int:
                 else:
                     found = categories[commit]
                     fmt, export, deleted, pending = _check_commit(
-                        worktree, commit, subject, found, pending, findings,
-                        commit_url)
+                        worktree, commit, subject, found, pending,
+                        _continues_run(commit_rows, categories, index),
+                        findings, commit_url)
                 if dirty_base:
                     dirty_base = False
                     tree = _check_tree(worktree, [], False, changed)
