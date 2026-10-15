@@ -464,6 +464,9 @@ source:
 - cpukit/rtems/src/timerserver.c
 - cpukit/rtems/src/timerserverfireafter.c
 - cpukit/rtems/src/timerserverfirewhen.c
+- cpukit/sapi/src/cpucounterconverter.c
+- cpukit/sapi/src/delaynano.c
+- cpukit/sapi/src/delayticks.c
 - cpukit/sapi/src/exinit.c
 - cpukit/sapi/src/extension.c
 - cpukit/sapi/src/extensioncreate.c
