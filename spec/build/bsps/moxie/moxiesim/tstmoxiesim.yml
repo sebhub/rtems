@@ -19,6 +19,7 @@ actions:
     - dhrystone
     - exit03
     - fatal-idle-thread-stack-too-small
+    - fatal-stack-checker-interrupt-stack
     - fatal-too-large-tls-size
     - flashdev01
     - fsclose02
