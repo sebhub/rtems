@@ -50,7 +50,8 @@
  *
  * @ingroup TestsuitesBspsFatalSparcLeon3ClockInitialization
  *
- * @brief Tests a fatal error.
+ * @brief Tests the fatal error of the RTEMS_FATAL_SOURCE_BSP fatal source with
+ *   the LEON3_FATAL_CLOCK_INITIALIZATION fatal code.
  *
  * This test case performs the following actions:
  *

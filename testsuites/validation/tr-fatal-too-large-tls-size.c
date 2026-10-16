@@ -48,7 +48,8 @@
  *
  * @ingroup TestsuitesFatalTooLargeTlsSize
  *
- * @brief Tests a fatal error.
+ * @brief Tests the fatal error of the INTERNAL_ERROR_CORE fatal source with
+ *   the INTERNAL_ERROR_TOO_LARGE_TLS_SIZE fatal code.
  *
  * This test case performs the following actions:
  *

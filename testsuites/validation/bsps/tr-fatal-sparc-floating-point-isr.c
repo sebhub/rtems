@@ -48,7 +48,8 @@
  *
  * @ingroup TestsuitesBspsFatalSparcFloatingPointIsr
  *
- * @brief Tests a fatal error.
+ * @brief Tests the fatal error of the INTERNAL_ERROR_CORE fatal source with
+ *   the INTERNAL_ERROR_ILLEGAL_USE_OF_FLOATING_POINT_UNIT fatal code.
  *
  * This test case performs the following actions:
  *

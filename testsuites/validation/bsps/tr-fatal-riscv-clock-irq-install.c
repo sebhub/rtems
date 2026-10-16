@@ -51,7 +51,8 @@
  *
  * @ingroup TestsuitesBspsFatalRiscvClockIrqInstall
  *
- * @brief Tests a fatal error.
+ * @brief Tests the fatal error of the RTEMS_FATAL_SOURCE_BSP fatal source with
+ *   the RISCV_FATAL_CLOCK_IRQ_INSTALL fatal code.
  *
  * This test case performs the following actions:
  *

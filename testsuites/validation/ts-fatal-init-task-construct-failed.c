@@ -53,8 +53,10 @@
  *
  * @ingroup RTEMSTestSuitesValidation
  *
- * @brief This validation test suite contains a test case which triggers a
- *   fatal error during system initialization.
+ * @brief This validation test suite contains a test case which triggers the
+ *   fatal error of the INTERNAL_ERROR_CORE fatal source with the
+ *   INTERNAL_ERROR_RTEMS_INIT_TASK_CONSTRUCT_FAILED fatal code during system
+ *   initialization.
  *
  * The application configuration defines the priority of the Classic API
  * initialization task as zero. Zero is no valid task priority, so the task

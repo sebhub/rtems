@@ -47,7 +47,8 @@
  *
  * @ingroup TestsuitesFatalSchedulerRequiresExactlyOneProcessor
  *
- * @brief Tests a fatal error.
+ * @brief Tests the fatal error of the RTEMS_FATAL_SOURCE_SMP fatal source with
+ *   the SMP_FATAL_SCHEDULER_REQUIRES_EXACTLY_ONE_PROCESSOR fatal code.
  *
  * This test case performs the following actions:
  *

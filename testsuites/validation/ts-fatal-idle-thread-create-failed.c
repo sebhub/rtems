@@ -45,8 +45,10 @@
  *
  * @ingroup RTEMSTestSuitesValidation
  *
- * @brief This validation test suite contains a test case which is triggered by
- *   a fatal error during system initialization.
+ * @brief This validation test suite contains a test case which triggers the
+ *   fatal error of the INTERNAL_ERROR_CORE fatal source with the
+ *   INTERNAL_ERROR_IDLE_THREAD_CREATE_FAILED fatal code during system
+ *   initialization.
  *
  * @{
  */

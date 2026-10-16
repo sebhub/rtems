@@ -47,7 +47,9 @@
  *
  * @ingroup TestsuitesFatalIdleThreadCreateFailed
  *
- * @brief Tests a fatal error caused by a failing task create extension.
+ * @brief Tests the fatal error of the INTERNAL_ERROR_CORE fatal source with
+ *   the INTERNAL_ERROR_IDLE_THREAD_CREATE_FAILED fatal code caused by a
+ *   failing task create extension.
  *
  * This test case performs the following actions:
  *

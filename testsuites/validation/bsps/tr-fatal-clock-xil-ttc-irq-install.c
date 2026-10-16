@@ -50,7 +50,8 @@
  *
  * @ingroup TestsuitesBspsFatalClockXilTtcIrqInstall
  *
- * @brief Tests a fatal error.
+ * @brief Tests the fatal error of the RTEMS_FATAL_SOURCE_BSP fatal source with
+ *   the XIL_FATAL_TTC_IRQ_INSTALL fatal code.
  *
  * This test case performs the following actions:
  *
