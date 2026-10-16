@@ -21,11 +21,18 @@ pkg-update:
 	  --spec-directory spec --lazy /target/riscv/gr765/sis/perf-default \
 	  workspace/doc/riscv/gr765/uni/test-logs/*-simulator.json
 
+ENABLED_UNI = riscv/gr765,riscv,bsps/riscv/noel,target/simulator,RTEMS_QUAL
+ENABLED_SMP = $(ENABLED_UNI),RTEMS_SMP
+
 specview:
 	. $(VENV)/bin/activate && specwareview --validated=no \
-	  --enabled=riscv/gr765,riscv,bsps/riscv/noel,target/simulator,RTEMS_QUAL
+	  --enabled=$(ENABLED_UNI)
 	. $(VENV)/bin/activate && specwareview --validated=no \
-	  --enabled=riscv/gr765,riscv,bsps/riscv/noel,target/simulator,RTEMS_QUAL,RTEMS_SMP
+	  --enabled=$(ENABLED_SMP)
+
+action-maps:
+	. $(VENV)/bin/activate && specwareview --format=commonmark \
+	  --filter=action-compact-table --enabled=$(ENABLED_SMP) $(UIDS)
 
 linkhub:
 	. $(VENV)/bin/activate && specbuild $(GIT_OPTIONS) \
