@@ -106,6 +106,27 @@ static uint64_t riscv_clock_read_mtime(volatile RISCV_CLINT_timer_reg *mtime)
 }
 #endif /* !RISCV_USE_S_MODE */
 
+#ifdef RISCV_USE_S_MODE
+static uint64_t riscv_clock_read_time(void)
+{
+#if __riscv_xlen == 32
+  uint32_t low;
+  uint32_t high_0;
+  uint32_t high_1;
+
+  do {
+    high_0 = read_csr(timeh);
+    low = read_csr(time);
+    high_1 = read_csr(timeh);
+  } while (high_0 != high_1);
+
+  return (((uint64_t) high_0) << 32) | low;
+#elif __riscv_xlen == 64
+  return rdtime();
+#endif
+}
+#endif /* RISCV_USE_S_MODE */
+
 static rtems_interrupt_entry riscv_clock_interrupt_entry;
 
 static void riscv_clock_handler_install(rtems_interrupt_handler handler)
@@ -150,7 +171,7 @@ static uint64_t riscv_clock_read_timer(riscv_timecounter *tc)
   (void) tc;
 
 #ifdef RISCV_USE_S_MODE
-  now = rdtime();
+  now = riscv_clock_read_time();
 #else
   now = riscv_clock_read_mtime(&riscv_clint_get()->mtime);
 #endif
