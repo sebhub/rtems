@@ -1,0 +1,21 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+actions:
+- get-boolean: null
+- env-enable: null
+- define-condition: null
+build-type: option
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+default:
+- enabled-by: true
+  value: false
+description: |
+  If set to true, then the CPU counter and the clock driver read the time CSR.
+  Set it only if the processor executes a read of the time CSR without a trap
+  and if all harts read the same value.  If set to false, then in machine mode
+  the CPU counter and the clock driver read the mtime register of the CLINT.
+enabled-by: riscv
+format: '{}'
+links: []
+name: RISCV_USE_TIME_CSR
+type: build

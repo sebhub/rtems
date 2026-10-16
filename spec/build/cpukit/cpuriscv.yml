@@ -22,6 +22,8 @@ install:
   - cpukit/score/cpu/riscv/include/rtems/score/riscv.h
 links:
 - role: build-dependency
+  uid: cpuriscvcounter
+- role: build-dependency
   uid: cpuriscvextra
 - role: build-dependency
   uid: cpuriscvqual
@@ -29,7 +31,6 @@ source:
 - cpukit/score/cpu/riscv/cpu.c
 - cpukit/score/cpu/riscv/riscv-context-initialize.c
 - cpukit/score/cpu/riscv/riscv-context-switch.S
-- cpukit/score/cpu/riscv/riscv-counter.S
 - cpukit/score/cpu/riscv/riscv-exception-handler.S
 - cpukit/score/cpu/riscv/riscv-exception-resume.S
 type: build
