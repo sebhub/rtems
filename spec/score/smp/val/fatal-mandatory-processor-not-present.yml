@@ -32,7 +32,9 @@ test-actions:
   - role: validation
     uid: /acfg/req/scheduler-assign-processor-mandatory
 test-brief: |
-  Tests a fatal error.
+  Tests the fatal error of the ${/score/interr/if/source-smp:/name} fatal source
+  with the ${/score/smp/if/fatal-mandatory-processor-not-present:/name} fatal
+  code.
 test-context: []
 test-context-support: null
 test-description: null

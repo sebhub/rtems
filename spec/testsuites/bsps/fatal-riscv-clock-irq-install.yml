@@ -8,8 +8,10 @@ links:
 - role: requirement-refinement
   uid: ../validation
 test-brief: |
-  This validation test suite contains a test case which triggers a fatal error
-  during system initialization.
+  This validation test suite contains a test case which triggers the fatal error
+  of the ${/score/interr/if/source-bsp:/name} fatal source with the
+  ${/bsp/if/fatal-riscv-clock-irq-install:/name} fatal code during system
+  initialization.
 test-code: |
   const char rtems_test_name[] = "${.:/test-suite-name}";
 

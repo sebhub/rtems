@@ -30,7 +30,9 @@ test-actions:
       uid: ../req/fatal-idle-thread-create-failed
   links: []
 test-brief: |
-  Tests a fatal error caused by a failing task create extension.
+  Tests the fatal error of the ${/score/interr/if/internal-error-core:/name}
+  fatal source with the ${/score/interr/if/idle-thread-create-failed:/name} fatal
+  code caused by a failing task create extension.
 test-context: []
 test-context-support: null
 test-description: null

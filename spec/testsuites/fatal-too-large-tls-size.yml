@@ -6,8 +6,10 @@ links:
 - role: requirement-refinement
   uid: validation
 test-brief: |
-  This validation test suite contains a test case which triggers a fatal error
-  during system initialization.
+  This validation test suite contains a test case which triggers the fatal error
+  of the ${/score/interr/if/internal-error-core:/name} fatal source with the
+  ${/score/interr/if/too-large-tls-size:/name} fatal code during system
+  initialization.
 test-code: |
   const char rtems_test_name[] = "${.:/test-suite-name}";
 

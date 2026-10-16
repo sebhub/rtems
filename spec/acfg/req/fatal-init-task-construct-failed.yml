@@ -19,8 +19,10 @@ links:
 rationale: null
 requirement-type: functional
 test-brief: |
-  This validation test suite contains a test case which triggers a fatal error
-  during system initialization.
+  This validation test suite contains a test case which triggers the fatal error
+  of the ${/score/interr/if/internal-error-core:/name} fatal source with the
+  ${/score/interr/if/init-task-construct-failed:/name} fatal code during system
+  initialization.
 test-case-code: |
   T_eq_int( source, INTERNAL_ERROR_CORE );
   T_eq_ulong( code, INTERNAL_ERROR_RTEMS_INIT_TASK_CONSTRUCT_FAILED );
