@@ -34,6 +34,9 @@ import shutil
 import subprocess
 import sys
 import tempfile
+from typing import Any
+
+import yaml
 
 from check_sources import find_references
 from specitems import CommonMarkContent, get_arguments
@@ -119,6 +122,7 @@ _CATEGORIES: dict[str, str] = {
     "spec/": CATEGORY_SPEC,
     # The packaging and qualification machinery.  These paths are local to the
     # eb repository.
+    ".eb/": CATEGORY_PKG,
     ".gitattributes": CATEGORY_PKG,
     ".gitignore": CATEGORY_PKG,
     ".mdformat.toml": CATEGORY_PKG,
@@ -852,6 +856,122 @@ def _is_build_move(commit: str, files: list[str]) -> bool:
     return bool(source) and source == qual
 
 
+def _load_build_item(revision: str, path: str) -> Any:
+    if not _git_ok("cat-file", "-e", f"{revision}:{path}"):
+        return None
+    return yaml.safe_load(_git("show", f"{revision}:{path}"))
+
+
+def _get_identity(data: dict) -> tuple:
+    """ Returns the scalar members of the dictionary which identify it as an
+    element of a list.  A reason is free text and identifies nothing. """
+    return tuple(
+        sorted((key, value) for key, value in data.items()
+               if not isinstance(value, (dict, list)) and key != "reason"))
+
+
+def _add_records(data: Any, context: tuple, records: dict[tuple, int],
+                 sign: int) -> None:
+    """ Adds a record with the sign for each scalar list element and for each
+    list element without nested lists or dictionaries.  The context of a
+    record names the keys and the identities of the enclosing elements.  The
+    copyrights belong to no build. """
+    if isinstance(data, dict):
+        for key, value in data.items():
+            if key == "copyrights":
+                continue
+            if isinstance(value, dict):
+                _add_records(value, context + ((key, _get_identity(value)), ),
+                             records, sign)
+            elif isinstance(value, list):
+                _add_records(value, context + (key, ), records, sign)
+        return
+    for value in data:
+        if isinstance(value, dict):
+            identity = _get_identity(value)
+            if any(isinstance(item, (dict, list)) for item in value.values()):
+                _add_records(value, context + (identity, ), records, sign)
+            else:
+                record = (context, identity)
+                records[record] = records.get(record, 0) + sign
+        elif isinstance(value, list):
+            _add_records(value, context + ((), ), records, sign)
+        else:
+            record = (context, str(value))
+            records[record] = records.get(record, 0) + sign
+
+
+def _get_attributes(data: dict) -> dict:
+    return {
+        key: value
+        for key, value in data.items() if not isinstance(value, list)
+    }
+
+
+def _get_uid(path: str) -> str:
+    return path[len("spec"):-len(".yml")]
+
+
+def _resolve_uid(base: str, uid: str) -> str:
+    if uid.startswith("/"):
+        return uid
+    return os.path.normpath(os.path.join(os.path.dirname(base), uid))
+
+
+def _is_build_split(commit: str, files: list[str]) -> bool:
+    """ Returns true, if the commit adds build items of the category
+    build-qual and moves list entries of build items of the category source
+    into the build items of the builds without RTEMS_QUAL.  The source build
+    items may gain links to the new build items.  The builds without
+    RTEMS_QUAL then build the same files as before. """
+    # pylint: disable=too-many-return-statements
+    status = _lines(
+        _git("diff-tree", "--no-commit-id", "--name-status", "--no-renames",
+             "-r", commit))
+    added = {line.split()[1] for line in status if line.startswith("A")}
+    new_uids = {
+        _get_uid(path)
+        for path in added if get_category(path) == CATEGORY_BUILD_QUAL
+    }
+    if not new_uids:
+        return False
+    moved: dict[tuple, int] = {}
+    extra: dict[tuple, int] = {}
+    for path in files:
+        if not path.startswith("spec/build/") or not path.endswith(".yml"):
+            return False
+        old = _load_build_item(f"{commit}^", path)
+        new = _load_build_item(commit, path)
+        if new is None:
+            return False
+        if get_category(path) == CATEGORY_SOURCE:
+            if old is None or _get_attributes(old) != _get_attributes(new):
+                return False
+            if "links" in new:
+                uid = _get_uid(path)
+                old_links = old.get("links", [])
+                new["links"] = [
+                    link for link in new["links"]
+                    if link in old_links or _resolve_uid(
+                        uid, link.get("uid", "")) not in new_uids
+                ]
+            _add_records(old, (), moved, 1)
+            _add_records(new, (), moved, -1)
+        elif _EXTRA_LIST.fullmatch(path):
+            if old is None:
+                if new.get("enabled-by") != {"not": "RTEMS_QUAL"}:
+                    return False
+            else:
+                if _get_attributes(old) != _get_attributes(new):
+                    return False
+                _add_records(old, (), extra, -1)
+            _add_records(new, (), extra, 1)
+    moved = {record: count for record, count in moved.items() if count != 0}
+    extra = {record: count for record, count in extra.items() if count != 0}
+    return bool(moved) and all(count > 0
+                               for count in moved.values()) and moved == extra
+
+
 def _is_mixed(commit: str, files: list[str]) -> bool:
     """ Returns true, if the build items of the category build-qual which the
     commit changes are build items of the builds without RTEMS_QUAL, and if the
@@ -883,7 +1003,7 @@ def _get_categories(commit: str) -> list[str]:
     files = _get_files(commit)
     found = sorted({get_category(f) for f in files})
     if found == sorted(_MIXED):
-        if _is_build_move(commit, files):
+        if _is_build_move(commit, files) or _is_build_split(commit, files):
             return [CATEGORY_BUILD_QUAL]
         if _is_mixed(commit, files):
             return list(_MIXED)
@@ -934,7 +1054,9 @@ def _check_commit(
             hint = ("  A commit of both categories may only register the "
                     "files which it adds or deletes in a build item which "
                     "ends in `extra.yml`, or only move list entries between "
-                    "build items.")
+                    "build items, or add build items of the pre-qualified "
+                    "build which take over list entries for the builds "
+                    "without RTEMS_QUAL.")
         findings.error(
             f"In {url}, the change set belongs to more than one category: "
             f"{', '.join(found)}.  Split it into one commit per category."
