@@ -45,8 +45,10 @@
  *
  * @ingroup RTEMSTestSuitesValidation
  *
- * @brief This validation test suite contains a test case which triggers a
- *   fatal error in an interrupt handler.
+ * @brief This validation test suite contains a test case which triggers the
+ *   fatal error of the INTERNAL_ERROR_CORE fatal source with the
+ *   INTERNAL_ERROR_ILLEGAL_USE_OF_FLOATING_POINT_UNIT fatal code in an
+ *   interrupt handler.
  *
  * @{
  */

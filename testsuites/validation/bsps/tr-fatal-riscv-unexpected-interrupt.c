@@ -52,7 +52,8 @@
  *
  * @ingroup TestsuitesBspsFatalRiscvUnexpectedInterrupt
  *
- * @brief Tests a fatal error.
+ * @brief Tests the fatal error of the RTEMS_FATAL_SOURCE_BSP fatal source with
+ *   the RISCV_FATAL_UNEXPECTED_INTERRUPT_EXCEPTION fatal code.
  *
  * This test case performs the following actions:
  *

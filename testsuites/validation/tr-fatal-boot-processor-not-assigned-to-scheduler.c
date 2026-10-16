@@ -47,7 +47,8 @@
  *
  * @ingroup TestsuitesFatalBootProcessorNotAssignedToScheduler
  *
- * @brief Tests a fatal error.
+ * @brief Tests the fatal error of the RTEMS_FATAL_SOURCE_SMP fatal source with
+ *   the SMP_FATAL_BOOT_PROCESSOR_NOT_ASSIGNED_TO_SCHEDULER fatal code.
  *
  * This test case performs the following actions:
  *

@@ -45,8 +45,9 @@
  *
  * @ingroup RTEMSTestSuitesValidation
  *
- * @brief This validation test suite contains a test case which triggers a
- *   fatal error during system initialization.
+ * @brief This validation test suite contains a test case which triggers the
+ *   fatal error of the RTEMS_FATAL_SOURCE_BSP fatal source with the
+ *   LEON3_FATAL_CLOCK_INITIALIZATION fatal code during system initialization.
  *
  * @{
  */

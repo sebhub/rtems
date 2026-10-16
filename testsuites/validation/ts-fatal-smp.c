@@ -45,8 +45,11 @@
  *
  * @ingroup RTEMSTestSuitesValidation
  *
- * @brief This validation test suite contains a test case which triggers
- *   SMP-specific fatal errors.
+ * @brief This validation test suite contains test cases which trigger the
+ *   fatal errors of the RTEMS_FATAL_SOURCE_SMP fatal source with the
+ *   SMP_FATAL_SHUTDOWN_RESPONSE, SMP_FATAL_WRONG_CPU_STATE_TO_PERFORM_JOBS,
+ *   SMP_FATAL_MULTITASKING_START_ON_INVALID_PROCESSOR and
+ *   SMP_FATAL_MULTITASKING_START_ON_UNASSIGNED_PROCESSOR fatal codes.
  *
  * @{
  */

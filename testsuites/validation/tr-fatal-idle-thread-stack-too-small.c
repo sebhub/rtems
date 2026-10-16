@@ -47,7 +47,9 @@
  *
  * @ingroup TestsuitesFatalIdleThreadStackTooSmall
  *
- * @brief Tests a fatal error caused by a too small idle thread stack size.
+ * @brief Tests the fatal error of the INTERNAL_ERROR_CORE fatal source with
+ *   the INTERNAL_ERROR_IDLE_THREAD_STACK_TOO_SMALL fatal code caused by a too
+ *   small idle thread stack size.
  *
  * This test case performs the following actions:
  *

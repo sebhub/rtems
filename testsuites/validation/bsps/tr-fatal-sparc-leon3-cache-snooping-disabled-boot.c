@@ -49,7 +49,8 @@
  *
  * @ingroup TestsuitesBspsFatalSparcLeon3CacheSnoopingDisabledBoot
  *
- * @brief Tests a fatal error.
+ * @brief Tests the fatal error of the RTEMS_FATAL_SOURCE_BSP fatal source with
+ *   the LEON3_FATAL_INVALID_CACHE_CONFIG_BOOT_PROCESSOR fatal code.
  *
  * This test case performs the following actions:
  *
