@@ -6,8 +6,10 @@ links:
 - role: requirement-refinement
   uid: validation
 test-brief: |
-  This validation test suite uses an application configuration which triggers a
-  fatal error during system initialization.
+  This validation test suite uses an application configuration which triggers the
+  fatal error of the ${/score/interr/if/source-smp:/name} fatal source with the
+  ${/score/smp/if/fatal-boot-processor-not-assigned-to-scheduler:/name} fatal
+  code during system initialization.
 test-code: |
   const char rtems_test_name[] = "${.:/test-suite-name}";
 

@@ -6,8 +6,13 @@ links:
 - role: requirement-refinement
   uid: validation
 test-brief: |
-  This validation test suite contains a test case which triggers
-  ${/glossary/smp:/term}-specific fatal errors.
+  This validation test suite contains test cases which trigger the fatal errors
+  of the ${/score/interr/if/source-smp:/name} fatal source with the
+  ${/score/smp/if/fatal-shutdown-response:/name},
+  ${/score/smp/if/fatal-wrong-cpu-state-to-perform-jobs:/name},
+  ${/score/smp/if/fatal-multitasking-start-on-invalid-processor:/name} and
+  ${/score/smp/if/fatal-multitasking-start-on-unassigned-processor:/name} fatal
+  codes.
 test-code: |
   const char rtems_test_name[] = "${.:/test-suite-name}";
 

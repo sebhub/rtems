@@ -28,8 +28,10 @@ rationale: |
   vector which cannot be raised on a processor.
 requirement-type: functional
 test-brief: |
-  This validation test suite contains a test case which triggers a fatal error
-  during system initialization.
+  This validation test suite contains a test case which triggers the fatal error
+  of the ${/score/interr/if/source-bsp:/name} fatal source with the
+  ${/bsp/if/fatal-leon3-cannot-raise-ipi:/name} fatal code during system
+  initialization.
 test-case-code: |
   T_eq_int( source, RTEMS_FATAL_SOURCE_BSP );
   T_eq_ulong( code, LEON3_FATAL_CANNOT_RAISE_IPI );

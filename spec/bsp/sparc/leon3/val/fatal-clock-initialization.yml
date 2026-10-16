@@ -26,7 +26,8 @@ test-actions:
       uid: ../req/fatal-clock-initialization
   links: []
 test-brief: |
-  Tests a fatal error.
+  Tests the fatal error of the ${/score/interr/if/source-bsp:/name} fatal source
+  with the ${/bsp/if/fatal-leon3-clock-initialization:/name} fatal code.
 test-context: []
 test-context-support: null
 test-description: null

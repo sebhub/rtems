@@ -30,7 +30,9 @@ test-actions:
       uid: ../req/fatal-scheduler-requires-exactly-one-processor
   links: []
 test-brief: |
-  Tests a fatal error.
+  Tests the fatal error of the ${/score/interr/if/source-smp:/name} fatal source
+  with the ${/score/smp/if/fatal-scheduler-requires-exactly-one-processor:/name}
+  fatal code.
 test-context: []
 test-context-support: null
 test-description: null

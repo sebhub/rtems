@@ -44,7 +44,8 @@ test-actions:
       uid: /acfg/if/max-thread-local-storage-size
   links: []
 test-brief: |
-  Tests a fatal error.
+  Tests the fatal error of the ${/score/interr/if/internal-error-core:/name}
+  fatal source with the ${/score/interr/if/too-large-tls-size:/name} fatal code.
 test-context: []
 test-context-support: null
 test-description: null

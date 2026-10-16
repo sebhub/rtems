@@ -9,8 +9,10 @@ links:
 - role: requirement-refinement
   uid: ../validation
 test-brief: |
-  This validation test suite contains a test case which triggers a fatal error in
-  an interrupt handler.
+  This validation test suite contains a test case which triggers the fatal error
+  of the ${/score/interr/if/internal-error-core:/name} fatal source with the
+  ${/score/interr/if/illegal-use-of-floating-point-unit:/name} fatal code in an
+  interrupt handler.
 test-code: |
   const char rtems_test_name[] = "${.:/test-suite-name}";
 
