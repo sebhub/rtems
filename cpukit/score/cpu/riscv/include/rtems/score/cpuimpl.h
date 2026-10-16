@@ -399,12 +399,12 @@ static inline uint32_t _RISCV_Read_FCSR( void )
   return fcsr;
 }
 
-#ifndef RISCV_USE_S_MODE
+#if !defined(RISCV_USE_S_MODE) && !defined(RISCV_USE_TIME_CSR)
 /*
  * The RISC-V ISA provides a rdtime instruction, however, it is implemented in
- * most chips via a trap-and-emulate.  Using this in machine mode makes no
- * sense.  Use the memory-mapped mtime register directly instead.  The address
- * of this register is platform-specific and provided via the device tree.
+ * most chips via a trap-and-emulate.  Use the memory-mapped mtime register
+ * directly instead.  The address of this register is platform-specific and
+ * provided via the device tree.
  *
  * To allow better code generation provide a const (_RISCV_Counter) and a
  * mutable (_RISCV_Counter_mutable) declaration for this pointer variable
@@ -438,7 +438,7 @@ extern volatile uint32_t *_RISCV_Counter_mutable;
  */
 extern volatile uint32_t _RISCV_Counter_register;
 
-#endif /* !RISCV_USE_S_MODE */
+#endif /* !RISCV_USE_S_MODE && !RISCV_USE_TIME_CSR */
 
 #ifdef RTEMS_SMP
 

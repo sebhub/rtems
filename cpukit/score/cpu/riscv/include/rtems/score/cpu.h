@@ -476,9 +476,28 @@ typedef uint32_t CPU_Counter_ticks;
 
 uint32_t _CPU_Counter_frequency( void );
 
+#ifdef RISCV_USE_TIME_CSR
+static inline CPU_Counter_ticks _CPU_Counter_read( void )
+{
+  unsigned long value;
+
+  __asm__ volatile (
+    ".option push\n"
+    ".option arch, +zicsr\n"
+    "csrr %0, time\n"
+    ".option pop" :
+    "=r" ( value )
+  );
+
+  return (CPU_Counter_ticks) value;
+}
+#else
+#ifndef RISCV_USE_S_MODE
 extern volatile uint32_t * const _RISCV_Counter;
+#endif
 
 CPU_Counter_ticks _CPU_Counter_read( void );
+#endif
 
 #ifdef RTEMS_SMP
 

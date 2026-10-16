@@ -85,7 +85,9 @@ static uint64_t riscv_clock_read_mtimecmp()
   mtimecmp = cpu_self->cpu_per_cpu.clint_mtimecmp;
   return mtimecmp->val_64;
 }
+#endif /* !RISCV_USE_S_MODE */
 
+#if !defined(RISCV_USE_S_MODE) && !defined(RISCV_USE_TIME_CSR)
 static uint64_t riscv_clock_read_mtime(volatile RISCV_CLINT_timer_reg *mtime)
 {
 #if __riscv_xlen == 32
@@ -104,9 +106,7 @@ static uint64_t riscv_clock_read_mtime(volatile RISCV_CLINT_timer_reg *mtime)
   return mtime->val_64;
 #endif
 }
-#endif /* !RISCV_USE_S_MODE */
-
-#ifdef RISCV_USE_S_MODE
+#else /* RISCV_USE_S_MODE || RISCV_USE_TIME_CSR */
 static uint64_t riscv_clock_read_time(void)
 {
 #if __riscv_xlen == 32
@@ -125,7 +125,7 @@ static uint64_t riscv_clock_read_time(void)
   return rdtime();
 #endif
 }
-#endif /* RISCV_USE_S_MODE */
+#endif /* !RISCV_USE_S_MODE && !RISCV_USE_TIME_CSR */
 
 static rtems_interrupt_entry riscv_clock_interrupt_entry;
 
@@ -155,7 +155,7 @@ static uint32_t riscv_clock_get_timecount(struct timecounter *base)
 
   (void) base;
 
-#ifdef RISCV_USE_S_MODE
+#if defined(RISCV_USE_S_MODE) || defined(RISCV_USE_TIME_CSR)
   timecount = (uint32_t) rdtime();
 #else
   timecount = riscv_clint_get()->mtime.val_32[0];
@@ -170,7 +170,7 @@ static uint64_t riscv_clock_read_timer(riscv_timecounter *tc)
 
   (void) tc;
 
-#ifdef RISCV_USE_S_MODE
+#if defined(RISCV_USE_S_MODE) || defined(RISCV_USE_TIME_CSR)
   now = riscv_clock_read_time();
 #else
   now = riscv_clock_read_mtime(&riscv_clint_get()->mtime);
@@ -276,30 +276,30 @@ static void riscv_clock_initialize(void)
   rtems_timecounter_install(&tc->base);
 }
 
-#ifndef RISCV_USE_S_MODE
-volatile uint32_t _RISCV_Counter_register;
-#endif
-
-static void riscv_counter_initialize(void)
-{
-#ifndef RISCV_USE_S_MODE
-  _RISCV_Counter_mutable = &riscv_clint_get()->mtime.val_32[0];
-#endif
-}
-
 uint32_t _CPU_Counter_frequency( void )
 {
   return riscv_get_timebase_frequency();
 }
 
+#if defined(RISCV_USE_TIME_CSR)
+/* The CPU port provides _CPU_Counter_read(). */
+#elif defined(RISCV_USE_S_MODE)
 CPU_Counter_ticks _CPU_Counter_read( void )
 {
-#ifdef RISCV_USE_S_MODE
   uint64_t now = rdtime();
   return (uint32_t) now;
+}
 #else
+volatile uint32_t _RISCV_Counter_register;
+
+static void riscv_counter_initialize(void)
+{
+  _RISCV_Counter_mutable = &riscv_clint_get()->mtime.val_32[0];
+}
+
+CPU_Counter_ticks _CPU_Counter_read( void )
+{
   return *_RISCV_Counter;
-#endif
 }
 
 RTEMS_SYSINIT_ITEM(
@@ -307,6 +307,7 @@ RTEMS_SYSINIT_ITEM(
   RTEMS_SYSINIT_CPU_COUNTER,
   RTEMS_SYSINIT_ORDER_FIRST
 );
+#endif
 
 #define Clock_driver_support_at_tick(arg) riscv_clock_at_tick(arg)
 
