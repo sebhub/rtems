@@ -8,15 +8,18 @@ copyrights:
 default:
 - enabled-by: RTEMS_GCOV_COVERAGE
   value: 4
+- enabled-by: RTEMS_DEBUG
+  value: 2
 - enabled-by: true
   value: 1
 description: |
   Sets the factor which multiplies RTEMS_MINIMUM_STACK_SIZE to give the base
   stack size of the tests compiled with optimisation.  The stack size of a
   test task, an idle task and the interrupt stack derive from this base.  The
-  code and branch coverage instrumentation increases the stack use.  The
-  default factor is four with coverage and one without it.  A BSP with little
-  memory may select a smaller factor.
+  code and branch coverage instrumentation and the RTEMS_DEBUG checks increase
+  the stack use.  The default factor is four with coverage, two with
+  RTEMS_DEBUG and one without both.  A BSP with little memory may select a
+  smaller factor.
 enabled-by: true
 format: '{}'
 links: []
