@@ -86,6 +86,11 @@ specview: | prepare
 	$(MAKE) -f $(PKG_MAKEFILE) specview
 .PHONY: specview
 
+# Write the compact transition maps of the action requirements UIDS.
+action-maps: | prepare
+	$(MAKE) -f $(PKG_MAKEFILE) action-maps
+.PHONY: action-maps
+
 # Check that the Doxygen files and groups of the package map to specification
 # items.
 linkhub: | prepare

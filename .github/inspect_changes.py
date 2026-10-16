@@ -171,6 +171,15 @@ _C_SUFFIXES = (".c", ".h")
 # uv.lock file pins the formatter and the specification types.
 _FORMATTER_INPUTS = ("_clang-format", "uv.lock")
 
+# The package whose enabled set evaluates the transition maps of the report.
+_ACTION_MAP_PACKAGE = ("PKG_ARCH=riscv", "PKG_BSP=gr765")
+
+# GitHub accepts a comment of at most 65536 characters.  The comment of a pull
+# request holds this report and the package summaries.
+_ACTION_MAP_BUDGET = 30000
+
+_ACTION = re.compile(r"^functional-type: action$", re.MULTILINE)
+
 
 def get_category(path: str) -> str:
     """ Returns the category of the path. """
@@ -1072,6 +1081,72 @@ def _export_only(commit: str) -> int:
     return 1
 
 
+def _get_action_uids(base_ref: str, head_ref: str) -> list[str]:
+    """ Returns the UIDs of the action requirements which the change set adds
+    or modifies. """
+    uids: list[str] = []
+    for path in _lines(
+            _git("diff", "--name-only", "--diff-filter=d", base_ref,
+                 head_ref)):
+        if path.startswith("spec/") and path.endswith(".yml") and \
+                _ACTION.search(_git("show", f"{head_ref}:{path}")):
+            uids.append(path[len("spec"):-len(".yml")])
+    return uids
+
+
+def _get_action_maps(repository: Path, base_ref: str, head_ref: str,
+                     findings: _Findings) -> CommonMarkContent:
+    """ Returns the compact transition maps of the action requirements which
+    the change set adds or modifies.  The view renders the tree of the
+    repository, so it has to be at the head. """
+    content = CommonMarkContent(context="CC-BY-SA-4.0")
+    uids = _get_action_uids(base_ref, head_ref)
+    if not uids:
+        return content
+    if _git("rev-parse", "HEAD") != _git("rev-parse", head_ref):
+        findings.warning(
+            f"The repository is not at the head `{head_ref}`.  The "
+            "transition maps are skipped.")
+        return content
+    blocks: list[str] = []
+    size = 0
+    rest: list[str] = []
+    for uid in uids:
+        if rest:
+            rest.append(uid)
+            continue
+        result = subprocess.run([
+            "make", "-s", "--no-print-directory", "action-maps",
+            *_ACTION_MAP_PACKAGE, f"UIDS={uid}"
+        ],
+                                cwd=repository,
+                                check=False,
+                                capture_output=True,
+                                encoding="utf-8")
+        if result.returncode != 0:
+            findings.warning(f"The transition map of `{uid}` failed:",
+                             result.stderr)
+            continue
+        block = (f"<details>\n<summary><code>{uid}</code></summary>\n\n"
+                 f"{result.stdout.strip()}\n\n</details>")
+        if blocks and size + len(block) > _ACTION_MAP_BUDGET:
+            rest.append(uid)
+            continue
+        blocks.append(block)
+        size += len(block)
+    if not blocks and not rest:
+        return content
+    content.add("### Transition maps")
+    for block in blocks:
+        content.add(block)
+    if rest:
+        content.add("The comment has no room for the transition maps of "
+                    "these items.  Run `make action-maps "
+                    f"{' '.join(_ACTION_MAP_PACKAGE)} UIDS=...` to view them:")
+        content.add_list([f"`{uid}`" for uid in rest])
+    return content
+
+
 def main(argv: list[str]) -> int:
     """ Inspects the change set of a pull request. """
 
@@ -1227,9 +1302,11 @@ def main(argv: list[str]) -> int:
     if has_upstream:
         _check_extractable(repository, args.upstream_ref, commits, categories,
                            originals, findings)
+    action_maps = _get_action_maps(repository, base_ref, head_ref, findings)
     content = CommonMarkContent(context="CC-BY-SA-4.0")
     content.add_simple_table(rows)
     content.add(findings.content)
+    content.add(action_maps)
     report = str(content)
     if args.output:
         Path(args.output).write_text(report, encoding="utf-8")
