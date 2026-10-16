@@ -7,6 +7,8 @@ build-type: option
 copyrights:
 - Copyright (C) 2026 embedded brains GmbH & Co. KG
 default:
+- enabled-by: riscv/gr765
+  value: true
 - enabled-by: true
   value: false
 description: |
