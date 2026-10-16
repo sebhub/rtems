@@ -605,6 +605,51 @@ def _tools_key() -> str:
     return digest.hexdigest()
 
 
+# The build types of the items which build a test program.
+_TEST_PROGRAM_TYPES = ("test-program", "ada-test-program")
+
+
+def _get_disabled_test_programs(enable: list[str]) -> set[str]:
+    """
+    Get the targets of the test programs which the enabled set does not build.
+
+    The build adds the name of a test with the test state exclude to the
+    enabled set, and a test program is enabled only without this name.  An
+    item of another build type, such as a script, may produce an executable as
+    well, so the result covers the test program items alone.
+    """
+    # pylint: disable=import-outside-toplevel
+    from specitems import is_enabled, load_data
+
+    targets: set[str] = set()
+    for path in sorted((_SPEC_ROOT / "build").rglob("*.yml")):
+        data = load_data(str(path))
+        if data.get("build-type") not in _TEST_PROGRAM_TYPES:
+            continue
+        name = path.stem.upper().replace("-", "_")
+        if (f"TEST_{name}_EXCLUDE" in enable
+                or not is_enabled(enable, data["enabled-by"])):
+            targets.add(data["target"])
+    return targets
+
+
+def _remove_stale_executables(directory: Path, enable: list[str]) -> None:
+    """
+    Remove each executable of a test program which the build does not
+    produce.
+
+    A build keeps the executable of a test program which a later configuration
+    excludes or disables.  The test runner runs each executable below the
+    directory of the test suites.
+    """
+    targets = _get_disabled_test_programs(enable)
+    for path in sorted((directory / "testsuites").rglob("*.exe")):
+        if str(path.relative_to(directory)) in targets:
+            print(f"note: remove the stale executable '{path}'",
+                  file=sys.stderr)
+            path.unlink()
+
+
 def _drop_stopped_runs(test_log: Path) -> None:
     """
     Remove the reports of the runs which a timeout or an error of the test
@@ -657,6 +702,7 @@ def _run(args: argparse.Namespace) -> int:
     defines = _directory_defines(args)
     defines.update(_key_values(args.define, "definition"))
     enable = _enabled_by_build(args.build_directory, bsp)
+    _remove_stale_executables(directory, enable)
     enable.extend(args.enable)
     timeout_key = _timeout_key(enable)
     command = [
