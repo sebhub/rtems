@@ -1,0 +1,18 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: mips
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: ../../req/ctx-initial-floating-point-environment
+rationale: |
+  FS flushes a denormalised result to zero, so that no underflow and no inexact
+  exception reaches the thread.
+references: []
+requirement-type: functional
+text: |
+  Where the multilib provides a floating-point unit, the context initialization
+  shall give the context an fcr31 in which the trap enables are zero and FS is
+  one.
+type: requirement
