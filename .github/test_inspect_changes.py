@@ -209,3 +209,139 @@ def test_split_keeps_the_test_state(repository: Path) -> None:
     assert inspect_changes._get_categories(commit) == [
         "build-qual", "source"
     ]
+
+
+def _write_file(path: str, text: str = "") -> None:
+    Path(path).parent.mkdir(parents=True, exist_ok=True)
+    Path(path).write_text(text, encoding="utf-8")
+
+
+def _add_extra(source: list[str]) -> None:
+    _write(
+        _BSP / "objextra.yml", {
+            "build-type": "objects",
+            "enabled-by": {
+                "not": "RTEMS_QUAL"
+            },
+            "source": source,
+            "type": "build"
+        })
+
+
+def _demo_with_extra() -> None:
+    _write_file("bsps/arm/demo/a.c")
+    _write_file("bsps/shared/b.c")
+    _write_file("bsps/shared/c.c")
+    _add_extra(["bsps/shared/c.c"])
+    _commit("bsps/arm/demo: Add the extra objects")
+
+
+def test_follow_moves_a_file(repository: Path) -> None:
+    """ A qualified build item may follow a file which the commit moves. """
+    del repository
+    _demo_with_extra()
+    subprocess.run(["git", "mv", "bsps/shared/c.c", "bsps/shared/d.c"],
+                   check=True)
+    _add_extra(["bsps/shared/d.c"])
+    commit = _commit("bsps/shared: Rename c.c")
+    assert inspect_changes._get_categories(commit) == ["source", "build-qual"]
+
+
+def test_follow_drops_an_unused_file(repository: Path) -> None:
+    """ A qualified build item may drop a file which the directory no longer
+    lists. """
+    del repository
+    _demo_with_extra()
+    _add_extra([])
+    _write_file("bsps/arm/demo/a.c", "int a;\n")
+    commit = _commit("bsps/arm/demo: Stop to use c.c")
+    assert inspect_changes._get_categories(commit) == ["source", "build-qual"]
+
+
+def test_follow_keeps_a_used_file(repository: Path) -> None:
+    """ A qualified build item may not drop a file which a build item of the
+    directory still lists. """
+    del repository
+    _demo_with_extra()
+    _add_extra([])
+    obj = dict(_OBJ)
+    obj["source"] = _OBJ["source"] + ["bsps/shared/c.c"]
+    _write(_BSP / "obj.yml", obj)
+    _write_file("bsps/arm/demo/a.c", "int a;\n")
+    commit = _commit("bsps/arm/demo: Move c.c")
+    assert inspect_changes._get_categories(commit) == ["build-qual", "source"]
+
+
+def test_follow_adds_a_new_file(repository: Path) -> None:
+    """ A qualified build item may gain a file which the commit adds. """
+    del repository
+    _demo_with_extra()
+    _write_file("bsps/shared/e.c")
+    _add_extra(["bsps/shared/c.c", "bsps/shared/e.c"])
+    commit = _commit("bsps/shared: Add e.c")
+    assert inspect_changes._get_categories(commit) == ["source", "build-qual"]
+
+
+def test_follow_adds_no_other_file(repository: Path) -> None:
+    """ A qualified build item may not gain a file which neither the commit
+    adds nor a source build item of the directory listed. """
+    del repository
+    _demo_with_extra()
+    _write_file("cpukit/dev/f.c")
+    _commit("cpukit/dev: Add f.c")
+    _add_extra(["bsps/shared/c.c", "cpukit/dev/f.c"])
+    _write_file("bsps/arm/demo/a.c", "int a;\n")
+    commit = _commit("bsps/arm/demo: Use f.c")
+    assert inspect_changes._get_categories(commit) == ["build-qual", "source"]
+
+
+def test_follow_moves_an_item(repository: Path) -> None:
+    """ A qualified build item may move together with its files. """
+    del repository
+    _demo_with_extra()
+    Path("bsps/demo2").mkdir(parents=True)
+    subprocess.run(["git", "mv", "bsps/shared/c.c", "bsps/demo2/c.c"],
+                   check=True)
+    other = Path("spec/build/bsps/arm/demo2")
+    other.mkdir(parents=True)
+    subprocess.run(["git", "mv", str(_BSP / "objextra.yml"),
+                    str(other / "objextra.yml")],
+                   check=True)
+    _write(
+        other / "objextra.yml", {
+            "build-type": "objects",
+            "enabled-by": {
+                "not": "RTEMS_QUAL"
+            },
+            "source": ["bsps/demo2/c.c"],
+            "type": "build"
+        })
+    commit = _commit("bsps: Move c.c")
+    assert inspect_changes._get_categories(commit) == ["source", "build-qual"]
+
+
+def test_follow_accepts_an_empty_list(repository: Path) -> None:
+    """ A qualified build item may have an empty source list. """
+    del repository
+    _demo_with_extra()
+    _write(
+        _BSP / "objqual.yml", {
+            "build-type": "objects",
+            "enabled-by": "RTEMS_QUAL",
+            "source": None,
+            "type": "build"
+        })
+    _commit("build-qual: Add an empty qualified item")
+    subprocess.run(["git", "mv", "bsps/shared/c.c", "bsps/shared/d.c"],
+                   check=True)
+    _add_extra(["bsps/shared/d.c"])
+    _write(
+        _BSP / "objqual.yml", {
+            "build-type": "objects",
+            "enabled-by": "RTEMS_QUAL",
+            "source": None,
+            "type": "build",
+            "links": []
+        })
+    commit = _commit("bsps/shared: Rename c.c")
+    assert inspect_changes._get_categories(commit) == ["build-qual", "source"]

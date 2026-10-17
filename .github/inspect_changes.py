@@ -999,13 +999,93 @@ def _is_mixed(commit: str, files: list[str]) -> bool:
     return True
 
 
+def _get_sources(data: Any) -> list[str]:
+    if not isinstance(data, dict):
+        return []
+    return data.get("source") or []
+
+
+def _strip_sources(data: Any) -> Any:
+    if not isinstance(data, dict):
+        return data
+    return {
+        key: value
+        for key, value in data.items()
+        if key not in ("copyrights", "source")
+    }
+
+
+def _lists_in_directory(revision: str, directory: str, name: str,
+                        category: str | None) -> bool:
+    """ Returns true, if a build item of the directory and of the category
+    lists the file.  A category of None stands for every category. """
+    for path in _lines(_git("ls-tree", "--name-only", revision,
+                            f"{directory}/")):
+        if not path.endswith(".yml"):
+            continue
+        if category is not None and get_category(path) != category:
+            continue
+        if name in _get_sources(_load_build_item(revision, path)):
+            return True
+    return False
+
+
+def _follows_source(commit: str, files: list[str]) -> bool:
+    """ Returns true, if the build items of the category build-qual which the
+    commit changes only follow the source change of the commit.  An entry may
+    leave such a build item, if the commit deletes its file or if no build
+    item of the directory lists the file any more.  An entry may join such a
+    build item, if the commit adds its file or if a source build item of the
+    directory listed the file before.  A build item which the commit moves
+    keeps its other attributes. """
+    # pylint: disable=too-many-locals
+    status = _lines(
+        _git("diff-tree", "--no-commit-id", "--name-status", "--no-renames",
+             "-r", commit))
+    added = {line.split()[1] for line in status if line.startswith("A")}
+    deleted = {line.split()[1] for line in status if line.startswith("D")}
+    qual = [path for path in files if get_category(path) == CATEGORY_BUILD_QUAL]
+    old_dirs: dict[str, str] = {}
+    new_dirs: dict[str, str] = {}
+    counts: dict[str, int] = {}
+    moved: dict[str, list[Any]] = {}
+    for path in qual:
+        if not path.startswith("spec/build/") or not path.endswith(".yml"):
+            return False
+        old = _load_build_item(f"{commit}^", path)
+        new = _load_build_item(commit, path)
+        if old is not None and new is not None:
+            if _strip_sources(old) != _strip_sources(new):
+                return False
+        else:
+            moved.setdefault(os.path.basename(path), []).append(
+                _strip_sources(old if new is None else new))
+        for name in _get_sources(old):
+            counts[name] = counts.get(name, 0) - 1
+            old_dirs[name] = os.path.dirname(path)
+        for name in _get_sources(new):
+            counts[name] = counts.get(name, 0) + 1
+            new_dirs[name] = os.path.dirname(path)
+    for items in moved.values():
+        if len(items) != 2 or items[0] != items[1]:
+            return False
+    for name, count in counts.items():
+        if count < 0 and name not in deleted and _lists_in_directory(
+                commit, old_dirs[name], name, None):
+            return False
+        if count > 0 and name not in added and not _lists_in_directory(
+                f"{commit}^", new_dirs[name], name, CATEGORY_SOURCE):
+            return False
+    return True
+
+
 def _get_categories(commit: str) -> list[str]:
     files = _get_files(commit)
     found = sorted({get_category(f) for f in files})
     if found == sorted(_MIXED):
         if _is_build_move(commit, files) or _is_build_split(commit, files):
             return [CATEGORY_BUILD_QUAL]
-        if _is_mixed(commit, files):
+        if _is_mixed(commit, files) or _follows_source(commit, files):
             return list(_MIXED)
     return found
 
@@ -1056,7 +1136,8 @@ def _check_commit(
                     "ends in `extra.yml`, or only move list entries between "
                     "build items, or add build items of the pre-qualified "
                     "build which take over list entries for the builds "
-                    "without RTEMS_QUAL.")
+                    "without RTEMS_QUAL, or only follow the files which the "
+                    "commit adds, deletes or stops to list.")
         findings.error(
             f"In {url}, the change set belongs to more than one category: "
             f"{', '.join(found)}.  Split it into one commit per category."
