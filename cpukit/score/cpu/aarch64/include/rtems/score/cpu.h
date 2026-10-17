@@ -498,44 +498,50 @@ static inline AArch64_Exception_Handler AArch64_set_exception_handler(
 }
 
 typedef struct {
-  uint64_t register_x0;
-  uint64_t register_x1;
-  uint64_t register_x2;
-  uint64_t register_x3;
-  uint64_t register_x4;
-  uint64_t register_x5;
-  uint64_t register_x6;
-  uint64_t register_x7;
-  uint64_t register_x8;
-  uint64_t register_x9;
-  uint64_t register_x10;
-  uint64_t register_x11;
-  uint64_t register_x12;
-  uint64_t register_x13;
-  uint64_t register_x14;
-  uint64_t register_x15;
-  uint64_t register_x16;
-  uint64_t register_x17;
-  uint64_t register_x18;
-  uint64_t register_x19;
-  uint64_t register_x20;
-  uint64_t register_x21;
-  uint64_t register_x22;
-  uint64_t register_x23;
-  uint64_t register_x24;
-  uint64_t register_x25;
-  uint64_t register_x26;
-  uint64_t register_x27;
-  uint64_t register_x28;
-  uint64_t register_fp;
-  void *register_lr;
+  union {
+    struct {
+      uint64_t register_x0;
+      uint64_t register_x1;
+      uint64_t register_x2;
+      uint64_t register_x3;
+      uint64_t register_x4;
+      uint64_t register_x5;
+      uint64_t register_x6;
+      uint64_t register_x7;
+      uint64_t register_x8;
+      uint64_t register_x9;
+      uint64_t register_x10;
+      uint64_t register_x11;
+      uint64_t register_x12;
+      uint64_t register_x13;
+      uint64_t register_x14;
+      uint64_t register_x15;
+      uint64_t register_x16;
+      uint64_t register_x17;
+      uint64_t register_x18;
+      uint64_t register_x19;
+      uint64_t register_x20;
+      uint64_t register_x21;
+      uint64_t register_x22;
+      uint64_t register_x23;
+      uint64_t register_x24;
+      uint64_t register_x25;
+      uint64_t register_x26;
+      uint64_t register_x27;
+      uint64_t register_x28;
+      uint64_t register_fp;
+      void *register_lr;
 #ifdef AARCH64_MULTILIB_ARCH_V8_ILP32
-  uint32_t _register_lr_top;
+      uint32_t _register_lr_top;
 #endif
-  uintptr_t register_sp;
+      uintptr_t register_sp;
 #ifdef AARCH64_MULTILIB_ARCH_V8_ILP32
-  uint32_t _register_sp_top;
+      uint32_t _register_sp_top;
 #endif
+    };
+
+    uint64_t registers[ 32 ];
+  };
   void *register_pc;
 #ifdef AARCH64_MULTILIB_ARCH_V8_ILP32
   uint32_t _register_pc_top;
@@ -548,38 +554,44 @@ typedef struct {
   uint64_t reserved_for_stack_alignment;
   uint64_t register_fpsr;
   uint64_t register_fpcr;
-  uint128_t register_q0;
-  uint128_t register_q1;
-  uint128_t register_q2;
-  uint128_t register_q3;
-  uint128_t register_q4;
-  uint128_t register_q5;
-  uint128_t register_q6;
-  uint128_t register_q7;
-  uint128_t register_q8;
-  uint128_t register_q9;
-  uint128_t register_q10;
-  uint128_t register_q11;
-  uint128_t register_q12;
-  uint128_t register_q13;
-  uint128_t register_q14;
-  uint128_t register_q15;
-  uint128_t register_q16;
-  uint128_t register_q17;
-  uint128_t register_q18;
-  uint128_t register_q19;
-  uint128_t register_q20;
-  uint128_t register_q21;
-  uint128_t register_q22;
-  uint128_t register_q23;
-  uint128_t register_q24;
-  uint128_t register_q25;
-  uint128_t register_q26;
-  uint128_t register_q27;
-  uint128_t register_q28;
-  uint128_t register_q29;
-  uint128_t register_q30;
-  uint128_t register_q31;
+  union {
+    struct {
+      uint128_t register_q0;
+      uint128_t register_q1;
+      uint128_t register_q2;
+      uint128_t register_q3;
+      uint128_t register_q4;
+      uint128_t register_q5;
+      uint128_t register_q6;
+      uint128_t register_q7;
+      uint128_t register_q8;
+      uint128_t register_q9;
+      uint128_t register_q10;
+      uint128_t register_q11;
+      uint128_t register_q12;
+      uint128_t register_q13;
+      uint128_t register_q14;
+      uint128_t register_q15;
+      uint128_t register_q16;
+      uint128_t register_q17;
+      uint128_t register_q18;
+      uint128_t register_q19;
+      uint128_t register_q20;
+      uint128_t register_q21;
+      uint128_t register_q22;
+      uint128_t register_q23;
+      uint128_t register_q24;
+      uint128_t register_q25;
+      uint128_t register_q26;
+      uint128_t register_q27;
+      uint128_t register_q28;
+      uint128_t register_q29;
+      uint128_t register_q30;
+      uint128_t register_q31;
+    };
+
+    uint128_t vector_registers[ 32 ];
+  };
 } CPU_Exception_frame;
 
 void _CPU_Exception_frame_print( const CPU_Exception_frame *frame );
