@@ -17,5 +17,5 @@ rationale: |
 requirement-type: functional
 text: |
   The context initialization shall give the thread a floating-point environment
-  which raises no trap and which flushes a denormalised result to zero.
+  which raises no trap.
 type: requirement

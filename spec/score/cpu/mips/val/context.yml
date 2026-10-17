@@ -427,7 +427,7 @@ test-actions:
       #endif
     links:
     - role: validation
-      uid: ../../req/ctx-initial-floating-point-environment
+      uid: ../req/ctx-initial-fcr31
   - brief: |
       Check that the context initialization sets the flush to zero flag of the MIPS
       register fcr31.
@@ -437,7 +437,7 @@ test-actions:
       #endif
     links:
     - role: validation
-      uid: ../../req/ctx-initial-floating-point-environment
+      uid: ../req/ctx-initial-fcr31
   - brief: |
       Check that the round trip reached the trap. The heir returns through the stack
       pointer of the caller.
