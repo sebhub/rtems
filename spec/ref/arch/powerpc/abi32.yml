@@ -1,0 +1,12 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+links: []
+organization: Power.org
+reference-type: manual
+title: Power Architecture 32-bit Application Binary Interface Supplement 1.0, Linux
+  and Embedded, Version 1.0
+type: reference
+work-hash: BiJ6V5K1K3yHi4jBP-YyEJZYFTmhwwIIUwQbiaPDmJA=
+work-url: https://www.polyomino.org.uk/publications/2011/Power-Arch-32-bit-ABI-supp-1.0-Unified.pdf

@@ -4,6 +4,7 @@ copyrights:
 enabled-by:
 - aarch64
 - arm
+- powerpc
 links:
 - role: requirement-refinement
   uid: ../validation

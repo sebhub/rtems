@@ -1,0 +1,16 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: powerpc
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+- location: 3.2.1.1
+  role: reference
+  uid: /ref/arch/powerpc/abi32
+term: PowerPC call-used register
+text: |
+  A register which a called function may change. These are r0, r3 to r12, LR,
+  CTR, XER and the fields CR0, CR1 and CR5 to CR7 of CR.
+type: glossary

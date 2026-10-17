@@ -1,0 +1,955 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: powerpc
+links: []
+test-actions:
+- action-brief: |
+    Load a distinct pattern into every register the interrupt has to preserve.
+    Raise the interrupt. The handler overwrites each call-used register. Trap, so
+    the frame captures every register. Run this once for each register with the
+    pattern of that register inverted, then once unchanged.
+  action-code: |
+    memcpy( interrupt_initial, interrupt_patterns, sizeof( interrupt_initial ) );
+    interrupt_request.handler = InterruptHandler;
+    interrupt_request.arg = NULL;
+    RegisterCheckRun( &interrupt_check );
+  checks:
+  - brief: |
+      Check that the interrupt preserved the PowerPC call-used register R0.
+    code: |
+      CheckSlot( SLOT_R0 );
+    links:
+    - role: validation
+      uid: ../../req/isr-call-used
+  - brief: |
+      Check that the interrupt preserved the PowerPC call-used register R3.
+    code: |
+      CheckSlot( SLOT_R3 );
+    links:
+    - role: validation
+      uid: ../../req/isr-call-used
+  - brief: |
+      Check that the interrupt preserved the PowerPC call-used register R4.
+    code: |
+      CheckSlot( SLOT_R4 );
+    links:
+    - role: validation
+      uid: ../../req/isr-call-used
+  - brief: |
+      Check that the interrupt preserved the PowerPC call-used register R5.
+    code: |
+      CheckSlot( SLOT_R5 );
+    links:
+    - role: validation
+      uid: ../../req/isr-call-used
+  - brief: |
+      Check that the interrupt preserved the PowerPC call-used register R6.
+    code: |
+      CheckSlot( SLOT_R6 );
+    links:
+    - role: validation
+      uid: ../../req/isr-call-used
+  - brief: |
+      Check that the interrupt preserved the PowerPC call-used register R7.
+    code: |
+      CheckSlot( SLOT_R7 );
+    links:
+    - role: validation
+      uid: ../../req/isr-call-used
+  - brief: |
+      Check that the interrupt preserved the PowerPC call-used register R8.
+    code: |
+      CheckSlot( SLOT_R8 );
+    links:
+    - role: validation
+      uid: ../../req/isr-call-used
+  - brief: |
+      Check that the interrupt preserved the PowerPC call-used register R9.
+    code: |
+      CheckSlot( SLOT_R9 );
+    links:
+    - role: validation
+      uid: ../../req/isr-call-used
+  - brief: |
+      Check that the interrupt preserved the PowerPC call-used register R10.
+    code: |
+      CheckSlot( SLOT_R10 );
+    links:
+    - role: validation
+      uid: ../../req/isr-call-used
+  - brief: |
+      Check that the interrupt preserved the PowerPC call-used register R11.
+    code: |
+      CheckSlot( SLOT_R11 );
+    links:
+    - role: validation
+      uid: ../../req/isr-call-used
+  - brief: |
+      Check that the interrupt preserved the PowerPC wrapper-private register R14.
+    code: |
+      CheckSlot( SLOT_R14 );
+    links:
+    - role: validation
+      uid: ../req/isr-wrapper-private-set
+  - brief: |
+      Check that the interrupt preserved the PowerPC call-used register R12.
+    code: |
+      CheckSlot( SLOT_R12 );
+    links:
+    - role: validation
+      uid: ../../req/isr-call-used
+  - brief: |
+      Check that the interrupt preserved CR.
+    code: |
+      CheckSlot( SLOT_CR );
+    links:
+    - role: validation
+      uid: ../../req/isr-status
+  - brief: |
+      Check that the interrupt preserved XER.
+    code: |
+      CheckSlot( SLOT_XER );
+    links:
+    - role: validation
+      uid: ../../req/isr-status
+  - brief: |
+      Check that the interrupt preserved CTR.
+    code: |
+      CheckSlot( SLOT_CTR );
+    links:
+    - role: validation
+      uid: ../../req/isr-call-used
+  - brief: |
+      Check that the interrupt preserved LR.
+    code: |
+      CheckSlot( SLOT_LR );
+    links:
+    - role: validation
+      uid: ../../req/isr-call-used
+  - brief: |
+      Check that the interrupt preserved the varied bits of MSR.
+    code: |
+      CheckSlot( SLOT_MSR );
+    links:
+    - role: validation
+      uid: ../../req/isr-status
+  - brief: |
+      Check that the interrupt preserved the PowerPC call-saved register R15.
+    code: |
+      CheckSlot( SLOT_R15 );
+    links:
+    - role: validation
+      uid: ../../req/isr-call-saved
+  - brief: |
+      Check that the interrupt preserved the PowerPC call-saved register R16.
+    code: |
+      CheckSlot( SLOT_R16 );
+    links:
+    - role: validation
+      uid: ../../req/isr-call-saved
+  - brief: |
+      Check that the interrupt preserved the PowerPC call-saved register R17.
+    code: |
+      CheckSlot( SLOT_R17 );
+    links:
+    - role: validation
+      uid: ../../req/isr-call-saved
+  - brief: |
+      Check that the interrupt preserved the PowerPC call-saved register R18.
+    code: |
+      CheckSlot( SLOT_R18 );
+    links:
+    - role: validation
+      uid: ../../req/isr-call-saved
+  - brief: |
+      Check that the interrupt preserved the PowerPC call-saved register R19.
+    code: |
+      CheckSlot( SLOT_R19 );
+    links:
+    - role: validation
+      uid: ../../req/isr-call-saved
+  - brief: |
+      Check that the interrupt preserved the PowerPC call-saved register R20.
+    code: |
+      CheckSlot( SLOT_R20 );
+    links:
+    - role: validation
+      uid: ../../req/isr-call-saved
+  - brief: |
+      Check that the interrupt preserved the PowerPC call-saved register R21.
+    code: |
+      CheckSlot( SLOT_R21 );
+    links:
+    - role: validation
+      uid: ../../req/isr-call-saved
+  - brief: |
+      Check that the interrupt preserved the PowerPC call-saved register R22.
+    code: |
+      CheckSlot( SLOT_R22 );
+    links:
+    - role: validation
+      uid: ../../req/isr-call-saved
+  - brief: |
+      Check that the interrupt preserved the PowerPC call-saved register R23.
+    code: |
+      CheckSlot( SLOT_R23 );
+    links:
+    - role: validation
+      uid: ../../req/isr-call-saved
+  - brief: |
+      Check that the interrupt preserved the PowerPC call-saved register R24.
+    code: |
+      CheckSlot( SLOT_R24 );
+    links:
+    - role: validation
+      uid: ../../req/isr-call-saved
+  - brief: |
+      Check that the interrupt preserved the PowerPC call-saved register R25.
+    code: |
+      CheckSlot( SLOT_R25 );
+    links:
+    - role: validation
+      uid: ../../req/isr-call-saved
+  - brief: |
+      Check that the interrupt preserved the PowerPC call-saved register R26.
+    code: |
+      CheckSlot( SLOT_R26 );
+    links:
+    - role: validation
+      uid: ../../req/isr-call-saved
+  - brief: |
+      Check that the interrupt preserved the PowerPC call-saved register R27.
+    code: |
+      CheckSlot( SLOT_R27 );
+    links:
+    - role: validation
+      uid: ../../req/isr-call-saved
+  - brief: |
+      Check that the interrupt preserved the PowerPC call-saved register R28.
+    code: |
+      CheckSlot( SLOT_R28 );
+    links:
+    - role: validation
+      uid: ../../req/isr-call-saved
+  - brief: |
+      Check that the interrupt preserved the PowerPC call-saved register R29.
+    code: |
+      CheckSlot( SLOT_R29 );
+    links:
+    - role: validation
+      uid: ../../req/isr-call-saved
+  - brief: |
+      Check that the interrupt preserved the PowerPC call-saved register R30.
+    code: |
+      CheckSlot( SLOT_R30 );
+    links:
+    - role: validation
+      uid: ../../req/isr-call-saved
+  - brief: |
+      Check that the interrupt preserved the PowerPC call-saved register R31.
+    code: |
+      CheckSlot( SLOT_R31 );
+    links:
+    - role: validation
+      uid: ../../req/isr-call-saved
+  - brief: |
+      Check that the handler ran once before the trap.
+    code: |
+      CheckSlot( SLOT_COUNT );
+    links:
+    - role: validation
+      uid: ../../req/isr-call-used
+  - brief: |
+      Check that the interrupted code continued at its next instruction, so the trap
+      reports its address.
+    code: |
+      CheckSlot( SLOT_PC );
+    links:
+    - role: validation
+      uid: ../../req/isr-return-address
+  - brief: |
+      Check that each run with a changed value flagged exactly the checks of that
+      value, and that each run recorded every check.
+    code: |
+      RegisterCheckReport( &interrupt_check );
+    links:
+    - role: validation
+      uid: ../../req/isr-call-used
+  links: []
+test-brief: |
+  Checks that the interrupt processing preserves every register of the
+  interrupted context.
+test-context: []
+test-context-support: null
+test-description: null
+test-header: null
+test-includes:
+- rtems/score/cpuimpl.h
+- string.h
+- stdint.h
+test-local-includes:
+- tx-register-check.h
+- tx-support.h
+test-setup: null
+test-stop: null
+test-support: |
+  extern const char interrupt_enable_label[];
+
+  extern const char interrupt_trap_label[];
+
+  extern const char interrupt_done_label[];
+
+  #define WORD UINT64_C( 0xffffffff )
+
+  /*
+   * A general-purpose register holds 64 bits in 64-bit code and 32 bits
+   * otherwise.  The table holds a doubleword for each register.  The load takes
+   * the whole doubleword in 64-bit code and its bottom word otherwise.
+   */
+  #if defined( __powerpc64__ )
+  #define GPR UINT64_MAX
+  #define GPR_LOAD "ld "
+  #define GPR_OFFSET "0"
+  #else
+  #define GPR WORD
+  #define GPR_LOAD "lwz "
+  #define GPR_OFFSET "4"
+  #endif
+
+  /*
+   * These are the bits of MSR which the test varies.  FE0 and FE1 select the
+   * floating-point exception mode.  FPSCR enables no exception, so they change
+   * no behaviour.  The e500 core keeps FE0 and FE1 cleared.  There, the test
+   * varies PMM, which marks the process for the performance monitor.  No
+   * performance monitor runs.
+   */
+  #if defined( __SPE__ )
+  #define MSR_BITS UINT64_C( 0x00000004 )
+  #else
+  #define MSR_BITS UINT64_C( 0x00000900 )
+  #endif
+
+  /*
+   * The handler loads the value of a register exclusive-or this value.  It
+   * differs from the pattern and from the inverted pattern of the register.
+   */
+  #define HANDLER UINT64_C( 0x00ff00ff00ff00ff )
+
+  typedef enum {
+    SOURCE_R0,
+    SOURCE_R3,
+    SOURCE_R4,
+    SOURCE_R5,
+    SOURCE_R6,
+    SOURCE_R7,
+    SOURCE_R8,
+    SOURCE_R9,
+    SOURCE_R10,
+    SOURCE_R11,
+    SOURCE_R14,
+    SOURCE_R12,
+    SOURCE_CR,
+    SOURCE_XER,
+    SOURCE_CTR,
+    SOURCE_LR,
+    SOURCE_MSR,
+    SOURCE_R15,
+    SOURCE_R16,
+    SOURCE_R17,
+    SOURCE_R18,
+    SOURCE_R19,
+    SOURCE_R20,
+    SOURCE_R21,
+    SOURCE_R22,
+    SOURCE_R23,
+    SOURCE_R24,
+    SOURCE_R25,
+    SOURCE_R26,
+    SOURCE_R27,
+    SOURCE_R28,
+    SOURCE_R29,
+    SOURCE_R30,
+    SOURCE_R31,
+    SOURCE_COUNT,
+    SOURCE_PC,
+    SOURCE_MAX
+  } Source;
+
+  typedef enum {
+    SLOT_R0,
+    SLOT_R3,
+    SLOT_R4,
+    SLOT_R5,
+    SLOT_R6,
+    SLOT_R7,
+    SLOT_R8,
+    SLOT_R9,
+    SLOT_R10,
+    SLOT_R11,
+    SLOT_R14,
+    SLOT_R12,
+    SLOT_CR,
+    SLOT_XER,
+    SLOT_CTR,
+    SLOT_LR,
+    SLOT_MSR,
+    SLOT_R15,
+    SLOT_R16,
+    SLOT_R17,
+    SLOT_R18,
+    SLOT_R19,
+    SLOT_R20,
+    SLOT_R21,
+    SLOT_R22,
+    SLOT_R23,
+    SLOT_R24,
+    SLOT_R25,
+    SLOT_R26,
+    SLOT_R27,
+    SLOT_R28,
+    SLOT_R29,
+    SLOT_R30,
+    SLOT_R31,
+    SLOT_COUNT,
+    SLOT_PC,
+    SLOT_MAX
+  } Slot;
+
+  static const RegisterCheckSource interrupt_sources[ SOURCE_MAX ] = {
+    { "r0", REGISTER_CHECK_INITIAL, GPR },
+    { "r3", REGISTER_CHECK_INITIAL, GPR },
+    { "r4", REGISTER_CHECK_INITIAL, GPR },
+    { "r5", REGISTER_CHECK_INITIAL, GPR },
+    { "r6", REGISTER_CHECK_INITIAL, GPR },
+    { "r7", REGISTER_CHECK_INITIAL, GPR },
+    { "r8", REGISTER_CHECK_INITIAL, GPR },
+    { "r9", REGISTER_CHECK_INITIAL, GPR },
+    { "r10", REGISTER_CHECK_INITIAL, GPR },
+    { "r11", REGISTER_CHECK_INITIAL, GPR },
+    { "r14", REGISTER_CHECK_INITIAL, GPR },
+    { "r12", REGISTER_CHECK_INITIAL, GPR },
+    { "cr", REGISTER_CHECK_INITIAL, UINT64_C( 0xffffffff ) },
+    { "xer", REGISTER_CHECK_INITIAL, UINT64_C( 0xe000007f ) },
+    { "ctr", REGISTER_CHECK_INITIAL, GPR },
+    { "lr", REGISTER_CHECK_INITIAL, GPR },
+    { "msr", REGISTER_CHECK_INITIAL, MSR_BITS },
+    { "r15", REGISTER_CHECK_INITIAL, GPR },
+    { "r16", REGISTER_CHECK_INITIAL, GPR },
+    { "r17", REGISTER_CHECK_INITIAL, GPR },
+    { "r18", REGISTER_CHECK_INITIAL, GPR },
+    { "r19", REGISTER_CHECK_INITIAL, GPR },
+    { "r20", REGISTER_CHECK_INITIAL, GPR },
+    { "r21", REGISTER_CHECK_INITIAL, GPR },
+    { "r22", REGISTER_CHECK_INITIAL, GPR },
+    { "r23", REGISTER_CHECK_INITIAL, GPR },
+    { "r24", REGISTER_CHECK_INITIAL, GPR },
+    { "r25", REGISTER_CHECK_INITIAL, GPR },
+    { "r26", REGISTER_CHECK_INITIAL, GPR },
+    { "r27", REGISTER_CHECK_INITIAL, GPR },
+    { "r28", REGISTER_CHECK_INITIAL, GPR },
+    { "r29", REGISTER_CHECK_INITIAL, GPR },
+    { "r30", REGISTER_CHECK_INITIAL, GPR },
+    { "r31", REGISTER_CHECK_INITIAL, GPR },
+    { "count", REGISTER_CHECK_EXPECTED, WORD },
+    { "pc", REGISTER_CHECK_EXPECTED, WORD }
+  };
+
+  static const RegisterCheckSlot interrupt_slots[ SOURCE_MAX ] = {
+    { "r0", SOURCE_R0, GPR },
+    { "r3", SOURCE_R3, GPR },
+    { "r4", SOURCE_R4, GPR },
+    { "r5", SOURCE_R5, GPR },
+    { "r6", SOURCE_R6, GPR },
+    { "r7", SOURCE_R7, GPR },
+    { "r8", SOURCE_R8, GPR },
+    { "r9", SOURCE_R9, GPR },
+    { "r10", SOURCE_R10, GPR },
+    { "r11", SOURCE_R11, GPR },
+    { "r14", SOURCE_R14, GPR },
+    { "r12", SOURCE_R12, GPR },
+    { "cr", SOURCE_CR, UINT64_C( 0xffffffff ) },
+    { "xer", SOURCE_XER, UINT64_C( 0xe000007f ) },
+    { "ctr", SOURCE_CTR, GPR },
+    { "lr", SOURCE_LR, GPR },
+    { "msr", SOURCE_MSR, MSR_BITS },
+    { "r15", SOURCE_R15, GPR },
+    { "r16", SOURCE_R16, GPR },
+    { "r17", SOURCE_R17, GPR },
+    { "r18", SOURCE_R18, GPR },
+    { "r19", SOURCE_R19, GPR },
+    { "r20", SOURCE_R20, GPR },
+    { "r21", SOURCE_R21, GPR },
+    { "r22", SOURCE_R22, GPR },
+    { "r23", SOURCE_R23, GPR },
+    { "r24", SOURCE_R24, GPR },
+    { "r25", SOURCE_R25, GPR },
+    { "r26", SOURCE_R26, GPR },
+    { "r27", SOURCE_R27, GPR },
+    { "r28", SOURCE_R28, GPR },
+    { "r29", SOURCE_R29, GPR },
+    { "r30", SOURCE_R30, GPR },
+    { "r31", SOURCE_R31, GPR },
+    { "count", SOURCE_COUNT, WORD },
+    { "pc", SOURCE_PC, WORD }
+  };
+
+  static const uint64_t interrupt_patterns[ SOURCE_MAX ] = {
+    UINT64_C( 0x9f8f7f6f01020304 ),
+    UINT64_C( 0x8f9f6f7f11121314 ),
+    UINT64_C( 0xbfaf5f4f21222324 ),
+    UINT64_C( 0xafbf4f5f31323334 ),
+    UINT64_C( 0xdfcf3f2f41424344 ),
+    UINT64_C( 0xcfdf2f3f51525354 ),
+    UINT64_C( 0xffef1f0f61626364 ),
+    UINT64_C( 0xefff0f1f71727374 ),
+    UINT64_C( 0x1f0fffef81828384 ),
+    UINT64_C( 0x0f1fefff91929394 ),
+    UINT64_C( 0x3f2fdfcfa1a2a3a4 ),
+    UINT64_C( 0x2f3fcfdfb1b2b3b4 ),
+    UINT64_C( 0x5a5a5a5a ),
+    UINT64_C( 0x40000015 ),
+    UINT64_C( 0xafbf4f5f31323334 ),
+    UINT64_C( 0xdfcf3f2f41424344 ),
+    UINT64_C( 0x00000800 ),
+    UINT64_C( 0x798a9bacd0d1d2d3 ),
+    UINT64_C( 0x7a8b9cadd1d2d3d4 ),
+    UINT64_C( 0x7b8c9daed2d3d4d5 ),
+    UINT64_C( 0x7c8d9eafd3d4d5d6 ),
+    UINT64_C( 0x7d8e9fb0d4d5d6d7 ),
+    UINT64_C( 0x7e8fa0b1d5d6d7d8 ),
+    UINT64_C( 0x7f90a1b2d6d7d8d9 ),
+    UINT64_C( 0x8091a2b3d7d8d9da ),
+    UINT64_C( 0x8192a3b4d8d9dadb ),
+    UINT64_C( 0x8293a4b5d9dadbdc ),
+    UINT64_C( 0x8394a5b6dadbdcdd ),
+    UINT64_C( 0x8495a6b7dbdcddde ),
+    UINT64_C( 0x8596a7b8dcdddedf ),
+    UINT64_C( 0x8697a8b9dddedfe0 ),
+    UINT64_C( 0x8798a9badedfe0e1 ),
+    UINT64_C( 0x8899aabbdfe0e1e2 ),
+    UINT64_C( 0x899aabbce0e1e2e3 ),
+    1,
+    1
+  };
+
+  uint64_t interrupt_initial[ SOURCE_MAX ];
+
+  static CPU_Exception_frame interrupt_frame;
+
+  static volatile uint32_t interrupt_count;
+
+  static uint32_t interrupt_count_at_trap;
+
+  static CallWithinISRRequest interrupt_request;
+
+  uint64_t interrupt_handler_values[ SOURCE_MAX ];
+
+  static uint32_t interrupt_msr_bits;
+
+  /*
+   * The block uses r12 as the address of the table and loads r12 last.  It
+   * loads CR, XER, CTR and LR through r0 first.
+   */
+  #define ISR_LOAD \
+      "lis 12, interrupt_initial@ha\n" \
+      "addi 12, 12, interrupt_initial@l\n" \
+      "lwz 0, 100(12)\n" \
+      "mtcr 0\n" \
+      "lwz 0, 108(12)\n" \
+      "mtxer 0\n" \
+      GPR_LOAD "0, 112+" GPR_OFFSET "(12)\n" \
+      "mtctr 0\n" \
+      GPR_LOAD "0, 120+" GPR_OFFSET "(12)\n" \
+      "mtlr 0\n" \
+      GPR_LOAD "0, 0+" GPR_OFFSET "(12)\n" \
+      GPR_LOAD "3, 8+" GPR_OFFSET "(12)\n" \
+      GPR_LOAD "4, 16+" GPR_OFFSET "(12)\n" \
+      GPR_LOAD "5, 24+" GPR_OFFSET "(12)\n" \
+      GPR_LOAD "6, 32+" GPR_OFFSET "(12)\n" \
+      GPR_LOAD "7, 40+" GPR_OFFSET "(12)\n" \
+      GPR_LOAD "8, 48+" GPR_OFFSET "(12)\n" \
+      GPR_LOAD "9, 56+" GPR_OFFSET "(12)\n" \
+      GPR_LOAD "10, 64+" GPR_OFFSET "(12)\n" \
+      GPR_LOAD "11, 72+" GPR_OFFSET "(12)\n" \
+      GPR_LOAD "14, 80+" GPR_OFFSET "(12)\n" \
+      GPR_LOAD "15, 136+" GPR_OFFSET "(12)\n" \
+      GPR_LOAD "16, 144+" GPR_OFFSET "(12)\n" \
+      GPR_LOAD "17, 152+" GPR_OFFSET "(12)\n" \
+      GPR_LOAD "18, 160+" GPR_OFFSET "(12)\n" \
+      GPR_LOAD "19, 168+" GPR_OFFSET "(12)\n" \
+      GPR_LOAD "20, 176+" GPR_OFFSET "(12)\n" \
+      GPR_LOAD "21, 184+" GPR_OFFSET "(12)\n" \
+      GPR_LOAD "22, 192+" GPR_OFFSET "(12)\n" \
+      GPR_LOAD "23, 200+" GPR_OFFSET "(12)\n" \
+      GPR_LOAD "24, 208+" GPR_OFFSET "(12)\n" \
+      GPR_LOAD "25, 216+" GPR_OFFSET "(12)\n" \
+      GPR_LOAD "26, 224+" GPR_OFFSET "(12)\n" \
+      GPR_LOAD "27, 232+" GPR_OFFSET "(12)\n" \
+      GPR_LOAD "28, 240+" GPR_OFFSET "(12)\n" \
+      GPR_LOAD "29, 248+" GPR_OFFSET "(12)\n" \
+      GPR_LOAD "30, 256+" GPR_OFFSET "(12)\n" \
+      GPR_LOAD "31, 264+" GPR_OFFSET "(12)\n" \
+      GPR_LOAD "12, 88+" GPR_OFFSET "(12)\n"
+
+  /*
+   * The block uses r12 as the address of the table and loads r12 last.  It
+   * loads CR, XER, CTR and LR through r0 first.
+   */
+  #define HANDLER_LOAD \
+      "lis 12, interrupt_handler_values@ha\n" \
+      "addi 12, 12, interrupt_handler_values@l\n" \
+      "lwz 0, 100(12)\n" \
+      "mtcr 0\n" \
+      "lwz 0, 108(12)\n" \
+      "mtxer 0\n" \
+      GPR_LOAD "0, 112+" GPR_OFFSET "(12)\n" \
+      "mtctr 0\n" \
+      GPR_LOAD "0, 120+" GPR_OFFSET "(12)\n" \
+      "mtlr 0\n" \
+      GPR_LOAD "0, 0+" GPR_OFFSET "(12)\n" \
+      GPR_LOAD "3, 8+" GPR_OFFSET "(12)\n" \
+      GPR_LOAD "4, 16+" GPR_OFFSET "(12)\n" \
+      GPR_LOAD "5, 24+" GPR_OFFSET "(12)\n" \
+      GPR_LOAD "6, 32+" GPR_OFFSET "(12)\n" \
+      GPR_LOAD "7, 40+" GPR_OFFSET "(12)\n" \
+      GPR_LOAD "8, 48+" GPR_OFFSET "(12)\n" \
+      GPR_LOAD "9, 56+" GPR_OFFSET "(12)\n" \
+      GPR_LOAD "10, 64+" GPR_OFFSET "(12)\n" \
+      GPR_LOAD "11, 72+" GPR_OFFSET "(12)\n" \
+      GPR_LOAD "12, 88+" GPR_OFFSET "(12)\n"
+
+  /*
+   * The handler overwrites each call-used register, the call-used fields of CR,
+   * XER, CTR and LR, so an interrupt which restores none of them fails the
+   * check.
+   */
+  static void InterruptHandler( void *arg )
+  {
+    (void) arg;
+    ++interrupt_count;
+    __asm__ volatile(
+      HANDLER_LOAD
+      :
+      :
+      : "memory", "cr0", "cr1", "cr2", "cr3", "cr4", "cr5", "cr6", "cr7",
+        "r0", "r3", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12",
+        "lr", "ctr", "xer"
+    );
+  }
+
+  static void InterruptFatal(
+    rtems_fatal_source source,
+    rtems_fatal_code   code,
+    void              *arg
+  )
+  {
+    CPU_Exception_frame *frame;
+
+    (void) arg;
+
+    if ( source != RTEMS_FATAL_SOURCE_EXCEPTION ) {
+      return;
+    }
+
+    frame = (CPU_Exception_frame *) code;
+    interrupt_frame = *frame;
+    interrupt_count_at_trap = interrupt_count;
+    SetFatalHandler( NULL, NULL );
+    frame->EXC_SRR1 = ( frame->EXC_SRR1 & ~MSR_BITS ) | interrupt_msr_bits;
+    frame->EXC_SRR0 = (uintptr_t) interrupt_done_label;
+    _CPU_Exception_resume( frame );
+  }
+
+  /*
+   * The interrupt is raised while it is masked, so no call happens after the
+   * block loads the registers.  Every general-purpose register which the block
+   * loads is under test.  The block therefore unmasks the interrupt with a
+   * return from interrupt, which takes the MSR from SRR1 and the address of the
+   * next instruction from SRR0.  The interrupt controller delivers an IPI a few
+   * cycles later, so a run of no-operations follows.
+   */
+  static void InterruptRaise( void )
+  {
+    rtems_interrupt_level level;
+    uint32_t              msr;
+    size_t                i;
+
+    for ( i = 0; i < SOURCE_MAX; ++i ) {
+      interrupt_handler_values[ i ] = interrupt_initial[ i ] ^ HANDLER;
+    }
+
+    memset( &interrupt_frame, 0, sizeof( interrupt_frame ) );
+    interrupt_count = 0;
+    interrupt_count_at_trap = 0;
+    SetFatalHandler( InterruptFatal, NULL );
+    rtems_interrupt_local_disable( level );
+    __asm__ volatile( "mfmsr %0" : "=r"( msr ) );
+    interrupt_msr_bits = msr & MSR_BITS;
+    msr = ( msr & ~MSR_BITS ) |
+          ( (uint32_t) interrupt_initial[ SOURCE_MSR ] & MSR_BITS );
+    __asm__ volatile( "mtmsr %0" : : "r"( msr ) );
+    CallWithinISRSubmit( &interrupt_request );
+    __asm__ volatile(
+      "mtsrr0 %0\n"
+      "mtsrr1 %1\n"
+      :
+      : "r"( interrupt_enable_label ), "r"( msr | MSR_EE )
+    );
+    __asm__ volatile(
+      ISR_LOAD
+      "rfi\n"
+      ".globl interrupt_enable_label\n"
+      "interrupt_enable_label:\n"
+      ".rept 256\n"
+      "nop\n"
+      ".endr\n"
+      ".globl interrupt_trap_label\n"
+      "interrupt_trap_label:\n"
+      "trap\n"
+      ".globl interrupt_done_label\n"
+      "interrupt_done_label:\n"
+      :
+      :
+      : "memory", "cr0", "cr1", "cr2", "cr3", "cr4", "cr5", "cr6", "cr7",
+        "r0", "r3", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12",
+        "r14", "r15", "r16", "r17", "r18", "r19", "r20", "r21", "r22", "r23",
+        "r24", "r25", "r26", "r27", "r28", "r29", "r30", "r31", "lr", "ctr",
+        "xer"
+    );
+    rtems_interrupt_local_enable( level );
+  }
+
+  static void InterruptRun( RegisterCheck *self, void *arg )
+  {
+    (void) arg;
+    InterruptRaise();
+    RegisterCheckRecord(
+      self,
+      SLOT_R0,
+      interrupt_frame.registers[ 0 ],
+      interrupt_patterns[ SOURCE_R0 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R3,
+      interrupt_frame.registers[ 3 ],
+      interrupt_patterns[ SOURCE_R3 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R4,
+      interrupt_frame.registers[ 4 ],
+      interrupt_patterns[ SOURCE_R4 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R5,
+      interrupt_frame.registers[ 5 ],
+      interrupt_patterns[ SOURCE_R5 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R6,
+      interrupt_frame.registers[ 6 ],
+      interrupt_patterns[ SOURCE_R6 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R7,
+      interrupt_frame.registers[ 7 ],
+      interrupt_patterns[ SOURCE_R7 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R8,
+      interrupt_frame.registers[ 8 ],
+      interrupt_patterns[ SOURCE_R8 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R9,
+      interrupt_frame.registers[ 9 ],
+      interrupt_patterns[ SOURCE_R9 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R10,
+      interrupt_frame.registers[ 10 ],
+      interrupt_patterns[ SOURCE_R10 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R11,
+      interrupt_frame.registers[ 11 ],
+      interrupt_patterns[ SOURCE_R11 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R14,
+      interrupt_frame.registers[ 14 ],
+      interrupt_patterns[ SOURCE_R14 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R12,
+      interrupt_frame.registers[ 12 ],
+      interrupt_patterns[ SOURCE_R12 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_CR,
+      interrupt_frame.EXC_CR,
+      interrupt_patterns[ SOURCE_CR ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_XER,
+      interrupt_frame.EXC_XER & UINT32_C( 0xe000007f ),
+      interrupt_patterns[ SOURCE_XER ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_CTR,
+      interrupt_frame.EXC_CTR,
+      interrupt_patterns[ SOURCE_CTR ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_LR,
+      interrupt_frame.EXC_LR,
+      interrupt_patterns[ SOURCE_LR ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_MSR,
+      interrupt_frame.EXC_SRR1 & MSR_BITS,
+      interrupt_patterns[ SOURCE_MSR ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R15,
+      interrupt_frame.registers[ 15 ],
+      interrupt_patterns[ SOURCE_R15 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R16,
+      interrupt_frame.registers[ 16 ],
+      interrupt_patterns[ SOURCE_R16 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R17,
+      interrupt_frame.registers[ 17 ],
+      interrupt_patterns[ SOURCE_R17 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R18,
+      interrupt_frame.registers[ 18 ],
+      interrupt_patterns[ SOURCE_R18 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R19,
+      interrupt_frame.registers[ 19 ],
+      interrupt_patterns[ SOURCE_R19 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R20,
+      interrupt_frame.registers[ 20 ],
+      interrupt_patterns[ SOURCE_R20 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R21,
+      interrupt_frame.registers[ 21 ],
+      interrupt_patterns[ SOURCE_R21 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R22,
+      interrupt_frame.registers[ 22 ],
+      interrupt_patterns[ SOURCE_R22 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R23,
+      interrupt_frame.registers[ 23 ],
+      interrupt_patterns[ SOURCE_R23 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R24,
+      interrupt_frame.registers[ 24 ],
+      interrupt_patterns[ SOURCE_R24 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R25,
+      interrupt_frame.registers[ 25 ],
+      interrupt_patterns[ SOURCE_R25 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R26,
+      interrupt_frame.registers[ 26 ],
+      interrupt_patterns[ SOURCE_R26 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R27,
+      interrupt_frame.registers[ 27 ],
+      interrupt_patterns[ SOURCE_R27 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R28,
+      interrupt_frame.registers[ 28 ],
+      interrupt_patterns[ SOURCE_R28 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R29,
+      interrupt_frame.registers[ 29 ],
+      interrupt_patterns[ SOURCE_R29 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R30,
+      interrupt_frame.registers[ 30 ],
+      interrupt_patterns[ SOURCE_R30 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R31,
+      interrupt_frame.registers[ 31 ],
+      interrupt_patterns[ SOURCE_R31 ]
+    );
+    RegisterCheckRecord( self, SLOT_COUNT, interrupt_count_at_trap, 1 );
+    RegisterCheckRecord(
+      self,
+      SLOT_PC,
+      interrupt_frame.EXC_SRR0 == (uintptr_t) interrupt_trap_label,
+      1
+    );
+  }
+
+  static RegisterCheck interrupt_check = {
+    .sources = interrupt_sources,
+    .source_count = SOURCE_MAX,
+    .slots = interrupt_slots,
+    .slot_count = SOURCE_MAX,
+    .initial = interrupt_initial,
+    .run = InterruptRun
+  };
+
+  static void CheckSlot( Slot slot )
+  {
+    RegisterCheckVerify( &interrupt_check, slot );
+  }
+test-target: testsuites/validation/bsps/tc-powerpc-interrupt.c
+test-teardown: null
+type: test-case
