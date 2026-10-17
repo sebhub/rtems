@@ -1,0 +1,1265 @@
+/* SPDX-License-Identifier: BSD-2-Clause */
+
+/**
+ * @file
+ *
+ * @ingroup ScoreCpuAarch64ValContext
+ */
+
+/*
+ * Copyright (C) 2026 embedded brains GmbH & Co. KG
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
+#include <stdint.h>
+#include <string.h>
+#include <rtems/score/cpuimpl.h>
+#include <rtems/score/percpu.h>
+#include <rtems/score/thread.h>
+
+#include "tx-register-check.h"
+#include "tx-support.h"
+
+#include <rtems/test.h>
+
+/**
+ * @defgroup ScoreCpuAarch64ValContext spec:/score/cpu/aarch64/val/context
+ *
+ * @ingroup TestsuitesBspsValidationBspNoClock0
+ *
+ * @brief Checks that the context switch saves and restores every call-saved
+ *   register.
+ *
+ * This test case performs the following actions:
+ *
+ * - Load a distinct pattern into every call-saved register. Call the context
+ *   switch directly. The heir switches back. Trap, so the frame reports every
+ *   register. Run this once for each register with the pattern of that
+ *   register inverted, then once unchanged.
+ *
+ *   - Check that the switch restored the AArch64 general-purpose register X19.
+ *
+ *   - Check that the switch restored the AArch64 general-purpose register X20.
+ *
+ *   - Check that the switch restored the AArch64 general-purpose register X21.
+ *
+ *   - Check that the switch restored the AArch64 general-purpose register X22.
+ *
+ *   - Check that the switch restored the AArch64 general-purpose register X23.
+ *
+ *   - Check that the switch restored the AArch64 general-purpose register X24.
+ *
+ *   - Check that the switch restored the AArch64 general-purpose register X25.
+ *
+ *   - Check that the switch restored the AArch64 general-purpose register X26.
+ *
+ *   - Check that the switch restored the AArch64 general-purpose register X27.
+ *
+ *   - Check that the switch restored the AArch64 general-purpose register X28.
+ *
+ *   - Check that the switch restored the AArch64 general-purpose register X29.
+ *
+ *   - Check that the switch saved the AArch64 general-purpose register X19.
+ *
+ *   - Check that the switch saved the AArch64 general-purpose register X20.
+ *
+ *   - Check that the switch saved the AArch64 general-purpose register X21.
+ *
+ *   - Check that the switch saved the AArch64 general-purpose register X22.
+ *
+ *   - Check that the switch saved the AArch64 general-purpose register X23.
+ *
+ *   - Check that the switch saved the AArch64 general-purpose register X24.
+ *
+ *   - Check that the switch saved the AArch64 general-purpose register X25.
+ *
+ *   - Check that the switch saved the AArch64 general-purpose register X26.
+ *
+ *   - Check that the switch saved the AArch64 general-purpose register X27.
+ *
+ *   - Check that the switch saved the AArch64 general-purpose register X28.
+ *
+ *   - Check that the switch saved the AArch64 general-purpose register X29.
+ *
+ *   - Check that the switch restored the AArch64 SIMD and floating-point
+ *     register D8.
+ *
+ *   - Check that the switch restored the AArch64 SIMD and floating-point
+ *     register D9.
+ *
+ *   - Check that the switch restored the AArch64 SIMD and floating-point
+ *     register D10.
+ *
+ *   - Check that the switch restored the AArch64 SIMD and floating-point
+ *     register D11.
+ *
+ *   - Check that the switch restored the AArch64 SIMD and floating-point
+ *     register D12.
+ *
+ *   - Check that the switch restored the AArch64 SIMD and floating-point
+ *     register D13.
+ *
+ *   - Check that the switch restored the AArch64 SIMD and floating-point
+ *     register D14.
+ *
+ *   - Check that the switch restored the AArch64 SIMD and floating-point
+ *     register D15.
+ *
+ *   - Check that the switch saved the AArch64 SIMD and floating-point register
+ *     D8.
+ *
+ *   - Check that the switch saved the AArch64 SIMD and floating-point register
+ *     D9.
+ *
+ *   - Check that the switch saved the AArch64 SIMD and floating-point register
+ *     D10.
+ *
+ *   - Check that the switch saved the AArch64 SIMD and floating-point register
+ *     D11.
+ *
+ *   - Check that the switch saved the AArch64 SIMD and floating-point register
+ *     D12.
+ *
+ *   - Check that the switch saved the AArch64 SIMD and floating-point register
+ *     D13.
+ *
+ *   - Check that the switch saved the AArch64 SIMD and floating-point register
+ *     D14.
+ *
+ *   - Check that the switch saved the AArch64 SIMD and floating-point register
+ *     D15.
+ *
+ *   - Check that the trap after the switch back reached the fatal handler
+ *     once.
+ *
+ *   - Check that the switch saved the return address of its call in the
+ *     AArch64 link register X30.
+ *
+ *   - Check that the switch saved the stack pointer of its call.
+ *
+ *   - Check that the switch back restored the stack pointer.
+ *
+ *   - Check that the heir received the thread pointer TPIDR_EL0 of its
+ *     context.
+ *
+ *   - Check that the switch back restored the thread pointer TPIDR_EL0 of the
+ *     executing context.
+ *
+ *   - Check that the switch saved FPCR.
+ *
+ *   - Check that the switch back restored FPCR.
+ *
+ *   - Check that the switch saved FPSR.
+ *
+ *   - Check that the switch back restored FPSR.
+ *
+ *   - Check that the heir received the FPCR of its context.
+ *
+ *   - Check that the context initialization set FPCR to zero.
+ *
+ *   - Check that the context initialization set FPSR to zero.
+ *
+ *   - Check that each run with a changed value flagged exactly the checks of
+ *     that value, and that each run recorded every check.
+ *
+ * @{
+ */
+
+extern const char context_done_label[];
+
+/* These are AHP, DN, FZ and the rounding mode of FPCR. */
+#define FPCR_MASK UINT64_C( 0x07c00000 )
+
+/* These are QC and the cumulative exception flags of FPSR. */
+#define FPSR_MASK UINT64_C( 0x0800009f )
+
+typedef enum {
+  SOURCE_X19,
+  SOURCE_X20,
+  SOURCE_X21,
+  SOURCE_X22,
+  SOURCE_X23,
+  SOURCE_X24,
+  SOURCE_X25,
+  SOURCE_X26,
+  SOURCE_X27,
+  SOURCE_X28,
+  SOURCE_FP,
+#ifdef AARCH64_MULTILIB_VFP
+  SOURCE_D8,
+  SOURCE_D9,
+  SOURCE_D10,
+  SOURCE_D11,
+  SOURCE_D12,
+  SOURCE_D13,
+  SOURCE_D14,
+  SOURCE_D15,
+#endif
+  SOURCE_TRAP,
+  SOURCE_HEIR_TP,
+  SOURCE_LR,
+  SOURCE_SP,
+  SOURCE_EXEC_TP,
+#ifdef AARCH64_MULTILIB_VFP
+  SOURCE_FPCR,
+  SOURCE_FPSR,
+  SOURCE_HEIR_FPCR,
+  SOURCE_INIT,
+#endif
+  SOURCE_MAX
+} Source;
+
+typedef enum {
+  SLOT_FRAME_X19,
+  SLOT_FRAME_X20,
+  SLOT_FRAME_X21,
+  SLOT_FRAME_X22,
+  SLOT_FRAME_X23,
+  SLOT_FRAME_X24,
+  SLOT_FRAME_X25,
+  SLOT_FRAME_X26,
+  SLOT_FRAME_X27,
+  SLOT_FRAME_X28,
+  SLOT_FRAME_FP,
+  SLOT_SAVED_X19,
+  SLOT_SAVED_X20,
+  SLOT_SAVED_X21,
+  SLOT_SAVED_X22,
+  SLOT_SAVED_X23,
+  SLOT_SAVED_X24,
+  SLOT_SAVED_X25,
+  SLOT_SAVED_X26,
+  SLOT_SAVED_X27,
+  SLOT_SAVED_X28,
+  SLOT_SAVED_FP,
+#ifdef AARCH64_MULTILIB_VFP
+  SLOT_FRAME_D8,
+  SLOT_FRAME_D9,
+  SLOT_FRAME_D10,
+  SLOT_FRAME_D11,
+  SLOT_FRAME_D12,
+  SLOT_FRAME_D13,
+  SLOT_FRAME_D14,
+  SLOT_FRAME_D15,
+  SLOT_SAVED_D8,
+  SLOT_SAVED_D9,
+  SLOT_SAVED_D10,
+  SLOT_SAVED_D11,
+  SLOT_SAVED_D12,
+  SLOT_SAVED_D13,
+  SLOT_SAVED_D14,
+  SLOT_SAVED_D15,
+#endif
+  SLOT_TRAP,
+  SLOT_SAVED_LR,
+  SLOT_SAVED_SP,
+  SLOT_FRAME_SP,
+  SLOT_HEIR_TP,
+  SLOT_EXEC_TP,
+#ifdef AARCH64_MULTILIB_VFP
+  SLOT_SAVED_FPCR,
+  SLOT_FRAME_FPCR,
+  SLOT_SAVED_FPSR,
+  SLOT_FRAME_FPSR,
+  SLOT_HEIR_FPCR,
+  SLOT_INIT_FPCR,
+  SLOT_INIT_FPSR,
+#endif
+  SLOT_MAX
+} Slot;
+
+/* The block loads each register from the byte offset eight times its source. */
+RTEMS_STATIC_ASSERT( SOURCE_FP == 10, source_fp );
+#ifdef AARCH64_MULTILIB_VFP
+RTEMS_STATIC_ASSERT( SOURCE_D8 == 11, source_d8 );
+#endif
+
+static const RegisterCheckSource context_sources[ SOURCE_MAX ] = {
+  { "x19", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "x20", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "x21", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "x22", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "x23", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "x24", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "x25", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "x26", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "x27", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "x28", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "fp", REGISTER_CHECK_INITIAL, UINT64_MAX },
+#ifdef AARCH64_MULTILIB_VFP
+  { "d8", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "d9", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "d10", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "d11", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "d12", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "d13", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "d14", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "d15", REGISTER_CHECK_INITIAL, UINT64_MAX },
+#endif
+  { "trap", REGISTER_CHECK_EXPECTED, UINT64_MAX },
+  { "heir tp", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "lr", REGISTER_CHECK_EXPECTED, UINT64_MAX },
+  { "sp", REGISTER_CHECK_EXPECTED, UINT64_MAX },
+  { "exec tp", REGISTER_CHECK_EXPECTED, UINT64_MAX },
+#ifdef AARCH64_MULTILIB_VFP
+  { "fpcr", REGISTER_CHECK_INITIAL, FPCR_MASK },
+  { "fpsr", REGISTER_CHECK_INITIAL, FPSR_MASK },
+  { "heir fpcr", REGISTER_CHECK_INITIAL, FPCR_MASK },
+  { "init", REGISTER_CHECK_EXPECTED, UINT64_MAX },
+#endif
+};
+
+static const RegisterCheckSlot context_slots[ SLOT_MAX ] = {
+  { "frame x19", SOURCE_X19, UINT64_MAX },
+  { "frame x20", SOURCE_X20, UINT64_MAX },
+  { "frame x21", SOURCE_X21, UINT64_MAX },
+  { "frame x22", SOURCE_X22, UINT64_MAX },
+  { "frame x23", SOURCE_X23, UINT64_MAX },
+  { "frame x24", SOURCE_X24, UINT64_MAX },
+  { "frame x25", SOURCE_X25, UINT64_MAX },
+  { "frame x26", SOURCE_X26, UINT64_MAX },
+  { "frame x27", SOURCE_X27, UINT64_MAX },
+  { "frame x28", SOURCE_X28, UINT64_MAX },
+  { "frame fp", SOURCE_FP, UINT64_MAX },
+  { "saved x19", SOURCE_X19, UINT64_MAX },
+  { "saved x20", SOURCE_X20, UINT64_MAX },
+  { "saved x21", SOURCE_X21, UINT64_MAX },
+  { "saved x22", SOURCE_X22, UINT64_MAX },
+  { "saved x23", SOURCE_X23, UINT64_MAX },
+  { "saved x24", SOURCE_X24, UINT64_MAX },
+  { "saved x25", SOURCE_X25, UINT64_MAX },
+  { "saved x26", SOURCE_X26, UINT64_MAX },
+  { "saved x27", SOURCE_X27, UINT64_MAX },
+  { "saved x28", SOURCE_X28, UINT64_MAX },
+  { "saved fp", SOURCE_FP, UINT64_MAX },
+#ifdef AARCH64_MULTILIB_VFP
+  { "frame d8", SOURCE_D8, UINT64_MAX },
+  { "frame d9", SOURCE_D9, UINT64_MAX },
+  { "frame d10", SOURCE_D10, UINT64_MAX },
+  { "frame d11", SOURCE_D11, UINT64_MAX },
+  { "frame d12", SOURCE_D12, UINT64_MAX },
+  { "frame d13", SOURCE_D13, UINT64_MAX },
+  { "frame d14", SOURCE_D14, UINT64_MAX },
+  { "frame d15", SOURCE_D15, UINT64_MAX },
+  { "saved d8", SOURCE_D8, UINT64_MAX },
+  { "saved d9", SOURCE_D9, UINT64_MAX },
+  { "saved d10", SOURCE_D10, UINT64_MAX },
+  { "saved d11", SOURCE_D11, UINT64_MAX },
+  { "saved d12", SOURCE_D12, UINT64_MAX },
+  { "saved d13", SOURCE_D13, UINT64_MAX },
+  { "saved d14", SOURCE_D14, UINT64_MAX },
+  { "saved d15", SOURCE_D15, UINT64_MAX },
+#endif
+  { "trap", SOURCE_TRAP, UINT64_MAX },
+  { "saved lr", SOURCE_LR, UINT64_MAX },
+  { "saved sp", SOURCE_SP, UINT64_MAX },
+  { "frame sp", SOURCE_SP, UINT64_MAX },
+  { "heir tp", SOURCE_HEIR_TP, UINT64_MAX },
+  { "exec tp", SOURCE_EXEC_TP, UINT64_MAX },
+#ifdef AARCH64_MULTILIB_VFP
+  { "saved fpcr", SOURCE_FPCR, FPCR_MASK },
+  { "frame fpcr", SOURCE_FPCR, FPCR_MASK },
+  { "saved fpsr", SOURCE_FPSR, FPSR_MASK },
+  { "frame fpsr", SOURCE_FPSR, FPSR_MASK },
+  { "heir fpcr", SOURCE_HEIR_FPCR, FPCR_MASK },
+  { "init fpcr", SOURCE_INIT, UINT64_MAX },
+  { "init fpsr", SOURCE_INIT, UINT64_MAX },
+#endif
+};
+
+static const uint64_t context_patterns[ SOURCE_MAX ] = {
+  UINT64_C( 0x1112131415161718 ),
+  UINT64_C( 0x1213141516171819 ),
+  UINT64_C( 0x131415161718191a ),
+  UINT64_C( 0x1415161718191a1b ),
+  UINT64_C( 0x15161718191a1b1c ),
+  UINT64_C( 0x161718191a1b1c1d ),
+  UINT64_C( 0x1718191a1b1c1d1e ),
+  UINT64_C( 0x18191a1b1c1d1e1f ),
+  UINT64_C( 0x191a1b1c1d1e1f20 ),
+  UINT64_C( 0x1a1b1c1d1e1f2021 ),
+  UINT64_C( 0x1b1c1d1e1f202122 ),
+#ifdef AARCH64_MULTILIB_VFP
+  UINT64_C( 0x3132333435363738 ),
+  UINT64_C( 0x3233343536373839 ),
+  UINT64_C( 0x333435363738393a ),
+  UINT64_C( 0x3435363738393a3b ),
+  UINT64_C( 0x35363738393a3b3c ),
+  UINT64_C( 0x363738393a3b3c3d ),
+  UINT64_C( 0x3738393a3b3c3d3e ),
+  UINT64_C( 0x38393a3b3c3d3e3f ),
+#endif
+  0,
+  UINT64_C( 0x7172737475767778 ),
+  0,
+  0,
+  0,
+#ifdef AARCH64_MULTILIB_VFP
+  UINT64_C( 0x02400000 ),
+  UINT64_C( 0x08000015 ),
+  UINT64_C( 0x01c00000 ),
+  0
+#endif
+};
+
+uint64_t context_initial[ SOURCE_MAX ];
+
+static CPU_Exception_frame context_frame;
+
+static volatile int context_trap;
+
+uint64_t context_heir_tp;
+
+static uintptr_t context_sp;
+
+static uint64_t context_exec_tp;
+
+#ifdef AARCH64_MULTILIB_VFP
+uint64_t context_heir_fpcr;
+
+static uint64_t context_fpcr;
+
+static uint64_t context_fpsr;
+
+static uint64_t context_init_fpcr;
+
+static uint64_t context_init_fpsr;
+#endif
+
+extern const char context_return_label[];
+
+Context_Control context_executing;
+
+Context_Control context_heir;
+
+static uint64_t context_heir_stack[ 256 ] RTEMS_ALIGNED( CPU_STACK_ALIGNMENT );
+
+/* The block loads x0 last, because x0 holds the address of the table. */
+#define CTX_LOAD                        \
+  "adrp x0, context_initial\n"          \
+  "add x0, x0, :lo12:context_initial\n" \
+  "ldr x19, [x0, #0]\n"                 \
+  "ldr x20, [x0, #8]\n"                 \
+  "ldr x21, [x0, #16]\n"                \
+  "ldr x22, [x0, #24]\n"                \
+  "ldr x23, [x0, #32]\n"                \
+  "ldr x24, [x0, #40]\n"                \
+  "ldr x25, [x0, #48]\n"                \
+  "ldr x26, [x0, #56]\n"                \
+  "ldr x27, [x0, #64]\n"                \
+  "ldr x28, [x0, #72]\n"                \
+  "ldr x29, [x0, #80]\n"
+
+#ifdef AARCH64_MULTILIB_VFP
+#define CTX_LOAD_VFP      \
+  "ldr d8, [x0, #88]\n"   \
+  "ldr d9, [x0, #96]\n"   \
+  "ldr d10, [x0, #104]\n" \
+  "ldr d11, [x0, #112]\n" \
+  "ldr d12, [x0, #120]\n" \
+  "ldr d13, [x0, #128]\n" \
+  "ldr d14, [x0, #136]\n" \
+  "ldr d15, [x0, #144]\n"
+
+#else
+#define CTX_LOAD_VFP
+#endif
+
+static void ContextFatal(
+  rtems_fatal_source source,
+  rtems_fatal_code   code,
+  void              *arg
+)
+{
+  CPU_Exception_frame *frame;
+
+  (void) arg;
+
+  if ( source != RTEMS_FATAL_SOURCE_EXCEPTION ) {
+    return;
+  }
+
+  frame = (CPU_Exception_frame *) code;
+  context_frame = *frame;
+  ++context_trap;
+  SetFatalHandler( NULL, NULL );
+#ifdef AARCH64_MULTILIB_VFP
+  frame->register_fpcr = context_fpcr;
+  frame->register_fpsr = context_fpsr;
+#endif
+  frame->register_pc = (void *) context_done_label;
+  _CPU_Exception_resume( frame );
+}
+
+/*
+ * The heir switches straight back.  It is assembly, so no prologue saves a
+ * register of the context under test.
+ */
+void ContextHeirEntry( void );
+
+__asm__( "  .globl ContextHeirEntry\n"
+         "  .type ContextHeirEntry, %function\n"
+         "ContextHeirEntry:\n"
+         "  mrs x2, TPIDR_EL0\n"
+         "  adrp x3, context_heir_tp\n"
+         "  add x3, x3, :lo12:context_heir_tp\n"
+         "  str x2, [x3]\n"
+#ifdef AARCH64_MULTILIB_VFP
+         "  mrs x2, FPCR\n"
+         "  adrp x3, context_heir_fpcr\n"
+         "  add x3, x3, :lo12:context_heir_fpcr\n"
+         "  str x2, [x3]\n"
+#endif
+         "  adrp x0, context_heir\n"
+         "  add x0, x0, :lo12:context_heir\n"
+         "  adrp x1, context_executing\n"
+         "  add x1, x1, :lo12:context_executing\n"
+         "  b _CPU_Context_switch\n" );
+
+/*
+ * The switch is called directly, so the patterns are in the registers when it
+ * saves them.  Nothing spills them to a stack frame first.
+ */
+static void ContextRunSwitch( void )
+{
+  context_trap = 0;
+  memset( &context_frame, 0, sizeof( context_frame ) );
+  memset( &context_executing, 0, sizeof( context_executing ) );
+
+  /*
+   * The switch restores the thread identifier and never saves it, so the
+   * context which resumes has to carry the one of the running thread.
+   */
+  context_executing.thread_id = GetExecuting()->Registers.thread_id;
+  _CPU_Context_Initialize(
+    &context_heir,
+    context_heir_stack,
+    sizeof( context_heir_stack ),
+    0,
+    ContextHeirEntry,
+    true,
+    NULL
+  );
+  context_heir.thread_id = context_initial[ SOURCE_HEIR_TP ];
+#ifdef AARCH64_MULTILIB_VFP
+  context_init_fpcr = context_heir.register_fpcr;
+  context_init_fpsr = context_heir.register_fpsr;
+  context_heir.register_fpcr = context_initial[ SOURCE_HEIR_FPCR ];
+  __asm__ volatile( "mrs %0, FPCR"
+                    : "=r"( context_fpcr ) );
+  __asm__ volatile( "mrs %0, FPSR"
+                    : "=r"( context_fpsr ) );
+  __asm__ volatile( "msr FPCR, %0"
+                    :
+                    : "r"( context_initial[SOURCE_FPCR] ) );
+  __asm__ volatile( "msr FPSR, %0"
+                    :
+                    : "r"( context_initial[SOURCE_FPSR] ) );
+#endif
+  __asm__ volatile( "mov %0, sp"
+                    : "=r"( context_sp ) );
+  SetFatalHandler( ContextFatal, NULL );
+
+  __asm__ volatile( CTX_LOAD CTX_LOAD_VFP
+                    "adrp x0, context_executing\n"
+                    "add x0, x0, :lo12:context_executing\n"
+                    "adrp x1, context_heir\n"
+                    "add x1, x1, :lo12:context_heir\n"
+                    "bl _CPU_Context_switch\n"
+                    ".globl context_return_label\n"
+                    "context_return_label:\n"
+                    "brk #0\n"
+                    ".globl context_done_label\n"
+                    "context_done_label:\n"
+                    :
+                    :
+                    :
+#ifdef AARCH64_MULTILIB_VFP
+                    "d8",
+                    "d9",
+                    "d10",
+                    "d11",
+                    "d12",
+                    "d13",
+                    "d14",
+                    "d15",
+#endif
+                    "memory",
+                    "cc",
+                    "x0",
+                    "x1",
+                    "x2",
+                    "x3",
+                    "x4",
+                    "x5",
+                    "x6",
+                    "x7",
+                    "x8",
+                    "x9",
+                    "x10",
+                    "x11",
+                    "x12",
+                    "x13",
+                    "x14",
+                    "x15",
+                    "x16",
+                    "x17",
+                    "x19",
+                    "x20",
+                    "x21",
+                    "x22",
+                    "x23",
+                    "x24",
+                    "x25",
+                    "x26",
+                    "x27",
+                    "x28",
+                    "x30" );
+  __asm__ volatile( "mrs %0, TPIDR_EL0"
+                    : "=r"( context_exec_tp ) );
+}
+
+static void ContextRun( RegisterCheck *self, void *arg )
+{
+  (void) arg;
+  ContextRunSwitch();
+
+  RegisterCheckRecord(
+    self,
+    SLOT_FRAME_X19,
+    context_frame.registers[ 19 ],
+    context_patterns[ SOURCE_X19 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_FRAME_X20,
+    context_frame.registers[ 20 ],
+    context_patterns[ SOURCE_X20 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_FRAME_X21,
+    context_frame.registers[ 21 ],
+    context_patterns[ SOURCE_X21 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_FRAME_X22,
+    context_frame.registers[ 22 ],
+    context_patterns[ SOURCE_X22 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_FRAME_X23,
+    context_frame.registers[ 23 ],
+    context_patterns[ SOURCE_X23 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_FRAME_X24,
+    context_frame.registers[ 24 ],
+    context_patterns[ SOURCE_X24 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_FRAME_X25,
+    context_frame.registers[ 25 ],
+    context_patterns[ SOURCE_X25 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_FRAME_X26,
+    context_frame.registers[ 26 ],
+    context_patterns[ SOURCE_X26 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_FRAME_X27,
+    context_frame.registers[ 27 ],
+    context_patterns[ SOURCE_X27 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_FRAME_X28,
+    context_frame.registers[ 28 ],
+    context_patterns[ SOURCE_X28 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_FRAME_FP,
+    context_frame.registers[ 29 ],
+    context_patterns[ SOURCE_FP ]
+  );
+
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_X19,
+    context_executing.register_x19,
+    context_patterns[ SOURCE_X19 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_X20,
+    context_executing.register_x20,
+    context_patterns[ SOURCE_X20 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_X21,
+    context_executing.register_x21,
+    context_patterns[ SOURCE_X21 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_X22,
+    context_executing.register_x22,
+    context_patterns[ SOURCE_X22 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_X23,
+    context_executing.register_x23,
+    context_patterns[ SOURCE_X23 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_X24,
+    context_executing.register_x24,
+    context_patterns[ SOURCE_X24 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_X25,
+    context_executing.register_x25,
+    context_patterns[ SOURCE_X25 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_X26,
+    context_executing.register_x26,
+    context_patterns[ SOURCE_X26 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_X27,
+    context_executing.register_x27,
+    context_patterns[ SOURCE_X27 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_X28,
+    context_executing.register_x28,
+    context_patterns[ SOURCE_X28 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_FP,
+    context_executing.register_fp,
+    context_patterns[ SOURCE_FP ]
+  );
+
+#ifdef AARCH64_MULTILIB_VFP
+  RegisterCheckRecord(
+    self,
+    SLOT_FRAME_D8,
+    (uint64_t) context_frame.vector_registers[ 8 ],
+    context_patterns[ SOURCE_D8 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_FRAME_D9,
+    (uint64_t) context_frame.vector_registers[ 9 ],
+    context_patterns[ SOURCE_D9 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_FRAME_D10,
+    (uint64_t) context_frame.vector_registers[ 10 ],
+    context_patterns[ SOURCE_D10 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_FRAME_D11,
+    (uint64_t) context_frame.vector_registers[ 11 ],
+    context_patterns[ SOURCE_D11 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_FRAME_D12,
+    (uint64_t) context_frame.vector_registers[ 12 ],
+    context_patterns[ SOURCE_D12 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_FRAME_D13,
+    (uint64_t) context_frame.vector_registers[ 13 ],
+    context_patterns[ SOURCE_D13 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_FRAME_D14,
+    (uint64_t) context_frame.vector_registers[ 14 ],
+    context_patterns[ SOURCE_D14 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_FRAME_D15,
+    (uint64_t) context_frame.vector_registers[ 15 ],
+    context_patterns[ SOURCE_D15 ]
+  );
+
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_D8,
+    context_executing.register_d8,
+    context_patterns[ SOURCE_D8 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_D9,
+    context_executing.register_d9,
+    context_patterns[ SOURCE_D9 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_D10,
+    context_executing.register_d10,
+    context_patterns[ SOURCE_D10 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_D11,
+    context_executing.register_d11,
+    context_patterns[ SOURCE_D11 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_D12,
+    context_executing.register_d12,
+    context_patterns[ SOURCE_D12 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_D13,
+    context_executing.register_d13,
+    context_patterns[ SOURCE_D13 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_D14,
+    context_executing.register_d14,
+    context_patterns[ SOURCE_D14 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_D15,
+    context_executing.register_d15,
+    context_patterns[ SOURCE_D15 ]
+  );
+#endif
+
+  RegisterCheckRecord( self, SLOT_TRAP, (uint64_t) context_trap, 1 );
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_LR,
+    context_executing.register_lr == (uintptr_t) context_return_label,
+    1
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_SP,
+    context_executing.register_sp == context_sp,
+    1
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_FRAME_SP,
+    context_frame.register_sp == context_sp,
+    1
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_HEIR_TP,
+    context_heir_tp,
+    context_patterns[ SOURCE_HEIR_TP ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_EXEC_TP,
+    context_exec_tp == context_executing.thread_id,
+    1
+  );
+#ifdef AARCH64_MULTILIB_VFP
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_FPCR,
+    context_executing.register_fpcr & FPCR_MASK,
+    context_patterns[ SOURCE_FPCR ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_FRAME_FPCR,
+    context_frame.register_fpcr & FPCR_MASK,
+    context_patterns[ SOURCE_FPCR ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_SAVED_FPSR,
+    context_executing.register_fpsr & FPSR_MASK,
+    context_patterns[ SOURCE_FPSR ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_FRAME_FPSR,
+    context_frame.register_fpsr & FPSR_MASK,
+    context_patterns[ SOURCE_FPSR ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_HEIR_FPCR,
+    context_heir_fpcr & FPCR_MASK,
+    context_patterns[ SOURCE_HEIR_FPCR ]
+  );
+  RegisterCheckRecord( self, SLOT_INIT_FPCR, context_init_fpcr, 0 );
+  RegisterCheckRecord( self, SLOT_INIT_FPSR, context_init_fpsr, 0 );
+#endif
+}
+
+static RegisterCheck context_check = {
+  .sources = context_sources,
+  .source_count = SOURCE_MAX,
+  .slots = context_slots,
+  .slot_count = SLOT_MAX,
+  .initial = context_initial,
+  .run = ContextRun
+};
+
+static void CheckSlot( Slot slot )
+{
+  RegisterCheckVerify( &context_check, slot );
+}
+
+/**
+ * @brief Load a distinct pattern into every call-saved register. Call the
+ *   context switch directly. The heir switches back. Trap, so the frame
+ *   reports every register. Run this once for each register with the pattern
+ *   of that register inverted, then once unchanged.
+ */
+static void ScoreCpuAarch64ValContext_Action_0( void )
+{
+  memcpy( context_initial, context_patterns, sizeof( context_initial ) );
+  RegisterCheckRun( &context_check );
+
+  /*
+   * Check that the switch restored the AArch64 general-purpose register X19.
+   */
+  CheckSlot( SLOT_FRAME_X19 );
+
+  /*
+   * Check that the switch restored the AArch64 general-purpose register X20.
+   */
+  CheckSlot( SLOT_FRAME_X20 );
+
+  /*
+   * Check that the switch restored the AArch64 general-purpose register X21.
+   */
+  CheckSlot( SLOT_FRAME_X21 );
+
+  /*
+   * Check that the switch restored the AArch64 general-purpose register X22.
+   */
+  CheckSlot( SLOT_FRAME_X22 );
+
+  /*
+   * Check that the switch restored the AArch64 general-purpose register X23.
+   */
+  CheckSlot( SLOT_FRAME_X23 );
+
+  /*
+   * Check that the switch restored the AArch64 general-purpose register X24.
+   */
+  CheckSlot( SLOT_FRAME_X24 );
+
+  /*
+   * Check that the switch restored the AArch64 general-purpose register X25.
+   */
+  CheckSlot( SLOT_FRAME_X25 );
+
+  /*
+   * Check that the switch restored the AArch64 general-purpose register X26.
+   */
+  CheckSlot( SLOT_FRAME_X26 );
+
+  /*
+   * Check that the switch restored the AArch64 general-purpose register X27.
+   */
+  CheckSlot( SLOT_FRAME_X27 );
+
+  /*
+   * Check that the switch restored the AArch64 general-purpose register X28.
+   */
+  CheckSlot( SLOT_FRAME_X28 );
+
+  /*
+   * Check that the switch restored the AArch64 general-purpose register X29.
+   */
+  CheckSlot( SLOT_FRAME_FP );
+
+  /*
+   * Check that the switch saved the AArch64 general-purpose register X19.
+   */
+  CheckSlot( SLOT_SAVED_X19 );
+
+  /*
+   * Check that the switch saved the AArch64 general-purpose register X20.
+   */
+  CheckSlot( SLOT_SAVED_X20 );
+
+  /*
+   * Check that the switch saved the AArch64 general-purpose register X21.
+   */
+  CheckSlot( SLOT_SAVED_X21 );
+
+  /*
+   * Check that the switch saved the AArch64 general-purpose register X22.
+   */
+  CheckSlot( SLOT_SAVED_X22 );
+
+  /*
+   * Check that the switch saved the AArch64 general-purpose register X23.
+   */
+  CheckSlot( SLOT_SAVED_X23 );
+
+  /*
+   * Check that the switch saved the AArch64 general-purpose register X24.
+   */
+  CheckSlot( SLOT_SAVED_X24 );
+
+  /*
+   * Check that the switch saved the AArch64 general-purpose register X25.
+   */
+  CheckSlot( SLOT_SAVED_X25 );
+
+  /*
+   * Check that the switch saved the AArch64 general-purpose register X26.
+   */
+  CheckSlot( SLOT_SAVED_X26 );
+
+  /*
+   * Check that the switch saved the AArch64 general-purpose register X27.
+   */
+  CheckSlot( SLOT_SAVED_X27 );
+
+  /*
+   * Check that the switch saved the AArch64 general-purpose register X28.
+   */
+  CheckSlot( SLOT_SAVED_X28 );
+
+  /*
+   * Check that the switch saved the AArch64 general-purpose register X29.
+   */
+  CheckSlot( SLOT_SAVED_FP );
+
+  /*
+   * Check that the switch restored the AArch64 SIMD and floating-point
+   * register D8.
+   */
+  CheckSlot( SLOT_FRAME_D8 );
+
+  /*
+   * Check that the switch restored the AArch64 SIMD and floating-point
+   * register D9.
+   */
+  CheckSlot( SLOT_FRAME_D9 );
+
+  /*
+   * Check that the switch restored the AArch64 SIMD and floating-point
+   * register D10.
+   */
+  CheckSlot( SLOT_FRAME_D10 );
+
+  /*
+   * Check that the switch restored the AArch64 SIMD and floating-point
+   * register D11.
+   */
+  CheckSlot( SLOT_FRAME_D11 );
+
+  /*
+   * Check that the switch restored the AArch64 SIMD and floating-point
+   * register D12.
+   */
+  CheckSlot( SLOT_FRAME_D12 );
+
+  /*
+   * Check that the switch restored the AArch64 SIMD and floating-point
+   * register D13.
+   */
+  CheckSlot( SLOT_FRAME_D13 );
+
+  /*
+   * Check that the switch restored the AArch64 SIMD and floating-point
+   * register D14.
+   */
+  CheckSlot( SLOT_FRAME_D14 );
+
+  /*
+   * Check that the switch restored the AArch64 SIMD and floating-point
+   * register D15.
+   */
+  CheckSlot( SLOT_FRAME_D15 );
+
+  /*
+   * Check that the switch saved the AArch64 SIMD and floating-point register
+   * D8.
+   */
+  CheckSlot( SLOT_SAVED_D8 );
+
+  /*
+   * Check that the switch saved the AArch64 SIMD and floating-point register
+   * D9.
+   */
+  CheckSlot( SLOT_SAVED_D9 );
+
+  /*
+   * Check that the switch saved the AArch64 SIMD and floating-point register
+   * D10.
+   */
+  CheckSlot( SLOT_SAVED_D10 );
+
+  /*
+   * Check that the switch saved the AArch64 SIMD and floating-point register
+   * D11.
+   */
+  CheckSlot( SLOT_SAVED_D11 );
+
+  /*
+   * Check that the switch saved the AArch64 SIMD and floating-point register
+   * D12.
+   */
+  CheckSlot( SLOT_SAVED_D12 );
+
+  /*
+   * Check that the switch saved the AArch64 SIMD and floating-point register
+   * D13.
+   */
+  CheckSlot( SLOT_SAVED_D13 );
+
+  /*
+   * Check that the switch saved the AArch64 SIMD and floating-point register
+   * D14.
+   */
+  CheckSlot( SLOT_SAVED_D14 );
+
+  /*
+   * Check that the switch saved the AArch64 SIMD and floating-point register
+   * D15.
+   */
+  CheckSlot( SLOT_SAVED_D15 );
+
+  /*
+   * Check that the trap after the switch back reached the fatal handler once.
+   */
+  CheckSlot( SLOT_TRAP );
+
+  /*
+   * Check that the switch saved the return address of its call in the AArch64
+   * link register X30.
+   */
+  CheckSlot( SLOT_SAVED_LR );
+
+  /*
+   * Check that the switch saved the stack pointer of its call.
+   */
+  CheckSlot( SLOT_SAVED_SP );
+
+  /*
+   * Check that the switch back restored the stack pointer.
+   */
+  CheckSlot( SLOT_FRAME_SP );
+
+  /*
+   * Check that the heir received the thread pointer TPIDR_EL0 of its context.
+   */
+  CheckSlot( SLOT_HEIR_TP );
+
+  /*
+   * Check that the switch back restored the thread pointer TPIDR_EL0 of the
+   * executing context.
+   */
+  CheckSlot( SLOT_EXEC_TP );
+
+  /*
+   * Check that the switch saved FPCR.
+   */
+  CheckSlot( SLOT_SAVED_FPCR );
+
+  /*
+   * Check that the switch back restored FPCR.
+   */
+  CheckSlot( SLOT_FRAME_FPCR );
+
+  /*
+   * Check that the switch saved FPSR.
+   */
+  CheckSlot( SLOT_SAVED_FPSR );
+
+  /*
+   * Check that the switch back restored FPSR.
+   */
+  CheckSlot( SLOT_FRAME_FPSR );
+
+  /*
+   * Check that the heir received the FPCR of its context.
+   */
+  CheckSlot( SLOT_HEIR_FPCR );
+
+  /*
+   * Check that the context initialization set FPCR to zero.
+   */
+  CheckSlot( SLOT_INIT_FPCR );
+
+  /*
+   * Check that the context initialization set FPSR to zero.
+   */
+  CheckSlot( SLOT_INIT_FPSR );
+
+  /*
+   * Check that each run with a changed value flagged exactly the checks of
+   * that value, and that each run recorded every check.
+   */
+  RegisterCheckReport( &context_check );
+}
+
+/**
+ * @fn void T_case_body_ScoreCpuAarch64ValContext( void )
+ */
+T_TEST_CASE( ScoreCpuAarch64ValContext )
+{
+  ScoreCpuAarch64ValContext_Action_0();
+}
+
+/** @} */

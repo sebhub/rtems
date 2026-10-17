@@ -6,12 +6,15 @@ copyrights:
 cppflags: []
 cxxflags: []
 enabled-by:
+- aarch64
 - arm
 features: c cprogram
 includes: []
 ldflags:
 - -Wl,--wrap=_IO_Relax
 links:
+- role: build-dependency
+  uid: objaarch64
 - role: build-dependency
   uid: objarm
 - role: build-dependency
