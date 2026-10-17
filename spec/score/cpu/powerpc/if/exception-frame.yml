@@ -1,0 +1,1101 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This structure represents the exception frame of the PowerPC CPU port.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+- default:
+    brief: |
+      This member contains EXC_SRR0.
+    definition: ${/c/if/uintptr_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: EXC_SRR0
+  variants: []
+- default:
+    brief: |
+      This member contains EXC_SRR1.
+    definition: ${/c/if/uintptr_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: EXC_SRR1
+  variants: []
+- default:
+    brief: |
+      This member provides padding.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: _EXC_number
+  variants: []
+- default:
+    brief: |
+      This member contains EXC_TYPE.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: EXC_TYPE
+  variants: []
+- default:
+    brief: |
+      This member contains EXC_CR.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: EXC_CR
+  variants: []
+- default:
+    brief: |
+      This member contains EXC_XER.
+    definition: ${/c/if/uint32_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: EXC_XER
+  variants: []
+- default:
+    brief: |
+      This member contains EXC_CTR.
+    definition: ${/c/if/uintptr_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: EXC_CTR
+  variants: []
+- default:
+    brief: |
+      This member contains EXC_LR.
+    definition: ${/c/if/uintptr_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: EXC_LR
+  variants: []
+- default:
+    brief: |
+      This member provides padding.
+    definition: ${/c/if/uintptr_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: RESERVED_FOR_ALIGNMENT_1
+  variants: []
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains EXC_SPEFSCR.
+      definition: ${/c/if/uint32_t:/name} ${.:name}
+      description: null
+      kind: member
+      name: EXC_SPEFSCR
+    enabled-by: defined(__SPE__)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains EXC_ACC.
+      definition: ${/c/if/uint64_t:/name} ${.:name}
+      description: null
+      kind: member
+      name: EXC_ACC
+    enabled-by: defined(__SPE__)
+- default:
+    brief: |
+      This member provides the registers by name and as an array.
+    definition:
+    - default:
+        brief: |
+          This member provides the registers by name.
+        definition:
+        - default:
+            brief: |
+              This member contains GPR0.
+            definition: PPC_GPR_TYPE ${.:name}
+            description: null
+            kind: member
+            name: GPR0
+          variants: []
+        - default:
+            brief: |
+              This member contains GPR1.
+            definition: PPC_GPR_TYPE ${.:name}
+            description: null
+            kind: member
+            name: GPR1
+          variants: []
+        - default:
+            brief: |
+              This member contains GPR2.
+            definition: PPC_GPR_TYPE ${.:name}
+            description: null
+            kind: member
+            name: GPR2
+          variants: []
+        - default:
+            brief: |
+              This member contains GPR3.
+            definition: PPC_GPR_TYPE ${.:name}
+            description: null
+            kind: member
+            name: GPR3
+          variants: []
+        - default:
+            brief: |
+              This member contains GPR4.
+            definition: PPC_GPR_TYPE ${.:name}
+            description: null
+            kind: member
+            name: GPR4
+          variants: []
+        - default:
+            brief: |
+              This member contains GPR5.
+            definition: PPC_GPR_TYPE ${.:name}
+            description: null
+            kind: member
+            name: GPR5
+          variants: []
+        - default:
+            brief: |
+              This member contains GPR6.
+            definition: PPC_GPR_TYPE ${.:name}
+            description: null
+            kind: member
+            name: GPR6
+          variants: []
+        - default:
+            brief: |
+              This member contains GPR7.
+            definition: PPC_GPR_TYPE ${.:name}
+            description: null
+            kind: member
+            name: GPR7
+          variants: []
+        - default:
+            brief: |
+              This member contains GPR8.
+            definition: PPC_GPR_TYPE ${.:name}
+            description: null
+            kind: member
+            name: GPR8
+          variants: []
+        - default:
+            brief: |
+              This member contains GPR9.
+            definition: PPC_GPR_TYPE ${.:name}
+            description: null
+            kind: member
+            name: GPR9
+          variants: []
+        - default:
+            brief: |
+              This member contains GPR10.
+            definition: PPC_GPR_TYPE ${.:name}
+            description: null
+            kind: member
+            name: GPR10
+          variants: []
+        - default:
+            brief: |
+              This member contains GPR11.
+            definition: PPC_GPR_TYPE ${.:name}
+            description: null
+            kind: member
+            name: GPR11
+          variants: []
+        - default:
+            brief: |
+              This member contains GPR12.
+            definition: PPC_GPR_TYPE ${.:name}
+            description: null
+            kind: member
+            name: GPR12
+          variants: []
+        - default:
+            brief: |
+              This member contains GPR13.
+            definition: PPC_GPR_TYPE ${.:name}
+            description: null
+            kind: member
+            name: GPR13
+          variants: []
+        - default:
+            brief: |
+              This member contains GPR14.
+            definition: PPC_GPR_TYPE ${.:name}
+            description: null
+            kind: member
+            name: GPR14
+          variants: []
+        - default:
+            brief: |
+              This member contains GPR15.
+            definition: PPC_GPR_TYPE ${.:name}
+            description: null
+            kind: member
+            name: GPR15
+          variants: []
+        - default:
+            brief: |
+              This member contains GPR16.
+            definition: PPC_GPR_TYPE ${.:name}
+            description: null
+            kind: member
+            name: GPR16
+          variants: []
+        - default:
+            brief: |
+              This member contains GPR17.
+            definition: PPC_GPR_TYPE ${.:name}
+            description: null
+            kind: member
+            name: GPR17
+          variants: []
+        - default:
+            brief: |
+              This member contains GPR18.
+            definition: PPC_GPR_TYPE ${.:name}
+            description: null
+            kind: member
+            name: GPR18
+          variants: []
+        - default:
+            brief: |
+              This member contains GPR19.
+            definition: PPC_GPR_TYPE ${.:name}
+            description: null
+            kind: member
+            name: GPR19
+          variants: []
+        - default:
+            brief: |
+              This member contains GPR20.
+            definition: PPC_GPR_TYPE ${.:name}
+            description: null
+            kind: member
+            name: GPR20
+          variants: []
+        - default:
+            brief: |
+              This member contains GPR21.
+            definition: PPC_GPR_TYPE ${.:name}
+            description: null
+            kind: member
+            name: GPR21
+          variants: []
+        - default:
+            brief: |
+              This member contains GPR22.
+            definition: PPC_GPR_TYPE ${.:name}
+            description: null
+            kind: member
+            name: GPR22
+          variants: []
+        - default:
+            brief: |
+              This member contains GPR23.
+            definition: PPC_GPR_TYPE ${.:name}
+            description: null
+            kind: member
+            name: GPR23
+          variants: []
+        - default:
+            brief: |
+              This member contains GPR24.
+            definition: PPC_GPR_TYPE ${.:name}
+            description: null
+            kind: member
+            name: GPR24
+          variants: []
+        - default:
+            brief: |
+              This member contains GPR25.
+            definition: PPC_GPR_TYPE ${.:name}
+            description: null
+            kind: member
+            name: GPR25
+          variants: []
+        - default:
+            brief: |
+              This member contains GPR26.
+            definition: PPC_GPR_TYPE ${.:name}
+            description: null
+            kind: member
+            name: GPR26
+          variants: []
+        - default:
+            brief: |
+              This member contains GPR27.
+            definition: PPC_GPR_TYPE ${.:name}
+            description: null
+            kind: member
+            name: GPR27
+          variants: []
+        - default:
+            brief: |
+              This member contains GPR28.
+            definition: PPC_GPR_TYPE ${.:name}
+            description: null
+            kind: member
+            name: GPR28
+          variants: []
+        - default:
+            brief: |
+              This member contains GPR29.
+            definition: PPC_GPR_TYPE ${.:name}
+            description: null
+            kind: member
+            name: GPR29
+          variants: []
+        - default:
+            brief: |
+              This member contains GPR30.
+            definition: PPC_GPR_TYPE ${.:name}
+            description: null
+            kind: member
+            name: GPR30
+          variants: []
+        - default:
+            brief: |
+              This member contains GPR31.
+            definition: PPC_GPR_TYPE ${.:name}
+            description: null
+            kind: member
+            name: GPR31
+          variants: []
+        description: null
+        kind: struct
+        name: ''
+      variants: []
+    - default:
+        brief: |
+          This member contains registers.
+        definition: PPC_GPR_TYPE ${.:name}[ 32 ]
+        description: null
+        kind: member
+        name: registers
+      variants: []
+    description: null
+    kind: union
+    name: ''
+  variants: []
+- default:
+    brief: |
+      This member provides padding.
+    definition: ${/c/if/uintptr_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: RESERVED_FOR_ALIGNMENT_2
+  variants: []
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains VRSAVE.
+      definition: ${/c/if/uint32_t:/name} ${.:name}
+      description: null
+      kind: member
+      name: VRSAVE
+    enabled-by: defined(PPC_MULTILIB_ALTIVEC)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member provides padding.
+      definition: ${/c/if/uint32_t:/name} ${.:name}[ 3 ]
+      description: null
+      kind: member
+      name: RESERVED_FOR_ALIGNMENT_3
+    enabled-by: defined(PPC_MULTILIB_ALTIVEC)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member provides padding.
+      definition: ${/c/if/uint32_t:/name} ${.:name}[ 3 ]
+      description: null
+      kind: member
+      name: RESERVED_FOR_ALIGNMENT_4
+    enabled-by: defined(PPC_MULTILIB_ALTIVEC)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains VSCR.
+      definition: ${/c/if/uint32_t:/name} ${.:name}
+      description: null
+      kind: member
+      name: VSCR
+    enabled-by: defined(PPC_MULTILIB_ALTIVEC)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains V0.
+      definition: ${/c/if/uint8_t:/name} ${.:name}[ 16 ]
+      description: null
+      kind: member
+      name: V0
+    enabled-by: defined(PPC_MULTILIB_ALTIVEC)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains V1.
+      definition: ${/c/if/uint8_t:/name} ${.:name}[ 16 ]
+      description: null
+      kind: member
+      name: V1
+    enabled-by: defined(PPC_MULTILIB_ALTIVEC)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains V2.
+      definition: ${/c/if/uint8_t:/name} ${.:name}[ 16 ]
+      description: null
+      kind: member
+      name: V2
+    enabled-by: defined(PPC_MULTILIB_ALTIVEC)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains V3.
+      definition: ${/c/if/uint8_t:/name} ${.:name}[ 16 ]
+      description: null
+      kind: member
+      name: V3
+    enabled-by: defined(PPC_MULTILIB_ALTIVEC)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains V4.
+      definition: ${/c/if/uint8_t:/name} ${.:name}[ 16 ]
+      description: null
+      kind: member
+      name: V4
+    enabled-by: defined(PPC_MULTILIB_ALTIVEC)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains V5.
+      definition: ${/c/if/uint8_t:/name} ${.:name}[ 16 ]
+      description: null
+      kind: member
+      name: V5
+    enabled-by: defined(PPC_MULTILIB_ALTIVEC)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains V6.
+      definition: ${/c/if/uint8_t:/name} ${.:name}[ 16 ]
+      description: null
+      kind: member
+      name: V6
+    enabled-by: defined(PPC_MULTILIB_ALTIVEC)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains V7.
+      definition: ${/c/if/uint8_t:/name} ${.:name}[ 16 ]
+      description: null
+      kind: member
+      name: V7
+    enabled-by: defined(PPC_MULTILIB_ALTIVEC)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains V8.
+      definition: ${/c/if/uint8_t:/name} ${.:name}[ 16 ]
+      description: null
+      kind: member
+      name: V8
+    enabled-by: defined(PPC_MULTILIB_ALTIVEC)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains V9.
+      definition: ${/c/if/uint8_t:/name} ${.:name}[ 16 ]
+      description: null
+      kind: member
+      name: V9
+    enabled-by: defined(PPC_MULTILIB_ALTIVEC)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains V10.
+      definition: ${/c/if/uint8_t:/name} ${.:name}[ 16 ]
+      description: null
+      kind: member
+      name: V10
+    enabled-by: defined(PPC_MULTILIB_ALTIVEC)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains V11.
+      definition: ${/c/if/uint8_t:/name} ${.:name}[ 16 ]
+      description: null
+      kind: member
+      name: V11
+    enabled-by: defined(PPC_MULTILIB_ALTIVEC)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains V12.
+      definition: ${/c/if/uint8_t:/name} ${.:name}[ 16 ]
+      description: null
+      kind: member
+      name: V12
+    enabled-by: defined(PPC_MULTILIB_ALTIVEC)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains V13.
+      definition: ${/c/if/uint8_t:/name} ${.:name}[ 16 ]
+      description: null
+      kind: member
+      name: V13
+    enabled-by: defined(PPC_MULTILIB_ALTIVEC)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains V14.
+      definition: ${/c/if/uint8_t:/name} ${.:name}[ 16 ]
+      description: null
+      kind: member
+      name: V14
+    enabled-by: defined(PPC_MULTILIB_ALTIVEC)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains V15.
+      definition: ${/c/if/uint8_t:/name} ${.:name}[ 16 ]
+      description: null
+      kind: member
+      name: V15
+    enabled-by: defined(PPC_MULTILIB_ALTIVEC)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains V16.
+      definition: ${/c/if/uint8_t:/name} ${.:name}[ 16 ]
+      description: null
+      kind: member
+      name: V16
+    enabled-by: defined(PPC_MULTILIB_ALTIVEC)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains V17.
+      definition: ${/c/if/uint8_t:/name} ${.:name}[ 16 ]
+      description: null
+      kind: member
+      name: V17
+    enabled-by: defined(PPC_MULTILIB_ALTIVEC)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains V18.
+      definition: ${/c/if/uint8_t:/name} ${.:name}[ 16 ]
+      description: null
+      kind: member
+      name: V18
+    enabled-by: defined(PPC_MULTILIB_ALTIVEC)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains V19.
+      definition: ${/c/if/uint8_t:/name} ${.:name}[ 16 ]
+      description: null
+      kind: member
+      name: V19
+    enabled-by: defined(PPC_MULTILIB_ALTIVEC)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains V20.
+      definition: ${/c/if/uint8_t:/name} ${.:name}[ 16 ]
+      description: null
+      kind: member
+      name: V20
+    enabled-by: defined(PPC_MULTILIB_ALTIVEC)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains V21.
+      definition: ${/c/if/uint8_t:/name} ${.:name}[ 16 ]
+      description: null
+      kind: member
+      name: V21
+    enabled-by: defined(PPC_MULTILIB_ALTIVEC)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains V22.
+      definition: ${/c/if/uint8_t:/name} ${.:name}[ 16 ]
+      description: null
+      kind: member
+      name: V22
+    enabled-by: defined(PPC_MULTILIB_ALTIVEC)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains V23.
+      definition: ${/c/if/uint8_t:/name} ${.:name}[ 16 ]
+      description: null
+      kind: member
+      name: V23
+    enabled-by: defined(PPC_MULTILIB_ALTIVEC)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains V24.
+      definition: ${/c/if/uint8_t:/name} ${.:name}[ 16 ]
+      description: null
+      kind: member
+      name: V24
+    enabled-by: defined(PPC_MULTILIB_ALTIVEC)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains V25.
+      definition: ${/c/if/uint8_t:/name} ${.:name}[ 16 ]
+      description: null
+      kind: member
+      name: V25
+    enabled-by: defined(PPC_MULTILIB_ALTIVEC)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains V26.
+      definition: ${/c/if/uint8_t:/name} ${.:name}[ 16 ]
+      description: null
+      kind: member
+      name: V26
+    enabled-by: defined(PPC_MULTILIB_ALTIVEC)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains V27.
+      definition: ${/c/if/uint8_t:/name} ${.:name}[ 16 ]
+      description: null
+      kind: member
+      name: V27
+    enabled-by: defined(PPC_MULTILIB_ALTIVEC)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains V28.
+      definition: ${/c/if/uint8_t:/name} ${.:name}[ 16 ]
+      description: null
+      kind: member
+      name: V28
+    enabled-by: defined(PPC_MULTILIB_ALTIVEC)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains V29.
+      definition: ${/c/if/uint8_t:/name} ${.:name}[ 16 ]
+      description: null
+      kind: member
+      name: V29
+    enabled-by: defined(PPC_MULTILIB_ALTIVEC)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains V30.
+      definition: ${/c/if/uint8_t:/name} ${.:name}[ 16 ]
+      description: null
+      kind: member
+      name: V30
+    enabled-by: defined(PPC_MULTILIB_ALTIVEC)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains V31.
+      definition: ${/c/if/uint8_t:/name} ${.:name}[ 16 ]
+      description: null
+      kind: member
+      name: V31
+    enabled-by: defined(PPC_MULTILIB_ALTIVEC)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains F0.
+      definition: double ${.:name}
+      description: null
+      kind: member
+      name: F0
+    enabled-by: defined(PPC_MULTILIB_FPU)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains F1.
+      definition: double ${.:name}
+      description: null
+      kind: member
+      name: F1
+    enabled-by: defined(PPC_MULTILIB_FPU)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains F2.
+      definition: double ${.:name}
+      description: null
+      kind: member
+      name: F2
+    enabled-by: defined(PPC_MULTILIB_FPU)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains F3.
+      definition: double ${.:name}
+      description: null
+      kind: member
+      name: F3
+    enabled-by: defined(PPC_MULTILIB_FPU)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains F4.
+      definition: double ${.:name}
+      description: null
+      kind: member
+      name: F4
+    enabled-by: defined(PPC_MULTILIB_FPU)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains F5.
+      definition: double ${.:name}
+      description: null
+      kind: member
+      name: F5
+    enabled-by: defined(PPC_MULTILIB_FPU)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains F6.
+      definition: double ${.:name}
+      description: null
+      kind: member
+      name: F6
+    enabled-by: defined(PPC_MULTILIB_FPU)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains F7.
+      definition: double ${.:name}
+      description: null
+      kind: member
+      name: F7
+    enabled-by: defined(PPC_MULTILIB_FPU)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains F8.
+      definition: double ${.:name}
+      description: null
+      kind: member
+      name: F8
+    enabled-by: defined(PPC_MULTILIB_FPU)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains F9.
+      definition: double ${.:name}
+      description: null
+      kind: member
+      name: F9
+    enabled-by: defined(PPC_MULTILIB_FPU)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains F10.
+      definition: double ${.:name}
+      description: null
+      kind: member
+      name: F10
+    enabled-by: defined(PPC_MULTILIB_FPU)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains F11.
+      definition: double ${.:name}
+      description: null
+      kind: member
+      name: F11
+    enabled-by: defined(PPC_MULTILIB_FPU)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains F12.
+      definition: double ${.:name}
+      description: null
+      kind: member
+      name: F12
+    enabled-by: defined(PPC_MULTILIB_FPU)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains F13.
+      definition: double ${.:name}
+      description: null
+      kind: member
+      name: F13
+    enabled-by: defined(PPC_MULTILIB_FPU)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains F14.
+      definition: double ${.:name}
+      description: null
+      kind: member
+      name: F14
+    enabled-by: defined(PPC_MULTILIB_FPU)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains F15.
+      definition: double ${.:name}
+      description: null
+      kind: member
+      name: F15
+    enabled-by: defined(PPC_MULTILIB_FPU)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains F16.
+      definition: double ${.:name}
+      description: null
+      kind: member
+      name: F16
+    enabled-by: defined(PPC_MULTILIB_FPU)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains F17.
+      definition: double ${.:name}
+      description: null
+      kind: member
+      name: F17
+    enabled-by: defined(PPC_MULTILIB_FPU)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains F18.
+      definition: double ${.:name}
+      description: null
+      kind: member
+      name: F18
+    enabled-by: defined(PPC_MULTILIB_FPU)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains F19.
+      definition: double ${.:name}
+      description: null
+      kind: member
+      name: F19
+    enabled-by: defined(PPC_MULTILIB_FPU)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains F20.
+      definition: double ${.:name}
+      description: null
+      kind: member
+      name: F20
+    enabled-by: defined(PPC_MULTILIB_FPU)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains F21.
+      definition: double ${.:name}
+      description: null
+      kind: member
+      name: F21
+    enabled-by: defined(PPC_MULTILIB_FPU)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains F22.
+      definition: double ${.:name}
+      description: null
+      kind: member
+      name: F22
+    enabled-by: defined(PPC_MULTILIB_FPU)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains F23.
+      definition: double ${.:name}
+      description: null
+      kind: member
+      name: F23
+    enabled-by: defined(PPC_MULTILIB_FPU)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains F24.
+      definition: double ${.:name}
+      description: null
+      kind: member
+      name: F24
+    enabled-by: defined(PPC_MULTILIB_FPU)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains F25.
+      definition: double ${.:name}
+      description: null
+      kind: member
+      name: F25
+    enabled-by: defined(PPC_MULTILIB_FPU)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains F26.
+      definition: double ${.:name}
+      description: null
+      kind: member
+      name: F26
+    enabled-by: defined(PPC_MULTILIB_FPU)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains F27.
+      definition: double ${.:name}
+      description: null
+      kind: member
+      name: F27
+    enabled-by: defined(PPC_MULTILIB_FPU)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains F28.
+      definition: double ${.:name}
+      description: null
+      kind: member
+      name: F28
+    enabled-by: defined(PPC_MULTILIB_FPU)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains F29.
+      definition: double ${.:name}
+      description: null
+      kind: member
+      name: F29
+    enabled-by: defined(PPC_MULTILIB_FPU)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains F30.
+      definition: double ${.:name}
+      description: null
+      kind: member
+      name: F30
+    enabled-by: defined(PPC_MULTILIB_FPU)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains F31.
+      definition: double ${.:name}
+      description: null
+      kind: member
+      name: F31
+    enabled-by: defined(PPC_MULTILIB_FPU)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains FPSCR.
+      definition: ${/c/if/uint64_t:/name} ${.:name}
+      description: null
+      kind: member
+      name: FPSCR
+    enabled-by: defined(PPC_MULTILIB_FPU)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member provides padding.
+      definition: ${/c/if/uint64_t:/name} ${.:name}
+      description: null
+      kind: member
+      name: RESERVED_FOR_ALIGNMENT_5
+    enabled-by: defined(PPC_MULTILIB_FPU)
+definition-kind: typedef-only
+description: null
+enabled-by: powerpc
+index-entries: []
+interface-type: struct
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+- role: proxy-member
+  uid: /score/cpu/if/exception-frame
+name: CPU_Exception_frame
+notes: null
+type: interface

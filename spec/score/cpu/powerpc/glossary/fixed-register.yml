@@ -1,0 +1,21 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: powerpc
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+- location: 3.2.1.1
+  role: reference
+  uid: /ref/arch/powerpc/abi32
+- location: 2.2.1.1
+  role: reference
+  uid: /ref/arch/powerpc/elfv2-abi-1-1
+term: PowerPC fixed register
+text: |
+  A register with a fixed role. In the 32-bit ABI, these are r1 as the stack
+  pointer, r2 as the thread pointer and r13 as the small data area pointer. In
+  the 64-bit ABI, these are r1 as the stack pointer, r2 as the TOC pointer and
+  r13 as the thread pointer.
+type: glossary

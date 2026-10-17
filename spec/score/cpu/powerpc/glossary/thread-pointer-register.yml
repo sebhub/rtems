@@ -1,0 +1,19 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: powerpc
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+- location: 3.2.1.1
+  role: reference
+  uid: /ref/arch/powerpc/abi32
+- location: 2.2.1.1
+  role: reference
+  uid: /ref/arch/powerpc/elfv2-abi-1-1
+term: PowerPC thread pointer register
+text: |
+  The register which addresses the thread-local storage. This is r2 in the 32-bit
+  ABI and r13 in the 64-bit ABI.
+type: glossary

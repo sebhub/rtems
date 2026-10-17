@@ -1,0 +1,13 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: powerpc
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+term: PowerPC wrapper-private register
+text: |
+  A call-saved register which the interrupt wrapper uses for its own bookkeeping.
+  This is r14. ppc_exc_async_normal.S names it FRAME_REGISTER.
+type: glossary

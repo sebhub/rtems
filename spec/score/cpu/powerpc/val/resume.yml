@@ -1,0 +1,851 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: powerpc
+links: []
+test-actions:
+- action-brief: |
+    Trap, let the handler write a new value into every register of the frame,
+    resume, and trap again to capture what the resume restored. Run this once for
+    each value with the value inverted, then once unchanged.
+  action-code: |
+    memcpy( resume_initial, resume_patterns, sizeof( resume_initial ) );
+    RegisterCheckRun( &resume_check );
+  checks:
+  - brief: |
+      Check that the resume restored the bottom 32 bits of the PowerPC register R0
+      from the frame.
+    code: |
+      CheckSlot( SLOT_R0 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 32 bits of the PowerPC register R3
+      from the frame.
+    code: |
+      CheckSlot( SLOT_R3 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 32 bits of the PowerPC register R4
+      from the frame.
+    code: |
+      CheckSlot( SLOT_R4 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 32 bits of the PowerPC register R5
+      from the frame.
+    code: |
+      CheckSlot( SLOT_R5 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 32 bits of the PowerPC register R6
+      from the frame.
+    code: |
+      CheckSlot( SLOT_R6 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 32 bits of the PowerPC register R7
+      from the frame.
+    code: |
+      CheckSlot( SLOT_R7 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 32 bits of the PowerPC register R8
+      from the frame.
+    code: |
+      CheckSlot( SLOT_R8 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 32 bits of the PowerPC register R9
+      from the frame.
+    code: |
+      CheckSlot( SLOT_R9 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 32 bits of the PowerPC register R10
+      from the frame.
+    code: |
+      CheckSlot( SLOT_R10 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 32 bits of the PowerPC register R11
+      from the frame.
+    code: |
+      CheckSlot( SLOT_R11 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 32 bits of the PowerPC register R12
+      from the frame.
+    code: |
+      CheckSlot( SLOT_R12 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 32 bits of the PowerPC register R14
+      from the frame.
+    code: |
+      CheckSlot( SLOT_R14 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 32 bits of the PowerPC register R15
+      from the frame.
+    code: |
+      CheckSlot( SLOT_R15 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 32 bits of the PowerPC register R16
+      from the frame.
+    code: |
+      CheckSlot( SLOT_R16 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 32 bits of the PowerPC register R17
+      from the frame.
+    code: |
+      CheckSlot( SLOT_R17 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 32 bits of the PowerPC register R18
+      from the frame.
+    code: |
+      CheckSlot( SLOT_R18 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 32 bits of the PowerPC register R19
+      from the frame.
+    code: |
+      CheckSlot( SLOT_R19 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 32 bits of the PowerPC register R20
+      from the frame.
+    code: |
+      CheckSlot( SLOT_R20 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 32 bits of the PowerPC register R21
+      from the frame.
+    code: |
+      CheckSlot( SLOT_R21 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 32 bits of the PowerPC register R22
+      from the frame.
+    code: |
+      CheckSlot( SLOT_R22 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 32 bits of the PowerPC register R23
+      from the frame.
+    code: |
+      CheckSlot( SLOT_R23 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 32 bits of the PowerPC register R24
+      from the frame.
+    code: |
+      CheckSlot( SLOT_R24 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 32 bits of the PowerPC register R25
+      from the frame.
+    code: |
+      CheckSlot( SLOT_R25 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 32 bits of the PowerPC register R26
+      from the frame.
+    code: |
+      CheckSlot( SLOT_R26 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 32 bits of the PowerPC register R27
+      from the frame.
+    code: |
+      CheckSlot( SLOT_R27 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 32 bits of the PowerPC register R28
+      from the frame.
+    code: |
+      CheckSlot( SLOT_R28 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 32 bits of the PowerPC register R29
+      from the frame.
+    code: |
+      CheckSlot( SLOT_R29 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 32 bits of the PowerPC register R30
+      from the frame.
+    code: |
+      CheckSlot( SLOT_R30 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 32 bits of the PowerPC register R31
+      from the frame.
+    code: |
+      CheckSlot( SLOT_R31 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored CR from the frame.
+    code: |
+      CheckSlot( SLOT_CR );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored XER from the frame.
+    code: |
+      CheckSlot( SLOT_XER );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored CTR from the frame.
+    code: |
+      CheckSlot( SLOT_CTR );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored LR from the frame.
+    code: |
+      CheckSlot( SLOT_LR );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the second trap placed its frame at the address of the first frame.
+    code: |
+      CheckSlot( SLOT_FRAME );
+    links:
+    - role: validation
+      uid: ../../req/resume-frame-address
+  - brief: |
+      Check that the stack pointer after the resume equals the one before the first
+      trap.
+    code: |
+      CheckSlot( SLOT_RELEASE );
+    links:
+    - role: validation
+      uid: ../../req/resume-frame-release
+  - brief: |
+      Check that each run with a changed value flagged exactly the checks of that
+      value, and that each run recorded every check.
+    code: |
+      RegisterCheckReport( &resume_check );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  links: []
+test-brief: |
+  Checks that the exception resume restores every register of the exception
+  frame.
+test-context: []
+test-context-support: null
+test-description: null
+test-header: null
+test-includes:
+- rtems/score/cpuimpl.h
+- string.h
+- stdint.h
+test-local-includes:
+- tx-register-check.h
+- tx-support.h
+test-setup: null
+test-stop: null
+test-support: |
+  extern const char resume_second_trap_label[];
+
+  extern const char resume_done_label[];
+
+  #define WORD UINT64_C( 0xffffffff )
+
+  typedef enum {
+    SOURCE_R0,
+    SOURCE_R3,
+    SOURCE_R4,
+    SOURCE_R5,
+    SOURCE_R6,
+    SOURCE_R7,
+    SOURCE_R8,
+    SOURCE_R9,
+    SOURCE_R10,
+    SOURCE_R11,
+    SOURCE_R12,
+    SOURCE_R14,
+    SOURCE_R15,
+    SOURCE_R16,
+    SOURCE_R17,
+    SOURCE_R18,
+    SOURCE_R19,
+    SOURCE_R20,
+    SOURCE_R21,
+    SOURCE_R22,
+    SOURCE_R23,
+    SOURCE_R24,
+    SOURCE_R25,
+    SOURCE_R26,
+    SOURCE_R27,
+    SOURCE_R28,
+    SOURCE_R29,
+    SOURCE_R30,
+    SOURCE_R31,
+    SOURCE_CR,
+    SOURCE_XER,
+    SOURCE_CTR,
+    SOURCE_LR,
+    SOURCE_FRAME,
+    SOURCE_RELEASE,
+    SOURCE_MAX
+  } Source;
+
+  typedef enum {
+    SLOT_R0,
+    SLOT_R3,
+    SLOT_R4,
+    SLOT_R5,
+    SLOT_R6,
+    SLOT_R7,
+    SLOT_R8,
+    SLOT_R9,
+    SLOT_R10,
+    SLOT_R11,
+    SLOT_R12,
+    SLOT_R14,
+    SLOT_R15,
+    SLOT_R16,
+    SLOT_R17,
+    SLOT_R18,
+    SLOT_R19,
+    SLOT_R20,
+    SLOT_R21,
+    SLOT_R22,
+    SLOT_R23,
+    SLOT_R24,
+    SLOT_R25,
+    SLOT_R26,
+    SLOT_R27,
+    SLOT_R28,
+    SLOT_R29,
+    SLOT_R30,
+    SLOT_R31,
+    SLOT_CR,
+    SLOT_XER,
+    SLOT_CTR,
+    SLOT_LR,
+    SLOT_FRAME,
+    SLOT_RELEASE,
+    SLOT_MAX
+  } Slot;
+
+  static const RegisterCheckSource resume_sources[ SOURCE_MAX ] = {
+    { "r0", REGISTER_CHECK_INITIAL, WORD },
+    { "r3", REGISTER_CHECK_INITIAL, WORD },
+    { "r4", REGISTER_CHECK_INITIAL, WORD },
+    { "r5", REGISTER_CHECK_INITIAL, WORD },
+    { "r6", REGISTER_CHECK_INITIAL, WORD },
+    { "r7", REGISTER_CHECK_INITIAL, WORD },
+    { "r8", REGISTER_CHECK_INITIAL, WORD },
+    { "r9", REGISTER_CHECK_INITIAL, WORD },
+    { "r10", REGISTER_CHECK_INITIAL, WORD },
+    { "r11", REGISTER_CHECK_INITIAL, WORD },
+    { "r12", REGISTER_CHECK_INITIAL, WORD },
+    { "r14", REGISTER_CHECK_INITIAL, WORD },
+    { "r15", REGISTER_CHECK_INITIAL, WORD },
+    { "r16", REGISTER_CHECK_INITIAL, WORD },
+    { "r17", REGISTER_CHECK_INITIAL, WORD },
+    { "r18", REGISTER_CHECK_INITIAL, WORD },
+    { "r19", REGISTER_CHECK_INITIAL, WORD },
+    { "r20", REGISTER_CHECK_INITIAL, WORD },
+    { "r21", REGISTER_CHECK_INITIAL, WORD },
+    { "r22", REGISTER_CHECK_INITIAL, WORD },
+    { "r23", REGISTER_CHECK_INITIAL, WORD },
+    { "r24", REGISTER_CHECK_INITIAL, WORD },
+    { "r25", REGISTER_CHECK_INITIAL, WORD },
+    { "r26", REGISTER_CHECK_INITIAL, WORD },
+    { "r27", REGISTER_CHECK_INITIAL, WORD },
+    { "r28", REGISTER_CHECK_INITIAL, WORD },
+    { "r29", REGISTER_CHECK_INITIAL, WORD },
+    { "r30", REGISTER_CHECK_INITIAL, WORD },
+    { "r31", REGISTER_CHECK_INITIAL, WORD },
+    { "cr", REGISTER_CHECK_INITIAL, WORD },
+    { "xer", REGISTER_CHECK_INITIAL, UINT64_C( 0xe000007f ) },
+    { "ctr", REGISTER_CHECK_INITIAL, WORD },
+    { "lr", REGISTER_CHECK_INITIAL, WORD },
+    { "frame", REGISTER_CHECK_EXPECTED, WORD },
+    { "release", REGISTER_CHECK_EXPECTED, WORD }
+  };
+
+  static const RegisterCheckSlot resume_slots[ SOURCE_MAX ] = {
+    { "r0", SOURCE_R0, WORD },
+    { "r3", SOURCE_R3, WORD },
+    { "r4", SOURCE_R4, WORD },
+    { "r5", SOURCE_R5, WORD },
+    { "r6", SOURCE_R6, WORD },
+    { "r7", SOURCE_R7, WORD },
+    { "r8", SOURCE_R8, WORD },
+    { "r9", SOURCE_R9, WORD },
+    { "r10", SOURCE_R10, WORD },
+    { "r11", SOURCE_R11, WORD },
+    { "r12", SOURCE_R12, WORD },
+    { "r14", SOURCE_R14, WORD },
+    { "r15", SOURCE_R15, WORD },
+    { "r16", SOURCE_R16, WORD },
+    { "r17", SOURCE_R17, WORD },
+    { "r18", SOURCE_R18, WORD },
+    { "r19", SOURCE_R19, WORD },
+    { "r20", SOURCE_R20, WORD },
+    { "r21", SOURCE_R21, WORD },
+    { "r22", SOURCE_R22, WORD },
+    { "r23", SOURCE_R23, WORD },
+    { "r24", SOURCE_R24, WORD },
+    { "r25", SOURCE_R25, WORD },
+    { "r26", SOURCE_R26, WORD },
+    { "r27", SOURCE_R27, WORD },
+    { "r28", SOURCE_R28, WORD },
+    { "r29", SOURCE_R29, WORD },
+    { "r30", SOURCE_R30, WORD },
+    { "r31", SOURCE_R31, WORD },
+    { "cr", SOURCE_CR, WORD },
+    { "xer", SOURCE_XER, UINT64_C( 0xe000007f ) },
+    { "ctr", SOURCE_CTR, WORD },
+    { "lr", SOURCE_LR, WORD },
+    { "frame", SOURCE_FRAME, WORD },
+    { "release", SOURCE_RELEASE, WORD }
+  };
+
+  static const uint64_t resume_patterns[ SOURCE_MAX ] = {
+    UINT64_C( 0x81828384 ),
+    UINT64_C( 0x82838485 ),
+    UINT64_C( 0x83848586 ),
+    UINT64_C( 0x84858687 ),
+    UINT64_C( 0x85868788 ),
+    UINT64_C( 0x86878889 ),
+    UINT64_C( 0x8788898a ),
+    UINT64_C( 0x88898a8b ),
+    UINT64_C( 0x898a8b8c ),
+    UINT64_C( 0x8a8b8c8d ),
+    UINT64_C( 0x8b8c8d8e ),
+    UINT64_C( 0x8c8d8e8f ),
+    UINT64_C( 0x8d8e8f90 ),
+    UINT64_C( 0x8e8f9091 ),
+    UINT64_C( 0x8f909192 ),
+    UINT64_C( 0x90919293 ),
+    UINT64_C( 0x91929394 ),
+    UINT64_C( 0x92939495 ),
+    UINT64_C( 0x93949596 ),
+    UINT64_C( 0x94959697 ),
+    UINT64_C( 0x95969798 ),
+    UINT64_C( 0x96979899 ),
+    UINT64_C( 0x9798999a ),
+    UINT64_C( 0x98999a9b ),
+    UINT64_C( 0x999a9b9c ),
+    UINT64_C( 0x9a9b9c9d ),
+    UINT64_C( 0x9b9c9d9e ),
+    UINT64_C( 0x9c9d9e9f ),
+    UINT64_C( 0x9d9e9fa0 ),
+    UINT64_C( 0xa5a5a5a5 ),
+    UINT64_C( 0x8000002a ),
+    UINT64_C( 0x61626364 ),
+    UINT64_C( 0x71727374 ),
+    1,
+    1
+  };
+
+  static uint64_t resume_initial[ SOURCE_MAX ];
+
+  static CPU_Exception_frame resume_frame;
+
+  static CPU_Exception_frame *resume_first_frame;
+
+  static CPU_Exception_frame *resume_second_frame;
+
+  static int resume_trap;
+
+  static uintptr_t resume_sp_delta;
+
+  static void ResumeFatal(
+    rtems_fatal_source source,
+    rtems_fatal_code   code,
+    void              *arg
+  )
+  {
+    CPU_Exception_frame *frame;
+
+    (void) arg;
+
+    if ( source != RTEMS_FATAL_SOURCE_EXCEPTION ) {
+      return;
+    }
+
+    frame = (CPU_Exception_frame *) code;
+
+    if ( resume_trap == 0 ) {
+      ++resume_trap;
+      resume_first_frame = frame;
+      frame->registers[ 0 ] = (uint32_t) resume_initial[ SOURCE_R0 ];
+      frame->registers[ 3 ] = (uint32_t) resume_initial[ SOURCE_R3 ];
+      frame->registers[ 4 ] = (uint32_t) resume_initial[ SOURCE_R4 ];
+      frame->registers[ 5 ] = (uint32_t) resume_initial[ SOURCE_R5 ];
+      frame->registers[ 6 ] = (uint32_t) resume_initial[ SOURCE_R6 ];
+      frame->registers[ 7 ] = (uint32_t) resume_initial[ SOURCE_R7 ];
+      frame->registers[ 8 ] = (uint32_t) resume_initial[ SOURCE_R8 ];
+      frame->registers[ 9 ] = (uint32_t) resume_initial[ SOURCE_R9 ];
+      frame->registers[ 10 ] = (uint32_t) resume_initial[ SOURCE_R10 ];
+      frame->registers[ 11 ] = (uint32_t) resume_initial[ SOURCE_R11 ];
+      frame->registers[ 12 ] = (uint32_t) resume_initial[ SOURCE_R12 ];
+      frame->registers[ 14 ] = (uint32_t) resume_initial[ SOURCE_R14 ];
+      frame->registers[ 15 ] = (uint32_t) resume_initial[ SOURCE_R15 ];
+      frame->registers[ 16 ] = (uint32_t) resume_initial[ SOURCE_R16 ];
+      frame->registers[ 17 ] = (uint32_t) resume_initial[ SOURCE_R17 ];
+      frame->registers[ 18 ] = (uint32_t) resume_initial[ SOURCE_R18 ];
+      frame->registers[ 19 ] = (uint32_t) resume_initial[ SOURCE_R19 ];
+      frame->registers[ 20 ] = (uint32_t) resume_initial[ SOURCE_R20 ];
+      frame->registers[ 21 ] = (uint32_t) resume_initial[ SOURCE_R21 ];
+      frame->registers[ 22 ] = (uint32_t) resume_initial[ SOURCE_R22 ];
+      frame->registers[ 23 ] = (uint32_t) resume_initial[ SOURCE_R23 ];
+      frame->registers[ 24 ] = (uint32_t) resume_initial[ SOURCE_R24 ];
+      frame->registers[ 25 ] = (uint32_t) resume_initial[ SOURCE_R25 ];
+      frame->registers[ 26 ] = (uint32_t) resume_initial[ SOURCE_R26 ];
+      frame->registers[ 27 ] = (uint32_t) resume_initial[ SOURCE_R27 ];
+      frame->registers[ 28 ] = (uint32_t) resume_initial[ SOURCE_R28 ];
+      frame->registers[ 29 ] = (uint32_t) resume_initial[ SOURCE_R29 ];
+      frame->registers[ 30 ] = (uint32_t) resume_initial[ SOURCE_R30 ];
+      frame->registers[ 31 ] = (uint32_t) resume_initial[ SOURCE_R31 ];
+      frame->EXC_CR = (uint32_t) resume_initial[ SOURCE_CR ];
+      frame->EXC_XER = (uint32_t) resume_initial[ SOURCE_XER ];
+      frame->EXC_CTR = (uint32_t) resume_initial[ SOURCE_CTR ];
+      frame->EXC_LR = (uint32_t) resume_initial[ SOURCE_LR ];
+      frame->EXC_SRR0 = (uintptr_t) resume_second_trap_label;
+    } else {
+      ++resume_trap;
+      resume_second_frame = frame;
+      resume_frame = *frame;
+      SetFatalHandler( NULL, NULL );
+      frame->EXC_SRR0 = (uintptr_t) resume_done_label;
+    }
+
+    _CPU_Exception_resume( frame );
+  }
+
+  static void ResumeRunOnce( void )
+  {
+    uintptr_t sp_before;
+    uintptr_t sp_after;
+
+    resume_trap = 0;
+    resume_first_frame = NULL;
+    resume_second_frame = NULL;
+    memset( &resume_frame, 0, sizeof( resume_frame ) );
+    SetFatalHandler( ResumeFatal, NULL );
+    __asm__ volatile( "mr %0, 1" : "=r"( sp_before ) );
+
+    /*
+     * The block holds both traps, so the compiler keeps no value of its own in a
+     * register which the first trap changes.
+     */
+    __asm__ volatile(
+      "trap\n"
+      ".globl resume_second_trap_label\n"
+      "resume_second_trap_label:\n"
+      "trap\n"
+      ".globl resume_done_label\n"
+      "resume_done_label:\n"
+      :
+      :
+      : "memory", "cr0", "cr1", "cr2", "cr3", "cr4", "cr5", "cr6", "cr7",
+        "r0", "r3", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12",
+        "r14", "r15", "r16", "r17", "r18", "r19", "r20", "r21", "r22", "r23",
+        "r24", "r25", "r26", "r27", "r28", "r29", "r30", "r31", "lr", "ctr",
+        "xer"
+    );
+    __asm__ volatile( "mr %0, 1" : "=r"( sp_after ) );
+    resume_sp_delta = sp_after - sp_before;
+  }
+
+  static void ResumeRun( RegisterCheck *self, void *arg )
+  {
+    (void) arg;
+    ResumeRunOnce();
+    RegisterCheckRecord(
+      self,
+      SLOT_R0,
+      (uint32_t) resume_frame.registers[ 0 ],
+      resume_patterns[ SOURCE_R0 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R3,
+      (uint32_t) resume_frame.registers[ 3 ],
+      resume_patterns[ SOURCE_R3 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R4,
+      (uint32_t) resume_frame.registers[ 4 ],
+      resume_patterns[ SOURCE_R4 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R5,
+      (uint32_t) resume_frame.registers[ 5 ],
+      resume_patterns[ SOURCE_R5 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R6,
+      (uint32_t) resume_frame.registers[ 6 ],
+      resume_patterns[ SOURCE_R6 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R7,
+      (uint32_t) resume_frame.registers[ 7 ],
+      resume_patterns[ SOURCE_R7 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R8,
+      (uint32_t) resume_frame.registers[ 8 ],
+      resume_patterns[ SOURCE_R8 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R9,
+      (uint32_t) resume_frame.registers[ 9 ],
+      resume_patterns[ SOURCE_R9 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R10,
+      (uint32_t) resume_frame.registers[ 10 ],
+      resume_patterns[ SOURCE_R10 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R11,
+      (uint32_t) resume_frame.registers[ 11 ],
+      resume_patterns[ SOURCE_R11 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R12,
+      (uint32_t) resume_frame.registers[ 12 ],
+      resume_patterns[ SOURCE_R12 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R14,
+      (uint32_t) resume_frame.registers[ 14 ],
+      resume_patterns[ SOURCE_R14 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R15,
+      (uint32_t) resume_frame.registers[ 15 ],
+      resume_patterns[ SOURCE_R15 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R16,
+      (uint32_t) resume_frame.registers[ 16 ],
+      resume_patterns[ SOURCE_R16 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R17,
+      (uint32_t) resume_frame.registers[ 17 ],
+      resume_patterns[ SOURCE_R17 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R18,
+      (uint32_t) resume_frame.registers[ 18 ],
+      resume_patterns[ SOURCE_R18 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R19,
+      (uint32_t) resume_frame.registers[ 19 ],
+      resume_patterns[ SOURCE_R19 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R20,
+      (uint32_t) resume_frame.registers[ 20 ],
+      resume_patterns[ SOURCE_R20 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R21,
+      (uint32_t) resume_frame.registers[ 21 ],
+      resume_patterns[ SOURCE_R21 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R22,
+      (uint32_t) resume_frame.registers[ 22 ],
+      resume_patterns[ SOURCE_R22 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R23,
+      (uint32_t) resume_frame.registers[ 23 ],
+      resume_patterns[ SOURCE_R23 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R24,
+      (uint32_t) resume_frame.registers[ 24 ],
+      resume_patterns[ SOURCE_R24 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R25,
+      (uint32_t) resume_frame.registers[ 25 ],
+      resume_patterns[ SOURCE_R25 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R26,
+      (uint32_t) resume_frame.registers[ 26 ],
+      resume_patterns[ SOURCE_R26 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R27,
+      (uint32_t) resume_frame.registers[ 27 ],
+      resume_patterns[ SOURCE_R27 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R28,
+      (uint32_t) resume_frame.registers[ 28 ],
+      resume_patterns[ SOURCE_R28 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R29,
+      (uint32_t) resume_frame.registers[ 29 ],
+      resume_patterns[ SOURCE_R29 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R30,
+      (uint32_t) resume_frame.registers[ 30 ],
+      resume_patterns[ SOURCE_R30 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R31,
+      (uint32_t) resume_frame.registers[ 31 ],
+      resume_patterns[ SOURCE_R31 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_CR,
+      resume_frame.EXC_CR,
+      resume_patterns[ SOURCE_CR ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_XER,
+      resume_frame.EXC_XER & UINT32_C( 0xe000007f ),
+      resume_patterns[ SOURCE_XER ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_CTR,
+      resume_frame.EXC_CTR,
+      resume_patterns[ SOURCE_CTR ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_LR,
+      resume_frame.EXC_LR,
+      resume_patterns[ SOURCE_LR ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_FRAME,
+      resume_trap == 2 && resume_second_frame == resume_first_frame,
+      1
+    );
+    RegisterCheckRecord( self, SLOT_RELEASE, resume_sp_delta == 0, 1 );
+  }
+
+  static RegisterCheck resume_check = {
+    .sources = resume_sources,
+    .source_count = SOURCE_MAX,
+    .slots = resume_slots,
+    .slot_count = SOURCE_MAX,
+    .initial = resume_initial,
+    .run = ResumeRun
+  };
+
+  static void CheckSlot( Slot slot )
+  {
+    RegisterCheckVerify( &resume_check, slot );
+  }
+test-target: testsuites/validation/bsps/tc-powerpc-resume.c
+test-teardown: null
+type: test-case
