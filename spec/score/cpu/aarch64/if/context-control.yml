@@ -1,0 +1,250 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This structure represents the thread context of the AArch64 CPU port.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+- default:
+    brief: |
+      This member contains the call-saved register X19.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_x19
+  variants: []
+- default:
+    brief: |
+      This member contains the call-saved register X20.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_x20
+  variants: []
+- default:
+    brief: |
+      This member contains the call-saved register X21.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_x21
+  variants: []
+- default:
+    brief: |
+      This member contains the call-saved register X22.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_x22
+  variants: []
+- default:
+    brief: |
+      This member contains the call-saved register X23.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_x23
+  variants: []
+- default:
+    brief: |
+      This member contains the call-saved register X24.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_x24
+  variants: []
+- default:
+    brief: |
+      This member contains the call-saved register X25.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_x25
+  variants: []
+- default:
+    brief: |
+      This member contains the call-saved register X26.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_x26
+  variants: []
+- default:
+    brief: |
+      This member contains the call-saved register X27.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_x27
+  variants: []
+- default:
+    brief: |
+      This member contains the call-saved register X28.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_x28
+  variants: []
+- default:
+    brief: |
+      This member contains the frame pointer X29.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_fp
+  variants: []
+- default:
+    brief: |
+      This member contains the link register X30.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_lr
+  variants: []
+- default:
+    brief: |
+      This member contains the stack pointer.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_sp
+  variants: []
+- default:
+    brief: |
+      This member contains the thread dispatch disable state of the interrupt
+      processing.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: isr_dispatch_disable
+  variants: []
+- default:
+    brief: |
+      This member contains the value of TPIDR_EL0 of the thread.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: thread_id
+  variants: []
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the bottom 64 bits of the call-saved register V8.
+      definition: ${/c/if/uint64_t:/name} ${.:name}
+      description: null
+      kind: member
+      name: register_d8
+    enabled-by: defined(AARCH64_MULTILIB_VFP)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the bottom 64 bits of the call-saved register V9.
+      definition: ${/c/if/uint64_t:/name} ${.:name}
+      description: null
+      kind: member
+      name: register_d9
+    enabled-by: defined(AARCH64_MULTILIB_VFP)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the bottom 64 bits of the call-saved register V10.
+      definition: ${/c/if/uint64_t:/name} ${.:name}
+      description: null
+      kind: member
+      name: register_d10
+    enabled-by: defined(AARCH64_MULTILIB_VFP)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the bottom 64 bits of the call-saved register V11.
+      definition: ${/c/if/uint64_t:/name} ${.:name}
+      description: null
+      kind: member
+      name: register_d11
+    enabled-by: defined(AARCH64_MULTILIB_VFP)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the bottom 64 bits of the call-saved register V12.
+      definition: ${/c/if/uint64_t:/name} ${.:name}
+      description: null
+      kind: member
+      name: register_d12
+    enabled-by: defined(AARCH64_MULTILIB_VFP)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the bottom 64 bits of the call-saved register V13.
+      definition: ${/c/if/uint64_t:/name} ${.:name}
+      description: null
+      kind: member
+      name: register_d13
+    enabled-by: defined(AARCH64_MULTILIB_VFP)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the bottom 64 bits of the call-saved register V14.
+      definition: ${/c/if/uint64_t:/name} ${.:name}
+      description: null
+      kind: member
+      name: register_d14
+    enabled-by: defined(AARCH64_MULTILIB_VFP)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains the bottom 64 bits of the call-saved register V15.
+      definition: ${/c/if/uint64_t:/name} ${.:name}
+      description: null
+      kind: member
+      name: register_d15
+    enabled-by: defined(AARCH64_MULTILIB_VFP)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains FPCR of the thread.
+      definition: ${/c/if/uint64_t:/name} ${.:name}
+      description: null
+      kind: member
+      name: register_fpcr
+    enabled-by: defined(AARCH64_MULTILIB_VFP)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains FPSR of the thread.
+      definition: ${/c/if/uint64_t:/name} ${.:name}
+      description: null
+      kind: member
+      name: register_fpsr
+    enabled-by: defined(AARCH64_MULTILIB_VFP)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member is true, if a processor executes the context.
+      definition: volatile bool ${.:name}
+      description: null
+      kind: member
+      name: is_executing
+    enabled-by: defined(RTEMS_SMP)
+definition-kind: typedef-only
+description: null
+enabled-by: aarch64
+index-entries: []
+interface-type: struct
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+name: Context_Control
+notes: null
+type: interface

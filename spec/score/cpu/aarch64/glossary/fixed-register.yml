@@ -1,0 +1,16 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: aarch64
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+- location: 6.1.1
+  role: reference
+  uid: /ref/arch/aarch64/aapcs64
+term: AArch64 fixed register
+text: |
+  A register with a fixed role. These are sp as the stack pointer and x30 as the
+  link register.
+type: glossary

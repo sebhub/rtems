@@ -1,0 +1,2097 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: aarch64
+links: []
+test-actions:
+- action-brief: |
+    Trap, let the handler write a new value into every register of the frame,
+    resume, and trap again to capture what the resume restored. Run this once for
+    each value with the value inverted, then once unchanged.
+  action-code: |
+    memcpy(
+      resume_gpr_initial,
+      resume_gpr_patterns,
+      sizeof( resume_gpr_initial )
+    );
+    memcpy(
+      resume_simd_initial,
+      resume_simd_patterns,
+      sizeof( resume_simd_initial )
+    );
+    RegisterCheckRun( &resume_gpr_check );
+    RegisterCheckRun( &resume_simd_check );
+  checks:
+  - brief: |
+      Check that the resume restored the AArch64 register X0 from the frame.
+    code: |
+      CheckGpr( GPR_X0 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the AArch64 register X1 from the frame.
+    code: |
+      CheckGpr( GPR_X1 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the AArch64 register X2 from the frame.
+    code: |
+      CheckGpr( GPR_X2 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the AArch64 register X3 from the frame.
+    code: |
+      CheckGpr( GPR_X3 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the AArch64 register X4 from the frame.
+    code: |
+      CheckGpr( GPR_X4 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the AArch64 register X5 from the frame.
+    code: |
+      CheckGpr( GPR_X5 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the AArch64 register X6 from the frame.
+    code: |
+      CheckGpr( GPR_X6 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the AArch64 register X7 from the frame.
+    code: |
+      CheckGpr( GPR_X7 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the AArch64 register X8 from the frame.
+    code: |
+      CheckGpr( GPR_X8 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the AArch64 register X9 from the frame.
+    code: |
+      CheckGpr( GPR_X9 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the AArch64 register X10 from the frame.
+    code: |
+      CheckGpr( GPR_X10 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the AArch64 register X11 from the frame.
+    code: |
+      CheckGpr( GPR_X11 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the AArch64 register X12 from the frame.
+    code: |
+      CheckGpr( GPR_X12 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the AArch64 register X13 from the frame.
+    code: |
+      CheckGpr( GPR_X13 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the AArch64 register X14 from the frame.
+    code: |
+      CheckGpr( GPR_X14 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the AArch64 register X15 from the frame.
+    code: |
+      CheckGpr( GPR_X15 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the AArch64 register X16 from the frame.
+    code: |
+      CheckGpr( GPR_X16 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the AArch64 register X17 from the frame.
+    code: |
+      CheckGpr( GPR_X17 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the AArch64 register X18 from the frame.
+    code: |
+      CheckGpr( GPR_X18 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the AArch64 register X19 from the frame.
+    code: |
+      CheckGpr( GPR_X19 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the AArch64 register X20 from the frame.
+    code: |
+      CheckGpr( GPR_X20 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the AArch64 register X21 from the frame.
+    code: |
+      CheckGpr( GPR_X21 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the AArch64 register X22 from the frame.
+    code: |
+      CheckGpr( GPR_X22 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the AArch64 register X23 from the frame.
+    code: |
+      CheckGpr( GPR_X23 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the AArch64 register X24 from the frame.
+    code: |
+      CheckGpr( GPR_X24 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the AArch64 register X25 from the frame.
+    code: |
+      CheckGpr( GPR_X25 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the AArch64 register X26 from the frame.
+    code: |
+      CheckGpr( GPR_X26 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the AArch64 register X27 from the frame.
+    code: |
+      CheckGpr( GPR_X27 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the AArch64 register X28 from the frame.
+    code: |
+      CheckGpr( GPR_X28 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the AArch64 register X29 from the frame.
+    code: |
+      CheckGpr( GPR_X29 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the AArch64 register X30 from the frame.
+    code: |
+      CheckGpr( GPR_X30 );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the condition flags of NZCV from the frame.
+    code: |
+      CheckGpr( GPR_NZCV );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored FPSR from the frame.
+    code: |
+      CheckGpr( GPR_FPSR );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored FPCR from the frame.
+    code: |
+      CheckGpr( GPR_FPCR );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the second trap placed its frame at the address of the first frame.
+    code: |
+      CheckGpr( GPR_FRAME );
+    links:
+    - role: validation
+      uid: ../../req/resume-frame-address
+  - brief: |
+      Check that the stack pointer after the resume equals the one before the first
+      trap.
+    code: |
+      CheckGpr( GPR_RELEASE );
+    links:
+    - role: validation
+      uid: ../../req/resume-frame-release
+  - brief: |
+      Check that each run with a changed value flagged exactly the checks of that
+      value, and that each run recorded every check.
+    code: |
+      RegisterCheckReport( &resume_gpr_check );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 64 bits of the AArch64 SIMD and
+      floating-point register V0 from the frame.
+    code: |
+      CheckSimd( SIMD_V0_LO );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the top 64 bits of the AArch64 SIMD and
+      floating-point register V0 from the frame.
+    code: |
+      CheckSimd( SIMD_V0_HI );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 64 bits of the AArch64 SIMD and
+      floating-point register V1 from the frame.
+    code: |
+      CheckSimd( SIMD_V1_LO );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the top 64 bits of the AArch64 SIMD and
+      floating-point register V1 from the frame.
+    code: |
+      CheckSimd( SIMD_V1_HI );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 64 bits of the AArch64 SIMD and
+      floating-point register V2 from the frame.
+    code: |
+      CheckSimd( SIMD_V2_LO );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the top 64 bits of the AArch64 SIMD and
+      floating-point register V2 from the frame.
+    code: |
+      CheckSimd( SIMD_V2_HI );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 64 bits of the AArch64 SIMD and
+      floating-point register V3 from the frame.
+    code: |
+      CheckSimd( SIMD_V3_LO );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the top 64 bits of the AArch64 SIMD and
+      floating-point register V3 from the frame.
+    code: |
+      CheckSimd( SIMD_V3_HI );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 64 bits of the AArch64 SIMD and
+      floating-point register V4 from the frame.
+    code: |
+      CheckSimd( SIMD_V4_LO );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the top 64 bits of the AArch64 SIMD and
+      floating-point register V4 from the frame.
+    code: |
+      CheckSimd( SIMD_V4_HI );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 64 bits of the AArch64 SIMD and
+      floating-point register V5 from the frame.
+    code: |
+      CheckSimd( SIMD_V5_LO );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the top 64 bits of the AArch64 SIMD and
+      floating-point register V5 from the frame.
+    code: |
+      CheckSimd( SIMD_V5_HI );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 64 bits of the AArch64 SIMD and
+      floating-point register V6 from the frame.
+    code: |
+      CheckSimd( SIMD_V6_LO );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the top 64 bits of the AArch64 SIMD and
+      floating-point register V6 from the frame.
+    code: |
+      CheckSimd( SIMD_V6_HI );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 64 bits of the AArch64 SIMD and
+      floating-point register V7 from the frame.
+    code: |
+      CheckSimd( SIMD_V7_LO );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the top 64 bits of the AArch64 SIMD and
+      floating-point register V7 from the frame.
+    code: |
+      CheckSimd( SIMD_V7_HI );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 64 bits of the AArch64 SIMD and
+      floating-point register V8 from the frame.
+    code: |
+      CheckSimd( SIMD_V8_LO );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the top 64 bits of the AArch64 SIMD and
+      floating-point register V8 from the frame.
+    code: |
+      CheckSimd( SIMD_V8_HI );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 64 bits of the AArch64 SIMD and
+      floating-point register V9 from the frame.
+    code: |
+      CheckSimd( SIMD_V9_LO );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the top 64 bits of the AArch64 SIMD and
+      floating-point register V9 from the frame.
+    code: |
+      CheckSimd( SIMD_V9_HI );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 64 bits of the AArch64 SIMD and
+      floating-point register V10 from the frame.
+    code: |
+      CheckSimd( SIMD_V10_LO );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the top 64 bits of the AArch64 SIMD and
+      floating-point register V10 from the frame.
+    code: |
+      CheckSimd( SIMD_V10_HI );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 64 bits of the AArch64 SIMD and
+      floating-point register V11 from the frame.
+    code: |
+      CheckSimd( SIMD_V11_LO );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the top 64 bits of the AArch64 SIMD and
+      floating-point register V11 from the frame.
+    code: |
+      CheckSimd( SIMD_V11_HI );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 64 bits of the AArch64 SIMD and
+      floating-point register V12 from the frame.
+    code: |
+      CheckSimd( SIMD_V12_LO );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the top 64 bits of the AArch64 SIMD and
+      floating-point register V12 from the frame.
+    code: |
+      CheckSimd( SIMD_V12_HI );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 64 bits of the AArch64 SIMD and
+      floating-point register V13 from the frame.
+    code: |
+      CheckSimd( SIMD_V13_LO );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the top 64 bits of the AArch64 SIMD and
+      floating-point register V13 from the frame.
+    code: |
+      CheckSimd( SIMD_V13_HI );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 64 bits of the AArch64 SIMD and
+      floating-point register V14 from the frame.
+    code: |
+      CheckSimd( SIMD_V14_LO );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the top 64 bits of the AArch64 SIMD and
+      floating-point register V14 from the frame.
+    code: |
+      CheckSimd( SIMD_V14_HI );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 64 bits of the AArch64 SIMD and
+      floating-point register V15 from the frame.
+    code: |
+      CheckSimd( SIMD_V15_LO );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the top 64 bits of the AArch64 SIMD and
+      floating-point register V15 from the frame.
+    code: |
+      CheckSimd( SIMD_V15_HI );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 64 bits of the AArch64 SIMD and
+      floating-point register V16 from the frame.
+    code: |
+      CheckSimd( SIMD_V16_LO );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the top 64 bits of the AArch64 SIMD and
+      floating-point register V16 from the frame.
+    code: |
+      CheckSimd( SIMD_V16_HI );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 64 bits of the AArch64 SIMD and
+      floating-point register V17 from the frame.
+    code: |
+      CheckSimd( SIMD_V17_LO );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the top 64 bits of the AArch64 SIMD and
+      floating-point register V17 from the frame.
+    code: |
+      CheckSimd( SIMD_V17_HI );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 64 bits of the AArch64 SIMD and
+      floating-point register V18 from the frame.
+    code: |
+      CheckSimd( SIMD_V18_LO );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the top 64 bits of the AArch64 SIMD and
+      floating-point register V18 from the frame.
+    code: |
+      CheckSimd( SIMD_V18_HI );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 64 bits of the AArch64 SIMD and
+      floating-point register V19 from the frame.
+    code: |
+      CheckSimd( SIMD_V19_LO );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the top 64 bits of the AArch64 SIMD and
+      floating-point register V19 from the frame.
+    code: |
+      CheckSimd( SIMD_V19_HI );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 64 bits of the AArch64 SIMD and
+      floating-point register V20 from the frame.
+    code: |
+      CheckSimd( SIMD_V20_LO );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the top 64 bits of the AArch64 SIMD and
+      floating-point register V20 from the frame.
+    code: |
+      CheckSimd( SIMD_V20_HI );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 64 bits of the AArch64 SIMD and
+      floating-point register V21 from the frame.
+    code: |
+      CheckSimd( SIMD_V21_LO );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the top 64 bits of the AArch64 SIMD and
+      floating-point register V21 from the frame.
+    code: |
+      CheckSimd( SIMD_V21_HI );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 64 bits of the AArch64 SIMD and
+      floating-point register V22 from the frame.
+    code: |
+      CheckSimd( SIMD_V22_LO );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the top 64 bits of the AArch64 SIMD and
+      floating-point register V22 from the frame.
+    code: |
+      CheckSimd( SIMD_V22_HI );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 64 bits of the AArch64 SIMD and
+      floating-point register V23 from the frame.
+    code: |
+      CheckSimd( SIMD_V23_LO );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the top 64 bits of the AArch64 SIMD and
+      floating-point register V23 from the frame.
+    code: |
+      CheckSimd( SIMD_V23_HI );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 64 bits of the AArch64 SIMD and
+      floating-point register V24 from the frame.
+    code: |
+      CheckSimd( SIMD_V24_LO );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the top 64 bits of the AArch64 SIMD and
+      floating-point register V24 from the frame.
+    code: |
+      CheckSimd( SIMD_V24_HI );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 64 bits of the AArch64 SIMD and
+      floating-point register V25 from the frame.
+    code: |
+      CheckSimd( SIMD_V25_LO );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the top 64 bits of the AArch64 SIMD and
+      floating-point register V25 from the frame.
+    code: |
+      CheckSimd( SIMD_V25_HI );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 64 bits of the AArch64 SIMD and
+      floating-point register V26 from the frame.
+    code: |
+      CheckSimd( SIMD_V26_LO );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the top 64 bits of the AArch64 SIMD and
+      floating-point register V26 from the frame.
+    code: |
+      CheckSimd( SIMD_V26_HI );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 64 bits of the AArch64 SIMD and
+      floating-point register V27 from the frame.
+    code: |
+      CheckSimd( SIMD_V27_LO );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the top 64 bits of the AArch64 SIMD and
+      floating-point register V27 from the frame.
+    code: |
+      CheckSimd( SIMD_V27_HI );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 64 bits of the AArch64 SIMD and
+      floating-point register V28 from the frame.
+    code: |
+      CheckSimd( SIMD_V28_LO );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the top 64 bits of the AArch64 SIMD and
+      floating-point register V28 from the frame.
+    code: |
+      CheckSimd( SIMD_V28_HI );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 64 bits of the AArch64 SIMD and
+      floating-point register V29 from the frame.
+    code: |
+      CheckSimd( SIMD_V29_LO );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the top 64 bits of the AArch64 SIMD and
+      floating-point register V29 from the frame.
+    code: |
+      CheckSimd( SIMD_V29_HI );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 64 bits of the AArch64 SIMD and
+      floating-point register V30 from the frame.
+    code: |
+      CheckSimd( SIMD_V30_LO );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the top 64 bits of the AArch64 SIMD and
+      floating-point register V30 from the frame.
+    code: |
+      CheckSimd( SIMD_V30_HI );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the bottom 64 bits of the AArch64 SIMD and
+      floating-point register V31 from the frame.
+    code: |
+      CheckSimd( SIMD_V31_LO );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the top 64 bits of the AArch64 SIMD and
+      floating-point register V31 from the frame.
+    code: |
+      CheckSimd( SIMD_V31_HI );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that each run with a changed value flagged exactly the checks of that
+      value, and that each run recorded every check.
+    code: |
+      RegisterCheckReport( &resume_simd_check );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  links: []
+test-brief: |
+  Checks that the exception resume restores every register of the exception
+  frame.
+test-context: []
+test-context-support: null
+test-description: null
+test-header: null
+test-includes:
+- rtems/score/cpuimpl.h
+- string.h
+- stdint.h
+test-local-includes:
+- tx-register-check.h
+- tx-support.h
+test-setup: null
+test-stop: null
+test-support: |
+  extern const char resume_second_trap_label[];
+
+  extern const char resume_done_label[];
+
+  /* The condition flags are the bits 31 to 28 of NZCV. */
+  #define NZCV_MASK UINT64_C( 0xf0000000 )
+
+  /* These are QC and the cumulative exception flags of FPSR. */
+  #define FPSR_MASK UINT64_C( 0x0800009f )
+
+  /* These are AHP, DN, FZ and the rounding mode of FPCR. */
+  #define FPCR_MASK UINT64_C( 0x07c00000 )
+
+  typedef enum {
+    GPR_X0,
+    GPR_X1,
+    GPR_X2,
+    GPR_X3,
+    GPR_X4,
+    GPR_X5,
+    GPR_X6,
+    GPR_X7,
+    GPR_X8,
+    GPR_X9,
+    GPR_X10,
+    GPR_X11,
+    GPR_X12,
+    GPR_X13,
+    GPR_X14,
+    GPR_X15,
+    GPR_X16,
+    GPR_X17,
+    GPR_X18,
+    GPR_X19,
+    GPR_X20,
+    GPR_X21,
+    GPR_X22,
+    GPR_X23,
+    GPR_X24,
+    GPR_X25,
+    GPR_X26,
+    GPR_X27,
+    GPR_X28,
+    GPR_X29,
+    GPR_X30,
+    GPR_NZCV,
+    GPR_FPSR,
+    GPR_FPCR,
+    GPR_FRAME,
+    GPR_RELEASE,
+    GPR_MAX
+  } Gpr;
+
+  typedef enum {
+    SIMD_V0_LO,
+    SIMD_V0_HI,
+    SIMD_V1_LO,
+    SIMD_V1_HI,
+    SIMD_V2_LO,
+    SIMD_V2_HI,
+    SIMD_V3_LO,
+    SIMD_V3_HI,
+    SIMD_V4_LO,
+    SIMD_V4_HI,
+    SIMD_V5_LO,
+    SIMD_V5_HI,
+    SIMD_V6_LO,
+    SIMD_V6_HI,
+    SIMD_V7_LO,
+    SIMD_V7_HI,
+    SIMD_V8_LO,
+    SIMD_V8_HI,
+    SIMD_V9_LO,
+    SIMD_V9_HI,
+    SIMD_V10_LO,
+    SIMD_V10_HI,
+    SIMD_V11_LO,
+    SIMD_V11_HI,
+    SIMD_V12_LO,
+    SIMD_V12_HI,
+    SIMD_V13_LO,
+    SIMD_V13_HI,
+    SIMD_V14_LO,
+    SIMD_V14_HI,
+    SIMD_V15_LO,
+    SIMD_V15_HI,
+    SIMD_V16_LO,
+    SIMD_V16_HI,
+    SIMD_V17_LO,
+    SIMD_V17_HI,
+    SIMD_V18_LO,
+    SIMD_V18_HI,
+    SIMD_V19_LO,
+    SIMD_V19_HI,
+    SIMD_V20_LO,
+    SIMD_V20_HI,
+    SIMD_V21_LO,
+    SIMD_V21_HI,
+    SIMD_V22_LO,
+    SIMD_V22_HI,
+    SIMD_V23_LO,
+    SIMD_V23_HI,
+    SIMD_V24_LO,
+    SIMD_V24_HI,
+    SIMD_V25_LO,
+    SIMD_V25_HI,
+    SIMD_V26_LO,
+    SIMD_V26_HI,
+    SIMD_V27_LO,
+    SIMD_V27_HI,
+    SIMD_V28_LO,
+    SIMD_V28_HI,
+    SIMD_V29_LO,
+    SIMD_V29_HI,
+    SIMD_V30_LO,
+    SIMD_V30_HI,
+    SIMD_V31_LO,
+    SIMD_V31_HI,
+    SIMD_MAX
+  } Simd;
+
+  static const RegisterCheckSource resume_gpr_sources[ GPR_MAX ] = {
+    { "x0", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "x1", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "x2", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "x3", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "x4", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "x5", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "x6", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "x7", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "x8", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "x9", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "x10", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "x11", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "x12", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "x13", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "x14", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "x15", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "x16", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "x17", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "x18", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "x19", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "x20", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "x21", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "x22", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "x23", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "x24", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "x25", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "x26", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "x27", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "x28", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "x29", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "x30", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "nzcv", REGISTER_CHECK_INITIAL, NZCV_MASK },
+    { "fpsr", REGISTER_CHECK_INITIAL, FPSR_MASK },
+    { "fpcr", REGISTER_CHECK_INITIAL, FPCR_MASK },
+    { "frame", REGISTER_CHECK_EXPECTED, UINT64_MAX },
+    { "release", REGISTER_CHECK_EXPECTED, UINT64_MAX }
+  };
+
+  static const RegisterCheckSlot resume_gpr_slots[ GPR_MAX ] = {
+    { "x0", GPR_X0, UINT64_MAX },
+    { "x1", GPR_X1, UINT64_MAX },
+    { "x2", GPR_X2, UINT64_MAX },
+    { "x3", GPR_X3, UINT64_MAX },
+    { "x4", GPR_X4, UINT64_MAX },
+    { "x5", GPR_X5, UINT64_MAX },
+    { "x6", GPR_X6, UINT64_MAX },
+    { "x7", GPR_X7, UINT64_MAX },
+    { "x8", GPR_X8, UINT64_MAX },
+    { "x9", GPR_X9, UINT64_MAX },
+    { "x10", GPR_X10, UINT64_MAX },
+    { "x11", GPR_X11, UINT64_MAX },
+    { "x12", GPR_X12, UINT64_MAX },
+    { "x13", GPR_X13, UINT64_MAX },
+    { "x14", GPR_X14, UINT64_MAX },
+    { "x15", GPR_X15, UINT64_MAX },
+    { "x16", GPR_X16, UINT64_MAX },
+    { "x17", GPR_X17, UINT64_MAX },
+    { "x18", GPR_X18, UINT64_MAX },
+    { "x19", GPR_X19, UINT64_MAX },
+    { "x20", GPR_X20, UINT64_MAX },
+    { "x21", GPR_X21, UINT64_MAX },
+    { "x22", GPR_X22, UINT64_MAX },
+    { "x23", GPR_X23, UINT64_MAX },
+    { "x24", GPR_X24, UINT64_MAX },
+    { "x25", GPR_X25, UINT64_MAX },
+    { "x26", GPR_X26, UINT64_MAX },
+    { "x27", GPR_X27, UINT64_MAX },
+    { "x28", GPR_X28, UINT64_MAX },
+    { "x29", GPR_X29, UINT64_MAX },
+    { "x30", GPR_X30, UINT64_MAX },
+    { "nzcv", GPR_NZCV, NZCV_MASK },
+    { "fpsr", GPR_FPSR, FPSR_MASK },
+    { "fpcr", GPR_FPCR, FPCR_MASK },
+    { "frame", GPR_FRAME, UINT64_MAX },
+    { "release", GPR_RELEASE, UINT64_MAX }
+  };
+
+  static const RegisterCheckSource resume_simd_sources[ SIMD_MAX ] = {
+    { "v0 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v0 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v1 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v1 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v2 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v2 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v3 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v3 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v4 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v4 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v5 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v5 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v6 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v6 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v7 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v7 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v8 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v8 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v9 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v9 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v10 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v10 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v11 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v11 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v12 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v12 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v13 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v13 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v14 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v14 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v15 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v15 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v16 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v16 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v17 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v17 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v18 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v18 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v19 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v19 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v20 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v20 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v21 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v21 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v22 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v22 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v23 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v23 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v24 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v24 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v25 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v25 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v26 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v26 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v27 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v27 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v28 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v28 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v29 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v29 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v30 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v30 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v31 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v31 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  };
+
+  static const RegisterCheckSlot resume_simd_slots[ SIMD_MAX ] = {
+    { "v0 lo", SIMD_V0_LO, UINT64_MAX },
+    { "v0 hi", SIMD_V0_HI, UINT64_MAX },
+    { "v1 lo", SIMD_V1_LO, UINT64_MAX },
+    { "v1 hi", SIMD_V1_HI, UINT64_MAX },
+    { "v2 lo", SIMD_V2_LO, UINT64_MAX },
+    { "v2 hi", SIMD_V2_HI, UINT64_MAX },
+    { "v3 lo", SIMD_V3_LO, UINT64_MAX },
+    { "v3 hi", SIMD_V3_HI, UINT64_MAX },
+    { "v4 lo", SIMD_V4_LO, UINT64_MAX },
+    { "v4 hi", SIMD_V4_HI, UINT64_MAX },
+    { "v5 lo", SIMD_V5_LO, UINT64_MAX },
+    { "v5 hi", SIMD_V5_HI, UINT64_MAX },
+    { "v6 lo", SIMD_V6_LO, UINT64_MAX },
+    { "v6 hi", SIMD_V6_HI, UINT64_MAX },
+    { "v7 lo", SIMD_V7_LO, UINT64_MAX },
+    { "v7 hi", SIMD_V7_HI, UINT64_MAX },
+    { "v8 lo", SIMD_V8_LO, UINT64_MAX },
+    { "v8 hi", SIMD_V8_HI, UINT64_MAX },
+    { "v9 lo", SIMD_V9_LO, UINT64_MAX },
+    { "v9 hi", SIMD_V9_HI, UINT64_MAX },
+    { "v10 lo", SIMD_V10_LO, UINT64_MAX },
+    { "v10 hi", SIMD_V10_HI, UINT64_MAX },
+    { "v11 lo", SIMD_V11_LO, UINT64_MAX },
+    { "v11 hi", SIMD_V11_HI, UINT64_MAX },
+    { "v12 lo", SIMD_V12_LO, UINT64_MAX },
+    { "v12 hi", SIMD_V12_HI, UINT64_MAX },
+    { "v13 lo", SIMD_V13_LO, UINT64_MAX },
+    { "v13 hi", SIMD_V13_HI, UINT64_MAX },
+    { "v14 lo", SIMD_V14_LO, UINT64_MAX },
+    { "v14 hi", SIMD_V14_HI, UINT64_MAX },
+    { "v15 lo", SIMD_V15_LO, UINT64_MAX },
+    { "v15 hi", SIMD_V15_HI, UINT64_MAX },
+    { "v16 lo", SIMD_V16_LO, UINT64_MAX },
+    { "v16 hi", SIMD_V16_HI, UINT64_MAX },
+    { "v17 lo", SIMD_V17_LO, UINT64_MAX },
+    { "v17 hi", SIMD_V17_HI, UINT64_MAX },
+    { "v18 lo", SIMD_V18_LO, UINT64_MAX },
+    { "v18 hi", SIMD_V18_HI, UINT64_MAX },
+    { "v19 lo", SIMD_V19_LO, UINT64_MAX },
+    { "v19 hi", SIMD_V19_HI, UINT64_MAX },
+    { "v20 lo", SIMD_V20_LO, UINT64_MAX },
+    { "v20 hi", SIMD_V20_HI, UINT64_MAX },
+    { "v21 lo", SIMD_V21_LO, UINT64_MAX },
+    { "v21 hi", SIMD_V21_HI, UINT64_MAX },
+    { "v22 lo", SIMD_V22_LO, UINT64_MAX },
+    { "v22 hi", SIMD_V22_HI, UINT64_MAX },
+    { "v23 lo", SIMD_V23_LO, UINT64_MAX },
+    { "v23 hi", SIMD_V23_HI, UINT64_MAX },
+    { "v24 lo", SIMD_V24_LO, UINT64_MAX },
+    { "v24 hi", SIMD_V24_HI, UINT64_MAX },
+    { "v25 lo", SIMD_V25_LO, UINT64_MAX },
+    { "v25 hi", SIMD_V25_HI, UINT64_MAX },
+    { "v26 lo", SIMD_V26_LO, UINT64_MAX },
+    { "v26 hi", SIMD_V26_HI, UINT64_MAX },
+    { "v27 lo", SIMD_V27_LO, UINT64_MAX },
+    { "v27 hi", SIMD_V27_HI, UINT64_MAX },
+    { "v28 lo", SIMD_V28_LO, UINT64_MAX },
+    { "v28 hi", SIMD_V28_HI, UINT64_MAX },
+    { "v29 lo", SIMD_V29_LO, UINT64_MAX },
+    { "v29 hi", SIMD_V29_HI, UINT64_MAX },
+    { "v30 lo", SIMD_V30_LO, UINT64_MAX },
+    { "v30 hi", SIMD_V30_HI, UINT64_MAX },
+    { "v31 lo", SIMD_V31_LO, UINT64_MAX },
+    { "v31 hi", SIMD_V31_HI, UINT64_MAX },
+  };
+
+  static const uint64_t resume_gpr_patterns[ GPR_MAX ] = {
+    UINT64_C( 0x4142434445464748 ),
+    UINT64_C( 0x4243444546474849 ),
+    UINT64_C( 0x434445464748494a ),
+    UINT64_C( 0x4445464748494a4b ),
+    UINT64_C( 0x45464748494a4b4c ),
+    UINT64_C( 0x464748494a4b4c4d ),
+    UINT64_C( 0x4748494a4b4c4d4e ),
+    UINT64_C( 0x48494a4b4c4d4e4f ),
+    UINT64_C( 0x494a4b4c4d4e4f50 ),
+    UINT64_C( 0x4a4b4c4d4e4f5051 ),
+    UINT64_C( 0x4b4c4d4e4f505152 ),
+    UINT64_C( 0x4c4d4e4f50515253 ),
+    UINT64_C( 0x4d4e4f5051525354 ),
+    UINT64_C( 0x4e4f505152535455 ),
+    UINT64_C( 0x4f50515253545556 ),
+    UINT64_C( 0x5051525354555657 ),
+    UINT64_C( 0x5152535455565758 ),
+    UINT64_C( 0x5253545556575859 ),
+    UINT64_C( 0x535455565758595a ),
+    UINT64_C( 0x5455565758595a5b ),
+    UINT64_C( 0x55565758595a5b5c ),
+    UINT64_C( 0x565758595a5b5c5d ),
+    UINT64_C( 0x5758595a5b5c5d5e ),
+    UINT64_C( 0x58595a5b5c5d5e5f ),
+    UINT64_C( 0x595a5b5c5d5e5f60 ),
+    UINT64_C( 0x5a5b5c5d5e5f6061 ),
+    UINT64_C( 0x5b5c5d5e5f606162 ),
+    UINT64_C( 0x5c5d5e5f60616263 ),
+    UINT64_C( 0x5d5e5f6061626364 ),
+    UINT64_C( 0x5e5f606162636465 ),
+    UINT64_C( 0x5f60616263646566 ),
+    UINT64_C( 0xa0000000 ),
+    UINT64_C( 0x08000015 ),
+    UINT64_C( 0x01800000 ),
+    1,
+    1
+  };
+
+  static const uint64_t resume_simd_patterns[ SIMD_MAX ] = {
+    UINT64_C( 0x8182838485868788 ),
+    UINT64_C( 0x8283848586878889 ),
+    UINT64_C( 0x838485868788898a ),
+    UINT64_C( 0x8485868788898a8b ),
+    UINT64_C( 0x85868788898a8b8c ),
+    UINT64_C( 0x868788898a8b8c8d ),
+    UINT64_C( 0x8788898a8b8c8d8e ),
+    UINT64_C( 0x88898a8b8c8d8e8f ),
+    UINT64_C( 0x898a8b8c8d8e8f90 ),
+    UINT64_C( 0x8a8b8c8d8e8f9091 ),
+    UINT64_C( 0x8b8c8d8e8f909192 ),
+    UINT64_C( 0x8c8d8e8f90919293 ),
+    UINT64_C( 0x8d8e8f9091929394 ),
+    UINT64_C( 0x8e8f909192939495 ),
+    UINT64_C( 0x8f90919293949596 ),
+    UINT64_C( 0x9091929394959697 ),
+    UINT64_C( 0x9192939495969798 ),
+    UINT64_C( 0x9293949596979899 ),
+    UINT64_C( 0x939495969798999a ),
+    UINT64_C( 0x9495969798999a9b ),
+    UINT64_C( 0x95969798999a9b9c ),
+    UINT64_C( 0x969798999a9b9c9d ),
+    UINT64_C( 0x9798999a9b9c9d9e ),
+    UINT64_C( 0x98999a9b9c9d9e9f ),
+    UINT64_C( 0x999a9b9c9d9e9fa0 ),
+    UINT64_C( 0x9a9b9c9d9e9fa0a1 ),
+    UINT64_C( 0x9b9c9d9e9fa0a1a2 ),
+    UINT64_C( 0x9c9d9e9fa0a1a2a3 ),
+    UINT64_C( 0x9d9e9fa0a1a2a3a4 ),
+    UINT64_C( 0x9e9fa0a1a2a3a4a5 ),
+    UINT64_C( 0x9fa0a1a2a3a4a5a6 ),
+    UINT64_C( 0xa0a1a2a3a4a5a6a7 ),
+    UINT64_C( 0xa1a2a3a4a5a6a7a8 ),
+    UINT64_C( 0xa2a3a4a5a6a7a8a9 ),
+    UINT64_C( 0xa3a4a5a6a7a8a9aa ),
+    UINT64_C( 0xa4a5a6a7a8a9aaab ),
+    UINT64_C( 0xa5a6a7a8a9aaabac ),
+    UINT64_C( 0xa6a7a8a9aaabacad ),
+    UINT64_C( 0xa7a8a9aaabacadae ),
+    UINT64_C( 0xa8a9aaabacadaeaf ),
+    UINT64_C( 0xa9aaabacadaeafb0 ),
+    UINT64_C( 0xaaabacadaeafb0b1 ),
+    UINT64_C( 0xabacadaeafb0b1b2 ),
+    UINT64_C( 0xacadaeafb0b1b2b3 ),
+    UINT64_C( 0xadaeafb0b1b2b3b4 ),
+    UINT64_C( 0xaeafb0b1b2b3b4b5 ),
+    UINT64_C( 0xafb0b1b2b3b4b5b6 ),
+    UINT64_C( 0xb0b1b2b3b4b5b6b7 ),
+    UINT64_C( 0xb1b2b3b4b5b6b7b8 ),
+    UINT64_C( 0xb2b3b4b5b6b7b8b9 ),
+    UINT64_C( 0xb3b4b5b6b7b8b9ba ),
+    UINT64_C( 0xb4b5b6b7b8b9babb ),
+    UINT64_C( 0xb5b6b7b8b9babbbc ),
+    UINT64_C( 0xb6b7b8b9babbbcbd ),
+    UINT64_C( 0xb7b8b9babbbcbdbe ),
+    UINT64_C( 0xb8b9babbbcbdbebf ),
+    UINT64_C( 0xb9babbbcbdbebfc0 ),
+    UINT64_C( 0xbabbbcbdbebfc0c1 ),
+    UINT64_C( 0xbbbcbdbebfc0c1c2 ),
+    UINT64_C( 0xbcbdbebfc0c1c2c3 ),
+    UINT64_C( 0xbdbebfc0c1c2c3c4 ),
+    UINT64_C( 0xbebfc0c1c2c3c4c5 ),
+    UINT64_C( 0xbfc0c1c2c3c4c5c6 ),
+    UINT64_C( 0xc0c1c2c3c4c5c6c7 ),
+  };
+
+  static uint64_t resume_gpr_initial[ GPR_MAX ];
+
+  static uint64_t resume_simd_initial[ SIMD_MAX ];
+
+  static CPU_Exception_frame resume_frame;
+
+  static CPU_Exception_frame *resume_first_frame;
+
+  static CPU_Exception_frame *resume_second_frame;
+
+  static uint64_t resume_fp;
+
+  static uintptr_t resume_sp;
+
+  static uint64_t resume_fpcr;
+
+  static uintptr_t resume_sp_delta;
+
+  static int resume_trap;
+
+  static void ResumeFatal(
+    rtems_fatal_source source,
+    rtems_fatal_code   code,
+    void              *arg
+  )
+  {
+    CPU_Exception_frame *frame;
+
+    (void) arg;
+
+    if ( source != RTEMS_FATAL_SOURCE_EXCEPTION ) {
+      return;
+    }
+
+    frame = (CPU_Exception_frame *) code;
+
+    if ( resume_trap == 0 ) {
+      const uint64_t *gpr;
+      const uint64_t *simd;
+
+      ++resume_trap;
+      resume_first_frame = frame;
+      resume_fp = frame->register_fp;
+      resume_sp = frame->register_sp;
+      resume_fpcr = frame->register_fpcr;
+      gpr = resume_gpr_initial;
+      simd = resume_simd_initial;
+      frame->registers[ 0 ] = gpr[ GPR_X0 ];
+      frame->registers[ 1 ] = gpr[ GPR_X1 ];
+      frame->registers[ 2 ] = gpr[ GPR_X2 ];
+      frame->registers[ 3 ] = gpr[ GPR_X3 ];
+      frame->registers[ 4 ] = gpr[ GPR_X4 ];
+      frame->registers[ 5 ] = gpr[ GPR_X5 ];
+      frame->registers[ 6 ] = gpr[ GPR_X6 ];
+      frame->registers[ 7 ] = gpr[ GPR_X7 ];
+      frame->registers[ 8 ] = gpr[ GPR_X8 ];
+      frame->registers[ 9 ] = gpr[ GPR_X9 ];
+      frame->registers[ 10 ] = gpr[ GPR_X10 ];
+      frame->registers[ 11 ] = gpr[ GPR_X11 ];
+      frame->registers[ 12 ] = gpr[ GPR_X12 ];
+      frame->registers[ 13 ] = gpr[ GPR_X13 ];
+      frame->registers[ 14 ] = gpr[ GPR_X14 ];
+      frame->registers[ 15 ] = gpr[ GPR_X15 ];
+      frame->registers[ 16 ] = gpr[ GPR_X16 ];
+      frame->registers[ 17 ] = gpr[ GPR_X17 ];
+      frame->registers[ 18 ] = gpr[ GPR_X18 ];
+      frame->registers[ 19 ] = gpr[ GPR_X19 ];
+      frame->registers[ 20 ] = gpr[ GPR_X20 ];
+      frame->registers[ 21 ] = gpr[ GPR_X21 ];
+      frame->registers[ 22 ] = gpr[ GPR_X22 ];
+      frame->registers[ 23 ] = gpr[ GPR_X23 ];
+      frame->registers[ 24 ] = gpr[ GPR_X24 ];
+      frame->registers[ 25 ] = gpr[ GPR_X25 ];
+      frame->registers[ 26 ] = gpr[ GPR_X26 ];
+      frame->registers[ 27 ] = gpr[ GPR_X27 ];
+      frame->registers[ 28 ] = gpr[ GPR_X28 ];
+      frame->registers[ 29 ] = gpr[ GPR_X29 ];
+      frame->registers[ 30 ] = gpr[ GPR_X30 ];
+      frame->vector_registers[ 0 ] = ( (uint128_t) simd[ SIMD_V0_HI ] << 64 ) |
+        simd[ SIMD_V0_LO ];
+      frame->vector_registers[ 1 ] = ( (uint128_t) simd[ SIMD_V1_HI ] << 64 ) |
+        simd[ SIMD_V1_LO ];
+      frame->vector_registers[ 2 ] = ( (uint128_t) simd[ SIMD_V2_HI ] << 64 ) |
+        simd[ SIMD_V2_LO ];
+      frame->vector_registers[ 3 ] = ( (uint128_t) simd[ SIMD_V3_HI ] << 64 ) |
+        simd[ SIMD_V3_LO ];
+      frame->vector_registers[ 4 ] = ( (uint128_t) simd[ SIMD_V4_HI ] << 64 ) |
+        simd[ SIMD_V4_LO ];
+      frame->vector_registers[ 5 ] = ( (uint128_t) simd[ SIMD_V5_HI ] << 64 ) |
+        simd[ SIMD_V5_LO ];
+      frame->vector_registers[ 6 ] = ( (uint128_t) simd[ SIMD_V6_HI ] << 64 ) |
+        simd[ SIMD_V6_LO ];
+      frame->vector_registers[ 7 ] = ( (uint128_t) simd[ SIMD_V7_HI ] << 64 ) |
+        simd[ SIMD_V7_LO ];
+      frame->vector_registers[ 8 ] = ( (uint128_t) simd[ SIMD_V8_HI ] << 64 ) |
+        simd[ SIMD_V8_LO ];
+      frame->vector_registers[ 9 ] = ( (uint128_t) simd[ SIMD_V9_HI ] << 64 ) |
+        simd[ SIMD_V9_LO ];
+      frame->vector_registers[ 10 ] = ( (uint128_t) simd[ SIMD_V10_HI ] << 64 ) |
+        simd[ SIMD_V10_LO ];
+      frame->vector_registers[ 11 ] = ( (uint128_t) simd[ SIMD_V11_HI ] << 64 ) |
+        simd[ SIMD_V11_LO ];
+      frame->vector_registers[ 12 ] = ( (uint128_t) simd[ SIMD_V12_HI ] << 64 ) |
+        simd[ SIMD_V12_LO ];
+      frame->vector_registers[ 13 ] = ( (uint128_t) simd[ SIMD_V13_HI ] << 64 ) |
+        simd[ SIMD_V13_LO ];
+      frame->vector_registers[ 14 ] = ( (uint128_t) simd[ SIMD_V14_HI ] << 64 ) |
+        simd[ SIMD_V14_LO ];
+      frame->vector_registers[ 15 ] = ( (uint128_t) simd[ SIMD_V15_HI ] << 64 ) |
+        simd[ SIMD_V15_LO ];
+      frame->vector_registers[ 16 ] = ( (uint128_t) simd[ SIMD_V16_HI ] << 64 ) |
+        simd[ SIMD_V16_LO ];
+      frame->vector_registers[ 17 ] = ( (uint128_t) simd[ SIMD_V17_HI ] << 64 ) |
+        simd[ SIMD_V17_LO ];
+      frame->vector_registers[ 18 ] = ( (uint128_t) simd[ SIMD_V18_HI ] << 64 ) |
+        simd[ SIMD_V18_LO ];
+      frame->vector_registers[ 19 ] = ( (uint128_t) simd[ SIMD_V19_HI ] << 64 ) |
+        simd[ SIMD_V19_LO ];
+      frame->vector_registers[ 20 ] = ( (uint128_t) simd[ SIMD_V20_HI ] << 64 ) |
+        simd[ SIMD_V20_LO ];
+      frame->vector_registers[ 21 ] = ( (uint128_t) simd[ SIMD_V21_HI ] << 64 ) |
+        simd[ SIMD_V21_LO ];
+      frame->vector_registers[ 22 ] = ( (uint128_t) simd[ SIMD_V22_HI ] << 64 ) |
+        simd[ SIMD_V22_LO ];
+      frame->vector_registers[ 23 ] = ( (uint128_t) simd[ SIMD_V23_HI ] << 64 ) |
+        simd[ SIMD_V23_LO ];
+      frame->vector_registers[ 24 ] = ( (uint128_t) simd[ SIMD_V24_HI ] << 64 ) |
+        simd[ SIMD_V24_LO ];
+      frame->vector_registers[ 25 ] = ( (uint128_t) simd[ SIMD_V25_HI ] << 64 ) |
+        simd[ SIMD_V25_LO ];
+      frame->vector_registers[ 26 ] = ( (uint128_t) simd[ SIMD_V26_HI ] << 64 ) |
+        simd[ SIMD_V26_LO ];
+      frame->vector_registers[ 27 ] = ( (uint128_t) simd[ SIMD_V27_HI ] << 64 ) |
+        simd[ SIMD_V27_LO ];
+      frame->vector_registers[ 28 ] = ( (uint128_t) simd[ SIMD_V28_HI ] << 64 ) |
+        simd[ SIMD_V28_LO ];
+      frame->vector_registers[ 29 ] = ( (uint128_t) simd[ SIMD_V29_HI ] << 64 ) |
+        simd[ SIMD_V29_LO ];
+      frame->vector_registers[ 30 ] = ( (uint128_t) simd[ SIMD_V30_HI ] << 64 ) |
+        simd[ SIMD_V30_LO ];
+      frame->vector_registers[ 31 ] = ( (uint128_t) simd[ SIMD_V31_HI ] << 64 ) |
+        simd[ SIMD_V31_LO ];
+      frame->register_cpsr = ( frame->register_cpsr & ~NZCV_MASK ) |
+        gpr[ GPR_NZCV ];
+      frame->register_fpsr = gpr[ GPR_FPSR ];
+      frame->register_fpcr = gpr[ GPR_FPCR ];
+      frame->register_pc = (void *) resume_second_trap_label;
+    } else {
+      ++resume_trap;
+      resume_second_frame = frame;
+      resume_frame = *frame;
+      SetFatalHandler( NULL, NULL );
+      frame->register_fp = resume_fp;
+      frame->register_sp = resume_sp;
+      frame->register_fpcr = resume_fpcr;
+      frame->register_pc = (void *) resume_done_label;
+    }
+
+    _CPU_Exception_resume( frame );
+  }
+
+  static void ResumeRunOnce( void )
+  {
+    uintptr_t sp_before;
+    uintptr_t sp_after;
+
+    resume_trap = 0;
+    resume_first_frame = NULL;
+    resume_second_frame = NULL;
+    memset( &resume_frame, 0, sizeof( resume_frame ) );
+    SetFatalHandler( ResumeFatal, NULL );
+
+    /*
+     * The block holds both traps, so the compiler keeps no value of its own in a
+     * register which the first trap changes.
+     */
+    __asm__ volatile( "mov %0, sp" : "=r"( sp_before ) );
+    __asm__ volatile(
+      "brk #0\n"
+      ".globl resume_second_trap_label\n"
+      "resume_second_trap_label:\n"
+      "brk #0\n"
+      ".globl resume_done_label\n"
+      "resume_done_label:\n"
+      :
+      :
+      : "memory", "cc", "x0", "x1", "x2", "x3", "x4", "x5", "x6", "x7", "x8",
+        "x9", "x10", "x11", "x12", "x13", "x14", "x15", "x16", "x17", "x18",
+        "x19", "x20", "x21", "x22", "x23", "x24", "x25", "x26", "x27", "x28",
+        "x30", "v0", "v1", "v2", "v3", "v4", "v5", "v6", "v7", "v8", "v9", "v10",
+        "v11", "v12", "v13", "v14", "v15", "v16", "v17", "v18", "v19", "v20",
+        "v21", "v22", "v23", "v24", "v25", "v26", "v27", "v28", "v29", "v30",
+        "v31"
+    );
+    __asm__ volatile( "mov %0, sp" : "=r"( sp_after ) );
+    resume_sp_delta = sp_after - sp_before;
+  }
+
+  static void ResumeRunGpr( RegisterCheck *self, void *arg )
+  {
+    (void) arg;
+    ResumeRunOnce();
+    RegisterCheckRecord(
+      self,
+      GPR_X0,
+      resume_frame.registers[ 0 ],
+      resume_gpr_patterns[ GPR_X0 ]
+    );
+    RegisterCheckRecord(
+      self,
+      GPR_X1,
+      resume_frame.registers[ 1 ],
+      resume_gpr_patterns[ GPR_X1 ]
+    );
+    RegisterCheckRecord(
+      self,
+      GPR_X2,
+      resume_frame.registers[ 2 ],
+      resume_gpr_patterns[ GPR_X2 ]
+    );
+    RegisterCheckRecord(
+      self,
+      GPR_X3,
+      resume_frame.registers[ 3 ],
+      resume_gpr_patterns[ GPR_X3 ]
+    );
+    RegisterCheckRecord(
+      self,
+      GPR_X4,
+      resume_frame.registers[ 4 ],
+      resume_gpr_patterns[ GPR_X4 ]
+    );
+    RegisterCheckRecord(
+      self,
+      GPR_X5,
+      resume_frame.registers[ 5 ],
+      resume_gpr_patterns[ GPR_X5 ]
+    );
+    RegisterCheckRecord(
+      self,
+      GPR_X6,
+      resume_frame.registers[ 6 ],
+      resume_gpr_patterns[ GPR_X6 ]
+    );
+    RegisterCheckRecord(
+      self,
+      GPR_X7,
+      resume_frame.registers[ 7 ],
+      resume_gpr_patterns[ GPR_X7 ]
+    );
+    RegisterCheckRecord(
+      self,
+      GPR_X8,
+      resume_frame.registers[ 8 ],
+      resume_gpr_patterns[ GPR_X8 ]
+    );
+    RegisterCheckRecord(
+      self,
+      GPR_X9,
+      resume_frame.registers[ 9 ],
+      resume_gpr_patterns[ GPR_X9 ]
+    );
+    RegisterCheckRecord(
+      self,
+      GPR_X10,
+      resume_frame.registers[ 10 ],
+      resume_gpr_patterns[ GPR_X10 ]
+    );
+    RegisterCheckRecord(
+      self,
+      GPR_X11,
+      resume_frame.registers[ 11 ],
+      resume_gpr_patterns[ GPR_X11 ]
+    );
+    RegisterCheckRecord(
+      self,
+      GPR_X12,
+      resume_frame.registers[ 12 ],
+      resume_gpr_patterns[ GPR_X12 ]
+    );
+    RegisterCheckRecord(
+      self,
+      GPR_X13,
+      resume_frame.registers[ 13 ],
+      resume_gpr_patterns[ GPR_X13 ]
+    );
+    RegisterCheckRecord(
+      self,
+      GPR_X14,
+      resume_frame.registers[ 14 ],
+      resume_gpr_patterns[ GPR_X14 ]
+    );
+    RegisterCheckRecord(
+      self,
+      GPR_X15,
+      resume_frame.registers[ 15 ],
+      resume_gpr_patterns[ GPR_X15 ]
+    );
+    RegisterCheckRecord(
+      self,
+      GPR_X16,
+      resume_frame.registers[ 16 ],
+      resume_gpr_patterns[ GPR_X16 ]
+    );
+    RegisterCheckRecord(
+      self,
+      GPR_X17,
+      resume_frame.registers[ 17 ],
+      resume_gpr_patterns[ GPR_X17 ]
+    );
+    RegisterCheckRecord(
+      self,
+      GPR_X18,
+      resume_frame.registers[ 18 ],
+      resume_gpr_patterns[ GPR_X18 ]
+    );
+    RegisterCheckRecord(
+      self,
+      GPR_X19,
+      resume_frame.registers[ 19 ],
+      resume_gpr_patterns[ GPR_X19 ]
+    );
+    RegisterCheckRecord(
+      self,
+      GPR_X20,
+      resume_frame.registers[ 20 ],
+      resume_gpr_patterns[ GPR_X20 ]
+    );
+    RegisterCheckRecord(
+      self,
+      GPR_X21,
+      resume_frame.registers[ 21 ],
+      resume_gpr_patterns[ GPR_X21 ]
+    );
+    RegisterCheckRecord(
+      self,
+      GPR_X22,
+      resume_frame.registers[ 22 ],
+      resume_gpr_patterns[ GPR_X22 ]
+    );
+    RegisterCheckRecord(
+      self,
+      GPR_X23,
+      resume_frame.registers[ 23 ],
+      resume_gpr_patterns[ GPR_X23 ]
+    );
+    RegisterCheckRecord(
+      self,
+      GPR_X24,
+      resume_frame.registers[ 24 ],
+      resume_gpr_patterns[ GPR_X24 ]
+    );
+    RegisterCheckRecord(
+      self,
+      GPR_X25,
+      resume_frame.registers[ 25 ],
+      resume_gpr_patterns[ GPR_X25 ]
+    );
+    RegisterCheckRecord(
+      self,
+      GPR_X26,
+      resume_frame.registers[ 26 ],
+      resume_gpr_patterns[ GPR_X26 ]
+    );
+    RegisterCheckRecord(
+      self,
+      GPR_X27,
+      resume_frame.registers[ 27 ],
+      resume_gpr_patterns[ GPR_X27 ]
+    );
+    RegisterCheckRecord(
+      self,
+      GPR_X28,
+      resume_frame.registers[ 28 ],
+      resume_gpr_patterns[ GPR_X28 ]
+    );
+    RegisterCheckRecord(
+      self,
+      GPR_X29,
+      resume_frame.registers[ 29 ],
+      resume_gpr_patterns[ GPR_X29 ]
+    );
+    RegisterCheckRecord(
+      self,
+      GPR_X30,
+      resume_frame.registers[ 30 ],
+      resume_gpr_patterns[ GPR_X30 ]
+    );
+    RegisterCheckRecord(
+      self,
+      GPR_NZCV,
+      resume_frame.register_cpsr & NZCV_MASK,
+      resume_gpr_patterns[ GPR_NZCV ]
+    );
+    RegisterCheckRecord(
+      self,
+      GPR_FPSR,
+      resume_frame.register_fpsr & FPSR_MASK,
+      resume_gpr_patterns[ GPR_FPSR ]
+    );
+    RegisterCheckRecord(
+      self,
+      GPR_FPCR,
+      resume_frame.register_fpcr & FPCR_MASK,
+      resume_gpr_patterns[ GPR_FPCR ]
+    );
+    RegisterCheckRecord(
+      self,
+      GPR_FRAME,
+      resume_trap == 2 && resume_second_frame == resume_first_frame,
+      1
+    );
+    RegisterCheckRecord( self, GPR_RELEASE, resume_sp_delta == 0, 1 );
+  }
+
+  static void ResumeRunSimd( RegisterCheck *self, void *arg )
+  {
+    (void) arg;
+    ResumeRunOnce();
+    RegisterCheckRecord(
+      self,
+      SIMD_V0_LO,
+      (uint64_t) ( resume_frame.vector_registers[ 0 ] ),
+      resume_simd_patterns[ SIMD_V0_LO ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V0_HI,
+      (uint64_t) ( resume_frame.vector_registers[ 0 ] >> 64 ),
+      resume_simd_patterns[ SIMD_V0_HI ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V1_LO,
+      (uint64_t) ( resume_frame.vector_registers[ 1 ] ),
+      resume_simd_patterns[ SIMD_V1_LO ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V1_HI,
+      (uint64_t) ( resume_frame.vector_registers[ 1 ] >> 64 ),
+      resume_simd_patterns[ SIMD_V1_HI ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V2_LO,
+      (uint64_t) ( resume_frame.vector_registers[ 2 ] ),
+      resume_simd_patterns[ SIMD_V2_LO ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V2_HI,
+      (uint64_t) ( resume_frame.vector_registers[ 2 ] >> 64 ),
+      resume_simd_patterns[ SIMD_V2_HI ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V3_LO,
+      (uint64_t) ( resume_frame.vector_registers[ 3 ] ),
+      resume_simd_patterns[ SIMD_V3_LO ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V3_HI,
+      (uint64_t) ( resume_frame.vector_registers[ 3 ] >> 64 ),
+      resume_simd_patterns[ SIMD_V3_HI ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V4_LO,
+      (uint64_t) ( resume_frame.vector_registers[ 4 ] ),
+      resume_simd_patterns[ SIMD_V4_LO ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V4_HI,
+      (uint64_t) ( resume_frame.vector_registers[ 4 ] >> 64 ),
+      resume_simd_patterns[ SIMD_V4_HI ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V5_LO,
+      (uint64_t) ( resume_frame.vector_registers[ 5 ] ),
+      resume_simd_patterns[ SIMD_V5_LO ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V5_HI,
+      (uint64_t) ( resume_frame.vector_registers[ 5 ] >> 64 ),
+      resume_simd_patterns[ SIMD_V5_HI ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V6_LO,
+      (uint64_t) ( resume_frame.vector_registers[ 6 ] ),
+      resume_simd_patterns[ SIMD_V6_LO ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V6_HI,
+      (uint64_t) ( resume_frame.vector_registers[ 6 ] >> 64 ),
+      resume_simd_patterns[ SIMD_V6_HI ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V7_LO,
+      (uint64_t) ( resume_frame.vector_registers[ 7 ] ),
+      resume_simd_patterns[ SIMD_V7_LO ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V7_HI,
+      (uint64_t) ( resume_frame.vector_registers[ 7 ] >> 64 ),
+      resume_simd_patterns[ SIMD_V7_HI ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V8_LO,
+      (uint64_t) ( resume_frame.vector_registers[ 8 ] ),
+      resume_simd_patterns[ SIMD_V8_LO ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V8_HI,
+      (uint64_t) ( resume_frame.vector_registers[ 8 ] >> 64 ),
+      resume_simd_patterns[ SIMD_V8_HI ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V9_LO,
+      (uint64_t) ( resume_frame.vector_registers[ 9 ] ),
+      resume_simd_patterns[ SIMD_V9_LO ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V9_HI,
+      (uint64_t) ( resume_frame.vector_registers[ 9 ] >> 64 ),
+      resume_simd_patterns[ SIMD_V9_HI ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V10_LO,
+      (uint64_t) ( resume_frame.vector_registers[ 10 ] ),
+      resume_simd_patterns[ SIMD_V10_LO ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V10_HI,
+      (uint64_t) ( resume_frame.vector_registers[ 10 ] >> 64 ),
+      resume_simd_patterns[ SIMD_V10_HI ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V11_LO,
+      (uint64_t) ( resume_frame.vector_registers[ 11 ] ),
+      resume_simd_patterns[ SIMD_V11_LO ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V11_HI,
+      (uint64_t) ( resume_frame.vector_registers[ 11 ] >> 64 ),
+      resume_simd_patterns[ SIMD_V11_HI ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V12_LO,
+      (uint64_t) ( resume_frame.vector_registers[ 12 ] ),
+      resume_simd_patterns[ SIMD_V12_LO ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V12_HI,
+      (uint64_t) ( resume_frame.vector_registers[ 12 ] >> 64 ),
+      resume_simd_patterns[ SIMD_V12_HI ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V13_LO,
+      (uint64_t) ( resume_frame.vector_registers[ 13 ] ),
+      resume_simd_patterns[ SIMD_V13_LO ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V13_HI,
+      (uint64_t) ( resume_frame.vector_registers[ 13 ] >> 64 ),
+      resume_simd_patterns[ SIMD_V13_HI ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V14_LO,
+      (uint64_t) ( resume_frame.vector_registers[ 14 ] ),
+      resume_simd_patterns[ SIMD_V14_LO ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V14_HI,
+      (uint64_t) ( resume_frame.vector_registers[ 14 ] >> 64 ),
+      resume_simd_patterns[ SIMD_V14_HI ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V15_LO,
+      (uint64_t) ( resume_frame.vector_registers[ 15 ] ),
+      resume_simd_patterns[ SIMD_V15_LO ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V15_HI,
+      (uint64_t) ( resume_frame.vector_registers[ 15 ] >> 64 ),
+      resume_simd_patterns[ SIMD_V15_HI ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V16_LO,
+      (uint64_t) ( resume_frame.vector_registers[ 16 ] ),
+      resume_simd_patterns[ SIMD_V16_LO ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V16_HI,
+      (uint64_t) ( resume_frame.vector_registers[ 16 ] >> 64 ),
+      resume_simd_patterns[ SIMD_V16_HI ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V17_LO,
+      (uint64_t) ( resume_frame.vector_registers[ 17 ] ),
+      resume_simd_patterns[ SIMD_V17_LO ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V17_HI,
+      (uint64_t) ( resume_frame.vector_registers[ 17 ] >> 64 ),
+      resume_simd_patterns[ SIMD_V17_HI ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V18_LO,
+      (uint64_t) ( resume_frame.vector_registers[ 18 ] ),
+      resume_simd_patterns[ SIMD_V18_LO ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V18_HI,
+      (uint64_t) ( resume_frame.vector_registers[ 18 ] >> 64 ),
+      resume_simd_patterns[ SIMD_V18_HI ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V19_LO,
+      (uint64_t) ( resume_frame.vector_registers[ 19 ] ),
+      resume_simd_patterns[ SIMD_V19_LO ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V19_HI,
+      (uint64_t) ( resume_frame.vector_registers[ 19 ] >> 64 ),
+      resume_simd_patterns[ SIMD_V19_HI ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V20_LO,
+      (uint64_t) ( resume_frame.vector_registers[ 20 ] ),
+      resume_simd_patterns[ SIMD_V20_LO ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V20_HI,
+      (uint64_t) ( resume_frame.vector_registers[ 20 ] >> 64 ),
+      resume_simd_patterns[ SIMD_V20_HI ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V21_LO,
+      (uint64_t) ( resume_frame.vector_registers[ 21 ] ),
+      resume_simd_patterns[ SIMD_V21_LO ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V21_HI,
+      (uint64_t) ( resume_frame.vector_registers[ 21 ] >> 64 ),
+      resume_simd_patterns[ SIMD_V21_HI ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V22_LO,
+      (uint64_t) ( resume_frame.vector_registers[ 22 ] ),
+      resume_simd_patterns[ SIMD_V22_LO ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V22_HI,
+      (uint64_t) ( resume_frame.vector_registers[ 22 ] >> 64 ),
+      resume_simd_patterns[ SIMD_V22_HI ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V23_LO,
+      (uint64_t) ( resume_frame.vector_registers[ 23 ] ),
+      resume_simd_patterns[ SIMD_V23_LO ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V23_HI,
+      (uint64_t) ( resume_frame.vector_registers[ 23 ] >> 64 ),
+      resume_simd_patterns[ SIMD_V23_HI ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V24_LO,
+      (uint64_t) ( resume_frame.vector_registers[ 24 ] ),
+      resume_simd_patterns[ SIMD_V24_LO ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V24_HI,
+      (uint64_t) ( resume_frame.vector_registers[ 24 ] >> 64 ),
+      resume_simd_patterns[ SIMD_V24_HI ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V25_LO,
+      (uint64_t) ( resume_frame.vector_registers[ 25 ] ),
+      resume_simd_patterns[ SIMD_V25_LO ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V25_HI,
+      (uint64_t) ( resume_frame.vector_registers[ 25 ] >> 64 ),
+      resume_simd_patterns[ SIMD_V25_HI ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V26_LO,
+      (uint64_t) ( resume_frame.vector_registers[ 26 ] ),
+      resume_simd_patterns[ SIMD_V26_LO ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V26_HI,
+      (uint64_t) ( resume_frame.vector_registers[ 26 ] >> 64 ),
+      resume_simd_patterns[ SIMD_V26_HI ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V27_LO,
+      (uint64_t) ( resume_frame.vector_registers[ 27 ] ),
+      resume_simd_patterns[ SIMD_V27_LO ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V27_HI,
+      (uint64_t) ( resume_frame.vector_registers[ 27 ] >> 64 ),
+      resume_simd_patterns[ SIMD_V27_HI ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V28_LO,
+      (uint64_t) ( resume_frame.vector_registers[ 28 ] ),
+      resume_simd_patterns[ SIMD_V28_LO ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V28_HI,
+      (uint64_t) ( resume_frame.vector_registers[ 28 ] >> 64 ),
+      resume_simd_patterns[ SIMD_V28_HI ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V29_LO,
+      (uint64_t) ( resume_frame.vector_registers[ 29 ] ),
+      resume_simd_patterns[ SIMD_V29_LO ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V29_HI,
+      (uint64_t) ( resume_frame.vector_registers[ 29 ] >> 64 ),
+      resume_simd_patterns[ SIMD_V29_HI ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V30_LO,
+      (uint64_t) ( resume_frame.vector_registers[ 30 ] ),
+      resume_simd_patterns[ SIMD_V30_LO ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V30_HI,
+      (uint64_t) ( resume_frame.vector_registers[ 30 ] >> 64 ),
+      resume_simd_patterns[ SIMD_V30_HI ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V31_LO,
+      (uint64_t) ( resume_frame.vector_registers[ 31 ] ),
+      resume_simd_patterns[ SIMD_V31_LO ]
+    );
+    RegisterCheckRecord(
+      self,
+      SIMD_V31_HI,
+      (uint64_t) ( resume_frame.vector_registers[ 31 ] >> 64 ),
+      resume_simd_patterns[ SIMD_V31_HI ]
+    );
+  }
+
+  static RegisterCheck resume_gpr_check = {
+    .sources = resume_gpr_sources,
+    .source_count = GPR_MAX,
+    .slots = resume_gpr_slots,
+    .slot_count = GPR_MAX,
+    .initial = resume_gpr_initial,
+    .run = ResumeRunGpr
+  };
+
+  static RegisterCheck resume_simd_check = {
+    .sources = resume_simd_sources,
+    .source_count = SIMD_MAX,
+    .slots = resume_simd_slots,
+    .slot_count = SIMD_MAX,
+    .initial = resume_simd_initial,
+    .run = ResumeRunSimd
+  };
+
+  static void CheckGpr( Gpr slot )
+  {
+    RegisterCheckVerify( &resume_gpr_check, slot );
+  }
+
+  static void CheckSimd( Simd slot )
+  {
+    RegisterCheckVerify( &resume_simd_check, slot );
+  }
+test-target: testsuites/validation/bsps/tc-aarch64-resume.c
+test-teardown: null
+type: test-case

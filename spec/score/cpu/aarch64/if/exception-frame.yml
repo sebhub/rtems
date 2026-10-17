@@ -1,0 +1,684 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This structure represents the exception frame of the AArch64 CPU port.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+- default:
+    brief: |
+      This member provides the general-purpose registers by name and as an array.
+    definition:
+    - default:
+        brief: |
+          This member provides the general-purpose registers by name.
+        definition:
+        - default:
+            brief: |
+              This member contains the register X0.
+            definition: ${/c/if/uint64_t:/name} ${.:name}
+            description: null
+            kind: member
+            name: register_x0
+          variants: []
+        - default:
+            brief: |
+              This member contains the register X1.
+            definition: ${/c/if/uint64_t:/name} ${.:name}
+            description: null
+            kind: member
+            name: register_x1
+          variants: []
+        - default:
+            brief: |
+              This member contains the register X2.
+            definition: ${/c/if/uint64_t:/name} ${.:name}
+            description: null
+            kind: member
+            name: register_x2
+          variants: []
+        - default:
+            brief: |
+              This member contains the register X3.
+            definition: ${/c/if/uint64_t:/name} ${.:name}
+            description: null
+            kind: member
+            name: register_x3
+          variants: []
+        - default:
+            brief: |
+              This member contains the register X4.
+            definition: ${/c/if/uint64_t:/name} ${.:name}
+            description: null
+            kind: member
+            name: register_x4
+          variants: []
+        - default:
+            brief: |
+              This member contains the register X5.
+            definition: ${/c/if/uint64_t:/name} ${.:name}
+            description: null
+            kind: member
+            name: register_x5
+          variants: []
+        - default:
+            brief: |
+              This member contains the register X6.
+            definition: ${/c/if/uint64_t:/name} ${.:name}
+            description: null
+            kind: member
+            name: register_x6
+          variants: []
+        - default:
+            brief: |
+              This member contains the register X7.
+            definition: ${/c/if/uint64_t:/name} ${.:name}
+            description: null
+            kind: member
+            name: register_x7
+          variants: []
+        - default:
+            brief: |
+              This member contains the register X8.
+            definition: ${/c/if/uint64_t:/name} ${.:name}
+            description: null
+            kind: member
+            name: register_x8
+          variants: []
+        - default:
+            brief: |
+              This member contains the register X9.
+            definition: ${/c/if/uint64_t:/name} ${.:name}
+            description: null
+            kind: member
+            name: register_x9
+          variants: []
+        - default:
+            brief: |
+              This member contains the register X10.
+            definition: ${/c/if/uint64_t:/name} ${.:name}
+            description: null
+            kind: member
+            name: register_x10
+          variants: []
+        - default:
+            brief: |
+              This member contains the register X11.
+            definition: ${/c/if/uint64_t:/name} ${.:name}
+            description: null
+            kind: member
+            name: register_x11
+          variants: []
+        - default:
+            brief: |
+              This member contains the register X12.
+            definition: ${/c/if/uint64_t:/name} ${.:name}
+            description: null
+            kind: member
+            name: register_x12
+          variants: []
+        - default:
+            brief: |
+              This member contains the register X13.
+            definition: ${/c/if/uint64_t:/name} ${.:name}
+            description: null
+            kind: member
+            name: register_x13
+          variants: []
+        - default:
+            brief: |
+              This member contains the register X14.
+            definition: ${/c/if/uint64_t:/name} ${.:name}
+            description: null
+            kind: member
+            name: register_x14
+          variants: []
+        - default:
+            brief: |
+              This member contains the register X15.
+            definition: ${/c/if/uint64_t:/name} ${.:name}
+            description: null
+            kind: member
+            name: register_x15
+          variants: []
+        - default:
+            brief: |
+              This member contains the register X16.
+            definition: ${/c/if/uint64_t:/name} ${.:name}
+            description: null
+            kind: member
+            name: register_x16
+          variants: []
+        - default:
+            brief: |
+              This member contains the register X17.
+            definition: ${/c/if/uint64_t:/name} ${.:name}
+            description: null
+            kind: member
+            name: register_x17
+          variants: []
+        - default:
+            brief: |
+              This member contains the register X18.
+            definition: ${/c/if/uint64_t:/name} ${.:name}
+            description: null
+            kind: member
+            name: register_x18
+          variants: []
+        - default:
+            brief: |
+              This member contains the register X19.
+            definition: ${/c/if/uint64_t:/name} ${.:name}
+            description: null
+            kind: member
+            name: register_x19
+          variants: []
+        - default:
+            brief: |
+              This member contains the register X20.
+            definition: ${/c/if/uint64_t:/name} ${.:name}
+            description: null
+            kind: member
+            name: register_x20
+          variants: []
+        - default:
+            brief: |
+              This member contains the register X21.
+            definition: ${/c/if/uint64_t:/name} ${.:name}
+            description: null
+            kind: member
+            name: register_x21
+          variants: []
+        - default:
+            brief: |
+              This member contains the register X22.
+            definition: ${/c/if/uint64_t:/name} ${.:name}
+            description: null
+            kind: member
+            name: register_x22
+          variants: []
+        - default:
+            brief: |
+              This member contains the register X23.
+            definition: ${/c/if/uint64_t:/name} ${.:name}
+            description: null
+            kind: member
+            name: register_x23
+          variants: []
+        - default:
+            brief: |
+              This member contains the register X24.
+            definition: ${/c/if/uint64_t:/name} ${.:name}
+            description: null
+            kind: member
+            name: register_x24
+          variants: []
+        - default:
+            brief: |
+              This member contains the register X25.
+            definition: ${/c/if/uint64_t:/name} ${.:name}
+            description: null
+            kind: member
+            name: register_x25
+          variants: []
+        - default:
+            brief: |
+              This member contains the register X26.
+            definition: ${/c/if/uint64_t:/name} ${.:name}
+            description: null
+            kind: member
+            name: register_x26
+          variants: []
+        - default:
+            brief: |
+              This member contains the register X27.
+            definition: ${/c/if/uint64_t:/name} ${.:name}
+            description: null
+            kind: member
+            name: register_x27
+          variants: []
+        - default:
+            brief: |
+              This member contains the register X28.
+            definition: ${/c/if/uint64_t:/name} ${.:name}
+            description: null
+            kind: member
+            name: register_x28
+          variants: []
+        - default:
+            brief: |
+              This member contains the frame pointer X29.
+            definition: ${/c/if/uint64_t:/name} ${.:name}
+            description: null
+            kind: member
+            name: register_fp
+          variants: []
+        - default:
+            brief: |
+              This member contains the link register X30.
+            definition: void *${.:name}
+            description: null
+            kind: member
+            name: register_lr
+          variants: []
+        - default: null
+          variants:
+          - definition:
+              brief: |
+                This member is the upper half of the 64-bit slot of the member before it.
+              definition: ${/c/if/uint32_t:/name} ${.:name}
+              description: null
+              kind: member
+              name: _register_lr_top
+            enabled-by: defined(AARCH64_MULTILIB_ARCH_V8_ILP32)
+        - default:
+            brief: |
+              This member contains the stack pointer of the trapped context.
+            definition: ${/c/if/uintptr_t:/name} ${.:name}
+            description: null
+            kind: member
+            name: register_sp
+          variants: []
+        - default: null
+          variants:
+          - definition:
+              brief: |
+                This member is the upper half of the 64-bit slot of the member before it.
+              definition: ${/c/if/uint32_t:/name} ${.:name}
+              description: null
+              kind: member
+              name: _register_sp_top
+            enabled-by: defined(AARCH64_MULTILIB_ARCH_V8_ILP32)
+        description: null
+        kind: struct
+        name: ''
+      variants: []
+    - default:
+        brief: |
+          This member provides X0 to X30 and the stack pointer as an array.
+        definition: ${/c/if/uint64_t:/name} ${.:name}[ 32 ]
+        description: null
+        kind: member
+        name: registers
+      variants: []
+    description: null
+    kind: union
+    name: ''
+  variants: []
+- default:
+    brief: |
+      This member contains the address of the trapped instruction.
+    definition: void *${.:name}
+    description: null
+    kind: member
+    name: register_pc
+  variants: []
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member is the upper half of the 64-bit slot of the member before it.
+      definition: ${/c/if/uint32_t:/name} ${.:name}
+      description: null
+      kind: member
+      name: _register_pc_top
+    enabled-by: defined(AARCH64_MULTILIB_ARCH_V8_ILP32)
+- default:
+    brief: |
+      This member contains DAIF.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_daif
+  variants: []
+- default:
+    brief: |
+      This member contains SPSR, which holds the PSTATE of the trapped context.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_cpsr
+  variants: []
+- default:
+    brief: |
+      This member contains ESR.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_syndrome
+  variants: []
+- default:
+    brief: |
+      This member contains FAR.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_fault_address
+  variants: []
+- default:
+    brief: |
+      This member contains the exception vector.
+    definition: AArch64_symbolic_exception_name ${.:name}
+    description: null
+    kind: member
+    name: vector
+  variants: []
+- default:
+    brief: |
+      This member pads the frame to the stack alignment.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: reserved_for_stack_alignment
+  variants: []
+- default:
+    brief: |
+      This member contains FPSR.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_fpsr
+  variants: []
+- default:
+    brief: |
+      This member contains FPCR.
+    definition: ${/c/if/uint64_t:/name} ${.:name}
+    description: null
+    kind: member
+    name: register_fpcr
+  variants: []
+- default:
+    brief: |
+      This member provides the SIMD and floating-point registers by name and as an
+      array.
+    definition:
+    - default:
+        brief: |
+          This member provides the SIMD and floating-point registers by name.
+        definition:
+        - default:
+            brief: |
+              This member contains the SIMD and floating-point register V0.
+            definition: uint128_t ${.:name}
+            description: null
+            kind: member
+            name: register_q0
+          variants: []
+        - default:
+            brief: |
+              This member contains the SIMD and floating-point register V1.
+            definition: uint128_t ${.:name}
+            description: null
+            kind: member
+            name: register_q1
+          variants: []
+        - default:
+            brief: |
+              This member contains the SIMD and floating-point register V2.
+            definition: uint128_t ${.:name}
+            description: null
+            kind: member
+            name: register_q2
+          variants: []
+        - default:
+            brief: |
+              This member contains the SIMD and floating-point register V3.
+            definition: uint128_t ${.:name}
+            description: null
+            kind: member
+            name: register_q3
+          variants: []
+        - default:
+            brief: |
+              This member contains the SIMD and floating-point register V4.
+            definition: uint128_t ${.:name}
+            description: null
+            kind: member
+            name: register_q4
+          variants: []
+        - default:
+            brief: |
+              This member contains the SIMD and floating-point register V5.
+            definition: uint128_t ${.:name}
+            description: null
+            kind: member
+            name: register_q5
+          variants: []
+        - default:
+            brief: |
+              This member contains the SIMD and floating-point register V6.
+            definition: uint128_t ${.:name}
+            description: null
+            kind: member
+            name: register_q6
+          variants: []
+        - default:
+            brief: |
+              This member contains the SIMD and floating-point register V7.
+            definition: uint128_t ${.:name}
+            description: null
+            kind: member
+            name: register_q7
+          variants: []
+        - default:
+            brief: |
+              This member contains the SIMD and floating-point register V8.
+            definition: uint128_t ${.:name}
+            description: null
+            kind: member
+            name: register_q8
+          variants: []
+        - default:
+            brief: |
+              This member contains the SIMD and floating-point register V9.
+            definition: uint128_t ${.:name}
+            description: null
+            kind: member
+            name: register_q9
+          variants: []
+        - default:
+            brief: |
+              This member contains the SIMD and floating-point register V10.
+            definition: uint128_t ${.:name}
+            description: null
+            kind: member
+            name: register_q10
+          variants: []
+        - default:
+            brief: |
+              This member contains the SIMD and floating-point register V11.
+            definition: uint128_t ${.:name}
+            description: null
+            kind: member
+            name: register_q11
+          variants: []
+        - default:
+            brief: |
+              This member contains the SIMD and floating-point register V12.
+            definition: uint128_t ${.:name}
+            description: null
+            kind: member
+            name: register_q12
+          variants: []
+        - default:
+            brief: |
+              This member contains the SIMD and floating-point register V13.
+            definition: uint128_t ${.:name}
+            description: null
+            kind: member
+            name: register_q13
+          variants: []
+        - default:
+            brief: |
+              This member contains the SIMD and floating-point register V14.
+            definition: uint128_t ${.:name}
+            description: null
+            kind: member
+            name: register_q14
+          variants: []
+        - default:
+            brief: |
+              This member contains the SIMD and floating-point register V15.
+            definition: uint128_t ${.:name}
+            description: null
+            kind: member
+            name: register_q15
+          variants: []
+        - default:
+            brief: |
+              This member contains the SIMD and floating-point register V16.
+            definition: uint128_t ${.:name}
+            description: null
+            kind: member
+            name: register_q16
+          variants: []
+        - default:
+            brief: |
+              This member contains the SIMD and floating-point register V17.
+            definition: uint128_t ${.:name}
+            description: null
+            kind: member
+            name: register_q17
+          variants: []
+        - default:
+            brief: |
+              This member contains the SIMD and floating-point register V18.
+            definition: uint128_t ${.:name}
+            description: null
+            kind: member
+            name: register_q18
+          variants: []
+        - default:
+            brief: |
+              This member contains the SIMD and floating-point register V19.
+            definition: uint128_t ${.:name}
+            description: null
+            kind: member
+            name: register_q19
+          variants: []
+        - default:
+            brief: |
+              This member contains the SIMD and floating-point register V20.
+            definition: uint128_t ${.:name}
+            description: null
+            kind: member
+            name: register_q20
+          variants: []
+        - default:
+            brief: |
+              This member contains the SIMD and floating-point register V21.
+            definition: uint128_t ${.:name}
+            description: null
+            kind: member
+            name: register_q21
+          variants: []
+        - default:
+            brief: |
+              This member contains the SIMD and floating-point register V22.
+            definition: uint128_t ${.:name}
+            description: null
+            kind: member
+            name: register_q22
+          variants: []
+        - default:
+            brief: |
+              This member contains the SIMD and floating-point register V23.
+            definition: uint128_t ${.:name}
+            description: null
+            kind: member
+            name: register_q23
+          variants: []
+        - default:
+            brief: |
+              This member contains the SIMD and floating-point register V24.
+            definition: uint128_t ${.:name}
+            description: null
+            kind: member
+            name: register_q24
+          variants: []
+        - default:
+            brief: |
+              This member contains the SIMD and floating-point register V25.
+            definition: uint128_t ${.:name}
+            description: null
+            kind: member
+            name: register_q25
+          variants: []
+        - default:
+            brief: |
+              This member contains the SIMD and floating-point register V26.
+            definition: uint128_t ${.:name}
+            description: null
+            kind: member
+            name: register_q26
+          variants: []
+        - default:
+            brief: |
+              This member contains the SIMD and floating-point register V27.
+            definition: uint128_t ${.:name}
+            description: null
+            kind: member
+            name: register_q27
+          variants: []
+        - default:
+            brief: |
+              This member contains the SIMD and floating-point register V28.
+            definition: uint128_t ${.:name}
+            description: null
+            kind: member
+            name: register_q28
+          variants: []
+        - default:
+            brief: |
+              This member contains the SIMD and floating-point register V29.
+            definition: uint128_t ${.:name}
+            description: null
+            kind: member
+            name: register_q29
+          variants: []
+        - default:
+            brief: |
+              This member contains the SIMD and floating-point register V30.
+            definition: uint128_t ${.:name}
+            description: null
+            kind: member
+            name: register_q30
+          variants: []
+        - default:
+            brief: |
+              This member contains the SIMD and floating-point register V31.
+            definition: uint128_t ${.:name}
+            description: null
+            kind: member
+            name: register_q31
+          variants: []
+        description: null
+        kind: struct
+        name: ''
+      variants: []
+    - default:
+        brief: |
+          This member provides V0 to V31 as an array.
+        definition: uint128_t ${.:name}[ 32 ]
+        description: null
+        kind: member
+        name: vector_registers
+      variants: []
+    description: null
+    kind: union
+    name: ''
+  variants: []
+definition-kind: typedef-only
+description: null
+enabled-by: aarch64
+index-entries: []
+interface-type: struct
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+- role: proxy-member
+  uid: /score/cpu/if/exception-frame
+name: CPU_Exception_frame
+notes: null
+type: interface
