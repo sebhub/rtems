@@ -1,0 +1,2349 @@
+/* SPDX-License-Identifier: BSD-2-Clause */
+
+/**
+ * @file
+ *
+ * @ingroup ScoreCpuAarch64ValExceptionFrame
+ */
+
+/*
+ * Copyright (C) 2026 embedded brains GmbH & Co. KG
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
+#include <stdint.h>
+#include <string.h>
+#include <rtems/score/cpuimpl.h>
+#include <rtems/score/percpu.h>
+
+#include "tx-register-check.h"
+#include "tx-support.h"
+
+#include <rtems/test.h>
+
+/**
+ * @defgroup ScoreCpuAarch64ValExceptionFrame \
+ *   spec:/score/cpu/aarch64/val/exception-frame
+ *
+ * @ingroup TestsuitesBspsValidationBspNoClock0
+ *
+ * @brief Checks the exception frame which the default exception handler
+ *   builds.
+ *
+ * This test case performs the following actions:
+ *
+ * - Load a distinct pattern into every register. Trap. Run this once for each
+ *   register with the pattern of that register inverted, then once unchanged.
+ *
+ *   - Check that the default exception handler saved the AArch64 register X0
+ *     to the frame.
+ *
+ *   - Check that the default exception handler saved the AArch64 register X1
+ *     to the frame.
+ *
+ *   - Check that the default exception handler saved the AArch64 register X2
+ *     to the frame.
+ *
+ *   - Check that the default exception handler saved the AArch64 register X3
+ *     to the frame.
+ *
+ *   - Check that the default exception handler saved the AArch64 register X4
+ *     to the frame.
+ *
+ *   - Check that the default exception handler saved the AArch64 register X5
+ *     to the frame.
+ *
+ *   - Check that the default exception handler saved the AArch64 register X6
+ *     to the frame.
+ *
+ *   - Check that the default exception handler saved the AArch64 register X7
+ *     to the frame.
+ *
+ *   - Check that the default exception handler saved the AArch64 register X8
+ *     to the frame.
+ *
+ *   - Check that the default exception handler saved the AArch64 register X9
+ *     to the frame.
+ *
+ *   - Check that the default exception handler saved the AArch64 register X10
+ *     to the frame.
+ *
+ *   - Check that the default exception handler saved the AArch64 register X11
+ *     to the frame.
+ *
+ *   - Check that the default exception handler saved the AArch64 register X12
+ *     to the frame.
+ *
+ *   - Check that the default exception handler saved the AArch64 register X13
+ *     to the frame.
+ *
+ *   - Check that the default exception handler saved the AArch64 register X14
+ *     to the frame.
+ *
+ *   - Check that the default exception handler saved the AArch64 register X15
+ *     to the frame.
+ *
+ *   - Check that the default exception handler saved the AArch64 register X16
+ *     to the frame.
+ *
+ *   - Check that the default exception handler saved the AArch64 register X17
+ *     to the frame.
+ *
+ *   - Check that the default exception handler saved the AArch64 register X18
+ *     to the frame.
+ *
+ *   - Check that the default exception handler saved the AArch64 register X19
+ *     to the frame.
+ *
+ *   - Check that the default exception handler saved the AArch64 register X20
+ *     to the frame.
+ *
+ *   - Check that the default exception handler saved the AArch64 register X21
+ *     to the frame.
+ *
+ *   - Check that the default exception handler saved the AArch64 register X22
+ *     to the frame.
+ *
+ *   - Check that the default exception handler saved the AArch64 register X23
+ *     to the frame.
+ *
+ *   - Check that the default exception handler saved the AArch64 register X24
+ *     to the frame.
+ *
+ *   - Check that the default exception handler saved the AArch64 register X25
+ *     to the frame.
+ *
+ *   - Check that the default exception handler saved the AArch64 register X26
+ *     to the frame.
+ *
+ *   - Check that the default exception handler saved the AArch64 register X27
+ *     to the frame.
+ *
+ *   - Check that the default exception handler saved the AArch64 register X28
+ *     to the frame.
+ *
+ *   - Check that the default exception handler saved the AArch64 register X29
+ *     to the frame.
+ *
+ *   - Check that the default exception handler saved the AArch64 register X30
+ *     to the frame.
+ *
+ *   - Check that the default exception handler saved the stack pointer of the
+ *     trapped context to the frame.
+ *
+ *   - Check that the default exception handler saved the condition flags of
+ *     NZCV to the frame.
+ *
+ *   - Check that the default exception handler saved FPSR to the frame.
+ *
+ *   - Check that the default exception handler saved FPCR to the frame.
+ *
+ *   - Check that the frame holds the address of the trapping instruction.
+ *
+ *   - Check that the default exception handler terminated with the fatal
+ *     source RTEMS_FATAL_SOURCE_EXCEPTION.
+ *
+ *   - Check that the fatal code is the address of a frame at the top of the
+ *     interrupt stack of the processor.
+ *
+ *   - Check that each run with a changed value flagged exactly the checks of
+ *     that value, and that each run recorded every check.
+ *
+ *   - Check that the default exception handler saved the bottom 64 bits of the
+ *     AArch64 SIMD and floating-point register V0 to the frame.
+ *
+ *   - Check that the default exception handler saved the top 64 bits of the
+ *     AArch64 SIMD and floating-point register V0 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 64 bits of the
+ *     AArch64 SIMD and floating-point register V1 to the frame.
+ *
+ *   - Check that the default exception handler saved the top 64 bits of the
+ *     AArch64 SIMD and floating-point register V1 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 64 bits of the
+ *     AArch64 SIMD and floating-point register V2 to the frame.
+ *
+ *   - Check that the default exception handler saved the top 64 bits of the
+ *     AArch64 SIMD and floating-point register V2 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 64 bits of the
+ *     AArch64 SIMD and floating-point register V3 to the frame.
+ *
+ *   - Check that the default exception handler saved the top 64 bits of the
+ *     AArch64 SIMD and floating-point register V3 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 64 bits of the
+ *     AArch64 SIMD and floating-point register V4 to the frame.
+ *
+ *   - Check that the default exception handler saved the top 64 bits of the
+ *     AArch64 SIMD and floating-point register V4 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 64 bits of the
+ *     AArch64 SIMD and floating-point register V5 to the frame.
+ *
+ *   - Check that the default exception handler saved the top 64 bits of the
+ *     AArch64 SIMD and floating-point register V5 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 64 bits of the
+ *     AArch64 SIMD and floating-point register V6 to the frame.
+ *
+ *   - Check that the default exception handler saved the top 64 bits of the
+ *     AArch64 SIMD and floating-point register V6 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 64 bits of the
+ *     AArch64 SIMD and floating-point register V7 to the frame.
+ *
+ *   - Check that the default exception handler saved the top 64 bits of the
+ *     AArch64 SIMD and floating-point register V7 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 64 bits of the
+ *     AArch64 SIMD and floating-point register V8 to the frame.
+ *
+ *   - Check that the default exception handler saved the top 64 bits of the
+ *     AArch64 SIMD and floating-point register V8 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 64 bits of the
+ *     AArch64 SIMD and floating-point register V9 to the frame.
+ *
+ *   - Check that the default exception handler saved the top 64 bits of the
+ *     AArch64 SIMD and floating-point register V9 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 64 bits of the
+ *     AArch64 SIMD and floating-point register V10 to the frame.
+ *
+ *   - Check that the default exception handler saved the top 64 bits of the
+ *     AArch64 SIMD and floating-point register V10 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 64 bits of the
+ *     AArch64 SIMD and floating-point register V11 to the frame.
+ *
+ *   - Check that the default exception handler saved the top 64 bits of the
+ *     AArch64 SIMD and floating-point register V11 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 64 bits of the
+ *     AArch64 SIMD and floating-point register V12 to the frame.
+ *
+ *   - Check that the default exception handler saved the top 64 bits of the
+ *     AArch64 SIMD and floating-point register V12 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 64 bits of the
+ *     AArch64 SIMD and floating-point register V13 to the frame.
+ *
+ *   - Check that the default exception handler saved the top 64 bits of the
+ *     AArch64 SIMD and floating-point register V13 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 64 bits of the
+ *     AArch64 SIMD and floating-point register V14 to the frame.
+ *
+ *   - Check that the default exception handler saved the top 64 bits of the
+ *     AArch64 SIMD and floating-point register V14 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 64 bits of the
+ *     AArch64 SIMD and floating-point register V15 to the frame.
+ *
+ *   - Check that the default exception handler saved the top 64 bits of the
+ *     AArch64 SIMD and floating-point register V15 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 64 bits of the
+ *     AArch64 SIMD and floating-point register V16 to the frame.
+ *
+ *   - Check that the default exception handler saved the top 64 bits of the
+ *     AArch64 SIMD and floating-point register V16 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 64 bits of the
+ *     AArch64 SIMD and floating-point register V17 to the frame.
+ *
+ *   - Check that the default exception handler saved the top 64 bits of the
+ *     AArch64 SIMD and floating-point register V17 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 64 bits of the
+ *     AArch64 SIMD and floating-point register V18 to the frame.
+ *
+ *   - Check that the default exception handler saved the top 64 bits of the
+ *     AArch64 SIMD and floating-point register V18 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 64 bits of the
+ *     AArch64 SIMD and floating-point register V19 to the frame.
+ *
+ *   - Check that the default exception handler saved the top 64 bits of the
+ *     AArch64 SIMD and floating-point register V19 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 64 bits of the
+ *     AArch64 SIMD and floating-point register V20 to the frame.
+ *
+ *   - Check that the default exception handler saved the top 64 bits of the
+ *     AArch64 SIMD and floating-point register V20 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 64 bits of the
+ *     AArch64 SIMD and floating-point register V21 to the frame.
+ *
+ *   - Check that the default exception handler saved the top 64 bits of the
+ *     AArch64 SIMD and floating-point register V21 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 64 bits of the
+ *     AArch64 SIMD and floating-point register V22 to the frame.
+ *
+ *   - Check that the default exception handler saved the top 64 bits of the
+ *     AArch64 SIMD and floating-point register V22 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 64 bits of the
+ *     AArch64 SIMD and floating-point register V23 to the frame.
+ *
+ *   - Check that the default exception handler saved the top 64 bits of the
+ *     AArch64 SIMD and floating-point register V23 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 64 bits of the
+ *     AArch64 SIMD and floating-point register V24 to the frame.
+ *
+ *   - Check that the default exception handler saved the top 64 bits of the
+ *     AArch64 SIMD and floating-point register V24 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 64 bits of the
+ *     AArch64 SIMD and floating-point register V25 to the frame.
+ *
+ *   - Check that the default exception handler saved the top 64 bits of the
+ *     AArch64 SIMD and floating-point register V25 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 64 bits of the
+ *     AArch64 SIMD and floating-point register V26 to the frame.
+ *
+ *   - Check that the default exception handler saved the top 64 bits of the
+ *     AArch64 SIMD and floating-point register V26 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 64 bits of the
+ *     AArch64 SIMD and floating-point register V27 to the frame.
+ *
+ *   - Check that the default exception handler saved the top 64 bits of the
+ *     AArch64 SIMD and floating-point register V27 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 64 bits of the
+ *     AArch64 SIMD and floating-point register V28 to the frame.
+ *
+ *   - Check that the default exception handler saved the top 64 bits of the
+ *     AArch64 SIMD and floating-point register V28 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 64 bits of the
+ *     AArch64 SIMD and floating-point register V29 to the frame.
+ *
+ *   - Check that the default exception handler saved the top 64 bits of the
+ *     AArch64 SIMD and floating-point register V29 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 64 bits of the
+ *     AArch64 SIMD and floating-point register V30 to the frame.
+ *
+ *   - Check that the default exception handler saved the top 64 bits of the
+ *     AArch64 SIMD and floating-point register V30 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 64 bits of the
+ *     AArch64 SIMD and floating-point register V31 to the frame.
+ *
+ *   - Check that the default exception handler saved the top 64 bits of the
+ *     AArch64 SIMD and floating-point register V31 to the frame.
+ *
+ *   - Check that each run with a changed value flagged exactly the checks of
+ *     that value, and that each run recorded every check.
+ *
+ * @{
+ */
+
+extern const char exception_trap_label[];
+
+extern const char exception_done_label[];
+
+/* The condition flags are the bits 31 to 28 of NZCV. */
+#define NZCV_MASK UINT64_C( 0xf0000000 )
+
+/* These are QC and the cumulative exception flags of FPSR. */
+#define FPSR_MASK UINT64_C( 0x0800009f )
+
+/* These are AHP, DN, FZ and the rounding mode of FPCR. */
+#define FPCR_MASK UINT64_C( 0x07c00000 )
+
+typedef enum {
+  GPR_X0,
+  GPR_X1,
+  GPR_X2,
+  GPR_X3,
+  GPR_X4,
+  GPR_X5,
+  GPR_X6,
+  GPR_X7,
+  GPR_X8,
+  GPR_X9,
+  GPR_X10,
+  GPR_X11,
+  GPR_X12,
+  GPR_X13,
+  GPR_X14,
+  GPR_X15,
+  GPR_X16,
+  GPR_X17,
+  GPR_X18,
+  GPR_X19,
+  GPR_X20,
+  GPR_X21,
+  GPR_X22,
+  GPR_X23,
+  GPR_X24,
+  GPR_X25,
+  GPR_X26,
+  GPR_X27,
+  GPR_X28,
+  GPR_X29,
+  GPR_X30,
+  GPR_SP,
+  GPR_NZCV,
+  GPR_FPSR,
+  GPR_FPCR,
+  GPR_PC,
+  GPR_SOURCE,
+  GPR_CODE,
+  GPR_MAX
+} Gpr;
+
+typedef enum {
+  SIMD_V0_LO,
+  SIMD_V0_HI,
+  SIMD_V1_LO,
+  SIMD_V1_HI,
+  SIMD_V2_LO,
+  SIMD_V2_HI,
+  SIMD_V3_LO,
+  SIMD_V3_HI,
+  SIMD_V4_LO,
+  SIMD_V4_HI,
+  SIMD_V5_LO,
+  SIMD_V5_HI,
+  SIMD_V6_LO,
+  SIMD_V6_HI,
+  SIMD_V7_LO,
+  SIMD_V7_HI,
+  SIMD_V8_LO,
+  SIMD_V8_HI,
+  SIMD_V9_LO,
+  SIMD_V9_HI,
+  SIMD_V10_LO,
+  SIMD_V10_HI,
+  SIMD_V11_LO,
+  SIMD_V11_HI,
+  SIMD_V12_LO,
+  SIMD_V12_HI,
+  SIMD_V13_LO,
+  SIMD_V13_HI,
+  SIMD_V14_LO,
+  SIMD_V14_HI,
+  SIMD_V15_LO,
+  SIMD_V15_HI,
+  SIMD_V16_LO,
+  SIMD_V16_HI,
+  SIMD_V17_LO,
+  SIMD_V17_HI,
+  SIMD_V18_LO,
+  SIMD_V18_HI,
+  SIMD_V19_LO,
+  SIMD_V19_HI,
+  SIMD_V20_LO,
+  SIMD_V20_HI,
+  SIMD_V21_LO,
+  SIMD_V21_HI,
+  SIMD_V22_LO,
+  SIMD_V22_HI,
+  SIMD_V23_LO,
+  SIMD_V23_HI,
+  SIMD_V24_LO,
+  SIMD_V24_HI,
+  SIMD_V25_LO,
+  SIMD_V25_HI,
+  SIMD_V26_LO,
+  SIMD_V26_HI,
+  SIMD_V27_LO,
+  SIMD_V27_HI,
+  SIMD_V28_LO,
+  SIMD_V28_HI,
+  SIMD_V29_LO,
+  SIMD_V29_HI,
+  SIMD_V30_LO,
+  SIMD_V30_HI,
+  SIMD_V31_LO,
+  SIMD_V31_HI,
+  SIMD_MAX
+} Simd;
+
+static const RegisterCheckSource exception_gpr_sources[ GPR_MAX ] = {
+  { "x0", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "x1", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "x2", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "x3", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "x4", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "x5", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "x6", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "x7", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "x8", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "x9", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "x10", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "x11", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "x12", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "x13", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "x14", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "x15", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "x16", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "x17", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "x18", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "x19", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "x20", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "x21", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "x22", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "x23", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "x24", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "x25", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "x26", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "x27", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "x28", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "x29", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "x30", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "sp", REGISTER_CHECK_EXPECTED, UINT64_MAX },
+  { "nzcv", REGISTER_CHECK_INITIAL, NZCV_MASK },
+  { "fpsr", REGISTER_CHECK_INITIAL, FPSR_MASK },
+  { "fpcr", REGISTER_CHECK_INITIAL, FPCR_MASK },
+  { "pc", REGISTER_CHECK_EXPECTED, UINT64_MAX },
+  { "source", REGISTER_CHECK_EXPECTED, UINT64_MAX },
+  { "code", REGISTER_CHECK_EXPECTED, UINT64_MAX }
+};
+
+static const RegisterCheckSlot exception_gpr_slots[ GPR_MAX ] = {
+  { "x0", GPR_X0, UINT64_MAX },
+  { "x1", GPR_X1, UINT64_MAX },
+  { "x2", GPR_X2, UINT64_MAX },
+  { "x3", GPR_X3, UINT64_MAX },
+  { "x4", GPR_X4, UINT64_MAX },
+  { "x5", GPR_X5, UINT64_MAX },
+  { "x6", GPR_X6, UINT64_MAX },
+  { "x7", GPR_X7, UINT64_MAX },
+  { "x8", GPR_X8, UINT64_MAX },
+  { "x9", GPR_X9, UINT64_MAX },
+  { "x10", GPR_X10, UINT64_MAX },
+  { "x11", GPR_X11, UINT64_MAX },
+  { "x12", GPR_X12, UINT64_MAX },
+  { "x13", GPR_X13, UINT64_MAX },
+  { "x14", GPR_X14, UINT64_MAX },
+  { "x15", GPR_X15, UINT64_MAX },
+  { "x16", GPR_X16, UINT64_MAX },
+  { "x17", GPR_X17, UINT64_MAX },
+  { "x18", GPR_X18, UINT64_MAX },
+  { "x19", GPR_X19, UINT64_MAX },
+  { "x20", GPR_X20, UINT64_MAX },
+  { "x21", GPR_X21, UINT64_MAX },
+  { "x22", GPR_X22, UINT64_MAX },
+  { "x23", GPR_X23, UINT64_MAX },
+  { "x24", GPR_X24, UINT64_MAX },
+  { "x25", GPR_X25, UINT64_MAX },
+  { "x26", GPR_X26, UINT64_MAX },
+  { "x27", GPR_X27, UINT64_MAX },
+  { "x28", GPR_X28, UINT64_MAX },
+  { "x29", GPR_X29, UINT64_MAX },
+  { "x30", GPR_X30, UINT64_MAX },
+  { "sp", GPR_SP, UINT64_MAX },
+  { "nzcv", GPR_NZCV, NZCV_MASK },
+  { "fpsr", GPR_FPSR, FPSR_MASK },
+  { "fpcr", GPR_FPCR, FPCR_MASK },
+  { "pc", GPR_PC, UINT64_MAX },
+  { "source", GPR_SOURCE, UINT64_MAX },
+  { "code", GPR_CODE, UINT64_MAX }
+};
+
+static const RegisterCheckSource exception_simd_sources[ SIMD_MAX ] = {
+  { "v0 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v0 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v1 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v1 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v2 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v2 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v3 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v3 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v4 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v4 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v5 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v5 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v6 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v6 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v7 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v7 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v8 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v8 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v9 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v9 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v10 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v10 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v11 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v11 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v12 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v12 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v13 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v13 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v14 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v14 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v15 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v15 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v16 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v16 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v17 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v17 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v18 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v18 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v19 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v19 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v20 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v20 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v21 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v21 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v22 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v22 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v23 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v23 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v24 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v24 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v25 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v25 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v26 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v26 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v27 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v27 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v28 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v28 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v29 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v29 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v30 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v30 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v31 lo", REGISTER_CHECK_INITIAL, UINT64_MAX },
+  { "v31 hi", REGISTER_CHECK_INITIAL, UINT64_MAX },
+};
+
+static const RegisterCheckSlot exception_simd_slots[ SIMD_MAX ] = {
+  { "v0 lo", SIMD_V0_LO, UINT64_MAX },
+  { "v0 hi", SIMD_V0_HI, UINT64_MAX },
+  { "v1 lo", SIMD_V1_LO, UINT64_MAX },
+  { "v1 hi", SIMD_V1_HI, UINT64_MAX },
+  { "v2 lo", SIMD_V2_LO, UINT64_MAX },
+  { "v2 hi", SIMD_V2_HI, UINT64_MAX },
+  { "v3 lo", SIMD_V3_LO, UINT64_MAX },
+  { "v3 hi", SIMD_V3_HI, UINT64_MAX },
+  { "v4 lo", SIMD_V4_LO, UINT64_MAX },
+  { "v4 hi", SIMD_V4_HI, UINT64_MAX },
+  { "v5 lo", SIMD_V5_LO, UINT64_MAX },
+  { "v5 hi", SIMD_V5_HI, UINT64_MAX },
+  { "v6 lo", SIMD_V6_LO, UINT64_MAX },
+  { "v6 hi", SIMD_V6_HI, UINT64_MAX },
+  { "v7 lo", SIMD_V7_LO, UINT64_MAX },
+  { "v7 hi", SIMD_V7_HI, UINT64_MAX },
+  { "v8 lo", SIMD_V8_LO, UINT64_MAX },
+  { "v8 hi", SIMD_V8_HI, UINT64_MAX },
+  { "v9 lo", SIMD_V9_LO, UINT64_MAX },
+  { "v9 hi", SIMD_V9_HI, UINT64_MAX },
+  { "v10 lo", SIMD_V10_LO, UINT64_MAX },
+  { "v10 hi", SIMD_V10_HI, UINT64_MAX },
+  { "v11 lo", SIMD_V11_LO, UINT64_MAX },
+  { "v11 hi", SIMD_V11_HI, UINT64_MAX },
+  { "v12 lo", SIMD_V12_LO, UINT64_MAX },
+  { "v12 hi", SIMD_V12_HI, UINT64_MAX },
+  { "v13 lo", SIMD_V13_LO, UINT64_MAX },
+  { "v13 hi", SIMD_V13_HI, UINT64_MAX },
+  { "v14 lo", SIMD_V14_LO, UINT64_MAX },
+  { "v14 hi", SIMD_V14_HI, UINT64_MAX },
+  { "v15 lo", SIMD_V15_LO, UINT64_MAX },
+  { "v15 hi", SIMD_V15_HI, UINT64_MAX },
+  { "v16 lo", SIMD_V16_LO, UINT64_MAX },
+  { "v16 hi", SIMD_V16_HI, UINT64_MAX },
+  { "v17 lo", SIMD_V17_LO, UINT64_MAX },
+  { "v17 hi", SIMD_V17_HI, UINT64_MAX },
+  { "v18 lo", SIMD_V18_LO, UINT64_MAX },
+  { "v18 hi", SIMD_V18_HI, UINT64_MAX },
+  { "v19 lo", SIMD_V19_LO, UINT64_MAX },
+  { "v19 hi", SIMD_V19_HI, UINT64_MAX },
+  { "v20 lo", SIMD_V20_LO, UINT64_MAX },
+  { "v20 hi", SIMD_V20_HI, UINT64_MAX },
+  { "v21 lo", SIMD_V21_LO, UINT64_MAX },
+  { "v21 hi", SIMD_V21_HI, UINT64_MAX },
+  { "v22 lo", SIMD_V22_LO, UINT64_MAX },
+  { "v22 hi", SIMD_V22_HI, UINT64_MAX },
+  { "v23 lo", SIMD_V23_LO, UINT64_MAX },
+  { "v23 hi", SIMD_V23_HI, UINT64_MAX },
+  { "v24 lo", SIMD_V24_LO, UINT64_MAX },
+  { "v24 hi", SIMD_V24_HI, UINT64_MAX },
+  { "v25 lo", SIMD_V25_LO, UINT64_MAX },
+  { "v25 hi", SIMD_V25_HI, UINT64_MAX },
+  { "v26 lo", SIMD_V26_LO, UINT64_MAX },
+  { "v26 hi", SIMD_V26_HI, UINT64_MAX },
+  { "v27 lo", SIMD_V27_LO, UINT64_MAX },
+  { "v27 hi", SIMD_V27_HI, UINT64_MAX },
+  { "v28 lo", SIMD_V28_LO, UINT64_MAX },
+  { "v28 hi", SIMD_V28_HI, UINT64_MAX },
+  { "v29 lo", SIMD_V29_LO, UINT64_MAX },
+  { "v29 hi", SIMD_V29_HI, UINT64_MAX },
+  { "v30 lo", SIMD_V30_LO, UINT64_MAX },
+  { "v30 hi", SIMD_V30_HI, UINT64_MAX },
+  { "v31 lo", SIMD_V31_LO, UINT64_MAX },
+  { "v31 hi", SIMD_V31_HI, UINT64_MAX },
+};
+
+static const uint64_t exception_gpr_patterns[ GPR_MAX ] = {
+  UINT64_C( 0x5152535455565758 ),
+  UINT64_C( 0x5253545556575859 ),
+  UINT64_C( 0x535455565758595a ),
+  UINT64_C( 0x5455565758595a5b ),
+  UINT64_C( 0x55565758595a5b5c ),
+  UINT64_C( 0x565758595a5b5c5d ),
+  UINT64_C( 0x5758595a5b5c5d5e ),
+  UINT64_C( 0x58595a5b5c5d5e5f ),
+  UINT64_C( 0x595a5b5c5d5e5f60 ),
+  UINT64_C( 0x5a5b5c5d5e5f6061 ),
+  UINT64_C( 0x5b5c5d5e5f606162 ),
+  UINT64_C( 0x5c5d5e5f60616263 ),
+  UINT64_C( 0x5d5e5f6061626364 ),
+  UINT64_C( 0x5e5f606162636465 ),
+  UINT64_C( 0x5f60616263646566 ),
+  UINT64_C( 0x6061626364656667 ),
+  UINT64_C( 0x6162636465666768 ),
+  UINT64_C( 0x6263646566676869 ),
+  UINT64_C( 0x636465666768696a ),
+  UINT64_C( 0x6465666768696a6b ),
+  UINT64_C( 0x65666768696a6b6c ),
+  UINT64_C( 0x666768696a6b6c6d ),
+  UINT64_C( 0x6768696a6b6c6d6e ),
+  UINT64_C( 0x68696a6b6c6d6e6f ),
+  UINT64_C( 0x696a6b6c6d6e6f70 ),
+  UINT64_C( 0x6a6b6c6d6e6f7071 ),
+  UINT64_C( 0x6b6c6d6e6f707172 ),
+  UINT64_C( 0x6c6d6e6f70717273 ),
+  UINT64_C( 0x6d6e6f7071727374 ),
+  UINT64_C( 0x6e6f707172737475 ),
+  UINT64_C( 0x6f70717273747576 ),
+  1,
+  UINT64_C( 0x50000000 ),
+  UINT64_C( 0x08000015 ),
+  UINT64_C( 0x01800000 ),
+  1,
+  1,
+  1
+};
+
+static const uint64_t exception_simd_patterns[ SIMD_MAX ] = {
+  UINT64_C( 0x9192939495969798 ),
+  UINT64_C( 0x9293949596979899 ),
+  UINT64_C( 0x939495969798999a ),
+  UINT64_C( 0x9495969798999a9b ),
+  UINT64_C( 0x95969798999a9b9c ),
+  UINT64_C( 0x969798999a9b9c9d ),
+  UINT64_C( 0x9798999a9b9c9d9e ),
+  UINT64_C( 0x98999a9b9c9d9e9f ),
+  UINT64_C( 0x999a9b9c9d9e9fa0 ),
+  UINT64_C( 0x9a9b9c9d9e9fa0a1 ),
+  UINT64_C( 0x9b9c9d9e9fa0a1a2 ),
+  UINT64_C( 0x9c9d9e9fa0a1a2a3 ),
+  UINT64_C( 0x9d9e9fa0a1a2a3a4 ),
+  UINT64_C( 0x9e9fa0a1a2a3a4a5 ),
+  UINT64_C( 0x9fa0a1a2a3a4a5a6 ),
+  UINT64_C( 0xa0a1a2a3a4a5a6a7 ),
+  UINT64_C( 0xa1a2a3a4a5a6a7a8 ),
+  UINT64_C( 0xa2a3a4a5a6a7a8a9 ),
+  UINT64_C( 0xa3a4a5a6a7a8a9aa ),
+  UINT64_C( 0xa4a5a6a7a8a9aaab ),
+  UINT64_C( 0xa5a6a7a8a9aaabac ),
+  UINT64_C( 0xa6a7a8a9aaabacad ),
+  UINT64_C( 0xa7a8a9aaabacadae ),
+  UINT64_C( 0xa8a9aaabacadaeaf ),
+  UINT64_C( 0xa9aaabacadaeafb0 ),
+  UINT64_C( 0xaaabacadaeafb0b1 ),
+  UINT64_C( 0xabacadaeafb0b1b2 ),
+  UINT64_C( 0xacadaeafb0b1b2b3 ),
+  UINT64_C( 0xadaeafb0b1b2b3b4 ),
+  UINT64_C( 0xaeafb0b1b2b3b4b5 ),
+  UINT64_C( 0xafb0b1b2b3b4b5b6 ),
+  UINT64_C( 0xb0b1b2b3b4b5b6b7 ),
+  UINT64_C( 0xb1b2b3b4b5b6b7b8 ),
+  UINT64_C( 0xb2b3b4b5b6b7b8b9 ),
+  UINT64_C( 0xb3b4b5b6b7b8b9ba ),
+  UINT64_C( 0xb4b5b6b7b8b9babb ),
+  UINT64_C( 0xb5b6b7b8b9babbbc ),
+  UINT64_C( 0xb6b7b8b9babbbcbd ),
+  UINT64_C( 0xb7b8b9babbbcbdbe ),
+  UINT64_C( 0xb8b9babbbcbdbebf ),
+  UINT64_C( 0xb9babbbcbdbebfc0 ),
+  UINT64_C( 0xbabbbcbdbebfc0c1 ),
+  UINT64_C( 0xbbbcbdbebfc0c1c2 ),
+  UINT64_C( 0xbcbdbebfc0c1c2c3 ),
+  UINT64_C( 0xbdbebfc0c1c2c3c4 ),
+  UINT64_C( 0xbebfc0c1c2c3c4c5 ),
+  UINT64_C( 0xbfc0c1c2c3c4c5c6 ),
+  UINT64_C( 0xc0c1c2c3c4c5c6c7 ),
+  UINT64_C( 0xc1c2c3c4c5c6c7c8 ),
+  UINT64_C( 0xc2c3c4c5c6c7c8c9 ),
+  UINT64_C( 0xc3c4c5c6c7c8c9ca ),
+  UINT64_C( 0xc4c5c6c7c8c9cacb ),
+  UINT64_C( 0xc5c6c7c8c9cacbcc ),
+  UINT64_C( 0xc6c7c8c9cacbcccd ),
+  UINT64_C( 0xc7c8c9cacbcccdce ),
+  UINT64_C( 0xc8c9cacbcccdcecf ),
+  UINT64_C( 0xc9cacbcccdcecfd0 ),
+  UINT64_C( 0xcacbcccdcecfd0d1 ),
+  UINT64_C( 0xcbcccdcecfd0d1d2 ),
+  UINT64_C( 0xcccdcecfd0d1d2d3 ),
+  UINT64_C( 0xcdcecfd0d1d2d3d4 ),
+  UINT64_C( 0xcecfd0d1d2d3d4d5 ),
+  UINT64_C( 0xcfd0d1d2d3d4d5d6 ),
+  UINT64_C( 0xd0d1d2d3d4d5d6d7 ),
+};
+
+uint64_t exception_gpr_initial[ GPR_MAX ];
+
+static uint64_t exception_simd_initial[ SIMD_MAX ];
+
+/* The block loads q0 to q31 from this image of the vector registers. */
+uint64_t exception_vector_image[ 64 ] RTEMS_ALIGNED( 16 );
+
+uint64_t exception_status[ 3 ];
+
+static CPU_Exception_frame exception_frame;
+
+static rtems_fatal_source exception_source;
+
+static rtems_fatal_code exception_code;
+
+static uint64_t exception_fp;
+
+static uint64_t exception_fpcr;
+
+/* The block loads x0 last, because x0 holds the address of the table. */
+#define EXC_LOAD                               \
+  "adrp x0, exception_status\n"                \
+  "add x0, x0, :lo12:exception_status\n"       \
+  "ldr x1, [x0, #0]\n"                         \
+  "msr nzcv, x1\n"                             \
+  "ldr x1, [x0, #8]\n"                         \
+  "msr fpsr, x1\n"                             \
+  "ldr x1, [x0, #16]\n"                        \
+  "msr fpcr, x1\n"                             \
+  "adrp x0, exception_vector_image\n"          \
+  "add x0, x0, :lo12:exception_vector_image\n" \
+  "ldr q0, [x0, #0]\n"                         \
+  "ldr q1, [x0, #16]\n"                        \
+  "ldr q2, [x0, #32]\n"                        \
+  "ldr q3, [x0, #48]\n"                        \
+  "ldr q4, [x0, #64]\n"                        \
+  "ldr q5, [x0, #80]\n"                        \
+  "ldr q6, [x0, #96]\n"                        \
+  "ldr q7, [x0, #112]\n"                       \
+  "ldr q8, [x0, #128]\n"                       \
+  "ldr q9, [x0, #144]\n"                       \
+  "ldr q10, [x0, #160]\n"                      \
+  "ldr q11, [x0, #176]\n"                      \
+  "ldr q12, [x0, #192]\n"                      \
+  "ldr q13, [x0, #208]\n"                      \
+  "ldr q14, [x0, #224]\n"                      \
+  "ldr q15, [x0, #240]\n"                      \
+  "ldr q16, [x0, #256]\n"                      \
+  "ldr q17, [x0, #272]\n"                      \
+  "ldr q18, [x0, #288]\n"                      \
+  "ldr q19, [x0, #304]\n"                      \
+  "ldr q20, [x0, #320]\n"                      \
+  "ldr q21, [x0, #336]\n"                      \
+  "ldr q22, [x0, #352]\n"                      \
+  "ldr q23, [x0, #368]\n"                      \
+  "ldr q24, [x0, #384]\n"                      \
+  "ldr q25, [x0, #400]\n"                      \
+  "ldr q26, [x0, #416]\n"                      \
+  "ldr q27, [x0, #432]\n"                      \
+  "ldr q28, [x0, #448]\n"                      \
+  "ldr q29, [x0, #464]\n"                      \
+  "ldr q30, [x0, #480]\n"                      \
+  "ldr q31, [x0, #496]\n"                      \
+  "adrp x0, exception_gpr_initial\n"           \
+  "add x0, x0, :lo12:exception_gpr_initial\n"  \
+  "ldr x1, [x0, #8]\n"                         \
+  "ldr x2, [x0, #16]\n"                        \
+  "ldr x3, [x0, #24]\n"                        \
+  "ldr x4, [x0, #32]\n"                        \
+  "ldr x5, [x0, #40]\n"                        \
+  "ldr x6, [x0, #48]\n"                        \
+  "ldr x7, [x0, #56]\n"                        \
+  "ldr x8, [x0, #64]\n"                        \
+  "ldr x9, [x0, #72]\n"                        \
+  "ldr x10, [x0, #80]\n"                       \
+  "ldr x11, [x0, #88]\n"                       \
+  "ldr x12, [x0, #96]\n"                       \
+  "ldr x13, [x0, #104]\n"                      \
+  "ldr x14, [x0, #112]\n"                      \
+  "ldr x15, [x0, #120]\n"                      \
+  "ldr x16, [x0, #128]\n"                      \
+  "ldr x17, [x0, #136]\n"                      \
+  "ldr x18, [x0, #144]\n"                      \
+  "ldr x19, [x0, #152]\n"                      \
+  "ldr x20, [x0, #160]\n"                      \
+  "ldr x21, [x0, #168]\n"                      \
+  "ldr x22, [x0, #176]\n"                      \
+  "ldr x23, [x0, #184]\n"                      \
+  "ldr x24, [x0, #192]\n"                      \
+  "ldr x25, [x0, #200]\n"                      \
+  "ldr x26, [x0, #208]\n"                      \
+  "ldr x27, [x0, #216]\n"                      \
+  "ldr x28, [x0, #224]\n"                      \
+  "ldr x29, [x0, #232]\n"                      \
+  "ldr x30, [x0, #240]\n"                      \
+  "ldr x0, [x0, #0]\n"
+
+static void ExceptionFatal(
+  rtems_fatal_source source,
+  rtems_fatal_code   code,
+  void              *arg
+)
+{
+  CPU_Exception_frame *frame;
+
+  (void) arg;
+  exception_source = source;
+  exception_code = code;
+
+  if ( source != RTEMS_FATAL_SOURCE_EXCEPTION ) {
+    return;
+  }
+
+  frame = (CPU_Exception_frame *) code;
+  exception_frame = *frame;
+  SetFatalHandler( NULL, NULL );
+  frame->register_fp = exception_fp;
+  frame->register_fpcr = exception_fpcr;
+  frame->register_pc = (void *) exception_done_label;
+  _CPU_Exception_resume( frame );
+}
+
+static void ExceptionPrepare( void )
+{
+  const uint64_t *simd;
+  size_t          i;
+
+  simd = exception_simd_initial;
+
+  for ( i = 0; i < 64; ++i ) {
+    exception_vector_image[ i ] = simd[ i ];
+  }
+
+  exception_status[ 0 ] = exception_gpr_initial[ GPR_NZCV ];
+  exception_status[ 1 ] = exception_gpr_initial[ GPR_FPSR ];
+  exception_status[ 2 ] = exception_gpr_initial[ GPR_FPCR ];
+  memset( &exception_frame, 0, sizeof( exception_frame ) );
+  exception_source = 0;
+  exception_code = 0;
+}
+
+static uintptr_t ExceptionRaise( void )
+{
+  uintptr_t sp;
+
+  ExceptionPrepare();
+  SetFatalHandler( ExceptionFatal, NULL );
+  __asm__ volatile( "mov %0, sp"
+                    : "=r"( sp ) );
+  __asm__ volatile( "mov %0, x29"
+                    : "=r"( exception_fp ) );
+  __asm__ volatile( "mrs %0, fpcr"
+                    : "=r"( exception_fpcr ) );
+  __asm__ volatile( EXC_LOAD ".globl exception_trap_label\n"
+                             "exception_trap_label:\n"
+                             "brk #0\n"
+                             ".globl exception_done_label\n"
+                             "exception_done_label:\n"
+                    :
+                    :
+                    : "memory",
+                      "cc",
+                      "x0",
+                      "x1",
+                      "x2",
+                      "x3",
+                      "x4",
+                      "x5",
+                      "x6",
+                      "x7",
+                      "x8",
+                      "x9",
+                      "x10",
+                      "x11",
+                      "x12",
+                      "x13",
+                      "x14",
+                      "x15",
+                      "x16",
+                      "x17",
+                      "x18",
+                      "x19",
+                      "x20",
+                      "x21",
+                      "x22",
+                      "x23",
+                      "x24",
+                      "x25",
+                      "x26",
+                      "x27",
+                      "x28",
+                      "x30",
+                      "v0",
+                      "v1",
+                      "v2",
+                      "v3",
+                      "v4",
+                      "v5",
+                      "v6",
+                      "v7",
+                      "v8",
+                      "v9",
+                      "v10",
+                      "v11",
+                      "v12",
+                      "v13",
+                      "v14",
+                      "v15",
+                      "v16",
+                      "v17",
+                      "v18",
+                      "v19",
+                      "v20",
+                      "v21",
+                      "v22",
+                      "v23",
+                      "v24",
+                      "v25",
+                      "v26",
+                      "v27",
+                      "v28",
+                      "v29",
+                      "v30",
+                      "v31" );
+
+  return sp;
+}
+
+static void ExceptionRunGpr( RegisterCheck *self, void *arg )
+{
+  uintptr_t sp;
+
+  (void) arg;
+  sp = ExceptionRaise();
+  RegisterCheckRecord(
+    self,
+    GPR_X0,
+    exception_frame.registers[ 0 ],
+    exception_gpr_patterns[ GPR_X0 ]
+  );
+  RegisterCheckRecord(
+    self,
+    GPR_X1,
+    exception_frame.registers[ 1 ],
+    exception_gpr_patterns[ GPR_X1 ]
+  );
+  RegisterCheckRecord(
+    self,
+    GPR_X2,
+    exception_frame.registers[ 2 ],
+    exception_gpr_patterns[ GPR_X2 ]
+  );
+  RegisterCheckRecord(
+    self,
+    GPR_X3,
+    exception_frame.registers[ 3 ],
+    exception_gpr_patterns[ GPR_X3 ]
+  );
+  RegisterCheckRecord(
+    self,
+    GPR_X4,
+    exception_frame.registers[ 4 ],
+    exception_gpr_patterns[ GPR_X4 ]
+  );
+  RegisterCheckRecord(
+    self,
+    GPR_X5,
+    exception_frame.registers[ 5 ],
+    exception_gpr_patterns[ GPR_X5 ]
+  );
+  RegisterCheckRecord(
+    self,
+    GPR_X6,
+    exception_frame.registers[ 6 ],
+    exception_gpr_patterns[ GPR_X6 ]
+  );
+  RegisterCheckRecord(
+    self,
+    GPR_X7,
+    exception_frame.registers[ 7 ],
+    exception_gpr_patterns[ GPR_X7 ]
+  );
+  RegisterCheckRecord(
+    self,
+    GPR_X8,
+    exception_frame.registers[ 8 ],
+    exception_gpr_patterns[ GPR_X8 ]
+  );
+  RegisterCheckRecord(
+    self,
+    GPR_X9,
+    exception_frame.registers[ 9 ],
+    exception_gpr_patterns[ GPR_X9 ]
+  );
+  RegisterCheckRecord(
+    self,
+    GPR_X10,
+    exception_frame.registers[ 10 ],
+    exception_gpr_patterns[ GPR_X10 ]
+  );
+  RegisterCheckRecord(
+    self,
+    GPR_X11,
+    exception_frame.registers[ 11 ],
+    exception_gpr_patterns[ GPR_X11 ]
+  );
+  RegisterCheckRecord(
+    self,
+    GPR_X12,
+    exception_frame.registers[ 12 ],
+    exception_gpr_patterns[ GPR_X12 ]
+  );
+  RegisterCheckRecord(
+    self,
+    GPR_X13,
+    exception_frame.registers[ 13 ],
+    exception_gpr_patterns[ GPR_X13 ]
+  );
+  RegisterCheckRecord(
+    self,
+    GPR_X14,
+    exception_frame.registers[ 14 ],
+    exception_gpr_patterns[ GPR_X14 ]
+  );
+  RegisterCheckRecord(
+    self,
+    GPR_X15,
+    exception_frame.registers[ 15 ],
+    exception_gpr_patterns[ GPR_X15 ]
+  );
+  RegisterCheckRecord(
+    self,
+    GPR_X16,
+    exception_frame.registers[ 16 ],
+    exception_gpr_patterns[ GPR_X16 ]
+  );
+  RegisterCheckRecord(
+    self,
+    GPR_X17,
+    exception_frame.registers[ 17 ],
+    exception_gpr_patterns[ GPR_X17 ]
+  );
+  RegisterCheckRecord(
+    self,
+    GPR_X18,
+    exception_frame.registers[ 18 ],
+    exception_gpr_patterns[ GPR_X18 ]
+  );
+  RegisterCheckRecord(
+    self,
+    GPR_X19,
+    exception_frame.registers[ 19 ],
+    exception_gpr_patterns[ GPR_X19 ]
+  );
+  RegisterCheckRecord(
+    self,
+    GPR_X20,
+    exception_frame.registers[ 20 ],
+    exception_gpr_patterns[ GPR_X20 ]
+  );
+  RegisterCheckRecord(
+    self,
+    GPR_X21,
+    exception_frame.registers[ 21 ],
+    exception_gpr_patterns[ GPR_X21 ]
+  );
+  RegisterCheckRecord(
+    self,
+    GPR_X22,
+    exception_frame.registers[ 22 ],
+    exception_gpr_patterns[ GPR_X22 ]
+  );
+  RegisterCheckRecord(
+    self,
+    GPR_X23,
+    exception_frame.registers[ 23 ],
+    exception_gpr_patterns[ GPR_X23 ]
+  );
+  RegisterCheckRecord(
+    self,
+    GPR_X24,
+    exception_frame.registers[ 24 ],
+    exception_gpr_patterns[ GPR_X24 ]
+  );
+  RegisterCheckRecord(
+    self,
+    GPR_X25,
+    exception_frame.registers[ 25 ],
+    exception_gpr_patterns[ GPR_X25 ]
+  );
+  RegisterCheckRecord(
+    self,
+    GPR_X26,
+    exception_frame.registers[ 26 ],
+    exception_gpr_patterns[ GPR_X26 ]
+  );
+  RegisterCheckRecord(
+    self,
+    GPR_X27,
+    exception_frame.registers[ 27 ],
+    exception_gpr_patterns[ GPR_X27 ]
+  );
+  RegisterCheckRecord(
+    self,
+    GPR_X28,
+    exception_frame.registers[ 28 ],
+    exception_gpr_patterns[ GPR_X28 ]
+  );
+  RegisterCheckRecord(
+    self,
+    GPR_X29,
+    exception_frame.registers[ 29 ],
+    exception_gpr_patterns[ GPR_X29 ]
+  );
+  RegisterCheckRecord(
+    self,
+    GPR_X30,
+    exception_frame.registers[ 30 ],
+    exception_gpr_patterns[ GPR_X30 ]
+  );
+  RegisterCheckRecord( self, GPR_SP, exception_frame.register_sp == sp, 1 );
+  RegisterCheckRecord(
+    self,
+    GPR_NZCV,
+    exception_frame.register_cpsr & NZCV_MASK,
+    exception_gpr_patterns[ GPR_NZCV ]
+  );
+  RegisterCheckRecord(
+    self,
+    GPR_FPSR,
+    exception_frame.register_fpsr & FPSR_MASK,
+    exception_gpr_patterns[ GPR_FPSR ]
+  );
+  RegisterCheckRecord(
+    self,
+    GPR_FPCR,
+    exception_frame.register_fpcr & FPCR_MASK,
+    exception_gpr_patterns[ GPR_FPCR ]
+  );
+  RegisterCheckRecord(
+    self,
+    GPR_PC,
+    exception_frame.register_pc == exception_trap_label,
+    1
+  );
+  RegisterCheckRecord(
+    self,
+    GPR_SOURCE,
+    exception_source == RTEMS_FATAL_SOURCE_EXCEPTION,
+    1
+  );
+  RegisterCheckRecord(
+    self,
+    GPR_CODE,
+    exception_code == (uintptr_t) _Per_CPU_Get()->interrupt_stack_high -
+                        sizeof( CPU_Exception_frame ),
+    1
+  );
+}
+
+static void ExceptionRunSimd( RegisterCheck *self, void *arg )
+{
+  (void) arg;
+  (void) ExceptionRaise();
+  RegisterCheckRecord(
+    self,
+    SIMD_V0_LO,
+    (uint64_t) ( exception_frame.vector_registers[ 0 ] ),
+    exception_simd_patterns[ SIMD_V0_LO ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V0_HI,
+    (uint64_t) ( exception_frame.vector_registers[ 0 ] >> 64 ),
+    exception_simd_patterns[ SIMD_V0_HI ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V1_LO,
+    (uint64_t) ( exception_frame.vector_registers[ 1 ] ),
+    exception_simd_patterns[ SIMD_V1_LO ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V1_HI,
+    (uint64_t) ( exception_frame.vector_registers[ 1 ] >> 64 ),
+    exception_simd_patterns[ SIMD_V1_HI ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V2_LO,
+    (uint64_t) ( exception_frame.vector_registers[ 2 ] ),
+    exception_simd_patterns[ SIMD_V2_LO ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V2_HI,
+    (uint64_t) ( exception_frame.vector_registers[ 2 ] >> 64 ),
+    exception_simd_patterns[ SIMD_V2_HI ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V3_LO,
+    (uint64_t) ( exception_frame.vector_registers[ 3 ] ),
+    exception_simd_patterns[ SIMD_V3_LO ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V3_HI,
+    (uint64_t) ( exception_frame.vector_registers[ 3 ] >> 64 ),
+    exception_simd_patterns[ SIMD_V3_HI ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V4_LO,
+    (uint64_t) ( exception_frame.vector_registers[ 4 ] ),
+    exception_simd_patterns[ SIMD_V4_LO ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V4_HI,
+    (uint64_t) ( exception_frame.vector_registers[ 4 ] >> 64 ),
+    exception_simd_patterns[ SIMD_V4_HI ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V5_LO,
+    (uint64_t) ( exception_frame.vector_registers[ 5 ] ),
+    exception_simd_patterns[ SIMD_V5_LO ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V5_HI,
+    (uint64_t) ( exception_frame.vector_registers[ 5 ] >> 64 ),
+    exception_simd_patterns[ SIMD_V5_HI ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V6_LO,
+    (uint64_t) ( exception_frame.vector_registers[ 6 ] ),
+    exception_simd_patterns[ SIMD_V6_LO ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V6_HI,
+    (uint64_t) ( exception_frame.vector_registers[ 6 ] >> 64 ),
+    exception_simd_patterns[ SIMD_V6_HI ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V7_LO,
+    (uint64_t) ( exception_frame.vector_registers[ 7 ] ),
+    exception_simd_patterns[ SIMD_V7_LO ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V7_HI,
+    (uint64_t) ( exception_frame.vector_registers[ 7 ] >> 64 ),
+    exception_simd_patterns[ SIMD_V7_HI ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V8_LO,
+    (uint64_t) ( exception_frame.vector_registers[ 8 ] ),
+    exception_simd_patterns[ SIMD_V8_LO ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V8_HI,
+    (uint64_t) ( exception_frame.vector_registers[ 8 ] >> 64 ),
+    exception_simd_patterns[ SIMD_V8_HI ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V9_LO,
+    (uint64_t) ( exception_frame.vector_registers[ 9 ] ),
+    exception_simd_patterns[ SIMD_V9_LO ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V9_HI,
+    (uint64_t) ( exception_frame.vector_registers[ 9 ] >> 64 ),
+    exception_simd_patterns[ SIMD_V9_HI ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V10_LO,
+    (uint64_t) ( exception_frame.vector_registers[ 10 ] ),
+    exception_simd_patterns[ SIMD_V10_LO ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V10_HI,
+    (uint64_t) ( exception_frame.vector_registers[ 10 ] >> 64 ),
+    exception_simd_patterns[ SIMD_V10_HI ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V11_LO,
+    (uint64_t) ( exception_frame.vector_registers[ 11 ] ),
+    exception_simd_patterns[ SIMD_V11_LO ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V11_HI,
+    (uint64_t) ( exception_frame.vector_registers[ 11 ] >> 64 ),
+    exception_simd_patterns[ SIMD_V11_HI ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V12_LO,
+    (uint64_t) ( exception_frame.vector_registers[ 12 ] ),
+    exception_simd_patterns[ SIMD_V12_LO ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V12_HI,
+    (uint64_t) ( exception_frame.vector_registers[ 12 ] >> 64 ),
+    exception_simd_patterns[ SIMD_V12_HI ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V13_LO,
+    (uint64_t) ( exception_frame.vector_registers[ 13 ] ),
+    exception_simd_patterns[ SIMD_V13_LO ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V13_HI,
+    (uint64_t) ( exception_frame.vector_registers[ 13 ] >> 64 ),
+    exception_simd_patterns[ SIMD_V13_HI ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V14_LO,
+    (uint64_t) ( exception_frame.vector_registers[ 14 ] ),
+    exception_simd_patterns[ SIMD_V14_LO ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V14_HI,
+    (uint64_t) ( exception_frame.vector_registers[ 14 ] >> 64 ),
+    exception_simd_patterns[ SIMD_V14_HI ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V15_LO,
+    (uint64_t) ( exception_frame.vector_registers[ 15 ] ),
+    exception_simd_patterns[ SIMD_V15_LO ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V15_HI,
+    (uint64_t) ( exception_frame.vector_registers[ 15 ] >> 64 ),
+    exception_simd_patterns[ SIMD_V15_HI ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V16_LO,
+    (uint64_t) ( exception_frame.vector_registers[ 16 ] ),
+    exception_simd_patterns[ SIMD_V16_LO ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V16_HI,
+    (uint64_t) ( exception_frame.vector_registers[ 16 ] >> 64 ),
+    exception_simd_patterns[ SIMD_V16_HI ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V17_LO,
+    (uint64_t) ( exception_frame.vector_registers[ 17 ] ),
+    exception_simd_patterns[ SIMD_V17_LO ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V17_HI,
+    (uint64_t) ( exception_frame.vector_registers[ 17 ] >> 64 ),
+    exception_simd_patterns[ SIMD_V17_HI ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V18_LO,
+    (uint64_t) ( exception_frame.vector_registers[ 18 ] ),
+    exception_simd_patterns[ SIMD_V18_LO ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V18_HI,
+    (uint64_t) ( exception_frame.vector_registers[ 18 ] >> 64 ),
+    exception_simd_patterns[ SIMD_V18_HI ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V19_LO,
+    (uint64_t) ( exception_frame.vector_registers[ 19 ] ),
+    exception_simd_patterns[ SIMD_V19_LO ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V19_HI,
+    (uint64_t) ( exception_frame.vector_registers[ 19 ] >> 64 ),
+    exception_simd_patterns[ SIMD_V19_HI ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V20_LO,
+    (uint64_t) ( exception_frame.vector_registers[ 20 ] ),
+    exception_simd_patterns[ SIMD_V20_LO ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V20_HI,
+    (uint64_t) ( exception_frame.vector_registers[ 20 ] >> 64 ),
+    exception_simd_patterns[ SIMD_V20_HI ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V21_LO,
+    (uint64_t) ( exception_frame.vector_registers[ 21 ] ),
+    exception_simd_patterns[ SIMD_V21_LO ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V21_HI,
+    (uint64_t) ( exception_frame.vector_registers[ 21 ] >> 64 ),
+    exception_simd_patterns[ SIMD_V21_HI ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V22_LO,
+    (uint64_t) ( exception_frame.vector_registers[ 22 ] ),
+    exception_simd_patterns[ SIMD_V22_LO ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V22_HI,
+    (uint64_t) ( exception_frame.vector_registers[ 22 ] >> 64 ),
+    exception_simd_patterns[ SIMD_V22_HI ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V23_LO,
+    (uint64_t) ( exception_frame.vector_registers[ 23 ] ),
+    exception_simd_patterns[ SIMD_V23_LO ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V23_HI,
+    (uint64_t) ( exception_frame.vector_registers[ 23 ] >> 64 ),
+    exception_simd_patterns[ SIMD_V23_HI ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V24_LO,
+    (uint64_t) ( exception_frame.vector_registers[ 24 ] ),
+    exception_simd_patterns[ SIMD_V24_LO ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V24_HI,
+    (uint64_t) ( exception_frame.vector_registers[ 24 ] >> 64 ),
+    exception_simd_patterns[ SIMD_V24_HI ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V25_LO,
+    (uint64_t) ( exception_frame.vector_registers[ 25 ] ),
+    exception_simd_patterns[ SIMD_V25_LO ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V25_HI,
+    (uint64_t) ( exception_frame.vector_registers[ 25 ] >> 64 ),
+    exception_simd_patterns[ SIMD_V25_HI ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V26_LO,
+    (uint64_t) ( exception_frame.vector_registers[ 26 ] ),
+    exception_simd_patterns[ SIMD_V26_LO ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V26_HI,
+    (uint64_t) ( exception_frame.vector_registers[ 26 ] >> 64 ),
+    exception_simd_patterns[ SIMD_V26_HI ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V27_LO,
+    (uint64_t) ( exception_frame.vector_registers[ 27 ] ),
+    exception_simd_patterns[ SIMD_V27_LO ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V27_HI,
+    (uint64_t) ( exception_frame.vector_registers[ 27 ] >> 64 ),
+    exception_simd_patterns[ SIMD_V27_HI ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V28_LO,
+    (uint64_t) ( exception_frame.vector_registers[ 28 ] ),
+    exception_simd_patterns[ SIMD_V28_LO ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V28_HI,
+    (uint64_t) ( exception_frame.vector_registers[ 28 ] >> 64 ),
+    exception_simd_patterns[ SIMD_V28_HI ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V29_LO,
+    (uint64_t) ( exception_frame.vector_registers[ 29 ] ),
+    exception_simd_patterns[ SIMD_V29_LO ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V29_HI,
+    (uint64_t) ( exception_frame.vector_registers[ 29 ] >> 64 ),
+    exception_simd_patterns[ SIMD_V29_HI ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V30_LO,
+    (uint64_t) ( exception_frame.vector_registers[ 30 ] ),
+    exception_simd_patterns[ SIMD_V30_LO ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V30_HI,
+    (uint64_t) ( exception_frame.vector_registers[ 30 ] >> 64 ),
+    exception_simd_patterns[ SIMD_V30_HI ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V31_LO,
+    (uint64_t) ( exception_frame.vector_registers[ 31 ] ),
+    exception_simd_patterns[ SIMD_V31_LO ]
+  );
+  RegisterCheckRecord(
+    self,
+    SIMD_V31_HI,
+    (uint64_t) ( exception_frame.vector_registers[ 31 ] >> 64 ),
+    exception_simd_patterns[ SIMD_V31_HI ]
+  );
+}
+
+static RegisterCheck exception_gpr_check = {
+  .sources = exception_gpr_sources,
+  .source_count = GPR_MAX,
+  .slots = exception_gpr_slots,
+  .slot_count = GPR_MAX,
+  .initial = exception_gpr_initial,
+  .run = ExceptionRunGpr
+};
+
+static RegisterCheck exception_simd_check = {
+  .sources = exception_simd_sources,
+  .source_count = SIMD_MAX,
+  .slots = exception_simd_slots,
+  .slot_count = SIMD_MAX,
+  .initial = exception_simd_initial,
+  .run = ExceptionRunSimd
+};
+
+static void CheckGpr( Gpr slot )
+{
+  RegisterCheckVerify( &exception_gpr_check, slot );
+}
+
+static void CheckSimd( Simd slot )
+{
+  RegisterCheckVerify( &exception_simd_check, slot );
+}
+
+/**
+ * @brief Load a distinct pattern into every register. Trap. Run this once for
+ *   each register with the pattern of that register inverted, then once
+ *   unchanged.
+ */
+static void ScoreCpuAarch64ValExceptionFrame_Action_0( void )
+{
+  memcpy(
+    exception_gpr_initial,
+    exception_gpr_patterns,
+    sizeof( exception_gpr_initial )
+  );
+  memcpy(
+    exception_simd_initial,
+    exception_simd_patterns,
+    sizeof( exception_simd_initial )
+  );
+  RegisterCheckRun( &exception_gpr_check );
+  RegisterCheckRun( &exception_simd_check );
+
+  /*
+   * Check that the default exception handler saved the AArch64 register X0 to
+   * the frame.
+   */
+  CheckGpr( GPR_X0 );
+
+  /*
+   * Check that the default exception handler saved the AArch64 register X1 to
+   * the frame.
+   */
+  CheckGpr( GPR_X1 );
+
+  /*
+   * Check that the default exception handler saved the AArch64 register X2 to
+   * the frame.
+   */
+  CheckGpr( GPR_X2 );
+
+  /*
+   * Check that the default exception handler saved the AArch64 register X3 to
+   * the frame.
+   */
+  CheckGpr( GPR_X3 );
+
+  /*
+   * Check that the default exception handler saved the AArch64 register X4 to
+   * the frame.
+   */
+  CheckGpr( GPR_X4 );
+
+  /*
+   * Check that the default exception handler saved the AArch64 register X5 to
+   * the frame.
+   */
+  CheckGpr( GPR_X5 );
+
+  /*
+   * Check that the default exception handler saved the AArch64 register X6 to
+   * the frame.
+   */
+  CheckGpr( GPR_X6 );
+
+  /*
+   * Check that the default exception handler saved the AArch64 register X7 to
+   * the frame.
+   */
+  CheckGpr( GPR_X7 );
+
+  /*
+   * Check that the default exception handler saved the AArch64 register X8 to
+   * the frame.
+   */
+  CheckGpr( GPR_X8 );
+
+  /*
+   * Check that the default exception handler saved the AArch64 register X9 to
+   * the frame.
+   */
+  CheckGpr( GPR_X9 );
+
+  /*
+   * Check that the default exception handler saved the AArch64 register X10 to
+   * the frame.
+   */
+  CheckGpr( GPR_X10 );
+
+  /*
+   * Check that the default exception handler saved the AArch64 register X11 to
+   * the frame.
+   */
+  CheckGpr( GPR_X11 );
+
+  /*
+   * Check that the default exception handler saved the AArch64 register X12 to
+   * the frame.
+   */
+  CheckGpr( GPR_X12 );
+
+  /*
+   * Check that the default exception handler saved the AArch64 register X13 to
+   * the frame.
+   */
+  CheckGpr( GPR_X13 );
+
+  /*
+   * Check that the default exception handler saved the AArch64 register X14 to
+   * the frame.
+   */
+  CheckGpr( GPR_X14 );
+
+  /*
+   * Check that the default exception handler saved the AArch64 register X15 to
+   * the frame.
+   */
+  CheckGpr( GPR_X15 );
+
+  /*
+   * Check that the default exception handler saved the AArch64 register X16 to
+   * the frame.
+   */
+  CheckGpr( GPR_X16 );
+
+  /*
+   * Check that the default exception handler saved the AArch64 register X17 to
+   * the frame.
+   */
+  CheckGpr( GPR_X17 );
+
+  /*
+   * Check that the default exception handler saved the AArch64 register X18 to
+   * the frame.
+   */
+  CheckGpr( GPR_X18 );
+
+  /*
+   * Check that the default exception handler saved the AArch64 register X19 to
+   * the frame.
+   */
+  CheckGpr( GPR_X19 );
+
+  /*
+   * Check that the default exception handler saved the AArch64 register X20 to
+   * the frame.
+   */
+  CheckGpr( GPR_X20 );
+
+  /*
+   * Check that the default exception handler saved the AArch64 register X21 to
+   * the frame.
+   */
+  CheckGpr( GPR_X21 );
+
+  /*
+   * Check that the default exception handler saved the AArch64 register X22 to
+   * the frame.
+   */
+  CheckGpr( GPR_X22 );
+
+  /*
+   * Check that the default exception handler saved the AArch64 register X23 to
+   * the frame.
+   */
+  CheckGpr( GPR_X23 );
+
+  /*
+   * Check that the default exception handler saved the AArch64 register X24 to
+   * the frame.
+   */
+  CheckGpr( GPR_X24 );
+
+  /*
+   * Check that the default exception handler saved the AArch64 register X25 to
+   * the frame.
+   */
+  CheckGpr( GPR_X25 );
+
+  /*
+   * Check that the default exception handler saved the AArch64 register X26 to
+   * the frame.
+   */
+  CheckGpr( GPR_X26 );
+
+  /*
+   * Check that the default exception handler saved the AArch64 register X27 to
+   * the frame.
+   */
+  CheckGpr( GPR_X27 );
+
+  /*
+   * Check that the default exception handler saved the AArch64 register X28 to
+   * the frame.
+   */
+  CheckGpr( GPR_X28 );
+
+  /*
+   * Check that the default exception handler saved the AArch64 register X29 to
+   * the frame.
+   */
+  CheckGpr( GPR_X29 );
+
+  /*
+   * Check that the default exception handler saved the AArch64 register X30 to
+   * the frame.
+   */
+  CheckGpr( GPR_X30 );
+
+  /*
+   * Check that the default exception handler saved the stack pointer of the
+   * trapped context to the frame.
+   */
+  CheckGpr( GPR_SP );
+
+  /*
+   * Check that the default exception handler saved the condition flags of NZCV
+   * to the frame.
+   */
+  CheckGpr( GPR_NZCV );
+
+  /*
+   * Check that the default exception handler saved FPSR to the frame.
+   */
+  CheckGpr( GPR_FPSR );
+
+  /*
+   * Check that the default exception handler saved FPCR to the frame.
+   */
+  CheckGpr( GPR_FPCR );
+
+  /*
+   * Check that the frame holds the address of the trapping instruction.
+   */
+  CheckGpr( GPR_PC );
+
+  /*
+   * Check that the default exception handler terminated with the fatal source
+   * RTEMS_FATAL_SOURCE_EXCEPTION.
+   */
+  CheckGpr( GPR_SOURCE );
+
+  /*
+   * Check that the fatal code is the address of a frame at the top of the
+   * interrupt stack of the processor.
+   */
+  CheckGpr( GPR_CODE );
+
+  /*
+   * Check that each run with a changed value flagged exactly the checks of
+   * that value, and that each run recorded every check.
+   */
+  RegisterCheckReport( &exception_gpr_check );
+
+  /*
+   * Check that the default exception handler saved the bottom 64 bits of the
+   * AArch64 SIMD and floating-point register V0 to the frame.
+   */
+  CheckSimd( SIMD_V0_LO );
+
+  /*
+   * Check that the default exception handler saved the top 64 bits of the
+   * AArch64 SIMD and floating-point register V0 to the frame.
+   */
+  CheckSimd( SIMD_V0_HI );
+
+  /*
+   * Check that the default exception handler saved the bottom 64 bits of the
+   * AArch64 SIMD and floating-point register V1 to the frame.
+   */
+  CheckSimd( SIMD_V1_LO );
+
+  /*
+   * Check that the default exception handler saved the top 64 bits of the
+   * AArch64 SIMD and floating-point register V1 to the frame.
+   */
+  CheckSimd( SIMD_V1_HI );
+
+  /*
+   * Check that the default exception handler saved the bottom 64 bits of the
+   * AArch64 SIMD and floating-point register V2 to the frame.
+   */
+  CheckSimd( SIMD_V2_LO );
+
+  /*
+   * Check that the default exception handler saved the top 64 bits of the
+   * AArch64 SIMD and floating-point register V2 to the frame.
+   */
+  CheckSimd( SIMD_V2_HI );
+
+  /*
+   * Check that the default exception handler saved the bottom 64 bits of the
+   * AArch64 SIMD and floating-point register V3 to the frame.
+   */
+  CheckSimd( SIMD_V3_LO );
+
+  /*
+   * Check that the default exception handler saved the top 64 bits of the
+   * AArch64 SIMD and floating-point register V3 to the frame.
+   */
+  CheckSimd( SIMD_V3_HI );
+
+  /*
+   * Check that the default exception handler saved the bottom 64 bits of the
+   * AArch64 SIMD and floating-point register V4 to the frame.
+   */
+  CheckSimd( SIMD_V4_LO );
+
+  /*
+   * Check that the default exception handler saved the top 64 bits of the
+   * AArch64 SIMD and floating-point register V4 to the frame.
+   */
+  CheckSimd( SIMD_V4_HI );
+
+  /*
+   * Check that the default exception handler saved the bottom 64 bits of the
+   * AArch64 SIMD and floating-point register V5 to the frame.
+   */
+  CheckSimd( SIMD_V5_LO );
+
+  /*
+   * Check that the default exception handler saved the top 64 bits of the
+   * AArch64 SIMD and floating-point register V5 to the frame.
+   */
+  CheckSimd( SIMD_V5_HI );
+
+  /*
+   * Check that the default exception handler saved the bottom 64 bits of the
+   * AArch64 SIMD and floating-point register V6 to the frame.
+   */
+  CheckSimd( SIMD_V6_LO );
+
+  /*
+   * Check that the default exception handler saved the top 64 bits of the
+   * AArch64 SIMD and floating-point register V6 to the frame.
+   */
+  CheckSimd( SIMD_V6_HI );
+
+  /*
+   * Check that the default exception handler saved the bottom 64 bits of the
+   * AArch64 SIMD and floating-point register V7 to the frame.
+   */
+  CheckSimd( SIMD_V7_LO );
+
+  /*
+   * Check that the default exception handler saved the top 64 bits of the
+   * AArch64 SIMD and floating-point register V7 to the frame.
+   */
+  CheckSimd( SIMD_V7_HI );
+
+  /*
+   * Check that the default exception handler saved the bottom 64 bits of the
+   * AArch64 SIMD and floating-point register V8 to the frame.
+   */
+  CheckSimd( SIMD_V8_LO );
+
+  /*
+   * Check that the default exception handler saved the top 64 bits of the
+   * AArch64 SIMD and floating-point register V8 to the frame.
+   */
+  CheckSimd( SIMD_V8_HI );
+
+  /*
+   * Check that the default exception handler saved the bottom 64 bits of the
+   * AArch64 SIMD and floating-point register V9 to the frame.
+   */
+  CheckSimd( SIMD_V9_LO );
+
+  /*
+   * Check that the default exception handler saved the top 64 bits of the
+   * AArch64 SIMD and floating-point register V9 to the frame.
+   */
+  CheckSimd( SIMD_V9_HI );
+
+  /*
+   * Check that the default exception handler saved the bottom 64 bits of the
+   * AArch64 SIMD and floating-point register V10 to the frame.
+   */
+  CheckSimd( SIMD_V10_LO );
+
+  /*
+   * Check that the default exception handler saved the top 64 bits of the
+   * AArch64 SIMD and floating-point register V10 to the frame.
+   */
+  CheckSimd( SIMD_V10_HI );
+
+  /*
+   * Check that the default exception handler saved the bottom 64 bits of the
+   * AArch64 SIMD and floating-point register V11 to the frame.
+   */
+  CheckSimd( SIMD_V11_LO );
+
+  /*
+   * Check that the default exception handler saved the top 64 bits of the
+   * AArch64 SIMD and floating-point register V11 to the frame.
+   */
+  CheckSimd( SIMD_V11_HI );
+
+  /*
+   * Check that the default exception handler saved the bottom 64 bits of the
+   * AArch64 SIMD and floating-point register V12 to the frame.
+   */
+  CheckSimd( SIMD_V12_LO );
+
+  /*
+   * Check that the default exception handler saved the top 64 bits of the
+   * AArch64 SIMD and floating-point register V12 to the frame.
+   */
+  CheckSimd( SIMD_V12_HI );
+
+  /*
+   * Check that the default exception handler saved the bottom 64 bits of the
+   * AArch64 SIMD and floating-point register V13 to the frame.
+   */
+  CheckSimd( SIMD_V13_LO );
+
+  /*
+   * Check that the default exception handler saved the top 64 bits of the
+   * AArch64 SIMD and floating-point register V13 to the frame.
+   */
+  CheckSimd( SIMD_V13_HI );
+
+  /*
+   * Check that the default exception handler saved the bottom 64 bits of the
+   * AArch64 SIMD and floating-point register V14 to the frame.
+   */
+  CheckSimd( SIMD_V14_LO );
+
+  /*
+   * Check that the default exception handler saved the top 64 bits of the
+   * AArch64 SIMD and floating-point register V14 to the frame.
+   */
+  CheckSimd( SIMD_V14_HI );
+
+  /*
+   * Check that the default exception handler saved the bottom 64 bits of the
+   * AArch64 SIMD and floating-point register V15 to the frame.
+   */
+  CheckSimd( SIMD_V15_LO );
+
+  /*
+   * Check that the default exception handler saved the top 64 bits of the
+   * AArch64 SIMD and floating-point register V15 to the frame.
+   */
+  CheckSimd( SIMD_V15_HI );
+
+  /*
+   * Check that the default exception handler saved the bottom 64 bits of the
+   * AArch64 SIMD and floating-point register V16 to the frame.
+   */
+  CheckSimd( SIMD_V16_LO );
+
+  /*
+   * Check that the default exception handler saved the top 64 bits of the
+   * AArch64 SIMD and floating-point register V16 to the frame.
+   */
+  CheckSimd( SIMD_V16_HI );
+
+  /*
+   * Check that the default exception handler saved the bottom 64 bits of the
+   * AArch64 SIMD and floating-point register V17 to the frame.
+   */
+  CheckSimd( SIMD_V17_LO );
+
+  /*
+   * Check that the default exception handler saved the top 64 bits of the
+   * AArch64 SIMD and floating-point register V17 to the frame.
+   */
+  CheckSimd( SIMD_V17_HI );
+
+  /*
+   * Check that the default exception handler saved the bottom 64 bits of the
+   * AArch64 SIMD and floating-point register V18 to the frame.
+   */
+  CheckSimd( SIMD_V18_LO );
+
+  /*
+   * Check that the default exception handler saved the top 64 bits of the
+   * AArch64 SIMD and floating-point register V18 to the frame.
+   */
+  CheckSimd( SIMD_V18_HI );
+
+  /*
+   * Check that the default exception handler saved the bottom 64 bits of the
+   * AArch64 SIMD and floating-point register V19 to the frame.
+   */
+  CheckSimd( SIMD_V19_LO );
+
+  /*
+   * Check that the default exception handler saved the top 64 bits of the
+   * AArch64 SIMD and floating-point register V19 to the frame.
+   */
+  CheckSimd( SIMD_V19_HI );
+
+  /*
+   * Check that the default exception handler saved the bottom 64 bits of the
+   * AArch64 SIMD and floating-point register V20 to the frame.
+   */
+  CheckSimd( SIMD_V20_LO );
+
+  /*
+   * Check that the default exception handler saved the top 64 bits of the
+   * AArch64 SIMD and floating-point register V20 to the frame.
+   */
+  CheckSimd( SIMD_V20_HI );
+
+  /*
+   * Check that the default exception handler saved the bottom 64 bits of the
+   * AArch64 SIMD and floating-point register V21 to the frame.
+   */
+  CheckSimd( SIMD_V21_LO );
+
+  /*
+   * Check that the default exception handler saved the top 64 bits of the
+   * AArch64 SIMD and floating-point register V21 to the frame.
+   */
+  CheckSimd( SIMD_V21_HI );
+
+  /*
+   * Check that the default exception handler saved the bottom 64 bits of the
+   * AArch64 SIMD and floating-point register V22 to the frame.
+   */
+  CheckSimd( SIMD_V22_LO );
+
+  /*
+   * Check that the default exception handler saved the top 64 bits of the
+   * AArch64 SIMD and floating-point register V22 to the frame.
+   */
+  CheckSimd( SIMD_V22_HI );
+
+  /*
+   * Check that the default exception handler saved the bottom 64 bits of the
+   * AArch64 SIMD and floating-point register V23 to the frame.
+   */
+  CheckSimd( SIMD_V23_LO );
+
+  /*
+   * Check that the default exception handler saved the top 64 bits of the
+   * AArch64 SIMD and floating-point register V23 to the frame.
+   */
+  CheckSimd( SIMD_V23_HI );
+
+  /*
+   * Check that the default exception handler saved the bottom 64 bits of the
+   * AArch64 SIMD and floating-point register V24 to the frame.
+   */
+  CheckSimd( SIMD_V24_LO );
+
+  /*
+   * Check that the default exception handler saved the top 64 bits of the
+   * AArch64 SIMD and floating-point register V24 to the frame.
+   */
+  CheckSimd( SIMD_V24_HI );
+
+  /*
+   * Check that the default exception handler saved the bottom 64 bits of the
+   * AArch64 SIMD and floating-point register V25 to the frame.
+   */
+  CheckSimd( SIMD_V25_LO );
+
+  /*
+   * Check that the default exception handler saved the top 64 bits of the
+   * AArch64 SIMD and floating-point register V25 to the frame.
+   */
+  CheckSimd( SIMD_V25_HI );
+
+  /*
+   * Check that the default exception handler saved the bottom 64 bits of the
+   * AArch64 SIMD and floating-point register V26 to the frame.
+   */
+  CheckSimd( SIMD_V26_LO );
+
+  /*
+   * Check that the default exception handler saved the top 64 bits of the
+   * AArch64 SIMD and floating-point register V26 to the frame.
+   */
+  CheckSimd( SIMD_V26_HI );
+
+  /*
+   * Check that the default exception handler saved the bottom 64 bits of the
+   * AArch64 SIMD and floating-point register V27 to the frame.
+   */
+  CheckSimd( SIMD_V27_LO );
+
+  /*
+   * Check that the default exception handler saved the top 64 bits of the
+   * AArch64 SIMD and floating-point register V27 to the frame.
+   */
+  CheckSimd( SIMD_V27_HI );
+
+  /*
+   * Check that the default exception handler saved the bottom 64 bits of the
+   * AArch64 SIMD and floating-point register V28 to the frame.
+   */
+  CheckSimd( SIMD_V28_LO );
+
+  /*
+   * Check that the default exception handler saved the top 64 bits of the
+   * AArch64 SIMD and floating-point register V28 to the frame.
+   */
+  CheckSimd( SIMD_V28_HI );
+
+  /*
+   * Check that the default exception handler saved the bottom 64 bits of the
+   * AArch64 SIMD and floating-point register V29 to the frame.
+   */
+  CheckSimd( SIMD_V29_LO );
+
+  /*
+   * Check that the default exception handler saved the top 64 bits of the
+   * AArch64 SIMD and floating-point register V29 to the frame.
+   */
+  CheckSimd( SIMD_V29_HI );
+
+  /*
+   * Check that the default exception handler saved the bottom 64 bits of the
+   * AArch64 SIMD and floating-point register V30 to the frame.
+   */
+  CheckSimd( SIMD_V30_LO );
+
+  /*
+   * Check that the default exception handler saved the top 64 bits of the
+   * AArch64 SIMD and floating-point register V30 to the frame.
+   */
+  CheckSimd( SIMD_V30_HI );
+
+  /*
+   * Check that the default exception handler saved the bottom 64 bits of the
+   * AArch64 SIMD and floating-point register V31 to the frame.
+   */
+  CheckSimd( SIMD_V31_LO );
+
+  /*
+   * Check that the default exception handler saved the top 64 bits of the
+   * AArch64 SIMD and floating-point register V31 to the frame.
+   */
+  CheckSimd( SIMD_V31_HI );
+
+  /*
+   * Check that each run with a changed value flagged exactly the checks of
+   * that value, and that each run recorded every check.
+   */
+  RegisterCheckReport( &exception_simd_check );
+}
+
+/**
+ * @fn void T_case_body_ScoreCpuAarch64ValExceptionFrame( void )
+ */
+T_TEST_CASE( ScoreCpuAarch64ValExceptionFrame )
+{
+  ScoreCpuAarch64ValExceptionFrame_Action_0();
+}
+
+/** @} */
