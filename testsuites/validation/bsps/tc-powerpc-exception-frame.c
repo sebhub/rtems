@@ -1,0 +1,1008 @@
+/* SPDX-License-Identifier: BSD-2-Clause */
+
+/**
+ * @file
+ *
+ * @ingroup ScoreCpuPowerpcValExceptionFrame
+ */
+
+/*
+ * Copyright (C) 2026 embedded brains GmbH & Co. KG
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
+#include <stdint.h>
+#include <string.h>
+#include <bsp/vectors.h>
+#include <rtems/score/cpuimpl.h>
+
+#include "tx-register-check.h"
+#include "tx-support.h"
+
+#include <rtems/test.h>
+
+/**
+ * @defgroup ScoreCpuPowerpcValExceptionFrame \
+ *   spec:/score/cpu/powerpc/val/exception-frame
+ *
+ * @ingroup TestsuitesBspsValidationBspNoClock0
+ *
+ * @brief Checks the exception frame which the default exception handler
+ *   builds.
+ *
+ * This test case performs the following actions:
+ *
+ * - Load a distinct pattern into every register. Trap. Run this once for each
+ *   register with the pattern of that register inverted, then once unchanged.
+ *
+ *   - Check that the default exception handler saved the bottom 32 bits of the
+ *     PowerPC register R0 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 32 bits of the
+ *     PowerPC register R3 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 32 bits of the
+ *     PowerPC register R4 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 32 bits of the
+ *     PowerPC register R5 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 32 bits of the
+ *     PowerPC register R6 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 32 bits of the
+ *     PowerPC register R7 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 32 bits of the
+ *     PowerPC register R8 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 32 bits of the
+ *     PowerPC register R9 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 32 bits of the
+ *     PowerPC register R10 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 32 bits of the
+ *     PowerPC register R11 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 32 bits of the
+ *     PowerPC register R12 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 32 bits of the
+ *     PowerPC register R14 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 32 bits of the
+ *     PowerPC register R15 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 32 bits of the
+ *     PowerPC register R16 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 32 bits of the
+ *     PowerPC register R17 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 32 bits of the
+ *     PowerPC register R18 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 32 bits of the
+ *     PowerPC register R19 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 32 bits of the
+ *     PowerPC register R20 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 32 bits of the
+ *     PowerPC register R21 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 32 bits of the
+ *     PowerPC register R22 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 32 bits of the
+ *     PowerPC register R23 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 32 bits of the
+ *     PowerPC register R24 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 32 bits of the
+ *     PowerPC register R25 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 32 bits of the
+ *     PowerPC register R26 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 32 bits of the
+ *     PowerPC register R27 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 32 bits of the
+ *     PowerPC register R28 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 32 bits of the
+ *     PowerPC register R29 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 32 bits of the
+ *     PowerPC register R30 to the frame.
+ *
+ *   - Check that the default exception handler saved the bottom 32 bits of the
+ *     PowerPC register R31 to the frame.
+ *
+ *   - Check that the default exception handler saved the stack pointer R1 of
+ *     the trapped context to the frame.
+ *
+ *   - Check that the default exception handler saved CR to the frame.
+ *
+ *   - Check that the default exception handler saved XER to the frame.
+ *
+ *   - Check that the default exception handler saved CTR to the frame.
+ *
+ *   - Check that the default exception handler saved LR to the frame.
+ *
+ *   - Check that SRR0 of the frame holds the address of the trapping
+ *     instruction.
+ *
+ *   - Check that the default exception handler terminated with the fatal
+ *     source RTEMS_FATAL_SOURCE_EXCEPTION.
+ *
+ *   - Check that the fatal code is the address of a frame directly below the
+ *     stack pointer of the trapped context.
+ *
+ *   - Check that each run with a changed value flagged exactly the checks of
+ *     that value, and that each run recorded every check.
+ *
+ * @{
+ */
+
+extern const char exception_trap_label[];
+
+extern const char exception_done_label[];
+
+#define WORD UINT64_C( 0xffffffff )
+
+typedef enum {
+  SOURCE_R0,
+  SOURCE_R3,
+  SOURCE_R4,
+  SOURCE_R5,
+  SOURCE_R6,
+  SOURCE_R7,
+  SOURCE_R8,
+  SOURCE_R9,
+  SOURCE_R10,
+  SOURCE_R11,
+  SOURCE_R12,
+  SOURCE_R14,
+  SOURCE_R15,
+  SOURCE_R16,
+  SOURCE_R17,
+  SOURCE_R18,
+  SOURCE_R19,
+  SOURCE_R20,
+  SOURCE_R21,
+  SOURCE_R22,
+  SOURCE_R23,
+  SOURCE_R24,
+  SOURCE_R25,
+  SOURCE_R26,
+  SOURCE_R27,
+  SOURCE_R28,
+  SOURCE_R29,
+  SOURCE_R30,
+  SOURCE_R31,
+  SOURCE_CR,
+  SOURCE_XER,
+  SOURCE_CTR,
+  SOURCE_LR,
+  SOURCE_SP,
+  SOURCE_PC,
+  SOURCE_SOURCE,
+  SOURCE_CODE,
+  SOURCE_MAX
+} Source;
+
+typedef enum {
+  SLOT_R0,
+  SLOT_R3,
+  SLOT_R4,
+  SLOT_R5,
+  SLOT_R6,
+  SLOT_R7,
+  SLOT_R8,
+  SLOT_R9,
+  SLOT_R10,
+  SLOT_R11,
+  SLOT_R12,
+  SLOT_R14,
+  SLOT_R15,
+  SLOT_R16,
+  SLOT_R17,
+  SLOT_R18,
+  SLOT_R19,
+  SLOT_R20,
+  SLOT_R21,
+  SLOT_R22,
+  SLOT_R23,
+  SLOT_R24,
+  SLOT_R25,
+  SLOT_R26,
+  SLOT_R27,
+  SLOT_R28,
+  SLOT_R29,
+  SLOT_R30,
+  SLOT_R31,
+  SLOT_CR,
+  SLOT_XER,
+  SLOT_CTR,
+  SLOT_LR,
+  SLOT_SP,
+  SLOT_PC,
+  SLOT_SOURCE,
+  SLOT_CODE,
+  SLOT_MAX
+} Slot;
+
+static const RegisterCheckSource exception_sources[ SOURCE_MAX ] = {
+  { "r0", REGISTER_CHECK_INITIAL, WORD },
+  { "r3", REGISTER_CHECK_INITIAL, WORD },
+  { "r4", REGISTER_CHECK_INITIAL, WORD },
+  { "r5", REGISTER_CHECK_INITIAL, WORD },
+  { "r6", REGISTER_CHECK_INITIAL, WORD },
+  { "r7", REGISTER_CHECK_INITIAL, WORD },
+  { "r8", REGISTER_CHECK_INITIAL, WORD },
+  { "r9", REGISTER_CHECK_INITIAL, WORD },
+  { "r10", REGISTER_CHECK_INITIAL, WORD },
+  { "r11", REGISTER_CHECK_INITIAL, WORD },
+  { "r12", REGISTER_CHECK_INITIAL, WORD },
+  { "r14", REGISTER_CHECK_INITIAL, WORD },
+  { "r15", REGISTER_CHECK_INITIAL, WORD },
+  { "r16", REGISTER_CHECK_INITIAL, WORD },
+  { "r17", REGISTER_CHECK_INITIAL, WORD },
+  { "r18", REGISTER_CHECK_INITIAL, WORD },
+  { "r19", REGISTER_CHECK_INITIAL, WORD },
+  { "r20", REGISTER_CHECK_INITIAL, WORD },
+  { "r21", REGISTER_CHECK_INITIAL, WORD },
+  { "r22", REGISTER_CHECK_INITIAL, WORD },
+  { "r23", REGISTER_CHECK_INITIAL, WORD },
+  { "r24", REGISTER_CHECK_INITIAL, WORD },
+  { "r25", REGISTER_CHECK_INITIAL, WORD },
+  { "r26", REGISTER_CHECK_INITIAL, WORD },
+  { "r27", REGISTER_CHECK_INITIAL, WORD },
+  { "r28", REGISTER_CHECK_INITIAL, WORD },
+  { "r29", REGISTER_CHECK_INITIAL, WORD },
+  { "r30", REGISTER_CHECK_INITIAL, WORD },
+  { "r31", REGISTER_CHECK_INITIAL, WORD },
+  { "cr", REGISTER_CHECK_INITIAL, WORD },
+  { "xer", REGISTER_CHECK_INITIAL, UINT64_C( 0xe000007f ) },
+  { "ctr", REGISTER_CHECK_INITIAL, WORD },
+  { "lr", REGISTER_CHECK_INITIAL, WORD },
+  { "sp", REGISTER_CHECK_EXPECTED, WORD },
+  { "pc", REGISTER_CHECK_EXPECTED, WORD },
+  { "source", REGISTER_CHECK_EXPECTED, WORD },
+  { "code", REGISTER_CHECK_EXPECTED, WORD },
+};
+
+static const RegisterCheckSlot exception_slots[ SOURCE_MAX ] = {
+  { "r0", SOURCE_R0, WORD },
+  { "r3", SOURCE_R3, WORD },
+  { "r4", SOURCE_R4, WORD },
+  { "r5", SOURCE_R5, WORD },
+  { "r6", SOURCE_R6, WORD },
+  { "r7", SOURCE_R7, WORD },
+  { "r8", SOURCE_R8, WORD },
+  { "r9", SOURCE_R9, WORD },
+  { "r10", SOURCE_R10, WORD },
+  { "r11", SOURCE_R11, WORD },
+  { "r12", SOURCE_R12, WORD },
+  { "r14", SOURCE_R14, WORD },
+  { "r15", SOURCE_R15, WORD },
+  { "r16", SOURCE_R16, WORD },
+  { "r17", SOURCE_R17, WORD },
+  { "r18", SOURCE_R18, WORD },
+  { "r19", SOURCE_R19, WORD },
+  { "r20", SOURCE_R20, WORD },
+  { "r21", SOURCE_R21, WORD },
+  { "r22", SOURCE_R22, WORD },
+  { "r23", SOURCE_R23, WORD },
+  { "r24", SOURCE_R24, WORD },
+  { "r25", SOURCE_R25, WORD },
+  { "r26", SOURCE_R26, WORD },
+  { "r27", SOURCE_R27, WORD },
+  { "r28", SOURCE_R28, WORD },
+  { "r29", SOURCE_R29, WORD },
+  { "r30", SOURCE_R30, WORD },
+  { "r31", SOURCE_R31, WORD },
+  { "cr", SOURCE_CR, WORD },
+  { "xer", SOURCE_XER, UINT64_C( 0xe000007f ) },
+  { "ctr", SOURCE_CTR, WORD },
+  { "lr", SOURCE_LR, WORD },
+  { "sp", SOURCE_SP, WORD },
+  { "pc", SOURCE_PC, WORD },
+  { "source", SOURCE_SOURCE, WORD },
+  { "code", SOURCE_CODE, WORD },
+};
+
+static const uint64_t exception_patterns[ SOURCE_MAX ] = {
+  UINT64_C( 0x51525354 ),
+  UINT64_C( 0x52535455 ),
+  UINT64_C( 0x53545556 ),
+  UINT64_C( 0x54555657 ),
+  UINT64_C( 0x55565758 ),
+  UINT64_C( 0x56575859 ),
+  UINT64_C( 0x5758595a ),
+  UINT64_C( 0x58595a5b ),
+  UINT64_C( 0x595a5b5c ),
+  UINT64_C( 0x5a5b5c5d ),
+  UINT64_C( 0x5b5c5d5e ),
+  UINT64_C( 0x5c5d5e5f ),
+  UINT64_C( 0x5d5e5f60 ),
+  UINT64_C( 0x5e5f6061 ),
+  UINT64_C( 0x5f606162 ),
+  UINT64_C( 0x60616263 ),
+  UINT64_C( 0x61626364 ),
+  UINT64_C( 0x62636465 ),
+  UINT64_C( 0x63646566 ),
+  UINT64_C( 0x64656667 ),
+  UINT64_C( 0x65666768 ),
+  UINT64_C( 0x66676869 ),
+  UINT64_C( 0x6768696a ),
+  UINT64_C( 0x68696a6b ),
+  UINT64_C( 0x696a6b6c ),
+  UINT64_C( 0x6a6b6c6d ),
+  UINT64_C( 0x6b6c6d6e ),
+  UINT64_C( 0x6c6d6e6f ),
+  UINT64_C( 0x6d6e6f70 ),
+  UINT64_C( 0x5a5a5a5a ),
+  UINT64_C( 0x40000015 ),
+  UINT64_C( 0x31323334 ),
+  UINT64_C( 0x41424344 ),
+  1,
+  1,
+  1,
+  1
+};
+
+uint64_t exception_initial[ SOURCE_MAX ];
+
+static CPU_Exception_frame exception_frame;
+
+static rtems_fatal_source exception_source;
+
+static rtems_fatal_code exception_code;
+
+/*
+ * The block uses r31 as the address of the table and loads r31 last.  It
+ * loads CR, XER, CTR and LR through r0 first.
+ */
+#define EXC_LOAD                       \
+  "lis 31, exception_initial@ha\n"     \
+  "addi 31, 31, exception_initial@l\n" \
+  "lwz 0, 236(31)\n"                   \
+  "mtcr 0\n"                           \
+  "lwz 0, 244(31)\n"                   \
+  "mtxer 0\n"                          \
+  "lwz 0, 252(31)\n"                   \
+  "mtctr 0\n"                          \
+  "lwz 0, 260(31)\n"                   \
+  "mtlr 0\n"                           \
+  "lwz 0, 4(31)\n"                     \
+  "lwz 3, 12(31)\n"                    \
+  "lwz 4, 20(31)\n"                    \
+  "lwz 5, 28(31)\n"                    \
+  "lwz 6, 36(31)\n"                    \
+  "lwz 7, 44(31)\n"                    \
+  "lwz 8, 52(31)\n"                    \
+  "lwz 9, 60(31)\n"                    \
+  "lwz 10, 68(31)\n"                   \
+  "lwz 11, 76(31)\n"                   \
+  "lwz 12, 84(31)\n"                   \
+  "lwz 14, 92(31)\n"                   \
+  "lwz 15, 100(31)\n"                  \
+  "lwz 16, 108(31)\n"                  \
+  "lwz 17, 116(31)\n"                  \
+  "lwz 18, 124(31)\n"                  \
+  "lwz 19, 132(31)\n"                  \
+  "lwz 20, 140(31)\n"                  \
+  "lwz 21, 148(31)\n"                  \
+  "lwz 22, 156(31)\n"                  \
+  "lwz 23, 164(31)\n"                  \
+  "lwz 24, 172(31)\n"                  \
+  "lwz 25, 180(31)\n"                  \
+  "lwz 26, 188(31)\n"                  \
+  "lwz 27, 196(31)\n"                  \
+  "lwz 28, 204(31)\n"                  \
+  "lwz 29, 212(31)\n"                  \
+  "lwz 30, 220(31)\n"                  \
+  "lwz 31, 228(31)\n"
+
+static void ExceptionFatal(
+  rtems_fatal_source source,
+  rtems_fatal_code   code,
+  void              *arg
+)
+{
+  CPU_Exception_frame *frame;
+
+  (void) arg;
+  exception_source = source;
+  exception_code = code;
+
+  if ( source != RTEMS_FATAL_SOURCE_EXCEPTION ) {
+    return;
+  }
+
+  frame = (CPU_Exception_frame *) code;
+  exception_frame = *frame;
+  SetFatalHandler( NULL, NULL );
+  frame->EXC_SRR0 = (uintptr_t) exception_done_label;
+  _CPU_Exception_resume( frame );
+}
+
+static uintptr_t ExceptionRaise( void )
+{
+  uintptr_t sp;
+
+  memset( &exception_frame, 0, sizeof( exception_frame ) );
+  exception_source = 0;
+  exception_code = 0;
+  SetFatalHandler( ExceptionFatal, NULL );
+  __asm__ volatile( "mr %0, 1"
+                    : "=r"( sp ) );
+  __asm__ volatile( EXC_LOAD ".globl exception_trap_label\n"
+                             "exception_trap_label:\n"
+                             "trap\n"
+                             ".globl exception_done_label\n"
+                             "exception_done_label:\n"
+                    :
+                    :
+                    : "memory",
+                      "cr0",
+                      "cr1",
+                      "cr2",
+                      "cr3",
+                      "cr4",
+                      "cr5",
+                      "cr6",
+                      "cr7",
+                      "r0",
+                      "r3",
+                      "r4",
+                      "r5",
+                      "r6",
+                      "r7",
+                      "r8",
+                      "r9",
+                      "r10",
+                      "r11",
+                      "r12",
+                      "r14",
+                      "r15",
+                      "r16",
+                      "r17",
+                      "r18",
+                      "r19",
+                      "r20",
+                      "r21",
+                      "r22",
+                      "r23",
+                      "r24",
+                      "r25",
+                      "r26",
+                      "r27",
+                      "r28",
+                      "r29",
+                      "r30",
+                      "r31",
+                      "lr",
+                      "ctr",
+                      "xer" );
+
+  return sp;
+}
+
+static void ExceptionRun( RegisterCheck *self, void *arg )
+{
+  uintptr_t sp;
+
+  (void) arg;
+  sp = ExceptionRaise();
+  RegisterCheckRecord(
+    self,
+    SLOT_R0,
+    (uint32_t) exception_frame.registers[ 0 ],
+    exception_patterns[ SOURCE_R0 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_R3,
+    (uint32_t) exception_frame.registers[ 3 ],
+    exception_patterns[ SOURCE_R3 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_R4,
+    (uint32_t) exception_frame.registers[ 4 ],
+    exception_patterns[ SOURCE_R4 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_R5,
+    (uint32_t) exception_frame.registers[ 5 ],
+    exception_patterns[ SOURCE_R5 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_R6,
+    (uint32_t) exception_frame.registers[ 6 ],
+    exception_patterns[ SOURCE_R6 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_R7,
+    (uint32_t) exception_frame.registers[ 7 ],
+    exception_patterns[ SOURCE_R7 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_R8,
+    (uint32_t) exception_frame.registers[ 8 ],
+    exception_patterns[ SOURCE_R8 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_R9,
+    (uint32_t) exception_frame.registers[ 9 ],
+    exception_patterns[ SOURCE_R9 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_R10,
+    (uint32_t) exception_frame.registers[ 10 ],
+    exception_patterns[ SOURCE_R10 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_R11,
+    (uint32_t) exception_frame.registers[ 11 ],
+    exception_patterns[ SOURCE_R11 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_R12,
+    (uint32_t) exception_frame.registers[ 12 ],
+    exception_patterns[ SOURCE_R12 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_R14,
+    (uint32_t) exception_frame.registers[ 14 ],
+    exception_patterns[ SOURCE_R14 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_R15,
+    (uint32_t) exception_frame.registers[ 15 ],
+    exception_patterns[ SOURCE_R15 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_R16,
+    (uint32_t) exception_frame.registers[ 16 ],
+    exception_patterns[ SOURCE_R16 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_R17,
+    (uint32_t) exception_frame.registers[ 17 ],
+    exception_patterns[ SOURCE_R17 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_R18,
+    (uint32_t) exception_frame.registers[ 18 ],
+    exception_patterns[ SOURCE_R18 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_R19,
+    (uint32_t) exception_frame.registers[ 19 ],
+    exception_patterns[ SOURCE_R19 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_R20,
+    (uint32_t) exception_frame.registers[ 20 ],
+    exception_patterns[ SOURCE_R20 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_R21,
+    (uint32_t) exception_frame.registers[ 21 ],
+    exception_patterns[ SOURCE_R21 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_R22,
+    (uint32_t) exception_frame.registers[ 22 ],
+    exception_patterns[ SOURCE_R22 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_R23,
+    (uint32_t) exception_frame.registers[ 23 ],
+    exception_patterns[ SOURCE_R23 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_R24,
+    (uint32_t) exception_frame.registers[ 24 ],
+    exception_patterns[ SOURCE_R24 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_R25,
+    (uint32_t) exception_frame.registers[ 25 ],
+    exception_patterns[ SOURCE_R25 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_R26,
+    (uint32_t) exception_frame.registers[ 26 ],
+    exception_patterns[ SOURCE_R26 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_R27,
+    (uint32_t) exception_frame.registers[ 27 ],
+    exception_patterns[ SOURCE_R27 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_R28,
+    (uint32_t) exception_frame.registers[ 28 ],
+    exception_patterns[ SOURCE_R28 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_R29,
+    (uint32_t) exception_frame.registers[ 29 ],
+    exception_patterns[ SOURCE_R29 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_R30,
+    (uint32_t) exception_frame.registers[ 30 ],
+    exception_patterns[ SOURCE_R30 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_R31,
+    (uint32_t) exception_frame.registers[ 31 ],
+    exception_patterns[ SOURCE_R31 ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_CR,
+    exception_frame.EXC_CR,
+    exception_patterns[ SOURCE_CR ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_XER,
+    exception_frame.EXC_XER & UINT32_C( 0xe000007f ),
+    exception_patterns[ SOURCE_XER ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_CTR,
+    exception_frame.EXC_CTR,
+    exception_patterns[ SOURCE_CTR ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_LR,
+    exception_frame.EXC_LR,
+    exception_patterns[ SOURCE_LR ]
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_SP,
+    (uintptr_t) exception_frame.GPR1 == sp,
+    1
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_PC,
+    exception_frame.EXC_SRR0 == (uintptr_t) exception_trap_label,
+    1
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_SOURCE,
+    exception_source == RTEMS_FATAL_SOURCE_EXCEPTION,
+    1
+  );
+  RegisterCheckRecord(
+    self,
+    SLOT_CODE,
+    exception_code + EXC_GENERIC_SIZE - FRAME_LINK_SPACE == sp,
+    1
+  );
+}
+
+static RegisterCheck exception_check = {
+  .sources = exception_sources,
+  .source_count = SOURCE_MAX,
+  .slots = exception_slots,
+  .slot_count = SOURCE_MAX,
+  .initial = exception_initial,
+  .run = ExceptionRun
+};
+
+static void CheckSlot( Slot slot )
+{
+  RegisterCheckVerify( &exception_check, slot );
+}
+
+/**
+ * @brief Load a distinct pattern into every register. Trap. Run this once for
+ *   each register with the pattern of that register inverted, then once
+ *   unchanged.
+ */
+static void ScoreCpuPowerpcValExceptionFrame_Action_0( void )
+{
+  memcpy( exception_initial, exception_patterns, sizeof( exception_initial ) );
+  RegisterCheckRun( &exception_check );
+
+  /*
+   * Check that the default exception handler saved the bottom 32 bits of the
+   * PowerPC register R0 to the frame.
+   */
+  CheckSlot( SLOT_R0 );
+
+  /*
+   * Check that the default exception handler saved the bottom 32 bits of the
+   * PowerPC register R3 to the frame.
+   */
+  CheckSlot( SLOT_R3 );
+
+  /*
+   * Check that the default exception handler saved the bottom 32 bits of the
+   * PowerPC register R4 to the frame.
+   */
+  CheckSlot( SLOT_R4 );
+
+  /*
+   * Check that the default exception handler saved the bottom 32 bits of the
+   * PowerPC register R5 to the frame.
+   */
+  CheckSlot( SLOT_R5 );
+
+  /*
+   * Check that the default exception handler saved the bottom 32 bits of the
+   * PowerPC register R6 to the frame.
+   */
+  CheckSlot( SLOT_R6 );
+
+  /*
+   * Check that the default exception handler saved the bottom 32 bits of the
+   * PowerPC register R7 to the frame.
+   */
+  CheckSlot( SLOT_R7 );
+
+  /*
+   * Check that the default exception handler saved the bottom 32 bits of the
+   * PowerPC register R8 to the frame.
+   */
+  CheckSlot( SLOT_R8 );
+
+  /*
+   * Check that the default exception handler saved the bottom 32 bits of the
+   * PowerPC register R9 to the frame.
+   */
+  CheckSlot( SLOT_R9 );
+
+  /*
+   * Check that the default exception handler saved the bottom 32 bits of the
+   * PowerPC register R10 to the frame.
+   */
+  CheckSlot( SLOT_R10 );
+
+  /*
+   * Check that the default exception handler saved the bottom 32 bits of the
+   * PowerPC register R11 to the frame.
+   */
+  CheckSlot( SLOT_R11 );
+
+  /*
+   * Check that the default exception handler saved the bottom 32 bits of the
+   * PowerPC register R12 to the frame.
+   */
+  CheckSlot( SLOT_R12 );
+
+  /*
+   * Check that the default exception handler saved the bottom 32 bits of the
+   * PowerPC register R14 to the frame.
+   */
+  CheckSlot( SLOT_R14 );
+
+  /*
+   * Check that the default exception handler saved the bottom 32 bits of the
+   * PowerPC register R15 to the frame.
+   */
+  CheckSlot( SLOT_R15 );
+
+  /*
+   * Check that the default exception handler saved the bottom 32 bits of the
+   * PowerPC register R16 to the frame.
+   */
+  CheckSlot( SLOT_R16 );
+
+  /*
+   * Check that the default exception handler saved the bottom 32 bits of the
+   * PowerPC register R17 to the frame.
+   */
+  CheckSlot( SLOT_R17 );
+
+  /*
+   * Check that the default exception handler saved the bottom 32 bits of the
+   * PowerPC register R18 to the frame.
+   */
+  CheckSlot( SLOT_R18 );
+
+  /*
+   * Check that the default exception handler saved the bottom 32 bits of the
+   * PowerPC register R19 to the frame.
+   */
+  CheckSlot( SLOT_R19 );
+
+  /*
+   * Check that the default exception handler saved the bottom 32 bits of the
+   * PowerPC register R20 to the frame.
+   */
+  CheckSlot( SLOT_R20 );
+
+  /*
+   * Check that the default exception handler saved the bottom 32 bits of the
+   * PowerPC register R21 to the frame.
+   */
+  CheckSlot( SLOT_R21 );
+
+  /*
+   * Check that the default exception handler saved the bottom 32 bits of the
+   * PowerPC register R22 to the frame.
+   */
+  CheckSlot( SLOT_R22 );
+
+  /*
+   * Check that the default exception handler saved the bottom 32 bits of the
+   * PowerPC register R23 to the frame.
+   */
+  CheckSlot( SLOT_R23 );
+
+  /*
+   * Check that the default exception handler saved the bottom 32 bits of the
+   * PowerPC register R24 to the frame.
+   */
+  CheckSlot( SLOT_R24 );
+
+  /*
+   * Check that the default exception handler saved the bottom 32 bits of the
+   * PowerPC register R25 to the frame.
+   */
+  CheckSlot( SLOT_R25 );
+
+  /*
+   * Check that the default exception handler saved the bottom 32 bits of the
+   * PowerPC register R26 to the frame.
+   */
+  CheckSlot( SLOT_R26 );
+
+  /*
+   * Check that the default exception handler saved the bottom 32 bits of the
+   * PowerPC register R27 to the frame.
+   */
+  CheckSlot( SLOT_R27 );
+
+  /*
+   * Check that the default exception handler saved the bottom 32 bits of the
+   * PowerPC register R28 to the frame.
+   */
+  CheckSlot( SLOT_R28 );
+
+  /*
+   * Check that the default exception handler saved the bottom 32 bits of the
+   * PowerPC register R29 to the frame.
+   */
+  CheckSlot( SLOT_R29 );
+
+  /*
+   * Check that the default exception handler saved the bottom 32 bits of the
+   * PowerPC register R30 to the frame.
+   */
+  CheckSlot( SLOT_R30 );
+
+  /*
+   * Check that the default exception handler saved the bottom 32 bits of the
+   * PowerPC register R31 to the frame.
+   */
+  CheckSlot( SLOT_R31 );
+
+  /*
+   * Check that the default exception handler saved the stack pointer R1 of the
+   * trapped context to the frame.
+   */
+  CheckSlot( SLOT_SP );
+
+  /*
+   * Check that the default exception handler saved CR to the frame.
+   */
+  CheckSlot( SLOT_CR );
+
+  /*
+   * Check that the default exception handler saved XER to the frame.
+   */
+  CheckSlot( SLOT_XER );
+
+  /*
+   * Check that the default exception handler saved CTR to the frame.
+   */
+  CheckSlot( SLOT_CTR );
+
+  /*
+   * Check that the default exception handler saved LR to the frame.
+   */
+  CheckSlot( SLOT_LR );
+
+  /*
+   * Check that SRR0 of the frame holds the address of the trapping
+   * instruction.
+   */
+  CheckSlot( SLOT_PC );
+
+  /*
+   * Check that the default exception handler terminated with the fatal source
+   * RTEMS_FATAL_SOURCE_EXCEPTION.
+   */
+  CheckSlot( SLOT_SOURCE );
+
+  /*
+   * Check that the fatal code is the address of a frame directly below the
+   * stack pointer of the trapped context.
+   */
+  CheckSlot( SLOT_CODE );
+
+  /*
+   * Check that each run with a changed value flagged exactly the checks of
+   * that value, and that each run recorded every check.
+   */
+  RegisterCheckReport( &exception_check );
+}
+
+/**
+ * @fn void T_case_body_ScoreCpuPowerpcValExceptionFrame( void )
+ */
+T_TEST_CASE( ScoreCpuPowerpcValExceptionFrame )
+{
+  ScoreCpuPowerpcValExceptionFrame_Action_0();
+}
+
+/** @} */
