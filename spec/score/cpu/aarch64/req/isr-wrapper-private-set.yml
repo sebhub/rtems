@@ -1,0 +1,16 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: aarch64
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: ../../req/isr-wrapper-private
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  Interrupt processing shall preserve x19, x20 and x21. The AArch64 interrupt
+  wrapper uses them as SELF_CPU_CONTROL, NON_VOLATILE_SCRATCH and the copy of the
+  link register.
+type: requirement

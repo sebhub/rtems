@@ -1,0 +1,13 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: aarch64
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+term: AArch64 status register
+text: |
+  The register which holds the condition flags and the execution state. The
+  condition flags are the NZCV field of PSTATE.
+type: glossary

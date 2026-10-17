@@ -1,0 +1,20 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: aarch64
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: ../../req/ctx-initial-floating-point-environment
+- location: 6.1.2
+  role: reference
+  uid: /ref/arch/aarch64/aapcs64
+rationale: |
+  An FPCR of zero rounds to nearest, enables no trap and keeps subnormal results
+  as IEEE 754 defines them. Linux and FreeBSD give a new program the same FPCR.
+references: []
+requirement-type: functional
+text: |
+  Where the multilib provides a floating-point unit, the context initialization
+  shall give the context an FPCR of zero and an FPSR of zero.
+type: requirement

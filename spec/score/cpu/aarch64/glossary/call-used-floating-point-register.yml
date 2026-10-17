@@ -1,0 +1,17 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: aarch64
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+- location: 6.1.2
+  role: reference
+  uid: /ref/arch/aarch64/aapcs64
+term: AArch64 call-used floating-point register
+text: |
+  A floating-point register which a called function may change. These are v0 to
+  v7, v16 to v31 and the top 64 bits of v8 to v15. FPSR and FPCR hold the
+  floating-point environment.
+type: glossary

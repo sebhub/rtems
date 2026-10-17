@@ -1,0 +1,16 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2024 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: exception-armv8
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  The default exception handler for synchronous exceptions taken from the current
+  exception level with SP_ELx with x > 0 shall set the vector member of the
+  exception frame to the value four.
+type: requirement

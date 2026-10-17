@@ -1,0 +1,71 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2024 embedded brains GmbH & Co. KG
+enabled-by: aarch64
+links: []
+test-actions:
+- action-brief: |
+    Initialize the exception frame. Do a system call. Save the exception frame.
+    Return to the action.
+  action-code: |
+    Initialize();
+    __asm__ volatile( "svc #0"
+                      :
+                      :
+                      : "memory" );
+  checks:
+  - brief: |
+      Check that the exception frame has the expected vector number.
+    code: |
+      T_eq_int( exception_frame.vector, 4 );
+    links:
+    - role: validation
+      uid: ../req/exception-type-cel-spelx-sync
+  links: []
+test-brief: |
+  Tests the default exception handling.
+test-context: []
+test-context-support: null
+test-description: null
+test-header: null
+test-includes:
+- string.h
+- rtems/score/cpuimpl.h
+test-local-includes:
+- tx-support.h
+test-setup: null
+test-stop: null
+test-support: |
+  #define _RTEMS_TMTEST27
+  #include <tm27.h>
+
+  static CPU_Exception_frame exception_frame;
+
+  static void Fatal(
+    rtems_fatal_source source,
+    rtems_fatal_code   code,
+    void              *arg
+  )
+  {
+    (void) arg;
+
+    SetFatalHandler( NULL, NULL );
+
+    if ( source == RTEMS_FATAL_SOURCE_EXCEPTION ) {
+      CPU_Exception_frame *frame;
+
+      frame = (CPU_Exception_frame *) code;
+      exception_frame = *frame;
+
+      _CPU_Exception_resume( frame );
+    }
+  }
+
+  static void Initialize( void )
+  {
+    memset( &exception_frame, 0xff, sizeof( exception_frame ) );
+    SetFatalHandler( Fatal, NULL );
+  }
+test-target: testsuites/validation/bsps/tc-aarch64-exception.c
+test-teardown: null
+type: test-case

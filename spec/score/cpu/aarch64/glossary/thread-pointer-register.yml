@@ -1,0 +1,15 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: aarch64
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+- location: 6.4.2
+  role: reference
+  uid: /ref/arch/aarch64/aapcs64
+term: AArch64 thread pointer register
+text: |
+  The register which addresses the thread-local storage. This is TPIDR_EL0.
+type: glossary

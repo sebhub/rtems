@@ -1,0 +1,13 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: aarch64
+glossary-type: group
+links:
+- role: requirement-refinement
+  uid: /req/glossary
+name: AArch64 CPU Port Registers
+text: |
+  The system shall have a glossary for the register roles of the AArch64 CPU
+  port.
+type: glossary

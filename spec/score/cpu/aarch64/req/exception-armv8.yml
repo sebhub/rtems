@@ -1,0 +1,15 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2024 embedded brains GmbH & Co. KG
+enabled-by: aarch64
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: ../../req/exception-terminate
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  Synchronous exceptions taken from the current exception level with SP_ELx with
+  x > 0 shall shall by default call the default exception handler.
+type: requirement
