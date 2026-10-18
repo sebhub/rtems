@@ -27,6 +27,8 @@ links:
 - role: build-dependency
   uid: objpowerpc
 - role: build-dependency
+  uid: objpowerpcspe
+- role: build-dependency
   uid: objpowerpcqoriq
 source:
 - testsuites/validation/bsps/ts-validation-bsp-no-clock-0.c
