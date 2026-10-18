@@ -188,14 +188,26 @@ definition:
     kind: member
     name: isr_dispatch_disable
   variants: []
-- default:
-    brief: |
-      This member provides padding.
-    definition: ${/c/if/uint32_t:/name} ${.:name}
-    description: null
-    kind: member
-    name: reserved_for_alignment
-  variants: []
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member contains spefscr.
+      definition: ${/c/if/uint32_t:/name} ${.:name}
+      description: null
+      kind: member
+      name: spefscr
+    enabled-by: defined(__SPE__)
+- default: null
+  variants:
+  - definition:
+      brief: |
+        This member provides padding.
+      definition: ${/c/if/uint32_t:/name} ${.:name}
+      description: null
+      kind: member
+      name: reserved_for_alignment
+    enabled-by: '!(defined(__SPE__))'
 - default: null
   variants:
   - definition:

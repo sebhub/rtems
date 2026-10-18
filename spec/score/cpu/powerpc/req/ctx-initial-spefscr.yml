@@ -1,0 +1,18 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: powerpc
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: ../../req/ctx-initial-floating-point-environment
+- location: 3.2.1.2
+  role: reference
+  uid: /ref/arch/powerpc/abi32
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  Where the multilib provides the SPE, the context initialization shall give the
+  context an SPEFSCR in which FINXE, FINVE, FDBZE, FUNFE and FOVFE are zero.
+type: requirement
