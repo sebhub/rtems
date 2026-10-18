@@ -88,9 +88,23 @@ static inline void Install_tm27_vector( rtems_interrupt_handler handler )
 
 static inline void qoriq_tm27_cause(uint32_t ipi_index)
 {
-  uint32_t self = ppc_processor_id();
+  rtems_interrupt_level level;
+  uint32_t self;
 
+  rtems_interrupt_local_disable(level);
+  self = ppc_processor_id();
   qoriq.pic.per_cpu[self].ipidr[ipi_index].reg = UINT32_C(1) << self;
+
+  /*
+   * The write to the IPI dispatch register is posted.  Wait until the
+   * activity bit of the IPI vector/priority register shows the request.  The
+   * processor then takes the interrupt as soon as it enables interrupts.
+   */
+  while ((qoriq.pic.ipivpr[ipi_index].reg & UINT32_C(0x40000000)) == 0) {
+    /* Wait */
+  }
+
+  rtems_interrupt_local_enable(level);
 }
 
 static inline void Cause_tm27_intr(void)
