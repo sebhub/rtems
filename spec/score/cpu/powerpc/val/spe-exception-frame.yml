@@ -1,0 +1,831 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: powerpc
+links: []
+test-actions:
+- action-brief: |
+    Load a distinct pattern into both halves of every register, into ACC and into
+    SPEFSCR. Trap. Run this once for each value with the pattern of that value
+    inverted, then once unchanged.
+  action-code: |
+    #if defined( __SPE__ )
+      memcpy(
+        spe_exception_initial,
+        spe_exception_patterns,
+        sizeof( spe_exception_initial )
+      );
+      RegisterCheckRun( &spe_exception_check );
+    #endif
+  checks:
+  - brief: |
+      Check that the default exception handler saved the top 32 bits of the PowerPC
+      register R0 to the frame.
+    code: |
+      #if defined( __SPE__ )
+        CheckSlot( SLOT_R0 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/exc-floating-point-registers
+  - brief: |
+      Check that the default exception handler saved the top 32 bits of the PowerPC
+      register R3 to the frame.
+    code: |
+      #if defined( __SPE__ )
+        CheckSlot( SLOT_R3 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/exc-floating-point-registers
+  - brief: |
+      Check that the default exception handler saved the top 32 bits of the PowerPC
+      register R4 to the frame.
+    code: |
+      #if defined( __SPE__ )
+        CheckSlot( SLOT_R4 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/exc-floating-point-registers
+  - brief: |
+      Check that the default exception handler saved the top 32 bits of the PowerPC
+      register R5 to the frame.
+    code: |
+      #if defined( __SPE__ )
+        CheckSlot( SLOT_R5 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/exc-floating-point-registers
+  - brief: |
+      Check that the default exception handler saved the top 32 bits of the PowerPC
+      register R6 to the frame.
+    code: |
+      #if defined( __SPE__ )
+        CheckSlot( SLOT_R6 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/exc-floating-point-registers
+  - brief: |
+      Check that the default exception handler saved the top 32 bits of the PowerPC
+      register R7 to the frame.
+    code: |
+      #if defined( __SPE__ )
+        CheckSlot( SLOT_R7 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/exc-floating-point-registers
+  - brief: |
+      Check that the default exception handler saved the top 32 bits of the PowerPC
+      register R8 to the frame.
+    code: |
+      #if defined( __SPE__ )
+        CheckSlot( SLOT_R8 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/exc-floating-point-registers
+  - brief: |
+      Check that the default exception handler saved the top 32 bits of the PowerPC
+      register R9 to the frame.
+    code: |
+      #if defined( __SPE__ )
+        CheckSlot( SLOT_R9 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/exc-floating-point-registers
+  - brief: |
+      Check that the default exception handler saved the top 32 bits of the PowerPC
+      register R10 to the frame.
+    code: |
+      #if defined( __SPE__ )
+        CheckSlot( SLOT_R10 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/exc-floating-point-registers
+  - brief: |
+      Check that the default exception handler saved the top 32 bits of the PowerPC
+      register R11 to the frame.
+    code: |
+      #if defined( __SPE__ )
+        CheckSlot( SLOT_R11 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/exc-floating-point-registers
+  - brief: |
+      Check that the default exception handler saved the top 32 bits of the PowerPC
+      register R12 to the frame.
+    code: |
+      #if defined( __SPE__ )
+        CheckSlot( SLOT_R12 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/exc-floating-point-registers
+  - brief: |
+      Check that the default exception handler saved the top 32 bits of the PowerPC
+      register R14 to the frame.
+    code: |
+      #if defined( __SPE__ )
+        CheckSlot( SLOT_R14 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/exc-floating-point-registers
+  - brief: |
+      Check that the default exception handler saved the top 32 bits of the PowerPC
+      register R15 to the frame.
+    code: |
+      #if defined( __SPE__ )
+        CheckSlot( SLOT_R15 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/exc-floating-point-registers
+  - brief: |
+      Check that the default exception handler saved the top 32 bits of the PowerPC
+      register R16 to the frame.
+    code: |
+      #if defined( __SPE__ )
+        CheckSlot( SLOT_R16 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/exc-floating-point-registers
+  - brief: |
+      Check that the default exception handler saved the top 32 bits of the PowerPC
+      register R17 to the frame.
+    code: |
+      #if defined( __SPE__ )
+        CheckSlot( SLOT_R17 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/exc-floating-point-registers
+  - brief: |
+      Check that the default exception handler saved the top 32 bits of the PowerPC
+      register R18 to the frame.
+    code: |
+      #if defined( __SPE__ )
+        CheckSlot( SLOT_R18 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/exc-floating-point-registers
+  - brief: |
+      Check that the default exception handler saved the top 32 bits of the PowerPC
+      register R19 to the frame.
+    code: |
+      #if defined( __SPE__ )
+        CheckSlot( SLOT_R19 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/exc-floating-point-registers
+  - brief: |
+      Check that the default exception handler saved the top 32 bits of the PowerPC
+      register R20 to the frame.
+    code: |
+      #if defined( __SPE__ )
+        CheckSlot( SLOT_R20 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/exc-floating-point-registers
+  - brief: |
+      Check that the default exception handler saved the top 32 bits of the PowerPC
+      register R21 to the frame.
+    code: |
+      #if defined( __SPE__ )
+        CheckSlot( SLOT_R21 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/exc-floating-point-registers
+  - brief: |
+      Check that the default exception handler saved the top 32 bits of the PowerPC
+      register R22 to the frame.
+    code: |
+      #if defined( __SPE__ )
+        CheckSlot( SLOT_R22 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/exc-floating-point-registers
+  - brief: |
+      Check that the default exception handler saved the top 32 bits of the PowerPC
+      register R23 to the frame.
+    code: |
+      #if defined( __SPE__ )
+        CheckSlot( SLOT_R23 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/exc-floating-point-registers
+  - brief: |
+      Check that the default exception handler saved the top 32 bits of the PowerPC
+      register R24 to the frame.
+    code: |
+      #if defined( __SPE__ )
+        CheckSlot( SLOT_R24 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/exc-floating-point-registers
+  - brief: |
+      Check that the default exception handler saved the top 32 bits of the PowerPC
+      register R25 to the frame.
+    code: |
+      #if defined( __SPE__ )
+        CheckSlot( SLOT_R25 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/exc-floating-point-registers
+  - brief: |
+      Check that the default exception handler saved the top 32 bits of the PowerPC
+      register R26 to the frame.
+    code: |
+      #if defined( __SPE__ )
+        CheckSlot( SLOT_R26 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/exc-floating-point-registers
+  - brief: |
+      Check that the default exception handler saved the top 32 bits of the PowerPC
+      register R27 to the frame.
+    code: |
+      #if defined( __SPE__ )
+        CheckSlot( SLOT_R27 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/exc-floating-point-registers
+  - brief: |
+      Check that the default exception handler saved the top 32 bits of the PowerPC
+      register R28 to the frame.
+    code: |
+      #if defined( __SPE__ )
+        CheckSlot( SLOT_R28 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/exc-floating-point-registers
+  - brief: |
+      Check that the default exception handler saved the top 32 bits of the PowerPC
+      register R29 to the frame.
+    code: |
+      #if defined( __SPE__ )
+        CheckSlot( SLOT_R29 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/exc-floating-point-registers
+  - brief: |
+      Check that the default exception handler saved the top 32 bits of the PowerPC
+      register R30 to the frame.
+    code: |
+      #if defined( __SPE__ )
+        CheckSlot( SLOT_R30 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/exc-floating-point-registers
+  - brief: |
+      Check that the default exception handler saved the top 32 bits of the PowerPC
+      register R31 to the frame.
+    code: |
+      #if defined( __SPE__ )
+        CheckSlot( SLOT_R31 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/exc-floating-point-registers
+  - brief: |
+      Check that the default exception handler saved ACC to the frame.
+    code: |
+      #if defined( __SPE__ )
+        CheckSlot( SLOT_ACC );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/exc-floating-point-registers
+  - brief: |
+      Check that the default exception handler saved SPEFSCR to the frame.
+    code: |
+      #if defined( __SPE__ )
+        CheckSlot( SLOT_SPEFSCR );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/exc-floating-point-registers
+  - brief: |
+      Check that each run with a changed value flagged exactly the checks of that
+      value, and that each run recorded every check.
+    code: |
+      #if defined( __SPE__ )
+        RegisterCheckReport( &spe_exception_check );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/exc-floating-point-registers
+  links: []
+test-brief: |
+  Checks the SPE state in the exception frame which the default exception handler
+  builds.
+test-context: []
+test-context-support: null
+test-description: null
+test-header: null
+test-includes:
+- rtems/score/cpuimpl.h
+- string.h
+- stdint.h
+test-local-includes:
+- tx-register-check.h
+- tx-support.h
+test-setup: null
+test-stop: null
+test-support: |
+  #if defined(__SPE__)
+  #define WORD UINT64_C( 0xffffffff )
+
+  /* These are the top 32 bits of a 64-bit general-purpose register. */
+  #define TOP UINT64_C( 0xffffffff00000000 )
+
+  /*
+   * These are the sticky bits FINXS, FINVS, FDBZS and FUNFS and the rounding mode
+   * of SPEFSCR.  The mask covers no enable bit, so no SPE operation traps.
+   */
+  #define SPEFSCR_MASK UINT64_C( 0x003c0003 )
+
+  typedef enum {
+    SOURCE_R0,
+    SOURCE_R3,
+    SOURCE_R4,
+    SOURCE_R5,
+    SOURCE_R6,
+    SOURCE_R7,
+    SOURCE_R8,
+    SOURCE_R9,
+    SOURCE_R10,
+    SOURCE_R11,
+    SOURCE_R12,
+    SOURCE_R14,
+    SOURCE_R15,
+    SOURCE_R16,
+    SOURCE_R17,
+    SOURCE_R18,
+    SOURCE_R19,
+    SOURCE_R20,
+    SOURCE_R21,
+    SOURCE_R22,
+    SOURCE_R23,
+    SOURCE_R24,
+    SOURCE_R25,
+    SOURCE_R26,
+    SOURCE_R27,
+    SOURCE_R28,
+    SOURCE_R29,
+    SOURCE_R30,
+    SOURCE_R31,
+    SOURCE_ACC,
+    SOURCE_SPEFSCR,
+    SOURCE_MAX
+  } Source;
+
+  typedef enum {
+    SLOT_R0,
+    SLOT_R3,
+    SLOT_R4,
+    SLOT_R5,
+    SLOT_R6,
+    SLOT_R7,
+    SLOT_R8,
+    SLOT_R9,
+    SLOT_R10,
+    SLOT_R11,
+    SLOT_R12,
+    SLOT_R14,
+    SLOT_R15,
+    SLOT_R16,
+    SLOT_R17,
+    SLOT_R18,
+    SLOT_R19,
+    SLOT_R20,
+    SLOT_R21,
+    SLOT_R22,
+    SLOT_R23,
+    SLOT_R24,
+    SLOT_R25,
+    SLOT_R26,
+    SLOT_R27,
+    SLOT_R28,
+    SLOT_R29,
+    SLOT_R30,
+    SLOT_R31,
+    SLOT_ACC,
+    SLOT_SPEFSCR,
+    SLOT_MAX
+  } Slot;
+
+  static const RegisterCheckSource spe_exception_sources[ SOURCE_MAX ] = {
+    { "r0 top", REGISTER_CHECK_INITIAL, TOP },
+    { "r3 top", REGISTER_CHECK_INITIAL, TOP },
+    { "r4 top", REGISTER_CHECK_INITIAL, TOP },
+    { "r5 top", REGISTER_CHECK_INITIAL, TOP },
+    { "r6 top", REGISTER_CHECK_INITIAL, TOP },
+    { "r7 top", REGISTER_CHECK_INITIAL, TOP },
+    { "r8 top", REGISTER_CHECK_INITIAL, TOP },
+    { "r9 top", REGISTER_CHECK_INITIAL, TOP },
+    { "r10 top", REGISTER_CHECK_INITIAL, TOP },
+    { "r11 top", REGISTER_CHECK_INITIAL, TOP },
+    { "r12 top", REGISTER_CHECK_INITIAL, TOP },
+    { "r14 top", REGISTER_CHECK_INITIAL, TOP },
+    { "r15 top", REGISTER_CHECK_INITIAL, TOP },
+    { "r16 top", REGISTER_CHECK_INITIAL, TOP },
+    { "r17 top", REGISTER_CHECK_INITIAL, TOP },
+    { "r18 top", REGISTER_CHECK_INITIAL, TOP },
+    { "r19 top", REGISTER_CHECK_INITIAL, TOP },
+    { "r20 top", REGISTER_CHECK_INITIAL, TOP },
+    { "r21 top", REGISTER_CHECK_INITIAL, TOP },
+    { "r22 top", REGISTER_CHECK_INITIAL, TOP },
+    { "r23 top", REGISTER_CHECK_INITIAL, TOP },
+    { "r24 top", REGISTER_CHECK_INITIAL, TOP },
+    { "r25 top", REGISTER_CHECK_INITIAL, TOP },
+    { "r26 top", REGISTER_CHECK_INITIAL, TOP },
+    { "r27 top", REGISTER_CHECK_INITIAL, TOP },
+    { "r28 top", REGISTER_CHECK_INITIAL, TOP },
+    { "r29 top", REGISTER_CHECK_INITIAL, TOP },
+    { "r30 top", REGISTER_CHECK_INITIAL, TOP },
+    { "r31 top", REGISTER_CHECK_INITIAL, TOP },
+    { "acc", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "spefscr", REGISTER_CHECK_INITIAL, SPEFSCR_MASK }
+  };
+
+  static const RegisterCheckSlot spe_exception_slots[ SOURCE_MAX ] = {
+    { "r0 top", SOURCE_R0, TOP },
+    { "r3 top", SOURCE_R3, TOP },
+    { "r4 top", SOURCE_R4, TOP },
+    { "r5 top", SOURCE_R5, TOP },
+    { "r6 top", SOURCE_R6, TOP },
+    { "r7 top", SOURCE_R7, TOP },
+    { "r8 top", SOURCE_R8, TOP },
+    { "r9 top", SOURCE_R9, TOP },
+    { "r10 top", SOURCE_R10, TOP },
+    { "r11 top", SOURCE_R11, TOP },
+    { "r12 top", SOURCE_R12, TOP },
+    { "r14 top", SOURCE_R14, TOP },
+    { "r15 top", SOURCE_R15, TOP },
+    { "r16 top", SOURCE_R16, TOP },
+    { "r17 top", SOURCE_R17, TOP },
+    { "r18 top", SOURCE_R18, TOP },
+    { "r19 top", SOURCE_R19, TOP },
+    { "r20 top", SOURCE_R20, TOP },
+    { "r21 top", SOURCE_R21, TOP },
+    { "r22 top", SOURCE_R22, TOP },
+    { "r23 top", SOURCE_R23, TOP },
+    { "r24 top", SOURCE_R24, TOP },
+    { "r25 top", SOURCE_R25, TOP },
+    { "r26 top", SOURCE_R26, TOP },
+    { "r27 top", SOURCE_R27, TOP },
+    { "r28 top", SOURCE_R28, TOP },
+    { "r29 top", SOURCE_R29, TOP },
+    { "r30 top", SOURCE_R30, TOP },
+    { "r31 top", SOURCE_R31, TOP },
+    { "acc", SOURCE_ACC, UINT64_MAX },
+    { "spefscr", SOURCE_SPEFSCR, SPEFSCR_MASK }
+  };
+
+  static const uint64_t spe_exception_patterns[ SOURCE_MAX ] = {
+    UINT64_C( 0xc1c2c3c431323334 ),
+    UINT64_C( 0xc2c3c4c532333435 ),
+    UINT64_C( 0xc3c4c5c633343536 ),
+    UINT64_C( 0xc4c5c6c734353637 ),
+    UINT64_C( 0xc5c6c7c835363738 ),
+    UINT64_C( 0xc6c7c8c936373839 ),
+    UINT64_C( 0xc7c8c9ca3738393a ),
+    UINT64_C( 0xc8c9cacb38393a3b ),
+    UINT64_C( 0xc9cacbcc393a3b3c ),
+    UINT64_C( 0xcacbcccd3a3b3c3d ),
+    UINT64_C( 0xcbcccdce3b3c3d3e ),
+    UINT64_C( 0xcccdcecf3c3d3e3f ),
+    UINT64_C( 0xcdcecfd03d3e3f40 ),
+    UINT64_C( 0xcecfd0d13e3f4041 ),
+    UINT64_C( 0xcfd0d1d23f404142 ),
+    UINT64_C( 0xd0d1d2d340414243 ),
+    UINT64_C( 0xd1d2d3d441424344 ),
+    UINT64_C( 0xd2d3d4d542434445 ),
+    UINT64_C( 0xd3d4d5d643444546 ),
+    UINT64_C( 0xd4d5d6d744454647 ),
+    UINT64_C( 0xd5d6d7d845464748 ),
+    UINT64_C( 0xd6d7d8d946474849 ),
+    UINT64_C( 0xd7d8d9da4748494a ),
+    UINT64_C( 0xd8d9dadb48494a4b ),
+    UINT64_C( 0xd9dadbdc494a4b4c ),
+    UINT64_C( 0xdadbdcdd4a4b4c4d ),
+    UINT64_C( 0xdbdcddde4b4c4d4e ),
+    UINT64_C( 0xdcdddedf4c4d4e4f ),
+    UINT64_C( 0xdddedfe04d4e4f50 ),
+    UINT64_C( 0x1f1e1d1c1b1a1918 ),
+    UINT64_C( 0x00280002 )
+  };
+
+  uint64_t spe_exception_initial[ SOURCE_MAX ] RTEMS_ALIGNED( 8 );
+
+  static CPU_Exception_frame spe_exception_frame;
+
+  static uint32_t spe_exception_spefscr;
+
+  extern const char spe_exception_done_label[];
+
+  #define EXC_LOAD \
+      "lis 31, spe_exception_initial@ha\n" \
+      "addi 31, 31, spe_exception_initial@l\n" \
+      "lwz 0, 244(31)\n" \
+      "mtspr 512, 0\n" \
+      "evldd 0, 232(31)\n" \
+      "evmra 0, 0\n" \
+      "evldd 0, 0(31)\n" \
+      "evldd 3, 8(31)\n" \
+      "evldd 4, 16(31)\n" \
+      "evldd 5, 24(31)\n" \
+      "evldd 6, 32(31)\n" \
+      "evldd 7, 40(31)\n" \
+      "evldd 8, 48(31)\n" \
+      "evldd 9, 56(31)\n" \
+      "evldd 10, 64(31)\n" \
+      "evldd 11, 72(31)\n" \
+      "evldd 12, 80(31)\n" \
+      "evldd 14, 88(31)\n" \
+      "evldd 15, 96(31)\n" \
+      "evldd 16, 104(31)\n" \
+      "evldd 17, 112(31)\n" \
+      "evldd 18, 120(31)\n" \
+      "evldd 19, 128(31)\n" \
+      "evldd 20, 136(31)\n" \
+      "evldd 21, 144(31)\n" \
+      "evldd 22, 152(31)\n" \
+      "evldd 23, 160(31)\n" \
+      "evldd 24, 168(31)\n" \
+      "evldd 25, 176(31)\n" \
+      "evldd 26, 184(31)\n" \
+      "evldd 27, 192(31)\n" \
+      "evldd 28, 200(31)\n" \
+      "evldd 29, 208(31)\n" \
+      "evldd 30, 216(31)\n" \
+      "evldd 31, 224(31)\n"
+
+  static void SpeExceptionFatal(
+    rtems_fatal_source source,
+    rtems_fatal_code   code,
+    void              *arg
+  )
+  {
+    CPU_Exception_frame *frame;
+
+    (void) arg;
+
+    if ( source != RTEMS_FATAL_SOURCE_EXCEPTION ) {
+      return;
+    }
+
+    frame = (CPU_Exception_frame *) code;
+    spe_exception_frame = *frame;
+    SetFatalHandler( NULL, NULL );
+    frame->EXC_SPEFSCR = spe_exception_spefscr;
+    frame->EXC_SRR0 = (uintptr_t) spe_exception_done_label;
+    _CPU_Exception_resume( frame );
+  }
+
+  static void SpeExceptionRun( RegisterCheck *self, void *arg )
+  {
+    (void) arg;
+    memset( &spe_exception_frame, 0, sizeof( spe_exception_frame ) );
+    __asm__ volatile( "mfspr %0, 512" : "=r"( spe_exception_spefscr ) );
+    SetFatalHandler( SpeExceptionFatal, NULL );
+    __asm__ volatile(
+      EXC_LOAD
+      "trap\n"
+      ".globl spe_exception_done_label\n"
+      "spe_exception_done_label:\n"
+      :
+      :
+      : "memory", "cr0", "cr1", "cr2", "cr3", "cr4", "cr5", "cr6", "cr7",
+        "r0", "r3", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12",
+        "r14", "r15", "r16", "r17", "r18", "r19", "r20", "r21", "r22", "r23",
+        "r24", "r25", "r26", "r27", "r28", "r29", "r30", "r31", "lr", "ctr",
+        "xer"
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R0,
+      spe_exception_frame.registers[ 0 ] & TOP,
+      spe_exception_patterns[ SOURCE_R0 ] & TOP
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R3,
+      spe_exception_frame.registers[ 3 ] & TOP,
+      spe_exception_patterns[ SOURCE_R3 ] & TOP
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R4,
+      spe_exception_frame.registers[ 4 ] & TOP,
+      spe_exception_patterns[ SOURCE_R4 ] & TOP
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R5,
+      spe_exception_frame.registers[ 5 ] & TOP,
+      spe_exception_patterns[ SOURCE_R5 ] & TOP
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R6,
+      spe_exception_frame.registers[ 6 ] & TOP,
+      spe_exception_patterns[ SOURCE_R6 ] & TOP
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R7,
+      spe_exception_frame.registers[ 7 ] & TOP,
+      spe_exception_patterns[ SOURCE_R7 ] & TOP
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R8,
+      spe_exception_frame.registers[ 8 ] & TOP,
+      spe_exception_patterns[ SOURCE_R8 ] & TOP
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R9,
+      spe_exception_frame.registers[ 9 ] & TOP,
+      spe_exception_patterns[ SOURCE_R9 ] & TOP
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R10,
+      spe_exception_frame.registers[ 10 ] & TOP,
+      spe_exception_patterns[ SOURCE_R10 ] & TOP
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R11,
+      spe_exception_frame.registers[ 11 ] & TOP,
+      spe_exception_patterns[ SOURCE_R11 ] & TOP
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R12,
+      spe_exception_frame.registers[ 12 ] & TOP,
+      spe_exception_patterns[ SOURCE_R12 ] & TOP
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R14,
+      spe_exception_frame.registers[ 14 ] & TOP,
+      spe_exception_patterns[ SOURCE_R14 ] & TOP
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R15,
+      spe_exception_frame.registers[ 15 ] & TOP,
+      spe_exception_patterns[ SOURCE_R15 ] & TOP
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R16,
+      spe_exception_frame.registers[ 16 ] & TOP,
+      spe_exception_patterns[ SOURCE_R16 ] & TOP
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R17,
+      spe_exception_frame.registers[ 17 ] & TOP,
+      spe_exception_patterns[ SOURCE_R17 ] & TOP
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R18,
+      spe_exception_frame.registers[ 18 ] & TOP,
+      spe_exception_patterns[ SOURCE_R18 ] & TOP
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R19,
+      spe_exception_frame.registers[ 19 ] & TOP,
+      spe_exception_patterns[ SOURCE_R19 ] & TOP
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R20,
+      spe_exception_frame.registers[ 20 ] & TOP,
+      spe_exception_patterns[ SOURCE_R20 ] & TOP
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R21,
+      spe_exception_frame.registers[ 21 ] & TOP,
+      spe_exception_patterns[ SOURCE_R21 ] & TOP
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R22,
+      spe_exception_frame.registers[ 22 ] & TOP,
+      spe_exception_patterns[ SOURCE_R22 ] & TOP
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R23,
+      spe_exception_frame.registers[ 23 ] & TOP,
+      spe_exception_patterns[ SOURCE_R23 ] & TOP
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R24,
+      spe_exception_frame.registers[ 24 ] & TOP,
+      spe_exception_patterns[ SOURCE_R24 ] & TOP
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R25,
+      spe_exception_frame.registers[ 25 ] & TOP,
+      spe_exception_patterns[ SOURCE_R25 ] & TOP
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R26,
+      spe_exception_frame.registers[ 26 ] & TOP,
+      spe_exception_patterns[ SOURCE_R26 ] & TOP
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R27,
+      spe_exception_frame.registers[ 27 ] & TOP,
+      spe_exception_patterns[ SOURCE_R27 ] & TOP
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R28,
+      spe_exception_frame.registers[ 28 ] & TOP,
+      spe_exception_patterns[ SOURCE_R28 ] & TOP
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R29,
+      spe_exception_frame.registers[ 29 ] & TOP,
+      spe_exception_patterns[ SOURCE_R29 ] & TOP
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R30,
+      spe_exception_frame.registers[ 30 ] & TOP,
+      spe_exception_patterns[ SOURCE_R30 ] & TOP
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_R31,
+      spe_exception_frame.registers[ 31 ] & TOP,
+      spe_exception_patterns[ SOURCE_R31 ] & TOP
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_ACC,
+      spe_exception_frame.EXC_ACC,
+      spe_exception_patterns[ SOURCE_ACC ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_SPEFSCR,
+      spe_exception_frame.EXC_SPEFSCR & SPEFSCR_MASK,
+      spe_exception_patterns[ SOURCE_SPEFSCR ]
+    );
+  }
+
+  static RegisterCheck spe_exception_check = {
+    .sources = spe_exception_sources,
+    .source_count = SOURCE_MAX,
+    .slots = spe_exception_slots,
+    .slot_count = SOURCE_MAX,
+    .initial = spe_exception_initial,
+    .run = SpeExceptionRun
+  };
+
+  static void CheckSlot( Slot slot )
+  {
+    RegisterCheckVerify( &spe_exception_check, slot );
+  }
+  #endif
+test-target: testsuites/validation/bsps/tc-powerpc-spe-exception-frame.c
+test-teardown: null
+type: test-case
