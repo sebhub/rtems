@@ -44,15 +44,7 @@
 .globl	_CPU_Exception_dispatch_and_resume
 .globl	_CPU_Exception_resume
 
-#ifdef AARCH64_MULTILIB_ARCH_V8_ILP32
-  #ifdef RTEMS_SMP
-    #define SELF_CPU_CONTROL_GET_REG x19
-  #else
-    #define SELF_CPU_CONTROL_GET_REG w19
-  #endif
-#else
-  #define SELF_CPU_CONTROL_GET_REG x19
-#endif
+#define SELF_CPU_CONTROL_GET_REG x19
 #define SELF_CPU_CONTROL x19
 
 /*

@@ -50,15 +50,7 @@
 .globl	_AArch64_Exception_interrupt_nest
 .globl	_AArch64_Exception_thread_dispatch
 
-#ifdef AARCH64_MULTILIB_ARCH_V8_ILP32
-  #ifdef RTEMS_SMP
-    #define SELF_CPU_CONTROL_GET_REG x19
-  #else
-    #define SELF_CPU_CONTROL_GET_REG w19
-  #endif
-#else
-  #define SELF_CPU_CONTROL_GET_REG x19
-#endif
+#define SELF_CPU_CONTROL_GET_REG x19
 #define SELF_CPU_CONTROL x19
 #define NON_VOLATILE_SCRATCH x20
 
