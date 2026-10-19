@@ -74,6 +74,7 @@ DEFINE_FUNCTION_AARCH64(_CPU_Context_switch)
 
 /* Start saving context */
 	GET_SELF_CPU_CONTROL	reg_2
+	mov	x4, sp
 	ldr	w3, [x2, #PER_CPU_ISR_DISPATCH_DISABLE]
 
 	stp x19, x20, [x0]
@@ -82,7 +83,6 @@ DEFINE_FUNCTION_AARCH64(_CPU_Context_switch)
 	stp x25, x26, [x0, #0x30]
 	stp x27, x28, [x0, #0x40]
 	stp fp,  lr,  [x0, #0x50]
-	mov x4,  sp
 	str x4,  [x0, #0x60]
 
 #ifdef AARCH64_MULTILIB_VFP
@@ -128,8 +128,9 @@ DEFINE_FUNCTION_AARCH64(_CPU_Context_switch)
 	clrex
 #endif
 
+	ldp fp,  lr,  [x1, #0x50]
+	ldr x8,  [x1, #0x60]
 	ldr	x3, [x1, #AARCH64_CONTEXT_CONTROL_THREAD_ID_OFFSET]
-
 	ldr	x4, [x1, #AARCH64_CONTEXT_CONTROL_ISR_DISPATCH_DISABLE]
 
 #ifdef AARCH64_MULTILIB_VFP
@@ -140,18 +141,15 @@ DEFINE_FUNCTION_AARCH64(_CPU_Context_switch)
 	ldp d14, d15, [x5, #0x30]
 #endif
 
-	msr	TPIDR_EL0, x3
-
-	str	w4, [x2, #PER_CPU_ISR_DISPATCH_DISABLE]
-
 	ldp x19, x20, [x1]
 	ldp x21, x22, [x1, #0x10]
 	ldp x23, x24, [x1, #0x20]
 	ldp x25, x26, [x1, #0x30]
 	ldp x27, x28, [x1, #0x40]
-	ldp fp,  lr,  [x1, #0x50]
-	ldr x4,  [x1, #0x60]
-	mov sp,  x4
+
+	msr	TPIDR_EL0, x3
+	str	w4, [x2, #PER_CPU_ISR_DISPATCH_DISABLE]
+	mov sp,  x8
 	ret
 
 /*
