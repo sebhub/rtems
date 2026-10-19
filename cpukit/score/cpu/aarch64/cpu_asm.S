@@ -69,6 +69,10 @@ DEFINE_FUNCTION_AARCH64(_CPU_Context_switch)
 /* Start saving context */
 	GET_SELF_CPU_CONTROL	reg_2
 	mov	x4, sp
+#ifdef AARCH64_MULTILIB_VFP
+	mrs	x6, FPCR
+	mrs	x7, FPSR
+#endif
 	ldr	w3, [x2, #PER_CPU_ISR_DISPATCH_DISABLE]
 
 	stp x19, x20, [x0]
@@ -85,6 +89,7 @@ DEFINE_FUNCTION_AARCH64(_CPU_Context_switch)
 	stp d10, d11, [x5, #0x10]
 	stp d12, d13, [x5, #0x20]
 	stp d14, d15, [x5, #0x30]
+	stp	x6, x7, [x5, #0x40]
 #endif
 
 	str	x3, [x0, #AARCH64_CONTEXT_CONTROL_ISR_DISPATCH_DISABLE]
@@ -129,6 +134,7 @@ DEFINE_FUNCTION_AARCH64(_CPU_Context_switch)
 
 #ifdef AARCH64_MULTILIB_VFP
 	add	x5, x1, #AARCH64_CONTEXT_CONTROL_D8_OFFSET
+	ldp	x6, x7, [x5, #0x40]
 	ldp d8,  d9,  [x5]
 	ldp d10, d11, [x5, #0x10]
 	ldp d12, d13, [x5, #0x20]
@@ -141,6 +147,14 @@ DEFINE_FUNCTION_AARCH64(_CPU_Context_switch)
 	ldp x25, x26, [x1, #0x30]
 	ldp x27, x28, [x1, #0x40]
 
+#ifdef AARCH64_MULTILIB_VFP
+	mrs	x9, FPCR
+	cmp	x6, x9
+	b.eq	.L_fpcr_done
+	msr	FPCR, x6
+.L_fpcr_done:
+	msr	FPSR, x7
+#endif
 	msr	TPIDR_EL0, x3
 	str	w4, [x2, #PER_CPU_ISR_DISPATCH_DISABLE]
 	mov sp,  x8

@@ -133,13 +133,14 @@
 
 #ifdef AARCH64_MULTILIB_VFP
   #define AARCH64_CONTEXT_CONTROL_D8_OFFSET 0x78
+  #define AARCH64_CONTEXT_CONTROL_FPCR_OFFSET 0xb8
 #endif
 
 #define AARCH64_CONTEXT_CONTROL_ISR_DISPATCH_DISABLE 0x68
 
 #ifdef RTEMS_SMP
   #if defined(AARCH64_MULTILIB_VFP)
-    #define AARCH64_CONTEXT_CONTROL_IS_EXECUTING_OFFSET 0xb8
+    #define AARCH64_CONTEXT_CONTROL_IS_EXECUTING_OFFSET 0xc8
   #else
     #define AARCH64_CONTEXT_CONTROL_IS_EXECUTING_OFFSET 0x78
   #endif
@@ -195,6 +196,8 @@ typedef struct {
   uint64_t register_d13;
   uint64_t register_d14;
   uint64_t register_d15;
+  uint64_t register_fpcr;
+  uint64_t register_fpsr;
 #endif
 #ifdef RTEMS_SMP
   volatile bool is_executing;
