@@ -49,6 +49,18 @@
       == AARCH64_CONTEXT_CONTROL_D8_OFFSET,
     AARCH64_CONTEXT_CONTROL_D8_OFFSET
   );
+
+  RTEMS_STATIC_ASSERT(
+    offsetof( Context_Control, register_fpcr )
+      == AARCH64_CONTEXT_CONTROL_FPCR_OFFSET,
+    AARCH64_CONTEXT_CONTROL_FPCR_OFFSET
+  );
+
+  RTEMS_STATIC_ASSERT(
+    offsetof( Context_Control, register_fpsr )
+      == AARCH64_CONTEXT_CONTROL_FPCR_OFFSET + 8,
+    register_fpsr
+  );
 #endif
 
   RTEMS_STATIC_ASSERT(
@@ -142,6 +154,12 @@ void _CPU_Context_Initialize(
   the_context->isr_dispatch_disable = 0;
 
   the_context->thread_id = (uintptr_t) tls_area;
+
+#ifdef AARCH64_MULTILIB_VFP
+  /* Round to nearest, no floating-point trap, no flush to zero */
+  the_context->register_fpcr = 0;
+  the_context->register_fpsr = 0;
+#endif
 
   if ( tls_area != NULL ) {
     the_context->thread_id = (uintptr_t) _TLS_Initialize_area( tls_area );
