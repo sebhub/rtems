@@ -282,7 +282,14 @@ _start:
 #endif
   add x1, x1, x0, lsl #PER_CPU_CONTROL_SIZE_LOG2
   msr TPIDR_EL1, x1
-
+#else
+  /* Store the per-CPU control in the Thread ID Register (TPIDR_EL1) */
+#ifdef AARCH64_MULTILIB_ARCH_V8_ILP32
+  ldr w1, =_Per_CPU_Information
+#else
+  ldr x1, =_Per_CPU_Information
+#endif
+  msr TPIDR_EL1, x1
 #endif
 
   /* Calculate interrupt stack area end for current processor */

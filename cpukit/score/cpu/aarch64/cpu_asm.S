@@ -63,14 +63,8 @@ DEFINE_FUNCTION_AARCH64(_CPU_Context_switch)
 /* Sanitize inputs for ILP32 ABI */
 	mov w0, w0
 	mov w1, w1
-  #ifdef RTEMS_SMP
-    #define reg_2 x2
-  #else
-    #define reg_2 w2
-  #endif
-#else
-#define reg_2 x2
 #endif
+#define reg_2 x2
 
 /* Start saving context */
 	GET_SELF_CPU_CONTROL	reg_2
