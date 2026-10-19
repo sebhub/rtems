@@ -179,89 +179,34 @@ static void openpic_safe_writefield(volatile unsigned int *addr, unsigned int ma
 void openpic_init(int main_pic, unsigned char *polarities, unsigned char *senses, int num_sources, int source_offset, unsigned long epic_freq)
 {
     unsigned int t, i;
-    unsigned int vendorid, devid, stepping, timerfreq;
-    const char *version, *vendor, *device;
 
     if (!OpenPIC)
 	rtems_panic("No OpenPIC found");
 
     t = openpic_read(&OpenPIC->Global.Feature_Reporting0);
-    switch (t & OPENPIC_FEATURE_VERSION_MASK) {
-	case 1:
-	    version = "1.0";
-	    break;
-	case 2:
-	    version = "1.2";
-	    break;
-	default:
-	    version = "?";
-	    break;
-    }
     NumProcessors = ((t & OPENPIC_FEATURE_LAST_PROCESSOR_MASK) >>
 		     OPENPIC_FEATURE_LAST_PROCESSOR_SHIFT) + 1;
     NumSources = ((t & OPENPIC_FEATURE_LAST_SOURCE_MASK) >>
 		  OPENPIC_FEATURE_LAST_SOURCE_SHIFT) + 1;
     t = openpic_read(&OpenPIC->Global.Vendor_Identification);
 
-    vendorid = t & OPENPIC_VENDOR_ID_VENDOR_ID_MASK;
-    devid = (t & OPENPIC_VENDOR_ID_DEVICE_ID_MASK) >>
-	    OPENPIC_VENDOR_ID_DEVICE_ID_SHIFT;
-    stepping = (t & OPENPIC_VENDOR_ID_STEPPING_MASK) >>
-	       OPENPIC_VENDOR_ID_STEPPING_SHIFT;
-
     /* Kludge for the Raven */
 /*
     pci_read_config_dword(0, 0, 0, 0, &t);
 */
     if (t == PCI_VENDOR_ID_MOTOROLA + (PCI_DEVICE_ID_MOTOROLA_RAVEN<<16)) {
-    	vendor = "Motorola";
-	device = "Raven";
 	NumSources += 1;
     }
     else if (t == PCI_VENDOR_ID_MOTOROLA + (PCI_DEVICE_ID_MOTOROLA_HAWK<<16)) {
-    	vendor = "Motorola";
-	device = "Hawk";
 	NumSources += 1;
-    } else {
-	switch (vendorid) {
-	    case OPENPIC_VENDOR_ID_APPLE:
-	  	vendor = "Apple";
-	    	break;
-	    default:
-	    	vendor = "Unknown";
-	    break;
-	}
-	switch (devid) {
-	    case OPENPIC_DEVICE_ID_APPLE_HYDRA:
-	    	device = "Hydra";
-		break;
-	    default:
-	        device = "Unknown";
-		break;
-	}
     }
-    printk("OpenPIC Version %s (%d CPUs and %d IRQ sources) at 0x%08" PRIuPTR "\n", version,
-	   NumProcessors, NumSources, (uintptr_t) OpenPIC);
-
-    printk("OpenPIC Vendor %d (%s), Device %d (%s), Stepping %d\n", vendorid,
-	   vendor, devid, device, stepping);
 
 	/* Override if they desire */
 	if ( num_sources ) {
-		if ( NumSources != (unsigned int)num_sources )
-			printk("Overriding NumSources (%i) from configuration with %i\n",
-				NumSources, num_sources);
 		NumSources = num_sources;
 	}
 
 	openpic_src_offst = source_offset;
-
-    timerfreq = openpic_read(&OpenPIC->Global.Timer_Frequency);
-    printk("OpenPIC timer frequency is ");
-    if (timerfreq)
-	printk("%d Hz\n", timerfreq);
-    else
-	printk("not set\n");
 
     if ( main_pic )
     {
