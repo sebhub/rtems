@@ -101,6 +101,12 @@ Two cases combine the categories `source` and `build-qual`:
 | moves only list entries between a `source` build item and a `build-qual` build item         | `build-qual`           | `build-qual: <Summary>` |
 | registers the files which it adds or deletes in a build item whose name ends in `extra.yml` | `source`, `build-qual` | `<scope>: <Summary>`    |
 
+A file which leaves an `extra.yml` build item enters another build item in the
+same commit, unless the commit deletes the file. Otherwise no build contains
+the file at that commit. A `build-qual` commit moves such a file into the
+library of the pre-qualified build before the test which needs it. The coverage
+of the file holds at the commit of the test and not at the move.
+
 The scope of a `source` subject names the area of the change, as the
 [commit header guidance](https://docs.rtems.org/docs/main/eng/vc-users.html#commit-header)
 of RTEMS describes. An example is

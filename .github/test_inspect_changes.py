@@ -345,3 +345,38 @@ def test_follow_accepts_an_empty_list(repository: Path) -> None:
         })
     commit = _commit("bsps/shared: Rename c.c")
     assert inspect_changes._get_categories(commit) == ["build-qual", "source"]
+
+
+def _unlisted(repository: Path, commit: str) -> tuple[str, int]:
+    findings = inspect_changes._Findings()
+    status = inspect_changes._check_unlisted(repository, commit, findings,
+                                             "url")
+    return status, findings.error_count
+
+
+def test_unlisted_rejects_a_removal(repository: Path) -> None:
+    """ A file which leaves the extra objects needs another build item. """
+    _demo_with_extra()
+    _add_extra([])
+    commit = _commit("build-qual: Remove c.c from objextra")
+    assert _unlisted(repository, commit) == (inspect_changes._ERROR, 1)
+
+
+def test_unlisted_accepts_a_move(repository: Path) -> None:
+    """ A file which moves from the extra objects stays in a build. """
+    _demo_with_extra()
+    _add_extra([])
+    obj = dict(_OBJ)
+    obj["source"] = _OBJ["source"] + ["bsps/shared/c.c"]
+    _write(_BSP / "obj.yml", obj)
+    commit = _commit("build-qual: Move c.c to obj")
+    assert _unlisted(repository, commit) == (inspect_changes._OK, 0)
+
+
+def test_unlisted_accepts_a_deletion(repository: Path) -> None:
+    """ A file which the commit deletes leaves every build item. """
+    _demo_with_extra()
+    subprocess.run(["git", "rm", "-q", "bsps/shared/c.c"], check=True)
+    _add_extra([])
+    commit = _commit("bsps/shared: Remove c.c")
+    assert _unlisted(repository, commit) == (inspect_changes._SKIP, 0)
