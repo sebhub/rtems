@@ -754,6 +754,42 @@ def _check_deleted(worktree: Path, commit: str, findings: _Findings,
     return _ERROR
 
 
+def _check_unlisted(worktree: Path, commit: str, findings: _Findings,
+                    url: str) -> str:
+    """ Checks that a file which the commit removes from a build item of the
+    builds without RTEMS_QUAL stays in a build item, unless the commit deletes
+    it.  Otherwise, no build contains the file at this commit. """
+    removed: set[str] = set()
+    for path in _get_files(commit):
+        if _EXTRA_LIST.fullmatch(path):
+            old = set(_get_sources(_load_build_item(f"{commit}^", path)))
+            new = set(_get_sources(_load_build_item(commit, path)))
+            removed.update(old - new)
+    existing = sorted(name for name in removed
+                      if (worktree / name).is_file())
+    if not existing:
+        return _SKIP
+    found = find_references(existing, cwd=worktree)
+    unlisted = [name for name in existing if name not in found]
+    if not unlisted:
+        return _OK
+    findings.error(
+        f"In {url}, the commit removes files from a build item of the builds "
+        "without RTEMS_QUAL, and no build item lists them, so no build "
+        "contains them.  Move each file in one commit into the build item "
+        "which takes it over:", "\n".join(unlisted))
+    return _ERROR
+
+
+def _combine(first: str, second: str) -> str:
+    """ Returns the status of two checks which share a column. """
+    if _ERROR in (first, second):
+        return _ERROR
+    if first == _SKIP:
+        return second
+    return first if second == _SKIP else _OK
+
+
 def _check_extractable(repository: Path, upstream_ref: str,
                        commits: list[tuple[str,
                                            str]], categories: dict[str,
@@ -1156,7 +1192,8 @@ def _check_commit(
     if exports and _has_export_configuration(worktree):
         export, pending = _check_export(worktree, found, files, pending,
                                         continues, findings, url)
-    deleted = _check_deleted(worktree, commit, findings, url)
+    deleted = _combine(_check_deleted(worktree, commit, findings, url),
+                       _check_unlisted(worktree, commit, findings, url))
     return fmt, export, deleted, pending
 
 
