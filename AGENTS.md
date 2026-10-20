@@ -90,7 +90,9 @@ options of `gr740` and adds the SMP configuration.
    `spec` commit may leave its generated files to the `source` commits which
    follow it. The last `source` commit of this run must provide them. A
    `source` commit may register its new files in a build item whose name ends
-   in `extra.yml`, see [CONTRIBUTING.md](CONTRIBUTING.md).
+   in `extra.yml`, see [CONTRIBUTING.md](CONTRIBUTING.md). A file which the
+   test needs moves from such a build item into its library in one `build-qual`
+   commit before the test.
 
 7. Inspect the branch. `<base>` is the commit of `eb/qual` on which the branch
    starts:
