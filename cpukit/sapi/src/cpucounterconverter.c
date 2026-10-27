@@ -3,7 +3,7 @@
 /**
  * @file
  *
- * @ingroup RTEMSImpl
+ * @ingroup RTEMSImplCounter
  *
  * @brief This source file contains a implementation of the counter value
  *   conversion functions.
@@ -32,6 +32,14 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
+ */
+
+/**
+ * @defgroup RTEMSImplCounter Counter
+ *
+ * @ingroup RTEMSImpl
+ *
+ * @brief This group contains the counter implementation.
  */
 
 #include <rtems/counter.h>
