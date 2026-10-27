@@ -141,7 +141,8 @@ uint64_t rtems_counter_ticks_to_nanoseconds(
  * @param[in] nanoseconds The nanoseconds value to convert.
  *
  * @return The counter ticks value corresponding to the nanoseconds value.  The
- * value is rounded up.
+ * value is the exact value rounded down or rounded up.  Where the exact value
+ * rounded down is greater than UINT32_MAX, the value is UINT32_MAX.
  */
 rtems_counter_ticks rtems_counter_nanoseconds_to_ticks(
   uint32_t nanoseconds
@@ -153,7 +154,9 @@ rtems_counter_ticks rtems_counter_nanoseconds_to_ticks(
  * @param[in] ticks The counter ticks value to convert.
  *
  * @return The signed binary time value corresponding to the counter ticks
- * value.  The value is rounded up.
+ * value.  The value is greater than or equal to the exact value rounded down.
+ * The value is less than or equal to the exact value rounded down plus two.
+ * Where the exact value is greater than INT64_MAX, the value is INT64_MAX.
  */
 int64_t rtems_counter_ticks_to_sbintime( rtems_counter_ticks ticks );
 
@@ -162,8 +165,10 @@ int64_t rtems_counter_ticks_to_sbintime( rtems_counter_ticks ticks );
  *
  * @param[in] sbt The signed binary time value to convert.
  *
- * @return The counter ticks value corresponding to the nanoseconds value.  The
- * value is rounded up.
+ * @return The counter ticks value corresponding to the signed binary time
+ * value.  The value is the exact value rounded down.  Where the exact value
+ * rounded down is greater than UINT32_MAX, the value is UINT32_MAX.  Where the
+ * signed binary time value is negative, the value is zero.
  */
 rtems_counter_ticks rtems_counter_sbintime_to_ticks( int64_t sbt );
 
@@ -175,7 +180,11 @@ rtems_counter_ticks rtems_counter_sbintime_to_ticks( int64_t sbt );
  * rtems_counter_nanoseconds_to_ticks() functions.  It should be called during
  * system initialization by the board support package.
  *
- * @param[in] frequency The current counter frequency in Hz.
+ * Before the first call, the conversion functions use a counter frequency of
+ * 100MHz.
+ *
+ * @param[in] frequency The current counter frequency in Hz.  Where the
+ * frequency is zero, the function returns and leaves the converter unchanged.
  */
 void rtems_counter_initialize_converter( uint32_t frequency );
 
