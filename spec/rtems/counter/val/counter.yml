@@ -1,0 +1,211 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2025 embedded brains GmbH & Co. KG
+enabled-by: true
+links: []
+test-actions:
+- action-brief: |
+    Validate the RTEMS counter directives.
+  action-code: |
+    rtems_counter_ticks ticks[ 10 ];
+    rtems_counter_ticks max;
+    uint32_t            frequency;
+    size_t              i;
+    rtems_interval      clock_ticks;
+    rtems_interval      clock_ticks_end;
+    rtems_counter_ticks begin;
+    rtems_counter_ticks end;
+    uint64_t            lower;
+    uint64_t            upper;
+
+    max = (rtems_counter_ticks) -1;
+    frequency = rtems_counter_frequency();
+  checks:
+  - brief: |
+      Check that ${../if/difference:/name} returns the expected value.
+    code: |
+      T_eq_ulong( rtems_counter_difference( 2, 1 ), 1 );
+      T_eq_ulong( rtems_counter_difference( 0, 1 ), max );
+    links:
+    - role: validation
+      uid: ../req/difference
+  - brief: |
+      Check that ${../if/frequency:/name} returns the frequency of the CPU counter.
+    code: |
+      T_eq_u32( frequency, _CPU_Counter_frequency() );
+    links:
+    - role: validation
+      uid: ../req/frequency
+  - brief: |
+      Check that the count of counter ticks during some clock ticks matches the
+      frequency which ${../if/frequency:/name} returns.
+    code: |
+      lower = (uint64_t) ( CLOCK_TICK_COUNT - 1 ) * frequency /
+              rtems_clock_get_ticks_per_second();
+      upper = ( (uint64_t) ( CLOCK_TICK_COUNT + 1 ) * frequency +
+                rtems_clock_get_ticks_per_second() - 1 ) /
+              rtems_clock_get_ticks_per_second();
+      clock_ticks = WaitForClockTicks(
+        rtems_clock_get_ticks_since_boot(),
+        1,
+        rtems_counter_read(),
+        upper
+      );
+      begin = rtems_counter_read();
+      clock_ticks_end = WaitForClockTicks(
+        clock_ticks,
+        CLOCK_TICK_COUNT,
+        begin,
+        upper
+      );
+      end = rtems_counter_read();
+      T_ge_u32( clock_ticks_end - clock_ticks, CLOCK_TICK_COUNT );
+      T_ge_u64( rtems_counter_difference( end, begin ), lower );
+      T_le_u64( rtems_counter_difference( end, begin ), upper );
+    links:
+    - role: validation
+      uid: ../req/frequency
+  - brief: |
+      Check that ${../if/read:/name} returns monotonically increasing values.
+    code: |
+      ticks[ 0 ] = rtems_counter_read();
+
+      for ( i = 1; i < RTEMS_ARRAY_SIZE( ticks ); ++i ) {
+        rtems_counter_ticks delta;
+
+        do {
+          ticks[ i ] = rtems_counter_read();
+        } while ( ticks[ i - 1 ] == ticks[ i ] );
+
+        delta = ticks[ i ] - ticks[ i - 1 ];
+        T_lt_ulong( delta, max / 2 );
+      }
+    links:
+    - role: validation
+      uid: ../req/read
+    - role: validation
+      uid: ../req/increase
+  - brief: |
+      Check that the conversions used a counter frequency of 100000000 Hz before the
+      system initialization initialized the converter.
+    code: |
+      T_eq_u64( converter_default.nanoseconds, 1000000000 );
+      T_eq_ulong( converter_default.ticks_of_nanoseconds, 100000000 );
+      T_ge_i64( converter_default.sbintime, INT64_C( 4294967296 ) );
+      T_le_i64( converter_default.sbintime, INT64_C( 4294967298 ) );
+      T_eq_ulong( converter_default.ticks_of_sbintime, 100000000 );
+      T_eq_ulong( converter_default.ticks_of_ten_nanoseconds, 1 );
+    links:
+    - role: validation
+      uid: ../req/converter-default
+  - brief: |
+      Check that the system initialization set the converter frequency to the counter
+      frequency. One second converts to and from counter ticks without a rounding.
+    code: |
+      T_eq_u64( rtems_counter_ticks_to_nanoseconds( frequency ), 1000000000 );
+      T_eq_ulong( rtems_counter_nanoseconds_to_ticks( 1000000000 ), frequency );
+      T_eq_ulong(
+        rtems_counter_sbintime_to_ticks( INT64_C( 4294967296 ) ),
+        frequency
+      );
+    links:
+    - role: validation
+      uid: ../req/converter-initialization
+  links: []
+test-brief: |
+  Tests the RTEMS counter.
+test-context: []
+test-context-support: null
+test-description: |
+  A system initialization handler of the test runs before the system
+  initialization initializes the converter. It converts one second and ten
+  nanoseconds and stores the results for the check. It then sets the converter
+  frequency to a value other than the counter frequency, so only the system
+  initialization can set the counter frequency. The test calls
+  ${../if/difference:/name} with a first value greater than the second value, so
+  the difference wraps around. It compares the return value of
+  ${../if/frequency:/name} with the frequency of the CPU counter. It counts the
+  counter ticks from a change of the clock tick count to the tenth change after
+  it. The clock tick interrupt can be late by less than one clock tick period at
+  each change, so the count is between nine and eleven clock tick periods at the
+  frequency which ${../if/frequency:/name} returns. The count of counter ticks
+  also bounds each wait for a clock tick, so a stopped clock fails the check. It
+  reads the counter until it holds ten values, each different from the value
+  before it. It converts one second at the counter frequency, so a converter
+  initialized with another frequency gives another result.
+test-header: null
+test-includes:
+- rtems.h
+- rtems/counter.h
+- rtems/sysinit.h
+test-local-includes: []
+test-setup: null
+test-stop: null
+test-support: |
+  typedef struct {
+    uint64_t            nanoseconds;
+    rtems_counter_ticks ticks_of_nanoseconds;
+    int64_t             sbintime;
+    rtems_counter_ticks ticks_of_sbintime;
+    rtems_counter_ticks ticks_of_ten_nanoseconds;
+  } ConverterDefault;
+
+  static ConverterDefault converter_default;
+
+  static uint32_t OtherFrequency( uint32_t frequency )
+  {
+    if ( frequency <= UINT32_MAX / 2 ) {
+      return 2 * frequency;
+    }
+
+    if ( frequency < UINT32_MAX ) {
+      return UINT32_MAX;
+    }
+
+    return UINT32_MAX - 1;
+  }
+
+  #define CLOCK_TICK_COUNT 10
+
+  static rtems_interval WaitForClockTicks(
+    rtems_interval      clock_ticks,
+    rtems_interval      count,
+    rtems_counter_ticks begin,
+    uint64_t            bound
+  )
+  {
+    rtems_interval now;
+
+    do {
+      now = rtems_clock_get_ticks_since_boot();
+    } while (
+      now - clock_ticks < count &&
+      rtems_counter_difference( rtems_counter_read(), begin ) <= bound
+    );
+
+    return now;
+  }
+
+  static void ConvertBeforeInitialization( void )
+  {
+    converter_default.nanoseconds =
+      rtems_counter_ticks_to_nanoseconds( 100000000 );
+    converter_default.ticks_of_nanoseconds =
+      rtems_counter_nanoseconds_to_ticks( 1000000000 );
+    converter_default.sbintime = rtems_counter_ticks_to_sbintime( 100000000 );
+    converter_default.ticks_of_sbintime =
+      rtems_counter_sbintime_to_ticks( INT64_C( 4294967296 ) );
+    converter_default.ticks_of_ten_nanoseconds =
+      rtems_counter_nanoseconds_to_ticks( 10 );
+
+    rtems_counter_initialize_converter( OtherFrequency( rtems_counter_frequency() ) );
+  }
+
+  RTEMS_SYSINIT_ITEM(
+    ConvertBeforeInitialization,
+    RTEMS_SYSINIT_CPU_COUNTER,
+    RTEMS_SYSINIT_ORDER_MIDDLE
+  );
+test-target: testsuites/validation/tc-counter.c
+test-teardown: null
+type: test-case

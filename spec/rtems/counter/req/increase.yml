@@ -1,0 +1,17 @@
+SPDX-License-Identifier: CC-BY-SA-4.0
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: function
+links:
+- role: interface-function
+  uid: ../if/read
+- role: interface-function
+  uid: ../if/ticks
+rationale: null
+references: []
+requirement-type: functional
+text: |
+  The value of the ${/glossary/rtemscounter:/term} shall increase by one in
+  unsigned arithmetic in each period of the counter frequency.
+type: requirement

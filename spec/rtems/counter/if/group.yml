@@ -1,0 +1,48 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This group contains free-running counter and busy wait delay functions.
+copyrights:
+- Copyright (C) 2025 embedded brains GmbH & Co. KG
+description: |
+  The ${/glossary/rtemscounter:/term} is a free-running counter. It usually ticks
+  with a frequency close to the processor or system bus clock. A read of the
+  counter has a low overhead. The conversion of ${/glossary/countertick:/plural}
+  to and from time is a separate step. The ticks in the names of this group are
+  ${/glossary/countertick:/plural}, not ${/glossary/clock-tick:/plural}. The
+  counter works without a clock driver and during the system initialization.
+  Applications can use the counter to profile low-level operations such as SMP
+  locks or critical sections with interrupts disabled. The counter can also act
+  as an entropy source for a random number generator. The period of the counter
+  depends on the hardware.
+enabled-by: true
+identifier: RTEMSAPICounter
+index-entries: []
+interface-type: group
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: ../../if/group
+- role: placement-order
+  uid: frequency
+- role: placement-order
+  uid: read
+- role: placement-order
+  uid: difference
+- role: placement-order
+  uid: ticks-to-nanoseconds
+- role: placement-order
+  uid: nanoseconds-to-ticks
+- role: placement-order
+  uid: ticks-to-sbintime
+- role: placement-order
+  uid: sbintime-to-ticks
+- role: placement-order
+  uid: delay-ticks
+- role: placement-order
+  uid: delay-nanoseconds
+name: Free-Running Counter and Busy Wait Delay
+text: |
+  The Classic API shall provide an interface to a free-running counter and busy
+  wait delay functions.
+type: interface

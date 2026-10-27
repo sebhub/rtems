@@ -1,0 +1,39 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Busy wait for some nanoseconds.
+copyrights:
+- Copyright (C) 2025 embedded brains GmbH & Co. KG
+definition:
+  default:
+    attributes: null
+    body: null
+    params:
+    - ${/c/if/uint32_t:/name} ${.:/params[0]/name}
+    return: void
+  variants: []
+description: null
+enabled-by: true
+index-entries: []
+interface-type: function
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+- role: constraint
+  uid: /constraint/directive-ctx-any
+- role: constraint
+  uid: /constraint/directive-no-preempt
+name: rtems_counter_delay_nanoseconds
+notes: |
+  This function does not disable interrupts. Task switches and interrupts can
+  prolong the delay. This function busy waits at least the specified time at the
+  ${/glossary/converterfrequency:/term}. The overhead of the function can make
+  the delay longer.
+params:
+- description: |
+    is the busy wait time in nanoseconds.
+  dir: null
+  name: nanoseconds
+return: null
+type: interface

@@ -1,0 +1,92 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2025 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: action
+links:
+- role: interface-function
+  uid: ../if/delay-ticks
+post-conditions:
+- name: Elapsed
+  states:
+  - name: AtLeast
+    test-code: |
+      if ( ctx->ticks > 0 ) {
+        T_ge_u32(
+          rtems_counter_difference( ctx->counter_after, ctx->counter_before ),
+          ctx->ticks
+        );
+      }
+    text: |
+      The ${../if/delay-ticks:/name} directive shall return after the count of
+      ${/glossary/countertick:/plural} which elapse during the call is greater than
+      or equal to the ${../if/delay-ticks:/params[0]/name} parameter value.
+  test-epilogue: null
+  test-prologue: null
+pre-conditions:
+- name: Ticks
+  states:
+  - name: Zero
+    test-code: |
+      ctx->ticks = 0;
+    text: |
+      While the ${../if/delay-ticks:/params[0]/name} parameter is equal to zero.
+  - name: Positive
+    test-code: |
+      ctx->ticks = rtems_counter_frequency() / 1000 + 1;
+    text: |
+      While the ${../if/delay-ticks:/params[0]/name} parameter is greater than zero.
+  test-epilogue: null
+  test-prologue: null
+rationale: |
+  The state Positive arranges a value of about one millisecond, which keeps the
+  run time of the test short.
+requirement-type: functional
+skip-reasons: {}
+test-action: |
+  ctx->counter_before = rtems_counter_read();
+  rtems_counter_delay_ticks( ctx->ticks );
+  ctx->counter_after = rtems_counter_read();
+test-brief: null
+test-cleanup: null
+test-context:
+- brief: |
+    This member contains the counter ticks parameter value.
+  description: null
+  member: rtems_counter_ticks ticks
+- brief: |
+    This member contains the counter value before the call.
+  description: null
+  member: rtems_counter_ticks counter_before
+- brief: |
+    This member contains the counter value after the call.
+  description: null
+  member: rtems_counter_ticks counter_after
+test-context-support: null
+test-description: |
+  The test reads the RTEMS counter before and after the call. The difference of
+  the two values is the count of counter ticks which elapsed during the call,
+  plus the time of one counter read. The measured interval includes the overhead
+  of the call. The test therefore detects a shortfall of the busy wait only where
+  the shortfall exceeds this overhead. For the state Zero, the return of the call
+  is the result.
+test-header: null
+test-includes:
+- rtems.h
+- rtems/counter.h
+test-local-includes: []
+test-prepare: null
+test-setup: null
+test-stop: null
+test-support: null
+test-target: testsuites/validation/tc-counter-delay-ticks.c
+test-teardown: null
+text: |
+  ${.:text-template}
+transition-map:
+- enabled-by: true
+  post-conditions:
+    Elapsed: AtLeast
+  pre-conditions:
+    Ticks: all
+type: requirement

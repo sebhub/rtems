@@ -1,0 +1,14 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+term: RTEMS counter
+text: |
+  The free-running counter which the CPU port provides. The
+  ${/rtems/counter/if/read:/name} directive returns its value. The
+  ${/rtems/counter/if/frequency:/name} directive returns its frequency in Hz.
+type: glossary

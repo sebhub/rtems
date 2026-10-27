@@ -1,0 +1,43 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Converts the signed binary time (sbintime_t) into counter ticks.
+copyrights:
+- Copyright (C) 2025 embedded brains GmbH & Co. KG
+definition:
+  default:
+    attributes: null
+    body: null
+    params:
+    - ${/c/if/int64_t:/name} ${.:/params[0]/name}
+    return: ${ticks:/name}
+  variants: []
+description: |
+  The function converts at the ${/glossary/converterfrequency:/term}.
+enabled-by: true
+index-entries: []
+interface-type: function
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+- role: constraint
+  uid: /constraint/directive-ctx-any
+- role: constraint
+  uid: /constraint/directive-no-preempt
+name: rtems_counter_sbintime_to_ticks
+notes: null
+params:
+- description: |
+    is the signed binary time value to convert.
+  dir: null
+  name: sbt
+return:
+  return: |
+    Returns the counter ticks value corresponding to the signed binary time value.
+    The value is the exact value rounded down. Where the exact value rounded down
+    is greater than ${/c/if/uint32_max:/name}, the value is
+    ${/c/if/uint32_max:/name}. Where the signed binary time value is negative, the
+    value is zero.
+  return-values: []
+type: interface

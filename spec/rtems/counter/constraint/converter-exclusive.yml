@@ -1,0 +1,14 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+links:
+- role: requirement-refinement
+  uid: /req/usage-constraints
+rationale: null
+text: |
+  The directive shall not be called while another context calls the
+  ${../if/ticks-to-nanoseconds:/name}, the ${../if/nanoseconds-to-ticks:/name},
+  the ${../if/ticks-to-sbintime:/name}, the ${../if/sbintime-to-ticks:/name}, or
+  the ${../if/delay-nanoseconds:/name} directive.
+type: constraint

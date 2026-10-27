@@ -1,0 +1,13 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+term: counter tick
+text: |
+  One period of the ${/glossary/rtemscounter:/term}. A counter tick is not
+  related to the ${/glossary/clock-tick:/term}.
+type: glossary

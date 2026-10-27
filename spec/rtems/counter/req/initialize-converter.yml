@@ -1,0 +1,126 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: action
+links:
+- role: interface-function
+  uid: ../if/initialize-converter
+post-conditions:
+- name: ConverterFrequency
+  states:
+  - name: Set
+    test-code: |
+      CheckFrequency( ctx->frequency );
+    text: |
+      The ${/glossary/converterfrequency:/term} shall be equal to the
+      ${../if/initialize-converter:/params[0]/name} parameter value.
+  - name: Unchanged
+    test-code: |
+      CheckFrequency( PREVIOUS_FREQUENCY );
+    text: |
+      The ${/glossary/converterfrequency:/term} shall be equal to the value before
+      the ${../if/initialize-converter:/name} call.
+  test-epilogue: null
+  test-prologue: null
+pre-conditions:
+- name: Frequency
+  states:
+  - name: Zero
+    test-code: |
+      ctx->frequency = 0;
+    text: |
+      While the ${../if/initialize-converter:/params[0]/name} parameter is equal to
+      zero.
+  - name: Min
+    test-code: |
+      ctx->frequency = 1;
+    text: |
+      While the ${../if/initialize-converter:/params[0]/name} parameter is equal to
+      one.
+  - name: Mid
+    test-code: |
+      ctx->frequency = UINT32_C( 123456789 );
+    text: |
+      While the ${../if/initialize-converter:/params[0]/name} parameter is greater
+      than one, while the ${../if/initialize-converter:/params[0]/name} parameter is
+      less than the maximum value of ${/c/if/uint32_t:/name}.
+  - name: Max
+    test-code: |
+      ctx->frequency = UINT32_MAX;
+    text: |
+      While the ${../if/initialize-converter:/params[0]/name} parameter is equal to
+      the maximum value of ${/c/if/uint32_t:/name}.
+  test-epilogue: null
+  test-prologue: null
+rationale: |
+  Dimension Frequency covers the values of the parameter, 4 states. The states
+  partition the range from zero to the maximum value of ${/c/if/uint32_t:/name}.
+
+  The post-condition ConverterFrequency observes the converter frequency through
+  the conversions of one second. One second is a whole number of nanoseconds, of
+  counter ticks and of signed binary time units. Each conversion of one second
+  therefore needs no rounding.
+requirement-type: functional
+skip-reasons: {}
+test-action: |
+  rtems_counter_initialize_converter( PREVIOUS_FREQUENCY );
+  rtems_counter_initialize_converter( ctx->frequency );
+test-brief: null
+test-cleanup: |
+  rtems_counter_initialize_converter( rtems_counter_frequency() );
+test-context:
+- brief: |
+    This member contains the frequency parameter value.
+  description: null
+  member: uint32_t frequency
+test-context-support: null
+test-description: |
+  The test sets the converter frequency to a value which no variant uses. It then
+  calls the directive with the frequency of the variant. It converts one second
+  in each direction, so a converter with another frequency gives another result.
+test-header: null
+test-includes:
+- rtems.h
+- rtems/counter.h
+test-local-includes: []
+test-prepare: null
+test-setup: null
+test-stop: null
+test-support: |
+  #define PREVIOUS_FREQUENCY UINT32_C( 987654321 )
+
+  static void CheckFrequency( uint32_t frequency )
+  {
+    int64_t sbt;
+
+    T_eq_u64( rtems_counter_ticks_to_nanoseconds( frequency ), 1000000000 );
+    T_eq_u32( rtems_counter_nanoseconds_to_ticks( 1000000000 ), frequency );
+    sbt = rtems_counter_ticks_to_sbintime( frequency );
+    T_ge_i64( sbt, INT64_C( 4294967296 ) );
+    T_le_i64( sbt, INT64_C( 4294967298 ) );
+    T_eq_u32(
+      rtems_counter_sbintime_to_ticks( INT64_C( 4294967296 ) ),
+      frequency
+    );
+  }
+test-target: testsuites/validation/tc-counter-initialize-converter.c
+test-teardown: null
+text: |
+  ${.:text-template}
+transition-map:
+- enabled-by: true
+  post-conditions:
+    ConverterFrequency: Set
+  pre-conditions:
+    Frequency:
+    - Min
+    - Mid
+    - Max
+- enabled-by: true
+  post-conditions:
+    ConverterFrequency: Unchanged
+  pre-conditions:
+    Frequency:
+    - Zero
+type: requirement

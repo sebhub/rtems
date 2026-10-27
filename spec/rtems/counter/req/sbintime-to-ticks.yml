@@ -1,0 +1,230 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: action
+links:
+- role: interface-function
+  uid: ../if/sbintime-to-ticks
+post-conditions:
+- name: Result
+  states:
+  - name: Bounded
+    test-code: |
+      T_eq_u64( ctx->result, ( (uint64_t) ctx->sbintime * ctx->frequency ) >> 32 );
+    text: |
+      The ${../if/sbintime-to-ticks:/name} directive shall return the count of
+      ${/glossary/countertick:/plural} in the time which the
+      ${../if/sbintime-to-ticks:/params[0]/name} parameter specifies in
+      ${/glossary/signedbinarytime:/term} at the
+      ${/glossary/converterfrequency:/term}, rounded down.
+  - name: Saturated
+    test-code: |
+      T_eq_u32( ctx->result, UINT32_MAX );
+    text: |
+      The ${../if/sbintime-to-ticks:/name} directive shall return
+      ${/c/if/uint32_max:/name}.
+  - name: Zero
+    test-code: |
+      T_eq_u32( ctx->result, 0 );
+    text: |
+      The ${../if/sbintime-to-ticks:/name} directive shall return zero.
+  test-epilogue: null
+  test-prologue: null
+pre-conditions:
+- name: ConverterFrequency
+  states:
+  - name: Min
+    test-code: |
+      ctx->frequency = 1;
+      rtems_counter_initialize_converter( ctx->frequency );
+    text: |
+      While the ${/glossary/converterfrequency:/term} is equal to one.
+  - name: Low
+    test-code: |
+      ctx->frequency = 2;
+      rtems_counter_initialize_converter( ctx->frequency );
+    text: |
+      While the ${/glossary/converterfrequency:/term} is equal to two.
+  - name: High
+    test-code: |
+      ctx->frequency = UINT32_C( 123456789 );
+      rtems_counter_initialize_converter( ctx->frequency );
+    text: |
+      While the ${/glossary/converterfrequency:/term} is greater than two, while the
+      ${/glossary/converterfrequency:/term} is less than the maximum value of
+      ${/c/if/uint32_t:/name}.
+  - name: Max
+    test-code: |
+      ctx->frequency = UINT32_MAX;
+      rtems_counter_initialize_converter( ctx->frequency );
+    text: |
+      While the ${/glossary/converterfrequency:/term} is equal to the maximum value
+      of ${/c/if/uint32_t:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: Sbintime
+  states:
+  - name: Negative
+    test-code: |
+      ctx->sbintime = -1;
+    text: |
+      While the ${../if/sbintime-to-ticks:/params[0]/name} parameter is less than
+      zero.
+  - name: Integral
+    test-code: |
+      ctx->sbintime = INT64_C( 4294967296 );
+    text: |
+      While the ${../if/sbintime-to-ticks:/params[0]/name} parameter is greater than
+      or equal to zero, while the ${../if/sbintime-to-ticks:/params[0]/name}
+      parameter is less than the largest value of ${/c/if/int64_t:/name} which
+      specifies a time shorter than 4294967296 ${/glossary/countertick:/plural} at
+      the ${/glossary/converterfrequency:/term}, while the
+      ${../if/sbintime-to-ticks:/params[0]/name} parameter specifies the time of a
+      whole number of ${/glossary/countertick:/plural} at the
+      ${/glossary/converterfrequency:/term}.
+  - name: Fraction
+    test-code: |
+      ctx->sbintime = 1;
+    text: |
+      While the ${../if/sbintime-to-ticks:/params[0]/name} parameter is greater than
+      or equal to zero, while the ${../if/sbintime-to-ticks:/params[0]/name}
+      parameter is less than the largest value of ${/c/if/int64_t:/name} which
+      specifies a time shorter than 4294967296 ${/glossary/countertick:/plural} at
+      the ${/glossary/converterfrequency:/term}, while the
+      ${../if/sbintime-to-ticks:/params[0]/name} parameter specifies no time of a
+      whole number of ${/glossary/countertick:/plural} at the
+      ${/glossary/converterfrequency:/term}.
+  - name: Limit
+    test-code: |
+      ctx->sbintime = Limit( ctx->frequency );
+    text: |
+      While the ${../if/sbintime-to-ticks:/params[0]/name} parameter is equal to the
+      largest value of ${/c/if/int64_t:/name} which specifies a time shorter than
+      4294967296 ${/glossary/countertick:/plural} at the
+      ${/glossary/converterfrequency:/term}.
+  - name: Beyond
+    test-code: |
+      ctx->sbintime = Limit( ctx->frequency ) + 1;
+    text: |
+      While the ${../if/sbintime-to-ticks:/params[0]/name} parameter is greater than
+      the largest value of ${/c/if/int64_t:/name} which specifies a time shorter than
+      4294967296 ${/glossary/countertick:/plural} at the
+      ${/glossary/converterfrequency:/term}.
+  test-epilogue: null
+  test-prologue: null
+rationale: |
+  Dimension ConverterFrequency covers the converter frequencies in Hz, 4 states.
+  The ${../if/initialize-converter:/name} directive keeps the converter frequency
+  for a frequency of zero, so the states partition the range from one to the
+  maximum value of ${/c/if/uint32_t:/name}. At a converter frequency of one or
+  two Hz, the limit is the maximum value of ${/c/if/int64_t:/name}, so no value
+  lies beyond the limit. The pre-condition ConverterFrequency comes first,
+  because the arrangement of the other dimension depends on it.
+
+  Dimension Sbintime covers the signed binary time values, 5 states. A counter
+  ticks value holds fewer than 4294967296 ticks.
+
+  The states Integral and Fraction cover the values below the limit of the return
+  type. They tell apart whether the exact value needs a rounding. The state Limit
+  holds the largest value whose result fits the return type. The state Beyond
+  holds the values above it. The state Negative holds the negative values, which
+  specify no counter ticks value.
+requirement-type: functional
+skip-reasons:
+  NoBeyond: |
+    At the converter frequency of the variant, the limit is the maximum value of
+    the type of the parameter, so no value lies beyond it.
+test-action: |
+  ctx->result = rtems_counter_sbintime_to_ticks( ctx->sbintime );
+test-brief: null
+test-cleanup: |
+  rtems_counter_initialize_converter( rtems_counter_frequency() );
+test-context:
+- brief: |
+    This member contains the converter frequency.
+  description: null
+  member: uint32_t frequency
+- brief: |
+    This member contains the signed binary time parameter value.
+  description: null
+  member: int64_t sbintime
+- brief: |
+    This member contains the return value.
+  description: null
+  member: rtems_counter_ticks result
+test-context-support: null
+test-description: |
+  The test initializes the converter with the frequency of the variant. It
+  computes the limit of the variant from the frequency, independent of the
+  converter. It converts the signed binary time value of the variant and compares
+  the result with the count rounded down, which the test computes in 64 bits.
+test-header: null
+test-includes:
+- rtems.h
+- rtems/counter.h
+test-local-includes: []
+test-prepare: null
+test-setup: null
+test-stop: null
+test-support: |
+  static int64_t Limit( uint32_t frequency )
+  {
+    uint64_t limit;
+
+    limit = UINT64_MAX / frequency;
+
+    if ( limit > INT64_MAX ) {
+      limit = INT64_MAX;
+    }
+
+    return (int64_t) limit;
+  }
+test-target: testsuites/validation/tc-counter-sbintime-to-ticks.c
+test-teardown: null
+text: |
+  ${.:text-template}
+transition-map:
+- enabled-by: true
+  post-conditions:
+    Result:
+    - if:
+        pre-conditions:
+          Sbintime: Negative
+      then: Zero
+    - if:
+        pre-conditions:
+          Sbintime: Beyond
+      then: Saturated
+    - else: Bounded
+  pre-conditions:
+    ConverterFrequency:
+    - High
+    - Max
+    Sbintime: all
+- enabled-by: true
+  post-conditions:
+    Result:
+    - if:
+        pre-conditions:
+          Sbintime: Negative
+      then: Zero
+    - else: Bounded
+  pre-conditions:
+    ConverterFrequency:
+    - Min
+    - Low
+    Sbintime:
+    - Negative
+    - Integral
+    - Fraction
+    - Limit
+- enabled-by: true
+  post-conditions: NoBeyond
+  pre-conditions:
+    ConverterFrequency:
+    - Min
+    - Low
+    Sbintime:
+    - Beyond
+type: requirement

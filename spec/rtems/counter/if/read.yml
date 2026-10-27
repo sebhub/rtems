@@ -1,0 +1,34 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Reads the current counter value.
+copyrights:
+- Copyright (C) 2025 embedded brains GmbH & Co. KG
+definition:
+  default:
+    attributes: null
+    body: |
+      return ${/score/cpu/if/counter-read:/name}();
+    params: []
+    return: ${ticks:/name}
+  variants: []
+description: null
+enabled-by: true
+index-entries: []
+interface-type: function
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+- role: constraint
+  uid: /constraint/directive-ctx-any
+- role: constraint
+  uid: /constraint/directive-no-preempt
+name: rtems_counter_read
+notes: null
+params: []
+return:
+  return: |
+    Returns the current counter value.
+  return-values: []
+type: interface

@@ -1,0 +1,41 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Busy wait for some counter ticks.
+copyrights:
+- Copyright (C) 2025 embedded brains GmbH & Co. KG
+definition:
+  default:
+    attributes: null
+    body: null
+    params:
+    - ${ticks:/name} ${.:/params[0]/name}
+    return: void
+  variants: []
+description: null
+enabled-by: true
+index-entries: []
+interface-type: function
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+- role: constraint
+  uid: /constraint/directive-ctx-any
+- role: constraint
+  uid: /constraint/directive-no-preempt
+name: rtems_counter_delay_ticks
+notes: |
+  This function does not disable interrupts. Task switches and interrupts can
+  prolong the delay. The function returns after the counter value changed by at
+  least the count of ticks. The first counter read can occur just before a change
+  of the counter. The busy wait can therefore be up to one counter period shorter
+  than the count of ticks times the counter period. The overhead of the function
+  can make the delay longer.
+params:
+- description: |
+    is the minimum count of counter ticks which elapse during the busy wait.
+  dir: null
+  name: ticks
+return: null
+type: interface

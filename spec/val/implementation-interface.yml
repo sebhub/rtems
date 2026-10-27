@@ -46,6 +46,12 @@ links:
 - role: validation
   uid: /score/cpu/if/all-tasks-are-fp
 - role: validation
+  uid: /score/cpu/if/counter-frequency
+- role: validation
+  uid: /score/cpu/if/counter-read
+- role: validation
+  uid: /score/cpu/if/counter-ticks
+- role: validation
   uid: /score/cpu/if/exception-frame
 - role: validation
   uid: /score/cpu/if/exception-frame-print

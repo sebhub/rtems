@@ -1,0 +1,157 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: action
+links:
+- role: interface-function
+  uid: ../if/ticks-to-nanoseconds
+post-conditions:
+- name: Result
+  states:
+  - name: Bounded
+    test-code: |
+      exact = (uint64_t) ctx->ticks * UINT64_C( 1000000000 );
+      T_ge_u64( ctx->result, exact / ctx->frequency );
+      T_le_u64( ctx->result, ( exact + ctx->frequency - 1 ) / ctx->frequency );
+    text: |
+      The ${../if/ticks-to-nanoseconds:/name} directive shall return the time in
+      nanoseconds which the ${../if/ticks-to-nanoseconds:/params[0]/name} parameter
+      represents at the ${/glossary/converterfrequency:/term}, rounded down or
+      rounded up.
+  test-epilogue: null
+  test-prologue: |
+    uint64_t exact;
+pre-conditions:
+- name: ConverterFrequency
+  states:
+  - name: Min
+    test-code: |
+      ctx->frequency = 1;
+      rtems_counter_initialize_converter( ctx->frequency );
+    text: |
+      While the ${/glossary/converterfrequency:/term} is equal to one.
+  - name: Mid
+    test-code: |
+      ctx->frequency = UINT32_C( 123456789 );
+      rtems_counter_initialize_converter( ctx->frequency );
+    text: |
+      While the ${/glossary/converterfrequency:/term} is greater than one, while the
+      ${/glossary/converterfrequency:/term} is less than the maximum value of
+      ${/c/if/uint32_t:/name}.
+  - name: Max
+    test-code: |
+      ctx->frequency = UINT32_MAX;
+      rtems_counter_initialize_converter( ctx->frequency );
+    text: |
+      While the ${/glossary/converterfrequency:/term} is equal to the maximum value
+      of ${/c/if/uint32_t:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: Ticks
+  states:
+  - name: Integral
+    test-code: |
+      ctx->ticks = ctx->frequency < UINT32_MAX ? ctx->frequency : 0;
+    text: |
+      While the ${../if/ticks-to-nanoseconds:/params[0]/name} parameter is less than
+      the maximum value of ${../if/ticks:/name}, while the
+      ${../if/ticks-to-nanoseconds:/params[0]/name} parameter represents a whole
+      number of seconds at the ${/glossary/converterfrequency:/term}.
+  - name: Fraction
+    test-code: |
+      ctx->ticks = 1;
+    text: |
+      While the ${../if/ticks-to-nanoseconds:/params[0]/name} parameter is less than
+      the maximum value of ${../if/ticks:/name}, while the
+      ${../if/ticks-to-nanoseconds:/params[0]/name} parameter represents no whole
+      number of seconds at the ${/glossary/converterfrequency:/term}.
+  - name: Max
+    test-code: |
+      ctx->ticks = UINT32_MAX;
+    text: |
+      While the ${../if/ticks-to-nanoseconds:/params[0]/name} parameter is equal to
+      the maximum value of ${../if/ticks:/name}.
+  test-epilogue: null
+  test-prologue: null
+rationale: |
+  Dimension ConverterFrequency covers the counter frequencies in Hz which the
+  interface of ${../if/initialize-converter:/name} admits, 3 states. The
+  interface states the frequency as greater than zero, so the states partition
+  the range from one to the maximum value of ${/c/if/uint32_t:/name}. The
+  pre-condition ConverterFrequency comes first, because the arrangement of the
+  other dimension depends on it.
+
+  Dimension Ticks covers the counter ticks values, 3 states. The state Integral
+  holds the values of a whole number of seconds. Their exact result needs no
+  rounding, because a whole number of seconds is a whole number of nanoseconds.
+  The state Fraction holds the other values. The exact result of some of them
+  needs a rounding. The state Max holds the largest value, which gives the
+  largest product of the conversion.
+requirement-type: functional
+skip-reasons:
+  NoFraction: |
+    At a converter frequency of one Hz, each counter ticks value represents a whole
+    number of seconds.
+test-action: |
+  ctx->result = rtems_counter_ticks_to_nanoseconds( ctx->ticks );
+test-brief: null
+test-cleanup: |
+  rtems_counter_initialize_converter( rtems_counter_frequency() );
+test-context:
+- brief: |
+    This member contains the converter frequency.
+  description: null
+  member: uint32_t frequency
+- brief: |
+    This member contains the counter ticks parameter value.
+  description: null
+  member: rtems_counter_ticks ticks
+- brief: |
+    This member contains the return value.
+  description: null
+  member: uint64_t result
+test-context-support: null
+test-description: |
+  The test initializes the converter with the frequency of the variant and
+  converts the counter ticks value of the variant. It compares the result with
+  the time rounded down and rounded up, which it computes in 64 bits.
+test-header: null
+test-includes:
+- rtems.h
+- rtems/counter.h
+test-local-includes: []
+test-prepare: null
+test-setup: null
+test-stop: null
+test-support: null
+test-target: testsuites/validation/tc-counter-ticks-to-nanoseconds.c
+test-teardown: null
+text: |
+  ${.:text-template}
+transition-map:
+- enabled-by: true
+  post-conditions:
+    Result: Bounded
+  pre-conditions:
+    ConverterFrequency:
+    - Mid
+    - Max
+    Ticks: all
+- enabled-by: true
+  post-conditions:
+    Result: Bounded
+  pre-conditions:
+    ConverterFrequency:
+    - Min
+    Ticks:
+    - Integral
+    - Max
+- enabled-by: true
+  post-conditions: NoFraction
+  pre-conditions:
+    ConverterFrequency:
+    - Min
+    Ticks:
+    - Fraction
+type: requirement
