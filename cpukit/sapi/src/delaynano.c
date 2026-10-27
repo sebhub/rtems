@@ -10,7 +10,7 @@
  */
 
 /*
- * Copyright (c) 2014 embedded brains GmbH & Co. KG
+ * Copyright (C) 2014, 2026 embedded brains GmbH & Co. KG
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -40,11 +40,48 @@
 
 #include <rtems/counter.h>
 
+/*
+ * The conversion of this count of nanoseconds gives at most 429496729 ticks,
+ * so the conversion does not saturate.
+ */
+#define COUNTER_DELAY_CHUNK UINT32_C( 100000000 )
+
+/*
+ * The conversion rounds down or rounds up.  The count of ticks which it gives
+ * can span up to one counter period less than the step.
+ */
+#define COUNTER_DELAY_ROUNDING_MARGIN 1
+
+/*
+ * The first step can start just before a change of the counter, so its busy
+ * wait can be up to one counter period shorter than its count of ticks.  Each
+ * further step starts after the change at which the step before it returned.
+ */
+#define COUNTER_DELAY_PARTIAL_PERIOD_MARGIN 1
+
+static void _Counter_Delay_nanoseconds(
+  uint32_t            nanoseconds,
+  rtems_counter_ticks margin
+)
+{
+  rtems_counter_ticks ticks;
+
+  ticks = rtems_counter_nanoseconds_to_ticks( nanoseconds );
+  rtems_counter_delay_ticks( ticks + margin );
+}
+
 void rtems_counter_delay_nanoseconds( uint32_t nanoseconds )
 {
-  rtems_counter_ticks ticks = rtems_counter_nanoseconds_to_ticks(
-    nanoseconds
-  );
+  while ( nanoseconds > COUNTER_DELAY_CHUNK ) {
+    _Counter_Delay_nanoseconds(
+      COUNTER_DELAY_CHUNK,
+      COUNTER_DELAY_ROUNDING_MARGIN
+    );
+    nanoseconds -= COUNTER_DELAY_CHUNK;
+  }
 
-  rtems_counter_delay_ticks( ticks );
+  _Counter_Delay_nanoseconds(
+    nanoseconds,
+    COUNTER_DELAY_ROUNDING_MARGIN + COUNTER_DELAY_PARTIAL_PERIOD_MARGIN
+  );
 }
