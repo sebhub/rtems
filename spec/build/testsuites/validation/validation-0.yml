@@ -12,6 +12,14 @@ ldflags: []
 links: []
 source:
 - testsuites/validation/tc-acfg-appl-needs-clock-driver.c
+- testsuites/validation/tc-counter-delay-nanoseconds.c
+- testsuites/validation/tc-counter-delay-ticks.c
+- testsuites/validation/tc-counter-initialize-converter.c
+- testsuites/validation/tc-counter-nanoseconds-to-ticks.c
+- testsuites/validation/tc-counter-sbintime-to-ticks.c
+- testsuites/validation/tc-counter-ticks-to-nanoseconds.c
+- testsuites/validation/tc-counter-ticks-to-sbintime.c
+- testsuites/validation/tc-counter.c
 - testsuites/validation/tc-event-send-receive.c
 - testsuites/validation/tc-mem-posix-memalign.c
 - testsuites/validation/tc-mem-rtems-calloc.c
