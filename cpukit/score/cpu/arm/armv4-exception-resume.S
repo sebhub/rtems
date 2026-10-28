@@ -75,7 +75,7 @@ FUNCTION_ENTRY(_CPU_Exception_resume)
 	ldr	r1, [r0, #ARM_EXCEPTION_FRAME_REGISTER_PC_OFFSET]
 	ldr	r2, [r0, #ARM_EXCEPTION_FRAME_REGISTER_CPSR_OFFSET]
 	mov	lr, r1
-	msr	spsr, r2
+	msr	spsr_fsxc, r2
 	mrs	r3, cpsr
 	bic	r4, r2, #(ARM_PSR_I | ARM_PSR_F)
 	and	r5, r3, #(ARM_PSR_I | ARM_PSR_F)
