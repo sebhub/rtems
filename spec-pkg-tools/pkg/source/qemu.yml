@@ -76,6 +76,37 @@ archive-patches:
     -- \n2.53.0\n\n"
   type: inline
 - enabled-by: true
+  patch: "From 41a068c11940198adcfa3266ba3dff2d1329ce91 Mon Sep 17 00:00:00 2001\n\
+    From: Sebastian Huber <sebastian.huber@embedded-brains.de>\nDate: Wed, 28 Oct\
+    \ 2026 03:39:43 +0100\nSubject: [PATCH] target/microblaze: Take an interrupt after\
+    \ a split TB\n\nWith icount, a TB ends when the instruction budget runs out. \
+    \ This end\ncan fall between an imm prefix and the insn which uses it, or between\n\
+    a branch and its delay slot.  The CPU takes no interrupt in this state,\nso mb_cpu_exec_interrupt()\
+    \ rejects an interrupt which became pending.\nThe CPU loop does not check the\
+    \ interrupt again before the next exit\nrequest.  The TBs which follow chain into\
+    \ each other up to the next\ntimer deadline.  A periodic timer interrupt was late\
+    \ by up to one full\ntimer period.\n\nEnd a TB which starts after an imm prefix\
+    \ or in a delay slot after its\nfirst insn and return to the main loop.  The CPU\
+    \ then takes the pending\ninterrupt at the next insn boundary which permits it.\n\
+    \nAssisted-by: Claude:claude-opus-5-5 claude-code\nSigned-off-by: Sebastian Huber\
+    \ <sebastian.huber@embedded-brains.de>\n---\n target/microblaze/translate.c |\
+    \ 20 ++++++++++++++++++++\n 1 file changed, 20 insertions(+)\n\ndiff --git a/target/microblaze/translate.c\
+    \ b/target/microblaze/translate.c\nindex 8b219afb5d..1903967d9e 100644\n--- a/target/microblaze/translate.c\n\
+    +++ b/target/microblaze/translate.c\n@@ -1707,6 +1707,26 @@ static void mb_tr_translate_insn(DisasContextBase\
+    \ *dcb, CPUState *cs)\n             g_assert_not_reached();\n         }\n    \
+    \ }\n+\n+    /*\n+     * A TB which starts after an imm prefix or in a delay slot\
+    \ starts where\n+     * the CPU takes no interrupt.  Return to the main loop after\
+    \ the insn\n+     * which completes the prefix or the delay slot, so that an interrupt\n\
+    +     * which became pending before the TB is taken at this point.\n+     */\n\
+    +    if (dc->base.num_insns == 1 &&\n+        (dc->base.tb->flags & (IMM_FLAG\
+    \ | D_FLAG))) {\n+        switch (dc->base.is_jmp) {\n+        case DISAS_NEXT:\n\
+    +            dc->base.is_jmp = DISAS_EXIT_NEXT;\n+            break;\n+      \
+    \  case DISAS_JUMP:\n+            dc->base.is_jmp = DISAS_EXIT_JUMP;\n+      \
+    \      break;\n+        default:\n+            break;\n+        }\n+    }\n }\n\
+    \ \n static void mb_tr_tb_stop(DisasContextBase *dcb, CPUState *cs)\n-- \n2.53.0\n\
+    \n"
+  type: inline
+- enabled-by: true
   patch: "From ee58daa8fc7c52baa578fc54a1aa6b4dbfd6b8ad Mon Sep 17 00:00:00 2001\n\
     From: Sebastian Huber <sebastian.huber@embedded-brains.de>\nDate: Fri, 11 Sep\
     \ 2026 03:28:13 +0200\nSubject: [PATCH] target/mips/tcg: Gate rdhwr on Config3.ULRI\n\
