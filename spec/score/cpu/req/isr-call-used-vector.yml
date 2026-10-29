@@ -1,0 +1,17 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by:
+- powerpc/qoriq_e6500_32
+- powerpc/qoriq_e6500_64
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: registers
+rationale: null
+requirement-type: functional
+text: |
+  Interrupt processing shall preserve every
+  ${/score/cpu/glossary/call-used-vector-register:/term} of the interrupted
+  context.
+type: requirement
