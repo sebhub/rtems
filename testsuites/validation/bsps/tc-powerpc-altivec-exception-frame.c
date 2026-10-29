@@ -1,0 +1,1339 @@
+/* SPDX-License-Identifier: BSD-2-Clause */
+
+/**
+ * @file
+ *
+ * @ingroup ScoreCpuPowerpcValAltivecExceptionFrame
+ */
+
+/*
+ * Copyright (C) 2026 embedded brains GmbH & Co. KG
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
+#include <stdint.h>
+#include <string.h>
+#include <rtems/score/cpuimpl.h>
+#include <rtems/score/thread.h>
+
+#include "tx-register-check.h"
+#include "tx-support.h"
+
+#include <rtems/test.h>
+
+/**
+ * @defgroup ScoreCpuPowerpcValAltivecExceptionFrame \
+ *   spec:/score/cpu/powerpc/val/altivec-exception-frame
+ *
+ * @ingroup TestsuitesBspsValidationBspNoClock0
+ *
+ * @brief Checks that the default exception handler saves the AltiVec state to
+ *   the exception frame.
+ *
+ * This test case performs the following actions:
+ *
+ * - Load a distinct pattern into v0 to v15. Trap. Run this once for each value
+ *   with the pattern of that value inverted, then once unchanged.
+ *
+ *   - Check that the exception frame holds the PowerPC vector register V0.
+ *
+ *   - Check that the exception frame holds the PowerPC vector register V1.
+ *
+ *   - Check that the exception frame holds the PowerPC vector register V2.
+ *
+ *   - Check that the exception frame holds the PowerPC vector register V3.
+ *
+ *   - Check that the exception frame holds the PowerPC vector register V4.
+ *
+ *   - Check that the exception frame holds the PowerPC vector register V5.
+ *
+ *   - Check that the exception frame holds the PowerPC vector register V6.
+ *
+ *   - Check that the exception frame holds the PowerPC vector register V7.
+ *
+ *   - Check that the exception frame holds the PowerPC vector register V8.
+ *
+ *   - Check that the exception frame holds the PowerPC vector register V9.
+ *
+ *   - Check that the exception frame holds the PowerPC vector register V10.
+ *
+ *   - Check that the exception frame holds the PowerPC vector register V11.
+ *
+ *   - Check that the exception frame holds the PowerPC vector register V12.
+ *
+ *   - Check that the exception frame holds the PowerPC vector register V13.
+ *
+ *   - Check that the exception frame holds the PowerPC vector register V14.
+ *
+ *   - Check that the exception frame holds the PowerPC vector register V15.
+ *
+ *   - Check that each run with a changed value flagged exactly the checks of
+ *     that value, and that each run recorded every check.
+ *
+ * - Load a distinct pattern into v16 to v31, into VSCR and into VRSAVE. Trap.
+ *   Run this once for each value with the pattern of that value inverted, then
+ *   once unchanged.
+ *
+ *   - Check that the exception frame holds the PowerPC vector register V16.
+ *
+ *   - Check that the exception frame holds the PowerPC vector register V17.
+ *
+ *   - Check that the exception frame holds the PowerPC vector register V18.
+ *
+ *   - Check that the exception frame holds the PowerPC vector register V19.
+ *
+ *   - Check that the exception frame holds the PowerPC vector register V20.
+ *
+ *   - Check that the exception frame holds the PowerPC vector register V21.
+ *
+ *   - Check that the exception frame holds the PowerPC vector register V22.
+ *
+ *   - Check that the exception frame holds the PowerPC vector register V23.
+ *
+ *   - Check that the exception frame holds the PowerPC vector register V24.
+ *
+ *   - Check that the exception frame holds the PowerPC vector register V25.
+ *
+ *   - Check that the exception frame holds the PowerPC vector register V26.
+ *
+ *   - Check that the exception frame holds the PowerPC vector register V27.
+ *
+ *   - Check that the exception frame holds the PowerPC vector register V28.
+ *
+ *   - Check that the exception frame holds the PowerPC vector register V29.
+ *
+ *   - Check that the exception frame holds the PowerPC vector register V30.
+ *
+ *   - Check that the exception frame holds the PowerPC vector register V31.
+ *
+ *   - Check that the exception frame holds VSCR.
+ *
+ *   - Check that the exception frame holds VRSAVE.
+ *
+ *   - Check that each run with a changed value flagged exactly the checks of
+ *     that value, and that each run recorded every check.
+ *
+ * @{
+ */
+
+#if defined( PPC_MULTILIB_ALTIVEC )
+/*
+ * The low doubleword of a vector register holds the pattern of its high
+ * doubleword exclusive-or this value.
+ */
+#define LOW UINT64_C( 0x5a5a5a5a5a5a5a5a )
+
+/* These are NJ and SAT of VSCR. */
+#define VSCR_MASK UINT64_C( 0x00010001 )
+
+/*
+ * These are the bits of VRSAVE for v0 to v19.  The bits for v20 to v31 stay
+ * set, so the context switch saves these registers.
+ */
+#define VRSAVE_MASK UINT64_C( 0xfffff000 )
+
+#define WORD UINT64_C( 0xffffffff )
+
+typedef enum {
+  LO_SOURCE_V0,
+  LO_SOURCE_V1,
+  LO_SOURCE_V2,
+  LO_SOURCE_V3,
+  LO_SOURCE_V4,
+  LO_SOURCE_V5,
+  LO_SOURCE_V6,
+  LO_SOURCE_V7,
+  LO_SOURCE_V8,
+  LO_SOURCE_V9,
+  LO_SOURCE_V10,
+  LO_SOURCE_V11,
+  LO_SOURCE_V12,
+  LO_SOURCE_V13,
+  LO_SOURCE_V14,
+  LO_SOURCE_V15,
+  LO_SOURCE_MAX
+} LoSource;
+
+typedef enum {
+  LO_SLOT_V0_HI,
+  LO_SLOT_V0_LO,
+  LO_SLOT_V1_HI,
+  LO_SLOT_V1_LO,
+  LO_SLOT_V2_HI,
+  LO_SLOT_V2_LO,
+  LO_SLOT_V3_HI,
+  LO_SLOT_V3_LO,
+  LO_SLOT_V4_HI,
+  LO_SLOT_V4_LO,
+  LO_SLOT_V5_HI,
+  LO_SLOT_V5_LO,
+  LO_SLOT_V6_HI,
+  LO_SLOT_V6_LO,
+  LO_SLOT_V7_HI,
+  LO_SLOT_V7_LO,
+  LO_SLOT_V8_HI,
+  LO_SLOT_V8_LO,
+  LO_SLOT_V9_HI,
+  LO_SLOT_V9_LO,
+  LO_SLOT_V10_HI,
+  LO_SLOT_V10_LO,
+  LO_SLOT_V11_HI,
+  LO_SLOT_V11_LO,
+  LO_SLOT_V12_HI,
+  LO_SLOT_V12_LO,
+  LO_SLOT_V13_HI,
+  LO_SLOT_V13_LO,
+  LO_SLOT_V14_HI,
+  LO_SLOT_V14_LO,
+  LO_SLOT_V15_HI,
+  LO_SLOT_V15_LO,
+  LO_SLOT_MAX
+} LoSlot;
+
+static const RegisterCheckSource
+  altivec_exception_lo_sources[ LO_SOURCE_MAX ] = {
+    { "v0", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v1", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v2", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v3", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v4", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v5", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v6", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v7", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v8", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v9", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v10", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v11", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v12", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v13", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v14", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v15", REGISTER_CHECK_INITIAL, UINT64_MAX }
+};
+
+static const RegisterCheckSlot altivec_exception_lo_slots[ LO_SLOT_MAX ] = {
+  { "v0 high", LO_SOURCE_V0, UINT64_MAX },
+  { "v0 low", LO_SOURCE_V0, UINT64_MAX },
+  { "v1 high", LO_SOURCE_V1, UINT64_MAX },
+  { "v1 low", LO_SOURCE_V1, UINT64_MAX },
+  { "v2 high", LO_SOURCE_V2, UINT64_MAX },
+  { "v2 low", LO_SOURCE_V2, UINT64_MAX },
+  { "v3 high", LO_SOURCE_V3, UINT64_MAX },
+  { "v3 low", LO_SOURCE_V3, UINT64_MAX },
+  { "v4 high", LO_SOURCE_V4, UINT64_MAX },
+  { "v4 low", LO_SOURCE_V4, UINT64_MAX },
+  { "v5 high", LO_SOURCE_V5, UINT64_MAX },
+  { "v5 low", LO_SOURCE_V5, UINT64_MAX },
+  { "v6 high", LO_SOURCE_V6, UINT64_MAX },
+  { "v6 low", LO_SOURCE_V6, UINT64_MAX },
+  { "v7 high", LO_SOURCE_V7, UINT64_MAX },
+  { "v7 low", LO_SOURCE_V7, UINT64_MAX },
+  { "v8 high", LO_SOURCE_V8, UINT64_MAX },
+  { "v8 low", LO_SOURCE_V8, UINT64_MAX },
+  { "v9 high", LO_SOURCE_V9, UINT64_MAX },
+  { "v9 low", LO_SOURCE_V9, UINT64_MAX },
+  { "v10 high", LO_SOURCE_V10, UINT64_MAX },
+  { "v10 low", LO_SOURCE_V10, UINT64_MAX },
+  { "v11 high", LO_SOURCE_V11, UINT64_MAX },
+  { "v11 low", LO_SOURCE_V11, UINT64_MAX },
+  { "v12 high", LO_SOURCE_V12, UINT64_MAX },
+  { "v12 low", LO_SOURCE_V12, UINT64_MAX },
+  { "v13 high", LO_SOURCE_V13, UINT64_MAX },
+  { "v13 low", LO_SOURCE_V13, UINT64_MAX },
+  { "v14 high", LO_SOURCE_V14, UINT64_MAX },
+  { "v14 low", LO_SOURCE_V14, UINT64_MAX },
+  { "v15 high", LO_SOURCE_V15, UINT64_MAX },
+  { "v15 low", LO_SOURCE_V15, UINT64_MAX }
+};
+
+static const uint64_t altivec_exception_lo_patterns[ LO_SOURCE_MAX ] = {
+  UINT64_C( 0xc1c2c3c441424344 ),
+  UINT64_C( 0xc2c3c4c542434445 ),
+  UINT64_C( 0xc3c4c5c643444546 ),
+  UINT64_C( 0xc4c5c6c744454647 ),
+  UINT64_C( 0xc5c6c7c845464748 ),
+  UINT64_C( 0xc6c7c8c946474849 ),
+  UINT64_C( 0xc7c8c9ca4748494a ),
+  UINT64_C( 0xc8c9cacb48494a4b ),
+  UINT64_C( 0xc9cacbcc494a4b4c ),
+  UINT64_C( 0xcacbcccd4a4b4c4d ),
+  UINT64_C( 0xcbcccdce4b4c4d4e ),
+  UINT64_C( 0xcccdcecf4c4d4e4f ),
+  UINT64_C( 0xcdcecfd04d4e4f50 ),
+  UINT64_C( 0xcecfd0d14e4f5051 ),
+  UINT64_C( 0xcfd0d1d24f505152 ),
+  UINT64_C( 0xd0d1d2d350515253 )
+};
+
+static uint64_t altivec_exception_lo_initial[ LO_SOURCE_MAX ];
+
+typedef enum {
+  HI_SOURCE_V16,
+  HI_SOURCE_V17,
+  HI_SOURCE_V18,
+  HI_SOURCE_V19,
+  HI_SOURCE_V20,
+  HI_SOURCE_V21,
+  HI_SOURCE_V22,
+  HI_SOURCE_V23,
+  HI_SOURCE_V24,
+  HI_SOURCE_V25,
+  HI_SOURCE_V26,
+  HI_SOURCE_V27,
+  HI_SOURCE_V28,
+  HI_SOURCE_V29,
+  HI_SOURCE_V30,
+  HI_SOURCE_V31,
+  HI_SOURCE_VSCR,
+  HI_SOURCE_VRSAVE,
+  HI_SOURCE_MAX
+} HiSource;
+
+typedef enum {
+  HI_SLOT_V16_HI,
+  HI_SLOT_V16_LO,
+  HI_SLOT_V17_HI,
+  HI_SLOT_V17_LO,
+  HI_SLOT_V18_HI,
+  HI_SLOT_V18_LO,
+  HI_SLOT_V19_HI,
+  HI_SLOT_V19_LO,
+  HI_SLOT_V20_HI,
+  HI_SLOT_V20_LO,
+  HI_SLOT_V21_HI,
+  HI_SLOT_V21_LO,
+  HI_SLOT_V22_HI,
+  HI_SLOT_V22_LO,
+  HI_SLOT_V23_HI,
+  HI_SLOT_V23_LO,
+  HI_SLOT_V24_HI,
+  HI_SLOT_V24_LO,
+  HI_SLOT_V25_HI,
+  HI_SLOT_V25_LO,
+  HI_SLOT_V26_HI,
+  HI_SLOT_V26_LO,
+  HI_SLOT_V27_HI,
+  HI_SLOT_V27_LO,
+  HI_SLOT_V28_HI,
+  HI_SLOT_V28_LO,
+  HI_SLOT_V29_HI,
+  HI_SLOT_V29_LO,
+  HI_SLOT_V30_HI,
+  HI_SLOT_V30_LO,
+  HI_SLOT_V31_HI,
+  HI_SLOT_V31_LO,
+  HI_SLOT_VSCR,
+  HI_SLOT_VRSAVE,
+  HI_SLOT_MAX
+} HiSlot;
+
+static const RegisterCheckSource
+  altivec_exception_hi_sources[ HI_SOURCE_MAX ] = {
+    { "v16", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v17", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v18", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v19", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v20", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v21", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v22", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v23", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v24", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v25", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v26", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v27", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v28", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v29", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v30", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v31", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "vscr", REGISTER_CHECK_INITIAL, VSCR_MASK },
+    { "vrsave", REGISTER_CHECK_INITIAL, WORD }
+};
+
+static const RegisterCheckSlot altivec_exception_hi_slots[ HI_SLOT_MAX ] = {
+  { "v16 high", HI_SOURCE_V16, UINT64_MAX },
+  { "v16 low", HI_SOURCE_V16, UINT64_MAX },
+  { "v17 high", HI_SOURCE_V17, UINT64_MAX },
+  { "v17 low", HI_SOURCE_V17, UINT64_MAX },
+  { "v18 high", HI_SOURCE_V18, UINT64_MAX },
+  { "v18 low", HI_SOURCE_V18, UINT64_MAX },
+  { "v19 high", HI_SOURCE_V19, UINT64_MAX },
+  { "v19 low", HI_SOURCE_V19, UINT64_MAX },
+  { "v20 high", HI_SOURCE_V20, UINT64_MAX },
+  { "v20 low", HI_SOURCE_V20, UINT64_MAX },
+  { "v21 high", HI_SOURCE_V21, UINT64_MAX },
+  { "v21 low", HI_SOURCE_V21, UINT64_MAX },
+  { "v22 high", HI_SOURCE_V22, UINT64_MAX },
+  { "v22 low", HI_SOURCE_V22, UINT64_MAX },
+  { "v23 high", HI_SOURCE_V23, UINT64_MAX },
+  { "v23 low", HI_SOURCE_V23, UINT64_MAX },
+  { "v24 high", HI_SOURCE_V24, UINT64_MAX },
+  { "v24 low", HI_SOURCE_V24, UINT64_MAX },
+  { "v25 high", HI_SOURCE_V25, UINT64_MAX },
+  { "v25 low", HI_SOURCE_V25, UINT64_MAX },
+  { "v26 high", HI_SOURCE_V26, UINT64_MAX },
+  { "v26 low", HI_SOURCE_V26, UINT64_MAX },
+  { "v27 high", HI_SOURCE_V27, UINT64_MAX },
+  { "v27 low", HI_SOURCE_V27, UINT64_MAX },
+  { "v28 high", HI_SOURCE_V28, UINT64_MAX },
+  { "v28 low", HI_SOURCE_V28, UINT64_MAX },
+  { "v29 high", HI_SOURCE_V29, UINT64_MAX },
+  { "v29 low", HI_SOURCE_V29, UINT64_MAX },
+  { "v30 high", HI_SOURCE_V30, UINT64_MAX },
+  { "v30 low", HI_SOURCE_V30, UINT64_MAX },
+  { "v31 high", HI_SOURCE_V31, UINT64_MAX },
+  { "v31 low", HI_SOURCE_V31, UINT64_MAX },
+  { "vscr", HI_SOURCE_VSCR, VSCR_MASK },
+  { "vrsave", HI_SOURCE_VRSAVE, WORD }
+};
+
+static const uint64_t altivec_exception_hi_patterns[ HI_SOURCE_MAX ] = {
+  UINT64_C( 0xe1e2e3e451525354 ),
+  UINT64_C( 0xe2e3e4e552535455 ),
+  UINT64_C( 0xe3e4e5e653545556 ),
+  UINT64_C( 0xe4e5e6e754555657 ),
+  UINT64_C( 0xe5e6e7e855565758 ),
+  UINT64_C( 0xe6e7e8e956575859 ),
+  UINT64_C( 0xe7e8e9ea5758595a ),
+  UINT64_C( 0xe8e9eaeb58595a5b ),
+  UINT64_C( 0xe9eaebec595a5b5c ),
+  UINT64_C( 0xeaebeced5a5b5c5d ),
+  UINT64_C( 0xebecedee5b5c5d5e ),
+  UINT64_C( 0xecedeeef5c5d5e5f ),
+  UINT64_C( 0xedeeeff05d5e5f60 ),
+  UINT64_C( 0xeeeff0f15e5f6061 ),
+  UINT64_C( 0xeff0f1f25f606162 ),
+  UINT64_C( 0xf0f1f2f360616263 ),
+  UINT64_C( 0x00010000 ),
+  UINT64_C( 0x5a5a5fff )
+};
+
+static uint64_t altivec_exception_hi_initial[ HI_SOURCE_MAX ];
+
+/* The block loads each vector register from the row of its number. */
+uint64_t altivec_exception_vectors[ 32 ][ 2 ] RTEMS_ALIGNED( 16 );
+
+uint32_t altivec_exception_vscr_in[ 4 ] RTEMS_ALIGNED( 16 );
+
+uint32_t altivec_exception_vrsave_in;
+
+uint32_t altivec_exception_vscr_out[ 4 ] RTEMS_ALIGNED( 16 );
+
+static void SetVector( int reg, uint64_t value )
+{
+  altivec_exception_vectors[ reg ][ 0 ] = value;
+  altivec_exception_vectors[ reg ][ 1 ] = value ^ LOW;
+}
+
+static uint32_t GetVSCR( void )
+{
+  __asm__ volatile( "mfvscr 0\n"
+                    "stvx 0, 0, %0\n"
+                    :
+                    : "r"( altivec_exception_vscr_out )
+                    : "memory", "v0" );
+  return altivec_exception_vscr_out[ 3 ];
+}
+
+static uint32_t GetVRSAVE( void )
+{
+  uint32_t value;
+
+  __asm__ volatile( "mfvrsave %0"
+                    : "=r"( value ) );
+  return value;
+}
+
+/*
+ * Records the high doubleword of a vector register in its slot and the low
+ * doubleword in the slot which follows.
+ */
+static void RecordVector(
+  RegisterCheck *self,
+  size_t         slot,
+  const uint8_t *vector,
+  uint64_t       expected
+)
+{
+  uint64_t high;
+  uint64_t low;
+
+  memcpy( &high, vector, sizeof( high ) );
+  memcpy( &low, vector + 8, sizeof( low ) );
+  RegisterCheckRecord( self, slot, high, expected );
+  RegisterCheckRecord( self, slot + 1, low ^ LOW, expected );
+}
+
+static CPU_Exception_frame altivec_exception_frame;
+
+static uint32_t altivec_exception_vscr;
+
+static uint32_t altivec_exception_vrsave;
+
+static const char *altivec_exception_done;
+
+extern const char altivec_exception_done_label_lo[];
+
+extern const char altivec_exception_done_label_hi[];
+
+#define EXC_LOAD_LO                          \
+  "lis 3, altivec_exception_vectors@ha\n"    \
+  "addi 3, 3, altivec_exception_vectors@l\n" \
+  "li 0, 0\n"                                \
+  "lvx 0, 3, 0\n"                            \
+  "li 0, 16\n"                               \
+  "lvx 1, 3, 0\n"                            \
+  "li 0, 32\n"                               \
+  "lvx 2, 3, 0\n"                            \
+  "li 0, 48\n"                               \
+  "lvx 3, 3, 0\n"                            \
+  "li 0, 64\n"                               \
+  "lvx 4, 3, 0\n"                            \
+  "li 0, 80\n"                               \
+  "lvx 5, 3, 0\n"                            \
+  "li 0, 96\n"                               \
+  "lvx 6, 3, 0\n"                            \
+  "li 0, 112\n"                              \
+  "lvx 7, 3, 0\n"                            \
+  "li 0, 128\n"                              \
+  "lvx 8, 3, 0\n"                            \
+  "li 0, 144\n"                              \
+  "lvx 9, 3, 0\n"                            \
+  "li 0, 160\n"                              \
+  "lvx 10, 3, 0\n"                           \
+  "li 0, 176\n"                              \
+  "lvx 11, 3, 0\n"                           \
+  "li 0, 192\n"                              \
+  "lvx 12, 3, 0\n"                           \
+  "li 0, 208\n"                              \
+  "lvx 13, 3, 0\n"                           \
+  "li 0, 224\n"                              \
+  "lvx 14, 3, 0\n"                           \
+  "li 0, 240\n"                              \
+  "lvx 15, 3, 0\n"
+
+#define EXC_LOAD_HI                           \
+  "lis 3, altivec_exception_vscr_in@ha\n"     \
+  "addi 3, 3, altivec_exception_vscr_in@l\n"  \
+  "lvx 0, 0, 3\n"                             \
+  "mtvscr 0\n"                                \
+  "lis 3, altivec_exception_vectors@ha\n"     \
+  "addi 3, 3, altivec_exception_vectors@l\n"  \
+  "li 0, 256\n"                               \
+  "lvx 16, 3, 0\n"                            \
+  "li 0, 272\n"                               \
+  "lvx 17, 3, 0\n"                            \
+  "li 0, 288\n"                               \
+  "lvx 18, 3, 0\n"                            \
+  "li 0, 304\n"                               \
+  "lvx 19, 3, 0\n"                            \
+  "li 0, 320\n"                               \
+  "lvx 20, 3, 0\n"                            \
+  "li 0, 336\n"                               \
+  "lvx 21, 3, 0\n"                            \
+  "li 0, 352\n"                               \
+  "lvx 22, 3, 0\n"                            \
+  "li 0, 368\n"                               \
+  "lvx 23, 3, 0\n"                            \
+  "li 0, 384\n"                               \
+  "lvx 24, 3, 0\n"                            \
+  "li 0, 400\n"                               \
+  "lvx 25, 3, 0\n"                            \
+  "li 0, 416\n"                               \
+  "lvx 26, 3, 0\n"                            \
+  "li 0, 432\n"                               \
+  "lvx 27, 3, 0\n"                            \
+  "li 0, 448\n"                               \
+  "lvx 28, 3, 0\n"                            \
+  "li 0, 464\n"                               \
+  "lvx 29, 3, 0\n"                            \
+  "li 0, 480\n"                               \
+  "lvx 30, 3, 0\n"                            \
+  "li 0, 496\n"                               \
+  "lvx 31, 3, 0\n"                            \
+  "lis 3, altivec_exception_vrsave_in@ha\n"   \
+  "lwz 0, altivec_exception_vrsave_in@l(3)\n" \
+  "mtvrsave 0\n"
+
+static void AltivecFrameFatal(
+  rtems_fatal_source source,
+  rtems_fatal_code   code,
+  void              *arg
+)
+{
+  CPU_Exception_frame *frame;
+
+  (void) arg;
+
+  if ( source != RTEMS_FATAL_SOURCE_EXCEPTION ) {
+    return;
+  }
+
+  frame = (CPU_Exception_frame *) code;
+  altivec_exception_frame = *frame;
+  SetFatalHandler( NULL, NULL );
+  frame->VSCR = altivec_exception_vscr;
+  frame->VRSAVE = altivec_exception_vrsave;
+  frame->EXC_SRR0 = (uintptr_t) altivec_exception_done;
+  _CPU_Exception_resume( frame );
+}
+
+static void AltivecFramePrepare( void )
+{
+  memset( &altivec_exception_frame, 0, sizeof( altivec_exception_frame ) );
+  altivec_exception_vscr = GetVSCR();
+  altivec_exception_vrsave = GetVRSAVE();
+  SetFatalHandler( AltivecFrameFatal, NULL );
+}
+
+static void AltivecExceptionRunLo( RegisterCheck *self, void *arg )
+{
+  int i;
+
+  (void) arg;
+
+  for ( i = 0; i < 16; ++i ) {
+    SetVector( 0 + i, altivec_exception_lo_initial[ LO_SOURCE_V0 + i ] );
+  }
+
+  altivec_exception_done = altivec_exception_done_label_lo;
+  AltivecFramePrepare();
+  __asm__ volatile( EXC_LOAD_LO "trap\n"
+                                ".globl altivec_exception_done_label_lo\n"
+                                "altivec_exception_done_label_lo:\n"
+                    :
+                    :
+                    : "memory",
+                      "cr0",
+                      "cr1",
+                      "cr2",
+                      "cr3",
+                      "cr4",
+                      "cr5",
+                      "cr6",
+                      "cr7",
+                      "r0",
+                      "r3",
+                      "r4",
+                      "r5",
+                      "r6",
+                      "r7",
+                      "r8",
+                      "r9",
+                      "r10",
+                      "r11",
+                      "r12",
+                      "r14",
+                      "r15",
+                      "r16",
+                      "r17",
+                      "r18",
+                      "r19",
+                      "r20",
+                      "r21",
+                      "r22",
+                      "r23",
+                      "r24",
+                      "r25",
+                      "r26",
+                      "r27",
+                      "r28",
+                      "r29",
+                      "r30",
+                      "r31",
+                      "lr",
+                      "ctr",
+                      "xer",
+                      "v0",
+                      "v1",
+                      "v2",
+                      "v3",
+                      "v4",
+                      "v5",
+                      "v6",
+                      "v7",
+                      "v8",
+                      "v9",
+                      "v10",
+                      "v11",
+                      "v12",
+                      "v13",
+                      "v14",
+                      "v15",
+                      "v16",
+                      "v17",
+                      "v18",
+                      "v19",
+                      "v20",
+                      "v21",
+                      "v22",
+                      "v23",
+                      "v24",
+                      "v25",
+                      "v26",
+                      "v27",
+                      "v28",
+                      "v29",
+                      "v30",
+                      "v31",
+                      "vrsave",
+                      "vscr" );
+  RecordVector(
+    self,
+    LO_SLOT_V0_HI,
+    altivec_exception_frame.V0,
+    altivec_exception_lo_patterns[ LO_SOURCE_V0 ]
+  );
+  RecordVector(
+    self,
+    LO_SLOT_V1_HI,
+    altivec_exception_frame.V1,
+    altivec_exception_lo_patterns[ LO_SOURCE_V1 ]
+  );
+  RecordVector(
+    self,
+    LO_SLOT_V2_HI,
+    altivec_exception_frame.V2,
+    altivec_exception_lo_patterns[ LO_SOURCE_V2 ]
+  );
+  RecordVector(
+    self,
+    LO_SLOT_V3_HI,
+    altivec_exception_frame.V3,
+    altivec_exception_lo_patterns[ LO_SOURCE_V3 ]
+  );
+  RecordVector(
+    self,
+    LO_SLOT_V4_HI,
+    altivec_exception_frame.V4,
+    altivec_exception_lo_patterns[ LO_SOURCE_V4 ]
+  );
+  RecordVector(
+    self,
+    LO_SLOT_V5_HI,
+    altivec_exception_frame.V5,
+    altivec_exception_lo_patterns[ LO_SOURCE_V5 ]
+  );
+  RecordVector(
+    self,
+    LO_SLOT_V6_HI,
+    altivec_exception_frame.V6,
+    altivec_exception_lo_patterns[ LO_SOURCE_V6 ]
+  );
+  RecordVector(
+    self,
+    LO_SLOT_V7_HI,
+    altivec_exception_frame.V7,
+    altivec_exception_lo_patterns[ LO_SOURCE_V7 ]
+  );
+  RecordVector(
+    self,
+    LO_SLOT_V8_HI,
+    altivec_exception_frame.V8,
+    altivec_exception_lo_patterns[ LO_SOURCE_V8 ]
+  );
+  RecordVector(
+    self,
+    LO_SLOT_V9_HI,
+    altivec_exception_frame.V9,
+    altivec_exception_lo_patterns[ LO_SOURCE_V9 ]
+  );
+  RecordVector(
+    self,
+    LO_SLOT_V10_HI,
+    altivec_exception_frame.V10,
+    altivec_exception_lo_patterns[ LO_SOURCE_V10 ]
+  );
+  RecordVector(
+    self,
+    LO_SLOT_V11_HI,
+    altivec_exception_frame.V11,
+    altivec_exception_lo_patterns[ LO_SOURCE_V11 ]
+  );
+  RecordVector(
+    self,
+    LO_SLOT_V12_HI,
+    altivec_exception_frame.V12,
+    altivec_exception_lo_patterns[ LO_SOURCE_V12 ]
+  );
+  RecordVector(
+    self,
+    LO_SLOT_V13_HI,
+    altivec_exception_frame.V13,
+    altivec_exception_lo_patterns[ LO_SOURCE_V13 ]
+  );
+  RecordVector(
+    self,
+    LO_SLOT_V14_HI,
+    altivec_exception_frame.V14,
+    altivec_exception_lo_patterns[ LO_SOURCE_V14 ]
+  );
+  RecordVector(
+    self,
+    LO_SLOT_V15_HI,
+    altivec_exception_frame.V15,
+    altivec_exception_lo_patterns[ LO_SOURCE_V15 ]
+  );
+}
+
+static RegisterCheck altivec_exception_lo_check = {
+  .sources = altivec_exception_lo_sources,
+  .source_count = LO_SOURCE_MAX,
+  .slots = altivec_exception_lo_slots,
+  .slot_count = LO_SLOT_MAX,
+  .initial = altivec_exception_lo_initial,
+  .run = AltivecExceptionRunLo
+};
+
+static void CheckLoVector( LoSlot slot )
+{
+  RegisterCheckVerify( &altivec_exception_lo_check, slot );
+  RegisterCheckVerify( &altivec_exception_lo_check, slot + 1 );
+}
+
+static void AltivecExceptionRunHi( RegisterCheck *self, void *arg )
+{
+  int i;
+
+  (void) arg;
+
+  for ( i = 0; i < 16; ++i ) {
+    SetVector( 16 + i, altivec_exception_hi_initial[ HI_SOURCE_V16 + i ] );
+  }
+
+  altivec_exception_vscr_in[ 3 ] = (uint32_t)
+    altivec_exception_hi_initial[ HI_SOURCE_VSCR ];
+  altivec_exception_vrsave_in = (uint32_t)
+    altivec_exception_hi_initial[ HI_SOURCE_VRSAVE ];
+  altivec_exception_done = altivec_exception_done_label_hi;
+  AltivecFramePrepare();
+  __asm__ volatile( EXC_LOAD_HI "trap\n"
+                                ".globl altivec_exception_done_label_hi\n"
+                                "altivec_exception_done_label_hi:\n"
+                    :
+                    :
+                    : "memory",
+                      "cr0",
+                      "cr1",
+                      "cr2",
+                      "cr3",
+                      "cr4",
+                      "cr5",
+                      "cr6",
+                      "cr7",
+                      "r0",
+                      "r3",
+                      "r4",
+                      "r5",
+                      "r6",
+                      "r7",
+                      "r8",
+                      "r9",
+                      "r10",
+                      "r11",
+                      "r12",
+                      "r14",
+                      "r15",
+                      "r16",
+                      "r17",
+                      "r18",
+                      "r19",
+                      "r20",
+                      "r21",
+                      "r22",
+                      "r23",
+                      "r24",
+                      "r25",
+                      "r26",
+                      "r27",
+                      "r28",
+                      "r29",
+                      "r30",
+                      "r31",
+                      "lr",
+                      "ctr",
+                      "xer",
+                      "v0",
+                      "v1",
+                      "v2",
+                      "v3",
+                      "v4",
+                      "v5",
+                      "v6",
+                      "v7",
+                      "v8",
+                      "v9",
+                      "v10",
+                      "v11",
+                      "v12",
+                      "v13",
+                      "v14",
+                      "v15",
+                      "v16",
+                      "v17",
+                      "v18",
+                      "v19",
+                      "v20",
+                      "v21",
+                      "v22",
+                      "v23",
+                      "v24",
+                      "v25",
+                      "v26",
+                      "v27",
+                      "v28",
+                      "v29",
+                      "v30",
+                      "v31",
+                      "vrsave",
+                      "vscr" );
+  RecordVector(
+    self,
+    HI_SLOT_V16_HI,
+    altivec_exception_frame.V16,
+    altivec_exception_hi_patterns[ HI_SOURCE_V16 ]
+  );
+  RecordVector(
+    self,
+    HI_SLOT_V17_HI,
+    altivec_exception_frame.V17,
+    altivec_exception_hi_patterns[ HI_SOURCE_V17 ]
+  );
+  RecordVector(
+    self,
+    HI_SLOT_V18_HI,
+    altivec_exception_frame.V18,
+    altivec_exception_hi_patterns[ HI_SOURCE_V18 ]
+  );
+  RecordVector(
+    self,
+    HI_SLOT_V19_HI,
+    altivec_exception_frame.V19,
+    altivec_exception_hi_patterns[ HI_SOURCE_V19 ]
+  );
+  RecordVector(
+    self,
+    HI_SLOT_V20_HI,
+    altivec_exception_frame.V20,
+    altivec_exception_hi_patterns[ HI_SOURCE_V20 ]
+  );
+  RecordVector(
+    self,
+    HI_SLOT_V21_HI,
+    altivec_exception_frame.V21,
+    altivec_exception_hi_patterns[ HI_SOURCE_V21 ]
+  );
+  RecordVector(
+    self,
+    HI_SLOT_V22_HI,
+    altivec_exception_frame.V22,
+    altivec_exception_hi_patterns[ HI_SOURCE_V22 ]
+  );
+  RecordVector(
+    self,
+    HI_SLOT_V23_HI,
+    altivec_exception_frame.V23,
+    altivec_exception_hi_patterns[ HI_SOURCE_V23 ]
+  );
+  RecordVector(
+    self,
+    HI_SLOT_V24_HI,
+    altivec_exception_frame.V24,
+    altivec_exception_hi_patterns[ HI_SOURCE_V24 ]
+  );
+  RecordVector(
+    self,
+    HI_SLOT_V25_HI,
+    altivec_exception_frame.V25,
+    altivec_exception_hi_patterns[ HI_SOURCE_V25 ]
+  );
+  RecordVector(
+    self,
+    HI_SLOT_V26_HI,
+    altivec_exception_frame.V26,
+    altivec_exception_hi_patterns[ HI_SOURCE_V26 ]
+  );
+  RecordVector(
+    self,
+    HI_SLOT_V27_HI,
+    altivec_exception_frame.V27,
+    altivec_exception_hi_patterns[ HI_SOURCE_V27 ]
+  );
+  RecordVector(
+    self,
+    HI_SLOT_V28_HI,
+    altivec_exception_frame.V28,
+    altivec_exception_hi_patterns[ HI_SOURCE_V28 ]
+  );
+  RecordVector(
+    self,
+    HI_SLOT_V29_HI,
+    altivec_exception_frame.V29,
+    altivec_exception_hi_patterns[ HI_SOURCE_V29 ]
+  );
+  RecordVector(
+    self,
+    HI_SLOT_V30_HI,
+    altivec_exception_frame.V30,
+    altivec_exception_hi_patterns[ HI_SOURCE_V30 ]
+  );
+  RecordVector(
+    self,
+    HI_SLOT_V31_HI,
+    altivec_exception_frame.V31,
+    altivec_exception_hi_patterns[ HI_SOURCE_V31 ]
+  );
+  RegisterCheckRecord(
+    self,
+    HI_SLOT_VSCR,
+    altivec_exception_frame.VSCR & VSCR_MASK,
+    altivec_exception_hi_patterns[ HI_SOURCE_VSCR ]
+  );
+  RegisterCheckRecord(
+    self,
+    HI_SLOT_VRSAVE,
+    altivec_exception_frame.VRSAVE,
+    altivec_exception_hi_patterns[ HI_SOURCE_VRSAVE ]
+  );
+}
+
+static RegisterCheck altivec_exception_hi_check = {
+  .sources = altivec_exception_hi_sources,
+  .source_count = HI_SOURCE_MAX,
+  .slots = altivec_exception_hi_slots,
+  .slot_count = HI_SLOT_MAX,
+  .initial = altivec_exception_hi_initial,
+  .run = AltivecExceptionRunHi
+};
+
+static void CheckHiSlot( HiSlot slot )
+{
+  RegisterCheckVerify( &altivec_exception_hi_check, slot );
+}
+
+static void CheckHiVector( HiSlot slot )
+{
+  RegisterCheckVerify( &altivec_exception_hi_check, slot );
+  RegisterCheckVerify( &altivec_exception_hi_check, slot + 1 );
+}
+#endif
+
+/**
+ * @brief Load a distinct pattern into v0 to v15. Trap. Run this once for each
+ *   value with the pattern of that value inverted, then once unchanged.
+ */
+static void ScoreCpuPowerpcValAltivecExceptionFrame_Action_0( void )
+{
+  #if defined( PPC_MULTILIB_ALTIVEC )
+  memcpy(
+    altivec_exception_lo_initial,
+    altivec_exception_lo_patterns,
+    sizeof( altivec_exception_lo_initial )
+  );
+  RegisterCheckRun( &altivec_exception_lo_check );
+  #endif
+
+  /*
+   * Check that the exception frame holds the PowerPC vector register V0.
+   */
+  #if defined( PPC_MULTILIB_ALTIVEC )
+  CheckLoVector( LO_SLOT_V0_HI );
+  #endif
+
+  /*
+   * Check that the exception frame holds the PowerPC vector register V1.
+   */
+  #if defined( PPC_MULTILIB_ALTIVEC )
+  CheckLoVector( LO_SLOT_V1_HI );
+  #endif
+
+  /*
+   * Check that the exception frame holds the PowerPC vector register V2.
+   */
+  #if defined( PPC_MULTILIB_ALTIVEC )
+  CheckLoVector( LO_SLOT_V2_HI );
+  #endif
+
+  /*
+   * Check that the exception frame holds the PowerPC vector register V3.
+   */
+  #if defined( PPC_MULTILIB_ALTIVEC )
+  CheckLoVector( LO_SLOT_V3_HI );
+  #endif
+
+  /*
+   * Check that the exception frame holds the PowerPC vector register V4.
+   */
+  #if defined( PPC_MULTILIB_ALTIVEC )
+  CheckLoVector( LO_SLOT_V4_HI );
+  #endif
+
+  /*
+   * Check that the exception frame holds the PowerPC vector register V5.
+   */
+  #if defined( PPC_MULTILIB_ALTIVEC )
+  CheckLoVector( LO_SLOT_V5_HI );
+  #endif
+
+  /*
+   * Check that the exception frame holds the PowerPC vector register V6.
+   */
+  #if defined( PPC_MULTILIB_ALTIVEC )
+  CheckLoVector( LO_SLOT_V6_HI );
+  #endif
+
+  /*
+   * Check that the exception frame holds the PowerPC vector register V7.
+   */
+  #if defined( PPC_MULTILIB_ALTIVEC )
+  CheckLoVector( LO_SLOT_V7_HI );
+  #endif
+
+  /*
+   * Check that the exception frame holds the PowerPC vector register V8.
+   */
+  #if defined( PPC_MULTILIB_ALTIVEC )
+  CheckLoVector( LO_SLOT_V8_HI );
+  #endif
+
+  /*
+   * Check that the exception frame holds the PowerPC vector register V9.
+   */
+  #if defined( PPC_MULTILIB_ALTIVEC )
+  CheckLoVector( LO_SLOT_V9_HI );
+  #endif
+
+  /*
+   * Check that the exception frame holds the PowerPC vector register V10.
+   */
+  #if defined( PPC_MULTILIB_ALTIVEC )
+  CheckLoVector( LO_SLOT_V10_HI );
+  #endif
+
+  /*
+   * Check that the exception frame holds the PowerPC vector register V11.
+   */
+  #if defined( PPC_MULTILIB_ALTIVEC )
+  CheckLoVector( LO_SLOT_V11_HI );
+  #endif
+
+  /*
+   * Check that the exception frame holds the PowerPC vector register V12.
+   */
+  #if defined( PPC_MULTILIB_ALTIVEC )
+  CheckLoVector( LO_SLOT_V12_HI );
+  #endif
+
+  /*
+   * Check that the exception frame holds the PowerPC vector register V13.
+   */
+  #if defined( PPC_MULTILIB_ALTIVEC )
+  CheckLoVector( LO_SLOT_V13_HI );
+  #endif
+
+  /*
+   * Check that the exception frame holds the PowerPC vector register V14.
+   */
+  #if defined( PPC_MULTILIB_ALTIVEC )
+  CheckLoVector( LO_SLOT_V14_HI );
+  #endif
+
+  /*
+   * Check that the exception frame holds the PowerPC vector register V15.
+   */
+  #if defined( PPC_MULTILIB_ALTIVEC )
+  CheckLoVector( LO_SLOT_V15_HI );
+  #endif
+
+  /*
+   * Check that each run with a changed value flagged exactly the checks of
+   * that value, and that each run recorded every check.
+   */
+  #if defined( PPC_MULTILIB_ALTIVEC )
+  RegisterCheckReport( &altivec_exception_lo_check );
+  #endif
+}
+
+/**
+ * @brief Load a distinct pattern into v16 to v31, into VSCR and into VRSAVE.
+ *   Trap. Run this once for each value with the pattern of that value
+ *   inverted, then once unchanged.
+ */
+static void ScoreCpuPowerpcValAltivecExceptionFrame_Action_1( void )
+{
+  #if defined( PPC_MULTILIB_ALTIVEC )
+  memcpy(
+    altivec_exception_hi_initial,
+    altivec_exception_hi_patterns,
+    sizeof( altivec_exception_hi_initial )
+  );
+  RegisterCheckRun( &altivec_exception_hi_check );
+  #endif
+
+  /*
+   * Check that the exception frame holds the PowerPC vector register V16.
+   */
+  #if defined( PPC_MULTILIB_ALTIVEC )
+  CheckHiVector( HI_SLOT_V16_HI );
+  #endif
+
+  /*
+   * Check that the exception frame holds the PowerPC vector register V17.
+   */
+  #if defined( PPC_MULTILIB_ALTIVEC )
+  CheckHiVector( HI_SLOT_V17_HI );
+  #endif
+
+  /*
+   * Check that the exception frame holds the PowerPC vector register V18.
+   */
+  #if defined( PPC_MULTILIB_ALTIVEC )
+  CheckHiVector( HI_SLOT_V18_HI );
+  #endif
+
+  /*
+   * Check that the exception frame holds the PowerPC vector register V19.
+   */
+  #if defined( PPC_MULTILIB_ALTIVEC )
+  CheckHiVector( HI_SLOT_V19_HI );
+  #endif
+
+  /*
+   * Check that the exception frame holds the PowerPC vector register V20.
+   */
+  #if defined( PPC_MULTILIB_ALTIVEC )
+  CheckHiVector( HI_SLOT_V20_HI );
+  #endif
+
+  /*
+   * Check that the exception frame holds the PowerPC vector register V21.
+   */
+  #if defined( PPC_MULTILIB_ALTIVEC )
+  CheckHiVector( HI_SLOT_V21_HI );
+  #endif
+
+  /*
+   * Check that the exception frame holds the PowerPC vector register V22.
+   */
+  #if defined( PPC_MULTILIB_ALTIVEC )
+  CheckHiVector( HI_SLOT_V22_HI );
+  #endif
+
+  /*
+   * Check that the exception frame holds the PowerPC vector register V23.
+   */
+  #if defined( PPC_MULTILIB_ALTIVEC )
+  CheckHiVector( HI_SLOT_V23_HI );
+  #endif
+
+  /*
+   * Check that the exception frame holds the PowerPC vector register V24.
+   */
+  #if defined( PPC_MULTILIB_ALTIVEC )
+  CheckHiVector( HI_SLOT_V24_HI );
+  #endif
+
+  /*
+   * Check that the exception frame holds the PowerPC vector register V25.
+   */
+  #if defined( PPC_MULTILIB_ALTIVEC )
+  CheckHiVector( HI_SLOT_V25_HI );
+  #endif
+
+  /*
+   * Check that the exception frame holds the PowerPC vector register V26.
+   */
+  #if defined( PPC_MULTILIB_ALTIVEC )
+  CheckHiVector( HI_SLOT_V26_HI );
+  #endif
+
+  /*
+   * Check that the exception frame holds the PowerPC vector register V27.
+   */
+  #if defined( PPC_MULTILIB_ALTIVEC )
+  CheckHiVector( HI_SLOT_V27_HI );
+  #endif
+
+  /*
+   * Check that the exception frame holds the PowerPC vector register V28.
+   */
+  #if defined( PPC_MULTILIB_ALTIVEC )
+  CheckHiVector( HI_SLOT_V28_HI );
+  #endif
+
+  /*
+   * Check that the exception frame holds the PowerPC vector register V29.
+   */
+  #if defined( PPC_MULTILIB_ALTIVEC )
+  CheckHiVector( HI_SLOT_V29_HI );
+  #endif
+
+  /*
+   * Check that the exception frame holds the PowerPC vector register V30.
+   */
+  #if defined( PPC_MULTILIB_ALTIVEC )
+  CheckHiVector( HI_SLOT_V30_HI );
+  #endif
+
+  /*
+   * Check that the exception frame holds the PowerPC vector register V31.
+   */
+  #if defined( PPC_MULTILIB_ALTIVEC )
+  CheckHiVector( HI_SLOT_V31_HI );
+  #endif
+
+  /*
+   * Check that the exception frame holds VSCR.
+   */
+  #if defined( PPC_MULTILIB_ALTIVEC )
+  CheckHiSlot( HI_SLOT_VSCR );
+  #endif
+
+  /*
+   * Check that the exception frame holds VRSAVE.
+   */
+  #if defined( PPC_MULTILIB_ALTIVEC )
+  CheckHiSlot( HI_SLOT_VRSAVE );
+  #endif
+
+  /*
+   * Check that each run with a changed value flagged exactly the checks of
+   * that value, and that each run recorded every check.
+   */
+  #if defined( PPC_MULTILIB_ALTIVEC )
+  RegisterCheckReport( &altivec_exception_hi_check );
+  #endif
+}
+
+/**
+ * @fn void T_case_body_ScoreCpuPowerpcValAltivecExceptionFrame( void )
+ */
+T_TEST_CASE( ScoreCpuPowerpcValAltivecExceptionFrame )
+{
+  ScoreCpuPowerpcValAltivecExceptionFrame_Action_0();
+  ScoreCpuPowerpcValAltivecExceptionFrame_Action_1();
+}
+
+/** @} */

@@ -27,6 +27,8 @@ links:
 - role: build-dependency
   uid: objpowerpc
 - role: build-dependency
+  uid: objpowerpcaltivec
+- role: build-dependency
   uid: objpowerpcfpu
 - role: build-dependency
   uid: objpowerpcspe
