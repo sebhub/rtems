@@ -536,6 +536,14 @@ test-actions:
     - role: validation
       uid: ../req/exc-stack-isr
   - brief: |
+      Check that the PSR of the exception frame holds the implementation, the
+      version, EF, PIL and S of the trapped context.
+    code: |
+      CheckSlot( SLOT_PSR );
+    links:
+    - role: validation
+      uid: ../../req/exc-status
+  - brief: |
       Check that each run with a changed value flagged exactly the checks of that
       value, and that each run recorded every check.
     code: |
@@ -575,6 +583,9 @@ test-header:
     #define PSR_ICC_MASK 0x00f00000
 
     #define PSR_ICC_BITS 0x00500000
+
+    /* These are impl, ver, EF, PIL and S of the PSR. */
+    #define PSR_FRAME_MASK 0xff001f80
 
     /* RD, NS, fcc, aexc and cexc of the FSR */
     #define FSR_TEST_MASK 0xc0400fff
@@ -825,6 +836,7 @@ test-support: |
     SOURCE_PC,
     SOURCE_TRAP,
     SOURCE_STACK,
+    SOURCE_PSR,
     SOURCE_MAX
   } Source;
 
@@ -893,6 +905,7 @@ test-support: |
     SLOT_PC,
     SLOT_TRAP,
     SLOT_STACK,
+    SLOT_PSR,
     SLOT_MAX
   } Slot;
 
@@ -975,6 +988,7 @@ test-support: |
     { "pc", REGISTER_CHECK_EXPECTED, WORD },
     { "trap", REGISTER_CHECK_EXPECTED, WORD },
     { "stack", REGISTER_CHECK_EXPECTED, WORD },
+    { "psr", REGISTER_CHECK_EXPECTED, PSR_FRAME_MASK },
   };
 
   static const RegisterCheckSlot exception_frame_slots[ SLOT_MAX ] = {
@@ -1042,6 +1056,7 @@ test-support: |
     { "pc", SOURCE_PC, WORD },
     { "trap", SOURCE_TRAP, WORD },
     { "stack", SOURCE_STACK, WORD },
+    { "psr", SOURCE_PSR, PSR_FRAME_MASK },
   };
 
   static const uint64_t exception_frame_patterns[ SOURCE_MAX ] = {
@@ -1110,6 +1125,8 @@ test-support: |
 
   /* The expected value of each source of the kind REGISTER_CHECK_INITIAL */
   static uint64_t exception_frame_expected[ SOURCE_MAX ];
+
+  static uint32_t exception_frame_psr;
 
   static const ExceptionFrameVariant *exception_frame_variant;
 
@@ -1190,6 +1207,7 @@ test-support: |
     trap = *(const uint32_t *) arg;
     exception_expected_pc = NULL;
     __asm__ volatile ( "mov %%g7, %0" : "=r" ( exception_frame_g7 ) );
+    __asm__ volatile ( "rd %%psr, %0" : "=r" ( exception_frame_psr ) );
   #if SPARC_HAS_FPU == 1
     __asm__ volatile ( "st %%fsr, %0" : "=m" ( fsr ) );
   #endif
@@ -1606,6 +1624,16 @@ test-support: |
       SLOT_STACK,
       IsOnInterruptStack( exception_frame_address ) ? 1 : 0,
       1
+    );
+
+    /*
+     * A scenario clears the bits of the set mask of its variant before it traps.
+     */
+    RegisterCheckRecord(
+      self,
+      SLOT_PSR,
+      frame->psr,
+      exception_frame_psr & ~exception_frame_variant->psr_set
     );
   }
 

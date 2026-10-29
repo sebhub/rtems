@@ -119,6 +119,8 @@ test-actions:
     links:
     - role: validation
       uid: ../req/isr-wrapper-private-set
+    - role: validation
+      uid: ../../req/isr-call-saved
   - brief: |
       Check that the interrupt preserved the SPARC local register L1.
     code: |
@@ -126,6 +128,8 @@ test-actions:
     links:
     - role: validation
       uid: ../req/isr-wrapper-private-set
+    - role: validation
+      uid: ../../req/isr-call-saved
   - brief: |
       Check that the interrupt preserved the SPARC local register L2.
     code: |
@@ -133,6 +137,8 @@ test-actions:
     links:
     - role: validation
       uid: ../req/isr-wrapper-private-set
+    - role: validation
+      uid: ../../req/isr-call-saved
   - brief: |
       Check that the interrupt preserved the SPARC local register L3.
     code: |
@@ -140,6 +146,8 @@ test-actions:
     links:
     - role: validation
       uid: ../req/isr-wrapper-private-set
+    - role: validation
+      uid: ../../req/isr-call-saved
   - brief: |
       Check that the interrupt preserved the SPARC local register L4.
     code: |
@@ -147,6 +155,8 @@ test-actions:
     links:
     - role: validation
       uid: ../req/isr-wrapper-private-set
+    - role: validation
+      uid: ../../req/isr-call-saved
   - brief: |
       Check that the interrupt preserved the SPARC local register L5.
     code: |
@@ -154,6 +164,8 @@ test-actions:
     links:
     - role: validation
       uid: ../req/isr-wrapper-private-set
+    - role: validation
+      uid: ../../req/isr-call-saved
   - brief: |
       Check that the interrupt preserved the SPARC local register L6.
     code: |
@@ -161,6 +173,8 @@ test-actions:
     links:
     - role: validation
       uid: ../req/isr-wrapper-private-set
+    - role: validation
+      uid: ../../req/isr-call-saved
   - brief: |
       Check that the interrupt preserved the SPARC input register I0.
     code: |
@@ -168,6 +182,8 @@ test-actions:
     links:
     - role: validation
       uid: ../req/isr-wrapper-private-set
+    - role: validation
+      uid: ../../req/isr-call-saved
   - brief: |
       Check that the interrupt preserved the SPARC input register I1.
     code: |
@@ -175,6 +191,8 @@ test-actions:
     links:
     - role: validation
       uid: ../req/isr-wrapper-private-set
+    - role: validation
+      uid: ../../req/isr-call-saved
   - brief: |
       Check that the interrupt preserved the SPARC input register I2.
     code: |
@@ -182,6 +200,8 @@ test-actions:
     links:
     - role: validation
       uid: ../req/isr-wrapper-private-set
+    - role: validation
+      uid: ../../req/isr-call-saved
   - brief: |
       Check that the interrupt preserved the SPARC input register I3.
     code: |
@@ -189,6 +209,8 @@ test-actions:
     links:
     - role: validation
       uid: ../req/isr-wrapper-private-set
+    - role: validation
+      uid: ../../req/isr-call-saved
   - brief: |
       Check that the interrupt preserved the SPARC input register I4.
     code: |
@@ -196,6 +218,8 @@ test-actions:
     links:
     - role: validation
       uid: ../req/isr-wrapper-private-set
+    - role: validation
+      uid: ../../req/isr-call-saved
   - brief: |
       Check that the interrupt preserved the SPARC input register I5.
     code: |
@@ -203,6 +227,8 @@ test-actions:
     links:
     - role: validation
       uid: ../req/isr-wrapper-private-set
+    - role: validation
+      uid: ../../req/isr-call-saved
   - brief: |
       Check that the interrupt preserved the SPARC input register I7.
     code: |
@@ -210,6 +236,8 @@ test-actions:
     links:
     - role: validation
       uid: ../req/isr-wrapper-private-set
+    - role: validation
+      uid: ../../req/isr-call-saved
   - brief: |
       Check that the interrupt preserved the SPARC register Y.
     code: |
@@ -421,6 +449,8 @@ test-actions:
     links:
     - role: validation
       uid: ../req/isr-wrapper-private-set
+    - role: validation
+      uid: ../../req/isr-call-saved
   - brief: |
       Check that the interrupt preserved the processor interrupt level.
     code: |
@@ -471,6 +501,8 @@ test-actions:
       uid: ../../req/isr-return-address
     - role: validation
       uid: ../req/isr-wrapper-private-set
+    - role: validation
+      uid: ../../req/isr-call-saved
     - role: validation
       uid: ../../req/isr-status
     - role: validation
@@ -929,6 +961,11 @@ test-support: |
 
   static CallWithinISRRequest interrupt_request;
 
+  /*
+   * The handler writes zero to the call-used global registers and to Y, and it
+   * sets the integer condition codes to Z.  A value which the interrupt
+   * processing does not restore then fails its check.
+   */
   static void InterruptHandler( void *arg )
   {
     uint32_t psr;
@@ -938,6 +975,18 @@ test-support: |
     interrupt_handler_psr = psr;
     interrupt_handler_processor = rtems_scheduler_get_processor();
     ++interrupt_count;
+    __asm__ volatile (
+      "mov %%g0, %%g1\n"
+      "mov %%g0, %%g2\n"
+      "mov %%g0, %%g3\n"
+      "mov %%g0, %%g4\n"
+      "mov %%g0, %%g5\n"
+      "wr %%g0, %%y\n"
+      "subcc %%g0, %%g0, %%g0\n"
+      :
+      :
+      : "g1", "g2", "g3", "g4", "g5", "cc"
+    );
   }
 
   /*

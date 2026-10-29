@@ -1418,6 +1418,14 @@ test-actions:
     - role: validation
       uid: ../req/exc-all-windows
   - brief: |
+      Check that the resume restored the integer condition codes and EF of the PSR of
+      the frame.
+    code: |
+      RegisterCheckVerify( &resume_c_check, RESUME_C_PSR );
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
       Check that both traps happened.
     code: |
       RegisterCheckVerify( &resume_c_check, RESUME_C_TRAPS );
@@ -1466,6 +1474,19 @@ test-support: |
   /* RD, NS, fcc, aexc and cexc of the FSR */
   #define FSR_TEST_MASK 0xc0400fff
 
+  /*
+   * These are the integer condition codes and, where the processor has a
+   * floating-point unit, EF of the PSR.  The pattern sets EF, so the members of
+   * the floating-point unit stay accessible.
+   */
+  #if SPARC_HAS_FPU == 1
+  #define PSR_TEST_MASK UINT32_C( 0x00f01000 )
+  #else
+  #define PSR_TEST_MASK UINT32_C( 0x00f00000 )
+  #endif
+
+  #define PSR_TEST_BITS ( UINT32_C( 0x00a01000 ) & PSR_TEST_MASK )
+
   typedef enum {
     MEMBER_GLOBAL,
     MEMBER_OUTPUT,
@@ -1473,7 +1494,8 @@ test-support: |
     MEMBER_FSR,
     MEMBER_FP,
     MEMBER_LOCAL,
-    MEMBER_INPUT
+    MEMBER_INPUT,
+    MEMBER_PSR
   } MemberKind;
 
   typedef struct {
@@ -1628,6 +1650,7 @@ test-support: |
     { MEMBER_INPUT, 53 },
     { MEMBER_INPUT, 54 },
     { MEMBER_INPUT, 55 },
+    { MEMBER_PSR, 0 },
   };
 
   typedef enum {
@@ -1776,6 +1799,7 @@ test-support: |
     MEMBER_INDEX_W6_I5,
     MEMBER_INDEX_W6_I6,
     MEMBER_INDEX_W6_I7,
+    MEMBER_INDEX_PSR,
     MEMBER_INDEX_MAX
   } MemberIndex;
 
@@ -1800,6 +1824,8 @@ test-support: |
   #endif
       case MEMBER_LOCAL:
         return frame->windows[ m->index / 8 ].local[ m->index % 8 ];
+      case MEMBER_PSR:
+        return frame->psr & PSR_TEST_MASK;
       default:
         return frame->windows[ m->index / 8 ].input[ m->index % 8 ];
     }
@@ -1832,6 +1858,10 @@ test-support: |
       case MEMBER_LOCAL:
         frame->windows[ m->index / 8 ].local[ m->index % 8 ] = (uint32_t) value;
         break;
+      case MEMBER_PSR:
+        frame->psr = ( frame->psr & ~PSR_TEST_MASK ) |
+                     ( (uint32_t) value & PSR_TEST_MASK );
+        break;
       default:
         frame->windows[ m->index / 8 ].input[ m->index % 8 ] = (uint32_t) value;
         break;
@@ -1849,6 +1879,10 @@ test-support: |
       return 0x404008a5 & GetFSRImplemented();
     }
   #endif
+
+    if ( m->kind == MEMBER_PSR ) {
+      return PSR_TEST_BITS;
+    }
 
     if ( m->kind == MEMBER_FP ) {
       return UINT64_C( 0x8182838485868788 ) +
@@ -2203,7 +2237,8 @@ test-support: |
       self,
       RESUME_A_PSR,
       resume_after.psr,
-      resume_before.psr | SPARC_PSR_PIL_MASK
+      ( resume_before.psr & ~PSR_TEST_MASK ) | PSR_TEST_BITS |
+        SPARC_PSR_PIL_MASK
     );
     RegisterCheckRecord(
       self,
@@ -2510,6 +2545,7 @@ test-support: |
     RESUME_C_W6_I5,
     RESUME_C_W6_I6,
     RESUME_C_W6_I7,
+    RESUME_C_PSR,
     RESUME_C_TRAPS,
     RESUME_C_MAX
   } ResumeCIndex;
@@ -2568,6 +2604,7 @@ test-support: |
     { "w6 i5", REGISTER_CHECK_INITIAL, WORD },
     { "w6 i6", REGISTER_CHECK_INITIAL, WORD },
     { "w6 i7", REGISTER_CHECK_INITIAL, WORD },
+    { "psr", REGISTER_CHECK_INITIAL, PSR_TEST_MASK },
     { "traps", REGISTER_CHECK_EXPECTED, WORD },
   };
 
@@ -2620,6 +2657,7 @@ test-support: |
     { "w6 i5", RESUME_C_W6_I5, WORD },
     { "w6 i6", RESUME_C_W6_I6, WORD },
     { "w6 i7", RESUME_C_W6_I7, WORD },
+    { "psr", RESUME_C_PSR, PSR_TEST_MASK },
     { "traps", RESUME_C_TRAPS, WORD },
   };
 
@@ -2627,7 +2665,7 @@ test-support: |
 
   static const ResumeGroup resume_c_group = {
     .begin = MEMBER_INDEX_W4_L0,
-    .end = MEMBER_INDEX_W6_I7 + 1,
+    .end = MEMBER_INDEX_PSR + 1,
     .initial = resume_c_initial
   };
 
@@ -2638,7 +2676,7 @@ test-support: |
     (void) arg;
     ResumeRunTraps( &resume_c_group );
 
-    for ( i = MEMBER_INDEX_W4_L0; i <= MEMBER_INDEX_W6_I7; ++i ) {
+    for ( i = MEMBER_INDEX_W4_L0; i <= MEMBER_INDEX_PSR; ++i ) {
       RegisterCheckRecord(
         self,
         i - MEMBER_INDEX_W4_L0,
@@ -2668,7 +2706,7 @@ test-support: |
   {
     size_t i;
 
-    for ( i = MEMBER_INDEX_W4_L0; i <= MEMBER_INDEX_W6_I7; ++i ) {
+    for ( i = MEMBER_INDEX_W4_L0; i <= MEMBER_INDEX_PSR; ++i ) {
       resume_c_initial[ i - MEMBER_INDEX_W4_L0 ] = GetPattern( i );
     }
   }
