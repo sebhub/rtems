@@ -57,7 +57,8 @@
  *
  * The interrupt comes from the TM27 support of the BSP. The handler overwrites
  * the call-used registers, since a handler of an application may do the same.
- * The interrupt wrapper uses s0 and s1 for its own bookkeeping.
+ * The interrupt wrapper uses s0 and s1 for its own bookkeeping. The interrupt
+ * processing preserves s2 to s11 as call-saved registers.
  *
  * This test case performs the following actions:
  *
@@ -103,6 +104,26 @@
  *   - Check that the interrupt processing preserved the RISC-V register t5.
  *
  *   - Check that the interrupt processing preserved the RISC-V register t6.
+ *
+ *   - Check that the interrupt processing preserved the RISC-V register s2.
+ *
+ *   - Check that the interrupt processing preserved the RISC-V register s3.
+ *
+ *   - Check that the interrupt processing preserved the RISC-V register s4.
+ *
+ *   - Check that the interrupt processing preserved the RISC-V register s5.
+ *
+ *   - Check that the interrupt processing preserved the RISC-V register s6.
+ *
+ *   - Check that the interrupt processing preserved the RISC-V register s7.
+ *
+ *   - Check that the interrupt processing preserved the RISC-V register s8.
+ *
+ *   - Check that the interrupt processing preserved the RISC-V register s9.
+ *
+ *   - Check that the interrupt processing preserved the RISC-V register s10.
+ *
+ *   - Check that the interrupt processing preserved the RISC-V register s11.
  *
  *   - Check that the interrupt processing preserved the RISC-V stack pointer
  *     register sp.
@@ -243,6 +264,16 @@ typedef enum {
   SOURCE_T4,
   SOURCE_T5,
   SOURCE_T6,
+  SOURCE_S2,
+  SOURCE_S3,
+  SOURCE_S4,
+  SOURCE_S5,
+  SOURCE_S6,
+  SOURCE_S7,
+  SOURCE_S8,
+  SOURCE_S9,
+  SOURCE_S10,
+  SOURCE_S11,
   SOURCE_SP,
   SOURCE_STATUS,
   SOURCE_EPC,
@@ -293,6 +324,16 @@ typedef enum {
   SLOT_T4,
   SLOT_T5,
   SLOT_T6,
+  SLOT_S2,
+  SLOT_S3,
+  SLOT_S4,
+  SLOT_S5,
+  SLOT_S6,
+  SLOT_S7,
+  SLOT_S8,
+  SLOT_S9,
+  SLOT_S10,
+  SLOT_S11,
   SLOT_SP,
   SLOT_STATUS,
   SLOT_EPC,
@@ -327,10 +368,11 @@ typedef enum {
 RTEMS_STATIC_ASSERT( SOURCE_RA == 0, source_ra );
 RTEMS_STATIC_ASSERT( SOURCE_T0 == 1, source_t0 );
 RTEMS_STATIC_ASSERT( SOURCE_T6 == 17, source_t6 );
+RTEMS_STATIC_ASSERT( SOURCE_S11 == 27, source_s11 );
 
 #if __riscv_flen > 0
-RTEMS_STATIC_ASSERT( SOURCE_FT0 == 22, source_ft0 );
-RTEMS_STATIC_ASSERT( SOURCE_FCSR == 42, source_fcsr );
+RTEMS_STATIC_ASSERT( SOURCE_FT0 == 32, source_ft0 );
+RTEMS_STATIC_ASSERT( SOURCE_FCSR == 52, source_fcsr );
 #endif
 
 static const RegisterCheckSource interrupt_sources[ SOURCE_MAX ] = {
@@ -352,6 +394,16 @@ static const RegisterCheckSource interrupt_sources[ SOURCE_MAX ] = {
   { "t4", REGISTER_CHECK_INITIAL, WORD },
   { "t5", REGISTER_CHECK_INITIAL, WORD },
   { "t6", REGISTER_CHECK_INITIAL, WORD },
+  { "s2", REGISTER_CHECK_INITIAL, WORD },
+  { "s3", REGISTER_CHECK_INITIAL, WORD },
+  { "s4", REGISTER_CHECK_INITIAL, WORD },
+  { "s5", REGISTER_CHECK_INITIAL, WORD },
+  { "s6", REGISTER_CHECK_INITIAL, WORD },
+  { "s7", REGISTER_CHECK_INITIAL, WORD },
+  { "s8", REGISTER_CHECK_INITIAL, WORD },
+  { "s9", REGISTER_CHECK_INITIAL, WORD },
+  { "s10", REGISTER_CHECK_INITIAL, WORD },
+  { "s11", REGISTER_CHECK_INITIAL, WORD },
   { "sp", REGISTER_CHECK_EXPECTED, WORD },
   { "status", REGISTER_CHECK_EXPECTED, STATUS_TEST_MASK },
   { "epc", REGISTER_CHECK_EXPECTED, WORD },
@@ -400,6 +452,16 @@ static const RegisterCheckSlot interrupt_slots[ SLOT_MAX ] = {
   { "t4", SOURCE_T4, WORD },
   { "t5", SOURCE_T5, WORD },
   { "t6", SOURCE_T6, WORD },
+  { "s2", SOURCE_S2, WORD },
+  { "s3", SOURCE_S3, WORD },
+  { "s4", SOURCE_S4, WORD },
+  { "s5", SOURCE_S5, WORD },
+  { "s6", SOURCE_S6, WORD },
+  { "s7", SOURCE_S7, WORD },
+  { "s8", SOURCE_S8, WORD },
+  { "s9", SOURCE_S9, WORD },
+  { "s10", SOURCE_S10, WORD },
+  { "s11", SOURCE_S11, WORD },
   { "sp", SOURCE_SP, WORD },
   { "status", SOURCE_STATUS, STATUS_TEST_MASK },
   { "epc", SOURCE_EPC, WORD },
@@ -449,6 +511,16 @@ static const uint16_t interrupt_members[] = {
   offsetof( CPU_Exception_frame, Interrupt_frame.t4 ),
   offsetof( CPU_Exception_frame, Interrupt_frame.t5 ),
   offsetof( CPU_Exception_frame, Interrupt_frame.t6 ),
+  offsetof( CPU_Exception_frame, s2 ),
+  offsetof( CPU_Exception_frame, s3 ),
+  offsetof( CPU_Exception_frame, s4 ),
+  offsetof( CPU_Exception_frame, s5 ),
+  offsetof( CPU_Exception_frame, s6 ),
+  offsetof( CPU_Exception_frame, s7 ),
+  offsetof( CPU_Exception_frame, s8 ),
+  offsetof( CPU_Exception_frame, s9 ),
+  offsetof( CPU_Exception_frame, s10 ),
+  offsetof( CPU_Exception_frame, s11 ),
 #if __riscv_flen > 0
   offsetof( CPU_Exception_frame, Interrupt_frame.ft0 ),
   offsetof( CPU_Exception_frame, Interrupt_frame.ft1 ),
@@ -506,7 +578,7 @@ static uint64_t GetMember( const CPU_Exception_frame *frame, size_t source )
 #endif
 
     member = (const char *) frame +
-             interrupt_members[ SOURCE_T6 + 1 + source - SOURCE_FT0 ];
+             interrupt_members[ SOURCE_S11 + 1 + source - SOURCE_FT0 ];
     memcpy( &bits, member, sizeof( bits ) );
     return bits;
   }
@@ -519,8 +591,11 @@ static uint64_t GetMember( const CPU_Exception_frame *frame, size_t source )
 
 uint64_t interrupt_initial[ SOURCE_MAX ];
 
-/* The ra, the s0, the s1 and the sp of the caller of the runner */
-uint64_t interrupt_saved[ 4 ];
+/*
+ * The ra, the s0, the s1, the sp and the s2 to s11 of the caller of the
+ * runner
+ */
+uint64_t interrupt_saved[ 14 ];
 
 static CPU_Exception_frame interrupt_frame;
 
@@ -603,29 +678,39 @@ __asm__ (
   "  " SREG " s0, 8(t0)\n"
   "  " SREG " s1, 16(t0)\n"
   "  " SREG " sp, 24(t0)\n"
+  "  " SREG " s2, 32(t0)\n"
+  "  " SREG " s3, 40(t0)\n"
+  "  " SREG " s4, 48(t0)\n"
+  "  " SREG " s5, 56(t0)\n"
+  "  " SREG " s6, 64(t0)\n"
+  "  " SREG " s7, 72(t0)\n"
+  "  " SREG " s8, 80(t0)\n"
+  "  " SREG " s9, 88(t0)\n"
+  "  " SREG " s10, 96(t0)\n"
+  "  " SREG " s11, 104(t0)\n"
   "  la t0, interrupt_initial\n"
 #if __riscv_flen > 0
-  "  " FLOAD " ft0, 176(t0)\n"
-  "  " FLOAD " ft1, 184(t0)\n"
-  "  " FLOAD " ft2, 192(t0)\n"
-  "  " FLOAD " ft3, 200(t0)\n"
-  "  " FLOAD " ft4, 208(t0)\n"
-  "  " FLOAD " ft5, 216(t0)\n"
-  "  " FLOAD " ft6, 224(t0)\n"
-  "  " FLOAD " ft7, 232(t0)\n"
-  "  " FLOAD " fa0, 240(t0)\n"
-  "  " FLOAD " fa1, 248(t0)\n"
-  "  " FLOAD " fa2, 256(t0)\n"
-  "  " FLOAD " fa3, 264(t0)\n"
-  "  " FLOAD " fa4, 272(t0)\n"
-  "  " FLOAD " fa5, 280(t0)\n"
-  "  " FLOAD " fa6, 288(t0)\n"
-  "  " FLOAD " fa7, 296(t0)\n"
-  "  " FLOAD " ft8, 304(t0)\n"
-  "  " FLOAD " ft9, 312(t0)\n"
-  "  " FLOAD " ft10, 320(t0)\n"
-  "  " FLOAD " ft11, 328(t0)\n"
-  "  lw t1, 336(t0)\n"
+  "  " FLOAD " ft0, 256(t0)\n"
+  "  " FLOAD " ft1, 264(t0)\n"
+  "  " FLOAD " ft2, 272(t0)\n"
+  "  " FLOAD " ft3, 280(t0)\n"
+  "  " FLOAD " ft4, 288(t0)\n"
+  "  " FLOAD " ft5, 296(t0)\n"
+  "  " FLOAD " ft6, 304(t0)\n"
+  "  " FLOAD " ft7, 312(t0)\n"
+  "  " FLOAD " fa0, 320(t0)\n"
+  "  " FLOAD " fa1, 328(t0)\n"
+  "  " FLOAD " fa2, 336(t0)\n"
+  "  " FLOAD " fa3, 344(t0)\n"
+  "  " FLOAD " fa4, 352(t0)\n"
+  "  " FLOAD " fa5, 360(t0)\n"
+  "  " FLOAD " fa6, 368(t0)\n"
+  "  " FLOAD " fa7, 376(t0)\n"
+  "  " FLOAD " ft8, 384(t0)\n"
+  "  " FLOAD " ft9, 392(t0)\n"
+  "  " FLOAD " ft10, 400(t0)\n"
+  "  " FLOAD " ft11, 408(t0)\n"
+  "  lw t1, 416(t0)\n"
   "  fscsr t1\n"
 #endif
   "  " LREG " ra, 0(t0)\n"
@@ -645,6 +730,16 @@ __asm__ (
   "  " LREG " t4, 120(t0)\n"
   "  " LREG " t5, 128(t0)\n"
   "  " LREG " t6, 136(t0)\n"
+  "  " LREG " s2, 144(t0)\n"
+  "  " LREG " s3, 152(t0)\n"
+  "  " LREG " s4, 160(t0)\n"
+  "  " LREG " s5, 168(t0)\n"
+  "  " LREG " s6, 176(t0)\n"
+  "  " LREG " s7, 184(t0)\n"
+  "  " LREG " s8, 192(t0)\n"
+  "  " LREG " s9, 200(t0)\n"
+  "  " LREG " s10, 208(t0)\n"
+  "  " LREG " s11, 216(t0)\n"
   "  " LREG " t0, 8(t0)\n"
   "  .option push\n"
   "  .option arch, +zicsr\n"
@@ -659,6 +754,16 @@ __asm__ (
   "  " LREG " ra, 0(t0)\n"
   "  " LREG " s0, 8(t0)\n"
   "  " LREG " s1, 16(t0)\n"
+  "  " LREG " s2, 32(t0)\n"
+  "  " LREG " s3, 40(t0)\n"
+  "  " LREG " s4, 48(t0)\n"
+  "  " LREG " s5, 56(t0)\n"
+  "  " LREG " s6, 64(t0)\n"
+  "  " LREG " s7, 72(t0)\n"
+  "  " LREG " s8, 80(t0)\n"
+  "  " LREG " s9, 88(t0)\n"
+  "  " LREG " s10, 96(t0)\n"
+  "  " LREG " s11, 104(t0)\n"
   "  ret\n"
 );
 /* clang-format on */
@@ -713,7 +818,7 @@ static void InterruptRunCheck( RegisterCheck *self, void *arg )
   rtems_interrupt_local_enable( level );
   SetFatalHandler( NULL, NULL );
 
-  for ( i = SOURCE_RA; i <= SOURCE_T6; ++i ) {
+  for ( i = SOURCE_RA; i <= SOURCE_S11; ++i ) {
     RegisterCheckRecord(
       self,
       i,
@@ -888,6 +993,56 @@ static void ScoreCpuRiscvValInterrupt_Action_0( void )
    * Check that the interrupt processing preserved the RISC-V register t6.
    */
   RegisterCheckVerify( &interrupt_check, SLOT_T6 );
+
+  /*
+   * Check that the interrupt processing preserved the RISC-V register s2.
+   */
+  RegisterCheckVerify( &interrupt_check, SLOT_S2 );
+
+  /*
+   * Check that the interrupt processing preserved the RISC-V register s3.
+   */
+  RegisterCheckVerify( &interrupt_check, SLOT_S3 );
+
+  /*
+   * Check that the interrupt processing preserved the RISC-V register s4.
+   */
+  RegisterCheckVerify( &interrupt_check, SLOT_S4 );
+
+  /*
+   * Check that the interrupt processing preserved the RISC-V register s5.
+   */
+  RegisterCheckVerify( &interrupt_check, SLOT_S5 );
+
+  /*
+   * Check that the interrupt processing preserved the RISC-V register s6.
+   */
+  RegisterCheckVerify( &interrupt_check, SLOT_S6 );
+
+  /*
+   * Check that the interrupt processing preserved the RISC-V register s7.
+   */
+  RegisterCheckVerify( &interrupt_check, SLOT_S7 );
+
+  /*
+   * Check that the interrupt processing preserved the RISC-V register s8.
+   */
+  RegisterCheckVerify( &interrupt_check, SLOT_S8 );
+
+  /*
+   * Check that the interrupt processing preserved the RISC-V register s9.
+   */
+  RegisterCheckVerify( &interrupt_check, SLOT_S9 );
+
+  /*
+   * Check that the interrupt processing preserved the RISC-V register s10.
+   */
+  RegisterCheckVerify( &interrupt_check, SLOT_S10 );
+
+  /*
+   * Check that the interrupt processing preserved the RISC-V register s11.
+   */
+  RegisterCheckVerify( &interrupt_check, SLOT_S11 );
 
   /*
    * Check that the interrupt processing preserved the RISC-V stack pointer
