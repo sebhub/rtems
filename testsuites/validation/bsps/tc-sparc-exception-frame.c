@@ -244,6 +244,9 @@
  *
  *   - Check that the exception frame is on the interrupt stack.
  *
+ *   - Check that the PSR of the exception frame holds the implementation, the
+ *     version, EF, PIL and S of the trapped context.
+ *
  *   - Check that each run with a changed value flagged exactly the checks of
  *     that value, and that each run recorded every check.
  *
@@ -343,6 +346,7 @@ typedef enum {
   SOURCE_PC,
   SOURCE_TRAP,
   SOURCE_STACK,
+  SOURCE_PSR,
   SOURCE_MAX
 } Source;
 
@@ -411,6 +415,7 @@ typedef enum {
   SLOT_PC,
   SLOT_TRAP,
   SLOT_STACK,
+  SLOT_PSR,
   SLOT_MAX
 } Slot;
 
@@ -494,6 +499,7 @@ static const RegisterCheckSource
     { "pc", REGISTER_CHECK_EXPECTED, WORD },
     { "trap", REGISTER_CHECK_EXPECTED, WORD },
     { "stack", REGISTER_CHECK_EXPECTED, WORD },
+    { "psr", REGISTER_CHECK_EXPECTED, PSR_FRAME_MASK },
 };
 
 static const RegisterCheckSlot exception_frame_slots[ SLOT_MAX ] = {
@@ -561,6 +567,7 @@ static const RegisterCheckSlot exception_frame_slots[ SLOT_MAX ] = {
   { "pc", SOURCE_PC, WORD },
   { "trap", SOURCE_TRAP, WORD },
   { "stack", SOURCE_STACK, WORD },
+  { "psr", SOURCE_PSR, PSR_FRAME_MASK },
 };
 
 static const uint64_t exception_frame_patterns[ SOURCE_MAX ] = {
@@ -629,6 +636,8 @@ static RegisterCheckSource exception_frame_sources[ SOURCE_MAX ];
 
 /* The expected value of each source of the kind REGISTER_CHECK_INITIAL */
 static uint64_t exception_frame_expected[ SOURCE_MAX ];
+
+static uint32_t exception_frame_psr;
 
 static const ExceptionFrameVariant *exception_frame_variant;
 
@@ -710,6 +719,8 @@ static void ExceptionFrameRun( RegisterCheck *self, void *arg )
   exception_expected_pc = NULL;
   __asm__ volatile( "mov %%g7, %0"
                     : "=r"( exception_frame_g7 ) );
+  __asm__ volatile( "rd %%psr, %0"
+                    : "=r"( exception_frame_psr ) );
 #if SPARC_HAS_FPU == 1
   __asm__ volatile( "st %%fsr, %0"
                     : "=m"( fsr ) );
@@ -1104,6 +1115,16 @@ static void ExceptionFrameRun( RegisterCheck *self, void *arg )
     SLOT_STACK,
     IsOnInterruptStack( exception_frame_address ) ? 1 : 0,
     1
+  );
+
+  /*
+   * A scenario clears the bits of the set mask of its variant before it traps.
+   */
+  RegisterCheckRecord(
+    self,
+    SLOT_PSR,
+    frame->psr,
+    exception_frame_psr & ~exception_frame_variant->psr_set
   );
 }
 
@@ -1576,6 +1597,12 @@ static void ScoreCpuSparcValExceptionFrame_Action_0(
    * Check that the exception frame is on the interrupt stack.
    */
   CheckSlot( SLOT_STACK );
+
+  /*
+   * Check that the PSR of the exception frame holds the implementation, the
+   * version, EF, PIL and S of the trapped context.
+   */
+  CheckSlot( SLOT_PSR );
 
   /*
    * Check that each run with a changed value flagged exactly the checks of

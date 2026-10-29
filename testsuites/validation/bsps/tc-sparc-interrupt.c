@@ -620,6 +620,11 @@ static uint32_t interrupt_trap_processor;
 
 static CallWithinISRRequest interrupt_request;
 
+/*
+ * The handler writes zero to the call-used global registers and to Y, and it
+ * sets the integer condition codes to Z.  A value which the interrupt
+ * processing does not restore then fails its check.
+ */
 static void InterruptHandler( void *arg )
 {
   uint32_t psr;
@@ -630,6 +635,16 @@ static void InterruptHandler( void *arg )
   interrupt_handler_psr = psr;
   interrupt_handler_processor = rtems_scheduler_get_processor();
   ++interrupt_count;
+  __asm__ volatile( "mov %%g0, %%g1\n"
+                    "mov %%g0, %%g2\n"
+                    "mov %%g0, %%g3\n"
+                    "mov %%g0, %%g4\n"
+                    "mov %%g0, %%g5\n"
+                    "wr %%g0, %%y\n"
+                    "subcc %%g0, %%g0, %%g0\n"
+                    :
+                    :
+                    : "g1", "g2", "g3", "g4", "g5", "cc" );
 }
 
 /*

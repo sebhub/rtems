@@ -400,6 +400,9 @@
  *
  *   - Check that the resume restored the SPARC input register I7 of window 6.
  *
+ *   - Check that the resume restored the integer condition codes and EF of the
+ *     PSR of the frame.
+ *
  *   - Check that both traps happened.
  *
  *   - Check that each run with a changed value flagged exactly the checks of
@@ -413,6 +416,19 @@
 /* RD, NS, fcc, aexc and cexc of the FSR */
 #define FSR_TEST_MASK 0xc0400fff
 
+/*
+ * These are the integer condition codes and, where the processor has a
+ * floating-point unit, EF of the PSR.  The pattern sets EF, so the members of
+ * the floating-point unit stay accessible.
+ */
+#if SPARC_HAS_FPU == 1
+#define PSR_TEST_MASK UINT32_C( 0x00f01000 )
+#else
+#define PSR_TEST_MASK UINT32_C( 0x00f00000 )
+#endif
+
+#define PSR_TEST_BITS ( UINT32_C( 0x00a01000 ) & PSR_TEST_MASK )
+
 typedef enum {
   MEMBER_GLOBAL,
   MEMBER_OUTPUT,
@@ -420,7 +436,8 @@ typedef enum {
   MEMBER_FSR,
   MEMBER_FP,
   MEMBER_LOCAL,
-  MEMBER_INPUT
+  MEMBER_INPUT,
+  MEMBER_PSR
 } MemberKind;
 
 typedef struct {
@@ -575,6 +592,7 @@ static const Member resume_members[] = {
   { MEMBER_INPUT, 53 },
   { MEMBER_INPUT, 54 },
   { MEMBER_INPUT, 55 },
+  { MEMBER_PSR, 0 },
 };
 
 typedef enum {
@@ -723,6 +741,7 @@ typedef enum {
   MEMBER_INDEX_W6_I5,
   MEMBER_INDEX_W6_I6,
   MEMBER_INDEX_W6_I7,
+  MEMBER_INDEX_PSR,
   MEMBER_INDEX_MAX
 } MemberIndex;
 
@@ -747,6 +766,8 @@ static uint64_t GetMember( const CPU_Exception_frame *frame, size_t i )
 #endif
     case MEMBER_LOCAL:
       return frame->windows[ m->index / 8 ].local[ m->index % 8 ];
+    case MEMBER_PSR:
+      return frame->psr & PSR_TEST_MASK;
     default:
       return frame->windows[ m->index / 8 ].input[ m->index % 8 ];
   }
@@ -779,6 +800,10 @@ static void SetMember( CPU_Exception_frame *frame, size_t i, uint64_t value )
     case MEMBER_LOCAL:
       frame->windows[ m->index / 8 ].local[ m->index % 8 ] = (uint32_t) value;
       break;
+    case MEMBER_PSR:
+      frame->psr = ( frame->psr & ~PSR_TEST_MASK ) |
+                   ( (uint32_t) value & PSR_TEST_MASK );
+      break;
     default:
       frame->windows[ m->index / 8 ].input[ m->index % 8 ] = (uint32_t) value;
       break;
@@ -796,6 +821,10 @@ static uint64_t GetPattern( size_t i )
     return 0x404008a5 & GetFSRImplemented();
   }
 #endif
+
+  if ( m->kind == MEMBER_PSR ) {
+    return PSR_TEST_BITS;
+  }
 
   if ( m->kind == MEMBER_FP ) {
     return UINT64_C( 0x8182838485868788 ) + UINT64_C( 0x0101010101010101 ) * i;
@@ -1144,7 +1173,7 @@ static void ResumeARun( RegisterCheck *self, void *arg )
     self,
     RESUME_A_PSR,
     resume_after.psr,
-    resume_before.psr | SPARC_PSR_PIL_MASK
+    ( resume_before.psr & ~PSR_TEST_MASK ) | PSR_TEST_BITS | SPARC_PSR_PIL_MASK
   );
   RegisterCheckRecord(
     self,
@@ -1438,6 +1467,7 @@ typedef enum {
   RESUME_C_W6_I5,
   RESUME_C_W6_I6,
   RESUME_C_W6_I7,
+  RESUME_C_PSR,
   RESUME_C_TRAPS,
   RESUME_C_MAX
 } ResumeCIndex;
@@ -1493,6 +1523,7 @@ static const RegisterCheckSource resume_c_sources[ RESUME_C_MAX ] = {
   { "w6 i5", REGISTER_CHECK_INITIAL, WORD },
   { "w6 i6", REGISTER_CHECK_INITIAL, WORD },
   { "w6 i7", REGISTER_CHECK_INITIAL, WORD },
+  { "psr", REGISTER_CHECK_INITIAL, PSR_TEST_MASK },
   { "traps", REGISTER_CHECK_EXPECTED, WORD },
 };
 
@@ -1545,6 +1576,7 @@ static const RegisterCheckSlot resume_c_slots[ RESUME_C_MAX ] = {
   { "w6 i5", RESUME_C_W6_I5, WORD },
   { "w6 i6", RESUME_C_W6_I6, WORD },
   { "w6 i7", RESUME_C_W6_I7, WORD },
+  { "psr", RESUME_C_PSR, PSR_TEST_MASK },
   { "traps", RESUME_C_TRAPS, WORD },
 };
 
@@ -1552,7 +1584,7 @@ static uint64_t resume_c_initial[ RESUME_C_MAX ];
 
 static const ResumeGroup resume_c_group = {
   .begin = MEMBER_INDEX_W4_L0,
-  .end = MEMBER_INDEX_W6_I7 + 1,
+  .end = MEMBER_INDEX_PSR + 1,
   .initial = resume_c_initial
 };
 
@@ -1563,7 +1595,7 @@ static void ResumeCRun( RegisterCheck *self, void *arg )
   (void) arg;
   ResumeRunTraps( &resume_c_group );
 
-  for ( i = MEMBER_INDEX_W4_L0; i <= MEMBER_INDEX_W6_I7; ++i ) {
+  for ( i = MEMBER_INDEX_W4_L0; i <= MEMBER_INDEX_PSR; ++i ) {
     RegisterCheckRecord(
       self,
       i - MEMBER_INDEX_W4_L0,
@@ -1588,7 +1620,7 @@ static void ResumeCPrepare( void )
 {
   size_t i;
 
-  for ( i = MEMBER_INDEX_W4_L0; i <= MEMBER_INDEX_W6_I7; ++i ) {
+  for ( i = MEMBER_INDEX_W4_L0; i <= MEMBER_INDEX_PSR; ++i ) {
     resume_c_initial[ i - MEMBER_INDEX_W4_L0 ] = GetPattern( i );
   }
 }
@@ -2441,6 +2473,12 @@ static void ScoreCpuSparcValResume_Action_2( void )
    * Check that the resume restored the SPARC input register I7 of window 6.
    */
   RegisterCheckVerify( &resume_c_check, RESUME_C_W6_I7 );
+
+  /*
+   * Check that the resume restored the integer condition codes and EF of the
+   * PSR of the frame.
+   */
+  RegisterCheckVerify( &resume_c_check, RESUME_C_PSR );
 
   /*
    * Check that both traps happened.

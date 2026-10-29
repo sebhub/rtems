@@ -57,6 +57,9 @@ extern "C" {
 
 #define PSR_ICC_BITS 0x00500000
 
+/* These are impl, ver, EF, PIL and S of the PSR. */
+#define PSR_FRAME_MASK 0xff001f80
+
 /* RD, NS, fcc, aexc and cexc of the FSR */
 #define FSR_TEST_MASK 0xc0400fff
 
