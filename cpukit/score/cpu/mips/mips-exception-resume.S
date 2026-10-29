@@ -149,6 +149,19 @@ FRAME(_CPU_Exception_resume,sp,0,ra)
 	or	t8,SR_EXL
 	mtc0	t8,C0_SR
 	NOP
+#elif __mips == 1
+	/*
+	 * The status register of the frame is the only source of the level
+	 * which the interrupted context had.  The rfe moves the previous
+	 * interrupt enable and kernel mode into the current ones.  The write
+	 * clears the current interrupt enable, so no interrupt arrives before
+	 * the rfe.
+	 */
+	LDREG	t8,R_SR*R_SZ(k0)
+	NOP
+	and	t8,~SR_IEC
+	mtc0	t8,C0_SR
+	NOP
 #endif
 
 
