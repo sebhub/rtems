@@ -13,4 +13,5 @@ term: PowerPC call-saved floating-point register
 text: |
   A floating-point register which the ABI requires a called function to preserve.
   Where the multilib provides the SPE, these are the upper words of r14 to r31.
+  Where the multilib provides a floating-point unit, these are f14 to f31.
 type: glossary

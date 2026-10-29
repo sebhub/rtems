@@ -1,0 +1,914 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: powerpc
+links: []
+test-actions:
+- action-brief: |
+    Trap, let the handler write a new value into every floating-point register and
+    into FPSCR of the frame, resume, and trap again to capture what the resume
+    restored. Run this once for each value with the value inverted, then once
+    unchanged.
+  action-code: |
+    #if defined( PPC_MULTILIB_FPU )
+      memcpy(
+        fpu_resume_initial,
+        fpu_resume_patterns,
+        sizeof( fpu_resume_initial )
+      );
+      RegisterCheckRun( &fpu_resume_check );
+    #endif
+  checks:
+  - brief: |
+      Check that the resume restored the PowerPC floating-point register F0 of the
+      frame.
+    code: |
+      #if defined( PPC_MULTILIB_FPU )
+        CheckSlot( SLOT_F0 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the PowerPC floating-point register F1 of the
+      frame.
+    code: |
+      #if defined( PPC_MULTILIB_FPU )
+        CheckSlot( SLOT_F1 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the PowerPC floating-point register F2 of the
+      frame.
+    code: |
+      #if defined( PPC_MULTILIB_FPU )
+        CheckSlot( SLOT_F2 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the PowerPC floating-point register F3 of the
+      frame.
+    code: |
+      #if defined( PPC_MULTILIB_FPU )
+        CheckSlot( SLOT_F3 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the PowerPC floating-point register F4 of the
+      frame.
+    code: |
+      #if defined( PPC_MULTILIB_FPU )
+        CheckSlot( SLOT_F4 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the PowerPC floating-point register F5 of the
+      frame.
+    code: |
+      #if defined( PPC_MULTILIB_FPU )
+        CheckSlot( SLOT_F5 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the PowerPC floating-point register F6 of the
+      frame.
+    code: |
+      #if defined( PPC_MULTILIB_FPU )
+        CheckSlot( SLOT_F6 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the PowerPC floating-point register F7 of the
+      frame.
+    code: |
+      #if defined( PPC_MULTILIB_FPU )
+        CheckSlot( SLOT_F7 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the PowerPC floating-point register F8 of the
+      frame.
+    code: |
+      #if defined( PPC_MULTILIB_FPU )
+        CheckSlot( SLOT_F8 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the PowerPC floating-point register F9 of the
+      frame.
+    code: |
+      #if defined( PPC_MULTILIB_FPU )
+        CheckSlot( SLOT_F9 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the PowerPC floating-point register F10 of the
+      frame.
+    code: |
+      #if defined( PPC_MULTILIB_FPU )
+        CheckSlot( SLOT_F10 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the PowerPC floating-point register F11 of the
+      frame.
+    code: |
+      #if defined( PPC_MULTILIB_FPU )
+        CheckSlot( SLOT_F11 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the PowerPC floating-point register F12 of the
+      frame.
+    code: |
+      #if defined( PPC_MULTILIB_FPU )
+        CheckSlot( SLOT_F12 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the PowerPC floating-point register F13 of the
+      frame.
+    code: |
+      #if defined( PPC_MULTILIB_FPU )
+        CheckSlot( SLOT_F13 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the PowerPC floating-point register F14 of the
+      frame.
+    code: |
+      #if defined( PPC_MULTILIB_FPU )
+        CheckSlot( SLOT_F14 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the PowerPC floating-point register F15 of the
+      frame.
+    code: |
+      #if defined( PPC_MULTILIB_FPU )
+        CheckSlot( SLOT_F15 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the PowerPC floating-point register F16 of the
+      frame.
+    code: |
+      #if defined( PPC_MULTILIB_FPU )
+        CheckSlot( SLOT_F16 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the PowerPC floating-point register F17 of the
+      frame.
+    code: |
+      #if defined( PPC_MULTILIB_FPU )
+        CheckSlot( SLOT_F17 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the PowerPC floating-point register F18 of the
+      frame.
+    code: |
+      #if defined( PPC_MULTILIB_FPU )
+        CheckSlot( SLOT_F18 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the PowerPC floating-point register F19 of the
+      frame.
+    code: |
+      #if defined( PPC_MULTILIB_FPU )
+        CheckSlot( SLOT_F19 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the PowerPC floating-point register F20 of the
+      frame.
+    code: |
+      #if defined( PPC_MULTILIB_FPU )
+        CheckSlot( SLOT_F20 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the PowerPC floating-point register F21 of the
+      frame.
+    code: |
+      #if defined( PPC_MULTILIB_FPU )
+        CheckSlot( SLOT_F21 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the PowerPC floating-point register F22 of the
+      frame.
+    code: |
+      #if defined( PPC_MULTILIB_FPU )
+        CheckSlot( SLOT_F22 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the PowerPC floating-point register F23 of the
+      frame.
+    code: |
+      #if defined( PPC_MULTILIB_FPU )
+        CheckSlot( SLOT_F23 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the PowerPC floating-point register F24 of the
+      frame.
+    code: |
+      #if defined( PPC_MULTILIB_FPU )
+        CheckSlot( SLOT_F24 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the PowerPC floating-point register F25 of the
+      frame.
+    code: |
+      #if defined( PPC_MULTILIB_FPU )
+        CheckSlot( SLOT_F25 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the PowerPC floating-point register F26 of the
+      frame.
+    code: |
+      #if defined( PPC_MULTILIB_FPU )
+        CheckSlot( SLOT_F26 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the PowerPC floating-point register F27 of the
+      frame.
+    code: |
+      #if defined( PPC_MULTILIB_FPU )
+        CheckSlot( SLOT_F27 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the PowerPC floating-point register F28 of the
+      frame.
+    code: |
+      #if defined( PPC_MULTILIB_FPU )
+        CheckSlot( SLOT_F28 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the PowerPC floating-point register F29 of the
+      frame.
+    code: |
+      #if defined( PPC_MULTILIB_FPU )
+        CheckSlot( SLOT_F29 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the PowerPC floating-point register F30 of the
+      frame.
+    code: |
+      #if defined( PPC_MULTILIB_FPU )
+        CheckSlot( SLOT_F30 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored the PowerPC floating-point register F31 of the
+      frame.
+    code: |
+      #if defined( PPC_MULTILIB_FPU )
+        CheckSlot( SLOT_F31 );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that the resume restored FPSCR of the frame.
+    code: |
+      #if defined( PPC_MULTILIB_FPU )
+        CheckSlot( SLOT_FPSCR );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  - brief: |
+      Check that each run with a changed value flagged exactly the checks of that
+      value, and that each run recorded every check.
+    code: |
+      #if defined( PPC_MULTILIB_FPU )
+        RegisterCheckReport( &fpu_resume_check );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/resume-restore
+  links: []
+test-brief: |
+  Checks that the exception resume restores the floating-point state of the
+  exception frame.
+test-context: []
+test-context-support: null
+test-description: null
+test-header: null
+test-includes:
+- rtems/score/cpuimpl.h
+- string.h
+- stdint.h
+test-local-includes:
+- tx-register-check.h
+- tx-support.h
+test-setup: null
+test-stop: null
+test-support: |
+  #if defined(PPC_MULTILIB_FPU)
+  /*
+   * These are the sticky bits OX, UX, ZX and XX and the rounding mode RN of
+   * FPSCR.  The mask covers no enable bit, so no operation traps.
+   */
+  #define FPSCR_MASK UINT64_C( 0x1e000003 )
+
+  typedef enum {
+    SOURCE_F0,
+    SOURCE_F1,
+    SOURCE_F2,
+    SOURCE_F3,
+    SOURCE_F4,
+    SOURCE_F5,
+    SOURCE_F6,
+    SOURCE_F7,
+    SOURCE_F8,
+    SOURCE_F9,
+    SOURCE_F10,
+    SOURCE_F11,
+    SOURCE_F12,
+    SOURCE_F13,
+    SOURCE_F14,
+    SOURCE_F15,
+    SOURCE_F16,
+    SOURCE_F17,
+    SOURCE_F18,
+    SOURCE_F19,
+    SOURCE_F20,
+    SOURCE_F21,
+    SOURCE_F22,
+    SOURCE_F23,
+    SOURCE_F24,
+    SOURCE_F25,
+    SOURCE_F26,
+    SOURCE_F27,
+    SOURCE_F28,
+    SOURCE_F29,
+    SOURCE_F30,
+    SOURCE_F31,
+    SOURCE_FPSCR,
+    SOURCE_MAX
+  } Source;
+
+  typedef enum {
+    SLOT_F0,
+    SLOT_F1,
+    SLOT_F2,
+    SLOT_F3,
+    SLOT_F4,
+    SLOT_F5,
+    SLOT_F6,
+    SLOT_F7,
+    SLOT_F8,
+    SLOT_F9,
+    SLOT_F10,
+    SLOT_F11,
+    SLOT_F12,
+    SLOT_F13,
+    SLOT_F14,
+    SLOT_F15,
+    SLOT_F16,
+    SLOT_F17,
+    SLOT_F18,
+    SLOT_F19,
+    SLOT_F20,
+    SLOT_F21,
+    SLOT_F22,
+    SLOT_F23,
+    SLOT_F24,
+    SLOT_F25,
+    SLOT_F26,
+    SLOT_F27,
+    SLOT_F28,
+    SLOT_F29,
+    SLOT_F30,
+    SLOT_F31,
+    SLOT_FPSCR,
+    SLOT_MAX
+  } Slot;
+
+  static const RegisterCheckSource fpu_resume_sources[ SOURCE_MAX ] = {
+    { "f0", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "f1", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "f2", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "f3", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "f4", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "f5", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "f6", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "f7", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "f8", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "f9", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "f10", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "f11", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "f12", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "f13", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "f14", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "f15", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "f16", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "f17", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "f18", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "f19", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "f20", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "f21", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "f22", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "f23", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "f24", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "f25", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "f26", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "f27", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "f28", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "f29", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "f30", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "f31", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "fpscr", REGISTER_CHECK_INITIAL, FPSCR_MASK }
+  };
+
+  static const RegisterCheckSlot fpu_resume_slots[ SLOT_MAX ] = {
+    { "f0", SOURCE_F0, UINT64_MAX },
+    { "f1", SOURCE_F1, UINT64_MAX },
+    { "f2", SOURCE_F2, UINT64_MAX },
+    { "f3", SOURCE_F3, UINT64_MAX },
+    { "f4", SOURCE_F4, UINT64_MAX },
+    { "f5", SOURCE_F5, UINT64_MAX },
+    { "f6", SOURCE_F6, UINT64_MAX },
+    { "f7", SOURCE_F7, UINT64_MAX },
+    { "f8", SOURCE_F8, UINT64_MAX },
+    { "f9", SOURCE_F9, UINT64_MAX },
+    { "f10", SOURCE_F10, UINT64_MAX },
+    { "f11", SOURCE_F11, UINT64_MAX },
+    { "f12", SOURCE_F12, UINT64_MAX },
+    { "f13", SOURCE_F13, UINT64_MAX },
+    { "f14", SOURCE_F14, UINT64_MAX },
+    { "f15", SOURCE_F15, UINT64_MAX },
+    { "f16", SOURCE_F16, UINT64_MAX },
+    { "f17", SOURCE_F17, UINT64_MAX },
+    { "f18", SOURCE_F18, UINT64_MAX },
+    { "f19", SOURCE_F19, UINT64_MAX },
+    { "f20", SOURCE_F20, UINT64_MAX },
+    { "f21", SOURCE_F21, UINT64_MAX },
+    { "f22", SOURCE_F22, UINT64_MAX },
+    { "f23", SOURCE_F23, UINT64_MAX },
+    { "f24", SOURCE_F24, UINT64_MAX },
+    { "f25", SOURCE_F25, UINT64_MAX },
+    { "f26", SOURCE_F26, UINT64_MAX },
+    { "f27", SOURCE_F27, UINT64_MAX },
+    { "f28", SOURCE_F28, UINT64_MAX },
+    { "f29", SOURCE_F29, UINT64_MAX },
+    { "f30", SOURCE_F30, UINT64_MAX },
+    { "f31", SOURCE_F31, UINT64_MAX },
+    { "fpscr", SOURCE_FPSCR, FPSCR_MASK }
+  };
+
+  static const uint64_t fpu_resume_patterns[ SOURCE_MAX ] = {
+    UINT64_C( 0xf1f2f3f431323334 ),
+    UINT64_C( 0xf2f3f4f532333435 ),
+    UINT64_C( 0xf3f4f5f633343536 ),
+    UINT64_C( 0xf4f5f6f734353637 ),
+    UINT64_C( 0xf5f6f7f835363738 ),
+    UINT64_C( 0xf6f7f8f936373839 ),
+    UINT64_C( 0xf7f8f9fa3738393a ),
+    UINT64_C( 0xf8f9fafb38393a3b ),
+    UINT64_C( 0xf9fafbfc393a3b3c ),
+    UINT64_C( 0xfafbfcfd3a3b3c3d ),
+    UINT64_C( 0xfbfcfdfe3b3c3d3e ),
+    UINT64_C( 0xfcfdfeff3c3d3e3f ),
+    UINT64_C( 0xfdff00003d3e3f40 ),
+    UINT64_C( 0xff0001013e3f4041 ),
+    UINT64_C( 0x000102023f404142 ),
+    UINT64_C( 0x0102030340414243 ),
+    UINT64_C( 0x0203040441424344 ),
+    UINT64_C( 0x0304050542434445 ),
+    UINT64_C( 0x0405060643444546 ),
+    UINT64_C( 0x0506070744454647 ),
+    UINT64_C( 0x0607080845464748 ),
+    UINT64_C( 0x0708090946474849 ),
+    UINT64_C( 0x08090a0a4748494a ),
+    UINT64_C( 0x090a0b0b48494a4b ),
+    UINT64_C( 0x0a0b0c0c494a4b4c ),
+    UINT64_C( 0x0b0c0d0d4a4b4c4d ),
+    UINT64_C( 0x0c0d0e0e4b4c4d4e ),
+    UINT64_C( 0x0d0e0f0f4c4d4e4f ),
+    UINT64_C( 0x0e0f10104d4e4f50 ),
+    UINT64_C( 0x0f1011114e4f5051 ),
+    UINT64_C( 0x101112124f505152 ),
+    UINT64_C( 0x1112131350515253 ),
+    UINT64_C( 0x0a000002 )
+  };
+
+  static uint64_t fpu_resume_initial[ SOURCE_MAX ];
+
+  static CPU_Exception_frame fpu_resume_frame;
+
+  static int fpu_resume_trap;
+
+  static uint64_t fpu_resume_fpscr;
+
+  extern const char fpu_resume_second_trap_label[];
+
+  extern const char fpu_resume_done_label[];
+
+  static uint64_t Bits( double value )
+  {
+    uint64_t bits;
+
+    memcpy( &bits, &value, sizeof( bits ) );
+    return bits;
+  }
+
+  static uint64_t GetFPSCR( void )
+  {
+    double value;
+
+    __asm__ volatile( "mffs %0" : "=f"( value ) );
+    return Bits( value );
+  }
+
+  static double Value( uint64_t bits )
+  {
+    double value;
+
+    memcpy( &value, &bits, sizeof( value ) );
+    return value;
+  }
+
+  static void FpuResumeFatal(
+    rtems_fatal_source source,
+    rtems_fatal_code   code,
+    void              *arg
+  )
+  {
+    CPU_Exception_frame *frame;
+
+    (void) arg;
+
+    if ( source != RTEMS_FATAL_SOURCE_EXCEPTION ) {
+      return;
+    }
+
+    frame = (CPU_Exception_frame *) code;
+
+    if ( fpu_resume_trap == 0 ) {
+      ++fpu_resume_trap;
+      frame->F0 = Value( fpu_resume_initial[ SOURCE_F0 ] );
+      frame->F1 = Value( fpu_resume_initial[ SOURCE_F1 ] );
+      frame->F2 = Value( fpu_resume_initial[ SOURCE_F2 ] );
+      frame->F3 = Value( fpu_resume_initial[ SOURCE_F3 ] );
+      frame->F4 = Value( fpu_resume_initial[ SOURCE_F4 ] );
+      frame->F5 = Value( fpu_resume_initial[ SOURCE_F5 ] );
+      frame->F6 = Value( fpu_resume_initial[ SOURCE_F6 ] );
+      frame->F7 = Value( fpu_resume_initial[ SOURCE_F7 ] );
+      frame->F8 = Value( fpu_resume_initial[ SOURCE_F8 ] );
+      frame->F9 = Value( fpu_resume_initial[ SOURCE_F9 ] );
+      frame->F10 = Value( fpu_resume_initial[ SOURCE_F10 ] );
+      frame->F11 = Value( fpu_resume_initial[ SOURCE_F11 ] );
+      frame->F12 = Value( fpu_resume_initial[ SOURCE_F12 ] );
+      frame->F13 = Value( fpu_resume_initial[ SOURCE_F13 ] );
+      frame->F14 = Value( fpu_resume_initial[ SOURCE_F14 ] );
+      frame->F15 = Value( fpu_resume_initial[ SOURCE_F15 ] );
+      frame->F16 = Value( fpu_resume_initial[ SOURCE_F16 ] );
+      frame->F17 = Value( fpu_resume_initial[ SOURCE_F17 ] );
+      frame->F18 = Value( fpu_resume_initial[ SOURCE_F18 ] );
+      frame->F19 = Value( fpu_resume_initial[ SOURCE_F19 ] );
+      frame->F20 = Value( fpu_resume_initial[ SOURCE_F20 ] );
+      frame->F21 = Value( fpu_resume_initial[ SOURCE_F21 ] );
+      frame->F22 = Value( fpu_resume_initial[ SOURCE_F22 ] );
+      frame->F23 = Value( fpu_resume_initial[ SOURCE_F23 ] );
+      frame->F24 = Value( fpu_resume_initial[ SOURCE_F24 ] );
+      frame->F25 = Value( fpu_resume_initial[ SOURCE_F25 ] );
+      frame->F26 = Value( fpu_resume_initial[ SOURCE_F26 ] );
+      frame->F27 = Value( fpu_resume_initial[ SOURCE_F27 ] );
+      frame->F28 = Value( fpu_resume_initial[ SOURCE_F28 ] );
+      frame->F29 = Value( fpu_resume_initial[ SOURCE_F29 ] );
+      frame->F30 = Value( fpu_resume_initial[ SOURCE_F30 ] );
+      frame->F31 = Value( fpu_resume_initial[ SOURCE_F31 ] );
+      frame->FPSCR = fpu_resume_initial[ SOURCE_FPSCR ];
+      frame->EXC_SRR0 = (uintptr_t) fpu_resume_second_trap_label;
+    } else {
+      ++fpu_resume_trap;
+      fpu_resume_frame = *frame;
+      SetFatalHandler( NULL, NULL );
+      frame->FPSCR = fpu_resume_fpscr;
+      frame->EXC_SRR0 = (uintptr_t) fpu_resume_done_label;
+    }
+
+    _CPU_Exception_resume( frame );
+  }
+
+  static void FpuResumeRun( RegisterCheck *self, void *arg )
+  {
+    (void) arg;
+    fpu_resume_trap = 0;
+    memset( &fpu_resume_frame, 0, sizeof( fpu_resume_frame ) );
+    fpu_resume_fpscr = GetFPSCR();
+    SetFatalHandler( FpuResumeFatal, NULL );
+
+    /*
+     * The block holds both traps, so the compiler keeps no value of its own in a
+     * register which the first trap changes.
+     */
+    __asm__ volatile(
+      "trap\n"
+      ".globl fpu_resume_second_trap_label\n"
+      "fpu_resume_second_trap_label:\n"
+      "trap\n"
+      ".globl fpu_resume_done_label\n"
+      "fpu_resume_done_label:\n"
+      :
+      :
+      : "memory", "cr0", "cr1", "cr2", "cr3", "cr4", "cr5", "cr6", "cr7",
+        "r0", "r3", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12",
+        "r14", "r15", "r16", "r17", "r18", "r19", "r20", "r21", "r22", "r23",
+        "r24", "r25", "r26", "r27", "r28", "r29", "r30", "r31", "lr", "ctr",
+        "xer",
+        "fr0", "fr1", "fr2", "fr3", "fr4", "fr5", "fr6", "fr7", "fr8", "fr9",
+        "fr10", "fr11", "fr12", "fr13", "fr14", "fr15", "fr16", "fr17",
+        "fr18", "fr19", "fr20", "fr21", "fr22", "fr23", "fr24", "fr25",
+        "fr26", "fr27", "fr28", "fr29", "fr30", "fr31"
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_F0,
+      Bits( fpu_resume_frame.F0 ),
+      fpu_resume_patterns[ SOURCE_F0 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_F1,
+      Bits( fpu_resume_frame.F1 ),
+      fpu_resume_patterns[ SOURCE_F1 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_F2,
+      Bits( fpu_resume_frame.F2 ),
+      fpu_resume_patterns[ SOURCE_F2 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_F3,
+      Bits( fpu_resume_frame.F3 ),
+      fpu_resume_patterns[ SOURCE_F3 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_F4,
+      Bits( fpu_resume_frame.F4 ),
+      fpu_resume_patterns[ SOURCE_F4 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_F5,
+      Bits( fpu_resume_frame.F5 ),
+      fpu_resume_patterns[ SOURCE_F5 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_F6,
+      Bits( fpu_resume_frame.F6 ),
+      fpu_resume_patterns[ SOURCE_F6 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_F7,
+      Bits( fpu_resume_frame.F7 ),
+      fpu_resume_patterns[ SOURCE_F7 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_F8,
+      Bits( fpu_resume_frame.F8 ),
+      fpu_resume_patterns[ SOURCE_F8 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_F9,
+      Bits( fpu_resume_frame.F9 ),
+      fpu_resume_patterns[ SOURCE_F9 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_F10,
+      Bits( fpu_resume_frame.F10 ),
+      fpu_resume_patterns[ SOURCE_F10 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_F11,
+      Bits( fpu_resume_frame.F11 ),
+      fpu_resume_patterns[ SOURCE_F11 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_F12,
+      Bits( fpu_resume_frame.F12 ),
+      fpu_resume_patterns[ SOURCE_F12 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_F13,
+      Bits( fpu_resume_frame.F13 ),
+      fpu_resume_patterns[ SOURCE_F13 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_F14,
+      Bits( fpu_resume_frame.F14 ),
+      fpu_resume_patterns[ SOURCE_F14 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_F15,
+      Bits( fpu_resume_frame.F15 ),
+      fpu_resume_patterns[ SOURCE_F15 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_F16,
+      Bits( fpu_resume_frame.F16 ),
+      fpu_resume_patterns[ SOURCE_F16 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_F17,
+      Bits( fpu_resume_frame.F17 ),
+      fpu_resume_patterns[ SOURCE_F17 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_F18,
+      Bits( fpu_resume_frame.F18 ),
+      fpu_resume_patterns[ SOURCE_F18 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_F19,
+      Bits( fpu_resume_frame.F19 ),
+      fpu_resume_patterns[ SOURCE_F19 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_F20,
+      Bits( fpu_resume_frame.F20 ),
+      fpu_resume_patterns[ SOURCE_F20 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_F21,
+      Bits( fpu_resume_frame.F21 ),
+      fpu_resume_patterns[ SOURCE_F21 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_F22,
+      Bits( fpu_resume_frame.F22 ),
+      fpu_resume_patterns[ SOURCE_F22 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_F23,
+      Bits( fpu_resume_frame.F23 ),
+      fpu_resume_patterns[ SOURCE_F23 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_F24,
+      Bits( fpu_resume_frame.F24 ),
+      fpu_resume_patterns[ SOURCE_F24 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_F25,
+      Bits( fpu_resume_frame.F25 ),
+      fpu_resume_patterns[ SOURCE_F25 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_F26,
+      Bits( fpu_resume_frame.F26 ),
+      fpu_resume_patterns[ SOURCE_F26 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_F27,
+      Bits( fpu_resume_frame.F27 ),
+      fpu_resume_patterns[ SOURCE_F27 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_F28,
+      Bits( fpu_resume_frame.F28 ),
+      fpu_resume_patterns[ SOURCE_F28 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_F29,
+      Bits( fpu_resume_frame.F29 ),
+      fpu_resume_patterns[ SOURCE_F29 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_F30,
+      Bits( fpu_resume_frame.F30 ),
+      fpu_resume_patterns[ SOURCE_F30 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_F31,
+      Bits( fpu_resume_frame.F31 ),
+      fpu_resume_patterns[ SOURCE_F31 ]
+    );
+    RegisterCheckRecord(
+      self,
+      SLOT_FPSCR,
+      fpu_resume_frame.FPSCR & FPSCR_MASK,
+      fpu_resume_patterns[ SOURCE_FPSCR ]
+    );
+  }
+
+  static RegisterCheck fpu_resume_check = {
+    .sources = fpu_resume_sources,
+    .source_count = SOURCE_MAX,
+    .slots = fpu_resume_slots,
+    .slot_count = SLOT_MAX,
+    .initial = fpu_resume_initial,
+    .run = FpuResumeRun
+  };
+
+  static void CheckSlot( Slot slot )
+  {
+    RegisterCheckVerify( &fpu_resume_check, slot );
+  }
+  #endif
+test-target: testsuites/validation/bsps/tc-powerpc-fpu-resume.c
+test-teardown: null
+type: test-case

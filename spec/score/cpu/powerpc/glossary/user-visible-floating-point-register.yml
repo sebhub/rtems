@@ -13,5 +13,6 @@ term: PowerPC user-visible floating-point register
 text: |
   A floating-point register which the instruction set makes visible to a program.
   Where the multilib provides the SPE, these are the upper words of r0 to r31,
-  ACC and SPEFSCR.
+  ACC and SPEFSCR. Where the multilib provides a floating-point unit, these are
+  f0 to f31 and FPSCR.
 type: glossary
