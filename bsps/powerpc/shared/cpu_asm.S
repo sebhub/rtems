@@ -449,6 +449,8 @@ PROC (_CPU_Context_switch_no_return):
 	stfd	f29, PPC_CONTEXT_OFFSET_F29(r3)
 	stfd	f30, PPC_CONTEXT_OFFSET_F30(r3)
 	stfd	f31, PPC_CONTEXT_OFFSET_F31(r3)
+	mffs	f0
+	stfd	f0, PPC_CONTEXT_OFFSET_FPSCR(r3)
 #endif
 
 #ifdef RTEMS_SMP
@@ -593,6 +595,8 @@ restore_context:
 	lfd	f29, PPC_CONTEXT_OFFSET_F29(r5)
 	lfd	f30, PPC_CONTEXT_OFFSET_F30(r5)
 	lfd	f31, PPC_CONTEXT_OFFSET_F31(r5)
+	lfd	f0, PPC_CONTEXT_OFFSET_FPSCR(r5)
+	mtfsf	255, f0
 #endif
 
 #ifdef __SPE__

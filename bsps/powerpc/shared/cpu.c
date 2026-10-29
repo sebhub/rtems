@@ -126,6 +126,11 @@ void _CPU_Context_Initialize(
   the_ppc_context->vrsave = 0;
 #endif
 
+#ifdef PPC_MULTILIB_FPU
+  /* Round to nearest, no floating-point exception enabled */
+  the_ppc_context->fpscr = 0;
+#endif
+
   the_ppc_context->gpr1 = sp;
   the_ppc_context->msr = msr_value;
   the_ppc_context->lr = (uintptr_t) entry_point;

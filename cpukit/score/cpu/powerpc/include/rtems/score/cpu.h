@@ -300,6 +300,7 @@ typedef struct {
     double f29;
     double f30;
     double f31;
+    double fpscr;
   #endif
   /*
    * The following items are at the structure end, so that we can use dcbz for
@@ -436,10 +437,11 @@ static inline ppc_context *ppc_get_context( const Context_Control *context )
   #define PPC_CONTEXT_OFFSET_F29 PPC_CONTEXT_OFFSET_F( 29 )
   #define PPC_CONTEXT_OFFSET_F30 PPC_CONTEXT_OFFSET_F( 30 )
   #define PPC_CONTEXT_OFFSET_F31 PPC_CONTEXT_OFFSET_F( 31 )
+  #define PPC_CONTEXT_OFFSET_FPSCR PPC_CONTEXT_OFFSET_F( 32 )
 #endif
 
 #if defined(PPC_MULTILIB_FPU)
-  #define PPC_CONTEXT_VOLATILE_SIZE PPC_CONTEXT_OFFSET_F( 32 )
+  #define PPC_CONTEXT_VOLATILE_SIZE PPC_CONTEXT_OFFSET_F( 33 )
 #elif defined(PPC_MULTILIB_ALTIVEC)
   #define PPC_CONTEXT_VOLATILE_SIZE PPC_CONTEXT_OFFSET_V( 33 )
 #elif defined(__ALTIVEC__)
