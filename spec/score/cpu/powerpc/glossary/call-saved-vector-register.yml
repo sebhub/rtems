@@ -1,0 +1,18 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: powerpc
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+- location: 3.2.1.1
+  role: reference
+  uid: /ref/arch/powerpc/abi32
+term: PowerPC call-saved vector register
+text: |
+  A vector register which the ABI requires a called function to preserve. Where
+  the multilib provides AltiVec, these are v20 to v31 and VRSAVE. Where the
+  multilib uses VRSAVE, a register of v20 to v31 holds a value only if VRSAVE
+  marks it.
+type: glossary

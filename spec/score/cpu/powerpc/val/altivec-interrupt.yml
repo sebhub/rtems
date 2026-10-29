@@ -1,0 +1,846 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: powerpc
+links: []
+test-actions:
+- action-brief: |
+    Load a distinct pattern into every call-used vector register and into VSCR, and
+    mark every vector register in VRSAVE. Raise the interrupt. The handler
+    overwrites each of these registers. Trap, so the frame captures every register.
+    Run this once for each value with the pattern of that value inverted, then once
+    unchanged.
+  action-code: |
+    #if defined( PPC_MULTILIB_ALTIVEC )
+      memcpy(
+        altivec_interrupt_initial,
+        altivec_interrupt_patterns,
+        sizeof( altivec_interrupt_initial )
+      );
+      altivec_interrupt_request.handler = AltivecInterruptHandler;
+      altivec_interrupt_request.arg = NULL;
+      RegisterCheckRun( &altivec_interrupt_check );
+    #endif
+  checks:
+  - brief: |
+      Check that the interrupt preserved the PowerPC vector register V0.
+    code: |
+      #if defined( PPC_MULTILIB_ALTIVEC )
+        CheckVector( ISR_SLOT_V0_HI );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/isr-call-used-vector
+  - brief: |
+      Check that the interrupt preserved the PowerPC vector register V1.
+    code: |
+      #if defined( PPC_MULTILIB_ALTIVEC )
+        CheckVector( ISR_SLOT_V1_HI );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/isr-call-used-vector
+  - brief: |
+      Check that the interrupt preserved the PowerPC vector register V2.
+    code: |
+      #if defined( PPC_MULTILIB_ALTIVEC )
+        CheckVector( ISR_SLOT_V2_HI );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/isr-call-used-vector
+  - brief: |
+      Check that the interrupt preserved the PowerPC vector register V3.
+    code: |
+      #if defined( PPC_MULTILIB_ALTIVEC )
+        CheckVector( ISR_SLOT_V3_HI );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/isr-call-used-vector
+  - brief: |
+      Check that the interrupt preserved the PowerPC vector register V4.
+    code: |
+      #if defined( PPC_MULTILIB_ALTIVEC )
+        CheckVector( ISR_SLOT_V4_HI );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/isr-call-used-vector
+  - brief: |
+      Check that the interrupt preserved the PowerPC vector register V5.
+    code: |
+      #if defined( PPC_MULTILIB_ALTIVEC )
+        CheckVector( ISR_SLOT_V5_HI );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/isr-call-used-vector
+  - brief: |
+      Check that the interrupt preserved the PowerPC vector register V6.
+    code: |
+      #if defined( PPC_MULTILIB_ALTIVEC )
+        CheckVector( ISR_SLOT_V6_HI );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/isr-call-used-vector
+  - brief: |
+      Check that the interrupt preserved the PowerPC vector register V7.
+    code: |
+      #if defined( PPC_MULTILIB_ALTIVEC )
+        CheckVector( ISR_SLOT_V7_HI );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/isr-call-used-vector
+  - brief: |
+      Check that the interrupt preserved the PowerPC vector register V8.
+    code: |
+      #if defined( PPC_MULTILIB_ALTIVEC )
+        CheckVector( ISR_SLOT_V8_HI );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/isr-call-used-vector
+  - brief: |
+      Check that the interrupt preserved the PowerPC vector register V9.
+    code: |
+      #if defined( PPC_MULTILIB_ALTIVEC )
+        CheckVector( ISR_SLOT_V9_HI );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/isr-call-used-vector
+  - brief: |
+      Check that the interrupt preserved the PowerPC vector register V10.
+    code: |
+      #if defined( PPC_MULTILIB_ALTIVEC )
+        CheckVector( ISR_SLOT_V10_HI );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/isr-call-used-vector
+  - brief: |
+      Check that the interrupt preserved the PowerPC vector register V11.
+    code: |
+      #if defined( PPC_MULTILIB_ALTIVEC )
+        CheckVector( ISR_SLOT_V11_HI );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/isr-call-used-vector
+  - brief: |
+      Check that the interrupt preserved the PowerPC vector register V12.
+    code: |
+      #if defined( PPC_MULTILIB_ALTIVEC )
+        CheckVector( ISR_SLOT_V12_HI );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/isr-call-used-vector
+  - brief: |
+      Check that the interrupt preserved the PowerPC vector register V13.
+    code: |
+      #if defined( PPC_MULTILIB_ALTIVEC )
+        CheckVector( ISR_SLOT_V13_HI );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/isr-call-used-vector
+  - brief: |
+      Check that the interrupt preserved the PowerPC vector register V14.
+    code: |
+      #if defined( PPC_MULTILIB_ALTIVEC )
+        CheckVector( ISR_SLOT_V14_HI );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/isr-call-used-vector
+  - brief: |
+      Check that the interrupt preserved the PowerPC vector register V15.
+    code: |
+      #if defined( PPC_MULTILIB_ALTIVEC )
+        CheckVector( ISR_SLOT_V15_HI );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/isr-call-used-vector
+  - brief: |
+      Check that the interrupt preserved the PowerPC vector register V16.
+    code: |
+      #if defined( PPC_MULTILIB_ALTIVEC )
+        CheckVector( ISR_SLOT_V16_HI );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/isr-call-used-vector
+  - brief: |
+      Check that the interrupt preserved the PowerPC vector register V17.
+    code: |
+      #if defined( PPC_MULTILIB_ALTIVEC )
+        CheckVector( ISR_SLOT_V17_HI );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/isr-call-used-vector
+  - brief: |
+      Check that the interrupt preserved the PowerPC vector register V18.
+    code: |
+      #if defined( PPC_MULTILIB_ALTIVEC )
+        CheckVector( ISR_SLOT_V18_HI );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/isr-call-used-vector
+  - brief: |
+      Check that the interrupt preserved the PowerPC vector register V19.
+    code: |
+      #if defined( PPC_MULTILIB_ALTIVEC )
+        CheckVector( ISR_SLOT_V19_HI );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/isr-call-used-vector
+  - brief: |
+      Check that the interrupt preserved VSCR.
+    code: |
+      #if defined( PPC_MULTILIB_ALTIVEC )
+        CheckSlot( ISR_SLOT_VSCR );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/isr-vector-environment
+  - brief: |
+      Check that the interrupt occurred exactly once before the trap.
+    code: |
+      #if defined( PPC_MULTILIB_ALTIVEC )
+        CheckSlot( ISR_SLOT_COUNT );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/isr-call-used-vector
+  - brief: |
+      Check that each run with a changed value flagged exactly the checks of that
+      value, and that each run recorded every check.
+    code: |
+      #if defined( PPC_MULTILIB_ALTIVEC )
+        RegisterCheckReport( &altivec_interrupt_check );
+      #endif
+    links:
+    - role: validation
+      uid: ../../req/isr-call-used-vector
+  links: []
+test-brief: |
+  Checks that interrupt processing preserves the AltiVec state of the interrupted
+  context.
+test-context: []
+test-context-support: null
+test-description: null
+test-header: null
+test-includes:
+- rtems/score/cpuimpl.h
+- rtems/score/thread.h
+- string.h
+- stdint.h
+test-local-includes:
+- tx-register-check.h
+- tx-support.h
+test-setup: null
+test-stop: null
+test-support: |
+  #if defined(PPC_MULTILIB_ALTIVEC)
+  /*
+   * The low doubleword of a vector register holds the pattern of its high
+   * doubleword exclusive-or this value.
+   */
+  #define LOW UINT64_C( 0x5a5a5a5a5a5a5a5a )
+
+  /* These are NJ and SAT of VSCR. */
+  #define VSCR_MASK UINT64_C( 0x00010001 )
+
+  /*
+   * These are the bits of VRSAVE for v0 to v19.  The bits for v20 to v31 stay
+   * set, so the context switch saves these registers.
+   */
+  #define VRSAVE_MASK UINT64_C( 0xfffff000 )
+
+  #define WORD UINT64_C( 0xffffffff )
+
+  typedef enum {
+    ISR_SOURCE_V0,
+    ISR_SOURCE_V1,
+    ISR_SOURCE_V2,
+    ISR_SOURCE_V3,
+    ISR_SOURCE_V4,
+    ISR_SOURCE_V5,
+    ISR_SOURCE_V6,
+    ISR_SOURCE_V7,
+    ISR_SOURCE_V8,
+    ISR_SOURCE_V9,
+    ISR_SOURCE_V10,
+    ISR_SOURCE_V11,
+    ISR_SOURCE_V12,
+    ISR_SOURCE_V13,
+    ISR_SOURCE_V14,
+    ISR_SOURCE_V15,
+    ISR_SOURCE_V16,
+    ISR_SOURCE_V17,
+    ISR_SOURCE_V18,
+    ISR_SOURCE_V19,
+    ISR_SOURCE_VSCR,
+    ISR_SOURCE_COUNT,
+    ISR_SOURCE_MAX
+  } IsrSource;
+
+  typedef enum {
+    ISR_SLOT_V0_HI,
+    ISR_SLOT_V0_LO,
+    ISR_SLOT_V1_HI,
+    ISR_SLOT_V1_LO,
+    ISR_SLOT_V2_HI,
+    ISR_SLOT_V2_LO,
+    ISR_SLOT_V3_HI,
+    ISR_SLOT_V3_LO,
+    ISR_SLOT_V4_HI,
+    ISR_SLOT_V4_LO,
+    ISR_SLOT_V5_HI,
+    ISR_SLOT_V5_LO,
+    ISR_SLOT_V6_HI,
+    ISR_SLOT_V6_LO,
+    ISR_SLOT_V7_HI,
+    ISR_SLOT_V7_LO,
+    ISR_SLOT_V8_HI,
+    ISR_SLOT_V8_LO,
+    ISR_SLOT_V9_HI,
+    ISR_SLOT_V9_LO,
+    ISR_SLOT_V10_HI,
+    ISR_SLOT_V10_LO,
+    ISR_SLOT_V11_HI,
+    ISR_SLOT_V11_LO,
+    ISR_SLOT_V12_HI,
+    ISR_SLOT_V12_LO,
+    ISR_SLOT_V13_HI,
+    ISR_SLOT_V13_LO,
+    ISR_SLOT_V14_HI,
+    ISR_SLOT_V14_LO,
+    ISR_SLOT_V15_HI,
+    ISR_SLOT_V15_LO,
+    ISR_SLOT_V16_HI,
+    ISR_SLOT_V16_LO,
+    ISR_SLOT_V17_HI,
+    ISR_SLOT_V17_LO,
+    ISR_SLOT_V18_HI,
+    ISR_SLOT_V18_LO,
+    ISR_SLOT_V19_HI,
+    ISR_SLOT_V19_LO,
+    ISR_SLOT_VSCR,
+    ISR_SLOT_COUNT,
+    ISR_SLOT_MAX
+  } IsrSlot;
+
+  static const RegisterCheckSource altivec_interrupt_sources[ ISR_SOURCE_MAX ] = {
+    { "v0", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v1", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v2", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v3", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v4", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v5", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v6", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v7", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v8", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v9", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v10", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v11", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v12", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v13", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v14", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v15", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v16", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v17", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v18", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "v19", REGISTER_CHECK_INITIAL, UINT64_MAX },
+    { "vscr", REGISTER_CHECK_INITIAL, VSCR_MASK },
+    { "count", REGISTER_CHECK_EXPECTED, WORD }
+  };
+
+  static const RegisterCheckSlot altivec_interrupt_slots[ ISR_SLOT_MAX ] = {
+    { "v0 high", ISR_SOURCE_V0, UINT64_MAX },
+    { "v0 low", ISR_SOURCE_V0, UINT64_MAX },
+    { "v1 high", ISR_SOURCE_V1, UINT64_MAX },
+    { "v1 low", ISR_SOURCE_V1, UINT64_MAX },
+    { "v2 high", ISR_SOURCE_V2, UINT64_MAX },
+    { "v2 low", ISR_SOURCE_V2, UINT64_MAX },
+    { "v3 high", ISR_SOURCE_V3, UINT64_MAX },
+    { "v3 low", ISR_SOURCE_V3, UINT64_MAX },
+    { "v4 high", ISR_SOURCE_V4, UINT64_MAX },
+    { "v4 low", ISR_SOURCE_V4, UINT64_MAX },
+    { "v5 high", ISR_SOURCE_V5, UINT64_MAX },
+    { "v5 low", ISR_SOURCE_V5, UINT64_MAX },
+    { "v6 high", ISR_SOURCE_V6, UINT64_MAX },
+    { "v6 low", ISR_SOURCE_V6, UINT64_MAX },
+    { "v7 high", ISR_SOURCE_V7, UINT64_MAX },
+    { "v7 low", ISR_SOURCE_V7, UINT64_MAX },
+    { "v8 high", ISR_SOURCE_V8, UINT64_MAX },
+    { "v8 low", ISR_SOURCE_V8, UINT64_MAX },
+    { "v9 high", ISR_SOURCE_V9, UINT64_MAX },
+    { "v9 low", ISR_SOURCE_V9, UINT64_MAX },
+    { "v10 high", ISR_SOURCE_V10, UINT64_MAX },
+    { "v10 low", ISR_SOURCE_V10, UINT64_MAX },
+    { "v11 high", ISR_SOURCE_V11, UINT64_MAX },
+    { "v11 low", ISR_SOURCE_V11, UINT64_MAX },
+    { "v12 high", ISR_SOURCE_V12, UINT64_MAX },
+    { "v12 low", ISR_SOURCE_V12, UINT64_MAX },
+    { "v13 high", ISR_SOURCE_V13, UINT64_MAX },
+    { "v13 low", ISR_SOURCE_V13, UINT64_MAX },
+    { "v14 high", ISR_SOURCE_V14, UINT64_MAX },
+    { "v14 low", ISR_SOURCE_V14, UINT64_MAX },
+    { "v15 high", ISR_SOURCE_V15, UINT64_MAX },
+    { "v15 low", ISR_SOURCE_V15, UINT64_MAX },
+    { "v16 high", ISR_SOURCE_V16, UINT64_MAX },
+    { "v16 low", ISR_SOURCE_V16, UINT64_MAX },
+    { "v17 high", ISR_SOURCE_V17, UINT64_MAX },
+    { "v17 low", ISR_SOURCE_V17, UINT64_MAX },
+    { "v18 high", ISR_SOURCE_V18, UINT64_MAX },
+    { "v18 low", ISR_SOURCE_V18, UINT64_MAX },
+    { "v19 high", ISR_SOURCE_V19, UINT64_MAX },
+    { "v19 low", ISR_SOURCE_V19, UINT64_MAX },
+    { "vscr", ISR_SOURCE_VSCR, VSCR_MASK },
+    { "count", ISR_SOURCE_COUNT, WORD }
+  };
+
+  static const uint64_t altivec_interrupt_patterns[ ISR_SOURCE_MAX ] = {
+    UINT64_C( 0xb1b2b3b441424344 ),
+    UINT64_C( 0xb2b3b4b542434445 ),
+    UINT64_C( 0xb3b4b5b643444546 ),
+    UINT64_C( 0xb4b5b6b744454647 ),
+    UINT64_C( 0xb5b6b7b845464748 ),
+    UINT64_C( 0xb6b7b8b946474849 ),
+    UINT64_C( 0xb7b8b9ba4748494a ),
+    UINT64_C( 0xb8b9babb48494a4b ),
+    UINT64_C( 0xb9babbbc494a4b4c ),
+    UINT64_C( 0xbabbbcbd4a4b4c4d ),
+    UINT64_C( 0xbbbcbdbe4b4c4d4e ),
+    UINT64_C( 0xbcbdbebf4c4d4e4f ),
+    UINT64_C( 0xbdbebfc04d4e4f50 ),
+    UINT64_C( 0xbebfc0c14e4f5051 ),
+    UINT64_C( 0xbfc0c1c24f505152 ),
+    UINT64_C( 0xc0c1c2c350515253 ),
+    UINT64_C( 0xc1c2c3c451525354 ),
+    UINT64_C( 0xc2c3c4c552535455 ),
+    UINT64_C( 0xc3c4c5c653545556 ),
+    UINT64_C( 0xc4c5c6c754555657 ),
+    UINT64_C( 0x00010000 ),
+    1
+  };
+
+  static uint64_t altivec_interrupt_initial[ ISR_SOURCE_MAX ];
+
+  /* The block loads each vector register from the row of its number. */
+  uint64_t altivec_interrupt_vectors[ 32 ][ 2 ] RTEMS_ALIGNED( 16 );
+
+  uint32_t altivec_interrupt_vscr_in[ 4 ] RTEMS_ALIGNED( 16 );
+
+  uint32_t altivec_interrupt_vscr_out[ 4 ] RTEMS_ALIGNED( 16 );
+
+  static void SetVector( int reg, uint64_t value )
+  {
+    altivec_interrupt_vectors[ reg ][ 0 ] = value;
+    altivec_interrupt_vectors[ reg ][ 1 ] = value ^ LOW;
+  }
+
+  static uint32_t GetVSCR( void )
+  {
+    __asm__ volatile(
+      "mfvscr 0\n"
+      "stvx 0, 0, %0\n"
+      :
+      : "r"( altivec_interrupt_vscr_out )
+      : "memory", "v0"
+    );
+    return altivec_interrupt_vscr_out[ 3 ];
+  }
+
+  /*
+   * Records the high doubleword of a vector register in its slot and the low
+   * doubleword in the slot which follows.
+   */
+  static void RecordVector(
+    RegisterCheck *self,
+    size_t         slot,
+    const uint8_t *vector,
+    uint64_t       expected
+  )
+  {
+    uint64_t high;
+    uint64_t low;
+
+    memcpy( &high, vector, sizeof( high ) );
+    memcpy( &low, vector + 8, sizeof( low ) );
+    RegisterCheckRecord( self, slot, high, expected );
+    RegisterCheckRecord( self, slot + 1, low ^ LOW, expected );
+  }
+
+  /*
+   * The handler loads the value of a register exclusive-or this value.  It
+   * differs from the pattern and from the inverted pattern of the register.
+   */
+  #define HANDLER UINT64_C( 0x00ff00ff00ff00ff )
+
+  uint64_t altivec_interrupt_handler_vectors[ 20 ][ 2 ] RTEMS_ALIGNED( 16 );
+
+  uint32_t altivec_interrupt_handler_vscr[ 4 ] RTEMS_ALIGNED( 16 ) = { 0, 0, 0, 1 };
+
+  static CPU_Exception_frame altivec_interrupt_frame;
+
+  static volatile uint32_t altivec_interrupt_count;
+
+  static uint32_t altivec_interrupt_count_at_trap;
+
+  static uint32_t altivec_interrupt_vscr;
+
+  static CallWithinISRRequest altivec_interrupt_request;
+
+  extern const char altivec_interrupt_done_label[];
+
+  #define HANDLER_LOAD \
+      "lis 12, altivec_interrupt_handler_vscr@ha\n" \
+      "addi 12, 12, altivec_interrupt_handler_vscr@l\n" \
+      "lvx 0, 0, 12\n" \
+      "mtvscr 0\n" \
+      "lis 12, altivec_interrupt_handler_vectors@ha\n" \
+      "addi 12, 12, altivec_interrupt_handler_vectors@l\n" \
+      "li 0, 0\n" \
+      "lvx 0, 12, 0\n" \
+      "li 0, 16\n" \
+      "lvx 1, 12, 0\n" \
+      "li 0, 32\n" \
+      "lvx 2, 12, 0\n" \
+      "li 0, 48\n" \
+      "lvx 3, 12, 0\n" \
+      "li 0, 64\n" \
+      "lvx 4, 12, 0\n" \
+      "li 0, 80\n" \
+      "lvx 5, 12, 0\n" \
+      "li 0, 96\n" \
+      "lvx 6, 12, 0\n" \
+      "li 0, 112\n" \
+      "lvx 7, 12, 0\n" \
+      "li 0, 128\n" \
+      "lvx 8, 12, 0\n" \
+      "li 0, 144\n" \
+      "lvx 9, 12, 0\n" \
+      "li 0, 160\n" \
+      "lvx 10, 12, 0\n" \
+      "li 0, 176\n" \
+      "lvx 11, 12, 0\n" \
+      "li 0, 192\n" \
+      "lvx 12, 12, 0\n" \
+      "li 0, 208\n" \
+      "lvx 13, 12, 0\n" \
+      "li 0, 224\n" \
+      "lvx 14, 12, 0\n" \
+      "li 0, 240\n" \
+      "lvx 15, 12, 0\n" \
+      "li 0, 256\n" \
+      "lvx 16, 12, 0\n" \
+      "li 0, 272\n" \
+      "lvx 17, 12, 0\n" \
+      "li 0, 288\n" \
+      "lvx 18, 12, 0\n" \
+      "li 0, 304\n" \
+      "lvx 19, 12, 0\n"
+
+  /* The block marks every vector register in VRSAVE. */
+  #define ISR_LOAD \
+      "lis 12, altivec_interrupt_vscr_in@ha\n" \
+      "addi 12, 12, altivec_interrupt_vscr_in@l\n" \
+      "lvx 0, 0, 12\n" \
+      "mtvscr 0\n" \
+      "lis 12, altivec_interrupt_vectors@ha\n" \
+      "addi 12, 12, altivec_interrupt_vectors@l\n" \
+      "li 0, 0\n" \
+      "lvx 0, 12, 0\n" \
+      "li 0, 16\n" \
+      "lvx 1, 12, 0\n" \
+      "li 0, 32\n" \
+      "lvx 2, 12, 0\n" \
+      "li 0, 48\n" \
+      "lvx 3, 12, 0\n" \
+      "li 0, 64\n" \
+      "lvx 4, 12, 0\n" \
+      "li 0, 80\n" \
+      "lvx 5, 12, 0\n" \
+      "li 0, 96\n" \
+      "lvx 6, 12, 0\n" \
+      "li 0, 112\n" \
+      "lvx 7, 12, 0\n" \
+      "li 0, 128\n" \
+      "lvx 8, 12, 0\n" \
+      "li 0, 144\n" \
+      "lvx 9, 12, 0\n" \
+      "li 0, 160\n" \
+      "lvx 10, 12, 0\n" \
+      "li 0, 176\n" \
+      "lvx 11, 12, 0\n" \
+      "li 0, 192\n" \
+      "lvx 12, 12, 0\n" \
+      "li 0, 208\n" \
+      "lvx 13, 12, 0\n" \
+      "li 0, 224\n" \
+      "lvx 14, 12, 0\n" \
+      "li 0, 240\n" \
+      "lvx 15, 12, 0\n" \
+      "li 0, 256\n" \
+      "lvx 16, 12, 0\n" \
+      "li 0, 272\n" \
+      "lvx 17, 12, 0\n" \
+      "li 0, 288\n" \
+      "lvx 18, 12, 0\n" \
+      "li 0, 304\n" \
+      "lvx 19, 12, 0\n" \
+      "li 0, -1\n" \
+      "mtvrsave 0\n"
+
+  /*
+   * The handler overwrites each call-used vector register and VSCR, so an
+   * interrupt which restores none of them fails the check.
+   */
+  static void AltivecInterruptHandler( void *arg )
+  {
+    (void) arg;
+    ++altivec_interrupt_count;
+    __asm__ volatile(
+      HANDLER_LOAD
+      :
+      :
+      : "memory", "r0", "r12",
+        "v0", "v1", "v2", "v3", "v4", "v5", "v6", "v7", "v8", "v9", "v10",
+        "v11", "v12", "v13", "v14", "v15", "v16", "v17", "v18", "v19", "vscr"
+    );
+  }
+
+  static void AltivecInterruptFatal(
+    rtems_fatal_source source,
+    rtems_fatal_code   code,
+    void              *arg
+  )
+  {
+    CPU_Exception_frame *frame;
+
+    (void) arg;
+
+    if ( source != RTEMS_FATAL_SOURCE_EXCEPTION ) {
+      return;
+    }
+
+    frame = (CPU_Exception_frame *) code;
+    altivec_interrupt_frame = *frame;
+    altivec_interrupt_count_at_trap = altivec_interrupt_count;
+    SetFatalHandler( NULL, NULL );
+    frame->VSCR = altivec_interrupt_vscr;
+    frame->EXC_SRR0 = (uintptr_t) altivec_interrupt_done_label;
+    _CPU_Exception_resume( frame );
+  }
+
+  /*
+   * The interrupt is raised while it is masked, so no call happens after the
+   * block loads the registers.  The block unmasks it.  The interrupt controller
+   * delivers an IPI a few cycles later, so a run of no-operations follows.
+   */
+  static void AltivecInterruptRun( RegisterCheck *self, void *arg )
+  {
+    rtems_interrupt_level level;
+    int                   i;
+
+    (void) arg;
+
+    for ( i = 0; i < 20; ++i ) {
+      SetVector( i, altivec_interrupt_initial[ ISR_SOURCE_V0 + i ] );
+      altivec_interrupt_handler_vectors[ i ][ 0 ] =
+        altivec_interrupt_initial[ ISR_SOURCE_V0 + i ] ^ HANDLER;
+      altivec_interrupt_handler_vectors[ i ][ 1 ] =
+        altivec_interrupt_initial[ ISR_SOURCE_V0 + i ] ^ HANDLER ^ LOW;
+    }
+
+    altivec_interrupt_vscr_in[ 3 ] = (uint32_t) altivec_interrupt_initial[ ISR_SOURCE_VSCR ];
+    memset( &altivec_interrupt_frame, 0, sizeof( altivec_interrupt_frame ) );
+    altivec_interrupt_count = 0;
+    altivec_interrupt_count_at_trap = 0;
+    altivec_interrupt_vscr = GetVSCR();
+    SetFatalHandler( AltivecInterruptFatal, NULL );
+    rtems_interrupt_local_disable( level );
+    CallWithinISRSubmit( &altivec_interrupt_request );
+    __asm__ volatile(
+      ISR_LOAD
+      "wrteei 1\n"
+      ".rept 256\n"
+      "nop\n"
+      ".endr\n"
+      "trap\n"
+      ".globl altivec_interrupt_done_label\n"
+      "altivec_interrupt_done_label:\n"
+      :
+      :
+      : "memory", "cr0", "cr1", "cr2", "cr3", "cr4", "cr5", "cr6", "cr7",
+        "r0", "r3", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12",
+        "r14", "r15", "r16", "r17", "r18", "r19", "r20", "r21", "r22", "r23",
+        "r24", "r25", "r26", "r27", "r28", "r29", "r30", "r31", "lr", "ctr",
+        "xer",
+        "v0", "v1", "v2", "v3", "v4", "v5", "v6", "v7", "v8", "v9", "v10",
+        "v11", "v12", "v13", "v14", "v15", "v16", "v17", "v18", "v19",
+        "vrsave", "vscr"
+    );
+    rtems_interrupt_local_enable( level );
+    RecordVector(
+      self,
+      ISR_SLOT_V0_HI,
+      altivec_interrupt_frame.V0,
+      altivec_interrupt_patterns[ ISR_SOURCE_V0 ]
+    );
+    RecordVector(
+      self,
+      ISR_SLOT_V1_HI,
+      altivec_interrupt_frame.V1,
+      altivec_interrupt_patterns[ ISR_SOURCE_V1 ]
+    );
+    RecordVector(
+      self,
+      ISR_SLOT_V2_HI,
+      altivec_interrupt_frame.V2,
+      altivec_interrupt_patterns[ ISR_SOURCE_V2 ]
+    );
+    RecordVector(
+      self,
+      ISR_SLOT_V3_HI,
+      altivec_interrupt_frame.V3,
+      altivec_interrupt_patterns[ ISR_SOURCE_V3 ]
+    );
+    RecordVector(
+      self,
+      ISR_SLOT_V4_HI,
+      altivec_interrupt_frame.V4,
+      altivec_interrupt_patterns[ ISR_SOURCE_V4 ]
+    );
+    RecordVector(
+      self,
+      ISR_SLOT_V5_HI,
+      altivec_interrupt_frame.V5,
+      altivec_interrupt_patterns[ ISR_SOURCE_V5 ]
+    );
+    RecordVector(
+      self,
+      ISR_SLOT_V6_HI,
+      altivec_interrupt_frame.V6,
+      altivec_interrupt_patterns[ ISR_SOURCE_V6 ]
+    );
+    RecordVector(
+      self,
+      ISR_SLOT_V7_HI,
+      altivec_interrupt_frame.V7,
+      altivec_interrupt_patterns[ ISR_SOURCE_V7 ]
+    );
+    RecordVector(
+      self,
+      ISR_SLOT_V8_HI,
+      altivec_interrupt_frame.V8,
+      altivec_interrupt_patterns[ ISR_SOURCE_V8 ]
+    );
+    RecordVector(
+      self,
+      ISR_SLOT_V9_HI,
+      altivec_interrupt_frame.V9,
+      altivec_interrupt_patterns[ ISR_SOURCE_V9 ]
+    );
+    RecordVector(
+      self,
+      ISR_SLOT_V10_HI,
+      altivec_interrupt_frame.V10,
+      altivec_interrupt_patterns[ ISR_SOURCE_V10 ]
+    );
+    RecordVector(
+      self,
+      ISR_SLOT_V11_HI,
+      altivec_interrupt_frame.V11,
+      altivec_interrupt_patterns[ ISR_SOURCE_V11 ]
+    );
+    RecordVector(
+      self,
+      ISR_SLOT_V12_HI,
+      altivec_interrupt_frame.V12,
+      altivec_interrupt_patterns[ ISR_SOURCE_V12 ]
+    );
+    RecordVector(
+      self,
+      ISR_SLOT_V13_HI,
+      altivec_interrupt_frame.V13,
+      altivec_interrupt_patterns[ ISR_SOURCE_V13 ]
+    );
+    RecordVector(
+      self,
+      ISR_SLOT_V14_HI,
+      altivec_interrupt_frame.V14,
+      altivec_interrupt_patterns[ ISR_SOURCE_V14 ]
+    );
+    RecordVector(
+      self,
+      ISR_SLOT_V15_HI,
+      altivec_interrupt_frame.V15,
+      altivec_interrupt_patterns[ ISR_SOURCE_V15 ]
+    );
+    RecordVector(
+      self,
+      ISR_SLOT_V16_HI,
+      altivec_interrupt_frame.V16,
+      altivec_interrupt_patterns[ ISR_SOURCE_V16 ]
+    );
+    RecordVector(
+      self,
+      ISR_SLOT_V17_HI,
+      altivec_interrupt_frame.V17,
+      altivec_interrupt_patterns[ ISR_SOURCE_V17 ]
+    );
+    RecordVector(
+      self,
+      ISR_SLOT_V18_HI,
+      altivec_interrupt_frame.V18,
+      altivec_interrupt_patterns[ ISR_SOURCE_V18 ]
+    );
+    RecordVector(
+      self,
+      ISR_SLOT_V19_HI,
+      altivec_interrupt_frame.V19,
+      altivec_interrupt_patterns[ ISR_SOURCE_V19 ]
+    );
+    RegisterCheckRecord(
+      self,
+      ISR_SLOT_VSCR,
+      altivec_interrupt_frame.VSCR & VSCR_MASK,
+      altivec_interrupt_patterns[ ISR_SOURCE_VSCR ]
+    );
+    RegisterCheckRecord( self, ISR_SLOT_COUNT, altivec_interrupt_count_at_trap, 1 );
+  }
+
+  static RegisterCheck altivec_interrupt_check = {
+    .sources = altivec_interrupt_sources,
+    .source_count = ISR_SOURCE_MAX,
+    .slots = altivec_interrupt_slots,
+    .slot_count = ISR_SLOT_MAX,
+    .initial = altivec_interrupt_initial,
+    .run = AltivecInterruptRun
+  };
+
+  static void CheckSlot( IsrSlot slot )
+  {
+    RegisterCheckVerify( &altivec_interrupt_check, slot );
+  }
+
+  static void CheckVector( IsrSlot slot )
+  {
+    RegisterCheckVerify( &altivec_interrupt_check, slot );
+    RegisterCheckVerify( &altivec_interrupt_check, slot + 1 );
+  }
+  #endif
+test-target: testsuites/validation/bsps/tc-powerpc-altivec-interrupt.c
+test-teardown: null
+type: test-case

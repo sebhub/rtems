@@ -1,0 +1,17 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: powerpc
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+- location: 3.2.1.1
+  role: reference
+  uid: /ref/arch/powerpc/abi32
+term: PowerPC call-used vector register
+text: |
+  A vector register which a called function can change. Where the multilib
+  provides AltiVec, these are v0 to v19. Where the multilib uses VRSAVE, a
+  register of v0 to v19 holds a value only if VRSAVE marks it.
+type: glossary
