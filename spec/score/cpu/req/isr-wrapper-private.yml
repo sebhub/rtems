@@ -5,7 +5,7 @@ enabled-by: true
 functional-type: function
 links:
 - role: requirement-refinement
-  uid: registers
+  uid: isr-call-saved
 rationale: null
 requirement-type: functional
 text: |

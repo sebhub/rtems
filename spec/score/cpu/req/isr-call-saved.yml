@@ -1,0 +1,18 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: function
+links:
+- role: requirement-refinement
+  uid: registers
+rationale: |
+  The interrupted code expects every register at the value it had before the
+  interrupt. An interrupt wrapper which uses a call-saved register for its own
+  bookkeeping has to restore it, because no called function does that for the
+  interrupted code.
+requirement-type: functional
+text: |
+  Interrupt processing shall preserve every
+  ${/score/cpu/glossary/call-saved-register:/term} of the interrupted context.
+type: requirement
