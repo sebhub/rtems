@@ -54,11 +54,18 @@ void __attribute__((naked)) _CPU_Context_restore(
     "movt r2, #:upper16:_Per_CPU_Information\n"
     "ldr r3, [r0, %[isrctxoff]]\n"
     "ldr sp, [r0, %[spctxoff]]\n"
+#ifdef ARM_MULTILIB_VFP
+    "ldr r1, [r0, %[fpscroff]]\n"
+    "vmsr FPSCR, r1\n"
+#endif
     "ldm r0, {r4-r11, lr}\n"
     "str r3, [r2, %[isrpcpuoff]]\n"
     "bx lr\n"
     :
     : [spctxoff] "J" (offsetof(Context_Control, register_sp)),
+#ifdef ARM_MULTILIB_VFP
+      [fpscroff] "J" (ARM_CONTEXT_CONTROL_FPSCR_OFFSET),
+#endif
       [isrctxoff] "J" (offsetof(Context_Control, isr_nest_level)),
       [isrpcpuoff] "J" (offsetof(Per_CPU_Control, isr_nest_level))
   );

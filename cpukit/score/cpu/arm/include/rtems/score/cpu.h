@@ -179,6 +179,7 @@
 
 #ifdef ARM_MULTILIB_VFP
   #define ARM_CONTEXT_CONTROL_D8_OFFSET 48
+  #define ARM_CONTEXT_CONTROL_FPSCR_OFFSET 112
 #endif
 
 #ifdef ARM_MULTILIB_ARCH_V4
@@ -187,7 +188,7 @@
 
 #ifdef RTEMS_SMP
   #if defined(ARM_MULTILIB_VFP)
-    #define ARM_CONTEXT_CONTROL_IS_EXECUTING_OFFSET 112
+    #define ARM_CONTEXT_CONTROL_IS_EXECUTING_OFFSET 116
   #else
     #define ARM_CONTEXT_CONTROL_IS_EXECUTING_OFFSET 48
   #endif
@@ -255,6 +256,7 @@ typedef struct {
   uint64_t register_d13;
   uint64_t register_d14;
   uint64_t register_d15;
+  uint32_t register_fpscr;
 #endif
 #ifdef RTEMS_SMP
   volatile bool is_executing;

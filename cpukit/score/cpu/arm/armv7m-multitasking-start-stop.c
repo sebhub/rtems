@@ -52,6 +52,10 @@ void __attribute__((naked)) _ARMV7M_Start_multitasking(
     /* Restore heir context */
     "ldr r2, [r0, %[spctxoff]]\n"
     "msr psp, r2\n"
+#ifdef ARM_MULTILIB_VFP
+    "ldr r2, [r0, %[fpscroff]]\n"
+    "vmsr FPSCR, r2\n"
+#endif
     "ldm r0, {r4-r11, lr}\n"
     /* Enable process stack pointer (PSP) */
     "mrs r2, control\n"
@@ -61,6 +65,9 @@ void __attribute__((naked)) _ARMV7M_Start_multitasking(
     "bx lr\n"
     :
     : [spctxoff] "J" (offsetof(Context_Control, register_sp))
+#ifdef ARM_MULTILIB_VFP
+      , [fpscroff] "J" (ARM_CONTEXT_CONTROL_FPSCR_OFFSET)
+#endif
   );
 }
 
