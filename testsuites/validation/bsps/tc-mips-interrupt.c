@@ -62,9 +62,10 @@
  *
  * This test case performs the following actions:
  *
- * - Load a distinct pattern into every MIPS call-used register and every MIPS
- *   call-used floating-point register. Raise the interrupt. Trap, so the frame
- *   captures every register.
+ * - Load a distinct pattern into every MIPS call-used register, every MIPS
+ *   call-used floating-point register and every MIPS call-saved register
+ *   except the global pointer and the stack pointer. Raise the interrupt.
+ *   Trap, so the frame captures every register.
  *
  *   - Check that the interrupt happened. Without it the test proves nothing
  *     about interrupt processing.
@@ -106,6 +107,24 @@
  *   - Check that the interrupt preserved the MIPS register lo.
  *
  *   - Check that the interrupt preserved the MIPS register hi.
+ *
+ *   - Check that the interrupt preserved the MIPS register \$s0.
+ *
+ *   - Check that the interrupt preserved the MIPS register \$s1.
+ *
+ *   - Check that the interrupt preserved the MIPS register \$s2.
+ *
+ *   - Check that the interrupt preserved the MIPS register \$s3.
+ *
+ *   - Check that the interrupt preserved the MIPS register \$s4.
+ *
+ *   - Check that the interrupt preserved the MIPS register \$s5.
+ *
+ *   - Check that the interrupt preserved the MIPS register \$s6.
+ *
+ *   - Check that the interrupt preserved the MIPS register \$s7.
+ *
+ *   - Check that the interrupt preserved the MIPS register \$fp.
  *
  *   - Check that the interrupt preserved the MIPS register \$f0.
  *
@@ -165,6 +184,8 @@ static CPU_Exception_frame interrupt_frame;
 
 volatile int interrupt_count;
 
+uint32_t interrupt_saved_fp;
+
 static CallWithinISRRequest interrupt_request;
 
 static rtems_interrupt_level interrupt_level;
@@ -210,6 +231,29 @@ static rtems_interrupt_level interrupt_level;
   "mtlo $27\n"           \
   "li $27, 0x83848586\n" \
   "mthi $27\n"
+
+/*
+ * The frame pointer is call-saved.  The compiler may need it, so the block
+ * saves it in memory and restores it after the trap.
+ */
+#define ISR_SAVE_FP              \
+  "la $27, interrupt_saved_fp\n" \
+  "sw $30, 0($27)\n"
+
+#define ISR_RESTORE_FP           \
+  "la $27, interrupt_saved_fp\n" \
+  "lw $30, 0($27)\n"
+
+#define ISR_LOAD_SAVED   \
+  "li $16, 0x84858687\n" \
+  "li $17, 0x85868788\n" \
+  "li $18, 0x86878889\n" \
+  "li $19, 0x8788898a\n" \
+  "li $20, 0x88898a8b\n" \
+  "li $21, 0x898a8b8c\n" \
+  "li $22, 0x8a8b8c8d\n" \
+  "li $23, 0x8b8c8d8e\n" \
+  "li $30, 0x8c8d8e8f\n"
 
 #if MIPS_HAS_FPU == 1
 #define ISR_LOAD_FPU                        \
@@ -259,10 +303,105 @@ static rtems_interrupt_level interrupt_level;
 #define ISR_LOAD_FPU
 #endif
 
+/*
+ * The handler writes zero into each call-used register.  An interrupt
+ * wrapper which fails to restore one of them then shows that value.
+ */
 static void InterruptHandler( void *arg )
 {
   (void) arg;
   ++interrupt_count;
+  __asm__ volatile(
+    "  .set push\n"
+    "  .set noat\n"
+    "  move $1, $0\n"
+    "  .set pop\n"
+    "  move $2, $0\n"
+    "  move $3, $0\n"
+    "  move $4, $0\n"
+    "  move $5, $0\n"
+    "  move $6, $0\n"
+    "  move $7, $0\n"
+    "  move $8, $0\n"
+    "  move $9, $0\n"
+    "  move $10, $0\n"
+    "  move $11, $0\n"
+    "  move $12, $0\n"
+    "  move $13, $0\n"
+    "  move $14, $0\n"
+    "  move $15, $0\n"
+    "  move $24, $0\n"
+    "  move $25, $0\n"
+    "  mtlo $0\n"
+    "  mthi $0\n"
+#if MIPS_HAS_FPU == 1
+    "  mtc1 $0, $f0\n"
+    "  mtc1 $0, $f1\n"
+    "  mtc1 $0, $f2\n"
+    "  mtc1 $0, $f3\n"
+    "  mtc1 $0, $f4\n"
+    "  mtc1 $0, $f5\n"
+    "  mtc1 $0, $f6\n"
+    "  mtc1 $0, $f7\n"
+    "  mtc1 $0, $f8\n"
+    "  mtc1 $0, $f9\n"
+    "  mtc1 $0, $f10\n"
+    "  mtc1 $0, $f11\n"
+    "  mtc1 $0, $f12\n"
+    "  mtc1 $0, $f13\n"
+    "  mtc1 $0, $f14\n"
+    "  mtc1 $0, $f15\n"
+    "  mtc1 $0, $f16\n"
+    "  mtc1 $0, $f17\n"
+    "  mtc1 $0, $f18\n"
+    "  mtc1 $0, $f19\n"
+    "  ctc1 $0, $31\n"
+#endif
+    :
+    :
+    : "$1",
+      "$2",
+      "$3",
+      "$4",
+      "$5",
+      "$6",
+      "$7",
+      "$8",
+      "$9",
+      "$10",
+      "$11",
+      "$12",
+      "$13",
+      "$14",
+      "$15",
+      "$24",
+      "$25",
+      "hi",
+      "lo"
+#if MIPS_HAS_FPU == 1
+      ,
+      "$f0",
+      "$f1",
+      "$f2",
+      "$f3",
+      "$f4",
+      "$f5",
+      "$f6",
+      "$f7",
+      "$f8",
+      "$f9",
+      "$f10",
+      "$f11",
+      "$f12",
+      "$f13",
+      "$f14",
+      "$f15",
+      "$f16",
+      "$f17",
+      "$f18",
+      "$f19"
+#endif
+  );
 }
 
 /*
@@ -291,9 +430,10 @@ static void InterruptFatal(
 }
 
 /**
- * @brief Load a distinct pattern into every MIPS call-used register and every
- *   MIPS call-used floating-point register. Raise the interrupt. Trap, so the
- *   frame captures every register.
+ * @brief Load a distinct pattern into every MIPS call-used register, every
+ *   MIPS call-used floating-point register and every MIPS call-saved register
+ *   except the global pointer and the stack pointer. Raise the interrupt.
+ *   Trap, so the frame captures every register.
  */
 static void ScoreCpuMipsValInterrupt_Action_0( void )
 {
@@ -313,7 +453,8 @@ static void ScoreCpuMipsValInterrupt_Action_0( void )
   rtems_interrupt_local_disable( interrupt_level );
   CallWithinISRSubmit( &interrupt_request );
   __asm__ volatile( "  .set push\n"
-                    "  .set noreorder\n" ISR_LOAD_FPU ISR_LOAD "  .set noat\n"
+                    "  .set noreorder\n" ISR_SAVE_FP ISR_LOAD_FPU
+                      ISR_LOAD ISR_LOAD_SAVED "  .set noat\n"
                     "  li $1, 0x71727374\n"
                     "  mfc0 $26, $12\n"
                     "  nop\n"
@@ -327,8 +468,7 @@ static void ScoreCpuMipsValInterrupt_Action_0( void )
                     "  nop\n"
                     "  .word -1\n"
                     "  .globl interrupt_done_label\n"
-                    "interrupt_done_label:\n"
-                    "  .set pop\n"
+                    "interrupt_done_label:\n" ISR_RESTORE_FP "  .set pop\n"
                     :
                     :
                     : "memory",
@@ -346,6 +486,14 @@ static void ScoreCpuMipsValInterrupt_Action_0( void )
                       "$13",
                       "$14",
                       "$15",
+                      "$16",
+                      "$17",
+                      "$18",
+                      "$19",
+                      "$20",
+                      "$21",
+                      "$22",
+                      "$23",
                       "$24",
                       "$25",
                       "hi",
@@ -453,6 +601,51 @@ static void ScoreCpuMipsValInterrupt_Action_0( void )
    * Check that the interrupt preserved the MIPS register hi.
    */
   T_eq_u32( (uint32_t) frame->mdhi, 0x83848586 );
+
+  /*
+   * Check that the interrupt preserved the MIPS register \$s0.
+   */
+  T_eq_u32( (uint32_t) frame->s0, 0x84858687 );
+
+  /*
+   * Check that the interrupt preserved the MIPS register \$s1.
+   */
+  T_eq_u32( (uint32_t) frame->s1, 0x85868788 );
+
+  /*
+   * Check that the interrupt preserved the MIPS register \$s2.
+   */
+  T_eq_u32( (uint32_t) frame->s2, 0x86878889 );
+
+  /*
+   * Check that the interrupt preserved the MIPS register \$s3.
+   */
+  T_eq_u32( (uint32_t) frame->s3, 0x8788898a );
+
+  /*
+   * Check that the interrupt preserved the MIPS register \$s4.
+   */
+  T_eq_u32( (uint32_t) frame->s4, 0x88898a8b );
+
+  /*
+   * Check that the interrupt preserved the MIPS register \$s5.
+   */
+  T_eq_u32( (uint32_t) frame->s5, 0x898a8b8c );
+
+  /*
+   * Check that the interrupt preserved the MIPS register \$s6.
+   */
+  T_eq_u32( (uint32_t) frame->s6, 0x8a8b8c8d );
+
+  /*
+   * Check that the interrupt preserved the MIPS register \$s7.
+   */
+  T_eq_u32( (uint32_t) frame->s7, 0x8b8c8d8e );
+
+  /*
+   * Check that the interrupt preserved the MIPS register \$fp.
+   */
+  T_eq_u32( (uint32_t) frame->fp, 0x8c8d8e8f );
 
   /*
    * Check that the interrupt preserved the MIPS register \$f0.
