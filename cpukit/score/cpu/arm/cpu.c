@@ -57,6 +57,12 @@
     offsetof( Context_Control, register_d8 ) == ARM_CONTEXT_CONTROL_D8_OFFSET,
     ARM_CONTEXT_CONTROL_D8_OFFSET
   );
+
+  RTEMS_STATIC_ASSERT(
+    offsetof( Context_Control, register_fpscr )
+      == ARM_CONTEXT_CONTROL_FPSCR_OFFSET,
+    ARM_CONTEXT_CONTROL_FPSCR_OFFSET
+  );
 #endif
 
 RTEMS_STATIC_ASSERT(
@@ -147,6 +153,11 @@ void _CPU_Context_Initialize(
   the_context->register_lr = (uint32_t) entry_point;
   the_context->isr_dispatch_disable = 0;
   the_context->thread_id = (uint32_t) tls_area;
+
+#ifdef ARM_MULTILIB_VFP
+  /* Round to nearest, no floating-point trap, no flush to zero */
+  the_context->register_fpscr = 0;
+#endif
 
   if ( tls_area != NULL ) {
     the_context->thread_id = (uint32_t) _TLS_Initialize_area( tls_area );
