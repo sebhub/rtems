@@ -95,10 +95,12 @@ void __attribute__((naked, no_profile_instrument_function)) _ARMV7M_Exception_de
     "beq 1f\n"
 
     /* Save VFP context */
+    "sub r5, r2, %[v7mlroff]\n" /* Get the hardware frame */
     "sub sp, %[vfpsz]\n"
     "add r4, sp, #4\n"
     "bic r4, r4, #7\n"
     "str r4, [r3]\n"
+    "mov r6, r4\n"
     "vmrs r2, FPSCR\n"
     "stmia r4!, {r1-r2}\n"
     "vstmia r4!, {d0-d15}\n"
@@ -109,6 +111,25 @@ void __attribute__((naked, no_profile_instrument_function)) _ARMV7M_Exception_de
     "stmia r4!, {r1-r2}\n"
     "cmp r4, r3\n"
     "bne 2b\n"
+
+    /*
+     * The extended frame holds s0 to s15 and FPSCR of the interrupted
+     * context.  The first floating-point instruction of the handler leaves
+     * these registers UNKNOWN and sets the FPSCR fields AHP, DN, FZ, and
+     * RMode to the values of FPDSCR.
+     */
+    "tst lr, #16\n"
+    "bne 1f\n"
+    "ldr r1, [r5, #0x60]\n"
+    "str r1, [r6, #4]\n"
+    "add r1, r5, #0x20\n"
+    "add r2, r6, #8\n"
+    "add r3, r5, #0x60\n"
+    "3:\n"
+    "ldr r4, [r1], #4\n"
+    "str r4, [r2], #4\n"
+    "cmp r1, r3\n"
+    "bne 3b\n"
     "1:\n"
 #endif
 
