@@ -195,11 +195,15 @@
  *
  *   - Check that the resume restored the MIPS register \$f31.
  *
- *   - Check that the resume restored the rounding mode of the MIPS register
- *     fcr31.
+ *   - Check that the resume restored the condition bit, the cause, the
+ *     enables, the flags and the rounding mode of the MIPS register fcr31.
  *
- *   - Check that the resume restored the MIPS status register. The second trap
- *     reports the register which the first resume installed.
+ *   - Check that the status register of the first trap has an interrupt mask
+ *     bit set. Without one the handler changes no bit of the register.
+ *
+ *   - Check that the resume restored the MIPS status register. The handler
+ *     cleared the interrupt mask of the frame. The second trap reports the
+ *     register which the first resume installed.
  *
  *   - Check that the second frame lies where the first one lay. The resume
  *     adds the size of the frame to the address of the frame. The stack of the
@@ -239,11 +243,18 @@ static int resume_trap;
 uint32_t resume_probe[ 3 ];
 
 /*
- * The rounding mode of the control and status register of coprocessor 1.
- * The value rounds toward minus infinity, which no other part of the test
- * selects.  The flush to zero flag keeps the setting of the port.
+ * The value of the control and status register of coprocessor 1.  It sets
+ * the condition bit and every flag, and it rounds toward minus infinity,
+ * which no other part of the test selects.  The flush to zero flag keeps the
+ * setting of the port.  No enable is set, so no flag raises an exception.
  */
-#define RESUME_FCSR 0x01000003
+#define RESUME_FCSR 0x0180007f
+
+/*
+ * The mask covers the flush to zero flag, the condition bit, the cause, the
+ * enables, the flags and the rounding mode.
+ */
+#define RESUME_FCSR_MASK 0x0183ffff
 
 void ResumeRun( void );
 
@@ -331,6 +342,12 @@ static void ResumeFatal(
     frame->gp = 0x64656667;
     frame->mdlo = 0x71727374;
     frame->mdhi = 0x72737475;
+
+    /*
+     * No exception changes the interrupt mask, and a cleared mask lets no
+     * interrupt in between the two traps.
+     */
+    frame->c0_sr &= ~SR_IMASK;
 
 #if MIPS_HAS_FPU == 1
     {
@@ -774,18 +791,28 @@ static void ScoreCpuMipsValResume_Action_0( void )
   #endif
 
   /*
-   * Check that the resume restored the rounding mode of the MIPS register
-   * fcr31.
+   * Check that the resume restored the condition bit, the cause, the enables,
+   * the flags and the rounding mode of the MIPS register fcr31.
    */
   #if MIPS_HAS_FPU == 1
-  T_eq_u32( (uint32_t) after->fcsr & 0x3, RESUME_FCSR & 0x3 );
+  T_eq_u32( (uint32_t) after->fcsr & RESUME_FCSR_MASK, RESUME_FCSR );
   #endif
 
   /*
-   * Check that the resume restored the MIPS status register. The second trap
-   * reports the register which the first resume installed.
+   * Check that the status register of the first trap has an interrupt mask bit
+   * set. Without one the handler changes no bit of the register.
    */
-  T_eq_u32( (uint32_t) after->c0_sr, (uint32_t) resume_before.c0_sr );
+  T_ne_u32( (uint32_t) resume_before.c0_sr & SR_IMASK, 0 );
+
+  /*
+   * Check that the resume restored the MIPS status register. The handler
+   * cleared the interrupt mask of the frame. The second trap reports the
+   * register which the first resume installed.
+   */
+  T_eq_u32(
+    (uint32_t) after->c0_sr,
+    (uint32_t) resume_before.c0_sr & ~SR_IMASK
+  );
 
   /*
    * Check that the second frame lies where the first one lay. The resume adds
