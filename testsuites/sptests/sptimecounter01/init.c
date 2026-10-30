@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: BSD-2-Clause */
 
 /*
- * Copyright (C) 2015, 2019 embedded brains GmbH & Co. KG
+ * Copyright (C) 2015, 2026 embedded brains GmbH & Co. KG
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -56,7 +56,10 @@ typedef struct {
 
 static test_context test_instance;
 
-static Thread_Control executing;
+/* The fatal extension of the BSP may print the name of this thread. */
+static Thread_Control executing = {
+  .Join_queue = { .Queue = { .name = "" } }
+};
 
 static uint32_t test_get_timecount( struct timecounter *tc )
 {
