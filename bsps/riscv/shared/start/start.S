@@ -160,7 +160,19 @@ RISCV_Start_on_processor:
 	LADDR	gp, __global_pointer$
 	.option	pop
 
-#ifndef RTEMS_SMP
+#ifdef RTEMS_SMP
+	/*
+	 * Check that this is a configured processor.  If not, then there is
+	 * not much that can be done since we do not have a stack available for
+	 * this processor.  Just loop forever in this case.  The check precedes
+	 * the FPU initialization, since a processor which is not configured
+	 * may have no FPU.
+	 */
+	li	t3, RISCV_BOOT_HARTID
+	sub	a0, a0, t3
+	lw	t3, _SMP_Processor_configured_maximum
+	bgeu	a0, t3, .Lwfi
+#else
 	li	t3, RISCV_BOOT_HARTID
 	bne	a0, t3, .Lwfi
 #endif
@@ -192,16 +204,6 @@ RISCV_Start_on_processor:
 #ifdef RTEMS_SMP
 	LADDR	sp, _ISR_Stack_area_begin
 	LADDR	t2, _ISR_Stack_size
-	li	t3, RISCV_BOOT_HARTID
-	sub	a0, a0, t3
-
-	/*
-	 * Check that this is a configured processor.  If not, then there is
-	 * not much that can be done since we do not have a stack available for
-	 * this processor.  Just loop forever in this case.
-	 */
-	lw	t3, _SMP_Processor_configured_maximum
-	bgeu	a0, t3, .Lwfi
 
 	/* Adjust stack pointer */
 #ifdef __riscv_mul
