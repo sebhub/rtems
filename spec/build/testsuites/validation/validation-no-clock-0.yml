@@ -94,6 +94,13 @@ source:
 - testsuites/validation/tc-pthread-getcpuclockid.c
 - testsuites/validation/tc-pthread-getname-np.c
 - testsuites/validation/tc-pthread-join.c
+- testsuites/validation/tc-pthread-mutex-init.c
+- testsuites/validation/tc-pthread-mutexattr-getprotocol.c
+- testsuites/validation/tc-pthread-mutexattr-getpshared.c
+- testsuites/validation/tc-pthread-mutexattr-gettype.c
+- testsuites/validation/tc-pthread-mutexattr-setprioceiling.c
+- testsuites/validation/tc-pthread-mutexattr-setprotocol.c
+- testsuites/validation/tc-pthread-mutexattr-settype.c
 - testsuites/validation/tc-pthread-setaffinity-np.c
 - testsuites/validation/tc-pthread-setcancelstate.c
 - testsuites/validation/tc-pthread-setcanceltype.c
