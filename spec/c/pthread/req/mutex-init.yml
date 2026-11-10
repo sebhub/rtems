@@ -1,0 +1,602 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 OHB System AG
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: action
+links:
+- role: interface-function
+  uid: ../if/mutex-init
+- role: requirement-refinement
+  uid: ../../req/group-posix-api
+- role: reference
+  uid: /ref/std/posix-2024/pthread-mutex-init
+post-conditions:
+- name: Status
+  states:
+  - name: Ok
+    test-code: |
+      T_eq_int( ctx->status, 0 );
+    text: |
+      The ${/glossary/returnvalue:/term} of ${../if/mutex-init:/name} shall be zero.
+  - name: Inval
+    test-code: |
+      T_eq_int( ctx->status, EINVAL );
+    text: |
+      The ${/glossary/returnvalue:/term} of ${../if/mutex-init:/name} shall be
+      ${/c/errno/if/einval:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: MutexObj
+  states:
+  - name: Initialized
+    test-code: |
+      T_eq_ulong(
+        ctx->mutex_obj._flags & ~POSIX_MUTEX_FLAGS_MASK,
+        ( (uintptr_t) &ctx->mutex_obj ^ POSIX_MUTEX_MAGIC ) &
+          ~POSIX_MUTEX_FLAGS_MASK
+      );
+    text: |
+      The object referenced by the ${../if/mutex-init:/params[0]/name} parameter
+      shall be an initialized ${../glossary/mutex:/term}.
+  - name: Nop
+    test-code: |
+      T_eq_mem( &ctx->mutex_obj, &ctx->mutex_prefill, sizeof( ctx->mutex_obj ) );
+    text: |
+      The object referenced by the ${../if/mutex-init:/params[0]/name} parameter
+      shall not be modified.
+  test-epilogue: null
+  test-prologue: null
+- name: Protocol
+  states:
+  - name: None
+    test-code: |
+      T_eq_int(
+        _POSIX_Mutex_Get_protocol( ctx->mutex_obj._flags ),
+        POSIX_MUTEX_NO_PROTOCOL
+      );
+    text: |
+      The ${../glossary/mutex-protocol:/term} of the mutex initialized by the call
+      shall be ${../if/prio-none:/name}.
+  - name: Inherit
+    test-code: |
+      T_eq_int(
+        _POSIX_Mutex_Get_protocol( ctx->mutex_obj._flags ),
+        POSIX_MUTEX_PRIORITY_INHERIT
+      );
+    text: |
+      The ${../glossary/mutex-protocol:/term} of the mutex initialized by the call
+      shall be ${../if/prio-inherit:/name}.
+  - name: Protect
+    test-code: |
+      T_eq_int(
+        _POSIX_Mutex_Get_protocol( ctx->mutex_obj._flags ),
+        POSIX_MUTEX_PRIORITY_CEILING
+      );
+    text: |
+      The ${../glossary/mutex-protocol:/term} of the mutex initialized by the call
+      shall be ${../if/prio-protect:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: Recursive
+  states:
+  - name: 'Yes'
+    test-code: |
+      T_true( _POSIX_Mutex_Is_recursive( ctx->mutex_obj._flags ) );
+    text: |
+      The ${../glossary/mutex:/term} initialized by the call shall permit a recursive
+      lock by its owner.
+  - name: 'No'
+    test-code: |
+      T_false( _POSIX_Mutex_Is_recursive( ctx->mutex_obj._flags ) );
+    text: |
+      The ${../glossary/mutex:/term} initialized by the call shall not permit a
+      recursive lock by its owner.
+  test-epilogue: null
+  test-prologue: null
+- name: Owner
+  states:
+  - name: None
+    test-code: |
+      T_null( _POSIX_Mutex_Get_owner( _POSIX_Mutex_Get( &ctx->mutex_obj ) ) );
+      T_eq_uint( _POSIX_Mutex_Get( &ctx->mutex_obj )->Recursive.nest_level, 0 );
+    text: |
+      The ${../glossary/mutex:/term} initialized by the call shall have no owner.
+  test-epilogue: null
+  test-prologue: null
+- name: Ceiling
+  states:
+  - name: Maximum
+    test-code: |
+      T_eq_u64(
+        _POSIX_Mutex_Get_priority( _POSIX_Mutex_Get( &ctx->mutex_obj ) ),
+        _Scheduler_Map_priority( ctx->scheduler, PRIO_VERY_ULTRA_HIGH )
+      );
+    text: |
+      The ${../glossary/mutex-priority-ceiling:/term} of the mutex initialized by the
+      call shall be the maximum ${../glossary/thread-priority:/term}.
+  - name: Valid
+    test-code: |
+      T_eq_u64(
+        _POSIX_Mutex_Get_priority( _POSIX_Mutex_Get( &ctx->mutex_obj ) ),
+        _Scheduler_Map_priority( ctx->scheduler, PRIO_HIGH )
+      );
+    text: |
+      The ${../glossary/mutex-priority-ceiling:/term} of the mutex initialized by the
+      call shall be the ${../glossary/mutex-priority-ceiling:/term} of the
+      ${../glossary/mutex:/term} attributes object.
+  test-epilogue: null
+  test-prologue: null
+- name: Scheduler
+  states:
+  - name: Home
+    test-code: |
+      T_eq_ptr( _POSIX_Mutex_Get( &ctx->mutex_obj )->scheduler, ctx->scheduler );
+    text: |
+      The scheduler of the mutex initialized by the call shall be the home scheduler
+      of the calling ${/glossary/task:/term}.
+  test-epilogue: null
+  test-prologue: null
+- name: AttrObj
+  states:
+  - name: Nop
+    test-code: |
+      T_eq_mem( &ctx->attr_obj, &ctx->attr_before, sizeof( ctx->attr_obj ) );
+    text: |
+      The object referenced by the ${../if/mutex-init:/params[1]/name} parameter
+      shall not be modified.
+  test-epilogue: null
+  test-prologue: null
+pre-conditions:
+- name: Pshared
+  states:
+  - name: Private
+    test-code: |
+      ctx->pshared = PTHREAD_PROCESS_PRIVATE;
+    text: |
+      While the ${../glossary/process-shared:/term} of the mutex attributes object is
+      ${../if/process-private:/name}.
+  - name: Shared
+    test-code: |
+      ctx->pshared = PTHREAD_PROCESS_SHARED;
+    text: |
+      While the ${../glossary/process-shared:/term} of the mutex attributes object is
+      ${../if/process-shared:/name}.
+  - name: Invalid
+    test-code: |
+      ctx->pshared = INT_MAX;
+    text: |
+      While the ${../glossary/process-shared:/term} of the mutex attributes object is
+      invalid.
+  test-epilogue: null
+  test-prologue: null
+- name: Protocol
+  states:
+  - name: None
+    test-code: |
+      ctx->protocol = PTHREAD_PRIO_NONE;
+    text: |
+      While the ${../glossary/mutex-protocol:/term} of the mutex attributes object is
+      ${../if/prio-none:/name}.
+  - name: Inherit
+    test-code: |
+      ctx->protocol = PTHREAD_PRIO_INHERIT;
+    text: |
+      While the ${../glossary/mutex-protocol:/term} of the mutex attributes object is
+      ${../if/prio-inherit:/name}.
+  - name: Protect
+    test-code: |
+      ctx->protocol = PTHREAD_PRIO_PROTECT;
+    text: |
+      While the ${../glossary/mutex-protocol:/term} of the mutex attributes object is
+      ${../if/prio-protect:/name}.
+  - name: Invalid
+    test-code: |
+      ctx->protocol = INT_MAX;
+    text: |
+      While the ${../glossary/mutex-protocol:/term} of the mutex attributes object is
+      invalid.
+  test-epilogue: null
+  test-prologue: null
+- name: Type
+  states:
+  - name: Normal
+    test-code: |
+      ctx->type = PTHREAD_MUTEX_NORMAL;
+    text: |
+      While the ${../glossary/mutex-type:/term} of the mutex attributes object is
+      ${../if/mutex-normal:/name}.
+  - name: Recursive
+    test-code: |
+      ctx->type = PTHREAD_MUTEX_RECURSIVE;
+    text: |
+      While the ${../glossary/mutex-type:/term} of the mutex attributes object is
+      ${../if/mutex-recursive:/name}.
+  - name: Errorcheck
+    test-code: |
+      ctx->type = PTHREAD_MUTEX_ERRORCHECK;
+    text: |
+      While the ${../glossary/mutex-type:/term} of the mutex attributes object is
+      ${../if/mutex-errorcheck:/name}.
+  - name: Default
+    test-code: |
+      ctx->type = PTHREAD_MUTEX_DEFAULT;
+    text: |
+      While the ${../glossary/mutex-type:/term} of the mutex attributes object is
+      ${../if/mutex-default:/name}.
+  - name: Invalid
+    test-code: |
+      ctx->type = INT_MAX;
+    text: |
+      While the ${../glossary/mutex-type:/term} of the mutex attributes object is
+      invalid.
+  test-epilogue: null
+  test-prologue: null
+- name: Ceiling
+  states:
+  - name: Default
+    test-code: |
+      ctx->prio_ceiling = INT_MAX;
+    text: |
+      While the ${../glossary/mutex-priority-ceiling:/term} of the mutex attributes
+      object has the default value.
+  - name: Valid
+    test-code: |
+      ctx->prio_ceiling = ToPOSIXPriority( PRIO_HIGH );
+    text: |
+      While the ${../glossary/mutex-priority-ceiling:/term} of the mutex attributes
+      object is a valid ${../glossary/thread-priority:/term}.
+  - name: TooLow
+    test-code: |
+      ctx->prio_ceiling = GetPOSIXPriorityMinimum() - 1;
+    text: |
+      While the ${../glossary/mutex-priority-ceiling:/term} of the mutex attributes
+      object is lower than the minimum ${../glossary/thread-priority:/term}.
+  - name: TooHigh
+    test-code: |
+      ctx->prio_ceiling = GetPOSIXPriorityMaximum() + 1;
+    text: |
+      While the ${../glossary/mutex-priority-ceiling:/term} of the mutex attributes
+      object is higher than the maximum ${../glossary/thread-priority:/term}.
+  test-epilogue: null
+  test-prologue: null
+- name: Attr
+  states:
+  - name: Default
+    test-code: |
+      ctx->attr = NULL;
+    text: |
+      While the ${../if/mutex-init:/params[1]/name} parameter is ${/c/if/null:/name}
+      so that the default attributes are used.
+  - name: Init
+    test-code: |
+      T_eq_int( pthread_mutexattr_init( &ctx->attr_obj ), 0 );
+      ctx->attr_valid = true;
+
+      /*
+       * The pthread_mutexattr_setpshared(), pthread_mutexattr_setprotocol() and
+       * pthread_mutexattr_settype() functions reject invalid values. The
+       * attribute values are written directly into the members of the mutex
+       * attributes object, so that the checks of pthread_mutex_init() can be
+       * reached. The priority ceiling is written the same way for consistency.
+       */
+      ctx->attr_obj.process_shared = ctx->pshared;
+      ctx->attr_obj.protocol = ctx->protocol;
+      ctx->attr_obj.type = ctx->type;
+      ctx->attr_obj.prio_ceiling = ctx->prio_ceiling;
+      ctx->attr = &ctx->attr_obj;
+    text: |
+      While the ${../if/mutex-init:/params[1]/name} parameter references an
+      initialized mutex attributes object.
+  - name: Uninit
+    test-code: |
+      memset( &ctx->attr_obj, 0x0, sizeof( ctx->attr_obj ) );
+      ctx->attr = &ctx->attr_obj;
+    text: |
+      While the ${../if/mutex-init:/params[1]/name} parameter references an mutex
+      attributes object which is not initialized.
+  test-epilogue: null
+  test-prologue: null
+- name: Mutex
+  states:
+  - name: Valid
+    test-code: |
+      ctx->mutex = &ctx->mutex_obj;
+    text: |
+      While the ${../if/mutex-init:/params[0]/name} parameter references an object of
+      type ${/c/if/pthread_mutex_t:/name}.
+  - name: 'Null'
+    test-code: |
+      ctx->mutex = NULL;
+    text: |
+      While the ${../if/mutex-init:/params[0]/name} parameter is ${/c/if/null:/name}.
+  test-epilogue: null
+  test-prologue: null
+rationale: |
+  ${/ref/std/posix-2024/pthread-mutex-init:/name} names
+  ${/c/errno/if/einval:/name} for an attributes object with an invalid value.
+  This gives the Invalid states of pre-conditions Pshared, Protocol and Type, and
+  states TooLow and TooHigh of pre-condition Ceiling for the
+  ${../if/prio-protect:/name} ${../glossary/mutex-protocol:/term}. The standard
+  does not define the behaviour where the ${../if/mutex-init:/params[0]/name}
+  parameter is ${/c/if/null:/name} or where the
+  ${../if/mutex-init:/params[1]/name} parameter references no initialized
+  ${../glossary/mutex:/term} attributes object. State Null of pre-condition Mutex
+  and state Uninit of pre-condition Attr specify the behaviour of RTEMS which
+  returns ${/c/errno/if/einval:/name}.
+
+  The ${../glossary/process-shared:/term}, the
+  ${../glossary/mutex-protocol:/term} and the ${../glossary/mutex-type:/term} are
+  written directly into the members of the ${../glossary/mutex:/term} attributes
+  object. The matching set functions reject the invalid values, so the checks of
+  this function could not be reached through them.
+
+  The post-conditions read the members of the mutex object which
+  ${../if/mutex-init:/name} writes. The ${../if/mutex-normal:/name}, the
+  ${../if/mutex-errorcheck:/name} and the ${../if/mutex-default:/name}
+  ${../glossary/mutex-type:/term} result in the same mutex. RTEMS accepts the
+  ${../if/process-shared:/name} ${../glossary/process-shared:/term} and
+  initializes the same mutex as for ${../if/process-private:/name}, so no
+  post-condition distinguishes the states of pre-condition Pshared.
+
+  The ${../glossary/mutex-priority-ceiling:/term} is only used by the
+  ${../if/prio-protect:/name} ${../glossary/mutex-protocol:/term}. For the other
+  protocols it is neither validated nor applied to the mutex, so the
+  post-conditions Ceiling and Scheduler do not apply to them. The default
+  ${../glossary/mutex-priority-ceiling:/term} selects the highest
+  ${../glossary/thread-priority:/term}. State Valid of pre-condition Ceiling uses
+  the priority which corresponds to the task priority PRIO_HIGH of the test
+  support.
+requirement-type: functional
+skip-reasons: {}
+test-action: |
+  memcpy( &ctx->attr_before, &ctx->attr_obj, sizeof( ctx->attr_before ) );
+  ctx->status = pthread_mutex_init( ctx->mutex, ctx->attr );
+test-brief: null
+test-cleanup: |
+  if ( ctx->attr_valid ) {
+    T_eq_int( pthread_mutexattr_destroy( &ctx->attr_obj ), 0 );
+  }
+
+  if ( ctx->status == 0 ) {
+    T_eq_int( pthread_mutex_destroy( &ctx->mutex_obj ), 0 );
+  }
+test-context:
+- brief: |
+    This member specifies the ${../if/mutex-init:/params[0]/name} parameter value.
+  description: null
+  member: |
+    pthread_mutex_t *mutex
+- brief: |
+    This member specifies the ${../if/mutex-init:/params[1]/name} parameter value.
+  description: null
+  member: |
+    const pthread_mutexattr_t *attr
+- brief: |
+    This member contains the return value of the ${../if/mutex-init:/name} call.
+  description: null
+  member: int status
+- brief: |
+    This member contains the mutex object.
+  description: null
+  member: |
+    pthread_mutex_t mutex_obj
+- brief: |
+    This member contains the initial content of the mutex object.
+  description: null
+  member: |
+    pthread_mutex_t mutex_prefill
+- brief: |
+    This member contains the mutex attributes object.
+  description: null
+  member: |
+    pthread_mutexattr_t attr_obj
+- brief: |
+    This member contains a copy of the ${../glossary/mutex:/term} attributes object
+    before the call.
+  description: null
+  member: pthread_mutexattr_t attr_before
+- brief: |
+    This member contains the home scheduler of the calling ${/glossary/task:/term}.
+  description: null
+  member: const Scheduler_Control *scheduler
+- brief: |
+    This member is true, if the mutex attributes object shall be destroyed by the
+    cleanup step.
+  description: null
+  member: |
+    bool attr_valid
+- brief: |
+    This member specifies the ${../glossary/process-shared:/term} of the mutex
+    attributes object.
+  description: null
+  member: |
+    int pshared
+- brief: |
+    This member specifies the ${../glossary/mutex-protocol:/term} of the mutex
+    attributes object.
+  description: null
+  member: |
+    int protocol
+- brief: |
+    This member specifies the ${../glossary/mutex-type:/term} of the mutex
+    attributes object.
+  description: null
+  member: |
+    int type
+- brief: |
+    This member specifies the ${../glossary/mutex-priority-ceiling:/term} of the
+    mutex attributes object.
+  description: null
+  member: |
+    int prio_ceiling
+test-context-support: null
+test-description: null
+test-header: null
+test-includes:
+- errno.h
+- limits.h
+- pthread.h
+- rtems.h
+- rtems/posix/muteximpl.h
+- rtems/score/schedulerimpl.h
+- rtems/score/threadimpl.h
+- string.h
+test-local-includes:
+- tx-support.h
+test-prepare: |
+  /*
+   * The object is filled with a non-zero pattern.  A mutex object which
+   * consists of zero bytes only would be automatically initialized by the
+   * functions which use a mutex.
+   */
+  memset( &ctx->mutex_obj, 0xa5, sizeof( ctx->mutex_obj ) );
+  memset( &ctx->mutex_prefill, 0xa5, sizeof( ctx->mutex_prefill ) );
+
+  ctx->attr_valid = false;
+  ctx->pshared = PTHREAD_PROCESS_PRIVATE;
+  ctx->protocol = PTHREAD_PRIO_NONE;
+  ctx->type = PTHREAD_MUTEX_DEFAULT;
+  ctx->prio_ceiling = INT_MAX;
+test-setup:
+  brief: null
+  code: |
+    /*
+     * The priority of the runner task must not be higher than the priority
+     * ceiling of the mutexes under test, otherwise the mutexes could not be
+     * locked by the runner task.
+     */
+    SetSelfPriority( PRIO_NORMAL );
+    ctx->scheduler = _Thread_Scheduler_get_home( _Thread_Get_executing() );
+  description: null
+test-stop: null
+test-support: null
+test-target: testsuites/validation/tc-pthread-mutex-init.c
+test-teardown:
+  brief: null
+  code: |
+    RestoreRunnerPriority();
+  description: null
+text: |
+  ${.:text-template}
+transition-map:
+- enabled-by: true
+  post-conditions:
+    Status:
+    - if:
+      - pre-conditions:
+          Mutex: 'Null'
+      - pre-conditions:
+          Attr: Uninit
+      - pre-conditions:
+          Pshared: Invalid
+      - pre-conditions:
+          Protocol: Invalid
+      - pre-conditions:
+          Type: Invalid
+      - pre-conditions:
+          Ceiling:
+          - TooLow
+          - TooHigh
+          Protocol: Protect
+      then: Inval
+    - else: Ok
+    MutexObj:
+    - if:
+        pre-conditions:
+          Mutex: 'Null'
+      then: N/A
+    - if:
+        post-conditions:
+          Status: Ok
+      then: Initialized
+    - else: Nop
+    Protocol:
+    - if:
+        and:
+        - post-conditions:
+            Status: Ok
+        - pre-conditions:
+            Attr: Default
+      then: None
+    - if:
+        post-conditions:
+          Status: Ok
+      then-specified-by: Protocol
+    - else: N/A
+    Recursive:
+    - if:
+        and:
+        - post-conditions:
+            Status: Ok
+        - pre-conditions:
+            Type: Recursive
+      then: 'Yes'
+    - if:
+        post-conditions:
+          Status: Ok
+      then: 'No'
+    - else: N/A
+    Owner:
+    - if:
+        post-conditions:
+          Status: Ok
+      then: None
+    - else: N/A
+    Ceiling:
+    - if:
+        and:
+        - post-conditions:
+            Status: Ok
+        - pre-conditions:
+            Ceiling: Default
+            Protocol: Protect
+      then: Maximum
+    - if:
+        and:
+        - post-conditions:
+            Status: Ok
+        - pre-conditions:
+            Ceiling: Valid
+            Protocol: Protect
+      then: Valid
+    - else: N/A
+    Scheduler:
+    - if:
+        and:
+        - post-conditions:
+            Status: Ok
+        - pre-conditions:
+            Protocol: Protect
+      then: Home
+    - else: N/A
+    AttrObj:
+    - if:
+        pre-conditions:
+          Attr: Default
+      then: N/A
+    - else: Nop
+  pre-conditions:
+    Pshared:
+      applicable:
+        pre-conditions:
+          Attr: Init
+    Protocol:
+      applicable:
+        pre-conditions:
+          Attr: Init
+    Type:
+      applicable:
+        pre-conditions:
+          Attr: Init
+    Ceiling:
+      applicable:
+        pre-conditions:
+          Attr: Init
+          Protocol:
+          - None
+          - Inherit
+          - Protect
+    Attr: all
+    Mutex: all
+type: requirement

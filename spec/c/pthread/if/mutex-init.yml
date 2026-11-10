@@ -1,0 +1,104 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Initialize the ${../glossary/mutex:/term} object referenced by
+  ${.:/params[0]/name} using the attributes object referenced by
+  ${.:/params[1]/name}.
+copyrights:
+- Copyright (C) 2026 OHB System AG
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+  default:
+    attributes: null
+    body: null
+    params:
+    - ${/c/if/pthread_mutex_t:/name} *restrict ${.:/params[0]/name}
+    - const ${/c/if/pthread_mutexattr_t:/name} *restrict ${.:/params[1]/name}
+    return: int
+  variants: []
+description: null
+enabled-by: true
+index-entries: []
+interface-type: function
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+- description: |
+    The ${.:/params[0]/name} parameter is ${/c/if/null:/name}.
+  role: errno
+  uid: /c/errno/if/einval
+- description: |
+    The ${../glossary/mutex:/term} attributes object referenced by
+    ${.:/params[1]/name} is not initialized.
+  role: errno
+  uid: /c/errno/if/einval
+- description: |
+    The ${../glossary/process-shared:/term} of the ${../glossary/mutex:/term}
+    attributes object referenced by ${.:/params[1]/name} is invalid.
+  role: errno
+  uid: /c/errno/if/einval
+- description: |
+    The ${../glossary/mutex-protocol:/term} of the ${../glossary/mutex:/term}
+    attributes object referenced by ${.:/params[1]/name} is invalid.
+  role: errno
+  uid: /c/errno/if/einval
+- description: |
+    The ${../glossary/mutex-type:/term} of the ${../glossary/mutex:/term}
+    attributes object referenced by ${.:/params[1]/name} is invalid.
+  role: errno
+  uid: /c/errno/if/einval
+- description: |
+    The ${../glossary/mutex-protocol:/term} of the ${../glossary/mutex:/term}
+    attributes object referenced by ${.:/params[1]/name} is
+    ${../if/prio-protect:/name} and its ${../glossary/mutex-priority-ceiling:/term}
+    is not a valid ${../glossary/thread-priority:/term}.
+  role: errno
+  uid: /c/errno/if/einval
+- role: reference
+  uid: /ref/std/posix-2024/pthread-mutex-init
+name: pthread_mutex_init
+notes: |
+  See ${/ref/std/posix-2024/pthread-mutex-init:/name}.
+params:
+- description: |
+    is the pointer to the ${../glossary/mutex:/term} to initialize.
+  dir: out
+  name: mutex
+- description: |
+    is the pointer to the ${../glossary/mutex:/term} attributes object, or
+    ${/c/if/null:/name} to use the default attributes.
+  dir: in
+  name: attr
+return:
+  return: null
+  return-values:
+  - description: |
+      The requested operation was successful.
+    value: 0
+  - description: |
+      The ${../glossary/mutex:/term} parameter was ${/c/if/null:/name}.
+    value: ${/c/errno/if/einval:/name}
+  - description: |
+      The ${../glossary/mutex:/term} attributes object referenced by
+      ${.:/params[1]/name} was not initialized.
+    value: ${/c/errno/if/einval:/name}
+  - description: |
+      The ${../glossary/process-shared:/term} of the ${../glossary/mutex:/term}
+      attributes object referenced by ${.:/params[1]/name} was invalid.
+    value: ${/c/errno/if/einval:/name}
+  - description: |
+      The ${../glossary/mutex-protocol:/term} of the ${../glossary/mutex:/term}
+      attributes object referenced by ${.:/params[1]/name} was invalid.
+    value: ${/c/errno/if/einval:/name}
+  - description: |
+      The ${../glossary/mutex-type:/term} of the ${../glossary/mutex:/term}
+      attributes object referenced by ${.:/params[1]/name} was invalid.
+    value: ${/c/errno/if/einval:/name}
+  - description: |
+      The ${../glossary/mutex-protocol:/term} of the ${../glossary/mutex:/term}
+      attributes object referenced by ${.:/params[1]/name} was
+      ${../if/prio-protect:/name} and its ${../glossary/mutex-priority-ceiling:/term}
+      was not valid ${../glossary/thread-priority:/term}
+    value: ${/c/errno/if/einval:/name}
+type: interface

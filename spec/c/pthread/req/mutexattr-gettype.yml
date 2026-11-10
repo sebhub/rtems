@@ -1,0 +1,276 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 OHB System AG
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: action
+links:
+- role: interface-function
+  uid: ../if/mutexattr-gettype
+- role: requirement-refinement
+  uid: ../../req/group-posix-api
+- role: reference
+  uid: /ref/std/posix-2024/pthread-mutexattr-gettype
+post-conditions:
+- name: Status
+  states:
+  - name: Ok
+    test-code: |
+      T_eq_int( ctx->status, 0 );
+    text: |
+      The ${/glossary/returnvalue:/term} of ${../if/mutexattr-gettype:/name} shall be
+      zero.
+  - name: Inval
+    test-code: |
+      T_eq_int( ctx->status, EINVAL );
+    text: |
+      The ${/glossary/returnvalue:/term} of ${../if/mutexattr-gettype:/name} shall be
+      ${/c/errno/if/einval:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: Type
+  states:
+  - name: Normal
+    test-code: |
+      T_eq_int( ctx->type_obj, PTHREAD_MUTEX_NORMAL );
+    text: |
+      The object referenced by the ${../if/mutexattr-gettype:/params[1]/name}
+      parameter shall be ${../if/mutex-normal:/name}.
+  - name: Recursive
+    test-code: |
+      T_eq_int( ctx->type_obj, PTHREAD_MUTEX_RECURSIVE );
+    text: |
+      The object referenced by the ${../if/mutexattr-gettype:/params[1]/name}
+      parameter shall be ${../if/mutex-recursive:/name}.
+  - name: Errorcheck
+    test-code: |
+      T_eq_int( ctx->type_obj, PTHREAD_MUTEX_ERRORCHECK );
+    text: |
+      The object referenced by the ${../if/mutexattr-gettype:/params[1]/name}
+      parameter shall be ${../if/mutex-errorcheck:/name}.
+  - name: Default
+    test-code: |
+      T_eq_int( ctx->type_obj, PTHREAD_MUTEX_DEFAULT );
+    text: |
+      The object referenced by the ${../if/mutexattr-gettype:/params[1]/name}
+      parameter shall be ${../if/mutex-default:/name}.
+  - name: Nop
+    test-code: |
+      T_eq_int( ctx->type_obj, POISON );
+    text: |
+      The object referenced by the ${../if/mutexattr-gettype:/params[1]/name}
+      parameter shall not be modified.
+  test-epilogue: null
+  test-prologue: null
+- name: Attr
+  states:
+  - name: Nop
+    test-code: |
+      T_eq_mem( &ctx->attr_obj, &ctx->attr_before, sizeof( ctx->attr_obj ) );
+    text: |
+      The object referenced by the ${../if/mutexattr-gettype:/params[0]/name}
+      parameter shall not be modified.
+  test-epilogue: null
+  test-prologue: null
+pre-conditions:
+- name: Attr
+  states:
+  - name: Obj
+    test-code: |
+      ctx->attr = &ctx->attr_obj;
+    text: |
+      While the ${../if/mutexattr-gettype:/params[0]/name} parameter references an
+      object of type ${/c/if/pthread_mutexattr_t:/name}.
+  - name: 'Null'
+    test-code: |
+      ctx->attr = NULL;
+    text: |
+      While the ${../if/mutexattr-gettype:/params[0]/name} parameter is
+      ${/c/if/null:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: Initialized
+  states:
+  - name: 'Yes'
+    test-code: |
+      T_eno_success( pthread_mutexattr_init( &ctx->attr_obj ) );
+    text: |
+      While the object referenced by the ${../if/mutexattr-gettype:/params[0]/name}
+      parameter is an initialized ${../glossary/mutex:/term} attributes object.
+  - name: 'No'
+    test-code: |
+      memset( &ctx->attr_obj, 0, sizeof( ctx->attr_obj ) );
+    text: |
+      While the object referenced by the ${../if/mutexattr-gettype:/params[0]/name}
+      parameter is not an initialized ${../glossary/mutex:/term} attributes object.
+  test-epilogue: null
+  test-prologue: null
+- name: StoredType
+  states:
+  - name: Normal
+    test-code: |
+      ctx->attr_obj.type = PTHREAD_MUTEX_NORMAL;
+    text: |
+      While the ${../glossary/mutex-type:/term} of the object referenced by the
+      ${../if/mutexattr-gettype:/params[0]/name} parameter is
+      ${../if/mutex-normal:/name}.
+  - name: Recursive
+    test-code: |
+      ctx->attr_obj.type = PTHREAD_MUTEX_RECURSIVE;
+    text: |
+      While the ${../glossary/mutex-type:/term} of the object referenced by the
+      ${../if/mutexattr-gettype:/params[0]/name} parameter is
+      ${../if/mutex-recursive:/name}.
+  - name: Errorcheck
+    test-code: |
+      ctx->attr_obj.type = PTHREAD_MUTEX_ERRORCHECK;
+    text: |
+      While the ${../glossary/mutex-type:/term} of the object referenced by the
+      ${../if/mutexattr-gettype:/params[0]/name} parameter is
+      ${../if/mutex-errorcheck:/name}.
+  - name: Default
+    test-code: |
+      ctx->attr_obj.type = PTHREAD_MUTEX_DEFAULT;
+    text: |
+      While the ${../glossary/mutex-type:/term} of the object referenced by the
+      ${../if/mutexattr-gettype:/params[0]/name} parameter is
+      ${../if/mutex-default:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: Type
+  states:
+  - name: Obj
+    test-code: |
+      ctx->type_obj = POISON;
+      ctx->type = &ctx->type_obj;
+    text: |
+      While the ${../if/mutexattr-gettype:/params[1]/name} parameter references an
+      object of type int.
+  - name: 'Null'
+    test-code: |
+      ctx->type = NULL;
+    text: |
+      While the ${../if/mutexattr-gettype:/params[1]/name} parameter is
+      ${/c/if/null:/name}.
+  test-epilogue: null
+  test-prologue: null
+rationale: |
+  ${/ref/std/posix-2024/pthread-mutexattr-gettype:/name} specifies that
+  ${../if/mutexattr-gettype:/name} stores the ${../glossary/mutex-type:/term} in
+  the object referenced by the ${../if/mutexattr-gettype:/params[1]/name}
+  parameter. This gives post-condition Type. The states of pre-condition
+  StoredType are the values which RTEMS supports for this attribute.
+
+  The standard does not define the behaviour where the
+  ${../if/mutexattr-gettype:/params[1]/name} parameter is ${/c/if/null:/name}.
+  The ${/c/if/null:/name} state of pre-condition Type specifies the behaviour of
+  RTEMS which returns ${/c/errno/if/einval:/name}.
+
+  The standard leaves the behaviour undefined where the
+  ${../if/mutexattr-gettype:/params[0]/name} parameter references no initialized
+  ${../glossary/mutex:/term} attributes object. It recommends
+  ${/c/errno/if/einval:/name} for that case. State Null of pre-condition Attr and
+  state No of pre-condition Initialized specify the behaviour of RTEMS which
+  follows that recommendation.
+
+  ${../if/mutexattr-gettype:/name} does not write the ${../glossary/mutex:/term}
+  attributes object, which post-condition Attr specifies.
+requirement-type: functional
+skip-reasons: {}
+test-action: |
+  memcpy( &ctx->attr_before, &ctx->attr_obj, sizeof( ctx->attr_before ) );
+  ctx->status = pthread_mutexattr_gettype( ctx->attr, ctx->type );
+test-brief: null
+test-cleanup: null
+test-context:
+- brief: |
+    This member specifies the ${../if/mutexattr-gettype:/params[0]/name} parameter
+    value.
+  description: null
+  member: const pthread_mutexattr_t *attr
+- brief: |
+    This member specifies the ${../if/mutexattr-gettype:/params[1]/name} parameter
+    value.
+  description: null
+  member: int *type
+- brief: |
+    This member contains the return value of the ${../if/mutexattr-gettype:/name}
+    call.
+  description: null
+  member: int status
+- brief: |
+    This member contains the ${../glossary/mutex:/term} attributes object.
+  description: null
+  member: pthread_mutexattr_t attr_obj
+- brief: |
+    This member contains a copy of the ${../glossary/mutex:/term} attributes object
+    before the call.
+  description: null
+  member: pthread_mutexattr_t attr_before
+- brief: |
+    This member contains the object referenced by the
+    ${../if/mutexattr-gettype:/params[1]/name} parameter.
+  description: null
+  member: int type_obj
+test-context-support: null
+test-description: null
+test-header: null
+test-includes:
+- errno.h
+- pthread.h
+- string.h
+test-local-includes: []
+test-prepare: null
+test-setup: null
+test-stop: null
+test-support: |
+  #define POISON -1
+test-target: testsuites/validation/tc-pthread-mutexattr-gettype.c
+test-teardown: null
+text: |
+  ${.:text-template}
+transition-map:
+- enabled-by: true
+  post-conditions:
+    Status:
+    - if:
+        pre-conditions:
+          Attr: 'Null'
+      then: Inval
+    - if:
+        pre-conditions:
+          Initialized: 'No'
+      then: Inval
+    - if:
+        pre-conditions:
+          Type: 'Null'
+      then: Inval
+    - else: Ok
+    Type:
+    - if:
+        pre-conditions:
+          Type: 'Null'
+      then: N/A
+    - if:
+        post-conditions:
+          Status: Ok
+      then-specified-by: StoredType
+    - else: Nop
+    Attr:
+    - if:
+        pre-conditions:
+          Attr: 'Null'
+      then: N/A
+    - else: Nop
+  pre-conditions:
+    Attr: all
+    Initialized:
+      applicable:
+        pre-conditions:
+          Attr: Obj
+    StoredType:
+      applicable:
+        pre-conditions:
+          Attr: Obj
+    Type: all
+type: requirement
