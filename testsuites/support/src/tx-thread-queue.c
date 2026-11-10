@@ -45,6 +45,9 @@
 
 #include <rtems/score/threadimpl.h>
 #include <rtems/rtems/semimpl.h>
+#include <rtems/posix/muteximpl.h>
+
+#include <pthread.h>
 
 void TQSend( TQContext *ctx, TQWorkerKind worker, rtems_event_set events )
 {
@@ -883,4 +886,36 @@ void TQSemSetCountClassic( TQSemContext *ctx, uint32_t count )
   T_assert_not_null( semaphore );
   semaphore->Core_control.Semaphore.count = count;
   _ISR_lock_ISR_enable( &queue_context.Lock_context.Lock_context );
+}
+
+Status_Control TQEnqueuePOSIXMutex( TQContext *ctx, TQWait wait )
+{
+  struct timespec abstime;
+  int             eno;
+
+  switch ( wait ) {
+    case TQ_WAIT_FOREVER:
+      eno = pthread_mutex_lock( ctx->thread_queue_object );
+      break;
+    case TQ_WAIT_TIMED:
+      abstime.tv_sec = INT64_MAX;
+      abstime.tv_nsec = 0;
+      eno = pthread_mutex_timedlock( ctx->thread_queue_object, &abstime );
+      break;
+    default:
+      eno = pthread_mutex_trylock( ctx->thread_queue_object );
+      break;
+  }
+
+  return STATUS_BUILD( 0, eno );
+}
+
+Status_Control TQSurrenderPOSIXMutex( TQContext *ctx )
+{
+  return STATUS_BUILD( 0, pthread_mutex_unlock( ctx->thread_queue_object ) );
+}
+
+rtems_tcb *TQGetOwnerPOSIXMutex( TQContext *ctx )
+{
+  return _POSIX_Mutex_Get_owner( ctx->thread_queue_object );
 }

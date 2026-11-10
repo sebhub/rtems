@@ -545,6 +545,45 @@ rtems_task_priority SetSelfPriority( rtems_task_priority priority );
 rtems_task_priority SetSelfPriorityNoYield( rtems_task_priority priority );
 
 /**
+ * @brief Converts an RTEMS task priority to the equivalent POSIX thread
+ * priority.
+ *
+ * RTEMS task priorities and POSIX thread priorities use opposite ordering.
+ * The POSIX API normally converts priorities relative to the home scheduler
+ * of the calling thread. This function performs the inverse conversion and
+ * returns the POSIX thread priority corresponding to the specified RTEMS
+ * task priority in the home scheduler of the calling thread.
+ *
+ * @param priority The RTEMS task priority to convert.
+ *
+ * @return The equivalent POSIX thread priority.
+ */
+int ToPOSIXPriority( rtems_task_priority priority );
+
+/**
+ * @brief Gets the minimum POSIX thread priority.
+ *
+ * The function returns the value which sched_get_priority_min() returns for
+ * SCHED_FIFO.  It does not call this function, so that the tests need no
+ * source of the sched_get_priority_min() function.
+ *
+ * @return Returns the minimum POSIX thread priority.
+ */
+int GetPOSIXPriorityMinimum( void );
+
+/**
+ * @brief Gets the maximum POSIX thread priority.
+ *
+ * The function returns the value which sched_get_priority_max() returns for
+ * SCHED_FIFO in the home scheduler of the calling thread.  It does not call
+ * this function, so that the tests need no source of the
+ * sched_get_priority_max() function.
+ *
+ * @return Returns the maximum POSIX thread priority.
+ */
+int GetPOSIXPriorityMaximum( void );
+
+/**
  * @brief Gets the home scheduler of the task.
  *
  * The test records a failure, if rtems_task_get_scheduler() does not succeed.
