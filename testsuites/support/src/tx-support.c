@@ -42,9 +42,11 @@
 
 #include <rtems/bspIo.h>
 #include <rtems/test.h>
+#include <rtems/posix/priorityimpl.h>
 #include <rtems/score/isrlevel.h>
 #include <rtems/score/objectimpl.h>
 #include <rtems/score/percpu.h>
+#include <rtems/score/schedulerimpl.h>
 #include <rtems/score/smpimpl.h>
 #include <rtems/score/threaddispatch.h>
 #include <rtems/score/threadimpl.h>
@@ -318,6 +320,30 @@ rtems_task_priority SetSelfPriorityNoYield( rtems_task_priority priority )
   DeleteMutex( id );
 
   return priority;
+}
+
+int ToPOSIXPriority( rtems_task_priority priority )
+{
+  const Scheduler_Control *scheduler;
+
+  scheduler = _Thread_Scheduler_get_home( _Thread_Get_executing() );
+
+  return _POSIX_Priority_From_core(
+    scheduler,
+    _Scheduler_Map_priority( scheduler, priority )
+  );
+}
+
+int GetPOSIXPriorityMinimum( void )
+{
+  return POSIX_SCHEDULER_MINIMUM_PRIORITY;
+}
+
+int GetPOSIXPriorityMaximum( void )
+{
+  return _POSIX_Priority_Get_maximum(
+    _Thread_Scheduler_get_home( _Thread_Get_executing() )
+  );
 }
 
 rtems_id GetScheduler( rtems_id id )

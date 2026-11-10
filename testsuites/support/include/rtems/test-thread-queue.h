@@ -1078,6 +1078,40 @@ void TQFlush( TQContext *ctx, bool flush_all );
 rtems_tcb *TQGetOwner( TQContext *ctx );
 
 /**
+ * @brief Locks the POSIX mutex of the test context.
+ *
+ * TQ_WAIT_FOREVER uses pthread_mutex_lock(). TQ_WAIT_TIMED uses
+ * pthread_mutex_timedlock() with the longest timeout. TQ_NO_WAIT uses
+ * pthread_mutex_trylock().
+ *
+ * @param ctx is the thread queue test context.
+ * @param wait is the wait behaviour of the lock.
+ *
+ * @return Returns a status with the error number of the function as its POSIX
+ *   part.
+ */
+Status_Control TQEnqueuePOSIXMutex( TQContext *ctx, TQWait wait );
+
+/**
+ * @brief Unlocks the POSIX mutex of the test context.
+ *
+ * @param ctx is the thread queue test context.
+ *
+ * @return Returns a status with the error number of pthread_mutex_unlock() as
+ *   its POSIX part.
+ */
+Status_Control TQSurrenderPOSIXMutex( TQContext *ctx );
+
+/**
+ * @brief Gets the owner of the POSIX mutex of the test context.
+ *
+ * @param ctx is the thread queue test context.
+ *
+ * @return Returns the owner, or NULL if no thread owns the mutex.
+ */
+rtems_tcb *TQGetOwnerPOSIXMutex( TQContext *ctx );
+
+/**
  * @brief Starts to record the scheduler operations in the scheduler log of the
  *   test context.
  *
