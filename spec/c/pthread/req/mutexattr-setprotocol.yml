@@ -1,0 +1,252 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 OHB System AG
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: action
+links:
+- role: interface-function
+  uid: ../if/mutexattr-setprotocol
+- role: requirement-refinement
+  uid: ../../req/group-posix-api
+- role: reference
+  uid: /ref/std/posix-2024/pthread-mutexattr-setprotocol
+post-conditions:
+- name: Status
+  states:
+  - name: Ok
+    test-code: |
+      T_eq_int( ctx->status, 0 );
+    text: |
+      The ${/glossary/returnvalue:/term} of ${../if/mutexattr-setprotocol:/name}
+      shall be zero.
+  - name: Inval
+    test-code: |
+      T_eq_int( ctx->status, EINVAL );
+    text: |
+      The ${/glossary/returnvalue:/term} of ${../if/mutexattr-setprotocol:/name}
+      shall be ${/c/errno/if/einval:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: Protocol
+  states:
+  - name: None
+    test-code: |
+      T_eq_int( ctx->attr_obj.protocol, PTHREAD_PRIO_NONE );
+    text: |
+      The ${../glossary/mutex-protocol:/term} of the ${../glossary/mutex:/term}
+      attributes object referenced by the
+      ${../if/mutexattr-setprotocol:/params[0]/name} parameter shall be
+      ${../if/prio-none:/name}.
+  - name: Inherit
+    test-code: |
+      T_eq_int( ctx->attr_obj.protocol, PTHREAD_PRIO_INHERIT );
+    text: |
+      The ${../glossary/mutex-protocol:/term} of the ${../glossary/mutex:/term}
+      attributes object referenced by the
+      ${../if/mutexattr-setprotocol:/params[0]/name} parameter shall be
+      ${../if/prio-inherit:/name}.
+  - name: Protect
+    test-code: |
+      T_eq_int( ctx->attr_obj.protocol, PTHREAD_PRIO_PROTECT );
+    text: |
+      The ${../glossary/mutex-protocol:/term} of the ${../glossary/mutex:/term}
+      attributes object referenced by the
+      ${../if/mutexattr-setprotocol:/params[0]/name} parameter shall be
+      ${../if/prio-protect:/name}.
+  - name: Nop
+    test-code: |
+      T_eq_int( ctx->attr_obj.protocol, ctx->attr_before.protocol );
+    text: |
+      The ${../glossary/mutex-protocol:/term} of the ${../glossary/mutex:/term}
+      attributes object referenced by the
+      ${../if/mutexattr-setprotocol:/params[0]/name} parameter shall not be modified.
+  test-epilogue: null
+  test-prologue: null
+- name: Other
+  states:
+  - name: Nop
+    test-code: |
+      pthread_mutexattr_t expected;
+
+      memcpy( &expected, &ctx->attr_before, sizeof( expected ) );
+      expected.protocol = ctx->attr_obj.protocol;
+      T_eq_mem( &ctx->attr_obj, &expected, sizeof( expected ) );
+    text: |
+      The content of the ${../glossary/mutex:/term} attributes object referenced by
+      the ${../if/mutexattr-setprotocol:/params[0]/name} parameter, other than its
+      ${../glossary/mutex-protocol:/term}, shall not be modified.
+  test-epilogue: null
+  test-prologue: null
+pre-conditions:
+- name: Attr
+  states:
+  - name: Obj
+    test-code: |
+      ctx->attr = &ctx->attr_obj;
+    text: |
+      While the ${../if/mutexattr-setprotocol:/params[0]/name} parameter references
+      an object of type ${/c/if/pthread_mutexattr_t:/name}.
+  - name: 'Null'
+    test-code: |
+      ctx->attr = NULL;
+    text: |
+      While the ${../if/mutexattr-setprotocol:/params[0]/name} parameter is
+      ${/c/if/null:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: Initialized
+  states:
+  - name: 'Yes'
+    test-code: |
+      T_eno_success( pthread_mutexattr_init( &ctx->attr_obj ) );
+      ctx->attr_obj.protocol = -1;
+    text: |
+      While the object referenced by the
+      ${../if/mutexattr-setprotocol:/params[0]/name} parameter is an initialized
+      ${../glossary/mutex:/term} attributes object.
+  - name: 'No'
+    test-code: |
+      memset( &ctx->attr_obj, 0, sizeof( ctx->attr_obj ) );
+      ctx->attr_obj.protocol = -1;
+    text: |
+      While the object referenced by the
+      ${../if/mutexattr-setprotocol:/params[0]/name} parameter is not an initialized
+      ${../glossary/mutex:/term} attributes object.
+  test-epilogue: null
+  test-prologue: null
+- name: Protocol
+  states:
+  - name: None
+    test-code: |
+      ctx->protocol = PTHREAD_PRIO_NONE;
+    text: |
+      While the ${../if/mutexattr-setprotocol:/params[1]/name} parameter is equal to
+      ${../if/prio-none:/name}.
+  - name: Inherit
+    test-code: |
+      ctx->protocol = PTHREAD_PRIO_INHERIT;
+    text: |
+      While the ${../if/mutexattr-setprotocol:/params[1]/name} parameter is equal to
+      ${../if/prio-inherit:/name}.
+  - name: Protect
+    test-code: |
+      ctx->protocol = PTHREAD_PRIO_PROTECT;
+    text: |
+      While the ${../if/mutexattr-setprotocol:/params[1]/name} parameter is equal to
+      ${../if/prio-protect:/name}.
+  - name: Invalid
+    test-code: |
+      ctx->protocol = PROTOCOL_INVALID;
+    text: |
+      While the ${../if/mutexattr-setprotocol:/params[1]/name} parameter is not a
+      valid ${../glossary/mutex-protocol:/term}.
+  test-epilogue: null
+  test-prologue: null
+rationale: |
+  ${/ref/std/posix-2024/pthread-mutexattr-setprotocol:/name} permits
+  ${/c/errno/if/einval:/name} for an invalid value of the
+  ${../if/mutexattr-setprotocol:/params[1]/name} parameter. RTEMS supports all
+  three protocols of the standard, which give the states of pre-condition
+  Protocol besides state Invalid, so the error for an unsupported protocol does
+  not apply.
+
+  The standard leaves the behaviour undefined where the
+  ${../if/mutexattr-setprotocol:/params[0]/name} parameter references no
+  initialized ${../glossary/mutex:/term} attributes object. It recommends
+  ${/c/errno/if/einval:/name} for that case. State Null of pre-condition Attr and
+  state No of pre-condition Initialized specify the behaviour of RTEMS which
+  follows that recommendation.
+
+  ${../if/mutexattr-setprotocol:/name} writes no other member of the object,
+  which post-condition Other specifies.
+requirement-type: functional
+skip-reasons: {}
+test-action: |
+  memcpy( &ctx->attr_before, &ctx->attr_obj, sizeof( ctx->attr_before ) );
+  ctx->status = pthread_mutexattr_setprotocol( ctx->attr, ctx->protocol );
+test-brief: null
+test-cleanup: null
+test-context:
+- brief: |
+    This member specifies the ${../if/mutexattr-setprotocol:/params[0]/name}
+    parameter value.
+  description: null
+  member: pthread_mutexattr_t *attr
+- brief: |
+    This member specifies the ${../if/mutexattr-setprotocol:/params[1]/name}
+    parameter value.
+  description: null
+  member: int protocol
+- brief: |
+    This member contains the return value of the
+    ${../if/mutexattr-setprotocol:/name} call.
+  description: null
+  member: int status
+- brief: |
+    This member contains the ${../glossary/mutex:/term} attributes object.
+  description: null
+  member: pthread_mutexattr_t attr_obj
+- brief: |
+    This member contains a copy of the ${../glossary/mutex:/term} attributes object
+    before the call.
+  description: null
+  member: pthread_mutexattr_t attr_before
+test-context-support: null
+test-description: null
+test-header: null
+test-includes:
+- errno.h
+- pthread.h
+- string.h
+test-local-includes: []
+test-prepare: null
+test-setup: null
+test-stop: null
+test-support: |
+  #define PROTOCOL_INVALID 123
+test-target: testsuites/validation/tc-pthread-mutexattr-setprotocol.c
+test-teardown: null
+text: |
+  ${.:text-template}
+transition-map:
+- enabled-by: true
+  post-conditions:
+    Status:
+    - if:
+        pre-conditions:
+          Attr: 'Null'
+      then: Inval
+    - if:
+        pre-conditions:
+          Initialized: 'No'
+      then: Inval
+    - if:
+        pre-conditions:
+          Protocol: Invalid
+      then: Inval
+    - else: Ok
+    Protocol:
+    - if:
+        pre-conditions:
+          Attr: 'Null'
+      then: N/A
+    - if:
+        post-conditions:
+          Status: Ok
+      then-specified-by: Protocol
+    - else: Nop
+    Other:
+    - if:
+        pre-conditions:
+          Attr: 'Null'
+      then: N/A
+    - else: Nop
+  pre-conditions:
+    Attr: all
+    Initialized:
+      applicable:
+        pre-conditions:
+          Attr: Obj
+    Protocol: all
+type: requirement

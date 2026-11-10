@@ -1,0 +1,101 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Attempt to lock the ${../glossary/mutex:/term} object referenced by
+  ${.:/params[0]/name} without blocking.
+copyrights:
+- Copyright (C) 2026 OHB System AG
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+  default:
+    attributes: null
+    body: null
+    params:
+    - ${/c/if/pthread_mutex_t:/name} *${.:/params[0]/name}
+    return: int
+  variants: []
+description: null
+enabled-by: true
+index-entries: []
+interface-type: function
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+- description: |
+    The ${.:/params[0]/name} parameter is ${/c/if/null:/name}.
+  role: errno
+  uid: /c/errno/if/einval
+- description: |
+    The ${../glossary/mutex:/term} referenced by the ${.:/params[0]/name} parameter
+    is not initialized and is not statically initialized by
+    ${../if/mutex-initializer:/name}.
+  role: errno
+  uid: /c/errno/if/einval
+- description: |
+    The ${../glossary/mutex-protocol:/term} of the ${../glossary/mutex:/term} is
+    ${../if/prio-protect:/name} and the current priority of the calling thread is
+    higher than the ${../glossary/mutex-priority-ceiling:/term} of the
+    ${../glossary/mutex:/term}.
+  role: errno
+  uid: /c/errno/if/einval
+- description: |
+    The ${../glossary/mutex-protocol:/term} of the ${../glossary/mutex:/term} is
+    ${../if/prio-protect:/name}, the ${../glossary/mutex:/term} is not owned, and
+    the home scheduler of the calling thread is not the scheduler of the
+    ${../glossary/mutex:/term}.
+  role: errno
+  uid: /c/errno/if/einval
+- description: |
+    The ${../glossary/mutex:/term} is owned by another thread.
+  role: errno
+  uid: /c/errno/if/ebusy
+- description: |
+    The calling thread owns the ${../glossary/mutex:/term} and the
+    ${../glossary/mutex-type:/term} is not ${../if/mutex-recursive:/name}
+  role: errno
+  uid: /c/errno/if/ebusy
+- role: reference
+  uid: /ref/std/posix-2024/pthread-mutex-trylock
+name: pthread_mutex_trylock
+notes: |
+  See ${/ref/std/posix-2024/pthread-mutex-trylock:/name}.
+params:
+- description: |
+    is the pointer to the ${../glossary/mutex:/term} to try to lock.
+  dir: inout
+  name: mutex
+return:
+  return: null
+  return-values:
+  - description: |
+      The requested operation was successful.
+    value: 0
+  - description: |
+      The ${.:/params[0]/name} parameter was ${/c/if/null:/name}.
+    value: ${/c/errno/if/einval:/name}
+  - description: |
+      The ${../glossary/mutex:/term} referenced by the ${.:/params[0]/name} parameter
+      was not initialized and was not statically initialized by
+      ${../if/mutex-initializer:/name}.
+    value: ${/c/errno/if/einval:/name}
+  - description: |
+      The ${../glossary/mutex-protocol:/term} of the ${../glossary/mutex:/term} was
+      ${../if/prio-protect:/name}, the ${../glossary/mutex:/term} was not owned, and
+      the current priority of the calling thread was higher than the
+      ${../glossary/mutex-priority-ceiling:/term} of the ${../glossary/mutex:/term}.
+    value: ${/c/errno/if/einval:/name}
+  - description: |
+      The ${../glossary/mutex-protocol:/term} of the ${../glossary/mutex:/term} was
+      ${../if/prio-protect:/name}, the ${../glossary/mutex:/term} was not owned, and
+      the home scheduler of the calling thread was not the scheduler of the
+      ${../glossary/mutex:/term}.
+    value: ${/c/errno/if/einval:/name}
+  - description: |
+      The ${../glossary/mutex:/term} was owned by another thread.
+    value: ${/c/errno/if/ebusy:/name}
+  - description: |
+      The calling thread owned the ${../glossary/mutex:/term} and the
+      ${../glossary/mutex-type:/term} was not ${../if/mutex-recursive:/name}.
+    value: ${/c/errno/if/ebusy:/name}
+type: interface

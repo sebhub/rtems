@@ -1,0 +1,63 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Set the ${../glossary/mutex-priority-ceiling:/term} of the
+  ${../glossary/mutex:/term} attributes object referenced by ${.:/params[0]/name}
+  to the value specified by ${.:/params[1]/name}.
+copyrights:
+- Copyright (C) 2026 OHB System AG
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+  default:
+    attributes: null
+    body: null
+    params:
+    - ${/c/if/pthread_mutexattr_t:/name} *${.:/params[0]/name}
+    - int ${.:/params[1]/name}
+    return: int
+  variants: []
+description: null
+enabled-by: true
+index-entries: []
+interface-type: function
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+- description: |
+    The ${.:/params[0]/name} parameter is ${/c/if/null:/name}.
+  role: errno
+  uid: /c/errno/if/einval
+- description: |
+    The ${../glossary/mutex:/term} attributes object referenced by the
+    ${.:/params[0]/name} parameter is not initialized.
+  role: errno
+  uid: /c/errno/if/einval
+- role: reference
+  uid: /ref/std/posix-2024/pthread-mutexattr-setprioceiling
+name: pthread_mutexattr_setprioceiling
+notes: |
+  See ${/ref/std/posix-2024/pthread-mutexattr-setprioceiling:/name}.
+params:
+- description: |
+    is the pointer to the ${../glossary/mutex:/term} attributes object.
+  dir: inout
+  name: attr
+- description: |
+    is the new ${../glossary/mutex-priority-ceiling:/term}.
+  dir: null
+  name: prioceiling
+return:
+  return: null
+  return-values:
+  - description: |
+      The requested operation was successful.
+    value: 0
+  - description: |
+      The ${.:/params[0]/name} parameter was ${/c/if/null:/name}.
+    value: ${/c/errno/if/einval:/name}
+  - description: |
+      The ${../glossary/mutex:/term} attributes object referenced by the
+      ${.:/params[0]/name} parameter was not initialized.
+    value: ${/c/errno/if/einval:/name}
+type: interface
