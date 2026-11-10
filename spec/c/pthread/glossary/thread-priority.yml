@@ -1,0 +1,21 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 OHB System AG
+enabled-by: true
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+- role: reference
+  uid: /ref/std/posix-2024/sched-h
+term: thread priority
+text: |
+  The ${/c/sched/glossary/priority:/term} of a thread. Thread priorities are
+  integers in the range of the minimum and maximum priority of the
+  ${/c/sched/glossary/policy:/term}, where a numerically greater value is a
+  ${/glossary/priority-higher:/term}. A thread priority is mapped to the
+  ${/glossary/priority-task:/term} of the underlying ${/glossary/task:/term}
+  where a numerically smaller value is a ${/glossary/priority-higher:/term}.
+  Requirements of the ${../if/group:/name} express priorities as thread
+  priorities unless stated otherwise. See ${/ref/std/posix-2024/sched-h:/name}.
+type: glossary

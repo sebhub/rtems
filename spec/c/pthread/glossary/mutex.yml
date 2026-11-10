@@ -1,0 +1,16 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 OHB System AG
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+- role: reference
+  uid: /ref/std/posix-2024/pthread-mutex-init
+term: mutex
+text: |
+  A synchronization object used to allow multiple threads to serialize their
+  access to shared data. See ${/ref/std/posix-2024/pthread-mutex-init:/name}.
+type: glossary
