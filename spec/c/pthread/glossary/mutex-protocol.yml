@@ -1,0 +1,18 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 OHB System AG
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+glossary-type: term
+links:
+- role: glossary-member
+  uid: group
+- role: reference
+  uid: /ref/std/posix-2024/pthread-mutexattr-getprotocol
+term: mutex protocol attribute
+text: |
+  An attribute of a ${mutex:/term} that specifies its scheduling protocol. See
+  ${/ref/std/posix-2024/pthread-mutexattr-getprotocol:/name}. This attribute can
+  be set to ${../if/prio-none:/name}, ${../if/prio-inherit:/name}, or
+  ${../if/prio-protect:/name}.
+type: glossary
