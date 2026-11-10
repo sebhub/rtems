@@ -97,6 +97,7 @@ install:
   - cpukit/include/rtems/dev/io.h
 - destination: ${BSP_INCLUDEDIR}/rtems/posix
   source:
+  - cpukit/include/rtems/posix/muteximpl.h
   - cpukit/include/rtems/posix/posixapi.h
   - cpukit/include/rtems/posix/priorityimpl.h
   - cpukit/include/rtems/posix/pthread.h
@@ -351,6 +352,26 @@ source:
 - cpukit/posix/src/clockgetres.c
 - cpukit/posix/src/clockgettime.c
 - cpukit/posix/src/clocknanosleep.c
+- cpukit/posix/src/mutexattrdestroy.c
+- cpukit/posix/src/mutexattrgetprioceiling.c
+- cpukit/posix/src/mutexattrgetprotocol.c
+- cpukit/posix/src/mutexattrgetpshared.c
+- cpukit/posix/src/mutexattrgettype.c
+- cpukit/posix/src/mutexattrinit.c
+- cpukit/posix/src/mutexattrsetprioceiling.c
+- cpukit/posix/src/mutexattrsetprotocol.c
+- cpukit/posix/src/mutexattrsetpshared.c
+- cpukit/posix/src/mutexattrsettype.c
+- cpukit/posix/src/mutexdestroy.c
+- cpukit/posix/src/mutexgetprioceiling.c
+- cpukit/posix/src/mutexinit.c
+- cpukit/posix/src/mutexlock.c
+- cpukit/posix/src/mutexlocksupp.c
+- cpukit/posix/src/mutexsetprioceiling.c
+- cpukit/posix/src/mutextimedlock.c
+- cpukit/posix/src/mutextrylock.c
+- cpukit/posix/src/mutexunlock.c
+- cpukit/posix/src/psxpriorityisvalid.c
 - cpukit/posix/src/pthreadattrdefault.c
 - cpukit/posix/src/pthreadattrdestroy.c
 - cpukit/posix/src/pthreadattrgetdetachstate.c
