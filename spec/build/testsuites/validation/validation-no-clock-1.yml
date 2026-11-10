@@ -22,6 +22,8 @@ source:
 - testsuites/validation/tc-futex-wake.c
 - testsuites/validation/tc-message-receive.c
 - testsuites/validation/tc-pthread-getname-np.c
+- testsuites/validation/tc-pthread-mutex-lock.c
+- testsuites/validation/tc-pthread-mutex-trylock.c
 - testsuites/validation/tc-pthread-setname-np.c
 - testsuites/validation/tc-sched-yield.c
 - testsuites/validation/tc-scheduler-add-processor.c
