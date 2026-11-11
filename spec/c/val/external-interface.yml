@@ -73,7 +73,31 @@ links:
 - role: validation
   uid: /c/sched/if/fifo
 - role: validation
+  uid: /c/pthread/if/mutex-default
+- role: validation
+  uid: /c/pthread/if/mutex-errorcheck
+- role: validation
+  uid: /c/pthread/if/mutex-initializer
+- role: validation
+  uid: /c/pthread/if/mutex-normal
+- role: validation
+  uid: /c/pthread/if/mutex-recursive
+- role: validation
   uid: /c/sched/if/other
+- role: validation
+  uid: /c/pthread/if/prio-inherit
+- role: validation
+  uid: /c/pthread/if/prio-none
+- role: validation
+  uid: /c/pthread/if/prio-protect
+- role: validation
+  uid: /c/pthread/if/process-private
+- role: validation
+  uid: /c/pthread/if/process-shared
+- role: validation
+  uid: /c/if/pthread_mutex_t
+- role: validation
+  uid: /c/if/pthread_mutexattr_t
 - role: validation
   uid: /c/sched/if/rr
 - role: validation
