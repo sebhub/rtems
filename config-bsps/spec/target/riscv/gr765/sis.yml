@@ -22,6 +22,8 @@ links:
   uid: sis/perf-default
 - role: performance-runtime-limits-provider
   uid: sis/perf-smp
+- role: verification-by
+  uid: /verification/code-coverage-gap/posix-mutex-set-priority
 - role: verification-provider
   uid: /verification/test-failures/default
 name: SIS configured to simulate the GR765 in NOEL-V mode
