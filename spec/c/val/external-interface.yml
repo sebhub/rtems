@@ -1,5 +1,6 @@
 SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
 copyrights:
+- Copyright (C) 2026 OHB System AG
 - Copyright (C) 2026 Critical Software S.A.
 - Copyright (C) 2023, 2026 embedded brains GmbH & Co. KG
 enabled-by: true
@@ -58,6 +59,8 @@ links:
   uid: /c/if/eof
 - role: validation
   uid: /c/errno/if/eoverflow
+- role: validation
+  uid: /c/errno/if/eperm
 - role: validation
   uid: /c/errno/if/eproto
 - role: validation
