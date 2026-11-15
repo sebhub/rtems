@@ -1,0 +1,75 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Get the ${../glossary/mutex-priority-ceiling:/term} of the
+  ${../glossary/mutex:/term} object referenced by ${.:/params[0]/name} and store
+  it in the object referenced by ${.:/params[1]/name}.
+copyrights:
+- Copyright (C) 2026 OHB System AG
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+  default:
+    attributes: null
+    body: null
+    params:
+    - const ${/c/if/pthread_mutex_t:/name} *restrict ${.:/params[0]/name}
+    - int *restrict ${.:/params[1]/name}
+    return: int
+  variants: []
+description: null
+enabled-by: true
+index-entries: []
+interface-type: function
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+- description: |
+    The ${.:/params[1]/name} parameter is ${/c/if/null:/name}.
+  role: errno
+  uid: /c/errno/if/einval
+- description: |
+    The ${.:/params[0]/name} parameter is ${/c/if/null:/name}.
+  role: errno
+  uid: /c/errno/if/einval
+- description: |
+    The object referenced by the ${.:/params[0]/name} parameter is not an
+    initialized ${../glossary/mutex:/term}.
+  role: errno
+  uid: /c/errno/if/einval
+- description: |
+    The ${../glossary/mutex-protocol:/term} of the ${../glossary/mutex:/term} is
+    not ${../if/prio-protect:/name}.
+  role: errno
+  uid: /c/errno/if/einval
+- role: reference
+  uid: /ref/std/posix-2024/pthread-mutex-getprioceiling
+name: pthread_mutex_getprioceiling
+notes: |
+  See ${/ref/std/posix-2024/pthread-mutex-getprioceiling:/name}.
+
+  If the ${.:/params[1]/name} parameter is not ${/c/if/null:/name}, the function
+  stores zero in the referenced object for each error.
+params:
+- description: |
+    is the mutex to get the priority ceiling from.
+  dir: in
+  name: mutex
+- description: |
+    is the pointer to an object where the priority ceiling will be stored.
+  dir: out
+  name: prioceiling
+return:
+  return: null
+  return-values:
+  - description: |
+      The successful completion.
+    value: 0
+  - description: |
+      The ${.:/params[1]/name} parameter was ${/c/if/null:/name}, the
+      ${.:/params[0]/name} parameter was ${/c/if/null:/name} or did not reference an
+      initialized ${../glossary/mutex:/term}, or the
+      ${../glossary/mutex-protocol:/term} of the ${../glossary/mutex:/term} was not
+      ${../if/prio-protect:/name}.
+    value: ${/c/errno/if/einval:/name}
+type: interface

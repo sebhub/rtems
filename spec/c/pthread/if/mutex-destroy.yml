@@ -1,0 +1,69 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Destroy the ${../glossary/mutex:/term} object referenced by
+  ${.:/params[0]/name}.
+copyrights:
+- Copyright (C) 2026 OHB System AG
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+  default:
+    attributes: null
+    body: null
+    params:
+    - ${/c/if/pthread_mutex_t:/name} *${.:/params[0]/name}
+    return: int
+  variants: []
+description: null
+enabled-by: true
+index-entries: []
+interface-type: function
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+- description: |
+    The ${.:/params[0]/name} parameter is ${/c/if/null:/name}.
+  role: errno
+  uid: /c/errno/if/einval
+- description: |
+    The object referenced by the ${.:/params[0]/name} parameter is not an
+    initialized ${../glossary/mutex:/term}.
+  role: errno
+  uid: /c/errno/if/einval
+- description: |
+    The ${../glossary/mutex:/term} referenced by the ${.:/params[0]/name} parameter
+    is owned by a thread.
+  role: errno
+  uid: /c/errno/if/ebusy
+- role: reference
+  uid: /ref/std/posix-2024/pthread-mutex-destroy
+name: pthread_mutex_destroy
+notes: |
+  See ${/ref/std/posix-2024/pthread-mutex-destroy:/name}.
+
+  POSIX.1-2024 specifies no error for this function and states that the destroy
+  of a locked mutex results in undefined behaviour. RTEMS returns
+  ${/c/errno/if/ebusy:/name} for a mutex which is owned by a thread and does not
+  destroy it.
+params:
+- description: |
+    is the mutex to destroy.
+  dir: inout
+  name: mutex
+return:
+  return: null
+  return-values:
+  - description: |
+      The requested operation was successful.
+    value: 0
+  - description: |
+      The ${../glossary/mutex:/term} referenced by the ${.:/params[0]/name} parameter
+      was owned by a thread.
+    value: ${/c/errno/if/ebusy:/name}
+  - description: |
+      The ${.:/params[0]/name} parameter was ${/c/if/null:/name}, or the object
+      referenced by the ${.:/params[0]/name} parameter was not an initialized
+      ${../glossary/mutex:/term}.
+    value: ${/c/errno/if/einval:/name}
+type: interface

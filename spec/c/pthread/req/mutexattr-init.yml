@@ -1,0 +1,198 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 OHB System AG
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: action
+links:
+- role: interface-function
+  uid: ../if/mutexattr-init
+- role: requirement-refinement
+  uid: ../../req/group-posix-api
+- role: reference
+  uid: /ref/std/posix-2024/pthread-mutexattr-destroy
+post-conditions:
+- name: Status
+  states:
+  - name: Ok
+    test-code: |
+      T_eq_int( ctx->status, 0 );
+    text: |
+      The ${/glossary/returnvalue:/term} of ${../if/mutexattr-init:/name} shall be
+      zero.
+  - name: Inval
+    test-code: |
+      T_eq_int( ctx->status, EINVAL );
+    text: |
+      The ${/glossary/returnvalue:/term} of ${../if/mutexattr-init:/name} shall be
+      ${/c/errno/if/einval:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: Initialized
+  states:
+  - name: 'Yes'
+    test-code: |
+      T_true( ctx->attr_obj.is_initialized );
+    text: |
+      The ${../glossary/mutex:/term} attributes object referenced by the
+      ${../if/mutexattr-init:/params[0]/name} parameter shall be an initialized mutex
+      attributes object.
+  test-epilogue: null
+  test-prologue: null
+- name: Protocol
+  states:
+  - name: None
+    test-code: |
+      T_eq_int( ctx->attr_obj.protocol, PTHREAD_PRIO_NONE );
+    text: |
+      The ${../glossary/mutex-protocol:/term} of the ${../glossary/mutex:/term}
+      attributes object referenced by the ${../if/mutexattr-init:/params[0]/name}
+      parameter shall be ${../if/prio-none:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: Pshared
+  states:
+  - name: Private
+    test-code: |
+      T_eq_int( ctx->attr_obj.process_shared, PTHREAD_PROCESS_PRIVATE );
+    text: |
+      The ${../glossary/process-shared:/term} of the ${../glossary/mutex:/term}
+      attributes object referenced by the ${../if/mutexattr-init:/params[0]/name}
+      parameter shall be ${../if/process-private:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: Type
+  states:
+  - name: Default
+    test-code: |
+      T_eq_int( ctx->attr_obj.type, PTHREAD_MUTEX_DEFAULT );
+    text: |
+      The ${../glossary/mutex-type:/term} of the ${../glossary/mutex:/term}
+      attributes object referenced by the ${../if/mutexattr-init:/params[0]/name}
+      parameter shall be ${../if/mutex-default:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: Ceiling
+  states:
+  - name: Max
+    test-code: |
+      T_eq_int( ctx->attr_obj.prio_ceiling, INT_MAX );
+    text: |
+      The ${../glossary/mutex-priority-ceiling:/term} of the
+      ${../glossary/mutex:/term} attributes object referenced by the
+      ${../if/mutexattr-init:/params[0]/name} parameter shall be the maximum of the
+      type int.
+  test-epilogue: null
+  test-prologue: null
+pre-conditions:
+- name: Attr
+  states:
+  - name: Obj
+    test-code: |
+      ctx->attr = &ctx->attr_obj;
+      memset( &ctx->attr_obj, 0xff, sizeof( ctx->attr_obj ) );
+    text: |
+      While the ${../if/mutexattr-init:/params[0]/name} parameter references an
+      object of type ${/c/if/pthread_mutexattr_t:/name}.
+  - name: 'Null'
+    test-code: |
+      ctx->attr = NULL;
+    text: |
+      While the ${../if/mutexattr-init:/params[0]/name} parameter is equal to
+      ${/c/if/null:/name}.
+  test-epilogue: null
+  test-prologue: null
+rationale: |
+  ${/ref/std/posix-2024/pthread-mutexattr-destroy:/name} requires
+  ${/c/errno/if/enomem:/name} where there is insufficient memory.
+  ${../if/mutexattr-init:/name} copies a statically allocated set of default
+  attributes and performs no allocation, so it cannot return this value and no
+  state is specified for it.
+
+  The implementation returns ${/c/errno/if/einval:/name} for a
+  ${../if/mutexattr-init:/params[0]/name} parameter which is equal to
+  ${/c/if/null:/name}. The standard does not specify this case. State Null of
+  pre-condition Attr specifies the behaviour of RTEMS.
+
+  The object is filled with 0xff before the call, so that each post-condition can
+  only hold if the function writes its attribute.
+requirement-type: functional
+skip-reasons: {}
+test-action: |
+  ctx->status = pthread_mutexattr_init( ctx->attr );
+test-brief: null
+test-cleanup: null
+test-context:
+- brief: |
+    This member specifies the ${../if/mutexattr-init:/params[0]/name} parameter
+    value.
+  description: null
+  member: pthread_mutexattr_t *attr
+- brief: |
+    This member contains the return value of the ${../if/mutexattr-init:/name}
+    call.
+  description: null
+  member: int status
+- brief: |
+    This member contains the ${../glossary/mutex:/term} attributes object.
+  description: null
+  member: pthread_mutexattr_t attr_obj
+test-context-support: null
+test-description: null
+test-header: null
+test-includes:
+- errno.h
+- limits.h
+- pthread.h
+- string.h
+test-local-includes: []
+test-prepare: null
+test-setup: null
+test-stop: null
+test-support: null
+test-target: testsuites/validation/tc-pthread-mutexattr-init.c
+test-teardown: null
+text: |
+  ${.:text-template}
+transition-map:
+- enabled-by: true
+  post-conditions:
+    Status:
+    - if:
+        pre-conditions:
+          Attr: 'Null'
+      then: Inval
+    - else: Ok
+    Initialized:
+    - if:
+        pre-conditions:
+          Attr: 'Null'
+      then: N/A
+    - else: 'Yes'
+    Protocol:
+    - if:
+        pre-conditions:
+          Attr: 'Null'
+      then: N/A
+    - else: None
+    Pshared:
+    - if:
+        pre-conditions:
+          Attr: 'Null'
+      then: N/A
+    - else: Private
+    Type:
+    - if:
+        pre-conditions:
+          Attr: 'Null'
+      then: N/A
+    - else: Default
+    Ceiling:
+    - if:
+        pre-conditions:
+          Attr: 'Null'
+      then: N/A
+    - else: Max
+  pre-conditions:
+    Attr: all
+type: requirement

@@ -1,0 +1,182 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 OHB System AG
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: action
+links:
+- role: interface-function
+  uid: ../if/mutexattr-destroy
+- role: requirement-refinement
+  uid: ../../req/group-posix-api
+- role: reference
+  uid: /ref/std/posix-2024/pthread-mutexattr-destroy
+post-conditions:
+- name: Status
+  states:
+  - name: Ok
+    test-code: |
+      T_eq_int( ctx->status, 0 );
+    text: |
+      The ${/glossary/returnvalue:/term} of ${../if/mutexattr-destroy:/name} shall be
+      zero.
+  - name: Inval
+    test-code: |
+      T_eq_int( ctx->status, EINVAL );
+    text: |
+      The ${/glossary/returnvalue:/term} of ${../if/mutexattr-destroy:/name} shall be
+      ${/c/errno/if/einval:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: Initialized
+  states:
+  - name: Cleared
+    test-code: |
+      T_false( ctx->attr_obj.is_initialized );
+    text: |
+      The ${../glossary/mutex:/term} attributes object referenced by the
+      ${../if/mutexattr-destroy:/params[0]/name} parameter shall not be an
+      initialized ${../glossary/mutex:/term} attributes object.
+  - name: Nop
+    test-code: |
+      T_eq_int( ctx->attr_obj.is_initialized, ctx->attr_before.is_initialized );
+    text: |
+      The initialization state of the ${../glossary/mutex:/term} attributes object
+      referenced by the ${../if/mutexattr-destroy:/params[0]/name} parameter shall
+      not be modified.
+  test-epilogue: null
+  test-prologue: null
+- name: Other
+  states:
+  - name: Nop
+    test-code: |
+      pthread_mutexattr_t expected;
+
+      memcpy( &expected, &ctx->attr_before, sizeof( expected ) );
+      expected.is_initialized = ctx->attr_obj.is_initialized;
+      T_eq_mem( &ctx->attr_obj, &expected, sizeof( expected ) );
+    text: |
+      The content of the ${../glossary/mutex:/term} attributes object referenced by
+      the ${../if/mutexattr-destroy:/params[0]/name} parameter, other than its
+      initialization state, shall not be modified.
+  test-epilogue: null
+  test-prologue: null
+pre-conditions:
+- name: Attr
+  states:
+  - name: Obj
+    test-code: |
+      ctx->attr = &ctx->attr_obj;
+    text: |
+      While the ${../if/mutexattr-destroy:/params[0]/name} parameter references an
+      object of type ${/c/if/pthread_mutexattr_t:/name}.
+  - name: 'Null'
+    test-code: |
+      ctx->attr = NULL;
+    text: |
+      While the ${../if/mutexattr-destroy:/params[0]/name} parameter is equal to
+      ${/c/if/null:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: Initialized
+  states:
+  - name: 'Yes'
+    test-code: |
+      T_eq_int( pthread_mutexattr_init( &ctx->attr_obj ), 0 );
+    text: |
+      While the object referenced by the ${../if/mutexattr-destroy:/params[0]/name}
+      parameter is an initialized ${../glossary/mutex:/term} attributes object.
+  - name: 'No'
+    test-code: |
+      memset( &ctx->attr_obj, 0xff, sizeof( ctx->attr_obj ) );
+      ctx->attr_obj.is_initialized = 0;
+    text: |
+      While the object referenced by the ${../if/mutexattr-destroy:/params[0]/name}
+      parameter is not an initialized ${../glossary/mutex:/term} attributes object.
+  test-epilogue: null
+  test-prologue: null
+rationale: |
+  The standard leaves the behaviour undefined where the
+  ${../if/mutexattr-destroy:/params[0]/name} parameter references no initialized
+  ${../glossary/mutex:/term} attributes object or is ${/c/if/null:/name}. State
+  Null of pre-condition Attr and state No of pre-condition Initialized specify
+  the behaviour of RTEMS, which returns ${/c/errno/if/einval:/name}.
+
+  The object of state No has all bytes set to 0xff except the initialization
+  state, so that a write to any other member is visible in post-condition Other.
+requirement-type: functional
+skip-reasons: {}
+test-action: |
+  memcpy( &ctx->attr_before, &ctx->attr_obj, sizeof( ctx->attr_before ) );
+  ctx->status = pthread_mutexattr_destroy( ctx->attr );
+test-brief: null
+test-cleanup: null
+test-context:
+- brief: |
+    This member specifies the ${../if/mutexattr-destroy:/params[0]/name} parameter
+    value.
+  description: null
+  member: pthread_mutexattr_t *attr
+- brief: |
+    This member contains the return value of the ${../if/mutexattr-destroy:/name}
+    call.
+  description: null
+  member: int status
+- brief: |
+    This member contains the ${../glossary/mutex:/term} attributes object.
+  description: null
+  member: pthread_mutexattr_t attr_obj
+- brief: |
+    This member contains a copy of the ${../glossary/mutex:/term} attributes object
+    before the call.
+  description: null
+  member: pthread_mutexattr_t attr_before
+test-context-support: null
+test-description: null
+test-header: null
+test-includes:
+- errno.h
+- pthread.h
+- string.h
+test-local-includes: []
+test-prepare: null
+test-setup: null
+test-stop: null
+test-support: null
+test-target: testsuites/validation/tc-pthread-mutexattr-destroy.c
+test-teardown: null
+text: |
+  ${.:text-template}
+transition-map:
+- enabled-by: true
+  post-conditions:
+    Status:
+    - if:
+        pre-conditions:
+          Attr: 'Null'
+      then: Inval
+    - if:
+        pre-conditions:
+          Initialized: 'No'
+      then: Inval
+    - else: Ok
+    Initialized:
+    - if:
+        pre-conditions:
+          Attr: 'Null'
+      then: N/A
+    - if:
+        pre-conditions:
+          Initialized: 'No'
+      then: Nop
+    - else: Cleared
+    Other:
+    - if:
+        pre-conditions:
+          Attr: 'Null'
+      then: N/A
+    - else: Nop
+  pre-conditions:
+    Attr: all
+    Initialized: all
+type: requirement

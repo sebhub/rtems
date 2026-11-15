@@ -1,0 +1,126 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Lock the ${../glossary/mutex:/term} object referenced by ${.:/params[0]/name}
+  with a timeout referenced by ${.:/params[1]/name}. If the
+  ${../glossary/mutex:/term} object is already locked, the calling
+  ${../glossary/thread:/term} blocks until the ${../glossary/mutex:/term} object
+  becomes available or the timeout expires.
+copyrights:
+- Copyright (C) 2026 OHB System AG
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+  default:
+    attributes: null
+    body: null
+    params:
+    - ${/c/if/pthread_mutex_t:/name} *restrict ${.:/params[0]/name}
+    - const ${/c/if/timespec:/name} *restrict ${.:/params[1]/name}
+    return: int
+  variants: []
+description: null
+enabled-by: true
+index-entries: []
+interface-type: function
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+- description: |
+    The ${.:/params[0]/name} parameter is ${/c/if/null:/name}.
+  role: errno
+  uid: /c/errno/if/einval
+- description: |
+    The object referenced by the ${.:/params[0]/name} parameter is not an
+    initialized ${../glossary/mutex:/term}.
+  role: errno
+  uid: /c/errno/if/einval
+- description: |
+    The ${../glossary/mutex-protocol:/term} of the ${../glossary/mutex:/term} is
+    ${../if/prio-protect:/name} and the current priority of the calling thread is
+    higher than the ${../glossary/mutex-priority-ceiling:/term} of the
+    ${../glossary/mutex:/term}.
+  role: errno
+  uid: /c/errno/if/einval
+- description: |
+    The ${../glossary/mutex-protocol:/term} of the ${../glossary/mutex:/term} is
+    ${../if/prio-protect:/name}, the ${../glossary/mutex:/term} is not owned, and
+    the home scheduler of the calling thread is not the scheduler of the
+    ${../glossary/mutex:/term}.
+  role: errno
+  uid: /c/errno/if/einval
+- description: |
+    The calling thread would have blocked, and the ${.:/params[1]/name} parameter
+    specifies a nanoseconds field value less than zero or greater than or equal to
+    1000 million.
+  role: errno
+  uid: /c/errno/if/einval
+- description: |
+    The ${../glossary/mutex:/term} could not be locked before the time point
+    specified by the ${.:/params[1]/name} parameter.
+  role: errno
+  uid: /c/errno/if/etimedout
+- description: |
+    The calling thread owns the ${../glossary/mutex:/term} and the
+    ${../glossary/mutex-type:/term} is not ${../if/mutex-recursive:/name}.
+  role: errno
+  uid: /c/errno/if/edeadlk
+- description: |
+    Waiting for the ${../glossary/mutex:/term} would result in a deadlock.
+  role: errno
+  uid: /c/errno/if/edeadlk
+- role: reference
+  uid: /ref/std/posix-2024/pthread-mutex-timedlock
+name: pthread_mutex_timedlock
+notes: |
+  See ${/ref/std/posix-2024/pthread-mutex-timedlock:/name}.
+
+  RTEMS counts the recursive locks of a ${../glossary/mutex:/term} without a
+  limit, so the function never returns ${/c/errno/if/eagain:/name}.
+params:
+- description: |
+    is the mutex to lock.
+  dir: inout
+  name: mutex
+- description: |
+    is the pointer to a timespec structure specifying the absolute timeout time.
+  dir: in
+  name: abstime
+return:
+  return: null
+  return-values:
+  - description: |
+      The requested operation was successful.
+    value: 0
+  - description: |
+      The ${.:/params[0]/name} parameter was ${/c/if/null:/name}, or the object
+      referenced by the ${.:/params[0]/name} parameter was not an initialized
+      ${../glossary/mutex:/term}.
+    value: ${/c/errno/if/einval:/name}
+  - description: |
+      The ${../glossary/mutex-protocol:/term} of the ${../glossary/mutex:/term} was
+      ${../if/prio-protect:/name} and the current priority of the calling thread was
+      higher than the ${../glossary/mutex-priority-ceiling:/term} of the
+      ${../glossary/mutex:/term}.
+    value: ${/c/errno/if/einval:/name}
+  - description: |
+      The ${../glossary/mutex-protocol:/term} of the ${../glossary/mutex:/term} was
+      ${../if/prio-protect:/name}, the ${../glossary/mutex:/term} was not owned, and
+      the home scheduler of the calling thread was not the scheduler of the
+      ${../glossary/mutex:/term}.
+    value: ${/c/errno/if/einval:/name}
+  - description: |
+      The calling thread would have blocked, and the ${.:/params[1]/name} parameter
+      specified a nanoseconds field value less than zero or greater than or equal to
+      1000 million.
+    value: ${/c/errno/if/einval:/name}
+  - description: |
+      The ${../glossary/mutex:/term} could not be locked before the time point
+      specified by the ${.:/params[1]/name} parameter.
+    value: ${/c/errno/if/etimedout:/name}
+  - description: |
+      The calling thread owned the ${../glossary/mutex:/term} and the
+      ${../glossary/mutex-type:/term} was not ${../if/mutex-recursive:/name}, or a
+      deadlock was detected.
+    value: ${/c/errno/if/edeadlk:/name}
+type: interface

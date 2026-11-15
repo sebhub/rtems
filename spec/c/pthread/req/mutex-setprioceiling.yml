@@ -1,0 +1,877 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 OHB System AG
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: action
+links:
+- role: interface-function
+  uid: ../if/mutex-setprioceiling
+- role: requirement-refinement
+  uid: ../../req/group-posix-api
+- role: reference
+  uid: /ref/std/posix-2024/pthread-mutex-getprioceiling
+post-conditions:
+- name: Status
+  states:
+  - name: Ok
+    test-code: |
+      T_eq_int( ctx->status, 0 );
+    text: |
+      The ${/glossary/returnvalue:/term} of ${../if/mutex-setprioceiling:/name} shall
+      be zero.
+  - name: Inval
+    test-code: |
+      T_eq_int( ctx->status, EINVAL );
+    text: |
+      The ${/glossary/returnvalue:/term} of ${../if/mutex-setprioceiling:/name} shall
+      be ${/c/errno/if/einval:/name}.
+  - name: Deadlock
+    test-code: |
+      T_eq_int( ctx->status, EDEADLK );
+    text: |
+      The ${/glossary/returnvalue:/term} of ${../if/mutex-setprioceiling:/name} shall
+      be ${/c/errno/if/edeadlk:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: OldCeiling
+  states:
+  - name: Valid
+    test-code: |
+      T_eq_int( ctx->old_obj, ToPOSIXPriority( PRIO_VERY_HIGH ) );
+    text: |
+      The value of the object referenced by the
+      ${../if/mutex-setprioceiling:/params[2]/name} parameter shall be the
+      ${../glossary/mutex-priority-ceiling:/term} of the mutex before the call.
+  - name: Maximum
+    test-code: |
+      T_eq_int( ctx->old_obj, GetPOSIXPriorityMaximum() );
+    text: |
+      The value of the object referenced by the
+      ${../if/mutex-setprioceiling:/params[2]/name} parameter shall be the maximum
+      ${../glossary/thread-priority:/term}.
+  - name: Zero
+    test-code: |
+      T_eq_int( ctx->old_obj, 0 );
+    text: |
+      The value of the object referenced by the
+      ${../if/mutex-setprioceiling:/params[2]/name} parameter shall be zero.
+  test-epilogue: null
+  test-prologue: null
+- name: Ceiling
+  states:
+  - name: New
+    test-code: |
+      T_eq_int( GetCeiling( ctx ), ctx->new_ceiling );
+    text: |
+      The ${../glossary/mutex-priority-ceiling:/term} of the mutex shall be the value
+      of the ${../if/mutex-setprioceiling:/params[1]/name} parameter.
+  - name: Nop
+    test-code: |
+      T_eq_int( GetCeiling( ctx ), ctx->ceiling_before );
+    text: |
+      The ${../glossary/mutex-priority-ceiling:/term} of the mutex shall not be
+      modified.
+  test-epilogue: null
+  test-prologue: null
+- name: Owner
+  states:
+  - name: None
+    test-code: |
+      T_null( ctx->owner_after );
+    text: |
+      The mutex shall have no owner.
+  - name: Caller
+    test-code: |
+      T_eq_ptr( ctx->owner_after, ctx->runner );
+    text: |
+      The owner of the mutex shall be the calling thread.
+  test-epilogue: null
+  test-prologue: null
+- name: Wait
+  states:
+  - name: 'Yes'
+    test-code: |
+      T_true( ctx->blocked );
+    text: |
+      The calling thread shall wait until the other thread surrenders the mutex.
+  - name: 'No'
+    test-code: |
+      T_false( ctx->blocked );
+    text: |
+      The calling thread shall not wait.
+  test-epilogue: null
+  test-prologue: null
+- name: Priority
+  states:
+  - name: Ceiling
+    test-code: |
+      T_eq_u32( ctx->priority_after, PRIO_ULTRA_HIGH );
+    text: |
+      The ${/glossary/priority-current:/term} of the calling thread shall be the
+      priority which corresponds to the value of the
+      ${../if/mutex-setprioceiling:/params[1]/name} parameter.
+  - name: Nop
+    test-code: |
+      T_eq_u32( ctx->priority_after, ctx->priority_before );
+    text: |
+      The ${/glossary/priority-current:/term} of the calling thread shall not be
+      modified.
+  test-epilogue: null
+  test-prologue: null
+pre-conditions:
+- name: Mutex
+  states:
+  - name: Init
+    test-code: |
+      ctx->mutex = &ctx->mutex_obj;
+      ctx->init = true;
+    text: |
+      While the ${../if/mutex-setprioceiling:/params[0]/name} parameter references an
+      initialized mutex.
+  - name: Static
+    test-code: |
+      static const pthread_mutex_t initializer = PTHREAD_MUTEX_INITIALIZER;
+
+      ctx->mutex_obj = initializer;
+      ctx->mutex = &ctx->mutex_obj;
+    text: |
+      While the object referenced by the
+      ${../if/mutex-setprioceiling:/params[0]/name} parameter is equal to
+      ${../if/mutex-initializer:/name}.
+  - name: Corrupted
+    test-code: |
+      memset( &ctx->mutex_obj, 0xff, sizeof( ctx->mutex_obj ) );
+      ctx->mutex = &ctx->mutex_obj;
+    text: |
+      While the ${../if/mutex-setprioceiling:/params[0]/name} parameter references an
+      object which is not a mutex.
+  - name: 'Null'
+    test-code: |
+      ctx->mutex = NULL;
+    text: |
+      While the ${../if/mutex-setprioceiling:/params[0]/name} parameter is equal to
+      ${/c/if/null:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: Protocol
+  states:
+  - name: None
+    test-code: |
+      T_eq_int(
+        pthread_mutexattr_setprotocol( &ctx->attr_obj, PTHREAD_PRIO_NONE ),
+        0
+      );
+    text: |
+      While the ${../glossary/mutex-protocol:/term} of the mutex is
+      ${../if/prio-none:/name}.
+  - name: Inherit
+    test-code: |
+      T_eq_int(
+        pthread_mutexattr_setprotocol( &ctx->attr_obj, PTHREAD_PRIO_INHERIT ),
+        0
+      );
+    text: |
+      While the ${../glossary/mutex-protocol:/term} of the mutex is
+      ${../if/prio-inherit:/name}.
+  - name: Protect
+    test-code: |
+      T_eq_int(
+        pthread_mutexattr_setprotocol( &ctx->attr_obj, PTHREAD_PRIO_PROTECT ),
+        0
+      );
+    text: |
+      While the ${../glossary/mutex-protocol:/term} of the mutex is
+      ${../if/prio-protect:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: Ceiling
+  states:
+  - name: Valid
+    test-code: |
+      T_eq_int(
+        pthread_mutexattr_setprioceiling(
+          &ctx->attr_obj,
+          ToPOSIXPriority( PRIO_VERY_HIGH )
+        ),
+        0
+      );
+    text: |
+      While the ${../glossary/mutex-priority-ceiling:/term} of the mutex is a
+      ${../glossary/thread-priority:/term} which is less than the maximum
+      ${../glossary/thread-priority:/term}.
+  - name: Maximum
+    test-code: |
+      T_eq_int( pthread_mutexattr_setprioceiling( &ctx->attr_obj, INT_MAX ), 0 );
+    text: |
+      While the ${../glossary/mutex-priority-ceiling:/term} of the mutex is the
+      maximum ${../glossary/thread-priority:/term}.
+  test-epilogue: null
+  test-prologue: null
+- name: Type
+  states:
+  - name: Normal
+    test-code: |
+      T_eq_int(
+        pthread_mutexattr_settype( &ctx->attr_obj, PTHREAD_MUTEX_NORMAL ),
+        0
+      );
+    text: |
+      While the ${../glossary/mutex-type:/term} of the mutex is
+      ${../if/mutex-normal:/name}.
+  - name: Recursive
+    test-code: |
+      T_eq_int(
+        pthread_mutexattr_settype( &ctx->attr_obj, PTHREAD_MUTEX_RECURSIVE ),
+        0
+      );
+    text: |
+      While the ${../glossary/mutex-type:/term} of the mutex is
+      ${../if/mutex-recursive:/name}.
+  - name: Errorcheck
+    test-code: |
+      T_eq_int(
+        pthread_mutexattr_settype( &ctx->attr_obj, PTHREAD_MUTEX_ERRORCHECK ),
+        0
+      );
+    text: |
+      While the ${../glossary/mutex-type:/term} of the mutex is
+      ${../if/mutex-errorcheck:/name}.
+  - name: Default
+    test-code: |
+      T_eq_int(
+        pthread_mutexattr_settype( &ctx->attr_obj, PTHREAD_MUTEX_DEFAULT ),
+        0
+      );
+    text: |
+      While the ${../glossary/mutex-type:/term} of the mutex is
+      ${../if/mutex-default:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: New
+  states:
+  - name: Valid
+    test-code: |
+      ctx->new_ceiling = ToPOSIXPriority( PRIO_ULTRA_HIGH );
+    text: |
+      While the ${../if/mutex-setprioceiling:/params[1]/name} parameter is a valid
+      ${../glossary/thread-priority:/term} which differs from the
+      ${../glossary/mutex-priority-ceiling:/term} of the mutex.
+  - name: High
+    test-code: |
+      ctx->new_ceiling = GetPOSIXPriorityMaximum() + 1;
+    text: |
+      While the ${../if/mutex-setprioceiling:/params[1]/name} parameter is greater
+      than the maximum ${../glossary/thread-priority:/term}.
+  - name: Low
+    test-code: |
+      ctx->new_ceiling = GetPOSIXPriorityMinimum() - 1;
+    text: |
+      While the ${../if/mutex-setprioceiling:/params[1]/name} parameter is less than
+      the minimum ${../glossary/thread-priority:/term}.
+  test-epilogue: null
+  test-prologue: null
+- name: Old
+  states:
+  - name: Obj
+    test-code: |
+      ctx->old = &ctx->old_obj;
+    text: |
+      While the ${../if/mutex-setprioceiling:/params[2]/name} parameter references an
+      object of type int.
+  - name: 'Null'
+    test-code: |
+      ctx->old = NULL;
+    text: |
+      While the ${../if/mutex-setprioceiling:/params[2]/name} parameter is equal to
+      ${/c/if/null:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: Owner
+  states:
+  - name: None
+    test-code: |
+      ctx->owner = OWNER_NONE;
+    text: |
+      While the mutex has no owner.
+  - name: Caller
+    test-code: |
+      ctx->owner = OWNER_CALLER;
+    text: |
+      While the owner of the mutex is the calling thread.
+  - name: Other
+    test-code: |
+      ctx->owner = OWNER_OTHER;
+    text: |
+      While the owner of the mutex is a thread other than the calling thread.
+  test-epilogue: null
+  test-prologue: null
+- name: Priority
+  states:
+  - name: Satisfied
+    test-code: |
+      ctx->priority_high = false;
+    text: |
+      While the ${/glossary/priority-current:/term} of the calling thread is not
+      higher than the priority which corresponds to the
+      ${../glossary/mutex-priority-ceiling:/term} of the mutex.
+  - name: Violated
+    test-code: |
+      ctx->priority_high = true;
+    text: |
+      While the ${/glossary/priority-current:/term} of the calling thread is higher
+      than the priority which corresponds to the
+      ${../glossary/mutex-priority-ceiling:/term} of the mutex.
+  test-epilogue: null
+  test-prologue: null
+- name: Scheduler
+  states:
+  - name: Home
+    test-code: |
+      ctx->scheduler_other = false;
+    text: |
+      While the ${/glossary/scheduler-home:/term} of the calling thread is the
+      ${/glossary/schedulerinstance:/term} of the mutex.
+  - name: Other
+    test-code: |
+      ctx->scheduler_other = true;
+    text: |
+      While the ${/glossary/scheduler-home:/term} of the calling thread is not the
+      ${/glossary/schedulerinstance:/term} of the mutex.
+  test-epilogue: null
+  test-prologue: null
+rationale: |
+  ${/ref/std/posix-2024/pthread-mutex-getprioceiling:/name} requires
+  ${/c/errno/if/einval:/name} for a mutex with the ${../if/prio-none:/name}
+  ${../glossary/mutex-protocol:/term}. A mutex with the
+  ${../if/prio-inherit:/name} ${../glossary/mutex-protocol:/term} has no
+  ${../glossary/mutex-priority-ceiling:/term} either, so RTEMS returns
+  ${/c/errno/if/einval:/name} for it as well. RTEMS requires no privilege, so
+  ${/c/errno/if/eperm:/name} has no state.
+
+  The function validates its parameters before it locks the mutex. It locks the
+  mutex as ${../if/mutex-lock:/name} does. The pre-conditions Type, Owner,
+  Priority and Scheduler give the cases in which the lock waits or fails. The
+  standard requires ${/c/errno/if/edeadlk:/name} for a mutex with the
+  ${../if/mutex-errorcheck:/name} ${../glossary/mutex-type:/term} which the
+  calling thread owns. RTEMS returns it for every type which is not
+  ${../if/mutex-recursive:/name}.
+
+  A calling thread which owns the mutex before the call owns it after the call
+  and keeps the ${../glossary/mutex-priority-ceiling:/term} as its
+  ${/glossary/priority-current:/term}, so post-condition Priority observes the
+  new ceiling. The priority of the ceiling Valid corresponds to the task priority
+  PRIO_VERY_HIGH of the test support. The worker which owns the mutex for state
+  Other of pre-condition Owner has the task priority PRIO_HIGH. It surrenders the
+  mutex when the calling thread blocks, so the mutex has no owner after the call.
+  The task priority PRIO_ULTRA_HIGH is higher than the ceiling Valid. No task
+  priority is higher than the ceiling Maximum, so pre-condition Priority applies
+  to the ceiling Valid only.
+
+  The standard leaves the behaviour undefined where the
+  ${../if/mutex-setprioceiling:/params[0]/name} parameter references no
+  initialized mutex. States Corrupted and Null of pre-condition Mutex specify
+  that RTEMS returns ${/c/errno/if/einval:/name}. A statically initialized mutex
+  has the ${../if/prio-none:/name} ${../glossary/mutex-protocol:/term}.
+
+  The function stores a defined value in the object referenced by the
+  ${../if/mutex-setprioceiling:/params[2]/name} parameter in every case in which
+  this parameter is not ${/c/if/null:/name}. It stores zero before it examines
+  the mutex. For a mutex with the ${../if/prio-protect:/name}
+  ${../glossary/mutex-protocol:/term}, it stores the
+  ${../glossary/mutex-priority-ceiling:/term} before it validates the
+  ${../if/mutex-setprioceiling:/params[1]/name} parameter and again after it
+  locked the mutex.
+requirement-type: functional
+skip-reasons:
+  NeedsSMP: |
+    Where the system is built with SMP support disabled, the system has exactly one
+    scheduler instance.
+test-action: |
+  Action( ctx );
+test-brief: null
+test-cleanup: |
+  if ( ctx->scheduler_other ) {
+    SetSelfScheduler( SCHEDULER_A_ID, PRIO_NORMAL );
+  }
+
+  if ( ctx->owner == OWNER_CALLER ) {
+    T_eq_int( pthread_mutex_unlock( ctx->mutex ), 0 );
+  }
+
+  if ( ctx->priority_high ) {
+    SetSelfPriority( PRIO_NORMAL );
+  }
+
+  if ( ctx->init ) {
+    T_eq_int( pthread_mutex_destroy( &ctx->mutex_obj ), 0 );
+  }
+test-context:
+- brief: |
+    This member provides the object referenced by the
+    ${../if/mutex-setprioceiling:/params[0]/name} parameter.
+  description: null
+  member: |
+    pthread_mutex_t mutex_obj
+- brief: |
+    This member specifies the ${../if/mutex-setprioceiling:/params[0]/name}
+    parameter value.
+  description: null
+  member: |
+    pthread_mutex_t *mutex
+- brief: |
+    This member provides the mutex attributes.
+  description: null
+  member: |
+    pthread_mutexattr_t attr_obj
+- brief: |
+    This member is true, if the mutex shall be initialized with the mutex
+    attributes.
+  description: null
+  member: |
+    bool init
+- brief: |
+    This member specifies the ${../if/mutex-setprioceiling:/params[1]/name}
+    parameter value.
+  description: null
+  member: |
+    int new_ceiling
+- brief: |
+    This member specifies the ${../if/mutex-setprioceiling:/params[2]/name}
+    parameter value.
+  description: null
+  member: |
+    int *old
+- brief: |
+    This member provides the object referenced by the
+    ${../if/mutex-setprioceiling:/params[2]/name} parameter.
+  description: null
+  member: |
+    int old_obj
+- brief: |
+    This member specifies the owner of the mutex before the call.
+  description: null
+  member: |
+    OwnerKind owner
+- brief: |
+    This member is true, if the calling thread shall have a priority higher than
+    the priority ceiling of the mutex.
+  description: null
+  member: |
+    bool priority_high
+- brief: |
+    This member is true, if the home scheduler of the calling thread shall not be
+    the scheduler of the mutex.
+  description: null
+  member: |
+    bool scheduler_other
+- brief: |
+    This member contains the priority ceiling of the mutex before the call.
+  description: null
+  member: |
+    int ceiling_before
+- brief: |
+    This member contains the current priority of the calling thread before the
+    call.
+  description: null
+  member: |
+    rtems_task_priority priority_before
+- brief: |
+    This member contains the current priority of the calling thread after the call.
+  description: null
+  member: |
+    rtems_task_priority priority_after
+- brief: |
+    This member contains the owner of the mutex after the call.
+  description: null
+  member: |
+    const rtems_tcb *owner_after
+- brief: |
+    This member is true, if the calling thread blocked in the call.
+  description: null
+  member: |
+    bool blocked
+- brief: |
+    This member contains the thread control block of the runner.
+  description: null
+  member: |
+    const rtems_tcb *runner
+- brief: |
+    This member contains the identifier of the worker.
+  description: null
+  member: |
+    rtems_id worker_id
+- brief: |
+    This member provides the request which lets the worker surrender the mutex.
+  description: null
+  member: |
+    CallWithinISRRequest request
+- brief: |
+    This member contains the return value of the
+    ${../if/mutex-setprioceiling:/name} call.
+  description: null
+  member: |
+    int status
+test-context-support: |
+  typedef enum { OWNER_NONE, OWNER_CALLER, OWNER_OTHER } OwnerKind;
+test-description: null
+test-header: null
+test-includes:
+- errno.h
+- limits.h
+- pthread.h
+- rtems/posix/muteximpl.h
+- rtems/score/threadimpl.h
+- rtems/test-scheduler.h
+- string.h
+test-local-includes:
+- tx-support.h
+test-prepare: |
+  ctx->init = false;
+  ctx->new_ceiling = 0;
+  ctx->old_obj = -1;
+  ctx->owner = OWNER_NONE;
+  ctx->priority_high = false;
+  ctx->scheduler_other = false;
+  ctx->ceiling_before = -1;
+  ctx->owner_after = NULL;
+  ctx->blocked = false;
+  ctx->status = -1;
+  T_eq_int( pthread_mutexattr_init( &ctx->attr_obj ), 0 );
+test-setup:
+  brief: null
+  code: |
+    SetSelfPriority( PRIO_NORMAL );
+    ctx->runner = _Thread_Get_executing();
+    ctx->request.handler = Surrender;
+    ctx->request.arg = ctx;
+    ctx->worker_id = CreateTask( "WORK", PRIO_HIGH );
+    StartTask( ctx->worker_id, Worker, ctx );
+  description: null
+test-stop: null
+test-support: |
+  typedef ${.:/test-context-type} Context;
+
+  #define EVENT_LOCK RTEMS_EVENT_0
+
+  #define EVENT_UNLOCK RTEMS_EVENT_1
+
+  #define EVENT_LOCKED RTEMS_EVENT_2
+
+  static rtems_task_priority GetCurrentPriority( void )
+  {
+    rtems_status_code sc;
+    rtems_id          scheduler_id;
+
+    sc = rtems_task_get_scheduler( RTEMS_SELF, &scheduler_id );
+    T_rsc_success( sc );
+
+    return GetPriorityByScheduler( RTEMS_SELF, scheduler_id );
+  }
+
+  static int GetCeiling( Context *ctx )
+  {
+    int ceiling;
+
+    if ( pthread_mutex_getprioceiling( &ctx->mutex_obj, &ceiling ) != 0 ) {
+      return -1;
+    }
+
+    return ceiling;
+  }
+
+  static void Worker( rtems_task_argument arg )
+  {
+    Context *ctx;
+
+    ctx = (Context *) arg;
+
+    while ( true ) {
+      rtems_event_set events;
+
+      events = ReceiveAnyEvents();
+
+      if ( ( events & EVENT_LOCK ) != 0 ) {
+        T_eq_int( pthread_mutex_lock( ctx->mutex ), 0 );
+        SendEvents( ctx->runner->Object.id, EVENT_LOCKED );
+      }
+
+      if ( ( events & EVENT_UNLOCK ) != 0 ) {
+        T_eq_int( pthread_mutex_unlock( ctx->mutex ), 0 );
+      }
+    }
+  }
+
+  static void Surrender( void *arg )
+  {
+    Context *ctx;
+
+    ctx = arg;
+    SendEvents( ctx->worker_id, EVENT_UNLOCK );
+  }
+
+  static void SchedulerBlock(
+    void                    *arg,
+    const T_scheduler_event *event,
+    T_scheduler_when         when
+  )
+  {
+    Context *ctx;
+
+    ctx = arg;
+
+    if (
+      when == T_SCHEDULER_BEFORE && event->operation == T_SCHEDULER_BLOCK &&
+      event->thread == ctx->runner
+    ) {
+      T_scheduler_set_event_handler( NULL, NULL );
+      ctx->blocked = true;
+      CallWithinISRSubmit( &ctx->request );
+    }
+  }
+
+  static void Action( Context *ctx )
+  {
+    if ( ctx->init ) {
+      T_eq_int( pthread_mutex_init( &ctx->mutex_obj, &ctx->attr_obj ), 0 );
+      ctx->ceiling_before = GetCeiling( ctx );
+    }
+
+    if ( ctx->owner == OWNER_CALLER ) {
+      T_eq_int( pthread_mutex_lock( ctx->mutex ), 0 );
+    } else if ( ctx->owner == OWNER_OTHER ) {
+      SendEvents( ctx->worker_id, EVENT_LOCK );
+      T_eq_u32( ReceiveAnyEvents(), EVENT_LOCKED );
+      T_scheduler_set_event_handler( SchedulerBlock, ctx );
+    }
+
+    if ( ctx->priority_high ) {
+      SetSelfPriority( PRIO_ULTRA_HIGH );
+    }
+
+    if ( ctx->scheduler_other ) {
+  #if defined( RTEMS_SMP )
+      SetSelfScheduler( SCHEDULER_B_ID, PRIO_NORMAL );
+  #endif
+    }
+
+    ctx->priority_before = GetCurrentPriority();
+    ctx->status = pthread_mutex_setprioceiling(
+      ctx->mutex,
+      ctx->new_ceiling,
+      ctx->old
+    );
+    ctx->priority_after = GetCurrentPriority();
+    T_scheduler_set_event_handler( NULL, NULL );
+
+    if ( ctx->init ) {
+      ctx->owner_after = _POSIX_Mutex_Get_owner(
+        _POSIX_Mutex_Get( &ctx->mutex_obj )
+      );
+    }
+  }
+test-target: testsuites/validation/tc-pthread-mutex-setprioceiling.c
+test-teardown:
+  brief: null
+  code: |
+    DeleteTask( ctx->worker_id );
+    RestoreRunnerPriority();
+  description: null
+text: |
+  ${.:text-template}
+transition-map:
+- enabled-by: true
+  post-conditions:
+    Status:
+    - if:
+        pre-conditions:
+          Old: 'Null'
+      then: Inval
+    - if:
+        pre-conditions:
+          Mutex:
+          - Static
+          - Corrupted
+          - 'Null'
+      then: Inval
+    - if:
+        pre-conditions:
+          Protocol:
+          - None
+          - Inherit
+      then: Inval
+    - if:
+        pre-conditions:
+          New:
+          - High
+          - Low
+      then: Inval
+    - if:
+        pre-conditions:
+          Priority: Violated
+      then: Inval
+    - if:
+        pre-conditions:
+          Scheduler: Other
+      then: Inval
+    - if:
+        pre-conditions:
+          Owner: Caller
+          Type:
+          - Normal
+          - Errorcheck
+          - Default
+      then: Deadlock
+    - else: Ok
+    OldCeiling:
+    - if:
+        pre-conditions:
+          Old: 'Null'
+      then: N/A
+    - if:
+        pre-conditions:
+          Mutex: Init
+          Protocol: Protect
+      then-specified-by: Ceiling
+    - else: Zero
+    Ceiling:
+    - if:
+        pre-conditions:
+          Protocol:
+          - None
+          - Inherit
+      then: N/A
+    - if:
+        post-conditions:
+          Status: Ok
+      then: New
+    - if:
+        pre-conditions:
+          Mutex: Init
+      then: Nop
+    - else: N/A
+    Owner:
+    - if:
+        pre-conditions:
+          Owner: Caller
+      then: Caller
+    - if:
+        pre-conditions:
+          Owner: Other
+      then: None
+    - if:
+        pre-conditions:
+          Mutex: Init
+      then: None
+    - else: N/A
+    Wait:
+    - if:
+        pre-conditions:
+          Owner: Other
+      then: 'Yes'
+    - else: 'No'
+    Priority:
+    - if:
+        and:
+        - post-conditions:
+            Status: Ok
+        - pre-conditions:
+            Owner: Caller
+      then: Ceiling
+    - else: Nop
+  pre-conditions:
+    Mutex: all
+    Protocol:
+      applicable:
+        pre-conditions:
+          Mutex: Init
+    Ceiling:
+      applicable:
+        pre-conditions:
+          Mutex: Init
+          Protocol: Protect
+    Type:
+      applicable:
+        pre-conditions:
+          Mutex: Init
+          New: Valid
+          Old: Obj
+          Owner: Caller
+          Protocol: Protect
+    New: all
+    Old: all
+    Owner:
+      applicable:
+        pre-conditions:
+          Mutex: Init
+          New: Valid
+          Old: Obj
+          Protocol: Protect
+    Priority:
+      applicable:
+        pre-conditions:
+          Ceiling: Valid
+          Mutex: Init
+          New: Valid
+          Old: Obj
+          Owner: None
+          Protocol: Protect
+    Scheduler:
+      applicable:
+        pre-conditions:
+          Mutex: Init
+          New: Valid
+          Old: Obj
+          Owner: None
+          Priority: Satisfied
+          Protocol: Protect
+- enabled-by: true
+  post-conditions: NeedsSMP
+  pre-conditions:
+    Mutex:
+    - Init
+    Protocol:
+    - Protect
+    Ceiling: all
+    Type: N/A
+    New:
+    - Valid
+    Old:
+    - Obj
+    Owner:
+    - None
+    Priority:
+    - Satisfied
+    Scheduler:
+    - Other
+- enabled-by: RTEMS_SMP
+  post-conditions:
+    Status: Inval
+    OldCeiling:
+    - if:
+        pre-conditions:
+          Ceiling: Valid
+      then: Valid
+    - else: Maximum
+    Ceiling: Nop
+    Owner: None
+    Wait: 'No'
+    Priority: Nop
+  pre-conditions:
+    Mutex:
+    - Init
+    Protocol:
+    - Protect
+    Ceiling: all
+    Type: N/A
+    New:
+    - Valid
+    Old:
+    - Obj
+    Owner:
+    - None
+    Priority:
+    - Satisfied
+    Scheduler:
+    - Other
+type: requirement

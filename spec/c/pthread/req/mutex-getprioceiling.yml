@@ -1,0 +1,353 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 OHB System AG
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: action
+links:
+- role: interface-function
+  uid: ../if/mutex-getprioceiling
+- role: requirement-refinement
+  uid: ../../req/group-posix-api
+- role: reference
+  uid: /ref/std/posix-2024/pthread-mutex-getprioceiling
+post-conditions:
+- name: Status
+  states:
+  - name: Ok
+    test-code: |
+      T_eq_int( ctx->status, 0 );
+    text: |
+      The ${/glossary/returnvalue:/term} of ${../if/mutex-getprioceiling:/name} shall
+      be zero.
+  - name: Inval
+    test-code: |
+      T_eq_int( ctx->status, EINVAL );
+    text: |
+      The ${/glossary/returnvalue:/term} of ${../if/mutex-getprioceiling:/name} shall
+      be ${/c/errno/if/einval:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: Result
+  states:
+  - name: Valid
+    test-code: |
+      T_eq_int( ctx->out_obj, CeilingValue() );
+    text: |
+      The value of the object referenced by the
+      ${../if/mutex-getprioceiling:/params[1]/name} parameter shall be the
+      ${../glossary/mutex-priority-ceiling:/term} of the mutex.
+  - name: Maximum
+    test-code: |
+      T_eq_int( ctx->out_obj, GetPOSIXPriorityMaximum() );
+    text: |
+      The value of the object referenced by the
+      ${../if/mutex-getprioceiling:/params[1]/name} parameter shall be the maximum
+      ${../glossary/thread-priority:/term}.
+  - name: Zero
+    test-code: |
+      T_eq_int( ctx->out_obj, 0 );
+    text: |
+      The value of the object referenced by the
+      ${../if/mutex-getprioceiling:/params[1]/name} parameter shall be zero.
+  test-epilogue: null
+  test-prologue: null
+- name: MutexObj
+  states:
+  - name: Nop
+    test-code: |
+      pthread_mutex_t expected;
+
+      memcpy( &expected, &ctx->mutex_before, sizeof( expected ) );
+
+      /* The call acquires and releases the lock of the thread queue. */
+      #if defined( RTEMS_SMP )
+      memcpy(
+        &_POSIX_Mutex_Get( &expected )->Recursive.Mutex.Queue.Queue.Lock,
+        &MutexOf( ctx )->Recursive.Mutex.Queue.Queue.Lock,
+        sizeof( MutexOf( ctx )->Recursive.Mutex.Queue.Queue.Lock )
+      );
+      #endif
+      T_eq_mem( &ctx->mutex_obj, &expected, sizeof( expected ) );
+    text: |
+      The mutex referenced by the ${../if/mutex-getprioceiling:/params[0]/name}
+      parameter shall not be modified.
+  test-epilogue: null
+  test-prologue: null
+pre-conditions:
+- name: Mutex
+  states:
+  - name: Init
+    test-code: |
+      ctx->mutex = &ctx->mutex_obj;
+      ctx->init = true;
+    text: |
+      While the ${../if/mutex-getprioceiling:/params[0]/name} parameter references an
+      initialized mutex.
+  - name: Static
+    test-code: |
+      static const pthread_mutex_t initializer = PTHREAD_MUTEX_INITIALIZER;
+
+      ctx->mutex_obj = initializer;
+      ctx->mutex = &ctx->mutex_obj;
+    text: |
+      While the object referenced by the
+      ${../if/mutex-getprioceiling:/params[0]/name} parameter is equal to
+      ${../if/mutex-initializer:/name}.
+  - name: Corrupted
+    test-code: |
+      memset( &ctx->mutex_obj, 0xff, sizeof( ctx->mutex_obj ) );
+      ctx->mutex = &ctx->mutex_obj;
+    text: |
+      While the ${../if/mutex-getprioceiling:/params[0]/name} parameter references an
+      object which is not a mutex.
+  - name: 'Null'
+    test-code: |
+      ctx->mutex = NULL;
+    text: |
+      While the ${../if/mutex-getprioceiling:/params[0]/name} parameter is equal to
+      ${/c/if/null:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: Protocol
+  states:
+  - name: None
+    test-code: |
+      T_eq_int(
+        pthread_mutexattr_setprotocol( &ctx->attr_obj, PTHREAD_PRIO_NONE ),
+        0
+      );
+    text: |
+      While the ${../glossary/mutex-protocol:/term} of the mutex is
+      ${../if/prio-none:/name}.
+  - name: Inherit
+    test-code: |
+      T_eq_int(
+        pthread_mutexattr_setprotocol( &ctx->attr_obj, PTHREAD_PRIO_INHERIT ),
+        0
+      );
+    text: |
+      While the ${../glossary/mutex-protocol:/term} of the mutex is
+      ${../if/prio-inherit:/name}.
+  - name: Protect
+    test-code: |
+      T_eq_int(
+        pthread_mutexattr_setprotocol( &ctx->attr_obj, PTHREAD_PRIO_PROTECT ),
+        0
+      );
+    text: |
+      While the ${../glossary/mutex-protocol:/term} of the mutex is
+      ${../if/prio-protect:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: Ceiling
+  states:
+  - name: Valid
+    test-code: |
+      T_eq_int(
+        pthread_mutexattr_setprioceiling( &ctx->attr_obj, CeilingValue() ),
+        0
+      );
+    text: |
+      While the ${../glossary/mutex-priority-ceiling:/term} of the mutex is a
+      ${../glossary/thread-priority:/term} which is less than the maximum
+      ${../glossary/thread-priority:/term}.
+  - name: Maximum
+    test-code: |
+      T_eq_int( pthread_mutexattr_setprioceiling( &ctx->attr_obj, INT_MAX ), 0 );
+    text: |
+      While the ${../glossary/mutex-priority-ceiling:/term} of the mutex is the
+      maximum ${../glossary/thread-priority:/term}.
+  test-epilogue: null
+  test-prologue: null
+- name: Out
+  states:
+  - name: Obj
+    test-code: |
+      ctx->out = &ctx->out_obj;
+    text: |
+      While the ${../if/mutex-getprioceiling:/params[1]/name} parameter references an
+      object of type int.
+  - name: 'Null'
+    test-code: |
+      ctx->out = NULL;
+    text: |
+      While the ${../if/mutex-getprioceiling:/params[1]/name} parameter is equal to
+      ${/c/if/null:/name}.
+  test-epilogue: null
+  test-prologue: null
+rationale: |
+  ${/ref/std/posix-2024/pthread-mutex-getprioceiling:/name} requires
+  ${/c/errno/if/einval:/name} for a mutex with the ${../if/prio-none:/name}
+  ${../glossary/mutex-protocol:/term}. A mutex with the
+  ${../if/prio-inherit:/name} ${../glossary/mutex-protocol:/term} has no
+  ${../glossary/mutex-priority-ceiling:/term} either, so RTEMS returns
+  ${/c/errno/if/einval:/name} for it as well. A statically initialized mutex has
+  the ${../if/prio-none:/name} ${../glossary/mutex-protocol:/term}. RTEMS
+  requires no privilege, so ${/c/errno/if/eperm:/name} has no state.
+
+  The standard leaves the behaviour undefined where the
+  ${../if/mutex-getprioceiling:/params[0]/name} parameter references no
+  initialized mutex or is ${/c/if/null:/name}. States Corrupted and Null of
+  pre-condition Mutex specify that RTEMS returns ${/c/errno/if/einval:/name}. The
+  function initializes a statically initialized mutex, so post-condition MutexObj
+  does not apply to it.
+
+  The function validates the ${../if/mutex-getprioceiling:/params[1]/name}
+  parameter first, so it does not examine the mutex for state Null of
+  pre-condition Out.
+
+  The function stores zero in the object referenced by the
+  ${../if/mutex-getprioceiling:/params[1]/name} parameter before it examines the
+  mutex. A caller which ignores the status therefore reads a defined value.
+requirement-type: functional
+skip-reasons: {}
+test-action: |
+  Action( ctx );
+test-brief: null
+test-cleanup: |
+  if ( ctx->init ) {
+    (void) pthread_mutex_destroy( &ctx->mutex_obj );
+  }
+test-context:
+- brief: |
+    This member provides the object referenced by the
+    ${../if/mutex-getprioceiling:/params[0]/name} parameter.
+  description: null
+  member: pthread_mutex_t mutex_obj
+- brief: |
+    This member contains a copy of the mutex object before the call.
+  description: null
+  member: pthread_mutex_t mutex_before
+- brief: |
+    This member specifies the ${../if/mutex-getprioceiling:/params[0]/name}
+    parameter value.
+  description: null
+  member: const pthread_mutex_t *mutex
+- brief: |
+    This member specifies the ${../if/mutex-getprioceiling:/params[1]/name}
+    parameter value.
+  description: null
+  member: int *out
+- brief: |
+    This member provides the object referenced by the
+    ${../if/mutex-getprioceiling:/params[1]/name} parameter.
+  description: null
+  member: int out_obj
+- brief: |
+    This member provides the mutex attributes.
+  description: null
+  member: pthread_mutexattr_t attr_obj
+- brief: |
+    This member is true, if the mutex shall be initialized with the mutex
+    attributes.
+  description: null
+  member: bool init
+- brief: |
+    This member contains the return value of the
+    ${../if/mutex-getprioceiling:/name} call.
+  description: null
+  member: int status
+test-context-support: null
+test-description: null
+test-header: null
+test-includes:
+- errno.h
+- limits.h
+- pthread.h
+- rtems/posix/muteximpl.h
+- rtems/posix/priorityimpl.h
+- string.h
+test-local-includes:
+- tx-support.h
+test-prepare: |
+  ctx->init = false;
+  ctx->out_obj = -1;
+  ctx->out = &ctx->out_obj;
+  T_eq_int( pthread_mutexattr_init( &ctx->attr_obj ), 0 );
+test-setup: null
+test-stop: null
+test-support: |
+  typedef ${.:/test-context-type} Context;
+
+  static int CeilingValue( void )
+  {
+    return GetPOSIXPriorityMaximum() - 10;
+  }
+
+  #if defined( RTEMS_SMP )
+  static POSIX_Mutex_Control *MutexOf( Context *ctx )
+  {
+    return _POSIX_Mutex_Get( &ctx->mutex_obj );
+  }
+  #endif
+
+  static void Action( Context *ctx )
+  {
+    if ( ctx->init ) {
+      T_eq_int( pthread_mutex_init( &ctx->mutex_obj, &ctx->attr_obj ), 0 );
+    }
+
+    memcpy( &ctx->mutex_before, &ctx->mutex_obj, sizeof( ctx->mutex_before ) );
+    ctx->status = pthread_mutex_getprioceiling( ctx->mutex, ctx->out );
+  }
+test-target: testsuites/validation/tc-pthread-mutex-getprioceiling.c
+test-teardown: null
+text: |
+  ${.:text-template}
+transition-map:
+- enabled-by: true
+  post-conditions:
+    Status:
+    - if:
+        pre-conditions:
+          Out: 'Null'
+      then: Inval
+    - if:
+        pre-conditions:
+          Mutex:
+          - Static
+          - Corrupted
+          - 'Null'
+      then: Inval
+    - if:
+        pre-conditions:
+          Protocol:
+          - None
+          - Inherit
+      then: Inval
+    - else: Ok
+    Result:
+    - if:
+        pre-conditions:
+          Out: 'Null'
+      then: N/A
+    - if:
+        post-conditions:
+          Status: Ok
+      then-specified-by: Ceiling
+    - else: Zero
+    MutexObj:
+    - if:
+        pre-conditions:
+          Mutex: 'Null'
+      then: N/A
+    - if:
+        pre-conditions:
+          Mutex: Static
+          Out: Obj
+      then: N/A
+    - else: Nop
+  pre-conditions:
+    Mutex: all
+    Protocol:
+      applicable:
+        pre-conditions:
+          Mutex: Init
+    Ceiling:
+      applicable:
+        pre-conditions:
+          Mutex: Init
+          Protocol: Protect
+    Out: all
+type: requirement

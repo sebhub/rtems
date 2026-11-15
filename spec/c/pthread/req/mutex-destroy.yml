@@ -1,0 +1,250 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 OHB System AG
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: action
+links:
+- role: interface-function
+  uid: ../if/mutex-destroy
+- role: requirement-refinement
+  uid: ../../req/group-posix-api
+- role: reference
+  uid: /ref/std/posix-2024/pthread-mutex-destroy
+post-conditions:
+- name: Status
+  states:
+  - name: Ok
+    test-code: |
+      T_eq_int( ctx->status, 0 );
+    text: |
+      The ${/glossary/returnvalue:/term} of ${../if/mutex-destroy:/name} shall be
+      zero.
+  - name: Busy
+    test-code: |
+      T_eq_int( ctx->status, EBUSY );
+    text: |
+      The ${/glossary/returnvalue:/term} of ${../if/mutex-destroy:/name} shall be
+      ${/c/errno/if/ebusy:/name}.
+  - name: Inval
+    test-code: |
+      T_eq_int( ctx->status, EINVAL );
+    text: |
+      The ${/glossary/returnvalue:/term} of ${../if/mutex-destroy:/name} shall be
+      ${/c/errno/if/einval:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: Object
+  states:
+  - name: Destroyed
+    test-code: |
+      T_ne_ulong(
+        MutexOf( ctx )->flags & ~POSIX_MUTEX_FLAGS_MASK,
+        ( (uintptr_t) &ctx->mutex_obj ^ POSIX_MUTEX_MAGIC ) &
+          ~POSIX_MUTEX_FLAGS_MASK
+      );
+    text: |
+      The object referenced by the ${../if/mutex-destroy:/params[0]/name} parameter
+      shall no longer be an initialized mutex.
+  - name: Nop
+    test-code: |
+      pthread_mutex_t expected;
+
+      memcpy( &expected, &ctx->mutex_before, sizeof( expected ) );
+
+      /* The call acquires and releases the lock of the thread queue. */
+      #if defined( RTEMS_SMP )
+      memcpy(
+        &_POSIX_Mutex_Get( &expected )->Recursive.Mutex.Queue.Queue.Lock,
+        &MutexOf( ctx )->Recursive.Mutex.Queue.Queue.Lock,
+        sizeof( MutexOf( ctx )->Recursive.Mutex.Queue.Queue.Lock )
+      );
+      #endif
+      T_eq_mem( &ctx->mutex_obj, &expected, sizeof( expected ) );
+    text: |
+      The mutex referenced by the ${../if/mutex-destroy:/params[0]/name} parameter
+      shall not be modified.
+  test-epilogue: null
+  test-prologue: null
+pre-conditions:
+- name: Mutex
+  states:
+  - name: Obj
+    test-code: |
+      ctx->mutex = &ctx->mutex_obj;
+    text: |
+      While the ${../if/mutex-destroy:/params[0]/name} parameter references an object
+      of type ${/c/if/pthread_mutex_t:/name}.
+  - name: 'Null'
+    test-code: |
+      ctx->mutex = NULL;
+    text: |
+      While the ${../if/mutex-destroy:/params[0]/name} parameter is equal to
+      ${/c/if/null:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: Kind
+  states:
+  - name: Init
+    test-code: |
+      T_eq_int( pthread_mutex_init( &ctx->mutex_obj, NULL ), 0 );
+    text: |
+      While the object referenced by the ${../if/mutex-destroy:/params[0]/name}
+      parameter is an initialized mutex.
+  - name: Static
+    test-code: |
+      ctx->mutex_obj = (pthread_mutex_t) PTHREAD_MUTEX_INITIALIZER;
+    text: |
+      While the object referenced by the ${../if/mutex-destroy:/params[0]/name}
+      parameter is a statically initialized mutex.
+  - name: Destroyed
+    test-code: |
+      T_eq_int( pthread_mutex_init( &ctx->mutex_obj, NULL ), 0 );
+      T_eq_int( pthread_mutex_destroy( &ctx->mutex_obj ), 0 );
+    text: |
+      While the object referenced by the ${../if/mutex-destroy:/params[0]/name}
+      parameter is a destroyed mutex.
+  - name: Corrupted
+    test-code: |
+      memset( &ctx->mutex_obj, 0xff, sizeof( ctx->mutex_obj ) );
+    text: |
+      While the object referenced by the ${../if/mutex-destroy:/params[0]/name}
+      parameter is not a mutex.
+  test-epilogue: null
+  test-prologue: null
+- name: Locked
+  states:
+  - name: 'Yes'
+    test-code: |
+      T_eq_int( pthread_mutex_lock( &ctx->mutex_obj ), 0 );
+      ctx->locked = true;
+    text: |
+      While the mutex is locked by the calling ${../glossary/thread:/term}.
+  - name: 'No'
+    test-code: |
+      ctx->locked = false;
+    text: |
+      While the mutex is not locked.
+  test-epilogue: null
+  test-prologue: null
+rationale: |
+  ${/ref/std/posix-2024/pthread-mutex-destroy:/name} specifies no error for
+  ${../if/mutex-destroy:/name} and states that destroying a locked mutex results
+  in undefined behaviour. State Yes of pre-condition Locked specifies that RTEMS
+  returns ${/c/errno/if/ebusy:/name} and keeps the mutex. The pre-condition
+  Locked applies to an initialized mutex only.
+
+  The standard leaves the behaviour undefined for a destroyed mutex, for an
+  object which is not a mutex and for a ${../if/mutex-destroy:/params[0]/name}
+  parameter which is equal to ${/c/if/null:/name}. The states Destroyed and
+  Corrupted of pre-condition Kind and state Null of pre-condition Mutex specify
+  that RTEMS returns ${/c/errno/if/einval:/name}.
+
+  A statically initialized mutex is initialized by the call and then destroyed,
+  so its object is no longer an initialized mutex. The memory of the object of
+  state Corrupted is filled with 0xff.
+requirement-type: functional
+skip-reasons: {}
+test-action: |
+  Action( ctx );
+test-brief: null
+test-cleanup: |
+  if ( ctx->locked ) {
+    (void) pthread_mutex_unlock( &ctx->mutex_obj );
+    (void) pthread_mutex_destroy( &ctx->mutex_obj );
+  }
+test-context:
+- brief: |
+    This member provides the object referenced by the
+    ${../if/mutex-destroy:/params[0]/name} parameter.
+  description: null
+  member: pthread_mutex_t mutex_obj
+- brief: |
+    This member contains a copy of the mutex object before the call.
+  description: null
+  member: pthread_mutex_t mutex_before
+- brief: |
+    This member specifies the ${../if/mutex-destroy:/params[0]/name} parameter
+    value.
+  description: null
+  member: pthread_mutex_t *mutex
+- brief: |
+    This member is true, if the test locked the mutex.
+  description: null
+  member: bool locked
+- brief: |
+    This member contains the return value of the ${../if/mutex-destroy:/name} call.
+  description: null
+  member: int status
+test-context-support: null
+test-description: null
+test-header: null
+test-includes:
+- errno.h
+- pthread.h
+- rtems/posix/muteximpl.h
+- string.h
+test-local-includes:
+- tx-support.h
+test-prepare: |
+  ctx->locked = false;
+test-setup: null
+test-stop: null
+test-support: |
+  typedef ${.:/test-context-type} Context;
+
+  static POSIX_Mutex_Control *MutexOf( Context *ctx )
+  {
+    return _POSIX_Mutex_Get( &ctx->mutex_obj );
+  }
+
+  static void Action( Context *ctx )
+  {
+    memcpy( &ctx->mutex_before, &ctx->mutex_obj, sizeof( ctx->mutex_before ) );
+    ctx->status = pthread_mutex_destroy( ctx->mutex );
+  }
+test-target: testsuites/validation/tc-pthread-mutex-destroy.c
+test-teardown: null
+text: |
+  ${.:text-template}
+transition-map:
+- enabled-by: true
+  post-conditions:
+    Status:
+    - if:
+        pre-conditions:
+          Mutex: 'Null'
+      then: Inval
+    - if:
+        pre-conditions:
+          Kind:
+          - Destroyed
+          - Corrupted
+      then: Inval
+    - if:
+        pre-conditions:
+          Kind: Init
+          Locked: 'Yes'
+      then: Busy
+    - else: Ok
+    Object:
+    - if:
+        pre-conditions:
+          Mutex: 'Null'
+      then: N/A
+    - if:
+        post-conditions:
+          Status: Ok
+      then: Destroyed
+    - else: Nop
+  pre-conditions:
+    Mutex: all
+    Kind:
+      applicable:
+        pre-conditions:
+          Mutex: Obj
+    Locked:
+      applicable:
+        pre-conditions:
+          Kind: Init
+type: requirement

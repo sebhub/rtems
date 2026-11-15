@@ -1,0 +1,261 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 OHB System AG
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: action
+links:
+- role: interface-function
+  uid: ../if/mutexattr-getprioceiling
+- role: requirement-refinement
+  uid: ../../req/group-posix-api
+- role: reference
+  uid: /ref/std/posix-2024/pthread-mutexattr-getprioceiling
+post-conditions:
+- name: Status
+  states:
+  - name: Ok
+    test-code: |
+      T_eq_int( ctx->status, 0 );
+    text: |
+      The ${/glossary/returnvalue:/term} of ${../if/mutexattr-getprioceiling:/name}
+      shall be zero.
+  - name: Inval
+    test-code: |
+      T_eq_int( ctx->status, EINVAL );
+    text: |
+      The ${/glossary/returnvalue:/term} of ${../if/mutexattr-getprioceiling:/name}
+      shall be ${/c/errno/if/einval:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: Result
+  states:
+  - name: Stored
+    test-code: |
+      T_eq_int( ctx->out_obj, ctx->stored );
+    text: |
+      The value of the object referenced by the
+      ${../if/mutexattr-getprioceiling:/params[1]/name} parameter shall be the
+      ${../glossary/mutex-priority-ceiling:/term} of the ${../glossary/mutex:/term}
+      attributes object.
+  - name: Nop
+    test-code: |
+      T_eq_int( ctx->out_obj, -1 );
+    text: |
+      The value of the object referenced by the
+      ${../if/mutexattr-getprioceiling:/params[1]/name} parameter shall not be
+      modified.
+  test-epilogue: null
+  test-prologue: null
+- name: Other
+  states:
+  - name: Nop
+    test-code: |
+      T_eq_mem( &ctx->attr_obj, &ctx->attr_before, sizeof( ctx->attr_obj ) );
+    text: |
+      The ${../glossary/mutex:/term} attributes object referenced by the
+      ${../if/mutexattr-getprioceiling:/params[0]/name} parameter shall not be
+      modified.
+  test-epilogue: null
+  test-prologue: null
+pre-conditions:
+- name: Attr
+  states:
+  - name: Obj
+    test-code: |
+      ctx->attr = &ctx->attr_obj;
+    text: |
+      While the ${../if/mutexattr-getprioceiling:/params[0]/name} parameter
+      references an object of type ${/c/if/pthread_mutexattr_t:/name}.
+  - name: 'Null'
+    test-code: |
+      ctx->attr = NULL;
+    text: |
+      While the ${../if/mutexattr-getprioceiling:/params[0]/name} parameter is equal
+      to ${/c/if/null:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: Initialized
+  states:
+  - name: 'Yes'
+    test-code: |
+      T_eq_int( pthread_mutexattr_init( &ctx->attr_obj ), 0 );
+    text: |
+      While the object referenced by the
+      ${../if/mutexattr-getprioceiling:/params[0]/name} parameter is an initialized
+      ${../glossary/mutex:/term} attributes object.
+  - name: 'No'
+    test-code: |
+      memset( &ctx->attr_obj, 0xff, sizeof( ctx->attr_obj ) );
+      ctx->attr_obj.is_initialized = 0;
+    text: |
+      While the object referenced by the
+      ${../if/mutexattr-getprioceiling:/params[0]/name} parameter is not an
+      initialized ${../glossary/mutex:/term} attributes object.
+  test-epilogue: null
+  test-prologue: null
+- name: Stored
+  states:
+  - name: Min
+    test-code: |
+      ctx->stored = INT_MIN;
+    text: |
+      While the ${../glossary/mutex-priority-ceiling:/term} of the object referenced
+      by the ${../if/mutexattr-getprioceiling:/params[0]/name} parameter is the
+      minimum of the type int.
+  - name: Valid
+    test-code: |
+      ctx->stored = ToPOSIXPriority( PRIO_HIGH );
+    text: |
+      While the ${../glossary/mutex-priority-ceiling:/term} of the object referenced
+      by the ${../if/mutexattr-getprioceiling:/params[0]/name} parameter is a valid
+      ${../glossary/thread-priority:/term}.
+  - name: Max
+    test-code: |
+      ctx->stored = INT_MAX;
+    text: |
+      While the ${../glossary/mutex-priority-ceiling:/term} of the object referenced
+      by the ${../if/mutexattr-getprioceiling:/params[0]/name} parameter is the
+      maximum of the type int.
+  test-epilogue: |
+    ctx->attr_obj.prio_ceiling = ctx->stored;
+  test-prologue: null
+- name: Out
+  states:
+  - name: Obj
+    test-code: |
+      ctx->out = &ctx->out_obj;
+    text: |
+      While the ${../if/mutexattr-getprioceiling:/params[1]/name} parameter
+      references an object of type int.
+  - name: 'Null'
+    test-code: |
+      ctx->out = NULL;
+    text: |
+      While the ${../if/mutexattr-getprioceiling:/params[1]/name} parameter is equal
+      to ${/c/if/null:/name}.
+  test-epilogue: null
+  test-prologue: null
+rationale: |
+  ${../if/mutexattr-setprioceiling:/name} stores every value of the type int, so
+  the ${../glossary/mutex-priority-ceiling:/term} of an initialized
+  ${../glossary/mutex:/term} attributes object can have every value. The states
+  of pre-condition Stored are the two bounds of the type int and a valid
+  ${../glossary/thread-priority:/term}. The value INT_MAX is the default of
+  ${../if/mutexattr-init:/name}.
+
+  The standard leaves the behaviour undefined where the
+  ${../if/mutexattr-getprioceiling:/params[0]/name} parameter references no
+  initialized ${../glossary/mutex:/term} attributes object or is
+  ${/c/if/null:/name}. State Null of pre-condition Attr and state No of
+  pre-condition Initialized specify the behaviour of RTEMS, which returns
+  ${/c/errno/if/einval:/name}. The same applies to a
+  ${../if/mutexattr-getprioceiling:/params[1]/name} parameter which is equal to
+  ${/c/if/null:/name}.
+requirement-type: functional
+skip-reasons: {}
+test-action: |
+  memcpy( &ctx->attr_before, &ctx->attr_obj, sizeof( ctx->attr_before ) );
+  ctx->status = pthread_mutexattr_getprioceiling( ctx->attr, ctx->out );
+test-brief: null
+test-cleanup: null
+test-context:
+- brief: |
+    This member specifies the ${../if/mutexattr-getprioceiling:/params[0]/name}
+    parameter value.
+  description: null
+  member: const pthread_mutexattr_t *attr
+- brief: |
+    This member specifies the ${../if/mutexattr-getprioceiling:/params[1]/name}
+    parameter value.
+  description: null
+  member: int *out
+- brief: |
+    This member provides the object referenced by the
+    ${../if/mutexattr-getprioceiling:/params[1]/name} parameter.
+  description: null
+  member: int out_obj
+- brief: |
+    This member contains the return value of the
+    ${../if/mutexattr-getprioceiling:/name} call.
+  description: null
+  member: int status
+- brief: |
+    This member contains the mutex attributes object.
+  description: null
+  member: pthread_mutexattr_t attr_obj
+- brief: |
+    This member contains a copy of the mutex attributes object before the call.
+  description: null
+  member: pthread_mutexattr_t attr_before
+- brief: |
+    This member contains the value of the
+    ${../glossary/mutex-priority-ceiling:/term} which the preparation stores in the
+    ${../glossary/mutex:/term} attributes object.
+  description: null
+  member: |
+    int stored
+test-context-support: null
+test-description: null
+test-header: null
+test-includes:
+- errno.h
+- limits.h
+- pthread.h
+- string.h
+test-local-includes:
+- tx-support.h
+test-prepare: |
+  ctx->out_obj = -1;
+test-setup: null
+test-stop: null
+test-support: null
+test-target: testsuites/validation/tc-pthread-mutexattr-getprioceiling.c
+test-teardown: null
+text: |
+  ${.:text-template}
+transition-map:
+- enabled-by: true
+  post-conditions:
+    Status:
+    - if:
+        pre-conditions:
+          Attr: 'Null'
+      then: Inval
+    - if:
+        pre-conditions:
+          Initialized: 'No'
+      then: Inval
+    - if:
+        pre-conditions:
+          Out: 'Null'
+      then: Inval
+    - else: Ok
+    Result:
+    - if:
+        pre-conditions:
+          Out: 'Null'
+      then: N/A
+    - if:
+        post-conditions:
+          Status: Ok
+      then: Stored
+    - else: Nop
+    Other:
+    - if:
+        pre-conditions:
+          Attr: 'Null'
+      then: N/A
+    - else: Nop
+  pre-conditions:
+    Attr: all
+    Initialized:
+      applicable:
+        pre-conditions:
+          Attr: Obj
+    Stored:
+      applicable:
+        pre-conditions:
+          Attr: Obj
+    Out: all
+type: requirement

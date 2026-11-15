@@ -1,0 +1,564 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+copyrights:
+- Copyright (C) 2026 OHB System AG
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+enabled-by: true
+functional-type: action
+links:
+- role: interface-function
+  uid: ../if/mutex-timedlock
+- role: requirement-refinement
+  uid: ../../req/group-posix-api
+- role: function-implementation
+  uid: /score/mtx/req/seize-wait
+- role: reference
+  uid: /ref/std/posix-2024/pthread-mutex-timedlock
+post-conditions:
+- name: Status
+  states:
+  - name: Ok
+    test-code: |
+      T_eq_int( ctx->status, 0 );
+    text: |
+      The ${/glossary/returnvalue:/term} of ${../if/mutex-timedlock:/name} shall be
+      zero.
+  - name: Inval
+    test-code: |
+      T_eq_int( ctx->status, EINVAL );
+    text: |
+      The ${/glossary/returnvalue:/term} of ${../if/mutex-timedlock:/name} shall be
+      ${/c/errno/if/einval:/name}.
+  - name: TimedOut
+    test-code: |
+      T_eq_int( ctx->status, ETIMEDOUT );
+    text: |
+      The ${/glossary/returnvalue:/term} of ${../if/mutex-timedlock:/name} shall be
+      ${/c/errno/if/etimedout:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: Owner
+  states:
+  - name: Caller
+    test-code: |
+      T_eq_ptr( TQGetOwnerPOSIXMutex( &ctx->tq_mtx_ctx.base ), ctx->runner );
+    text: |
+      The owner of the mutex shall be the calling thread.
+  - name: Other
+    test-code: |
+      T_eq_ptr(
+        TQGetOwnerPOSIXMutex( &ctx->tq_mtx_ctx.base ),
+        ctx->tq_mtx_ctx.base.worker_tcb[ TQ_BLOCKER_B ]
+      );
+    text: |
+      The owner of the mutex shall be the other thread.
+  - name: None
+    test-code: |
+      T_null( TQGetOwnerPOSIXMutex( &ctx->tq_mtx_ctx.base ) );
+    text: |
+      The mutex shall have no owner.
+  test-epilogue: null
+  test-prologue: null
+- name: Action
+  states:
+  - name: MtxSeizeWait
+    test-code: |
+      /*
+       * The function call left the mutex owned by the calling thread, and a
+       * priority ceiling raised its priority.  Release it so that the
+       * delegated test starts with an unowned mutex and the calling thread at
+       * its normal priority.
+       */
+      T_eq_int( ctx->status, 0 );
+      T_eq_int( pthread_mutex_unlock( ctx->mutex ), 0 );
+
+      ctx->tq_mtx_ctx.base.wait = TQ_WAIT_TIMED;
+      ${/score/mtx/req/seize-wait:/test-run}( &ctx->tq_mtx_ctx );
+    text: |
+      The calling thread shall wait to seize the mutex as specified by
+      ${/score/mtx/req/seize-wait:/spec}.
+  test-epilogue: null
+  test-prologue: null
+pre-conditions:
+- name: Protocol
+  states:
+  - name: None
+    test-code: |
+      ctx->protocol = PTHREAD_PRIO_NONE;
+      ctx->tq_mtx_ctx.protocol = TQ_MTX_NO_PROTOCOL;
+      ctx->tq_mtx_ctx.priority_ceiling = PRIO_INVALID;
+      ctx->tq_mtx_ctx.base.discipline = TQ_FIFO;
+    text: |
+      While the ${../glossary/mutex-protocol:/term} of the mutex is
+      ${../if/prio-none:/name}.
+  - name: Inherit
+    test-code: |
+      ctx->protocol = PTHREAD_PRIO_INHERIT;
+      ctx->tq_mtx_ctx.protocol = TQ_MTX_PRIORITY_INHERIT;
+      ctx->tq_mtx_ctx.priority_ceiling = PRIO_INVALID;
+      ctx->tq_mtx_ctx.base.discipline = TQ_PRIORITY;
+    text: |
+      While the ${../glossary/mutex-protocol:/term} of the mutex is
+      ${../if/prio-inherit:/name}.
+  - name: Protect
+    test-code: |
+      ctx->protocol = PTHREAD_PRIO_PROTECT;
+      ctx->tq_mtx_ctx.protocol = TQ_MTX_PRIORITY_CEILING;
+      ctx->tq_mtx_ctx.priority_ceiling = PRIO_VERY_HIGH;
+      ctx->tq_mtx_ctx.base.discipline = TQ_PRIORITY;
+    text: |
+      While the ${../glossary/mutex-protocol:/term} of the mutex is
+      ${../if/prio-protect:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: Type
+  states:
+  - name: Normal
+    test-code: |
+      ctx->type = PTHREAD_MUTEX_NORMAL;
+      ctx->tq_mtx_ctx.recursive = TQ_MTX_RECURSIVE_DEADLOCK;
+    text: |
+      While the ${../glossary/mutex-type:/term} of the mutex is
+      ${../if/mutex-normal:/name}.
+  - name: Recursive
+    test-code: |
+      ctx->type = PTHREAD_MUTEX_RECURSIVE;
+      ctx->tq_mtx_ctx.recursive = TQ_MTX_RECURSIVE_ALLOWED;
+    text: |
+      While the ${../glossary/mutex-type:/term} of the mutex is
+      ${../if/mutex-recursive:/name}.
+  - name: Errorcheck
+    test-code: |
+      ctx->type = PTHREAD_MUTEX_ERRORCHECK;
+      ctx->tq_mtx_ctx.recursive = TQ_MTX_RECURSIVE_DEADLOCK;
+    text: |
+      While the ${../glossary/mutex-type:/term} of the mutex is
+      ${../if/mutex-errorcheck:/name}.
+  - name: Default
+    test-code: |
+      ctx->type = PTHREAD_MUTEX_DEFAULT;
+      ctx->tq_mtx_ctx.recursive = TQ_MTX_RECURSIVE_DEADLOCK;
+    text: |
+      While the ${../glossary/mutex-type:/term} of the mutex is
+      ${../if/mutex-default:/name}.
+  test-epilogue: null
+  test-prologue: null
+- name: Mutex
+  states:
+  - name: 'Null'
+    test-code: |
+      ctx->mutex = NULL;
+    text: |
+      While the ${../if/mutex-timedlock:/params[0]/name} parameter is
+      ${/c/if/null:/name}.
+  - name: Invalid
+    test-code: |
+      T_eq_int( pthread_mutex_init( &ctx->mutex_obj, NULL ), 0 );
+      T_eq_int( pthread_mutex_destroy( &ctx->mutex_obj ), 0 );
+      ctx->mutex = &ctx->mutex_obj;
+    text: |
+      While the object referenced by the ${../if/mutex-timedlock:/params[0]/name}
+      parameter is not a valid mutex.
+  - name: Static
+    test-code: |
+      static const pthread_mutex_t initializer = PTHREAD_MUTEX_INITIALIZER;
+
+      /*
+       * The first lock initializes the mutex with the default attributes.
+       * The Protocol and Type pre-conditions are not applicable, so the
+       * thread queue test context is set here.
+       */
+      ctx->mutex_obj = initializer;
+      ctx->mutex = &ctx->mutex_obj;
+      ctx->mutex_initialized = true;
+      ctx->tq_mtx_ctx.base.thread_queue_object = ctx->mutex;
+      ctx->tq_mtx_ctx.protocol = TQ_MTX_NO_PROTOCOL;
+      ctx->tq_mtx_ctx.recursive = TQ_MTX_RECURSIVE_DEADLOCK;
+      ctx->tq_mtx_ctx.priority_ceiling = PRIO_INVALID;
+      ctx->tq_mtx_ctx.base.discipline = TQ_FIFO;
+    text: |
+      While the object referenced by the ${../if/mutex-timedlock:/params[0]/name}
+      parameter is equal to ${../if/mutex-initializer:/name}.
+  - name: Init
+    test-code: |
+      pthread_mutexattr_t attr;
+
+      T_eq_int( pthread_mutexattr_init( &attr ), 0 );
+      T_eq_int( pthread_mutexattr_settype( &attr, ctx->type ), 0 );
+      T_eq_int( pthread_mutexattr_setprotocol( &attr, ctx->protocol ), 0 );
+      T_eq_int(
+        pthread_mutexattr_setprioceiling(
+          &attr,
+          ToPOSIXPriority( PRIO_VERY_HIGH )
+        ),
+        0
+      );
+      T_eq_int( pthread_mutex_init( &ctx->mutex_obj, &attr ), 0 );
+      T_eq_int( pthread_mutexattr_destroy( &attr ), 0 );
+      ctx->mutex = &ctx->mutex_obj;
+      ctx->mutex_initialized = true;
+      ctx->tq_mtx_ctx.base.thread_queue_object = ctx->mutex;
+    text: |
+      While the object referenced by the ${../if/mutex-timedlock:/params[0]/name}
+      parameter is an initialized mutex.
+  test-epilogue: null
+  test-prologue: null
+- name: Timeout
+  states:
+  - name: Future
+    test-code: |
+      T_eq_int( clock_gettime( CLOCK_REALTIME, &ctx->abstime ), 0 );
+      ctx->abstime.tv_sec += 3600;
+    text: |
+      While the ${../if/mutex-timedlock:/params[1]/name} parameter references a valid
+      time point which is later than the current time of
+      ${/c/time/if/clock-realtime:/name}.
+  - name: Past
+    test-code: |
+      T_eq_int( clock_gettime( CLOCK_REALTIME, &ctx->abstime ), 0 );
+      ctx->abstime.tv_sec -= 1;
+    text: |
+      While the ${../if/mutex-timedlock:/params[1]/name} parameter references a valid
+      time point which is not later than the current time of
+      ${/c/time/if/clock-realtime:/name}.
+  - name: Invalid
+    test-code: |
+      ctx->abstime.tv_sec = 0;
+      ctx->abstime.tv_nsec = -1;
+    text: |
+      While the ${../if/mutex-timedlock:/params[1]/name} parameter references an
+      object which is not a valid time point.
+  test-epilogue: null
+  test-prologue: null
+- name: Owner
+  states:
+  - name: None
+    test-code: |
+      ctx->owner_other = false;
+    text: |
+      While the mutex has no owner.
+  - name: Other
+    test-code: |
+      ctx->owner_other = true;
+      ctx->tq_mtx_ctx.base.thread_queue_object = ctx->mutex;
+      ctx->tq_mtx_ctx.base.wait = TQ_WAIT_FOREVER;
+      TQSend( &ctx->tq_mtx_ctx.base, TQ_BLOCKER_B, TQ_EVENT_ENQUEUE );
+    text: |
+      While the owner of the mutex is a thread other than the calling thread.
+  test-epilogue: null
+  test-prologue: null
+- name: Scheduler
+  states:
+  - name: Home
+    test-code: |
+      ctx->scheduler_other = false;
+    text: |
+      While the ${/glossary/scheduler-home:/term} of the calling thread is the
+      ${/glossary/schedulerinstance:/term} of the mutex.
+  - name: Other
+    test-code: |
+      ctx->scheduler_other = true;
+
+      #if defined( RTEMS_SMP )
+      SetSelfScheduler( SCHEDULER_B_ID, PRIO_NORMAL );
+      #endif
+    text: |
+      While the ${/glossary/scheduler-home:/term} of the calling thread is not the
+      ${/glossary/schedulerinstance:/term} of the mutex.
+  test-epilogue: null
+  test-prologue: null
+rationale: |
+  The validation of the ${../if/mutex-timedlock:/params[0]/name} parameter is not
+  covered by ${/score/mtx/req/seize-wait:/spec}, which has no pre-condition for
+  the validity of the object. States Null and Invalid of pre-condition Mutex are
+  therefore specified by post-condition Status. For a valid mutex and a time
+  point in the future, the result depends on the owner of the mutex and on the
+  priority of the calling thread with respect to the
+  ${../glossary/mutex-priority-ceiling:/term}. Both are pre-conditions of
+  ${/score/mtx/req/seize-wait:/spec}, which also specifies the
+  ${/c/errno/if/einval:/name} for a violated priority ceiling and the priority
+  change of the owner. Post-condition Action alone therefore specifies the seize
+  in this case. The delegated test uses a time point in the far future, so the
+  timeout does not expire. ${./mutex-timedlock-timeout:/spec} specifies the
+  expiry of the timeout.
+
+  ${/ref/std/posix-2024/pthread-mutex-timedlock:/name} states that the function
+  does not fail if it can lock the mutex at once. It need not check the
+  ${../if/mutex-timedlock:/params[1]/name} parameter in this case. For a mutex
+  which another thread owns, it requires ${/c/errno/if/einval:/name} for a time
+  point which is not valid and ${/c/errno/if/etimedout:/name} for a time point
+  which is not in the future. Pre-condition Owner gives these cases for the
+  states Past and Invalid of pre-condition Timeout.
+
+  ${/score/mtx/req/seize-wait:/spec} has no pre-condition for the scheduler of
+  the calling thread. Pre-condition Scheduler specifies the
+  ${/c/errno/if/einval:/name} for a mutex with the ${../if/prio-protect:/name}
+  ${../glossary/mutex-protocol:/term} which a thread of another scheduler seizes.
+
+  The ${../if/mutex-normal:/name}, the ${../if/mutex-errorcheck:/name} and the
+  ${../if/mutex-default:/name} ${../glossary/mutex-type:/term} do not allow a
+  recursive seize and return ${/c/errno/if/edeadlk:/name}. A statically
+  initialized mutex has the ${../if/mutex-default:/name}
+  ${../glossary/mutex-type:/term} and the ${../if/prio-none:/name}
+  ${../glossary/mutex-protocol:/term}. RTEMS counts the recursive seizes of a
+  mutex without a limit, so it cannot return ${/c/errno/if/eagain:/name}.
+requirement-type: functional
+skip-reasons:
+  NeedsSMP: |
+    Where the system is built with SMP support disabled, the system has exactly one
+    scheduler instance.
+test-action: |
+  ctx->status = pthread_mutex_timedlock( ctx->mutex, &ctx->abstime );
+test-brief: null
+test-cleanup: |
+  if ( ctx->scheduler_other ) {
+    SetSelfScheduler( SCHEDULER_A_ID, PRIO_NORMAL );
+  }
+
+  if ( ctx->owner_other ) {
+    TQSend( &ctx->tq_mtx_ctx.base, TQ_BLOCKER_B, TQ_EVENT_SURRENDER );
+  }
+
+  if ( ctx->mutex_initialized ) {
+    /*
+     * The mutex may be still owned by the calling thread, possibly with
+     * recursive locks.
+     */
+    while ( pthread_mutex_unlock( ctx->mutex ) == 0 ) {
+      /* Release the mutex including all recursive locks */
+    }
+
+    T_eq_int( pthread_mutex_destroy( &ctx->mutex_obj ), 0 );
+  }
+test-context:
+- brief: |
+    This member contains the thread queue test context.
+  description: null
+  member: |
+    TQMtxContext tq_mtx_ctx
+- brief: |
+    This member specifies the ${../if/mutex-timedlock:/params[0]/name} parameter
+    value.
+  description: null
+  member: |
+    pthread_mutex_t *mutex
+- brief: |
+    This member provides the object referenced by the
+    ${../if/mutex-timedlock:/params[1]/name} parameter.
+  description: null
+  member: |
+    struct timespec abstime
+- brief: |
+    This member contains the return value of the ${../if/mutex-timedlock:/name}
+    call.
+  description: null
+  member: |
+    int status
+- brief: |
+    This member contains the mutex object.
+  description: null
+  member: |
+    pthread_mutex_t mutex_obj
+- brief: |
+    This member specifies the protocol attribute used to initialize the mutex
+    object.
+  description: null
+  member: |
+    int protocol
+- brief: |
+    This member specifies the type attribute used to initialize the mutex object.
+  description: null
+  member: |
+    int type
+- brief: |
+    This member is true, if the mutex object shall be destroyed by the cleanup
+    step.
+  description: null
+  member: |
+    bool mutex_initialized
+- brief: |
+    This member is true, if another thread owns the mutex.
+  description: null
+  member: |
+    bool owner_other
+- brief: |
+    This member is true, if the home scheduler of the calling thread is not the
+    scheduler of the mutex.
+  description: null
+  member: |
+    bool scheduler_other
+- brief: |
+    This member contains the thread control block of the runner.
+  description: null
+  member: |
+    const rtems_tcb *runner
+test-context-support: null
+test-description: null
+test-header: null
+test-includes:
+- errno.h
+- pthread.h
+- rtems.h
+- rtems/score/threadimpl.h
+- string.h
+- time.h
+test-local-includes:
+- tr-mtx-seize-wait.h
+- tx-support.h
+- tx-thread-queue.h
+test-prepare: |
+  ctx->protocol = PTHREAD_PRIO_NONE;
+  ctx->type = PTHREAD_MUTEX_DEFAULT;
+  ctx->mutex_initialized = false;
+  ctx->owner_other = false;
+  ctx->scheduler_other = false;
+  ctx->status = -1;
+  T_eq_int( clock_gettime( CLOCK_REALTIME, &ctx->abstime ), 0 );
+  ctx->abstime.tv_sec += 3600;
+test-setup:
+  brief: null
+  code: |
+    SetSelfPriority( PRIO_NORMAL );
+    memset( ctx, 0, sizeof( *ctx ) );
+    ctx->runner = _Thread_Get_executing();
+    ctx->tq_mtx_ctx.base.enqueue_variant = TQ_ENQUEUE_BLOCKS;
+    ctx->tq_mtx_ctx.base.deadlock = TQ_DEADLOCK_STATUS;
+    ctx->tq_mtx_ctx.base.convert_status = TQConvertStatusPOSIX;
+    ctx->tq_mtx_ctx.base.enqueue_prepare = TQEnqueuePrepareDefault;
+    ctx->tq_mtx_ctx.base.enqueue_done = TQEnqueueDoneDefault;
+    ctx->tq_mtx_ctx.base.enqueue = TQEnqueuePOSIXMutex;
+    ctx->tq_mtx_ctx.base.surrender = TQSurrenderPOSIXMutex;
+    ctx->tq_mtx_ctx.base.get_owner = TQGetOwnerPOSIXMutex;
+    TQInitialize( &ctx->tq_mtx_ctx.base );
+  description: null
+test-stop: null
+test-support: null
+test-target: testsuites/validation/tc-pthread-mutex-timedlock.c
+test-teardown:
+  brief: null
+  code: |
+    TQDestroy( &ctx->tq_mtx_ctx.base );
+    RestoreRunnerPriority();
+  description: null
+text: |
+  ${.:text-template}
+transition-map:
+- enabled-by: true
+  post-conditions:
+    Status:
+    - if:
+        pre-conditions:
+          Mutex:
+          - 'Null'
+          - Invalid
+      then: Inval
+    - if:
+        pre-conditions:
+          Scheduler: Other
+      then: Inval
+    - if:
+        pre-conditions:
+          Owner: Other
+          Timeout: Invalid
+      then: Inval
+    - if:
+        pre-conditions:
+          Owner: Other
+          Timeout: Past
+      then: TimedOut
+    - if:
+        pre-conditions:
+          Timeout: Future
+      then: N/A
+    - else: Ok
+    Owner:
+    - if:
+        pre-conditions:
+          Mutex:
+          - 'Null'
+          - Invalid
+      then: N/A
+    - if:
+        pre-conditions:
+          Owner: Other
+      then: Other
+    - if:
+        pre-conditions:
+          Scheduler: Other
+      then: None
+    - if:
+        pre-conditions:
+          Timeout:
+          - Past
+          - Invalid
+      then: Caller
+    - else: N/A
+    Action:
+    - if:
+        pre-conditions:
+          Scheduler:
+          - Home
+          - N/A
+          Timeout: Future
+      then: MtxSeizeWait
+    - else: N/A
+  pre-conditions:
+    Protocol:
+      applicable:
+        pre-conditions:
+          Mutex: Init
+    Type:
+      applicable:
+        pre-conditions:
+          Mutex: Init
+    Mutex: all
+    Timeout:
+      applicable:
+        pre-conditions:
+          Mutex:
+          - Static
+          - Init
+    Owner:
+      applicable:
+        pre-conditions:
+          Mutex:
+          - Static
+          - Init
+          Timeout:
+          - Past
+          - Invalid
+    Scheduler:
+      applicable:
+        pre-conditions:
+          Mutex: Init
+          Protocol: Protect
+          Timeout: Future
+- enabled-by: true
+  post-conditions: NeedsSMP
+  pre-conditions:
+    Protocol:
+    - Protect
+    Type: all
+    Mutex:
+    - Init
+    Timeout:
+    - Future
+    Owner: N/A
+    Scheduler:
+    - Other
+- enabled-by: RTEMS_SMP
+  post-conditions:
+    Status: Inval
+    Owner: None
+    Action: N/A
+  pre-conditions:
+    Protocol:
+    - Protect
+    Type: all
+    Mutex:
+    - Init
+    Timeout:
+    - Future
+    Owner: N/A
+    Scheduler:
+    - Other
+type: requirement

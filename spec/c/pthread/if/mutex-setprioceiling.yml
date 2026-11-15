@@ -1,0 +1,123 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Set the ${../glossary/mutex-priority-ceiling:/term} of the
+  ${../glossary/mutex:/term} object referenced by ${.:/params[0]/name} to the
+  value specified by ${.:/params[1]/name} and store the old priority ceiling in
+  the object referenced by ${.:/params[2]/name}.
+copyrights:
+- Copyright (C) 2026 OHB System AG
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+  default:
+    attributes: null
+    body: null
+    params:
+    - ${/c/if/pthread_mutex_t:/name} *restrict ${.:/params[0]/name}
+    - int ${.:/params[1]/name}
+    - int *restrict ${.:/params[2]/name}
+    return: int
+  variants: []
+description: |
+  The function locks the ${../glossary/mutex:/term} as ${../if/mutex-lock:/name}
+  does, changes the ${../glossary/mutex-priority-ceiling:/term} and unlocks the
+  ${../glossary/mutex:/term}.
+enabled-by: true
+index-entries: []
+interface-type: function
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+- description: |
+    The ${.:/params[2]/name} parameter is ${/c/if/null:/name}.
+  role: errno
+  uid: /c/errno/if/einval
+- description: |
+    The ${.:/params[0]/name} parameter is ${/c/if/null:/name}.
+  role: errno
+  uid: /c/errno/if/einval
+- description: |
+    The object referenced by the ${.:/params[0]/name} parameter is not an
+    initialized ${../glossary/mutex:/term}.
+  role: errno
+  uid: /c/errno/if/einval
+- description: |
+    The ${../glossary/mutex-protocol:/term} of the ${../glossary/mutex:/term} is
+    not ${../if/prio-protect:/name}.
+  role: errno
+  uid: /c/errno/if/einval
+- description: |
+    The priority specified by ${.:/params[1]/name} is out of range.
+  role: errno
+  uid: /c/errno/if/einval
+- description: |
+    The ${../glossary/mutex:/term} is not owned and the current priority of the
+    calling thread is higher than the ${../glossary/mutex-priority-ceiling:/term}.
+  role: errno
+  uid: /c/errno/if/einval
+- description: |
+    The ${../glossary/mutex:/term} is not owned and the home scheduler of the
+    calling thread is not the scheduler of the ${../glossary/mutex:/term}.
+  role: errno
+  uid: /c/errno/if/einval
+- description: |
+    The calling thread owns the ${../glossary/mutex:/term} and the
+    ${../glossary/mutex-type:/term} is not ${../if/mutex-recursive:/name}.
+  role: errno
+  uid: /c/errno/if/edeadlk
+- role: reference
+  uid: /ref/std/posix-2024/pthread-mutex-getprioceiling
+name: pthread_mutex_setprioceiling
+notes: |
+  See ${/ref/std/posix-2024/pthread-mutex-getprioceiling:/name}.
+
+  If the ${.:/params[2]/name} parameter is not ${/c/if/null:/name}, the function
+  stores a defined value in the referenced object for each error. The value is
+  the ${../glossary/mutex-priority-ceiling:/term} of a ${../glossary/mutex:/term}
+  with the ${../if/prio-protect:/name} ${../glossary/mutex-protocol:/term} and
+  zero otherwise.
+params:
+- description: |
+    is the mutex to set the priority ceiling for.
+  dir: inout
+  name: mutex
+- description: |
+    is the new priority ceiling.
+  dir: null
+  name: prioceiling
+- description: |
+    is the pointer to an object where the old priority ceiling will be stored.
+  dir: out
+  name: old_ceiling
+return:
+  return: null
+  return-values:
+  - description: |
+      The successful completion.
+    value: 0
+  - description: |
+      This error number indicates the following error conditions:
+
+      - The ${.:/params[2]/name} parameter was ${/c/if/null:/name}.
+
+      - The ${.:/params[0]/name} parameter was ${/c/if/null:/name} or did not
+        reference an initialized ${../glossary/mutex:/term}.
+
+      - The ${../glossary/mutex-protocol:/term} of the ${../glossary/mutex:/term} was
+        not ${../if/prio-protect:/name}.
+
+      - The priority requested by ${.:/params[1]/name} was out of range.
+
+      - The ${../glossary/mutex:/term} was not owned and the current priority of the
+        calling thread was higher than the
+        ${../glossary/mutex-priority-ceiling:/term}.
+
+      - The ${../glossary/mutex:/term} was not owned and the home scheduler of the
+        calling thread was not the scheduler of the ${../glossary/mutex:/term}.
+    value: ${/c/errno/if/einval:/name}
+  - description: |
+      The calling thread owned the ${../glossary/mutex:/term} and the
+      ${../glossary/mutex-type:/term} was not ${../if/mutex-recursive:/name}.
+    value: ${/c/errno/if/edeadlk:/name}
+type: interface

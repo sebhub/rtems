@@ -1,0 +1,60 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Destroy the ${../glossary/mutex:/term} attributes object referenced by
+  ${.:/params[0]/name}.
+copyrights:
+- Copyright (C) 2026 OHB System AG
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+  default:
+    attributes: null
+    body: null
+    params:
+    - ${/c/if/pthread_mutexattr_t:/name} *${.:/params[0]/name}
+    return: int
+  variants: []
+description: null
+enabled-by: true
+index-entries: []
+interface-type: function
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+- description: |
+    The ${.:/params[0]/name} parameter is ${/c/if/null:/name}.
+  role: errno
+  uid: /c/errno/if/einval
+- description: |
+    The ${../glossary/mutex:/term} attributes object referenced by the
+    ${.:/params[0]/name} parameter is not initialized.
+  role: errno
+  uid: /c/errno/if/einval
+- role: reference
+  uid: /ref/std/posix-2024/pthread-mutexattr-destroy
+name: pthread_mutexattr_destroy
+notes: |
+  See ${/ref/std/posix-2024/pthread-mutexattr-destroy:/name}.
+
+  POSIX.1-2024 specifies no error for this function. RTEMS returns
+  ${/c/errno/if/einval:/name} for a ${.:/params[0]/name} parameter which is
+  ${/c/if/null:/name} or references an attributes object which is not
+  initialized.
+params:
+- description: |
+    is the mutex attributes object to destroy.
+  dir: inout
+  name: attr
+return:
+  return: null
+  return-values:
+  - description: |
+      The requested operation was successful.
+    value: 0
+  - description: |
+      The ${.:/params[0]/name} parameter was ${/c/if/null:/name}, or the
+      ${../glossary/mutex:/term} attributes object referenced by the
+      ${.:/params[0]/name} parameter was not initialized.
+    value: ${/c/errno/if/einval:/name}
+type: interface
