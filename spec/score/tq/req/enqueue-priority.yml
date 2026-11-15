@@ -32,8 +32,8 @@ post-conditions:
       T_eq_ptr( GetUnblock( ctx, &i ), GetTCB( ctx, TQ_BLOCKER_B ) );
       T_eq_ptr( GetUnblock( ctx, &i ), NULL );
     text: |
-      The enqueueing thread shall be enqueued in the priority queue associated with
-      the scheduler.
+      The enqueueing thread shall be enqueued as the first thread of the priority
+      queue associated with the scheduler.
   - name: Second
     test-code: |
       T_eq_ptr( GetUnblock( ctx, &i ), GetTCB( ctx, TQ_BLOCKER_B ) );
@@ -41,7 +41,8 @@ post-conditions:
       T_eq_ptr( GetUnblock( ctx, &i ), NULL );
     text: |
       The enqueueing thread shall be enqueued in the priority queue associated with
-      the scheduler.
+      the scheduler after all threads of the priority queue with a priority higher
+      than or equal to the priority of the enqueueing thread.
   - name: FirstFirst
     test-code: |
       T_eq_ptr( GetUnblock( ctx, &i ), GetTCB( ctx, TQ_BLOCKER_C ) );
@@ -49,10 +50,10 @@ post-conditions:
       T_eq_ptr( GetUnblock( ctx, &i ), GetTCB( ctx, TQ_BLOCKER_B ) );
       T_eq_ptr( GetUnblock( ctx, &i ), NULL );
     text: |
-      The enqueueing thread shall be enqueued in the priority queue associated with
-      the scheduler.
+      The enqueueing thread shall be enqueued as the first thread of the priority
+      queue associated with the scheduler.
 
-      The position of the priority queue in the thread queue shall not change.
+      The priority queue shall stay the first priority queue of the thread queue.
   - name: SecondFirst
     test-code: |
       T_eq_ptr( GetUnblock( ctx, &i ), GetTCB( ctx, TQ_BLOCKER_B ) );
@@ -61,9 +62,10 @@ post-conditions:
       T_eq_ptr( GetUnblock( ctx, &i ), NULL );
     text: |
       The enqueueing thread shall be enqueued in the priority queue associated with
-      the scheduler.
+      the scheduler after all threads of the priority queue with a priority higher
+      than or equal to the priority of the enqueueing thread.
 
-      The position of the priority queue in the thread queue shall not change.
+      The priority queue shall stay the first priority queue of the thread queue.
   - name: FirstLast
     test-code: |
       T_eq_ptr( GetUnblock( ctx, &i ), GetTCB( ctx, TQ_BLOCKER_D ) );
@@ -71,10 +73,10 @@ post-conditions:
       T_eq_ptr( GetUnblock( ctx, &i ), GetTCB( ctx, TQ_BLOCKER_B ) );
       T_eq_ptr( GetUnblock( ctx, &i ), NULL );
     text: |
-      The enqueueing thread shall be enqueued in the priority queue associated with
-      the scheduler.
+      The enqueueing thread shall be enqueued as the first thread of the priority
+      queue associated with the scheduler.
 
-      The position of the priority queue in the thread queue shall not change.
+      The priority queue shall stay the last priority queue of the thread queue.
   - name: SecondLast
     test-code: |
       T_eq_ptr( GetUnblock( ctx, &i ), GetTCB( ctx, TQ_BLOCKER_D ) );
@@ -83,9 +85,10 @@ post-conditions:
       T_eq_ptr( GetUnblock( ctx, &i ), NULL );
     text: |
       The enqueueing thread shall be enqueued in the priority queue associated with
-      the scheduler.
+      the scheduler after all threads of the priority queue with a priority higher
+      than or equal to the priority of the enqueueing thread.
 
-      The position of the priority queue in the thread queue shall not change.
+      The priority queue shall stay the last priority queue of the thread queue.
   test-epilogue: null
   test-prologue: |
     size_t i;

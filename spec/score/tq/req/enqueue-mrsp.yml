@@ -42,8 +42,8 @@ post-conditions:
         T_eq_u32( 1, TQGetCounter( ctx->tq_ctx ) );
       }
     text: |
-      The enqueueing thread shall be enqueued in the priority queue associated with
-      the scheduler.
+      The enqueueing thread shall be enqueued as the last thread of the priority
+      queue associated with the scheduler.
   - name: SecondFirst
     test-code: |
       if ( CanDoFullValidation() ) {
@@ -56,10 +56,10 @@ post-conditions:
         T_eq_u32( 1, TQGetCounter( ctx->tq_ctx ) );
       }
     text: |
-      The enqueueing thread shall be enqueued in the priority queue associated with
-      the scheduler.
+      The enqueueing thread shall be enqueued as the last thread of the priority
+      queue associated with the scheduler.
 
-      The position of the priority queue in the thread queue shall not change.
+      The priority queue shall stay the first priority queue of the thread queue.
   - name: SecondLast
     test-code: |
       if ( CanDoFullValidation() ) {
@@ -72,10 +72,10 @@ post-conditions:
         T_eq_u32( 1, TQGetCounter( ctx->tq_ctx ) );
       }
     text: |
-      The enqueueing thread shall be enqueued in the priority queue associated with
-      the scheduler.
+      The enqueueing thread shall be enqueued as the last thread of the priority
+      queue associated with the scheduler.
 
-      The position of the priority queue in the thread queue shall not change.
+      The priority queue shall stay the last priority queue of the thread queue.
   test-epilogue: null
   test-prologue: |
     size_t i;

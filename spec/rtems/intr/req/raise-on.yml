@@ -84,7 +84,7 @@ pre-conditions:
     text: |
       While the ${../if/raise-on:/params[1]/name} parameter is associated with a
       configured processor, while the processor specified by
-      ${../if/raise-on:/params[1]/name} is not online.
+      ${../if/raise-on:/params[1]/name} is online.
   - name: NotOnline
     test-code: |
       ctx->cpu_index = 4;
