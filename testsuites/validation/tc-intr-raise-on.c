@@ -382,7 +382,7 @@ static void RtemsIntrReqRaiseOn_Pre_CPU_Prepare(
     case RtemsIntrReqRaiseOn_Pre_CPU_Online: {
       /*
        * While the `cpu_index` parameter is associated with a configured
-       * processor, while the processor specified by `cpu_index` is not online.
+       * processor, while the processor specified by `cpu_index` is online.
        */
       ctx->cpu_index = 0;
       break;

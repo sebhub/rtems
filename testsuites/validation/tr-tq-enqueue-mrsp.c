@@ -320,8 +320,8 @@ static void ScoreTqReqEnqueueMrsp_Post_Position_Check(
 
     case ScoreTqReqEnqueueMrsp_Post_Position_Second: {
       /*
-       * The enqueueing thread shall be enqueued in the priority queue
-       * associated with the scheduler.
+       * The enqueueing thread shall be enqueued as the last thread of the
+       * priority queue associated with the scheduler.
        */
       if ( CanDoFullValidation() ) {
         T_eq_u32( 1, TQGetWorkerCounter( ctx->tq_ctx, TQ_BLOCKER_B ) );
@@ -336,11 +336,11 @@ static void ScoreTqReqEnqueueMrsp_Post_Position_Check(
 
     case ScoreTqReqEnqueueMrsp_Post_Position_SecondFirst: {
       /*
-       * The enqueueing thread shall be enqueued in the priority queue
-       * associated with the scheduler.
+       * The enqueueing thread shall be enqueued as the last thread of the
+       * priority queue associated with the scheduler.
        *
-       * The position of the priority queue in the thread queue shall not
-       * change.
+       * The priority queue shall stay the first priority queue of the thread
+       * queue.
        */
       if ( CanDoFullValidation() ) {
         T_eq_u32( 1, TQGetWorkerCounter( ctx->tq_ctx, TQ_BLOCKER_B ) );
@@ -356,11 +356,11 @@ static void ScoreTqReqEnqueueMrsp_Post_Position_Check(
 
     case ScoreTqReqEnqueueMrsp_Post_Position_SecondLast: {
       /*
-       * The enqueueing thread shall be enqueued in the priority queue
-       * associated with the scheduler.
+       * The enqueueing thread shall be enqueued as the last thread of the
+       * priority queue associated with the scheduler.
        *
-       * The position of the priority queue in the thread queue shall not
-       * change.
+       * The priority queue shall stay the last priority queue of the thread
+       * queue.
        */
       if ( CanDoFullValidation() ) {
         T_eq_u32( 1, TQGetWorkerCounter( ctx->tq_ctx, TQ_BLOCKER_C ) );

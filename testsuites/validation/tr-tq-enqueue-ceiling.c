@@ -314,8 +314,8 @@ static void ScoreTqReqEnqueueCeiling_Post_Position_Check(
 
     case ScoreTqReqEnqueueCeiling_Post_Position_First: {
       /*
-       * The enqueueing thread shall be enqueued in the priority queue
-       * associated with the scheduler.
+       * The enqueueing thread shall be enqueued as the first thread of the
+       * priority queue associated with the scheduler.
        */
       T_eq_ptr( GetUnblock( ctx, &i ), GetTCB( ctx, TQ_BLOCKER_C ) );
       T_eq_ptr( GetUnblock( ctx, &i ), GetTCB( ctx, TQ_BLOCKER_B ) );
@@ -326,7 +326,9 @@ static void ScoreTqReqEnqueueCeiling_Post_Position_Check(
     case ScoreTqReqEnqueueCeiling_Post_Position_Second: {
       /*
        * The enqueueing thread shall be enqueued in the priority queue
-       * associated with the scheduler.
+       * associated with the scheduler after all threads of the priority queue
+       * with a priority higher than or equal to the priority of the enqueueing
+       * thread.
        */
       T_eq_ptr( GetUnblock( ctx, &i ), GetTCB( ctx, TQ_BLOCKER_B ) );
       T_eq_ptr( GetUnblock( ctx, &i ), GetTCB( ctx, TQ_BLOCKER_C ) );
@@ -336,11 +338,11 @@ static void ScoreTqReqEnqueueCeiling_Post_Position_Check(
 
     case ScoreTqReqEnqueueCeiling_Post_Position_FirstFirst: {
       /*
-       * The enqueueing thread shall be enqueued in the priority queue
-       * associated with the scheduler.
+       * The enqueueing thread shall be enqueued as the first thread of the
+       * priority queue associated with the scheduler.
        *
-       * The position of the priority queue in the thread queue shall not
-       * change.
+       * The priority queue shall stay the first priority queue of the thread
+       * queue.
        */
       T_eq_ptr( GetUnblock( ctx, &i ), GetTCB( ctx, TQ_BLOCKER_C ) );
       T_eq_ptr( GetUnblock( ctx, &i ), GetTCB( ctx, TQ_BLOCKER_B ) );
@@ -351,10 +353,12 @@ static void ScoreTqReqEnqueueCeiling_Post_Position_Check(
     case ScoreTqReqEnqueueCeiling_Post_Position_SecondFirst: {
       /*
        * The enqueueing thread shall be enqueued in the priority queue
-       * associated with the scheduler.
+       * associated with the scheduler after all threads of the priority queue
+       * with a priority higher than or equal to the priority of the enqueueing
+       * thread.
        *
-       * The position of the priority queue in the thread queue shall not
-       * change.
+       * The priority queue shall stay the first priority queue of the thread
+       * queue.
        */
       T_eq_ptr( GetUnblock( ctx, &i ), GetTCB( ctx, TQ_BLOCKER_B ) );
       T_eq_ptr( GetUnblock( ctx, &i ), GetTCB( ctx, TQ_BLOCKER_C ) );
@@ -367,8 +371,9 @@ static void ScoreTqReqEnqueueCeiling_Post_Position_Check(
        * The enqueueing thread shall be enqueued in the priority queue
        * associated with the scheduler.
        *
-       * The position of the priority queue in the thread queue shall not
-       * change.
+       * The priority queue shall stay positioned after the priority queue
+       * which is not associated with an eligible scheduler of the enqueueing
+       * thread.
        */
       T_eq_ptr( GetUnblock( ctx, &i ), GetTCB( ctx, TQ_BLOCKER_B ) );
       T_eq_ptr( GetUnblock( ctx, &i ), GetTCB( ctx, TQ_BLOCKER_C ) );
