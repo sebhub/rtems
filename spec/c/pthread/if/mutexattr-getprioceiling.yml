@@ -1,0 +1,69 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Get the ${../glossary/mutex-priority-ceiling:/term} of the
+  ${../glossary/mutex:/term} attributes object referenced by ${.:/params[0]/name}
+  and store it in the object referenced by ${.:/params[1]/name}.
+copyrights:
+- Copyright (C) 2026 OHB System AG
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+  default:
+    attributes: null
+    body: null
+    params:
+    - const ${/c/if/pthread_mutexattr_t:/name} *restrict ${.:/params[0]/name}
+    - int *restrict ${.:/params[1]/name}
+    return: int
+  variants: []
+description: null
+enabled-by: true
+index-entries: []
+interface-type: function
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+- description: |
+    The ${.:/params[0]/name} parameter is ${/c/if/null:/name}.
+  role: errno
+  uid: /c/errno/if/einval
+- description: |
+    The ${../glossary/mutex:/term} attributes object referenced by the
+    ${.:/params[0]/name} parameter is not initialized.
+  role: errno
+  uid: /c/errno/if/einval
+- description: |
+    The ${.:/params[1]/name} parameter is ${/c/if/null:/name}.
+  role: errno
+  uid: /c/errno/if/einval
+- role: reference
+  uid: /ref/std/posix-2024/pthread-mutexattr-getprioceiling
+name: pthread_mutexattr_getprioceiling
+notes: |
+  See ${/ref/std/posix-2024/pthread-mutexattr-getprioceiling:/name}.
+
+  RTEMS requires no privilege, so the function never returns
+  ${/c/errno/if/eperm:/name}.
+params:
+- description: |
+    is the mutex attributes object to get the priority ceiling from.
+  dir: in
+  name: attr
+- description: |
+    is the pointer to an object where the priority ceiling will be stored.
+  dir: out
+  name: prioceiling
+return:
+  return: null
+  return-values:
+  - description: |
+      The requested operation was successful.
+    value: 0
+  - description: |
+      The ${.:/params[0]/name} parameter was ${/c/if/null:/name}, the
+      ${../glossary/mutex:/term} attributes object referenced by the
+      ${.:/params[0]/name} parameter was not initialized, or the ${.:/params[1]/name}
+      parameter was ${/c/if/null:/name}.
+    value: ${/c/errno/if/einval:/name}
+type: interface

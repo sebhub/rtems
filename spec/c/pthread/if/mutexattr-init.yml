@@ -1,0 +1,51 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Initialize the ${../glossary/mutex:/term} attributes object referenced by
+  ${.:/params[0]/name} with the default value for all of the attributes.
+copyrights:
+- Copyright (C) 2026 OHB System AG
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+  default:
+    attributes: null
+    body: null
+    params:
+    - ${/c/if/pthread_mutexattr_t:/name} *${.:/params[0]/name}
+    return: int
+  variants: []
+description: null
+enabled-by: true
+index-entries: []
+interface-type: function
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+- description: |
+    The ${.:/params[0]/name} parameter is ${/c/if/null:/name}.
+  role: errno
+  uid: /c/errno/if/einval
+- role: reference
+  uid: /ref/std/posix-2024/pthread-mutexattr-destroy
+name: pthread_mutexattr_init
+notes: |
+  See ${/ref/std/posix-2024/pthread-mutexattr-destroy:/name}.
+
+  The function copies a statically allocated set of default attributes and
+  allocates no memory, so it never returns ${/c/errno/if/enomem:/name}.
+params:
+- description: |
+    is the mutex attributes object to initialize.
+  dir: out
+  name: attr
+return:
+  return: null
+  return-values:
+  - description: |
+      The requested operation was successful.
+    value: 0
+  - description: |
+      The ${.:/params[0]/name} parameter was ${/c/if/null:/name}.
+    value: ${/c/errno/if/einval:/name}
+type: interface

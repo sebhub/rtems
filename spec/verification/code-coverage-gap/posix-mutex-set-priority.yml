@@ -1,0 +1,24 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+areas:
+  RTEMS:
+    cpukit/include/rtems/posix/muteximpl.h:
+      branches:
+      - branches:
+        - 7
+        line: 300
+        md5: 6b581c79f61187f8a20747df923d886a
+      functions: []
+      lines:
+      - line: 311
+        md5: 884b0812d5d96b91496876ba8ef15ee0
+copyrights:
+- Copyright (C) 2026 OHB System AG
+enabled-by: true
+links: []
+text: |
+  The uncovered code handles a mutex without an owner. The only caller of
+  \_POSIX_Mutex_Set_priority() is pthread_mutex_setprioceiling(). It locks the
+  mutex before the call, so the calling thread owns the mutex and the owner is
+  never NULL. See ${/c/pthread/req/mutex-setprioceiling:/spec}.
+type: verification
+verification-type: code-coverage-gap

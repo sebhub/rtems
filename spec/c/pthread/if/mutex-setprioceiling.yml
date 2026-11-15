@@ -1,0 +1,92 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  Set the ${../glossary/mutex-priority-ceiling:/term} of the
+  ${../glossary/mutex:/term} object referenced by ${.:/params[0]/name} to the
+  value specified by ${.:/params[1]/name} and store the old priority ceiling in
+  the object referenced by ${.:/params[2]/name}.
+copyrights:
+- Copyright (C) 2026 OHB System AG
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+  default:
+    attributes: null
+    body: null
+    params:
+    - ${/c/if/pthread_mutex_t:/name} *restrict ${.:/params[0]/name}
+    - int ${.:/params[1]/name}
+    - int *restrict ${.:/params[2]/name}
+    return: int
+  variants: []
+description: null
+enabled-by: true
+index-entries: []
+interface-type: function
+links:
+- role: interface-placement
+  uid: header
+- role: interface-ingroup
+  uid: group
+- description: |
+    The ${.:/params[2]/name} parameter is ${/c/if/null:/name}.
+  role: errno
+  uid: /c/errno/if/einval
+- description: |
+    The ${.:/params[0]/name} parameter is ${/c/if/null:/name}.
+  role: errno
+  uid: /c/errno/if/einval
+- description: |
+    The object referenced by the ${.:/params[0]/name} parameter is not an
+    initialized ${../glossary/mutex:/term}.
+  role: errno
+  uid: /c/errno/if/einval
+- description: |
+    The ${../glossary/mutex-protocol:/term} of the ${../glossary/mutex:/term} is
+    ${../if/prio-protect:/name} and the priority specified by ${.:/params[1]/name}
+    is out of range.
+  role: errno
+  uid: /c/errno/if/einval
+- role: reference
+  uid: /ref/std/posix-2024/pthread-mutex-getprioceiling
+name: pthread_mutex_setprioceiling
+notes: |
+  See ${/ref/std/posix-2024/pthread-mutex-getprioceiling:/name}.
+
+  POSIX.1-2024 requires ${/c/errno/if/einval:/name} if the
+  ${../glossary/mutex-protocol:/term} of the ${../glossary/mutex:/term} is
+  ${../if/prio-none:/name}. RTEMS returns zero instead, stores zero in the object
+  referenced by ${.:/params[2]/name} and ignores the priority specified by
+  ${.:/params[1]/name} for a ${../glossary/mutex:/term} which does not use the
+  priority protect protocol. RTEMS requires no privilege, so the function never
+  returns ${/c/errno/if/eperm:/name}.
+params:
+- description: |
+    is the mutex to set the priority ceiling for.
+  dir: inout
+  name: mutex
+- description: |
+    is the new priority ceiling.
+  dir: null
+  name: prioceiling
+- description: |
+    is the pointer to an object where the old priority ceiling will be stored.
+  dir: out
+  name: old_ceiling
+return:
+  return: null
+  return-values:
+  - description: |
+      The successful completion.
+    value: 0
+  - description: |
+      This error number indicates the following error conditions:
+
+      - The ${.:/params[2]/name} parameter was ${/c/if/null:/name}.
+      - The ${.:/params[0]/name} parameter was ${/c/if/null:/name} or did not
+        reference an initialized ${../glossary/mutex:/term}.
+      - The priority requested by ${.:/params[1]/name} was out of range for a
+        ${../glossary/mutex:/term} which uses the priority protect protocol.
+    value: ${/c/errno/if/einval:/name}
+  - description: |
+      The caller does not have the privilege to perform the operation.
+    value: ${/c/errno/if/eperm:/name}
+type: interface
