@@ -52,61 +52,62 @@ int pthread_mutex_setprioceiling(
   int             *old_ceiling
 )
 {
-  POSIX_Mutex_Control *the_mutex;
-  int                  error;
-  int                  unlock_error;
+  POSIX_Mutex_Control     *the_mutex;
+  unsigned long            flags;
+  const Scheduler_Control *scheduler;
+  Priority_Control         new_priority;
+  Priority_Control         old_priority;
+  bool                     valid;
+  int                      eno;
+  Thread_queue_Context     queue_context;
+  Per_CPU_Control         *cpu_self;
 
   if ( old_ceiling == NULL ) {
     return EINVAL;
   }
 
-  /*
-   *  Must acquire the mutex before we can change it's ceiling.
-   *  POSIX says block until we acquire it.
-   */
-  error = pthread_mutex_lock( mutex );
-  if ( error != 0 ) {
-    _Assert( error == EINVAL );
+  *old_ceiling = 0;
+  the_mutex = _POSIX_Mutex_Get( mutex );
+  POSIX_MUTEX_VALIDATE_OBJECT( the_mutex, flags );
+
+  if ( _POSIX_Mutex_Get_protocol( flags ) != POSIX_MUTEX_PRIORITY_CEILING ) {
     return EINVAL;
   }
 
-  the_mutex = _POSIX_Mutex_Get( mutex );
+  scheduler = _POSIX_Mutex_Get_scheduler( the_mutex );
+  _POSIX_Mutex_Acquire( the_mutex, &queue_context );
+  old_priority = _POSIX_Mutex_Get_priority( the_mutex );
+  _POSIX_Mutex_Release( the_mutex, &queue_context );
+  *old_ceiling = _POSIX_Priority_From_core( scheduler, old_priority );
 
-  if (
-    _POSIX_Mutex_Get_protocol( the_mutex->flags ) ==
-    POSIX_MUTEX_PRIORITY_CEILING
-  ) {
-    const Scheduler_Control *scheduler;
-    bool                     valid;
-    Priority_Control         new_priority;
-    Priority_Control         old_priority;
+  new_priority = _POSIX_Priority_To_core( scheduler, prioceiling, &valid );
 
-    scheduler = _POSIX_Mutex_Get_scheduler( the_mutex );
-    old_priority = _POSIX_Mutex_Get_priority( the_mutex );
-    *old_ceiling = _POSIX_Priority_From_core( scheduler, old_priority );
-
-    new_priority = _POSIX_Priority_To_core( scheduler, prioceiling, &valid );
-    if ( valid ) {
-      Thread_queue_Context queue_context;
-      Per_CPU_Control     *cpu_self;
-
-      _Thread_queue_Context_initialize( &queue_context );
-      _Thread_queue_Context_clear_priority_updates( &queue_context );
-      _POSIX_Mutex_Set_priority( the_mutex, new_priority, &queue_context );
-      cpu_self = _Thread_Dispatch_disable();
-      _Thread_Priority_update( &queue_context );
-      _Thread_Dispatch_enable( cpu_self );
-      error = 0;
-    } else {
-      error = EINVAL;
-    }
-  } else {
-    *old_ceiling = 0;
-    error = 0;
+  if ( !valid ) {
+    return EINVAL;
   }
 
-  unlock_error = pthread_mutex_unlock( mutex );
-  _Assert( unlock_error == 0 );
-  (void) unlock_error;
-  return error;
+  eno = pthread_mutex_lock( mutex );
+
+  if ( eno != 0 ) {
+    return eno;
+  }
+
+  old_priority = _POSIX_Mutex_Get_priority( the_mutex );
+  *old_ceiling = _POSIX_Priority_From_core( scheduler, old_priority );
+
+  _Thread_queue_Context_initialize( &queue_context );
+  _Thread_queue_Context_clear_priority_updates( &queue_context );
+  _POSIX_Mutex_Set_priority(
+    the_mutex,
+    _Thread_Get_executing(),
+    new_priority,
+    &queue_context
+  );
+  cpu_self = _Thread_Dispatch_disable();
+  _Thread_Priority_update( &queue_context );
+  _Thread_Dispatch_enable( cpu_self );
+
+  eno = pthread_mutex_unlock( mutex );
+  _Assert( eno == 0 );
+  return eno;
 }
