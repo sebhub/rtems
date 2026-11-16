@@ -289,27 +289,21 @@ static inline const Scheduler_Control *_POSIX_Mutex_Get_scheduler(
 
 static inline void _POSIX_Mutex_Set_priority(
   POSIX_Mutex_Control  *the_mutex,
+  Thread_Control       *owner,
   Priority_Control      priority_ceiling,
   Thread_queue_Context *queue_context
 )
 {
-  Thread_Control *owner;
-
-  owner = _POSIX_Mutex_Get_owner( the_mutex );
-
-  if ( owner != NULL ) {
-    _Thread_Wait_acquire( owner, queue_context );
-    _Thread_Priority_change(
-      owner,
-      &the_mutex->Priority_ceiling,
-      priority_ceiling,
-      PRIORITY_GROUP_LAST,
-      queue_context
-    );
-    _Thread_Wait_release( owner, queue_context );
-  } else {
-    the_mutex->Priority_ceiling.priority = priority_ceiling;
-  }
+  _Assert( _POSIX_Mutex_Get_owner( the_mutex ) == owner );
+  _Thread_Wait_acquire( owner, queue_context );
+  _Thread_Priority_change(
+    owner,
+    &the_mutex->Priority_ceiling,
+    priority_ceiling,
+    PRIORITY_GROUP_LAST,
+    queue_context
+  );
+  _Thread_Wait_release( owner, queue_context );
 }
 
 static inline Priority_Control _POSIX_Mutex_Get_priority(

@@ -63,20 +63,19 @@ int pthread_mutex_getprioceiling(
     return EINVAL;
   }
 
+  *prioceiling = 0;
   the_mutex = _POSIX_Mutex_Get( RTEMS_DECONST( pthread_mutex_t *, mutex ) );
   POSIX_MUTEX_VALIDATE_OBJECT( the_mutex, flags );
 
-  _POSIX_Mutex_Acquire( the_mutex, &queue_context );
-
-  if ( _POSIX_Mutex_Get_protocol( flags ) == POSIX_MUTEX_PRIORITY_CEILING ) {
-    *prioceiling = _POSIX_Priority_From_core(
-      _POSIX_Mutex_Get_scheduler( the_mutex ),
-      _POSIX_Mutex_Get_priority( the_mutex )
-    );
-  } else {
-    *prioceiling = 0;
+  if ( _POSIX_Mutex_Get_protocol( flags ) != POSIX_MUTEX_PRIORITY_CEILING ) {
+    return EINVAL;
   }
 
+  _POSIX_Mutex_Acquire( the_mutex, &queue_context );
+  *prioceiling = _POSIX_Priority_From_core(
+    _POSIX_Mutex_Get_scheduler( the_mutex ),
+    _POSIX_Mutex_Get_priority( the_mutex )
+  );
   _POSIX_Mutex_Release( the_mutex, &queue_context );
   return 0;
 }

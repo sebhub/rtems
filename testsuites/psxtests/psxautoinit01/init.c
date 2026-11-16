@@ -64,10 +64,10 @@ void *POSIX_Init( void *argument )
   fatal_posix_service_status( sc, 0, "mutex destroy OK" );
 
   /* path using mutex get with dispatching disabled */
-  puts( "Init - pthread_mutex_getprioceiling - auto initialize - OK" );
+  puts( "Init - pthread_mutex_getprioceiling - auto initialize - EINVAL" );
   prioceiling = 1;
   sc = pthread_mutex_getprioceiling( &mutex2, &prioceiling );
-  fatal_posix_service_status( sc, 0, "mutex getprioceiling OK" );
+  fatal_posix_service_status( sc, EINVAL, "mutex getprioceiling EINVAL" );
   rtems_test_assert( prioceiling == 0 );
 
   puts( "Init - pthread_mutex_destroy - OK" );
