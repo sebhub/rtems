@@ -30,32 +30,26 @@ post-conditions:
   test-prologue: null
 - name: Result
   states:
-  - name: Zero
-    test-code: |
-      T_eq_int( ctx->out_obj, 0 );
-    text: |
-      The value of the object referenced by the
-      ${../if/mutex-getprioceiling:/params[1]/name} parameter shall be zero.
   - name: Valid
     test-code: |
       T_eq_int( ctx->out_obj, CeilingValue() );
     text: |
       The value of the object referenced by the
-      ${../if/mutex-getprioceiling:/params[1]/name} parameter shall be the priority
-      ceiling of the mutex.
+      ${../if/mutex-getprioceiling:/params[1]/name} parameter shall be the
+      ${../glossary/mutex-priority-ceiling:/term} of the mutex.
   - name: Maximum
     test-code: |
       T_eq_int( ctx->out_obj, GetPOSIXPriorityMaximum() );
     text: |
       The value of the object referenced by the
       ${../if/mutex-getprioceiling:/params[1]/name} parameter shall be the maximum
-      priority.
-  - name: Nop
+      ${../glossary/thread-priority:/term}.
+  - name: Zero
     test-code: |
-      T_eq_int( ctx->out_obj, -1 );
+      T_eq_int( ctx->out_obj, 0 );
     text: |
       The value of the object referenced by the
-      ${../if/mutex-getprioceiling:/params[1]/name} parameter shall not be modified.
+      ${../if/mutex-getprioceiling:/params[1]/name} parameter shall be zero.
   test-epilogue: null
   test-prologue: null
 - name: MutexObj
@@ -65,6 +59,8 @@ post-conditions:
       pthread_mutex_t expected;
 
       memcpy( &expected, &ctx->mutex_before, sizeof( expected ) );
+
+      /* The call acquires and releases the lock of the thread queue. */
       #if defined( RTEMS_SMP )
       memcpy(
         &_POSIX_Mutex_Get( &expected )->Recursive.Mutex.Queue.Queue.Lock,
@@ -74,22 +70,8 @@ post-conditions:
       #endif
       T_eq_mem( &ctx->mutex_obj, &expected, sizeof( expected ) );
     text: |
-      The object referenced by the ${../if/mutex-getprioceiling:/params[0]/name}
-      parameter, other than its SMP lock, shall not be modified.
-  test-epilogue: null
-  test-prologue: null
-- name: Lock
-  states:
-  - name: Released
-    test-code: |
-      #if defined( RTEMS_SMP )
-        T_true( TicketLockIsAvailable( MutexTicketLock( ctx ) ) );
-      #else
-        (void) ctx;
-      #endif
-    text: |
-      The SMP lock of the mutex referenced by the
-      ${../if/mutex-getprioceiling:/params[0]/name} parameter shall be released.
+      The mutex referenced by the ${../if/mutex-getprioceiling:/params[0]/name}
+      parameter shall not be modified.
   test-epilogue: null
   test-prologue: null
 pre-conditions:
@@ -104,11 +86,14 @@ pre-conditions:
       initialized mutex.
   - name: Static
     test-code: |
-      memset( &ctx->mutex_obj, 0, sizeof( ctx->mutex_obj ) );
+      static const pthread_mutex_t initializer = PTHREAD_MUTEX_INITIALIZER;
+
+      ctx->mutex_obj = initializer;
       ctx->mutex = &ctx->mutex_obj;
     text: |
-      While the ${../if/mutex-getprioceiling:/params[0]/name} parameter references a
-      statically initialized mutex.
+      While the object referenced by the
+      ${../if/mutex-getprioceiling:/params[0]/name} parameter is equal to
+      ${../if/mutex-initializer:/name}.
   - name: Corrupted
     test-code: |
       memset( &ctx->mutex_obj, 0xff, sizeof( ctx->mutex_obj ) );
@@ -128,34 +113,51 @@ pre-conditions:
   states:
   - name: None
     test-code: |
-      ctx->attr_obj.protocol = PTHREAD_PRIO_NONE;
+      T_eq_int(
+        pthread_mutexattr_setprotocol( &ctx->attr_obj, PTHREAD_PRIO_NONE ),
+        0
+      );
     text: |
-      While the mutex uses no priority protocol.
+      While the ${../glossary/mutex-protocol:/term} of the mutex is
+      ${../if/prio-none:/name}.
   - name: Inherit
     test-code: |
-      ctx->attr_obj.protocol = PTHREAD_PRIO_INHERIT;
+      T_eq_int(
+        pthread_mutexattr_setprotocol( &ctx->attr_obj, PTHREAD_PRIO_INHERIT ),
+        0
+      );
     text: |
-      While the mutex uses the priority inheritance protocol.
+      While the ${../glossary/mutex-protocol:/term} of the mutex is
+      ${../if/prio-inherit:/name}.
   - name: Protect
     test-code: |
-      ctx->attr_obj.protocol = PTHREAD_PRIO_PROTECT;
+      T_eq_int(
+        pthread_mutexattr_setprotocol( &ctx->attr_obj, PTHREAD_PRIO_PROTECT ),
+        0
+      );
     text: |
-      While the mutex uses the priority ceiling protocol.
+      While the ${../glossary/mutex-protocol:/term} of the mutex is
+      ${../if/prio-protect:/name}.
   test-epilogue: null
   test-prologue: null
 - name: Ceiling
   states:
   - name: Valid
     test-code: |
-      ctx->attr_obj.prio_ceiling = CeilingValue();
+      T_eq_int(
+        pthread_mutexattr_setprioceiling( &ctx->attr_obj, CeilingValue() ),
+        0
+      );
     text: |
-      While the priority ceiling of the mutex is a valid priority which is not the
-      maximum priority.
+      While the ${../glossary/mutex-priority-ceiling:/term} of the mutex is a
+      ${../glossary/thread-priority:/term} which is less than the maximum
+      ${../glossary/thread-priority:/term}.
   - name: Maximum
     test-code: |
-      ctx->attr_obj.prio_ceiling = INT_MAX;
+      T_eq_int( pthread_mutexattr_setprioceiling( &ctx->attr_obj, INT_MAX ), 0 );
     text: |
-      While the priority ceiling of the mutex is the maximum priority.
+      While the ${../glossary/mutex-priority-ceiling:/term} of the mutex is the
+      maximum ${../glossary/thread-priority:/term}.
   test-epilogue: null
   test-prologue: null
 - name: Out
@@ -176,38 +178,28 @@ pre-conditions:
   test-prologue: null
 rationale: |
   ${/ref/std/posix-2024/pthread-mutex-getprioceiling:/name} requires
-  ${/c/errno/if/eperm:/name} only if the implementation requires privileges to
-  perform the operation. RTEMS requires none and
-  ${../if/mutex-getprioceiling:/name} contains no privilege check, so it cannot
-  return this value and no state is specified for it.
-
-  The standard requires ${/c/errno/if/einval:/name} if the
-  ${../glossary/mutex-protocol:/term} of the mutex is ${../if/prio-none:/name}.
-  RTEMS returns zero for such a mutex, which state None of pre-condition Protocol
-  specifies. This is the only deviation of ${../if/mutex-getprioceiling:/name}
-  from the standard. The same holds for state Inherit, for which the standard
-  specifies no error.
-
-  A mutex which does not use the priority ceiling protocol has no priority
-  ceiling. ${../if/mutex-getprioceiling:/name} stores zero in the object
-  referenced by the ${../if/mutex-getprioceiling:/params[1]/name} parameter for
-  such a mutex. The states of pre-conditions Protocol and Ceiling arrange the
-  mutex, and pre-condition Ceiling applies only to state Protect of pre-condition
-  Protocol.
+  ${/c/errno/if/einval:/name} for a mutex with the ${../if/prio-none:/name}
+  ${../glossary/mutex-protocol:/term}. A mutex with the
+  ${../if/prio-inherit:/name} ${../glossary/mutex-protocol:/term} has no
+  ${../glossary/mutex-priority-ceiling:/term} either, so RTEMS returns
+  ${/c/errno/if/einval:/name} for it as well. A statically initialized mutex has
+  the ${../if/prio-none:/name} ${../glossary/mutex-protocol:/term}. RTEMS
+  requires no privilege, so ${/c/errno/if/eperm:/name} has no state.
 
   The standard leaves the behaviour undefined where the
   ${../if/mutex-getprioceiling:/params[0]/name} parameter references no
   initialized mutex or is ${/c/if/null:/name}. States Corrupted and Null of
-  pre-condition Mutex specify that RTEMS returns ${/c/errno/if/einval:/name}. A
-  statically initialized mutex is initialized by the call, so its object is not
-  specified as unmodified.
+  pre-condition Mutex specify that RTEMS returns ${/c/errno/if/einval:/name}. The
+  function initializes a statically initialized mutex, so post-condition MutexObj
+  does not apply to it.
 
-  ${../if/mutex-getprioceiling:/name} validates the
-  ${../if/mutex-getprioceiling:/params[1]/name} parameter before the
-  ${../if/mutex-getprioceiling:/params[0]/name} parameter, so the mutex is not
-  examined for state Null of pre-condition Out.
+  The function validates the ${../if/mutex-getprioceiling:/params[1]/name}
+  parameter first, so it does not examine the mutex for state Null of
+  pre-condition Out.
 
-  Post-condition Lock specifies that the call releases the SMP lock of the mutex.
+  The function stores zero in the object referenced by the
+  ${../if/mutex-getprioceiling:/params[1]/name} parameter before it examines the
+  mutex. A caller which ignores the status therefore reads a defined value.
 requirement-type: functional
 skip-reasons: {}
 test-action: |
@@ -288,11 +280,6 @@ test-support: |
   {
     return _POSIX_Mutex_Get( &ctx->mutex_obj );
   }
-
-  static const SMP_ticket_lock_Control *MutexTicketLock( Context *ctx )
-  {
-    return &MutexOf( ctx )->Recursive.Mutex.Queue.Queue.Lock;
-  }
   #endif
 
   static void Action( Context *ctx )
@@ -314,15 +301,20 @@ transition-map:
     Status:
     - if:
         pre-conditions:
-          Mutex: 'Null'
-      then: Inval
-    - if:
-        pre-conditions:
-          Mutex: Corrupted
-      then: Inval
-    - if:
-        pre-conditions:
           Out: 'Null'
+      then: Inval
+    - if:
+        pre-conditions:
+          Mutex:
+          - Static
+          - Corrupted
+          - 'Null'
+      then: Inval
+    - if:
+        pre-conditions:
+          Protocol:
+          - None
+          - Inherit
       then: Inval
     - else: Ok
     Result:
@@ -330,103 +322,22 @@ transition-map:
         pre-conditions:
           Out: 'Null'
       then: N/A
-    - if:
-        pre-conditions:
-          Mutex:
-          - 'Null'
-          - Corrupted
-      then: Nop
-    - if:
-        pre-conditions:
-          Mutex: Static
-      then: Zero
-    - if:
-        pre-conditions:
-          Protocol: Protect
-      then-specified-by: Ceiling
-    - else: Zero
-    MutexObj:
-    - if:
-        pre-conditions:
-          Mutex: 'Null'
-      then: N/A
-    - if:
-        pre-conditions:
-          Mutex: Static
-          Out: Obj
-      then: N/A
-    - else: Nop
-    Lock: N/A
-  pre-conditions:
-    Mutex: all
-    Protocol:
-      applicable:
-        pre-conditions:
-          Mutex: Init
-    Ceiling:
-      applicable:
-        and:
-        - pre-conditions:
-            Mutex: Init
-        - or:
-          - pre-conditions:
-              Out: 'Null'
-          - pre-conditions:
-              Protocol: Protect
-    Out: all
-- enabled-by: RTEMS_SMP
-  post-conditions:
-    Status:
-    - if:
-        pre-conditions:
-          Mutex: 'Null'
-      then: Inval
-    - if:
-        pre-conditions:
-          Mutex: Corrupted
-      then: Inval
-    - if:
-        pre-conditions:
-          Out: 'Null'
-      then: Inval
-    - else: Ok
-    Result:
-    - if:
-        pre-conditions:
-          Out: 'Null'
-      then: N/A
-    - if:
-        pre-conditions:
-          Mutex:
-          - 'Null'
-          - Corrupted
-      then: Nop
-    - if:
-        pre-conditions:
-          Mutex: Static
-      then: Zero
-    - if:
-        pre-conditions:
-          Protocol: Protect
-      then-specified-by: Ceiling
-    - else: Zero
-    MutexObj:
-    - if:
-        pre-conditions:
-          Mutex: 'Null'
-      then: N/A
-    - if:
-        pre-conditions:
-          Mutex: Static
-          Out: Obj
-      then: N/A
-    - else: Nop
-    Lock:
     - if:
         post-conditions:
           Status: Ok
-      then: Released
-    - else: N/A
+      then-specified-by: Ceiling
+    - else: Zero
+    MutexObj:
+    - if:
+        pre-conditions:
+          Mutex: 'Null'
+      then: N/A
+    - if:
+        pre-conditions:
+          Mutex: Static
+          Out: Obj
+      then: N/A
+    - else: Nop
   pre-conditions:
     Mutex: all
     Protocol:
@@ -435,13 +346,8 @@ transition-map:
           Mutex: Init
     Ceiling:
       applicable:
-        and:
-        - pre-conditions:
-            Mutex: Init
-        - or:
-          - pre-conditions:
-              Out: 'Null'
-          - pre-conditions:
-              Protocol: Protect
+        pre-conditions:
+          Mutex: Init
+          Protocol: Protect
     Out: all
 type: requirement
