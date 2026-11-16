@@ -90,10 +90,9 @@ typedef enum {
 } CPthreadReqMutexGetprioceiling_Post_Status;
 
 typedef enum {
-  CPthreadReqMutexGetprioceiling_Post_Result_Zero,
   CPthreadReqMutexGetprioceiling_Post_Result_Valid,
   CPthreadReqMutexGetprioceiling_Post_Result_Maximum,
-  CPthreadReqMutexGetprioceiling_Post_Result_Nop,
+  CPthreadReqMutexGetprioceiling_Post_Result_Zero,
   CPthreadReqMutexGetprioceiling_Post_Result_NA
 } CPthreadReqMutexGetprioceiling_Post_Result;
 
@@ -102,11 +101,6 @@ typedef enum {
   CPthreadReqMutexGetprioceiling_Post_MutexObj_NA
 } CPthreadReqMutexGetprioceiling_Post_MutexObj;
 
-typedef enum {
-  CPthreadReqMutexGetprioceiling_Post_Lock_Released,
-  CPthreadReqMutexGetprioceiling_Post_Lock_NA
-} CPthreadReqMutexGetprioceiling_Post_Lock;
-
 typedef struct {
   uint16_t Skip : 1;
   uint16_t Pre_Mutex_NA : 1;
@@ -114,9 +108,8 @@ typedef struct {
   uint16_t Pre_Ceiling_NA : 1;
   uint16_t Pre_Out_NA : 1;
   uint16_t Post_Status : 2;
-  uint16_t Post_Result : 3;
+  uint16_t Post_Result : 2;
   uint16_t Post_MutexObj : 1;
-  uint16_t Post_Lock : 1;
 } CPthreadReqMutexGetprioceiling_Entry;
 
 /**
@@ -237,11 +230,6 @@ static POSIX_Mutex_Control *MutexOf( Context *ctx )
 {
   return _POSIX_Mutex_Get( &ctx->mutex_obj );
 }
-
-static const SMP_ticket_lock_Control *MutexTicketLock( Context *ctx )
-{
-  return &MutexOf( ctx )->Recursive.Mutex.Queue.Queue.Lock;
-}
 #endif
 
 static void Action( Context *ctx )
@@ -271,9 +259,12 @@ static void CPthreadReqMutexGetprioceiling_Pre_Mutex_Prepare(
 
     case CPthreadReqMutexGetprioceiling_Pre_Mutex_Static: {
       /*
-       * While the `mutex` parameter references a statically initialized mutex.
+       * While the object referenced by the `mutex` parameter is equal to
+       * PTHREAD_MUTEX_INITIALIZER.
        */
-      memset( &ctx->mutex_obj, 0, sizeof( ctx->mutex_obj ) );
+      static const pthread_mutex_t initializer = PTHREAD_MUTEX_INITIALIZER;
+
+      ctx->mutex_obj = initializer;
       ctx->mutex = &ctx->mutex_obj;
       break;
     }
@@ -308,25 +299,36 @@ static void CPthreadReqMutexGetprioceiling_Pre_Protocol_Prepare(
   switch ( state ) {
     case CPthreadReqMutexGetprioceiling_Pre_Protocol_None: {
       /*
-       * While the mutex uses no priority protocol.
+       * While the mutex protocol attribute of the mutex is PTHREAD_PRIO_NONE.
        */
-      ctx->attr_obj.protocol = PTHREAD_PRIO_NONE;
+      T_eq_int(
+        pthread_mutexattr_setprotocol( &ctx->attr_obj, PTHREAD_PRIO_NONE ),
+        0
+      );
       break;
     }
 
     case CPthreadReqMutexGetprioceiling_Pre_Protocol_Inherit: {
       /*
-       * While the mutex uses the priority inheritance protocol.
+       * While the mutex protocol attribute of the mutex is
+       * PTHREAD_PRIO_INHERIT.
        */
-      ctx->attr_obj.protocol = PTHREAD_PRIO_INHERIT;
+      T_eq_int(
+        pthread_mutexattr_setprotocol( &ctx->attr_obj, PTHREAD_PRIO_INHERIT ),
+        0
+      );
       break;
     }
 
     case CPthreadReqMutexGetprioceiling_Pre_Protocol_Protect: {
       /*
-       * While the mutex uses the priority ceiling protocol.
+       * While the mutex protocol attribute of the mutex is
+       * PTHREAD_PRIO_PROTECT.
        */
-      ctx->attr_obj.protocol = PTHREAD_PRIO_PROTECT;
+      T_eq_int(
+        pthread_mutexattr_setprotocol( &ctx->attr_obj, PTHREAD_PRIO_PROTECT ),
+        0
+      );
       break;
     }
 
@@ -343,18 +345,25 @@ static void CPthreadReqMutexGetprioceiling_Pre_Ceiling_Prepare(
   switch ( state ) {
     case CPthreadReqMutexGetprioceiling_Pre_Ceiling_Valid: {
       /*
-       * While the priority ceiling of the mutex is a valid priority which is
-       * not the maximum priority.
+       * While the mutex priority ceiling attribute of the mutex is a thread
+       * priority which is less than the maximum thread priority.
        */
-      ctx->attr_obj.prio_ceiling = CeilingValue();
+      T_eq_int(
+        pthread_mutexattr_setprioceiling( &ctx->attr_obj, CeilingValue() ),
+        0
+      );
       break;
     }
 
     case CPthreadReqMutexGetprioceiling_Pre_Ceiling_Maximum: {
       /*
-       * While the priority ceiling of the mutex is the maximum priority.
+       * While the mutex priority ceiling attribute of the mutex is the maximum
+       * thread priority.
        */
-      ctx->attr_obj.prio_ceiling = INT_MAX;
+      T_eq_int(
+        pthread_mutexattr_setprioceiling( &ctx->attr_obj, INT_MAX ),
+        0
+      );
       break;
     }
 
@@ -423,19 +432,10 @@ static void CPthreadReqMutexGetprioceiling_Post_Result_Check(
 )
 {
   switch ( state ) {
-    case CPthreadReqMutexGetprioceiling_Post_Result_Zero: {
-      /*
-       * The value of the object referenced by the `prioceiling` parameter
-       * shall be zero.
-       */
-      T_eq_int( ctx->out_obj, 0 );
-      break;
-    }
-
     case CPthreadReqMutexGetprioceiling_Post_Result_Valid: {
       /*
        * The value of the object referenced by the `prioceiling` parameter
-       * shall be the priority ceiling of the mutex.
+       * shall be the mutex priority ceiling attribute of the mutex.
        */
       T_eq_int( ctx->out_obj, CeilingValue() );
       break;
@@ -444,18 +444,18 @@ static void CPthreadReqMutexGetprioceiling_Post_Result_Check(
     case CPthreadReqMutexGetprioceiling_Post_Result_Maximum: {
       /*
        * The value of the object referenced by the `prioceiling` parameter
-       * shall be the maximum priority.
+       * shall be the maximum thread priority.
        */
       T_eq_int( ctx->out_obj, GetPOSIXPriorityMaximum() );
       break;
     }
 
-    case CPthreadReqMutexGetprioceiling_Post_Result_Nop: {
+    case CPthreadReqMutexGetprioceiling_Post_Result_Zero: {
       /*
        * The value of the object referenced by the `prioceiling` parameter
-       * shall not be modified.
+       * shall be zero.
        */
-      T_eq_int( ctx->out_obj, -1 );
+      T_eq_int( ctx->out_obj, 0 );
       break;
     }
 
@@ -472,12 +472,13 @@ static void CPthreadReqMutexGetprioceiling_Post_MutexObj_Check(
   switch ( state ) {
     case CPthreadReqMutexGetprioceiling_Post_MutexObj_Nop: {
       /*
-       * The object referenced by the `mutex` parameter, other than its SMP
-       * lock, shall not be modified.
+       * The mutex referenced by the `mutex` parameter shall not be modified.
        */
       pthread_mutex_t expected;
 
       memcpy( &expected, &ctx->mutex_before, sizeof( expected ) );
+
+      /* The call acquires and releases the lock of the thread queue. */
       #if defined( RTEMS_SMP )
       memcpy(
         &_POSIX_Mutex_Get( &expected )->Recursive.Mutex.Queue.Queue.Lock,
@@ -490,30 +491,6 @@ static void CPthreadReqMutexGetprioceiling_Post_MutexObj_Check(
     }
 
     case CPthreadReqMutexGetprioceiling_Post_MutexObj_NA:
-      break;
-  }
-}
-
-static void CPthreadReqMutexGetprioceiling_Post_Lock_Check(
-  CPthreadReqMutexGetprioceiling_Context  *ctx,
-  CPthreadReqMutexGetprioceiling_Post_Lock state
-)
-{
-  switch ( state ) {
-    case CPthreadReqMutexGetprioceiling_Post_Lock_Released: {
-      /*
-       * The SMP lock of the mutex referenced by the `mutex` parameter shall be
-       * released.
-       */
-      #if defined( RTEMS_SMP )
-      T_true( TicketLockIsAvailable( MutexTicketLock( ctx ) ) );
-      #else
-      (void) ctx;
-      #endif
-      break;
-    }
-
-    case CPthreadReqMutexGetprioceiling_Post_Lock_NA:
       break;
   }
 }
@@ -550,78 +527,40 @@ static const CPthreadReqMutexGetprioceiling_Entry
 CPthreadReqMutexGetprioceiling_Entries[] = {
   { 1, 0, 0, 0, 0, CPthreadReqMutexGetprioceiling_Post_Status_NA,
     CPthreadReqMutexGetprioceiling_Post_Result_NA,
-    CPthreadReqMutexGetprioceiling_Post_MutexObj_NA,
-    CPthreadReqMutexGetprioceiling_Post_Lock_NA },
+    CPthreadReqMutexGetprioceiling_Post_MutexObj_NA },
+  { 0, 0, 0, 1, 0, CPthreadReqMutexGetprioceiling_Post_Status_Inval,
+    CPthreadReqMutexGetprioceiling_Post_Result_Zero,
+    CPthreadReqMutexGetprioceiling_Post_MutexObj_Nop },
+  { 0, 0, 0, 1, 0, CPthreadReqMutexGetprioceiling_Post_Status_Inval,
+    CPthreadReqMutexGetprioceiling_Post_Result_NA,
+    CPthreadReqMutexGetprioceiling_Post_MutexObj_Nop },
   { 0, 0, 0, 0, 0, CPthreadReqMutexGetprioceiling_Post_Status_Inval,
     CPthreadReqMutexGetprioceiling_Post_Result_NA,
-    CPthreadReqMutexGetprioceiling_Post_MutexObj_Nop,
-    CPthreadReqMutexGetprioceiling_Post_Lock_NA },
-#if defined(RTEMS_SMP)
-  { 0, 0, 0, 1, 0, CPthreadReqMutexGetprioceiling_Post_Status_Ok,
+    CPthreadReqMutexGetprioceiling_Post_MutexObj_Nop },
+  { 0, 0, 1, 1, 0, CPthreadReqMutexGetprioceiling_Post_Status_Inval,
     CPthreadReqMutexGetprioceiling_Post_Result_Zero,
-    CPthreadReqMutexGetprioceiling_Post_MutexObj_Nop,
-    CPthreadReqMutexGetprioceiling_Post_Lock_Released },
-#else
-  { 0, 0, 0, 1, 0, CPthreadReqMutexGetprioceiling_Post_Status_Ok,
-    CPthreadReqMutexGetprioceiling_Post_Result_Zero,
-    CPthreadReqMutexGetprioceiling_Post_MutexObj_Nop,
-    CPthreadReqMutexGetprioceiling_Post_Lock_NA },
-#endif
+    CPthreadReqMutexGetprioceiling_Post_MutexObj_NA },
   { 0, 0, 1, 1, 0, CPthreadReqMutexGetprioceiling_Post_Status_Inval,
     CPthreadReqMutexGetprioceiling_Post_Result_NA,
-    CPthreadReqMutexGetprioceiling_Post_MutexObj_Nop,
-    CPthreadReqMutexGetprioceiling_Post_Lock_NA },
-#if defined(RTEMS_SMP)
+    CPthreadReqMutexGetprioceiling_Post_MutexObj_Nop },
   { 0, 0, 0, 0, 0, CPthreadReqMutexGetprioceiling_Post_Status_Ok,
     CPthreadReqMutexGetprioceiling_Post_Result_Valid,
-    CPthreadReqMutexGetprioceiling_Post_MutexObj_Nop,
-    CPthreadReqMutexGetprioceiling_Post_Lock_Released },
-#else
-  { 0, 0, 0, 0, 0, CPthreadReqMutexGetprioceiling_Post_Status_Ok,
-    CPthreadReqMutexGetprioceiling_Post_Result_Valid,
-    CPthreadReqMutexGetprioceiling_Post_MutexObj_Nop,
-    CPthreadReqMutexGetprioceiling_Post_Lock_NA },
-#endif
-#if defined(RTEMS_SMP)
+    CPthreadReqMutexGetprioceiling_Post_MutexObj_Nop },
   { 0, 0, 0, 0, 0, CPthreadReqMutexGetprioceiling_Post_Status_Ok,
     CPthreadReqMutexGetprioceiling_Post_Result_Maximum,
-    CPthreadReqMutexGetprioceiling_Post_MutexObj_Nop,
-    CPthreadReqMutexGetprioceiling_Post_Lock_Released },
-#else
-  { 0, 0, 0, 0, 0, CPthreadReqMutexGetprioceiling_Post_Status_Ok,
-    CPthreadReqMutexGetprioceiling_Post_Result_Maximum,
-    CPthreadReqMutexGetprioceiling_Post_MutexObj_Nop,
-    CPthreadReqMutexGetprioceiling_Post_Lock_NA },
-#endif
-#if defined(RTEMS_SMP)
-  { 0, 0, 1, 1, 0, CPthreadReqMutexGetprioceiling_Post_Status_Ok,
-    CPthreadReqMutexGetprioceiling_Post_Result_Zero,
-    CPthreadReqMutexGetprioceiling_Post_MutexObj_NA,
-    CPthreadReqMutexGetprioceiling_Post_Lock_Released },
-#else
-  { 0, 0, 1, 1, 0, CPthreadReqMutexGetprioceiling_Post_Status_Ok,
-    CPthreadReqMutexGetprioceiling_Post_Result_Zero,
-    CPthreadReqMutexGetprioceiling_Post_MutexObj_NA,
-    CPthreadReqMutexGetprioceiling_Post_Lock_NA },
-#endif
+    CPthreadReqMutexGetprioceiling_Post_MutexObj_Nop },
   { 0, 0, 1, 1, 0, CPthreadReqMutexGetprioceiling_Post_Status_Inval,
-    CPthreadReqMutexGetprioceiling_Post_Result_Nop,
-    CPthreadReqMutexGetprioceiling_Post_MutexObj_Nop,
-    CPthreadReqMutexGetprioceiling_Post_Lock_NA },
-  { 0, 0, 1, 1, 0, CPthreadReqMutexGetprioceiling_Post_Status_Inval,
-    CPthreadReqMutexGetprioceiling_Post_Result_Nop,
-    CPthreadReqMutexGetprioceiling_Post_MutexObj_NA,
-    CPthreadReqMutexGetprioceiling_Post_Lock_NA },
+    CPthreadReqMutexGetprioceiling_Post_Result_Zero,
+    CPthreadReqMutexGetprioceiling_Post_MutexObj_Nop },
   { 0, 0, 1, 1, 0, CPthreadReqMutexGetprioceiling_Post_Status_Inval,
     CPthreadReqMutexGetprioceiling_Post_Result_NA,
-    CPthreadReqMutexGetprioceiling_Post_MutexObj_NA,
-    CPthreadReqMutexGetprioceiling_Post_Lock_NA }
+    CPthreadReqMutexGetprioceiling_Post_MutexObj_NA }
 };
 
 static const uint8_t
 CPthreadReqMutexGetprioceiling_Map[] = {
-  2, 1, 0, 1, 2, 1, 0, 1, 4, 1, 5, 1, 6, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 3,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+  1, 2, 0, 0, 1, 2, 0, 0, 6, 3, 7, 3, 4, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 5,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 };
 
 /* clang-format on */
@@ -713,10 +652,6 @@ static void CPthreadReqMutexGetprioceiling_TestVariant(
   CPthreadReqMutexGetprioceiling_Post_MutexObj_Check(
     ctx,
     ctx->Map.entry.Post_MutexObj
-  );
-  CPthreadReqMutexGetprioceiling_Post_Lock_Check(
-    ctx,
-    ctx->Map.entry.Post_Lock
   );
 }
 

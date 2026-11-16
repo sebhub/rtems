@@ -40,8 +40,9 @@
 #include <limits.h>
 #include <pthread.h>
 #include <string.h>
+#include <rtems/test-scheduler.h>
 #include <rtems/posix/muteximpl.h>
-#include <rtems/posix/priorityimpl.h>
+#include <rtems/score/threadimpl.h>
 
 #include "tx-support.h"
 
@@ -78,6 +79,14 @@ typedef enum {
 } CPthreadReqMutexSetprioceiling_Pre_Ceiling;
 
 typedef enum {
+  CPthreadReqMutexSetprioceiling_Pre_Type_Normal,
+  CPthreadReqMutexSetprioceiling_Pre_Type_Recursive,
+  CPthreadReqMutexSetprioceiling_Pre_Type_Errorcheck,
+  CPthreadReqMutexSetprioceiling_Pre_Type_Default,
+  CPthreadReqMutexSetprioceiling_Pre_Type_NA
+} CPthreadReqMutexSetprioceiling_Pre_Type;
+
+typedef enum {
   CPthreadReqMutexSetprioceiling_Pre_New_Valid,
   CPthreadReqMutexSetprioceiling_Pre_New_High,
   CPthreadReqMutexSetprioceiling_Pre_New_Low,
@@ -91,48 +100,82 @@ typedef enum {
 } CPthreadReqMutexSetprioceiling_Pre_Old;
 
 typedef enum {
+  CPthreadReqMutexSetprioceiling_Pre_Owner_None,
+  CPthreadReqMutexSetprioceiling_Pre_Owner_Caller,
+  CPthreadReqMutexSetprioceiling_Pre_Owner_Other,
+  CPthreadReqMutexSetprioceiling_Pre_Owner_NA
+} CPthreadReqMutexSetprioceiling_Pre_Owner;
+
+typedef enum {
+  CPthreadReqMutexSetprioceiling_Pre_Priority_Satisfied,
+  CPthreadReqMutexSetprioceiling_Pre_Priority_Violated,
+  CPthreadReqMutexSetprioceiling_Pre_Priority_NA
+} CPthreadReqMutexSetprioceiling_Pre_Priority;
+
+typedef enum {
+  CPthreadReqMutexSetprioceiling_Pre_Scheduler_Home,
+  CPthreadReqMutexSetprioceiling_Pre_Scheduler_Other,
+  CPthreadReqMutexSetprioceiling_Pre_Scheduler_NA
+} CPthreadReqMutexSetprioceiling_Pre_Scheduler;
+
+typedef enum {
   CPthreadReqMutexSetprioceiling_Post_Status_Ok,
   CPthreadReqMutexSetprioceiling_Post_Status_Inval,
+  CPthreadReqMutexSetprioceiling_Post_Status_Deadlock,
   CPthreadReqMutexSetprioceiling_Post_Status_NA
 } CPthreadReqMutexSetprioceiling_Post_Status;
 
 typedef enum {
-  CPthreadReqMutexSetprioceiling_Post_OldCeiling_Zero,
   CPthreadReqMutexSetprioceiling_Post_OldCeiling_Valid,
   CPthreadReqMutexSetprioceiling_Post_OldCeiling_Maximum,
-  CPthreadReqMutexSetprioceiling_Post_OldCeiling_Nop,
+  CPthreadReqMutexSetprioceiling_Post_OldCeiling_Zero,
   CPthreadReqMutexSetprioceiling_Post_OldCeiling_NA
 } CPthreadReqMutexSetprioceiling_Post_OldCeiling;
 
 typedef enum {
-  CPthreadReqMutexSetprioceiling_Post_Ceiling_Valid,
+  CPthreadReqMutexSetprioceiling_Post_Ceiling_New,
   CPthreadReqMutexSetprioceiling_Post_Ceiling_Nop,
   CPthreadReqMutexSetprioceiling_Post_Ceiling_NA
 } CPthreadReqMutexSetprioceiling_Post_Ceiling;
 
 typedef enum {
   CPthreadReqMutexSetprioceiling_Post_Owner_None,
+  CPthreadReqMutexSetprioceiling_Post_Owner_Caller,
   CPthreadReqMutexSetprioceiling_Post_Owner_NA
 } CPthreadReqMutexSetprioceiling_Post_Owner;
 
 typedef enum {
-  CPthreadReqMutexSetprioceiling_Post_Lock_Released,
-  CPthreadReqMutexSetprioceiling_Post_Lock_NA
-} CPthreadReqMutexSetprioceiling_Post_Lock;
+  CPthreadReqMutexSetprioceiling_Post_Wait_Yes,
+  CPthreadReqMutexSetprioceiling_Post_Wait_No,
+  CPthreadReqMutexSetprioceiling_Post_Wait_NA
+} CPthreadReqMutexSetprioceiling_Post_Wait;
+
+typedef enum {
+  CPthreadReqMutexSetprioceiling_Post_Priority_Ceiling,
+  CPthreadReqMutexSetprioceiling_Post_Priority_Nop,
+  CPthreadReqMutexSetprioceiling_Post_Priority_NA
+} CPthreadReqMutexSetprioceiling_Post_Priority;
 
 typedef struct {
-  uint16_t Skip : 1;
-  uint16_t Pre_Mutex_NA : 1;
-  uint16_t Pre_Protocol_NA : 1;
-  uint16_t Pre_Ceiling_NA : 1;
-  uint16_t Pre_New_NA : 1;
-  uint16_t Pre_Old_NA : 1;
-  uint16_t Post_Status : 2;
-  uint16_t Post_OldCeiling : 3;
-  uint16_t Post_Ceiling : 2;
-  uint16_t Post_Owner : 1;
-  uint16_t Post_Lock : 1;
+  uint32_t Skip : 1;
+  uint32_t Pre_Mutex_NA : 1;
+  uint32_t Pre_Protocol_NA : 1;
+  uint32_t Pre_Ceiling_NA : 1;
+  uint32_t Pre_Type_NA : 1;
+  uint32_t Pre_New_NA : 1;
+  uint32_t Pre_Old_NA : 1;
+  uint32_t Pre_Owner_NA : 1;
+  uint32_t Pre_Priority_NA : 1;
+  uint32_t Pre_Scheduler_NA : 1;
+  uint32_t Post_Status : 2;
+  uint32_t Post_OldCeiling : 2;
+  uint32_t Post_Ceiling : 2;
+  uint32_t Post_Owner : 2;
+  uint32_t Post_Wait : 2;
+  uint32_t Post_Priority : 2;
 } CPthreadReqMutexSetprioceiling_Entry;
+
+typedef enum { OWNER_NONE, OWNER_CALLER, OWNER_OTHER } OwnerKind;
 
 /**
  * @brief Test context for spec:/c/pthread/req/mutex-setprioceiling test case.
@@ -145,30 +188,9 @@ typedef struct {
   pthread_mutex_t mutex_obj;
 
   /**
-   * @brief This member contains a copy of the mutex object before the call.
-   */
-  pthread_mutex_t mutex_before;
-
-  /**
    * @brief This member specifies the `mutex` parameter value.
    */
   pthread_mutex_t *mutex;
-
-  /**
-   * @brief This member specifies the `prioceiling` parameter value.
-   */
-  int value;
-
-  /**
-   * @brief This member specifies the `old_ceiling` parameter value.
-   */
-  int *out;
-
-  /**
-   * @brief This member provides the object referenced by the `old_ceiling`
-   *   parameter.
-   */
-  int out_obj;
 
   /**
    * @brief This member provides the mutex attributes.
@@ -182,10 +204,81 @@ typedef struct {
   bool init;
 
   /**
-   * @brief This member contains the core priority of the priority ceiling
+   * @brief This member specifies the `prioceiling` parameter value.
+   */
+  int new_ceiling;
+
+  /**
+   * @brief This member specifies the `old_ceiling` parameter value.
+   */
+  int *old;
+
+  /**
+   * @brief This member provides the object referenced by the `old_ceiling`
+   *   parameter.
+   */
+  int old_obj;
+
+  /**
+   * @brief This member specifies the owner of the mutex before the call.
+   */
+  OwnerKind owner;
+
+  /**
+   * @brief This member is true, if the calling thread shall have a priority
+   *   higher than the priority ceiling of the mutex.
+   */
+  bool priority_high;
+
+  /**
+   * @brief This member is true, if the home scheduler of the calling thread
+   *   shall not be the scheduler of the mutex.
+   */
+  bool scheduler_other;
+
+  /**
+   * @brief This member contains the priority ceiling of the mutex before the
+   *   call.
+   */
+  int ceiling_before;
+
+  /**
+   * @brief This member contains the current priority of the calling thread
    *   before the call.
    */
-  Priority_Control priority_before;
+  rtems_task_priority priority_before;
+
+  /**
+   * @brief This member contains the current priority of the calling thread
+   *   after the call.
+   */
+  rtems_task_priority priority_after;
+
+  /**
+   * @brief This member contains the owner of the mutex after the call.
+   */
+  const rtems_tcb *owner_after;
+
+  /**
+   * @brief This member is true, if the calling thread blocked in the call.
+   */
+  bool blocked;
+
+  /**
+   * @brief This member contains the thread control block of the runner.
+   */
+  const rtems_tcb *runner;
+
+  /**
+   * @brief This member contains the identifier of the worker.
+   */
+  rtems_id worker_id;
+
+  /**
+   * @brief This member provides the request which lets the worker surrender
+   *   the mutex.
+   */
+  CallWithinISRRequest request;
 
   /**
    * @brief This member contains the return value of the
@@ -198,12 +291,12 @@ typedef struct {
      * @brief This member defines the pre-condition indices for the next
      *   action.
      */
-    size_t pci[ 5 ];
+    size_t pci[ 9 ];
 
     /**
      * @brief This member defines the pre-condition states for the next action.
      */
-    size_t pcs[ 5 ];
+    size_t pcs[ 9 ];
 
     /**
      * @brief If this member is true, then the test action loop is executed.
@@ -240,75 +333,156 @@ static const char *const CPthreadReqMutexSetprioceiling_PreDesc_Protocol[] =
 static const char *const CPthreadReqMutexSetprioceiling_PreDesc_Ceiling[] =
   { "Valid", "Maximum", "NA" };
 
+static const char *const CPthreadReqMutexSetprioceiling_PreDesc_Type[] =
+  { "Normal", "Recursive", "Errorcheck", "Default", "NA" };
+
 static const char *const CPthreadReqMutexSetprioceiling_PreDesc_New[] =
   { "Valid", "High", "Low", "NA" };
 
 static const char *const CPthreadReqMutexSetprioceiling_PreDesc_Old[] =
   { "Obj", "Null", "NA" };
 
+static const char *const CPthreadReqMutexSetprioceiling_PreDesc_Owner[] =
+  { "None", "Caller", "Other", "NA" };
+
+static const char *const CPthreadReqMutexSetprioceiling_PreDesc_Priority[] =
+  { "Satisfied", "Violated", "NA" };
+
+static const char *const CPthreadReqMutexSetprioceiling_PreDesc_Scheduler[] =
+  { "Home", "Other", "NA" };
+
 static const char *const *const CPthreadReqMutexSetprioceiling_PreDesc[] = {
   CPthreadReqMutexSetprioceiling_PreDesc_Mutex,
   CPthreadReqMutexSetprioceiling_PreDesc_Protocol,
   CPthreadReqMutexSetprioceiling_PreDesc_Ceiling,
+  CPthreadReqMutexSetprioceiling_PreDesc_Type,
   CPthreadReqMutexSetprioceiling_PreDesc_New,
   CPthreadReqMutexSetprioceiling_PreDesc_Old,
+  CPthreadReqMutexSetprioceiling_PreDesc_Owner,
+  CPthreadReqMutexSetprioceiling_PreDesc_Priority,
+  CPthreadReqMutexSetprioceiling_PreDesc_Scheduler,
   NULL
 };
 
 typedef CPthreadReqMutexSetprioceiling_Context Context;
 
-static int CeilingValue( void )
+#define EVENT_LOCK RTEMS_EVENT_0
+
+#define EVENT_UNLOCK RTEMS_EVENT_1
+
+#define EVENT_LOCKED RTEMS_EVENT_2
+
+static rtems_task_priority GetCurrentPriority( void )
 {
-  return GetPOSIXPriorityMaximum() - 10;
+  rtems_status_code sc;
+  rtems_id          scheduler_id;
+
+  sc = rtems_task_get_scheduler( RTEMS_SELF, &scheduler_id );
+  T_rsc_success( sc );
+
+  return GetPriorityByScheduler( RTEMS_SELF, scheduler_id );
 }
 
-static POSIX_Mutex_Control *MutexOf( Context *ctx )
+static int GetCeiling( Context *ctx )
 {
-  return _POSIX_Mutex_Get( &ctx->mutex_obj );
+  int ceiling;
+
+  if ( pthread_mutex_getprioceiling( &ctx->mutex_obj, &ceiling ) != 0 ) {
+    return -1;
+  }
+
+  return ceiling;
 }
 
-#if defined( RTEMS_SMP )
-static const SMP_ticket_lock_Control *MutexTicketLock( Context *ctx )
+static void Worker( rtems_task_argument arg )
 {
-  return &MutexOf( ctx )->Recursive.Mutex.Queue.Queue.Lock;
+  Context *ctx;
+
+  ctx = (Context *) arg;
+
+  while ( true ) {
+    rtems_event_set events;
+
+    events = ReceiveAnyEvents();
+
+    if ( ( events & EVENT_LOCK ) != 0 ) {
+      T_eq_int( pthread_mutex_lock( ctx->mutex ), 0 );
+      SendEvents( ctx->runner->Object.id, EVENT_LOCKED );
+    }
+
+    if ( ( events & EVENT_UNLOCK ) != 0 ) {
+      T_eq_int( pthread_mutex_unlock( ctx->mutex ), 0 );
+    }
+  }
 }
-#endif
 
-static int NewValue( void )
+static void Surrender( void *arg )
 {
-  return GetPOSIXPriorityMaximum() - 20;
+  Context *ctx;
+
+  ctx = arg;
+  SendEvents( ctx->worker_id, EVENT_UNLOCK );
 }
 
-static Priority_Control CoreOf( Context *ctx, int priority )
+static void SchedulerBlock(
+  void                    *arg,
+  const T_scheduler_event *event,
+  T_scheduler_when         when
+)
 {
-  bool             valid;
-  Priority_Control core;
+  Context *ctx;
 
-  core = _POSIX_Priority_To_core(
-    _POSIX_Mutex_Get_scheduler( MutexOf( ctx ) ),
-    priority,
-    &valid
-  );
-  T_true( valid );
-  return core;
+  ctx = arg;
+
+  if (
+    when == T_SCHEDULER_BEFORE && event->operation == T_SCHEDULER_BLOCK &&
+    event->thread == ctx->runner
+  ) {
+    T_scheduler_set_event_handler( NULL, NULL );
+    ctx->blocked = true;
+    CallWithinISRSubmit( &ctx->request );
+  }
 }
 
 static void Action( Context *ctx )
 {
   if ( ctx->init ) {
     T_eq_int( pthread_mutex_init( &ctx->mutex_obj, &ctx->attr_obj ), 0 );
+    ctx->ceiling_before = GetCeiling( ctx );
   }
 
-  if ( ctx->init ) {
-    ctx->priority_before = _POSIX_Mutex_Get_priority( MutexOf( ctx ) );
+  if ( ctx->owner == OWNER_CALLER ) {
+    T_eq_int( pthread_mutex_lock( ctx->mutex ), 0 );
+  } else if ( ctx->owner == OWNER_OTHER ) {
+    SendEvents( ctx->worker_id, EVENT_LOCK );
+    T_eq_u32( ReceiveAnyEvents(), EVENT_LOCKED );
+    T_scheduler_set_event_handler( SchedulerBlock, ctx );
   }
 
-  memcpy( &ctx->mutex_before, &ctx->mutex_obj, sizeof( ctx->mutex_before ) );
+  if ( ctx->priority_high ) {
+    SetSelfPriority( PRIO_ULTRA_HIGH );
+  }
+
+  if ( ctx->scheduler_other ) {
+#if defined( RTEMS_SMP )
+    SetSelfScheduler( SCHEDULER_B_ID, PRIO_NORMAL );
+#endif
+  }
+
+  ctx->priority_before = GetCurrentPriority();
   ctx->status = pthread_mutex_setprioceiling(
     ctx->mutex,
-    ctx->value,
-    ctx->out
+    ctx->new_ceiling,
+    ctx->old
   );
+  ctx->priority_after = GetCurrentPriority();
+  T_scheduler_set_event_handler( NULL, NULL );
+
+  if ( ctx->init ) {
+    ctx->owner_after = _POSIX_Mutex_Get_owner(
+      _POSIX_Mutex_Get( &ctx->mutex_obj )
+    );
+  }
 }
 
 static void CPthreadReqMutexSetprioceiling_Pre_Mutex_Prepare(
@@ -328,9 +502,12 @@ static void CPthreadReqMutexSetprioceiling_Pre_Mutex_Prepare(
 
     case CPthreadReqMutexSetprioceiling_Pre_Mutex_Static: {
       /*
-       * While the `mutex` parameter references a statically initialized mutex.
+       * While the object referenced by the `mutex` parameter is equal to
+       * PTHREAD_MUTEX_INITIALIZER.
        */
-      memset( &ctx->mutex_obj, 0, sizeof( ctx->mutex_obj ) );
+      static const pthread_mutex_t initializer = PTHREAD_MUTEX_INITIALIZER;
+
+      ctx->mutex_obj = initializer;
       ctx->mutex = &ctx->mutex_obj;
       break;
     }
@@ -365,25 +542,36 @@ static void CPthreadReqMutexSetprioceiling_Pre_Protocol_Prepare(
   switch ( state ) {
     case CPthreadReqMutexSetprioceiling_Pre_Protocol_None: {
       /*
-       * While the mutex uses no priority protocol.
+       * While the mutex protocol attribute of the mutex is PTHREAD_PRIO_NONE.
        */
-      ctx->attr_obj.protocol = PTHREAD_PRIO_NONE;
+      T_eq_int(
+        pthread_mutexattr_setprotocol( &ctx->attr_obj, PTHREAD_PRIO_NONE ),
+        0
+      );
       break;
     }
 
     case CPthreadReqMutexSetprioceiling_Pre_Protocol_Inherit: {
       /*
-       * While the mutex uses the priority inheritance protocol.
+       * While the mutex protocol attribute of the mutex is
+       * PTHREAD_PRIO_INHERIT.
        */
-      ctx->attr_obj.protocol = PTHREAD_PRIO_INHERIT;
+      T_eq_int(
+        pthread_mutexattr_setprotocol( &ctx->attr_obj, PTHREAD_PRIO_INHERIT ),
+        0
+      );
       break;
     }
 
     case CPthreadReqMutexSetprioceiling_Pre_Protocol_Protect: {
       /*
-       * While the mutex uses the priority ceiling protocol.
+       * While the mutex protocol attribute of the mutex is
+       * PTHREAD_PRIO_PROTECT.
        */
-      ctx->attr_obj.protocol = PTHREAD_PRIO_PROTECT;
+      T_eq_int(
+        pthread_mutexattr_setprotocol( &ctx->attr_obj, PTHREAD_PRIO_PROTECT ),
+        0
+      );
       break;
     }
 
@@ -400,22 +588,89 @@ static void CPthreadReqMutexSetprioceiling_Pre_Ceiling_Prepare(
   switch ( state ) {
     case CPthreadReqMutexSetprioceiling_Pre_Ceiling_Valid: {
       /*
-       * While the priority ceiling of the mutex is a valid priority which is
-       * not the maximum priority.
+       * While the mutex priority ceiling attribute of the mutex is a thread
+       * priority which is less than the maximum thread priority.
        */
-      ctx->attr_obj.prio_ceiling = CeilingValue();
+      T_eq_int(
+        pthread_mutexattr_setprioceiling(
+          &ctx->attr_obj,
+          ToPOSIXPriority( PRIO_VERY_HIGH )
+        ),
+        0
+      );
       break;
     }
 
     case CPthreadReqMutexSetprioceiling_Pre_Ceiling_Maximum: {
       /*
-       * While the priority ceiling of the mutex is the maximum priority.
+       * While the mutex priority ceiling attribute of the mutex is the maximum
+       * thread priority.
        */
-      ctx->attr_obj.prio_ceiling = INT_MAX;
+      T_eq_int(
+        pthread_mutexattr_setprioceiling( &ctx->attr_obj, INT_MAX ),
+        0
+      );
       break;
     }
 
     case CPthreadReqMutexSetprioceiling_Pre_Ceiling_NA:
+      break;
+  }
+}
+
+static void CPthreadReqMutexSetprioceiling_Pre_Type_Prepare(
+  CPthreadReqMutexSetprioceiling_Context *ctx,
+  CPthreadReqMutexSetprioceiling_Pre_Type state
+)
+{
+  switch ( state ) {
+    case CPthreadReqMutexSetprioceiling_Pre_Type_Normal: {
+      /*
+       * While the mutex type attribute of the mutex is PTHREAD_MUTEX_NORMAL.
+       */
+      T_eq_int(
+        pthread_mutexattr_settype( &ctx->attr_obj, PTHREAD_MUTEX_NORMAL ),
+        0
+      );
+      break;
+    }
+
+    case CPthreadReqMutexSetprioceiling_Pre_Type_Recursive: {
+      /*
+       * While the mutex type attribute of the mutex is
+       * PTHREAD_MUTEX_RECURSIVE.
+       */
+      T_eq_int(
+        pthread_mutexattr_settype( &ctx->attr_obj, PTHREAD_MUTEX_RECURSIVE ),
+        0
+      );
+      break;
+    }
+
+    case CPthreadReqMutexSetprioceiling_Pre_Type_Errorcheck: {
+      /*
+       * While the mutex type attribute of the mutex is
+       * PTHREAD_MUTEX_ERRORCHECK.
+       */
+      T_eq_int(
+        pthread_mutexattr_settype( &ctx->attr_obj, PTHREAD_MUTEX_ERRORCHECK ),
+        0
+      );
+      break;
+    }
+
+    case CPthreadReqMutexSetprioceiling_Pre_Type_Default: {
+      /*
+       * While the mutex type attribute of the mutex is PTHREAD_MUTEX_DEFAULT.
+       */
+      T_eq_int(
+        pthread_mutexattr_settype( &ctx->attr_obj, PTHREAD_MUTEX_DEFAULT ),
+        0
+      );
+      break;
+    }
+
+    case CPthreadReqMutexSetprioceiling_Pre_Type_NA:
       break;
   }
 }
@@ -428,27 +683,28 @@ static void CPthreadReqMutexSetprioceiling_Pre_New_Prepare(
   switch ( state ) {
     case CPthreadReqMutexSetprioceiling_Pre_New_Valid: {
       /*
-       * While the `prioceiling` parameter is a valid priority which differs
-       * from the priority ceiling of the mutex.
+       * While the `prioceiling` parameter is a valid thread priority which
+       * differs from the mutex priority ceiling attribute of the mutex.
        */
-      ctx->value = NewValue();
+      ctx->new_ceiling = ToPOSIXPriority( PRIO_ULTRA_HIGH );
       break;
     }
 
     case CPthreadReqMutexSetprioceiling_Pre_New_High: {
       /*
-       * While the `prioceiling` parameter is greater than the maximum
+       * While the `prioceiling` parameter is greater than the maximum thread
        * priority.
        */
-      ctx->value = 0x7fffffff;
+      ctx->new_ceiling = GetPOSIXPriorityMaximum() + 1;
       break;
     }
 
     case CPthreadReqMutexSetprioceiling_Pre_New_Low: {
       /*
-       * While the `prioceiling` parameter is less than the minimum priority.
+       * While the `prioceiling` parameter is less than the minimum thread
+       * priority.
        */
-      ctx->value = GetPOSIXPriorityMinimum() - 1;
+      ctx->new_ceiling = GetPOSIXPriorityMinimum() - 1;
       break;
     }
 
@@ -467,7 +723,7 @@ static void CPthreadReqMutexSetprioceiling_Pre_Old_Prepare(
       /*
        * While the `old_ceiling` parameter references an object of type int.
        */
-      ctx->out = &ctx->out_obj;
+      ctx->old = &ctx->old_obj;
       break;
     }
 
@@ -475,11 +731,107 @@ static void CPthreadReqMutexSetprioceiling_Pre_Old_Prepare(
       /*
        * While the `old_ceiling` parameter is equal to NULL.
        */
-      ctx->out = NULL;
+      ctx->old = NULL;
       break;
     }
 
     case CPthreadReqMutexSetprioceiling_Pre_Old_NA:
+      break;
+  }
+}
+
+static void CPthreadReqMutexSetprioceiling_Pre_Owner_Prepare(
+  CPthreadReqMutexSetprioceiling_Context  *ctx,
+  CPthreadReqMutexSetprioceiling_Pre_Owner state
+)
+{
+  switch ( state ) {
+    case CPthreadReqMutexSetprioceiling_Pre_Owner_None: {
+      /*
+       * While the mutex has no owner.
+       */
+      ctx->owner = OWNER_NONE;
+      break;
+    }
+
+    case CPthreadReqMutexSetprioceiling_Pre_Owner_Caller: {
+      /*
+       * While the owner of the mutex is the calling thread.
+       */
+      ctx->owner = OWNER_CALLER;
+      break;
+    }
+
+    case CPthreadReqMutexSetprioceiling_Pre_Owner_Other: {
+      /*
+       * While the owner of the mutex is a thread other than the calling
+       * thread.
+       */
+      ctx->owner = OWNER_OTHER;
+      break;
+    }
+
+    case CPthreadReqMutexSetprioceiling_Pre_Owner_NA:
+      break;
+  }
+}
+
+static void CPthreadReqMutexSetprioceiling_Pre_Priority_Prepare(
+  CPthreadReqMutexSetprioceiling_Context     *ctx,
+  CPthreadReqMutexSetprioceiling_Pre_Priority state
+)
+{
+  switch ( state ) {
+    case CPthreadReqMutexSetprioceiling_Pre_Priority_Satisfied: {
+      /*
+       * While the current priority of the calling thread is not higher than
+       * the priority which corresponds to the mutex priority ceiling attribute
+       * of the mutex.
+       */
+      ctx->priority_high = false;
+      break;
+    }
+
+    case CPthreadReqMutexSetprioceiling_Pre_Priority_Violated: {
+      /*
+       * While the current priority of the calling thread is higher than the
+       * priority which corresponds to the mutex priority ceiling attribute of
+       * the mutex.
+       */
+      ctx->priority_high = true;
+      break;
+    }
+
+    case CPthreadReqMutexSetprioceiling_Pre_Priority_NA:
+      break;
+  }
+}
+
+static void CPthreadReqMutexSetprioceiling_Pre_Scheduler_Prepare(
+  CPthreadReqMutexSetprioceiling_Context      *ctx,
+  CPthreadReqMutexSetprioceiling_Pre_Scheduler state
+)
+{
+  switch ( state ) {
+    case CPthreadReqMutexSetprioceiling_Pre_Scheduler_Home: {
+      /*
+       * While the home scheduler of the calling thread is the scheduler
+       * instance of the mutex.
+       */
+      ctx->scheduler_other = false;
+      break;
+    }
+
+    case CPthreadReqMutexSetprioceiling_Pre_Scheduler_Other: {
+      /*
+       * While the home scheduler of the calling thread is not the scheduler
+       * instance of the mutex.
+       */
+      ctx->scheduler_other = true;
+      break;
+    }
+
+    case CPthreadReqMutexSetprioceiling_Pre_Scheduler_NA:
       break;
   }
 }
@@ -506,6 +858,14 @@ static void CPthreadReqMutexSetprioceiling_Post_Status_Check(
       break;
     }
 
+    case CPthreadReqMutexSetprioceiling_Post_Status_Deadlock: {
+      /*
+       * The return value of pthread_mutex_setprioceiling() shall be EDEADLK.
+       */
+      T_eq_int( ctx->status, EDEADLK );
+      break;
+    }
+
     case CPthreadReqMutexSetprioceiling_Post_Status_NA:
       break;
   }
@@ -517,39 +877,31 @@ static void CPthreadReqMutexSetprioceiling_Post_OldCeiling_Check(
 )
 {
   switch ( state ) {
-    case CPthreadReqMutexSetprioceiling_Post_OldCeiling_Zero: {
-      /*
-       * The value of the object referenced by the `old_ceiling` parameter
-       * shall be zero.
-       */
-      T_eq_int( ctx->out_obj, 0 );
-      break;
-    }
-
     case CPthreadReqMutexSetprioceiling_Post_OldCeiling_Valid: {
       /*
        * The value of the object referenced by the `old_ceiling` parameter
-       * shall be the priority ceiling of the mutex.
+       * shall be the mutex priority ceiling attribute of the mutex before the
+       * call.
        */
-      T_eq_int( ctx->out_obj, CeilingValue() );
+      T_eq_int( ctx->old_obj, ToPOSIXPriority( PRIO_VERY_HIGH ) );
       break;
     }
 
     case CPthreadReqMutexSetprioceiling_Post_OldCeiling_Maximum: {
       /*
        * The value of the object referenced by the `old_ceiling` parameter
-       * shall be the maximum priority.
+       * shall be the maximum thread priority.
        */
-      T_eq_int( ctx->out_obj, GetPOSIXPriorityMaximum() );
+      T_eq_int( ctx->old_obj, GetPOSIXPriorityMaximum() );
       break;
     }
 
-    case CPthreadReqMutexSetprioceiling_Post_OldCeiling_Nop: {
+    case CPthreadReqMutexSetprioceiling_Post_OldCeiling_Zero: {
       /*
        * The value of the object referenced by the `old_ceiling` parameter
-       * shall not be modified.
+       * shall be zero.
        */
-      T_eq_int( ctx->out_obj, -1 );
+      T_eq_int( ctx->old_obj, 0 );
       break;
     }
 
@@ -564,27 +916,21 @@ static void CPthreadReqMutexSetprioceiling_Post_Ceiling_Check(
 )
 {
   switch ( state ) {
-    case CPthreadReqMutexSetprioceiling_Post_Ceiling_Valid: {
+    case CPthreadReqMutexSetprioceiling_Post_Ceiling_New: {
       /*
-       * The priority ceiling of the mutex referenced by the `mutex` parameter
-       * shall be the value of the `prioceiling` parameter.
+       * The mutex priority ceiling attribute of the mutex shall be the value
+       * of the `prioceiling` parameter.
        */
-      T_eq_u64(
-        _POSIX_Mutex_Get_priority( MutexOf( ctx ) ),
-        CoreOf( ctx, NewValue() )
-      );
+      T_eq_int( GetCeiling( ctx ), ctx->new_ceiling );
       break;
     }
 
     case CPthreadReqMutexSetprioceiling_Post_Ceiling_Nop: {
       /*
-       * The priority ceiling of the mutex referenced by the `mutex` parameter
-       * shall not be modified.
+       * The mutex priority ceiling attribute of the mutex shall not be
+       * modified.
        */
-      T_eq_u64(
-        _POSIX_Mutex_Get_priority( MutexOf( ctx ) ),
-        ctx->priority_before
-      );
+      T_eq_int( GetCeiling( ctx ), ctx->ceiling_before );
       break;
     }
 
@@ -601,9 +947,17 @@ static void CPthreadReqMutexSetprioceiling_Post_Owner_Check(
   switch ( state ) {
     case CPthreadReqMutexSetprioceiling_Post_Owner_None: {
       /*
-       * The mutex referenced by the `mutex` parameter shall have no owner.
+       * The mutex shall have no owner.
        */
-      T_null( _POSIX_Mutex_Get_owner( MutexOf( ctx ) ) );
+      T_null( ctx->owner_after );
+      break;
+    }
+
+    case CPthreadReqMutexSetprioceiling_Post_Owner_Caller: {
+      /*
+       * The owner of the mutex shall be the calling thread.
+       */
+      T_eq_ptr( ctx->owner_after, ctx->runner );
       break;
     }
 
@@ -612,33 +966,72 @@ static void CPthreadReqMutexSetprioceiling_Post_Owner_Check(
   }
 }
 
-static void CPthreadReqMutexSetprioceiling_Post_Lock_Check(
+static void CPthreadReqMutexSetprioceiling_Post_Wait_Check(
   CPthreadReqMutexSetprioceiling_Context  *ctx,
-  CPthreadReqMutexSetprioceiling_Post_Lock state
+  CPthreadReqMutexSetprioceiling_Post_Wait state
 )
 {
   switch ( state ) {
-    case CPthreadReqMutexSetprioceiling_Post_Lock_Released: {
+    case CPthreadReqMutexSetprioceiling_Post_Wait_Yes: {
       /*
-       * The SMP lock of the mutex referenced by the `mutex` parameter shall be
-       * released.
+       * The calling thread shall wait until the other thread surrenders the
+       * mutex.
        */
-      #if defined( RTEMS_SMP )
-      T_true( TicketLockIsAvailable( MutexTicketLock( ctx ) ) );
-      #else
-      (void) ctx;
-      #endif
+      T_true( ctx->blocked );
       break;
     }
 
-    case CPthreadReqMutexSetprioceiling_Post_Lock_NA:
+    case CPthreadReqMutexSetprioceiling_Post_Wait_No: {
+      /*
+       * The calling thread shall not wait.
+       */
+      T_false( ctx->blocked );
+      break;
+    }
+
+    case CPthreadReqMutexSetprioceiling_Post_Wait_NA:
       break;
   }
 }
 
-static void CPthreadReqMutexSetprioceiling_Setup( void )
+static void CPthreadReqMutexSetprioceiling_Post_Priority_Check(
+  CPthreadReqMutexSetprioceiling_Context      *ctx,
+  CPthreadReqMutexSetprioceiling_Post_Priority state
+)
 {
-  SetSelfPriority( PRIO_NEARLY_IDLE );
+  switch ( state ) {
+    case CPthreadReqMutexSetprioceiling_Post_Priority_Ceiling: {
+      /*
+       * The current priority of the calling thread shall be the priority which
+       * corresponds to the value of the `prioceiling` parameter.
+       */
+      T_eq_u32( ctx->priority_after, PRIO_ULTRA_HIGH );
+      break;
+    }
+
+    case CPthreadReqMutexSetprioceiling_Post_Priority_Nop: {
+      /*
+       * The current priority of the calling thread shall not be modified.
+       */
+      T_eq_u32( ctx->priority_after, ctx->priority_before );
+      break;
+    }
+
+    case CPthreadReqMutexSetprioceiling_Post_Priority_NA:
+      break;
+  }
+}
+
+static void CPthreadReqMutexSetprioceiling_Setup(
+  CPthreadReqMutexSetprioceiling_Context *ctx
+)
+{
+  SetSelfPriority( PRIO_NORMAL );
+  ctx->runner = _Thread_Get_executing();
+  ctx->request.handler = Surrender;
+  ctx->request.arg = ctx;
+  ctx->worker_id = CreateTask( "WORK", PRIO_HIGH );
+  StartTask( ctx->worker_id, Worker, ctx );
 }
 
 static void CPthreadReqMutexSetprioceiling_Setup_Wrap( void *arg )
@@ -647,11 +1040,14 @@ static void CPthreadReqMutexSetprioceiling_Setup_Wrap( void *arg )
 
   ctx = arg;
   ctx->Map.in_action_loop = false;
-  CPthreadReqMutexSetprioceiling_Setup();
+  CPthreadReqMutexSetprioceiling_Setup( ctx );
 }
 
-static void CPthreadReqMutexSetprioceiling_Teardown( void )
+static void CPthreadReqMutexSetprioceiling_Teardown(
+  CPthreadReqMutexSetprioceiling_Context *ctx
+)
 {
+  DeleteTask( ctx->worker_id );
   RestoreRunnerPriority();
 }
 
@@ -661,17 +1057,23 @@ static void CPthreadReqMutexSetprioceiling_Teardown_Wrap( void *arg )
 
   ctx = arg;
   ctx->Map.in_action_loop = false;
-  CPthreadReqMutexSetprioceiling_Teardown();
+  CPthreadReqMutexSetprioceiling_Teardown( ctx );
 }
 
 static void CPthreadReqMutexSetprioceiling_Prepare(
   CPthreadReqMutexSetprioceiling_Context *ctx
 )
 {
-  ctx->priority_before = 0;
   ctx->init = false;
-  ctx->out_obj = -1;
-  ctx->out = &ctx->out_obj;
+  ctx->new_ceiling = 0;
+  ctx->old_obj = -1;
+  ctx->owner = OWNER_NONE;
+  ctx->priority_high = false;
+  ctx->scheduler_other = false;
+  ctx->ceiling_before = -1;
+  ctx->owner_after = NULL;
+  ctx->blocked = false;
+  ctx->status = -1;
   T_eq_int( pthread_mutexattr_init( &ctx->attr_obj ), 0 );
 }
 
@@ -686,8 +1088,20 @@ static void CPthreadReqMutexSetprioceiling_Cleanup(
   CPthreadReqMutexSetprioceiling_Context *ctx
 )
 {
+  if ( ctx->scheduler_other ) {
+    SetSelfScheduler( SCHEDULER_A_ID, PRIO_NORMAL );
+  }
+
+  if ( ctx->owner == OWNER_CALLER ) {
+    T_eq_int( pthread_mutex_unlock( ctx->mutex ), 0 );
+  }
+
+  if ( ctx->priority_high ) {
+    SetSelfPriority( PRIO_NORMAL );
+  }
+
   if ( ctx->init ) {
-    (void) pthread_mutex_destroy( &ctx->mutex_obj );
+    T_eq_int( pthread_mutex_destroy( &ctx->mutex_obj ), 0 );
   }
 }
 
@@ -695,98 +1109,430 @@ static void CPthreadReqMutexSetprioceiling_Cleanup(
 
 static const CPthreadReqMutexSetprioceiling_Entry
 CPthreadReqMutexSetprioceiling_Entries[] = {
-  { 1, 0, 0, 0, 0, 0, CPthreadReqMutexSetprioceiling_Post_Status_NA,
+  { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    CPthreadReqMutexSetprioceiling_Post_Status_NA,
     CPthreadReqMutexSetprioceiling_Post_OldCeiling_NA,
     CPthreadReqMutexSetprioceiling_Post_Ceiling_NA,
     CPthreadReqMutexSetprioceiling_Post_Owner_NA,
-    CPthreadReqMutexSetprioceiling_Post_Lock_NA },
-  { 0, 0, 0, 0, 0, 0, CPthreadReqMutexSetprioceiling_Post_Status_Inval,
-    CPthreadReqMutexSetprioceiling_Post_OldCeiling_NA,
-    CPthreadReqMutexSetprioceiling_Post_Ceiling_Nop,
-    CPthreadReqMutexSetprioceiling_Post_Owner_None,
-    CPthreadReqMutexSetprioceiling_Post_Lock_NA },
-  { 0, 0, 1, 1, 0, 0, CPthreadReqMutexSetprioceiling_Post_Status_Inval,
+    CPthreadReqMutexSetprioceiling_Post_Wait_NA,
+    CPthreadReqMutexSetprioceiling_Post_Priority_NA },
+  { 0, 0, 1, 1, 1, 0, 0, 1, 1, 1,
+    CPthreadReqMutexSetprioceiling_Post_Status_Inval,
+    CPthreadReqMutexSetprioceiling_Post_OldCeiling_Zero,
+    CPthreadReqMutexSetprioceiling_Post_Ceiling_NA,
+    CPthreadReqMutexSetprioceiling_Post_Owner_NA,
+    CPthreadReqMutexSetprioceiling_Post_Wait_No,
+    CPthreadReqMutexSetprioceiling_Post_Priority_Nop },
+  { 0, 0, 1, 1, 1, 0, 0, 1, 1, 1,
+    CPthreadReqMutexSetprioceiling_Post_Status_Inval,
     CPthreadReqMutexSetprioceiling_Post_OldCeiling_NA,
     CPthreadReqMutexSetprioceiling_Post_Ceiling_NA,
     CPthreadReqMutexSetprioceiling_Post_Owner_NA,
-    CPthreadReqMutexSetprioceiling_Post_Lock_NA },
+    CPthreadReqMutexSetprioceiling_Post_Wait_No,
+    CPthreadReqMutexSetprioceiling_Post_Priority_Nop },
+  { 0, 0, 0, 1, 1, 0, 0, 1, 1, 1,
+    CPthreadReqMutexSetprioceiling_Post_Status_Inval,
+    CPthreadReqMutexSetprioceiling_Post_OldCeiling_Zero,
+    CPthreadReqMutexSetprioceiling_Post_Ceiling_NA,
+    CPthreadReqMutexSetprioceiling_Post_Owner_None,
+    CPthreadReqMutexSetprioceiling_Post_Wait_No,
+    CPthreadReqMutexSetprioceiling_Post_Priority_Nop },
+  { 0, 0, 0, 1, 1, 0, 0, 1, 1, 1,
+    CPthreadReqMutexSetprioceiling_Post_Status_Inval,
+    CPthreadReqMutexSetprioceiling_Post_OldCeiling_NA,
+    CPthreadReqMutexSetprioceiling_Post_Ceiling_NA,
+    CPthreadReqMutexSetprioceiling_Post_Owner_None,
+    CPthreadReqMutexSetprioceiling_Post_Wait_No,
+    CPthreadReqMutexSetprioceiling_Post_Priority_Nop },
+  { 0, 0, 0, 0, 1, 0, 0, 1, 1, 1,
+    CPthreadReqMutexSetprioceiling_Post_Status_Inval,
+    CPthreadReqMutexSetprioceiling_Post_OldCeiling_NA,
+    CPthreadReqMutexSetprioceiling_Post_Ceiling_Nop,
+    CPthreadReqMutexSetprioceiling_Post_Owner_None,
+    CPthreadReqMutexSetprioceiling_Post_Wait_No,
+    CPthreadReqMutexSetprioceiling_Post_Priority_Nop },
+  { 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
+    CPthreadReqMutexSetprioceiling_Post_Status_Deadlock,
+    CPthreadReqMutexSetprioceiling_Post_OldCeiling_Valid,
+    CPthreadReqMutexSetprioceiling_Post_Ceiling_Nop,
+    CPthreadReqMutexSetprioceiling_Post_Owner_Caller,
+    CPthreadReqMutexSetprioceiling_Post_Wait_No,
+    CPthreadReqMutexSetprioceiling_Post_Priority_Nop },
+  { 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
+    CPthreadReqMutexSetprioceiling_Post_Status_Deadlock,
+    CPthreadReqMutexSetprioceiling_Post_OldCeiling_Maximum,
+    CPthreadReqMutexSetprioceiling_Post_Ceiling_Nop,
+    CPthreadReqMutexSetprioceiling_Post_Owner_Caller,
+    CPthreadReqMutexSetprioceiling_Post_Wait_No,
+    CPthreadReqMutexSetprioceiling_Post_Priority_Nop },
+  { 0, 0, 0, 0, 1, 0, 0, 1, 1, 1,
+    CPthreadReqMutexSetprioceiling_Post_Status_Inval,
+    CPthreadReqMutexSetprioceiling_Post_OldCeiling_Valid,
+    CPthreadReqMutexSetprioceiling_Post_Ceiling_Nop,
+    CPthreadReqMutexSetprioceiling_Post_Owner_None,
+    CPthreadReqMutexSetprioceiling_Post_Wait_No,
+    CPthreadReqMutexSetprioceiling_Post_Priority_Nop },
+  { 0, 0, 0, 0, 1, 0, 0, 1, 1, 1,
+    CPthreadReqMutexSetprioceiling_Post_Status_Inval,
+    CPthreadReqMutexSetprioceiling_Post_OldCeiling_Maximum,
+    CPthreadReqMutexSetprioceiling_Post_Ceiling_Nop,
+    CPthreadReqMutexSetprioceiling_Post_Owner_None,
+    CPthreadReqMutexSetprioceiling_Post_Wait_No,
+    CPthreadReqMutexSetprioceiling_Post_Priority_Nop },
+  { 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
+    CPthreadReqMutexSetprioceiling_Post_Status_Ok,
+    CPthreadReqMutexSetprioceiling_Post_OldCeiling_Valid,
+    CPthreadReqMutexSetprioceiling_Post_Ceiling_New,
+    CPthreadReqMutexSetprioceiling_Post_Owner_None,
+    CPthreadReqMutexSetprioceiling_Post_Wait_No,
+    CPthreadReqMutexSetprioceiling_Post_Priority_Nop },
 #if defined(RTEMS_SMP)
-  { 0, 0, 0, 1, 0, 0, CPthreadReqMutexSetprioceiling_Post_Status_Ok,
-    CPthreadReqMutexSetprioceiling_Post_OldCeiling_Zero,
+  { 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
+    CPthreadReqMutexSetprioceiling_Post_Status_Inval,
+    CPthreadReqMutexSetprioceiling_Post_OldCeiling_Valid,
     CPthreadReqMutexSetprioceiling_Post_Ceiling_Nop,
     CPthreadReqMutexSetprioceiling_Post_Owner_None,
-    CPthreadReqMutexSetprioceiling_Post_Lock_Released },
+    CPthreadReqMutexSetprioceiling_Post_Wait_No,
+    CPthreadReqMutexSetprioceiling_Post_Priority_Nop },
 #else
-  { 0, 0, 0, 1, 0, 0, CPthreadReqMutexSetprioceiling_Post_Status_Ok,
-    CPthreadReqMutexSetprioceiling_Post_OldCeiling_Zero,
-    CPthreadReqMutexSetprioceiling_Post_Ceiling_Nop,
-    CPthreadReqMutexSetprioceiling_Post_Owner_None,
-    CPthreadReqMutexSetprioceiling_Post_Lock_NA },
-#endif
-  { 0, 0, 1, 1, 0, 0, CPthreadReqMutexSetprioceiling_Post_Status_Inval,
-    CPthreadReqMutexSetprioceiling_Post_OldCeiling_Nop,
+  { 1, 0, 0, 0, 1, 0, 0, 0, 0, 0,
+    CPthreadReqMutexSetprioceiling_Post_Status_NA,
+    CPthreadReqMutexSetprioceiling_Post_OldCeiling_NA,
     CPthreadReqMutexSetprioceiling_Post_Ceiling_NA,
     CPthreadReqMutexSetprioceiling_Post_Owner_NA,
-    CPthreadReqMutexSetprioceiling_Post_Lock_NA },
-#if defined(RTEMS_SMP)
-  { 0, 0, 1, 1, 0, 0, CPthreadReqMutexSetprioceiling_Post_Status_Ok,
-    CPthreadReqMutexSetprioceiling_Post_OldCeiling_Zero,
-    CPthreadReqMutexSetprioceiling_Post_Ceiling_Nop,
-    CPthreadReqMutexSetprioceiling_Post_Owner_None,
-    CPthreadReqMutexSetprioceiling_Post_Lock_Released },
-#else
-  { 0, 0, 1, 1, 0, 0, CPthreadReqMutexSetprioceiling_Post_Status_Ok,
-    CPthreadReqMutexSetprioceiling_Post_OldCeiling_Zero,
-    CPthreadReqMutexSetprioceiling_Post_Ceiling_Nop,
-    CPthreadReqMutexSetprioceiling_Post_Owner_None,
-    CPthreadReqMutexSetprioceiling_Post_Lock_NA },
+    CPthreadReqMutexSetprioceiling_Post_Wait_NA,
+    CPthreadReqMutexSetprioceiling_Post_Priority_NA },
 #endif
-  { 0, 0, 0, 0, 0, 0, CPthreadReqMutexSetprioceiling_Post_Status_Inval,
+  { 0, 0, 0, 0, 1, 0, 0, 0, 0, 1,
+    CPthreadReqMutexSetprioceiling_Post_Status_Inval,
     CPthreadReqMutexSetprioceiling_Post_OldCeiling_Valid,
     CPthreadReqMutexSetprioceiling_Post_Ceiling_Nop,
     CPthreadReqMutexSetprioceiling_Post_Owner_None,
-    CPthreadReqMutexSetprioceiling_Post_Lock_NA },
-  { 0, 0, 0, 0, 0, 0, CPthreadReqMutexSetprioceiling_Post_Status_Inval,
+    CPthreadReqMutexSetprioceiling_Post_Wait_No,
+    CPthreadReqMutexSetprioceiling_Post_Priority_Nop },
+  { 0, 0, 0, 0, 1, 0, 0, 0, 1, 1,
+    CPthreadReqMutexSetprioceiling_Post_Status_Ok,
+    CPthreadReqMutexSetprioceiling_Post_OldCeiling_Valid,
+    CPthreadReqMutexSetprioceiling_Post_Ceiling_New,
+    CPthreadReqMutexSetprioceiling_Post_Owner_None,
+    CPthreadReqMutexSetprioceiling_Post_Wait_Yes,
+    CPthreadReqMutexSetprioceiling_Post_Priority_Nop },
+  { 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
+    CPthreadReqMutexSetprioceiling_Post_Status_Ok,
+    CPthreadReqMutexSetprioceiling_Post_OldCeiling_Valid,
+    CPthreadReqMutexSetprioceiling_Post_Ceiling_New,
+    CPthreadReqMutexSetprioceiling_Post_Owner_Caller,
+    CPthreadReqMutexSetprioceiling_Post_Wait_No,
+    CPthreadReqMutexSetprioceiling_Post_Priority_Ceiling },
+  { 0, 0, 0, 0, 1, 0, 0, 0, 1, 1,
+    CPthreadReqMutexSetprioceiling_Post_Status_Ok,
+    CPthreadReqMutexSetprioceiling_Post_OldCeiling_Maximum,
+    CPthreadReqMutexSetprioceiling_Post_Ceiling_New,
+    CPthreadReqMutexSetprioceiling_Post_Owner_None,
+    CPthreadReqMutexSetprioceiling_Post_Wait_No,
+    CPthreadReqMutexSetprioceiling_Post_Priority_Nop },
+#if defined(RTEMS_SMP)
+  { 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
+    CPthreadReqMutexSetprioceiling_Post_Status_Inval,
     CPthreadReqMutexSetprioceiling_Post_OldCeiling_Maximum,
     CPthreadReqMutexSetprioceiling_Post_Ceiling_Nop,
     CPthreadReqMutexSetprioceiling_Post_Owner_None,
-    CPthreadReqMutexSetprioceiling_Post_Lock_NA },
-#if defined(RTEMS_SMP)
-  { 0, 0, 0, 0, 0, 0, CPthreadReqMutexSetprioceiling_Post_Status_Ok,
-    CPthreadReqMutexSetprioceiling_Post_OldCeiling_Valid,
-    CPthreadReqMutexSetprioceiling_Post_Ceiling_Valid,
-    CPthreadReqMutexSetprioceiling_Post_Owner_None,
-    CPthreadReqMutexSetprioceiling_Post_Lock_Released },
+    CPthreadReqMutexSetprioceiling_Post_Wait_No,
+    CPthreadReqMutexSetprioceiling_Post_Priority_Nop },
 #else
-  { 0, 0, 0, 0, 0, 0, CPthreadReqMutexSetprioceiling_Post_Status_Ok,
-    CPthreadReqMutexSetprioceiling_Post_OldCeiling_Valid,
-    CPthreadReqMutexSetprioceiling_Post_Ceiling_Valid,
-    CPthreadReqMutexSetprioceiling_Post_Owner_None,
-    CPthreadReqMutexSetprioceiling_Post_Lock_NA },
+  { 1, 0, 0, 0, 1, 0, 0, 0, 0, 0,
+    CPthreadReqMutexSetprioceiling_Post_Status_NA,
+    CPthreadReqMutexSetprioceiling_Post_OldCeiling_NA,
+    CPthreadReqMutexSetprioceiling_Post_Ceiling_NA,
+    CPthreadReqMutexSetprioceiling_Post_Owner_NA,
+    CPthreadReqMutexSetprioceiling_Post_Wait_NA,
+    CPthreadReqMutexSetprioceiling_Post_Priority_NA },
 #endif
-#if defined(RTEMS_SMP)
-  { 0, 0, 0, 0, 0, 0, CPthreadReqMutexSetprioceiling_Post_Status_Ok,
+  { 0, 0, 0, 0, 1, 0, 0, 0, 1, 1,
+    CPthreadReqMutexSetprioceiling_Post_Status_Ok,
     CPthreadReqMutexSetprioceiling_Post_OldCeiling_Maximum,
-    CPthreadReqMutexSetprioceiling_Post_Ceiling_Valid,
+    CPthreadReqMutexSetprioceiling_Post_Ceiling_New,
     CPthreadReqMutexSetprioceiling_Post_Owner_None,
-    CPthreadReqMutexSetprioceiling_Post_Lock_Released }
-#else
-  { 0, 0, 0, 0, 0, 0, CPthreadReqMutexSetprioceiling_Post_Status_Ok,
+    CPthreadReqMutexSetprioceiling_Post_Wait_Yes,
+    CPthreadReqMutexSetprioceiling_Post_Priority_Nop },
+  { 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
+    CPthreadReqMutexSetprioceiling_Post_Status_Ok,
     CPthreadReqMutexSetprioceiling_Post_OldCeiling_Maximum,
-    CPthreadReqMutexSetprioceiling_Post_Ceiling_Valid,
-    CPthreadReqMutexSetprioceiling_Post_Owner_None,
-    CPthreadReqMutexSetprioceiling_Post_Lock_NA }
-#endif
+    CPthreadReqMutexSetprioceiling_Post_Ceiling_New,
+    CPthreadReqMutexSetprioceiling_Post_Owner_Caller,
+    CPthreadReqMutexSetprioceiling_Post_Wait_No,
+    CPthreadReqMutexSetprioceiling_Post_Priority_Ceiling }
 };
 
 static const uint8_t
 CPthreadReqMutexSetprioceiling_Map[] = {
-  3, 1, 3, 1, 3, 1, 0, 1, 0, 1, 0, 1, 3, 1, 3, 1, 3, 1, 0, 1, 0, 1, 0, 1, 8, 1,
-  6, 1, 6, 1, 9, 1, 7, 1, 7, 1, 5, 2, 5, 2, 5, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 2, 4, 2, 4, 2,
+  3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 4, 2, 4, 2, 4, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 10, 11, 12, 0, 6, 0, 0, 0, 13, 0, 0, 0, 5, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 16, 0, 0, 7, 0, 0, 0, 17, 0, 0, 0,
+  5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0
 };
 
 /* clang-format on */
@@ -852,8 +1598,32 @@ static void CPthreadReqMutexSetprioceiling_SetPreConditionStates(
     ctx->Map.pcs[ 2 ] = ctx->Map.pci[ 2 ];
   }
 
-  ctx->Map.pcs[ 3 ] = ctx->Map.pci[ 3 ];
+  if ( ctx->Map.entry.Pre_Type_NA ) {
+    ctx->Map.pcs[ 3 ] = CPthreadReqMutexSetprioceiling_Pre_Type_NA;
+  } else {
+    ctx->Map.pcs[ 3 ] = ctx->Map.pci[ 3 ];
+  }
+
   ctx->Map.pcs[ 4 ] = ctx->Map.pci[ 4 ];
+  ctx->Map.pcs[ 5 ] = ctx->Map.pci[ 5 ];
+
+  if ( ctx->Map.entry.Pre_Owner_NA ) {
+    ctx->Map.pcs[ 6 ] = CPthreadReqMutexSetprioceiling_Pre_Owner_NA;
+  } else {
+    ctx->Map.pcs[ 6 ] = ctx->Map.pci[ 6 ];
+  }
+
+  if ( ctx->Map.entry.Pre_Priority_NA ) {
+    ctx->Map.pcs[ 7 ] = CPthreadReqMutexSetprioceiling_Pre_Priority_NA;
+  } else {
+    ctx->Map.pcs[ 7 ] = ctx->Map.pci[ 7 ];
+  }
+
+  if ( ctx->Map.entry.Pre_Scheduler_NA ) {
+    ctx->Map.pcs[ 8 ] = CPthreadReqMutexSetprioceiling_Pre_Scheduler_NA;
+  } else {
+    ctx->Map.pcs[ 8 ] = ctx->Map.pci[ 8 ];
+  }
 }
 
 static void CPthreadReqMutexSetprioceiling_TestVariant(
@@ -866,8 +1636,18 @@ static void CPthreadReqMutexSetprioceiling_TestVariant(
     ctx->Map.pcs[ 1 ]
   );
   CPthreadReqMutexSetprioceiling_Pre_Ceiling_Prepare( ctx, ctx->Map.pcs[ 2 ] );
-  CPthreadReqMutexSetprioceiling_Pre_New_Prepare( ctx, ctx->Map.pcs[ 3 ] );
-  CPthreadReqMutexSetprioceiling_Pre_Old_Prepare( ctx, ctx->Map.pcs[ 4 ] );
+  CPthreadReqMutexSetprioceiling_Pre_Type_Prepare( ctx, ctx->Map.pcs[ 3 ] );
+  CPthreadReqMutexSetprioceiling_Pre_New_Prepare( ctx, ctx->Map.pcs[ 4 ] );
+  CPthreadReqMutexSetprioceiling_Pre_Old_Prepare( ctx, ctx->Map.pcs[ 5 ] );
+  CPthreadReqMutexSetprioceiling_Pre_Owner_Prepare( ctx, ctx->Map.pcs[ 6 ] );
+  CPthreadReqMutexSetprioceiling_Pre_Priority_Prepare(
+    ctx,
+    ctx->Map.pcs[ 7 ]
+  );
+  CPthreadReqMutexSetprioceiling_Pre_Scheduler_Prepare(
+    ctx,
+    ctx->Map.pcs[ 8 ]
+  );
   CPthreadReqMutexSetprioceiling_Action( ctx );
   CPthreadReqMutexSetprioceiling_Post_Status_Check(
     ctx,
@@ -885,9 +1665,13 @@ static void CPthreadReqMutexSetprioceiling_TestVariant(
     ctx,
     ctx->Map.entry.Post_Owner
   );
-  CPthreadReqMutexSetprioceiling_Post_Lock_Check(
+  CPthreadReqMutexSetprioceiling_Post_Wait_Check(
     ctx,
-    ctx->Map.entry.Post_Lock
+    ctx->Map.entry.Post_Wait
+  );
+  CPthreadReqMutexSetprioceiling_Post_Priority_Check(
+    ctx,
+    ctx->Map.entry.Post_Priority
   );
 }
 
@@ -921,25 +1705,59 @@ T_TEST_CASE_FIXTURE(
         ++ctx->Map.pci[ 2 ]
       ) {
         for (
-          ctx->Map.pci[ 3 ] = CPthreadReqMutexSetprioceiling_Pre_New_Valid;
-          ctx->Map.pci[ 3 ] < CPthreadReqMutexSetprioceiling_Pre_New_NA;
+          ctx->Map.pci[ 3 ] = CPthreadReqMutexSetprioceiling_Pre_Type_Normal;
+          ctx->Map.pci[ 3 ] < CPthreadReqMutexSetprioceiling_Pre_Type_NA;
           ++ctx->Map.pci[ 3 ]
         ) {
           for (
-            ctx->Map.pci[ 4 ] = CPthreadReqMutexSetprioceiling_Pre_Old_Obj;
-            ctx->Map.pci[ 4 ] < CPthreadReqMutexSetprioceiling_Pre_Old_NA;
+            ctx->Map.pci[ 4 ] = CPthreadReqMutexSetprioceiling_Pre_New_Valid;
+            ctx->Map.pci[ 4 ] < CPthreadReqMutexSetprioceiling_Pre_New_NA;
             ++ctx->Map.pci[ 4 ]
           ) {
-            ctx->Map.entry = CPthreadReqMutexSetprioceiling_PopEntry( ctx );
+            for (
+              ctx->Map.pci[ 5 ] = CPthreadReqMutexSetprioceiling_Pre_Old_Obj;
+              ctx->Map.pci[ 5 ] < CPthreadReqMutexSetprioceiling_Pre_Old_NA;
+              ++ctx->Map.pci[ 5 ]
+            ) {
+              for (
+                ctx->Map.pci[ 6 ] =
+                  CPthreadReqMutexSetprioceiling_Pre_Owner_None;
+                ctx->Map.pci[ 6 ] <
+                CPthreadReqMutexSetprioceiling_Pre_Owner_NA;
+                ++ctx->Map.pci[ 6 ]
+              ) {
+                for (
+                  ctx->Map.pci[ 7 ] =
+                    CPthreadReqMutexSetprioceiling_Pre_Priority_Satisfied;
+                  ctx->Map.pci[ 7 ] <
+                  CPthreadReqMutexSetprioceiling_Pre_Priority_NA;
+                  ++ctx->Map.pci[ 7 ]
+                ) {
+                  for (
+                    ctx->Map.pci[ 8 ] =
+                      CPthreadReqMutexSetprioceiling_Pre_Scheduler_Home;
+                    ctx->Map.pci[ 8 ] <
+                    CPthreadReqMutexSetprioceiling_Pre_Scheduler_NA;
+                    ++ctx->Map.pci[ 8 ]
+                  ) {
+                    ctx->Map.entry = CPthreadReqMutexSetprioceiling_PopEntry(
+                      ctx
+                    );
 
-            if ( ctx->Map.entry.Skip ) {
-              continue;
+                    if ( ctx->Map.entry.Skip ) {
+                      continue;
+                    }
+
+                    CPthreadReqMutexSetprioceiling_SetPreConditionStates(
+                      ctx
+                    );
+                    CPthreadReqMutexSetprioceiling_Prepare( ctx );
+                    CPthreadReqMutexSetprioceiling_TestVariant( ctx );
+                    CPthreadReqMutexSetprioceiling_Cleanup( ctx );
+                  }
+                }
+              }
             }
-
-            CPthreadReqMutexSetprioceiling_SetPreConditionStates( ctx );
-            CPthreadReqMutexSetprioceiling_Prepare( ctx );
-            CPthreadReqMutexSetprioceiling_TestVariant( ctx );
-            CPthreadReqMutexSetprioceiling_Cleanup( ctx );
           }
         }
       }
