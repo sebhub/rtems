@@ -26,8 +26,6 @@ links:
   uid: /verification/code-coverage-gap/thread-queue-enqueue
 - role: verification-by
   uid: /verification/code-coverage-gap/thread-scheduler-process-requests
-- role: verification-by
-  uid: /verification/code-coverage-gap/posix-mutex-set-priority
 - role: verification-provider
   uid: /verification/test-failures/default
 name: SIS configured to simulate the GR712RC
