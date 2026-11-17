@@ -1085,7 +1085,7 @@ rtems_tcb *TQGetOwner( TQContext *ctx );
  * pthread_mutex_trylock().
  *
  * @param ctx is the thread queue test context.
- * @param ctx is the wait behavior of the lock.
+ * @param wait is the wait behaviour of the lock.
  *
  * @return Returns a status with the error number of the function as its POSIX
  *   part.
