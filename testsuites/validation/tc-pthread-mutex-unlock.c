@@ -80,6 +80,7 @@ typedef enum {
 
 typedef enum {
   CPthreadReqMutexUnlock_Post_Status_Inval,
+  CPthreadReqMutexUnlock_Post_Status_Perm,
   CPthreadReqMutexUnlock_Post_Status_NA
 } CPthreadReqMutexUnlock_Post_Status;
 
@@ -93,7 +94,7 @@ typedef struct {
   uint8_t Pre_Protocol_NA : 1;
   uint8_t Pre_Type_NA : 1;
   uint8_t Pre_Mutex_NA : 1;
-  uint8_t Post_Status : 1;
+  uint8_t Post_Status : 2;
   uint8_t Post_Action : 1;
 } CPthreadReqMutexUnlock_Entry;
 
@@ -320,20 +321,9 @@ static void CPthreadReqMutexUnlock_Pre_Mutex_Prepare(
        */
       static const pthread_mutex_t initializer = PTHREAD_MUTEX_INITIALIZER;
 
-      /*
-       * The lock initializes the mutex with the default attributes.  The
-       * Protocol and Type pre-conditions are not applicable, so the thread
-       * queue test context is set here.
-       */
       ctx->mutex_obj = initializer;
       ctx->mutex = &ctx->mutex_obj;
       ctx->mutex_initialized = true;
-      ctx->tq_mtx_ctx.base.thread_queue_object = ctx->mutex;
-      ctx->tq_mtx_ctx.protocol = TQ_MTX_NO_PROTOCOL;
-      ctx->tq_mtx_ctx.recursive = TQ_MTX_RECURSIVE_DEADLOCK;
-      ctx->tq_mtx_ctx.priority_ceiling = PRIO_INVALID;
-      ctx->tq_mtx_ctx.base.discipline = TQ_FIFO;
-      T_eq_int( pthread_mutex_lock( ctx->mutex ), 0 );
       break;
     }
 
@@ -379,6 +369,14 @@ static void CPthreadReqMutexUnlock_Post_Status_Check(
        * The return value of pthread_mutex_unlock() shall be EINVAL.
        */
       T_eq_int( ctx->status, EINVAL );
+      break;
+    }
+
+    case CPthreadReqMutexUnlock_Post_Status_Perm: {
+      /*
+       * The return value of pthread_mutex_unlock() shall be EPERM.
+       */
+      T_eq_int( ctx->status, EPERM );
       break;
     }
 
@@ -497,8 +495,8 @@ CPthreadReqMutexUnlock_Entries[] = {
     CPthreadReqMutexUnlock_Post_Action_MtxSurrender },
   { 0, 1, 1, 0, CPthreadReqMutexUnlock_Post_Status_Inval,
     CPthreadReqMutexUnlock_Post_Action_NA },
-  { 0, 1, 1, 0, CPthreadReqMutexUnlock_Post_Status_NA,
-    CPthreadReqMutexUnlock_Post_Action_MtxSurrender }
+  { 0, 1, 1, 0, CPthreadReqMutexUnlock_Post_Status_Perm,
+    CPthreadReqMutexUnlock_Post_Action_NA }
 };
 
 static const uint8_t
