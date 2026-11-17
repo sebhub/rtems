@@ -50,31 +50,27 @@
 RBTree_Node *_RBTree_Successor( const RBTree_Node *node )
 {
   RBTree_Node *elm;
+  RBTree_Node *tmp;
 
   elm = RTEMS_DECONST( RBTree_Node *, node );
+  tmp = _RBTree_Right( elm );
 
-  if ( _RBTree_Right( elm ) ) {
-    elm = _RBTree_Right( elm );
+  if ( tmp != NULL ) {
+    do {
+      elm = tmp;
+      tmp = _RBTree_Left( tmp );
+    } while ( tmp != NULL );
 
-    while ( _RBTree_Left( elm ) ) {
-      elm = _RBTree_Left( elm );
-    }
-  } else {
-    if (
-      _RBTree_Parent( elm ) && ( elm == _RBTree_Left( _RBTree_Parent( elm ) ) )
-    ) {
-      elm = _RBTree_Parent( elm );
-    } else {
-      while (
-        _RBTree_Parent( elm ) &&
-        ( elm == _RBTree_Right( _RBTree_Parent( elm ) ) )
-      ) {
-        elm = _RBTree_Parent( elm );
-      }
-
-      elm = _RBTree_Parent( elm );
-    }
+    return elm;
   }
 
-  return elm;
+  while ( true ) {
+    tmp = _RBTree_Parent( elm );
+
+    if ( tmp == NULL || _RBTree_Left( tmp ) == elm ) {
+      return tmp;
+    }
+
+    elm = tmp;
+  }
 }
