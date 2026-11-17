@@ -60,29 +60,32 @@ extern "C" {
 
 /**
  * @brief Watchdog states.
+ *
+ * The state uses bits 0 and 1 of the parent and color word of the red-black
+ * tree node.  The states of a scheduled watchdog are the colors of the node.
  */
 typedef enum {
   /**
    * @brief The watchdog is scheduled and a black node in the red-black tree.
    */
-  WATCHDOG_SCHEDULED_BLACK,
+  WATCHDOG_SCHEDULED_BLACK = RTEMS_RB_BLACK,
 
   /**
    * @brief The watchdog is scheduled and a red node in the red-black tree.
    */
-  WATCHDOG_SCHEDULED_RED,
+  WATCHDOG_SCHEDULED_RED = RTEMS_RB_RED,
 
   /**
    * @brief The watchdog is inactive.
    */
-  WATCHDOG_INACTIVE,
+  WATCHDOG_INACTIVE = 2,
 
   /**
    * @brief The watchdog is on a chain of pending watchdogs.
    *
    * This state is used by the timer server for example.
    */
-  WATCHDOG_PENDING
+  WATCHDOG_PENDING = 3
 } Watchdog_State;
 
 /**
@@ -93,15 +96,15 @@ typedef enum {
  * @see _Watchdog_Preinitialize().
  */
 #if defined( RTEMS_SMP )
-  #define WATCHDOG_INITIALIZER( routine )        \
-  { { { NULL, NULL, NULL, WATCHDOG_INACTIVE } }, \
-    &_Per_CPU_Information[ 0 ].per_cpu,          \
-    ( routine ),                                 \
-    0,                                           \
+  #define WATCHDOG_INITIALIZER( routine )  \
+  { { { NULL, NULL, WATCHDOG_INACTIVE } }, \
+    &_Per_CPU_Information[ 0 ].per_cpu,    \
+    ( routine ),                           \
+    0,                                     \
     0 }
 #else
   #define WATCHDOG_INITIALIZER( routine ) \
-  { { { NULL, NULL, NULL, WATCHDOG_INACTIVE } }, ( routine ), 0, 0 }
+  { { { NULL, NULL, WATCHDOG_INACTIVE } }, ( routine ), 0, 0 }
 #endif
 
 /**
@@ -182,13 +185,13 @@ static inline void _Watchdog_Wait_for_service_stop(
  *
  * @param the_watchdog The watchdog to get the state of.
  *
- * @return The color of the red-black tree node of @a the_watchdog.
+ * @return The state of @a the_watchdog.
  */
 static inline Watchdog_State _Watchdog_Get_state(
   const Watchdog_Control *the_watchdog
 )
 {
-  return (Watchdog_State) _RBTree_Color( &the_watchdog->Node.RBTree );
+  return (Watchdog_State) ( the_watchdog->Node.RBTree.rbn_parent_color & 3 );
 }
 
 /**
@@ -202,7 +205,11 @@ static inline void _Watchdog_Set_state(
   Watchdog_State    state
 )
 {
-  _RBTree_Set_color( &the_watchdog->Node.RBTree, (int) state );
+  RBTree_Node *node;
+
+  node = &the_watchdog->Node.RBTree;
+  node->rbn_parent_color = ( node->rbn_parent_color & RTEMS_RB_PARENT_MASK ) |
+                           (uintptr_t) state;
 }
 
 /**

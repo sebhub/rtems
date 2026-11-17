@@ -47,24 +47,29 @@
 
 #include <rtems/score/rbtreeimpl.h>
 
-void _RBTree_Insert_color( RBTree_Control *head, RBTree_Node *elm )
+/*
+ * The parent of a node lies in the same word as its color.  Where the color
+ * of a node is known, a store writes its parent and its color at once.
+ */
+
+/*
+ * The node and its parent are red.  The function lies apart from
+ * _RBTree_Insert_color(), so that the cases without a rebalance save no
+ * register.
+ */
+static RTEMS_NO_INLINE void _RBTree_Insert_rebalance(
+  RBTree_Control *head,
+  RBTree_Node    *elm,
+  RBTree_Node    *parent
+)
 {
-  RBTree_Node *parent;
-  RBTree_Node *gparent;
-  RBTree_Node *tmp;
-
-  /* A black parent needs no rebalance. */
-  parent = _RBTree_Parent( elm );
-
-  if ( parent != NULL && _RBTree_Color( parent ) == RTEMS_RB_BLACK ) {
-    return;
-  }
-
   while ( true ) {
-    parent = _RBTree_Parent( elm );
+    RBTree_Node *gparent;
+    RBTree_Node *uncle;
+    RBTree_Node *tmp;
 
     if ( parent == NULL ) {
-      _RBTree_Set_color( elm, RTEMS_RB_BLACK );
+      _RBTree_Set_parent_and_color( elm, NULL, RTEMS_RB_BLACK );
       return;
     }
 
@@ -72,47 +77,104 @@ void _RBTree_Insert_color( RBTree_Control *head, RBTree_Node *elm )
       return;
     }
 
-    gparent = _RBTree_Parent( parent );
-    tmp = _RBTree_Right( gparent );
+    /* A red parent is not the root, and its parent is black. */
+    gparent = _RBTree_Parent_of_color( parent, RTEMS_RB_RED );
+    uncle = _RBTree_Right( gparent );
 
-    if ( parent != tmp ) {
-      if ( _RBTree_Is_red( tmp ) ) {
-        _RBTree_Set_color( tmp, RTEMS_RB_BLACK );
-        _RBTree_Set_black_red( parent, gparent );
+    if ( parent != uncle ) {
+      if ( _RBTree_Is_red( uncle ) ) {
+        _RBTree_Set_parent_and_color( uncle, gparent, RTEMS_RB_BLACK );
+        _RBTree_Set_parent_and_color( parent, gparent, RTEMS_RB_BLACK );
         elm = gparent;
+        parent = _RBTree_Parent_of_color( elm, RTEMS_RB_BLACK );
+        _RBTree_Set_parent_and_color( elm, parent, RTEMS_RB_RED );
         continue;
       }
 
       if ( _RBTree_Right( parent ) == elm ) {
-        (void) _RBTree_Parent_rotate_left( gparent, parent );
-        tmp = parent;
+        /* Rotate left at the parent.  A child of a red node is black. */
+        tmp = _RBTree_Left( elm );
+        _RBTree_Set_right( parent, tmp );
+
+        if ( tmp != NULL ) {
+          _RBTree_Set_parent_and_color( tmp, parent, RTEMS_RB_BLACK );
+        }
+
+        _RBTree_Set_left( elm, parent );
+        _RBTree_Set_parent_and_color( parent, elm, RTEMS_RB_RED );
         parent = elm;
-        elm = tmp;
       }
 
-      _RBTree_Set_black_red( parent, gparent );
-      (void) _RBTree_Rotate_right( head, gparent );
-    } else {
-      tmp = _RBTree_Left( gparent );
+      /* Rotate right at the grandparent. */
+      tmp = _RBTree_Right( parent );
+      _RBTree_Set_left( gparent, tmp );
 
-      if ( _RBTree_Is_red( tmp ) ) {
-        _RBTree_Set_color( tmp, RTEMS_RB_BLACK );
-        _RBTree_Set_black_red( parent, gparent );
+      if ( tmp != NULL ) {
+        _RBTree_Set_parent_and_color( tmp, gparent, RTEMS_RB_BLACK );
+      }
+
+      _RBTree_Set_right( parent, gparent );
+    } else {
+      uncle = _RBTree_Left( gparent );
+
+      if ( _RBTree_Is_red( uncle ) ) {
+        _RBTree_Set_parent_and_color( uncle, gparent, RTEMS_RB_BLACK );
+        _RBTree_Set_parent_and_color( parent, gparent, RTEMS_RB_BLACK );
         elm = gparent;
+        parent = _RBTree_Parent_of_color( elm, RTEMS_RB_BLACK );
+        _RBTree_Set_parent_and_color( elm, parent, RTEMS_RB_RED );
         continue;
       }
 
       if ( _RBTree_Left( parent ) == elm ) {
-        (void) _RBTree_Parent_rotate_right( gparent, parent );
-        tmp = parent;
+        /* Rotate right at the parent.  A child of a red node is black. */
+        tmp = _RBTree_Right( elm );
+        _RBTree_Set_left( parent, tmp );
+
+        if ( tmp != NULL ) {
+          _RBTree_Set_parent_and_color( tmp, parent, RTEMS_RB_BLACK );
+        }
+
+        _RBTree_Set_right( elm, parent );
+        _RBTree_Set_parent_and_color( parent, elm, RTEMS_RB_RED );
         parent = elm;
-        elm = tmp;
       }
 
-      _RBTree_Set_black_red( parent, gparent );
-      (void) _RBTree_Rotate_left( head, gparent );
+      /* Rotate left at the grandparent. */
+      tmp = _RBTree_Left( parent );
+      _RBTree_Set_right( gparent, tmp );
+
+      if ( tmp != NULL ) {
+        _RBTree_Set_parent_and_color( tmp, gparent, RTEMS_RB_BLACK );
+      }
+
+      _RBTree_Set_left( parent, gparent );
     }
 
+    /* The parent takes the place of the grandparent and becomes black. */
+    tmp = _RBTree_Parent_of_color( gparent, RTEMS_RB_BLACK );
+    _RBTree_Set_parent_and_color( parent, tmp, RTEMS_RB_BLACK );
+    _RBTree_Set_parent_and_color( gparent, parent, RTEMS_RB_RED );
+    _RBTree_Relink_child( head, gparent, parent, tmp );
     return;
   }
+}
+
+void _RBTree_Insert_color( RBTree_Control *head, RBTree_Node *elm )
+{
+  RBTree_Node *parent;
+
+  /* The node is red. */
+  parent = _RBTree_Parent_of_color( elm, RTEMS_RB_RED );
+
+  if ( parent == NULL ) {
+    _RBTree_Set_parent_and_color( elm, NULL, RTEMS_RB_BLACK );
+    return;
+  }
+
+  if ( _RBTree_Color( parent ) == RTEMS_RB_BLACK ) {
+    return;
+  }
+
+  _RBTree_Insert_rebalance( head, elm, parent );
 }

@@ -62,9 +62,17 @@ extern "C" {
  */
 
 typedef struct {
-  unsigned long            flags;
-  Mutex_recursive_Control  Recursive;
-  Priority_Node            Priority_ceiling;
+  unsigned long           flags;
+  Mutex_recursive_Control Recursive;
+  union {
+    Priority_Node Priority_ceiling;
+
+    /*
+     * The red-black tree node of the Newlib type has a member for the color.
+     * This member keeps the size and the member offsets of pthread_mutex_t.
+     */
+    struct _Priority_Node Reserved_priority_ceiling;
+  };
   const Scheduler_Control *scheduler;
 } POSIX_Mutex_Control;
 

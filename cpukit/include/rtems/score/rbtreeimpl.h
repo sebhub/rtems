@@ -120,6 +120,78 @@ static inline bool _RBTree_Is_red( const RBTree_Node *the_node )
 }
 
 /**
+ * @brief Returns the parent of the node of the specified color.
+ *
+ * @param the_node is the node.
+ *
+ * @param color is the color of the node.
+ *
+ * @return Returns the parent of the node.
+ */
+static inline RBTree_Node *_RBTree_Parent_of_color(
+  const RBTree_Node *the_node,
+  int                color
+)
+{
+  _Assert( _RBTree_Color( the_node ) == color );
+  return (RBTree_Node *) ( the_node->rbn_parent_color - (uintptr_t) color );
+}
+
+/**
+ * @brief Returns the parent and color word of the node.
+ *
+ * @param the_node is the node.
+ *
+ * @return Returns the parent and color word of the node.
+ */
+static inline uintptr_t _RBTree_Get_parent_color( const RBTree_Node *the_node )
+{
+  return the_node->rbn_parent_color;
+}
+
+/**
+ * @brief Sets the parent and color word of the node.
+ *
+ * @param[out] the_node is the node.
+ *
+ * @param parent_color is the parent and color word.
+ */
+static inline void _RBTree_Set_parent_color_word(
+  RBTree_Node *the_node,
+  uintptr_t    parent_color
+)
+{
+  the_node->rbn_parent_color = parent_color;
+}
+
+/**
+ * @brief Replaces the old node by the new node in the link of the parent.
+ *
+ * @param[in, out] head is the tree.
+ *
+ * @param old_node is the old node.
+ *
+ * @param[in, out] new_node is the new node.
+ *
+ * @param[in, out] parent is the parent of the old node, else NULL.
+ */
+static inline void _RBTree_Relink_child(
+  RBTree_Control *head,
+  RBTree_Node    *old_node,
+  RBTree_Node    *new_node,
+  RBTree_Node    *parent
+)
+{
+  if ( parent == NULL ) {
+    _RBTree_Set_root( head, new_node );
+  } else if ( _RBTree_Left( parent ) == old_node ) {
+    _RBTree_Set_left( parent, new_node );
+  } else {
+    _RBTree_Set_right( parent, new_node );
+  }
+}
+
+/**
  * @brief Sets the color of the first node to black and the color of the
  *   second node to red.
  *

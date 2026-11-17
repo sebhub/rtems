@@ -87,15 +87,20 @@ typedef struct RBTree_Node {
   struct RBTree_Node *rbn_right;
 
   /**
-   * @brief This member references the parent of the node.
+   * @brief This member references the parent of the node and contains the
+   *   color of the node in bit 0.
+   *
+   * A node is aligned to at least four bytes, so bits 0 and 1 of the address
+   * of the parent are zero.  A node off the tree may use bit 1, as the
+   * watchdog does for its state.
    */
-  struct RBTree_Node *rbn_parent;
+  uintptr_t rbn_parent_color;
+} RTEMS_ALIGNED( 4 ) RBTree_Node;
 
-  /**
-   * @brief This member contains the color of the node.
-   */
-  int rbn_color;
-} RBTree_Node;
+RTEMS_STATIC_ASSERT(
+  RTEMS_ALIGNOF( RBTree_Node ) >= 4,
+  RBTree_Node_alignment
+);
 
 /**
  * @brief Red-black tree control.
@@ -113,12 +118,18 @@ typedef struct RBTree_Control {
 /**
  * @brief This constant represents the color black of a red-black tree node.
  */
-#define RTEMS_RB_BLACK 0
+#define RTEMS_RB_BLACK 1
 
 /**
  * @brief This constant represents the color red of a red-black tree node.
  */
-#define RTEMS_RB_RED 1
+#define RTEMS_RB_RED 0
+
+/**
+ * @brief This constant is the mask of the parent in the parent and color word
+ *   of a node.
+ */
+#define RTEMS_RB_PARENT_MASK ( ~(uintptr_t) 3 )
 
 /**
  * @brief Initializer for an empty red-black tree with designator @a name.
@@ -140,7 +151,42 @@ typedef struct RBTree_Control {
  */
 static inline int _RBTree_Color( const RBTree_Node *the_node )
 {
-  return the_node->rbn_color;
+  return (int) ( the_node->rbn_parent_color & 1 );
+}
+
+/**
+ * @brief Returns the parent and color word for the parent and the color.
+ *
+ * @param parent is the parent.
+ *
+ * @param color is the color.
+ *
+ * @return Returns the parent and color word.
+ */
+static inline uintptr_t _RBTree_Parent_color(
+  const RBTree_Node *parent,
+  int                color
+)
+{
+  return (uintptr_t) parent | (uintptr_t) color;
+}
+
+/**
+ * @brief Sets the parent and the color of the node.
+ *
+ * @param[out] the_node is the node.
+ *
+ * @param parent is the parent.
+ *
+ * @param color is the color.
+ */
+static inline void _RBTree_Set_parent_and_color(
+  RBTree_Node *the_node,
+  RBTree_Node *parent,
+  int          color
+)
+{
+  the_node->rbn_parent_color = _RBTree_Parent_color( parent, color );
 }
 
 /**
@@ -152,7 +198,9 @@ static inline int _RBTree_Color( const RBTree_Node *the_node )
  */
 static inline void _RBTree_Set_color( RBTree_Node *the_node, int color )
 {
-  the_node->rbn_color = color;
+  the_node->rbn_parent_color = ( the_node->rbn_parent_color &
+                                 ~(uintptr_t) 1 ) |
+                               (uintptr_t) color;
 }
 
 /**
@@ -167,7 +215,8 @@ static inline void _RBTree_Set_parent(
   RBTree_Node *parent
 )
 {
-  the_node->rbn_parent = parent;
+  the_node->rbn_parent_color = (uintptr_t) parent |
+                               ( the_node->rbn_parent_color & 1 );
 }
 
 /**
@@ -225,10 +274,9 @@ static inline void _RBTree_Set_node(
   RBTree_Node *parent
 )
 {
-  _RBTree_Set_parent( the_node, parent );
+  _RBTree_Set_parent_and_color( the_node, parent, RTEMS_RB_RED );
   _RBTree_Set_right( the_node, NULL );
   _RBTree_Set_left( the_node, NULL );
-  _RBTree_Set_color( the_node, RTEMS_RB_RED );
 }
 
 /**
@@ -242,7 +290,7 @@ static inline void _RBTree_Set_node(
  */
 static inline void _RBTree_Set_off_tree( RBTree_Node *the_node )
 {
-  _RBTree_Set_color( the_node, -1 );
+  the_node->rbn_parent_color = (uintptr_t) the_node;
 }
 
 /**
@@ -257,7 +305,7 @@ static inline void _RBTree_Set_off_tree( RBTree_Node *the_node )
  */
 static inline bool _RBTree_Is_node_off_tree( const RBTree_Node *the_node )
 {
-  return _RBTree_Color( the_node ) == -1;
+  return the_node->rbn_parent_color == (uintptr_t) the_node;
 }
 
 /**
@@ -439,7 +487,10 @@ static inline RBTree_Node *const *_RBTree_Root_const_reference(
  */
 static inline RBTree_Node *_RBTree_Parent( const RBTree_Node *the_node )
 {
-  return the_node->rbn_parent;
+  uintptr_t parent_color;
+
+  parent_color = the_node->rbn_parent_color;
+  return (RBTree_Node *) ( parent_color & RTEMS_RB_PARENT_MASK );
 }
 
 /**
@@ -557,10 +608,9 @@ static inline void _RBTree_Initialize_one(
 {
   _Assert( _RBTree_Is_node_off_tree( the_node ) );
   _RBTree_Set_root( the_rbtree, the_node );
-  _RBTree_Set_parent( the_node, NULL );
+  _RBTree_Set_parent_and_color( the_node, NULL, RTEMS_RB_BLACK );
   _RBTree_Set_left( the_node, NULL );
   _RBTree_Set_right( the_node, NULL );
-  _RBTree_Set_color( the_node, RTEMS_RB_BLACK );
 }
 
 /**

@@ -49,6 +49,8 @@ extern "C" {
 
 #define rb_right rbn_right
 
+#define __rb_parent_color rbn_parent_color
+
 /*
  * Getting rid of this placeholder structure is a bit difficult.  The use of
  * this placeholder struct may lead to bugs with link-time optimization due to

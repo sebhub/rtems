@@ -430,14 +430,7 @@ static void eat_last(struct rb_root *root, struct rb_node *node)
 
 	*link = node->rb_left;
 	if (node->rb_left)
-#ifndef __rtems__
 		node->rb_left->__rb_parent_color = node->__rb_parent_color;
-#else /* __rtems__ */
-	{
-		node->rb_left->rbn_parent = node->rbn_parent;
-		node->rb_left->rbn_color = node->rbn_color;
-	}
-#endif /* __rtems__ */
 }
 
 /* We put the version tree in reverse order, so we can use the same eat_last()
