@@ -79,6 +79,12 @@ typedef enum {
 } CPthreadReqMutexTrylock_Pre_Mutex;
 
 typedef enum {
+  CPthreadReqMutexTrylock_Pre_Scheduler_Home,
+  CPthreadReqMutexTrylock_Pre_Scheduler_Other,
+  CPthreadReqMutexTrylock_Pre_Scheduler_NA
+} CPthreadReqMutexTrylock_Pre_Scheduler;
+
+typedef enum {
   CPthreadReqMutexTrylock_Post_Status_Inval,
   CPthreadReqMutexTrylock_Post_Status_NA
 } CPthreadReqMutexTrylock_Post_Status;
@@ -93,6 +99,7 @@ typedef struct {
   uint8_t Pre_Protocol_NA : 1;
   uint8_t Pre_Type_NA : 1;
   uint8_t Pre_Mutex_NA : 1;
+  uint8_t Pre_Scheduler_NA : 1;
   uint8_t Post_Status : 1;
   uint8_t Post_Action : 1;
 } CPthreadReqMutexTrylock_Entry;
@@ -140,17 +147,23 @@ typedef struct {
    */
   bool mutex_initialized;
 
+  /**
+   * @brief This member is true, if the home scheduler of the calling thread is
+   *   not the scheduler of the mutex.
+   */
+  bool scheduler_other;
+
   struct {
     /**
      * @brief This member defines the pre-condition indices for the next
      *   action.
      */
-    size_t pci[ 3 ];
+    size_t pci[ 4 ];
 
     /**
      * @brief This member defines the pre-condition states for the next action.
      */
-    size_t pcs[ 3 ];
+    size_t pcs[ 4 ];
 
     /**
      * @brief If this member is true, then the test action loop is executed.
@@ -186,10 +199,14 @@ static const char *const CPthreadReqMutexTrylock_PreDesc_Type[] =
 static const char *const CPthreadReqMutexTrylock_PreDesc_Mutex[] =
   { "Null", "Invalid", "Static", "Init", "NA" };
 
+static const char *const CPthreadReqMutexTrylock_PreDesc_Scheduler[] =
+  { "Home", "Other", "NA" };
+
 static const char *const *const CPthreadReqMutexTrylock_PreDesc[] = {
   CPthreadReqMutexTrylock_PreDesc_Protocol,
   CPthreadReqMutexTrylock_PreDesc_Type,
   CPthreadReqMutexTrylock_PreDesc_Mutex,
+  CPthreadReqMutexTrylock_PreDesc_Scheduler,
   NULL
 };
 
@@ -364,6 +381,39 @@ static void CPthreadReqMutexTrylock_Pre_Mutex_Prepare(
   }
 }
 
+static void CPthreadReqMutexTrylock_Pre_Scheduler_Prepare(
+  CPthreadReqMutexTrylock_Context      *ctx,
+  CPthreadReqMutexTrylock_Pre_Scheduler state
+)
+{
+  switch ( state ) {
+    case CPthreadReqMutexTrylock_Pre_Scheduler_Home: {
+      /*
+       * While the home scheduler of the calling thread is the scheduler
+       * instance of the mutex.
+       */
+      ctx->scheduler_other = false;
+      break;
+    }
+
+    case CPthreadReqMutexTrylock_Pre_Scheduler_Other: {
+      /*
+       * While the home scheduler of the calling thread is not the scheduler
+       * instance of the mutex.
+       */
+      ctx->scheduler_other = true;
+
+      #if defined( RTEMS_SMP )
+      SetSelfScheduler( SCHEDULER_B_ID, PRIO_NORMAL );
+      #endif
+      break;
+    }
+
+    case CPthreadReqMutexTrylock_Pre_Scheduler_NA:
+      break;
+  }
+}
+
 static void CPthreadReqMutexTrylock_Post_Status_Check(
   CPthreadReqMutexTrylock_Context    *ctx,
   CPthreadReqMutexTrylock_Post_Status state
@@ -463,6 +513,7 @@ static void CPthreadReqMutexTrylock_Prepare(
   ctx->protocol = PTHREAD_PRIO_NONE;
   ctx->type = PTHREAD_MUTEX_DEFAULT;
   ctx->mutex_initialized = false;
+  ctx->scheduler_other = false;
 }
 
 static void CPthreadReqMutexTrylock_Action(
@@ -476,6 +527,10 @@ static void CPthreadReqMutexTrylock_Cleanup(
   CPthreadReqMutexTrylock_Context *ctx
 )
 {
+  if ( ctx->scheduler_other ) {
+    SetSelfScheduler( SCHEDULER_A_ID, PRIO_NORMAL );
+  }
+
   if ( ctx->mutex_initialized ) {
     ctx->mutex_initialized = false;
 
@@ -495,20 +550,31 @@ static void CPthreadReqMutexTrylock_Cleanup(
 
 static const CPthreadReqMutexTrylock_Entry
 CPthreadReqMutexTrylock_Entries[] = {
-  { 1, 0, 0, 0, CPthreadReqMutexTrylock_Post_Status_NA,
+  { 1, 0, 0, 0, 0, CPthreadReqMutexTrylock_Post_Status_NA,
     CPthreadReqMutexTrylock_Post_Action_NA },
-  { 0, 0, 0, 0, CPthreadReqMutexTrylock_Post_Status_NA,
+  { 0, 0, 0, 0, 1, CPthreadReqMutexTrylock_Post_Status_NA,
     CPthreadReqMutexTrylock_Post_Action_MtxSeizeTry },
-  { 0, 1, 1, 0, CPthreadReqMutexTrylock_Post_Status_Inval,
+  { 0, 0, 0, 0, 0, CPthreadReqMutexTrylock_Post_Status_NA,
+    CPthreadReqMutexTrylock_Post_Action_MtxSeizeTry },
+#if defined(RTEMS_SMP)
+  { 0, 0, 0, 0, 0, CPthreadReqMutexTrylock_Post_Status_Inval,
     CPthreadReqMutexTrylock_Post_Action_NA },
-  { 0, 1, 1, 0, CPthreadReqMutexTrylock_Post_Status_NA,
+#else
+  { 1, 0, 0, 0, 0, CPthreadReqMutexTrylock_Post_Status_NA,
+    CPthreadReqMutexTrylock_Post_Action_NA },
+#endif
+  { 0, 1, 1, 0, 1, CPthreadReqMutexTrylock_Post_Status_Inval,
+    CPthreadReqMutexTrylock_Post_Action_NA },
+  { 0, 1, 1, 0, 1, CPthreadReqMutexTrylock_Post_Status_NA,
     CPthreadReqMutexTrylock_Post_Action_MtxSeizeTry }
 };
 
 static const uint8_t
 CPthreadReqMutexTrylock_Map[] = {
-  2, 2, 3, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0,
-  0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1
+  4, 0, 4, 0, 5, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
+  0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
+  0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 2, 3, 0, 0, 0, 0, 0, 0,
+  2, 3, 0, 0, 0, 0, 0, 0, 2, 3, 0, 0, 0, 0, 0, 0, 2, 3
 };
 
 /* clang-format on */
@@ -568,6 +634,12 @@ static void CPthreadReqMutexTrylock_SetPreConditionStates(
   }
 
   ctx->Map.pcs[ 2 ] = ctx->Map.pci[ 2 ];
+
+  if ( ctx->Map.entry.Pre_Scheduler_NA ) {
+    ctx->Map.pcs[ 3 ] = CPthreadReqMutexTrylock_Pre_Scheduler_NA;
+  } else {
+    ctx->Map.pcs[ 3 ] = ctx->Map.pci[ 3 ];
+  }
 }
 
 static void CPthreadReqMutexTrylock_TestVariant(
@@ -577,6 +649,7 @@ static void CPthreadReqMutexTrylock_TestVariant(
   CPthreadReqMutexTrylock_Pre_Protocol_Prepare( ctx, ctx->Map.pcs[ 0 ] );
   CPthreadReqMutexTrylock_Pre_Type_Prepare( ctx, ctx->Map.pcs[ 1 ] );
   CPthreadReqMutexTrylock_Pre_Mutex_Prepare( ctx, ctx->Map.pcs[ 2 ] );
+  CPthreadReqMutexTrylock_Pre_Scheduler_Prepare( ctx, ctx->Map.pcs[ 3 ] );
   CPthreadReqMutexTrylock_Action( ctx );
   CPthreadReqMutexTrylock_Post_Status_Check( ctx, ctx->Map.entry.Post_Status );
   CPthreadReqMutexTrylock_Post_Action_Check( ctx, ctx->Map.entry.Post_Action );
@@ -611,16 +684,22 @@ T_TEST_CASE_FIXTURE(
         ctx->Map.pci[ 2 ] < CPthreadReqMutexTrylock_Pre_Mutex_NA;
         ++ctx->Map.pci[ 2 ]
       ) {
-        ctx->Map.entry = CPthreadReqMutexTrylock_PopEntry( ctx );
+        for (
+          ctx->Map.pci[ 3 ] = CPthreadReqMutexTrylock_Pre_Scheduler_Home;
+          ctx->Map.pci[ 3 ] < CPthreadReqMutexTrylock_Pre_Scheduler_NA;
+          ++ctx->Map.pci[ 3 ]
+        ) {
+          ctx->Map.entry = CPthreadReqMutexTrylock_PopEntry( ctx );
 
-        if ( ctx->Map.entry.Skip ) {
-          continue;
+          if ( ctx->Map.entry.Skip ) {
+            continue;
+          }
+
+          CPthreadReqMutexTrylock_SetPreConditionStates( ctx );
+          CPthreadReqMutexTrylock_Prepare( ctx );
+          CPthreadReqMutexTrylock_TestVariant( ctx );
+          CPthreadReqMutexTrylock_Cleanup( ctx );
         }
-
-        CPthreadReqMutexTrylock_SetPreConditionStates( ctx );
-        CPthreadReqMutexTrylock_Prepare( ctx );
-        CPthreadReqMutexTrylock_TestVariant( ctx );
-        CPthreadReqMutexTrylock_Cleanup( ctx );
       }
     }
   }
