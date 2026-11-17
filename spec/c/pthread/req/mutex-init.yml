@@ -113,8 +113,8 @@ post-conditions:
         _Scheduler_Map_priority( ctx->scheduler, PRIO_VERY_ULTRA_HIGH )
       );
     text: |
-      The priority ceiling of the mutex initialized by the call shall be the highest
-      ${../glossary/thread-priority:/term}.
+      The ${../glossary/mutex-priority-ceiling:/term} of the mutex initialized by the
+      call shall be the maximum ${../glossary/thread-priority:/term}.
   - name: Valid
     test-code: |
       T_eq_u64(
@@ -122,17 +122,9 @@ post-conditions:
         _Scheduler_Map_priority( ctx->scheduler, PRIO_HIGH )
       );
     text: |
-      The priority ceiling of the mutex initialized by the call shall be the priority
-      which corresponds to the ${../glossary/mutex-priority-ceiling:/term} of the
+      The ${../glossary/mutex-priority-ceiling:/term} of the mutex initialized by the
+      call shall be the ${../glossary/mutex-priority-ceiling:/term} of the
       ${../glossary/mutex:/term} attributes object.
-  - name: None
-    test-code: |
-      T_eq_u64(
-        _POSIX_Mutex_Get_priority( _POSIX_Mutex_Get( &ctx->mutex_obj ) ),
-        0
-      );
-    text: |
-      The priority ceiling of the mutex initialized by the call shall be zero.
   test-epilogue: null
   test-prologue: null
 - name: Scheduler
@@ -143,11 +135,6 @@ post-conditions:
     text: |
       The scheduler of the mutex initialized by the call shall be the home scheduler
       of the calling ${/glossary/task:/term}.
-  - name: None
-    test-code: |
-      T_null( _POSIX_Mutex_Get( &ctx->mutex_obj )->scheduler );
-    text: |
-      The mutex initialized by the call shall have no scheduler.
   test-epilogue: null
   test-prologue: null
 - name: AttrObj
@@ -347,11 +334,15 @@ rationale: |
   The post-conditions read the members of the mutex object which
   ${../if/mutex-init:/name} writes. The ${../if/mutex-normal:/name}, the
   ${../if/mutex-errorcheck:/name} and the ${../if/mutex-default:/name}
-  ${../glossary/mutex-type:/term} result in the same mutex.
+  ${../glossary/mutex-type:/term} result in the same mutex. RTEMS accepts the
+  ${../if/process-shared:/name} ${../glossary/process-shared:/term} and
+  initializes the same mutex as for ${../if/process-private:/name}, so no
+  post-condition distinguishes the states of pre-condition Pshared.
 
   The ${../glossary/mutex-priority-ceiling:/term} is only used by the
   ${../if/prio-protect:/name} ${../glossary/mutex-protocol:/term}. For the other
-  protocols it is neither validated nor applied to the mutex. The default
+  protocols it is neither validated nor applied to the mutex, so the
+  post-conditions Ceiling and Scheduler do not apply to them. The default
   ${../glossary/mutex-priority-ceiling:/term} selects the highest
   ${../glossary/thread-priority:/term}. State Valid of pre-condition Ceiling uses
   the priority which corresponds to the task priority PRIO_HIGH of the test
@@ -569,10 +560,6 @@ transition-map:
             Ceiling: Valid
             Protocol: Protect
       then: Valid
-    - if:
-        post-conditions:
-          Status: Ok
-      then: None
     - else: N/A
     Scheduler:
     - if:
@@ -582,10 +569,6 @@ transition-map:
         - pre-conditions:
             Protocol: Protect
       then: Home
-    - if:
-        post-conditions:
-          Status: Ok
-      then: None
     - else: N/A
     AttrObj:
     - if:

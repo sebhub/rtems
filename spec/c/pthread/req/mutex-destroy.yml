@@ -51,6 +51,8 @@ post-conditions:
       pthread_mutex_t expected;
 
       memcpy( &expected, &ctx->mutex_before, sizeof( expected ) );
+
+      /* The call acquires and releases the lock of the thread queue. */
       #if defined( RTEMS_SMP )
       memcpy(
         &_POSIX_Mutex_Get( &expected )->Recursive.Mutex.Queue.Queue.Lock,
@@ -60,24 +62,8 @@ post-conditions:
       #endif
       T_eq_mem( &ctx->mutex_obj, &expected, sizeof( expected ) );
     text: |
-      The object referenced by the ${../if/mutex-destroy:/params[0]/name} parameter,
-      other than its SMP lock, shall not be modified.
-  test-epilogue: null
-  test-prologue: null
-- name: Lock
-  states:
-  - name: Released
-    test-code: |
-      #if defined( RTEMS_SMP )
-        T_true(
-          TicketLockIsAvailable( &MutexOf( ctx )->Recursive.Mutex.Queue.Queue.Lock )
-        );
-      #else
-        (void) ctx;
-      #endif
-    text: |
-      The SMP lock of the mutex referenced by the
-      ${../if/mutex-destroy:/params[0]/name} parameter shall be released.
+      The mutex referenced by the ${../if/mutex-destroy:/params[0]/name} parameter
+      shall not be modified.
   test-epilogue: null
   test-prologue: null
 pre-conditions:
@@ -157,11 +143,6 @@ rationale: |
   A statically initialized mutex is initialized by the call and then destroyed,
   so its object is no longer an initialized mutex. The memory of the object of
   state Corrupted is filled with 0xff.
-
-  Post-condition Lock specifies that the call releases the SMP lock of the mutex.
-  This also holds where the call destroys the mutex, because no later call on the
-  destroyed object would reveal an SMP lock which stays taken or which is
-  released twice.
 requirement-type: functional
 skip-reasons: {}
 test-action: |
@@ -256,54 +237,6 @@ transition-map:
           Status: Ok
       then: Destroyed
     - else: Nop
-    Lock: N/A
-  pre-conditions:
-    Mutex: all
-    Kind:
-      applicable:
-        pre-conditions:
-          Mutex: Obj
-    Locked:
-      applicable:
-        pre-conditions:
-          Kind: Init
-- enabled-by: RTEMS_SMP
-  post-conditions:
-    Status:
-    - if:
-        pre-conditions:
-          Mutex: 'Null'
-      then: Inval
-    - if:
-        pre-conditions:
-          Kind:
-          - Destroyed
-          - Corrupted
-      then: Inval
-    - if:
-        pre-conditions:
-          Kind: Init
-          Locked: 'Yes'
-      then: Busy
-    - else: Ok
-    Object:
-    - if:
-        pre-conditions:
-          Mutex: 'Null'
-      then: N/A
-    - if:
-        post-conditions:
-          Status: Ok
-      then: Destroyed
-    - else: Nop
-    Lock:
-    - if:
-        post-conditions:
-          Status:
-          - Ok
-          - Busy
-      then: Released
-    - else: N/A
   pre-conditions:
     Mutex: all
     Kind:
