@@ -12,7 +12,7 @@ links:
 term: mutex type attribute
 text: |
   An attribute of a ${mutex:/term} that specifies its behavior. See
-  ${/ref/std/posix-2024/pthread-mutexattr-gettype:/name} This attribute can be
+  ${/ref/std/posix-2024/pthread-mutexattr-gettype:/name}. This attribute can be
   set to ${../if/mutex-normal:/name}, ${../if/mutex-errorcheck:/name},
   ${../if/mutex-recursive:/name}, or ${../if/mutex-default:/name}.
 type: glossary

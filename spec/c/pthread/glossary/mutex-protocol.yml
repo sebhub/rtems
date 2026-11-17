@@ -12,7 +12,7 @@ links:
 term: mutex protocol attribute
 text: |
   An attribute of a ${mutex:/term} that specifies its scheduling protocol. See
-  ${/ref/std/posix-2024/pthread-mutexattr-getprotocol:/name} This attribute can
+  ${/ref/std/posix-2024/pthread-mutexattr-getprotocol:/name}. This attribute can
   be set to ${../if/prio-none:/name}, ${../if/prio-inherit:/name}, or
   ${../if/prio-protect:/name}.
 type: glossary

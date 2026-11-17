@@ -34,21 +34,24 @@ post-conditions:
     test-code: |
       T_eq_int( ctx->attr_obj.process_shared, PTHREAD_PROCESS_PRIVATE );
     text: |
-      The process-shared attribute of the mutex attributes object referenced by the
+      The ${../glossary/process-shared:/term} of the ${../glossary/mutex:/term}
+      attributes object referenced by the
       ${../if/mutexattr-setpshared:/params[0]/name} parameter shall be
       ${../if/process-private:/name}.
   - name: Shared
     test-code: |
       T_eq_int( ctx->attr_obj.process_shared, PTHREAD_PROCESS_SHARED );
     text: |
-      The process-shared attribute of the mutex attributes object referenced by the
+      The ${../glossary/process-shared:/term} of the ${../glossary/mutex:/term}
+      attributes object referenced by the
       ${../if/mutexattr-setpshared:/params[0]/name} parameter shall be
       ${../if/process-shared:/name}.
   - name: Nop
     test-code: |
       T_eq_int( ctx->attr_obj.process_shared, ctx->attr_before.process_shared );
     text: |
-      The process-shared attribute of the mutex attributes object referenced by the
+      The ${../glossary/process-shared:/term} of the ${../glossary/mutex:/term}
+      attributes object referenced by the
       ${../if/mutexattr-setpshared:/params[0]/name} parameter shall not be modified.
   test-epilogue: null
   test-prologue: null
@@ -62,9 +65,9 @@ post-conditions:
       expected.process_shared = ctx->attr_obj.process_shared;
       T_eq_mem( &ctx->attr_obj, &expected, sizeof( expected ) );
     text: |
-      The content of the mutex attributes object referenced by the
-      ${../if/mutexattr-setpshared:/params[0]/name} parameter, other than its
-      process-shared attribute, shall not be modified.
+      The content of the ${../glossary/mutex:/term} attributes object referenced by
+      the ${../if/mutexattr-setpshared:/params[0]/name} parameter, other than its
+      ${../glossary/process-shared:/term}, shall not be modified.
   test-epilogue: null
   test-prologue: null
 pre-conditions:
@@ -102,7 +105,7 @@ pre-conditions:
     text: |
       While the object referenced by the
       ${../if/mutexattr-setpshared:/params[0]/name} parameter is not an initialized
-      mutex attributes object.
+      ${../glossary/mutex:/term} attributes object.
   test-epilogue: null
   test-prologue: null
 - name: Value
@@ -124,7 +127,7 @@ pre-conditions:
       ctx->value = 0x7fffffff;
     text: |
       While the ${../if/mutexattr-setpshared:/params[1]/name} parameter is not a
-      valid process-shared attribute value.
+      valid ${../glossary/process-shared:/term} value.
   test-epilogue: null
   test-prologue: null
 rationale: |
@@ -134,9 +137,10 @@ rationale: |
 
   The standard leaves the behaviour undefined where the
   ${../if/mutexattr-setpshared:/params[0]/name} parameter references no
-  initialized mutex attributes object or is ${/c/if/null:/name}. State Null of
-  pre-condition Attr and state No of pre-condition Initialized specify the
-  behaviour of RTEMS, which returns ${/c/errno/if/einval:/name}.
+  initialized ${../glossary/mutex:/term} attributes object or is
+  ${/c/if/null:/name}. State Null of pre-condition Attr and state No of
+  pre-condition Initialized specify the behaviour of RTEMS, which returns
+  ${/c/errno/if/einval:/name}.
 requirement-type: functional
 skip-reasons: {}
 test-action: |
@@ -161,11 +165,12 @@ test-context:
   description: null
   member: int status
 - brief: |
-    This member contains the mutex attributes object.
+    This member contains the ${../glossary/mutex:/term} attributes object.
   description: null
   member: pthread_mutexattr_t attr_obj
 - brief: |
-    This member contains a copy of the mutex attributes object before the call.
+    This member contains a copy of the ${../glossary/mutex:/term} attributes object
+    before the call.
   description: null
   member: pthread_mutexattr_t attr_before
 test-context-support: null
