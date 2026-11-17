@@ -9,101 +9,35 @@ links:
   uid: ../if/mutex-unlock
 - role: requirement-refinement
   uid: ../../req/group-posix-api
-- role: reference
-  uid: /ref/std/posix-2024/pthread-mutex-lock
 - role: function-implementation
   uid: /score/mtx/req/surrender
+- role: reference
+  uid: /ref/std/posix-2024/pthread-mutex-lock
 post-conditions:
 - name: Status
   states:
-  - name: Ok
-    test-code: |
-      T_eq_int( ctx->status, 0 );
-    text: |
-      The ${/glossary/returnvalue:/term} of ${../if/mutex-unlock:/name} shall be
-      zero.
   - name: Inval
     test-code: |
       T_eq_int( ctx->status, EINVAL );
     text: |
       The ${/glossary/returnvalue:/term} of ${../if/mutex-unlock:/name} shall be
       ${/c/errno/if/einval:/name}.
-  - name: Perm
-    test-code: |
-      T_eq_int( ctx->status, EPERM );
-    text: |
-      The ${/glossary/returnvalue:/term} of ${../if/mutex-unlock:/name} shall be
-      ${/c/errno/if/eperm:/name}.
   test-epilogue: null
   test-prologue: null
 - name: Action
   states:
-  - name: MtxNone
+  - name: MtxSurrender
     test-code: |
-      ctx->tq_mtx_ctx.base.thread_queue_object = ctx->mutex;
+      /*
+       * The function call released the mutex which the preparation locked.
+       * The delegated test starts with an unowned mutex.
+       */
+      T_eq_int( ctx->status, 0 );
+      T_null( TQGetOwnerPOSIXMutex( &ctx->tq_mtx_ctx.base ) );
       ${/score/mtx/req/surrender:/test-run}( &ctx->tq_mtx_ctx );
     text: |
-      The calling thread shall surrender the mutex referenced by the
-      ${../if/mutex-unlock:/params[0]/name} parameter as specified by
-      ${/score/mtx/req/surrender:/spec} where the mutex does not use a locking
-      protocol, the thread queue of the mutex uses the FIFO discipline, a recursive
-      seize of the mutex is not allowed, and the surrender checks that the mutex
-      owner is the calling thread.
-  - name: MtxNoneRecursive
-    test-code: |
-      ctx->tq_mtx_ctx.base.thread_queue_object = ctx->mutex;
-      ${/score/mtx/req/surrender:/test-run}( &ctx->tq_mtx_ctx );
-    text: |
-      The calling thread shall surrender the mutex referenced by the
-      ${../if/mutex-unlock:/params[0]/name} parameter as specified by
-      ${/score/mtx/req/surrender:/spec} where the mutex does not use a locking
-      protocol, the thread queue of the mutex uses the FIFO discipline, a recursive
-      seize of the mutex is allowed, and the surrender checks that the mutex owner is
-      the calling thread.
-  - name: MtxInherit
-    test-code: |
-      ctx->tq_mtx_ctx.base.thread_queue_object = ctx->mutex;
-      ${/score/mtx/req/surrender:/test-run}( &ctx->tq_mtx_ctx );
-    text: |
-      The calling thread shall surrender the mutex referenced by the
-      ${../if/mutex-unlock:/params[0]/name} parameter as specified by
-      ${/score/mtx/req/surrender:/spec} where the mutex uses the priority inheritance
-      locking protocol, the thread queue of the mutex uses the priority discipline, a
-      recursive seize of the mutex is not allowed, and the surrender checks that the
-      mutex owner is the calling thread.
-  - name: MtxInheritRecursive
-    test-code: |
-      ctx->tq_mtx_ctx.base.thread_queue_object = ctx->mutex;
-      ${/score/mtx/req/surrender:/test-run}( &ctx->tq_mtx_ctx );
-    text: |
-      The calling thread shall surrender the mutex referenced by the
-      ${../if/mutex-unlock:/params[0]/name} parameter as specified by
-      ${/score/mtx/req/surrender:/spec} where the mutex uses the priority inheritance
-      locking protocol, the thread queue of the mutex uses the priority discipline, a
-      recursive seize of the mutex is allowed, and the surrender checks that the
-      mutex owner is the calling thread.
-  - name: MtxCeiling
-    test-code: |
-      ctx->tq_mtx_ctx.base.thread_queue_object = ctx->mutex;
-      ${/score/mtx/req/surrender:/test-run}( &ctx->tq_mtx_ctx );
-    text: |
-      The calling thread shall surrender the mutex referenced by the
-      ${../if/mutex-unlock:/params[0]/name} parameter as specified by
-      ${/score/mtx/req/surrender:/spec} where the mutex uses the priority ceiling
-      locking protocol, the thread queue of the mutex uses the priority discipline, a
-      recursive seize of the mutex is not allowed, and the surrender checks that the
-      mutex owner is the calling thread.
-  - name: MtxCeilingRecursive
-    test-code: |
-      ctx->tq_mtx_ctx.base.thread_queue_object = ctx->mutex;
-      ${/score/mtx/req/surrender:/test-run}( &ctx->tq_mtx_ctx );
-    text: |
-      The calling thread shall surrender the mutex referenced by the
-      ${../if/mutex-unlock:/params[0]/name} parameter as specified by
-      ${/score/mtx/req/surrender:/spec} where the mutex uses the priority ceiling
-      locking protocol, the thread queue of the mutex uses the priority discipline, a
-      recursive seize of the mutex is allowed, and the surrender checks that the
-      mutex owner is the calling thread.
+      The calling thread shall surrender the mutex as specified by
+      ${/score/mtx/req/surrender:/spec}.
   test-epilogue: null
   test-prologue: null
 pre-conditions:
@@ -116,7 +50,8 @@ pre-conditions:
       ctx->tq_mtx_ctx.priority_ceiling = PRIO_INVALID;
       ctx->tq_mtx_ctx.base.discipline = TQ_FIFO;
     text: |
-      While the mutex uses no locking protocol.
+      While the ${../glossary/mutex-protocol:/term} of the mutex is
+      ${../if/prio-none:/name}.
   - name: Inherit
     test-code: |
       ctx->protocol = PTHREAD_PRIO_INHERIT;
@@ -124,63 +59,49 @@ pre-conditions:
       ctx->tq_mtx_ctx.priority_ceiling = PRIO_INVALID;
       ctx->tq_mtx_ctx.base.discipline = TQ_PRIORITY;
     text: |
-      While the mutex uses the priority inheritance locking protocol.
-  - name: Ceiling
+      While the ${../glossary/mutex-protocol:/term} of the mutex is
+      ${../if/prio-inherit:/name}.
+  - name: Protect
     test-code: |
-      {
-        const Scheduler_Control *scheduler;
-
-        scheduler = _Thread_Scheduler_get_home( _Thread_Get_executing() );
-        ctx->prio_ceiling = _POSIX_Priority_From_core(
-          scheduler,
-          _Scheduler_Map_priority( scheduler, PRIO_VERY_HIGH )
-        );
-      }
-
       ctx->protocol = PTHREAD_PRIO_PROTECT;
       ctx->tq_mtx_ctx.protocol = TQ_MTX_PRIORITY_CEILING;
       ctx->tq_mtx_ctx.priority_ceiling = PRIO_VERY_HIGH;
       ctx->tq_mtx_ctx.base.discipline = TQ_PRIORITY;
     text: |
-      While the mutex uses the priority ceiling locking protocol.
-  test-epilogue: null
-  test-prologue: null
-- name: Owner
-  states:
-  - name: Caller
-    test-code: |
-      ctx->owner_caller = true;
-      ctx->owner_other = false;
-    text: |
-      While the owner of the mutex is the calling thread.
-  - name: Other
-    test-code: |
-      ctx->owner_caller = false;
-      ctx->owner_other = true;
-    text: |
-      While the owner of the mutex is a thread other than the calling thread.
-  - name: None
-    test-code: |
-      ctx->owner_caller = false;
-      ctx->owner_other = false;
-    text: |
-      While the mutex has no owner.
+      While the ${../glossary/mutex-protocol:/term} of the mutex is
+      ${../if/prio-protect:/name}.
   test-epilogue: null
   test-prologue: null
 - name: Type
   states:
   - name: Normal
     test-code: |
-      ctx->type = PTHREAD_MUTEX_DEFAULT;
+      ctx->type = PTHREAD_MUTEX_NORMAL;
       ctx->tq_mtx_ctx.recursive = TQ_MTX_RECURSIVE_DEADLOCK;
     text: |
-      While the type of the mutex is not recursive.
+      While the ${../glossary/mutex-type:/term} of the mutex is
+      ${../if/mutex-normal:/name}.
   - name: Recursive
     test-code: |
       ctx->type = PTHREAD_MUTEX_RECURSIVE;
       ctx->tq_mtx_ctx.recursive = TQ_MTX_RECURSIVE_ALLOWED;
     text: |
-      While the type of the mutex is recursive.
+      While the ${../glossary/mutex-type:/term} of the mutex is
+      ${../if/mutex-recursive:/name}.
+  - name: Errorcheck
+    test-code: |
+      ctx->type = PTHREAD_MUTEX_ERRORCHECK;
+      ctx->tq_mtx_ctx.recursive = TQ_MTX_RECURSIVE_DEADLOCK;
+    text: |
+      While the ${../glossary/mutex-type:/term} of the mutex is
+      ${../if/mutex-errorcheck:/name}.
+  - name: Default
+    test-code: |
+      ctx->type = PTHREAD_MUTEX_DEFAULT;
+      ctx->tq_mtx_ctx.recursive = TQ_MTX_RECURSIVE_DEADLOCK;
+    text: |
+      While the ${../glossary/mutex-type:/term} of the mutex is
+      ${../if/mutex-default:/name}.
   test-epilogue: null
   test-prologue: null
 - name: Mutex
@@ -188,35 +109,38 @@ pre-conditions:
   - name: 'Null'
     test-code: |
       ctx->mutex = NULL;
-      ctx->mutex_initialized = false;
     text: |
       While the ${../if/mutex-unlock:/params[0]/name} parameter is
       ${/c/if/null:/name}.
   - name: Invalid
     test-code: |
-      T_eq_int( pthread_mutex_init( &ctx->mutex_storage, NULL ), 0 );
-      T_eq_int( pthread_mutex_destroy( &ctx->mutex_storage ), 0 );
-      ctx->mutex = &ctx->mutex_storage;
-      ctx->mutex_initialized = false;
-    text: |
-      While the mutex referenced by the ${../if/mutex-unlock:/params[0]/name}
-      parameter is invalid.
-  - name: Static
-    test-code: |
-      ctx->mutex_storage = (pthread_mutex_t) PTHREAD_MUTEX_INITIALIZER;
-      ctx->mutex = &ctx->mutex_storage;
-      ctx->mutex_initialized = true;
-      ctx->owner_caller = false;
-      ctx->owner_other = false;
-
-      ctx->tq_mtx_ctx.protocol = TQ_MTX_NO_PROTOCOL;
-      ctx->tq_mtx_ctx.recursive = TQ_MTX_RECURSIVE_DEADLOCK;
-      ctx->tq_mtx_ctx.owner_check = TQ_MTX_CHECKS_OWNER;
-      ctx->tq_mtx_ctx.priority_ceiling = PRIO_INVALID;
-      ctx->tq_mtx_ctx.base.discipline = TQ_FIFO;
+      T_eq_int( pthread_mutex_init( &ctx->mutex_obj, NULL ), 0 );
+      T_eq_int( pthread_mutex_destroy( &ctx->mutex_obj ), 0 );
+      ctx->mutex = &ctx->mutex_obj;
     text: |
       While the object referenced by the ${../if/mutex-unlock:/params[0]/name}
-      parameter is a statically initialized mutex.
+      parameter is not a valid mutex.
+  - name: Static
+    test-code: |
+      static const pthread_mutex_t initializer = PTHREAD_MUTEX_INITIALIZER;
+
+      /*
+       * The lock initializes the mutex with the default attributes.  The
+       * Protocol and Type pre-conditions are not applicable, so the thread
+       * queue test context is set here.
+       */
+      ctx->mutex_obj = initializer;
+      ctx->mutex = &ctx->mutex_obj;
+      ctx->mutex_initialized = true;
+      ctx->tq_mtx_ctx.base.thread_queue_object = ctx->mutex;
+      ctx->tq_mtx_ctx.protocol = TQ_MTX_NO_PROTOCOL;
+      ctx->tq_mtx_ctx.recursive = TQ_MTX_RECURSIVE_DEADLOCK;
+      ctx->tq_mtx_ctx.priority_ceiling = PRIO_INVALID;
+      ctx->tq_mtx_ctx.base.discipline = TQ_FIFO;
+      T_eq_int( pthread_mutex_lock( ctx->mutex ), 0 );
+    text: |
+      While the object referenced by the ${../if/mutex-unlock:/params[0]/name}
+      parameter is equal to ${../if/mutex-initializer:/name}.
   - name: Init
     test-code: |
       pthread_mutexattr_t attr;
@@ -224,145 +148,133 @@ pre-conditions:
       T_eq_int( pthread_mutexattr_init( &attr ), 0 );
       T_eq_int( pthread_mutexattr_settype( &attr, ctx->type ), 0 );
       T_eq_int( pthread_mutexattr_setprotocol( &attr, ctx->protocol ), 0 );
-
-      if ( ctx->protocol == PTHREAD_PRIO_PROTECT ) {
-        T_eq_int(
-          pthread_mutexattr_setprioceiling( &attr, ctx->prio_ceiling ),
-          0
-        );
-      }
-
-      T_eq_int( pthread_mutex_init( &ctx->mutex_storage, &attr ), 0 );
+      T_eq_int(
+        pthread_mutexattr_setprioceiling(
+          &attr,
+          ToPOSIXPriority( PRIO_VERY_HIGH )
+        ),
+        0
+      );
+      T_eq_int( pthread_mutex_init( &ctx->mutex_obj, &attr ), 0 );
       T_eq_int( pthread_mutexattr_destroy( &attr ), 0 );
-
-      ctx->mutex = &ctx->mutex_storage;
+      ctx->mutex = &ctx->mutex_obj;
       ctx->mutex_initialized = true;
-
-      ctx->tq_mtx_ctx.owner_check = TQ_MTX_CHECKS_OWNER;
       ctx->tq_mtx_ctx.base.thread_queue_object = ctx->mutex;
-      ctx->tq_mtx_ctx.base.wait = TQ_WAIT_FOREVER;
-
-      if ( ctx->owner_caller ) {
-        T_eq_int( pthread_mutex_lock( ctx->mutex ), 0 );
-      } else if ( ctx->owner_other ) {
-        TQSend( &ctx->tq_mtx_ctx.base, TQ_BLOCKER_B, TQ_EVENT_ENQUEUE );
-      }
+      T_eq_int( pthread_mutex_lock( ctx->mutex ), 0 );
     text: |
       While the object referenced by the ${../if/mutex-unlock:/params[0]/name}
       parameter is an initialized mutex.
   test-epilogue: null
   test-prologue: null
 rationale: |
+  The validation of the ${../if/mutex-unlock:/params[0]/name} parameter is not
+  covered by ${/score/mtx/req/surrender:/spec}, which has no pre-condition for
+  the validity of the object. States Null and Invalid of pre-condition Mutex are
+  therefore specified by post-condition Status. The standard leaves the behaviour
+  undefined for these states, and RTEMS returns ${/c/errno/if/einval:/name}.
+
+  For a valid mutex, the result depends on the owner of the mutex, on the nesting
+  level and on the threads which wait for the mutex. These are pre-conditions of
+  ${/score/mtx/req/surrender:/spec}, so post-condition Action alone specifies the
+  surrender of a valid mutex. The preparation of a valid mutex locks it, so that
+  the call of the action succeeds.
   ${/ref/std/posix-2024/pthread-mutex-lock:/name} requires
-  ${/c/errno/if/eperm:/name} for a mutex of the type PTHREAD_MUTEX_ERRORCHECK or
-  PTHREAD_MUTEX_RECURSIVE where the calling ${../glossary/thread:/term} does not
-  own the mutex. RTEMS checks the owner for every type. The states Other and None
-  of pre-condition Owner specify this error. The states of pre-condition Protocol
-  cover the protocols whose handling differs on release, and the states of
-  pre-condition Type cover a mutex whose recursive seize is allowed and one whose
-  recursive seize is not allowed. Pre-condition Type applies to an initialized
-  mutex only, because a statically initialized mutex is not recursive.
+  ${/c/errno/if/eperm:/name} for a mutex with the ${../if/mutex-errorcheck:/name}
+  or the ${../if/mutex-recursive:/name} ${../glossary/mutex-type:/term} which the
+  calling thread does not own. RTEMS checks the owner for every
+  ${../glossary/mutex-type:/term}, which the state Yes of pre-condition
+  OwnerCheck of ${/score/mtx/req/surrender:/spec} specifies.
 
-  The standard leaves the behaviour undefined for a mutex which is not
-  initialized and for a ${../if/mutex-unlock:/params[0]/name} parameter which is
-  equal to ${/c/if/null:/name}. The states Invalid and Null of pre-condition
-  Mutex specify that RTEMS returns ${/c/errno/if/einval:/name}. A statically
-  initialized mutex (state Static) is initialized by the call.
-
-  All other effects of a successful call are specified by the thread queue
-  requirement /score/mtx/req/surrender through post-condition Action. Each state
-  of the post-condition names one state of every pre-condition of the thread
-  queue requirement which selects a variant of the mutex: the locking protocol,
-  the discipline of the thread queue, the recursive seize and the check of the
-  owner. RTEMS checks the owner on every release and does not use the MrsP
-  protocol for a POSIX mutex.
+  A statically initialized mutex has the ${../if/mutex-default:/name}
+  ${../glossary/mutex-type:/term} and the ${../if/prio-none:/name}
+  ${../glossary/mutex-protocol:/term}. Each ${../glossary/mutex-type:/term} is a
+  state of its own, so that every ${../glossary/mutex-type:/term} which the
+  interface defines has a requirement.
 requirement-type: functional
 skip-reasons: {}
-test-action: ctx->status = pthread_mutex_unlock( ctx->mutex );
+test-action: |
+  ctx->status = pthread_mutex_unlock( ctx->mutex );
 test-brief: null
 test-cleanup: |
   if ( ctx->mutex_initialized ) {
-    if ( ctx->owner_other ) {
-      TQSend( &ctx->tq_mtx_ctx.base, TQ_BLOCKER_B, TQ_EVENT_SURRENDER );
+    ctx->mutex_initialized = false;
+
+    while ( pthread_mutex_unlock( ctx->mutex ) == 0 ) {
+      /* Release the mutex including all recursive locks */
     }
 
-    T_eq_int( pthread_mutex_destroy( &ctx->mutex_storage ), 0 );
+    T_eq_int( pthread_mutex_destroy( &ctx->mutex_obj ), 0 );
   }
 test-context:
+- brief: |
+    This member contains the thread queue test context.
+  description: null
+  member: |
+    TQMtxContext tq_mtx_ctx
 - brief: |
     This member specifies the ${../if/mutex-unlock:/params[0]/name} parameter
     value.
   description: null
-  member: pthread_mutex_t *mutex
+  member: |
+    pthread_mutex_t *mutex
 - brief: |
     This member contains the return value of the ${../if/mutex-unlock:/name} call.
   description: null
-  member: int status
+  member: |
+    int status
 - brief: |
-    This member specifies the priority ceiling used for the mutex.
+    This member contains the mutex object.
   description: null
-  member: int prio_ceiling
+  member: |
+    pthread_mutex_t mutex_obj
 - brief: |
-    This member provides the storage for a mutex which is not the statically
-    allocated ${../if/mutex-initializer:/name}.
-  description: null
-  member: pthread_mutex_t mutex_storage
-- brief: |
-    This member is true, if the mutex_storage member contains an initialized mutex
+    This member specifies the protocol attribute used to initialize the mutex
     object.
   description: null
-  member: bool mutex_initialized
+  member: |
+    int protocol
 - brief: |
-    This member specifies the locking protocol used to initialize the mutex.
+    This member specifies the type attribute used to initialize the mutex object.
   description: null
-  member: int protocol
+  member: |
+    int type
 - brief: |
-    This member is true, if the calling thread owns the mutex before the directive
-    call.
+    This member is true, if the mutex object shall be destroyed by the cleanup
+    step.
   description: null
-  member: bool owner_caller
-- brief: |
-    This member is true, if a thread other than the calling thread owns the mutex
-    before the directive call.
-  description: null
-  member: bool owner_other
-- brief: |
-    This member contains the thread queue test context.
-  description: null
-  member: TQMtxContext tq_mtx_ctx
-- brief: |
-    This member specifies the mutex type.
-  description: null
-  member: int type
+  member: |
+    bool mutex_initialized
 test-context-support: null
 test-description: null
 test-header: null
 test-includes:
 - errno.h
 - pthread.h
-- rtems/posix/priorityimpl.h
-- rtems/score/schedulerimpl.h
-- rtems/score/threadimpl.h
+- rtems.h
+- string.h
 test-local-includes:
 - tr-mtx-surrender.h
 - tx-support.h
 - tx-thread-queue.h
 test-prepare: |
-  ctx->mutex_initialized = false;
-  ctx->owner_caller = false;
-  ctx->owner_other = false;
+  ctx->protocol = PTHREAD_PRIO_NONE;
   ctx->type = PTHREAD_MUTEX_DEFAULT;
-  ctx->tq_mtx_ctx.recursive = TQ_MTX_RECURSIVE_DEADLOCK;
+  ctx->mutex_initialized = false;
+  ctx->status = -1;
 test-setup:
   brief: null
   code: |
+    SetSelfPriority( PRIO_NORMAL );
     memset( ctx, 0, sizeof( *ctx ) );
+    ctx->tq_mtx_ctx.owner_check = TQ_MTX_CHECKS_OWNER;
+    ctx->tq_mtx_ctx.base.wait = TQ_WAIT_FOREVER;
+    ctx->tq_mtx_ctx.base.enqueue_variant = TQ_ENQUEUE_BLOCKS;
+    ctx->tq_mtx_ctx.base.convert_status = TQConvertStatusPOSIX;
     ctx->tq_mtx_ctx.base.enqueue_prepare = TQEnqueuePrepareDefault;
     ctx->tq_mtx_ctx.base.enqueue_done = TQEnqueueDoneDefault;
     ctx->tq_mtx_ctx.base.enqueue = TQEnqueuePOSIXMutex;
     ctx->tq_mtx_ctx.base.surrender = TQSurrenderPOSIXMutex;
     ctx->tq_mtx_ctx.base.get_owner = TQGetOwnerPOSIXMutex;
-    ctx->tq_mtx_ctx.base.convert_status = TQConvertStatusPOSIX;
     TQInitialize( &ctx->tq_mtx_ctx.base );
   description: null
 test-stop: null
@@ -372,6 +284,7 @@ test-teardown:
   brief: null
   code: |
     TQDestroy( &ctx->tq_mtx_ctx.base );
+    RestoreRunnerPriority();
   description: null
 text: |
   ${.:text-template}
@@ -385,87 +298,23 @@ transition-map:
           - 'Null'
           - Invalid
       then: Inval
-    - if:
-        pre-conditions:
-          Mutex: Static
-      then: Perm
-    - if:
-        pre-conditions:
-          Mutex: Init
-          Owner:
-          - Other
-          - None
-      then: Perm
-    - else: Ok
+    - else: N/A
     Action:
     - if:
-        and:
-        - post-conditions:
-            Status: Ok
-        - pre-conditions:
-            Protocol:
-            - None
-            Type:
-            - Normal
-      then: MtxNone
-    - if:
-        and:
-        - post-conditions:
-            Status: Ok
-        - pre-conditions:
-            Protocol:
-            - None
-            Type:
-            - Recursive
-      then: MtxNoneRecursive
-    - if:
-        and:
-        - post-conditions:
-            Status: Ok
-        - pre-conditions:
-            Protocol:
-            - Inherit
-            Type:
-            - Normal
-      then: MtxInherit
-    - if:
-        and:
-        - post-conditions:
-            Status: Ok
-        - pre-conditions:
-            Protocol:
-            - Inherit
-            Type:
-            - Recursive
-      then: MtxInheritRecursive
-    - if:
-        and:
-        - post-conditions:
-            Status: Ok
-        - pre-conditions:
-            Protocol:
-            - Ceiling
-            Type:
-            - Normal
-      then: MtxCeiling
-    - if:
-        and:
-        - post-conditions:
-            Status: Ok
-        - pre-conditions:
-            Protocol:
-            - Ceiling
-            Type:
-            - Recursive
-      then: MtxCeilingRecursive
-    - else: N/A
+        pre-conditions:
+          Mutex:
+          - 'Null'
+          - Invalid
+      then: N/A
+    - else: MtxSurrender
   pre-conditions:
-    Protocol: all
-    Owner: all
+    Protocol:
+      applicable:
+        pre-conditions:
+          Mutex: Init
     Type:
       applicable:
         pre-conditions:
-          Mutex:
-          - Init
+          Mutex: Init
     Mutex: all
 type: requirement
