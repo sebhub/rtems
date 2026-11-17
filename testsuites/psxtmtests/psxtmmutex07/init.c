@@ -89,11 +89,21 @@ void *POSIX_Init( void *argument )
 {
   (void) argument;
 
-  int status;
+  int                 status;
+  pthread_mutexattr_t attr;
 
   TEST_BEGIN();
-  /* create mutex*/
-  status = pthread_mutex_init( &MutexId, NULL );
+
+  status = pthread_mutexattr_init( &attr );
+  rtems_test_assert( status == 0 );
+
+  status = pthread_mutexattr_setprotocol( &attr, PTHREAD_PRIO_PROTECT );
+  rtems_test_assert( status == 0 );
+
+  status = pthread_mutex_init( &MutexId, &attr );
+  rtems_test_assert( status == 0 );
+
+  status = pthread_mutexattr_destroy( &attr );
   rtems_test_assert( status == 0 );
 
   test_mutex_getprioceiling();
