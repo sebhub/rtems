@@ -22,6 +22,12 @@ post-conditions:
     text: |
       The ${/glossary/returnvalue:/term} of ${../if/mutex-unlock:/name} shall be
       ${/c/errno/if/einval:/name}.
+  - name: Perm
+    test-code: |
+      T_eq_int( ctx->status, EPERM );
+    text: |
+      The ${/glossary/returnvalue:/term} of ${../if/mutex-unlock:/name} shall be
+      ${/c/errno/if/eperm:/name}.
   test-epilogue: null
   test-prologue: null
 - name: Action
@@ -124,20 +130,9 @@ pre-conditions:
     test-code: |
       static const pthread_mutex_t initializer = PTHREAD_MUTEX_INITIALIZER;
 
-      /*
-       * The lock initializes the mutex with the default attributes.  The
-       * Protocol and Type pre-conditions are not applicable, so the thread
-       * queue test context is set here.
-       */
       ctx->mutex_obj = initializer;
       ctx->mutex = &ctx->mutex_obj;
       ctx->mutex_initialized = true;
-      ctx->tq_mtx_ctx.base.thread_queue_object = ctx->mutex;
-      ctx->tq_mtx_ctx.protocol = TQ_MTX_NO_PROTOCOL;
-      ctx->tq_mtx_ctx.recursive = TQ_MTX_RECURSIVE_DEADLOCK;
-      ctx->tq_mtx_ctx.priority_ceiling = PRIO_INVALID;
-      ctx->tq_mtx_ctx.base.discipline = TQ_FIFO;
-      T_eq_int( pthread_mutex_lock( ctx->mutex ), 0 );
     text: |
       While the object referenced by the ${../if/mutex-unlock:/params[0]/name}
       parameter is equal to ${../if/mutex-initializer:/name}.
@@ -173,23 +168,26 @@ rationale: |
   therefore specified by post-condition Status. The standard leaves the behaviour
   undefined for these states, and RTEMS returns ${/c/errno/if/einval:/name}.
 
-  For a valid mutex, the result depends on the owner of the mutex, on the nesting
-  level and on the threads which wait for the mutex. These are pre-conditions of
-  ${/score/mtx/req/surrender:/spec}, so post-condition Action alone specifies the
-  surrender of a valid mutex. The preparation of a valid mutex locks it, so that
-  the call of the action succeeds.
-  ${/ref/std/posix-2024/pthread-mutex-lock:/name} requires
+  For an initialized mutex, the result depends on the owner of the mutex, on the
+  nesting level and on the threads which wait for the mutex. These are
+  pre-conditions of ${/score/mtx/req/surrender:/spec}, so post-condition Action
+  alone specifies the surrender of an initialized mutex. The preparation of state
+  Init of pre-condition Mutex locks the mutex, so that the call of the action
+  succeeds. ${/ref/std/posix-2024/pthread-mutex-lock:/name} requires
   ${/c/errno/if/eperm:/name} for a mutex with the ${../if/mutex-errorcheck:/name}
   or the ${../if/mutex-recursive:/name} ${../glossary/mutex-type:/term} which the
   calling thread does not own. RTEMS checks the owner for every
   ${../glossary/mutex-type:/term}, which the state Yes of pre-condition
   OwnerCheck of ${/score/mtx/req/surrender:/spec} specifies.
 
-  A statically initialized mutex has the ${../if/mutex-default:/name}
-  ${../glossary/mutex-type:/term} and the ${../if/prio-none:/name}
-  ${../glossary/mutex-protocol:/term}. Each ${../glossary/mutex-type:/term} is a
-  state of its own, so that every ${../glossary/mutex-type:/term} which the
-  interface defines has a requirement.
+  A statically initialized mutex has no owner until a thread locks it. The
+  function initializes such a mutex and returns ${/c/errno/if/eperm:/name},
+  because the calling thread does not own it. The state Static of pre-condition
+  Mutex therefore leads to post-condition Status and not to the surrender. The
+  ${../glossary/mutex-type:/term} and the ${../glossary/mutex-protocol:/term} of
+  an initialized mutex are pre-conditions of their own. Each
+  ${../glossary/mutex-type:/term} is a state of its own, so that every
+  ${../glossary/mutex-type:/term} which the interface defines has a requirement.
 requirement-type: functional
 skip-reasons: {}
 test-action: |
@@ -298,6 +296,10 @@ transition-map:
           - 'Null'
           - Invalid
       then: Inval
+    - if:
+        pre-conditions:
+          Mutex: Static
+      then: Perm
     - else: N/A
     Action:
     - if:
@@ -305,6 +307,7 @@ transition-map:
           Mutex:
           - 'Null'
           - Invalid
+          - Static
       then: N/A
     - else: MtxSurrender
   pre-conditions:
