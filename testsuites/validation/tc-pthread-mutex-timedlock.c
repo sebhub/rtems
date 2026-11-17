@@ -38,9 +38,9 @@
 
 #include <errno.h>
 #include <pthread.h>
+#include <rtems.h>
+#include <string.h>
 #include <time.h>
-#include <rtems/posix/priorityimpl.h>
-#include <rtems/score/schedulerimpl.h>
 #include <rtems/score/threadimpl.h>
 
 #include "tr-mtx-seize-wait.h"
@@ -60,20 +60,15 @@
 typedef enum {
   CPthreadReqMutexTimedlock_Pre_Protocol_None,
   CPthreadReqMutexTimedlock_Pre_Protocol_Inherit,
-  CPthreadReqMutexTimedlock_Pre_Protocol_Ceiling,
+  CPthreadReqMutexTimedlock_Pre_Protocol_Protect,
   CPthreadReqMutexTimedlock_Pre_Protocol_NA
 } CPthreadReqMutexTimedlock_Pre_Protocol;
 
 typedef enum {
-  CPthreadReqMutexTimedlock_Pre_Ceiling_Satisfied,
-  CPthreadReqMutexTimedlock_Pre_Ceiling_Violated,
-  CPthreadReqMutexTimedlock_Pre_Ceiling_None,
-  CPthreadReqMutexTimedlock_Pre_Ceiling_NA
-} CPthreadReqMutexTimedlock_Pre_Ceiling;
-
-typedef enum {
   CPthreadReqMutexTimedlock_Pre_Type_Normal,
   CPthreadReqMutexTimedlock_Pre_Type_Recursive,
+  CPthreadReqMutexTimedlock_Pre_Type_Errorcheck,
+  CPthreadReqMutexTimedlock_Pre_Type_Default,
   CPthreadReqMutexTimedlock_Pre_Type_NA
 } CPthreadReqMutexTimedlock_Pre_Type;
 
@@ -112,27 +107,28 @@ typedef enum {
 } CPthreadReqMutexTimedlock_Post_Status;
 
 typedef enum {
-  CPthreadReqMutexTimedlock_Post_Action_MtxNone,
-  CPthreadReqMutexTimedlock_Post_Action_MtxNoneRecursive,
-  CPthreadReqMutexTimedlock_Post_Action_MtxInherit,
-  CPthreadReqMutexTimedlock_Post_Action_MtxInheritRecursive,
-  CPthreadReqMutexTimedlock_Post_Action_MtxCeiling,
-  CPthreadReqMutexTimedlock_Post_Action_MtxCeilingRecursive,
-  CPthreadReqMutexTimedlock_Post_Action_MtxStatic,
+  CPthreadReqMutexTimedlock_Post_Owner_Caller,
+  CPthreadReqMutexTimedlock_Post_Owner_Other,
+  CPthreadReqMutexTimedlock_Post_Owner_None,
+  CPthreadReqMutexTimedlock_Post_Owner_NA
+} CPthreadReqMutexTimedlock_Post_Owner;
+
+typedef enum {
+  CPthreadReqMutexTimedlock_Post_Action_MtxSeizeWait,
   CPthreadReqMutexTimedlock_Post_Action_NA
 } CPthreadReqMutexTimedlock_Post_Action;
 
 typedef struct {
   uint16_t Skip : 1;
   uint16_t Pre_Protocol_NA : 1;
-  uint16_t Pre_Ceiling_NA : 1;
   uint16_t Pre_Type_NA : 1;
   uint16_t Pre_Mutex_NA : 1;
   uint16_t Pre_Timeout_NA : 1;
   uint16_t Pre_Owner_NA : 1;
   uint16_t Pre_Scheduler_NA : 1;
   uint16_t Post_Status : 2;
-  uint16_t Post_Action : 3;
+  uint16_t Post_Owner : 2;
+  uint16_t Post_Action : 1;
 } CPthreadReqMutexTimedlock_Entry;
 
 /**
@@ -140,12 +136,18 @@ typedef struct {
  */
 typedef struct {
   /**
+   * @brief This member contains the thread queue test context.
+   */
+  TQMtxContext tq_mtx_ctx;
+
+  /**
    * @brief This member specifies the `mutex` parameter value.
    */
   pthread_mutex_t *mutex;
 
   /**
-   * @brief This member specifies the `abstime` parameter value.
+   * @brief This member provides the object referenced by the `abstime`
+   *   parameter.
    */
   struct timespec abstime;
 
@@ -156,43 +158,27 @@ typedef struct {
   int status;
 
   /**
-   * @brief This member specifies the priority ceiling used for the mutex.
+   * @brief This member contains the mutex object.
    */
-  int prio_ceiling;
+  pthread_mutex_t mutex_obj;
 
   /**
-   * @brief This member provides the storage for a mutex which is not the
-   *   statically allocated PTHREAD_MUTEX_INITIALIZER.
-   */
-  pthread_mutex_t mutex_storage;
-
-  /**
-   * @brief This member is true, if the mutex_storage member contains an
-   *   initialized mutex object.
-   */
-  bool mutex_initialized;
-
-  /**
-   * @brief This member specifies the locking protocol used to initialize the
-   *   mutex.
+   * @brief This member specifies the protocol attribute used to initialize the
+   *   mutex object.
    */
   int protocol;
 
   /**
-   * @brief This member contains the thread queue test context.
-   */
-  TQMtxContext tq_mtx_ctx;
-
-  /**
-   * @brief This member specifies the mutex type.
+   * @brief This member specifies the type attribute used to initialize the
+   *   mutex object.
    */
   int type;
 
   /**
-   * @brief This member is true, if the call is not delegated to the thread
-   *   queue requirement.
+   * @brief This member is true, if the mutex object shall be destroyed by the
+   *   cleanup step.
    */
-  bool direct;
+  bool mutex_initialized;
 
   /**
    * @brief This member is true, if another thread owns the mutex.
@@ -200,22 +186,27 @@ typedef struct {
   bool owner_other;
 
   /**
-   * @brief This member is true, if the home scheduler instance of the calling
-   *   thread is not the scheduler instance of the mutex.
+   * @brief This member is true, if the home scheduler of the calling thread is
+   *   not the scheduler of the mutex.
    */
   bool scheduler_other;
+
+  /**
+   * @brief This member contains the thread control block of the runner.
+   */
+  const rtems_tcb *runner;
 
   struct {
     /**
      * @brief This member defines the pre-condition indices for the next
      *   action.
      */
-    size_t pci[ 7 ];
+    size_t pci[ 6 ];
 
     /**
      * @brief This member defines the pre-condition states for the next action.
      */
-    size_t pcs[ 7 ];
+    size_t pcs[ 6 ];
 
     /**
      * @brief If this member is true, then the test action loop is executed.
@@ -243,13 +234,10 @@ typedef struct {
 static CPthreadReqMutexTimedlock_Context CPthreadReqMutexTimedlock_Instance;
 
 static const char *const CPthreadReqMutexTimedlock_PreDesc_Protocol[] =
-  { "None", "Inherit", "Ceiling", "NA" };
-
-static const char *const CPthreadReqMutexTimedlock_PreDesc_Ceiling[] =
-  { "Satisfied", "Violated", "None", "NA" };
+  { "None", "Inherit", "Protect", "NA" };
 
 static const char *const CPthreadReqMutexTimedlock_PreDesc_Type[] =
-  { "Normal", "Recursive", "NA" };
+  { "Normal", "Recursive", "Errorcheck", "Default", "NA" };
 
 static const char *const CPthreadReqMutexTimedlock_PreDesc_Mutex[] =
   { "Null", "Invalid", "Static", "Init", "NA" };
@@ -265,7 +253,6 @@ static const char *const CPthreadReqMutexTimedlock_PreDesc_Scheduler[] =
 
 static const char *const *const CPthreadReqMutexTimedlock_PreDesc[] = {
   CPthreadReqMutexTimedlock_PreDesc_Protocol,
-  CPthreadReqMutexTimedlock_PreDesc_Ceiling,
   CPthreadReqMutexTimedlock_PreDesc_Type,
   CPthreadReqMutexTimedlock_PreDesc_Mutex,
   CPthreadReqMutexTimedlock_PreDesc_Timeout,
@@ -282,7 +269,7 @@ static void CPthreadReqMutexTimedlock_Pre_Protocol_Prepare(
   switch ( state ) {
     case CPthreadReqMutexTimedlock_Pre_Protocol_None: {
       /*
-       * While the mutex uses no locking protocol.
+       * While the mutex protocol attribute of the mutex is PTHREAD_PRIO_NONE.
        */
       ctx->protocol = PTHREAD_PRIO_NONE;
       ctx->tq_mtx_ctx.protocol = TQ_MTX_NO_PROTOCOL;
@@ -293,7 +280,8 @@ static void CPthreadReqMutexTimedlock_Pre_Protocol_Prepare(
 
     case CPthreadReqMutexTimedlock_Pre_Protocol_Inherit: {
       /*
-       * While the mutex uses the priority inheritance locking protocol.
+       * While the mutex protocol attribute of the mutex is
+       * PTHREAD_PRIO_INHERIT.
        */
       ctx->protocol = PTHREAD_PRIO_INHERIT;
       ctx->tq_mtx_ctx.protocol = TQ_MTX_PRIORITY_INHERIT;
@@ -302,9 +290,10 @@ static void CPthreadReqMutexTimedlock_Pre_Protocol_Prepare(
       break;
     }
 
-    case CPthreadReqMutexTimedlock_Pre_Protocol_Ceiling: {
+    case CPthreadReqMutexTimedlock_Pre_Protocol_Protect: {
       /*
-       * While the mutex uses the priority ceiling locking protocol.
+       * While the mutex protocol attribute of the mutex is
+       * PTHREAD_PRIO_PROTECT.
        */
       ctx->protocol = PTHREAD_PRIO_PROTECT;
       ctx->tq_mtx_ctx.protocol = TQ_MTX_PRIORITY_CEILING;
@@ -318,63 +307,6 @@ static void CPthreadReqMutexTimedlock_Pre_Protocol_Prepare(
   }
 }
 
-static void CPthreadReqMutexTimedlock_Pre_Ceiling_Prepare(
-  CPthreadReqMutexTimedlock_Context    *ctx,
-  CPthreadReqMutexTimedlock_Pre_Ceiling state
-)
-{
-  switch ( state ) {
-    case CPthreadReqMutexTimedlock_Pre_Ceiling_Satisfied: {
-      /*
-       * While the mutex uses the priority ceiling locking protocol, while the
-       * calling thread's current priority does not violate the priority
-       * ceiling of the mutex.
-       */
-      if ( ctx->protocol != PTHREAD_PRIO_PROTECT ) {
-        ctx->Map.skip = true;
-      }
-
-      {
-        const Scheduler_Control *scheduler;
-
-        scheduler = _Thread_Scheduler_get_home( _Thread_Get_executing() );
-        ctx->prio_ceiling = _POSIX_Priority_From_core(
-          scheduler,
-          _Scheduler_Map_priority( scheduler, PRIO_VERY_HIGH )
-        );
-      }
-      break;
-    }
-
-    case CPthreadReqMutexTimedlock_Pre_Ceiling_Violated: {
-      /*
-       * While the mutex uses the priority ceiling locking protocol, while the
-       * calling thread's current priority violates the priority ceiling of the
-       * mutex.
-       */
-      if ( ctx->protocol != PTHREAD_PRIO_PROTECT ) {
-        ctx->Map.skip = true;
-      }
-
-      ctx->prio_ceiling = GetPOSIXPriorityMinimum();
-      break;
-    }
-
-    case CPthreadReqMutexTimedlock_Pre_Ceiling_None: {
-      /*
-       * Where the mutex does not use the priority ceiling locking protocol.
-       */
-      if ( ctx->protocol == PTHREAD_PRIO_PROTECT ) {
-        ctx->Map.skip = true;
-      }
-      break;
-    }
-
-    case CPthreadReqMutexTimedlock_Pre_Ceiling_NA:
-      break;
-  }
-}
-
 static void CPthreadReqMutexTimedlock_Pre_Type_Prepare(
   CPthreadReqMutexTimedlock_Context *ctx,
   CPthreadReqMutexTimedlock_Pre_Type state
@@ -383,19 +315,39 @@ static void CPthreadReqMutexTimedlock_Pre_Type_Prepare(
   switch ( state ) {
     case CPthreadReqMutexTimedlock_Pre_Type_Normal: {
       /*
-       * While the type of the mutex is not recursive.
+       * While the mutex type attribute of the mutex is PTHREAD_MUTEX_NORMAL.
        */
-      ctx->type = PTHREAD_MUTEX_DEFAULT;
+      ctx->type = PTHREAD_MUTEX_NORMAL;
       ctx->tq_mtx_ctx.recursive = TQ_MTX_RECURSIVE_DEADLOCK;
       break;
     }
 
     case CPthreadReqMutexTimedlock_Pre_Type_Recursive: {
       /*
-       * While the type of the mutex is recursive.
+       * While the mutex type attribute of the mutex is
+       * PTHREAD_MUTEX_RECURSIVE.
        */
       ctx->type = PTHREAD_MUTEX_RECURSIVE;
       ctx->tq_mtx_ctx.recursive = TQ_MTX_RECURSIVE_ALLOWED;
+      break;
+    }
+
+    case CPthreadReqMutexTimedlock_Pre_Type_Errorcheck: {
+      /*
+       * While the mutex type attribute of the mutex is
+       * PTHREAD_MUTEX_ERRORCHECK.
+       */
+      ctx->type = PTHREAD_MUTEX_ERRORCHECK;
+      ctx->tq_mtx_ctx.recursive = TQ_MTX_RECURSIVE_DEADLOCK;
+      break;
+    }
+
+    case CPthreadReqMutexTimedlock_Pre_Type_Default: {
+      /*
+       * While the mutex type attribute of the mutex is PTHREAD_MUTEX_DEFAULT.
+       */
+      ctx->type = PTHREAD_MUTEX_DEFAULT;
+      ctx->tq_mtx_ctx.recursive = TQ_MTX_RECURSIVE_DEADLOCK;
       break;
     }
 
@@ -415,30 +367,36 @@ static void CPthreadReqMutexTimedlock_Pre_Mutex_Prepare(
        * While the `mutex` parameter is NULL.
        */
       ctx->mutex = NULL;
-      ctx->mutex_initialized = false;
       break;
     }
 
     case CPthreadReqMutexTimedlock_Pre_Mutex_Invalid: {
       /*
-       * While the mutex referenced by the `mutex` parameter is invalid.
+       * While the object referenced by the `mutex` parameter is not a valid
+       * mutex.
        */
-      T_eq_int( pthread_mutex_init( &ctx->mutex_storage, NULL ), 0 );
-      T_eq_int( pthread_mutex_destroy( &ctx->mutex_storage ), 0 );
-      ctx->mutex = &ctx->mutex_storage;
-      ctx->mutex_initialized = false;
+      T_eq_int( pthread_mutex_init( &ctx->mutex_obj, NULL ), 0 );
+      T_eq_int( pthread_mutex_destroy( &ctx->mutex_obj ), 0 );
+      ctx->mutex = &ctx->mutex_obj;
       break;
     }
 
     case CPthreadReqMutexTimedlock_Pre_Mutex_Static: {
       /*
-       * While the object referenced by the `mutex` parameter is a statically
-       * initialized mutex.
+       * While the object referenced by the `mutex` parameter is equal to
+       * PTHREAD_MUTEX_INITIALIZER.
        */
-      ctx->mutex_storage = (pthread_mutex_t) PTHREAD_MUTEX_INITIALIZER;
-      ctx->mutex = &ctx->mutex_storage;
-      ctx->mutex_initialized = true;
+      static const pthread_mutex_t initializer = PTHREAD_MUTEX_INITIALIZER;
 
+      /*
+       * The first lock initializes the mutex with the default attributes.
+       * The Protocol and Type pre-conditions are not applicable, so the
+       * thread queue test context is set here.
+       */
+      ctx->mutex_obj = initializer;
+      ctx->mutex = &ctx->mutex_obj;
+      ctx->mutex_initialized = true;
+      ctx->tq_mtx_ctx.base.thread_queue_object = ctx->mutex;
       ctx->tq_mtx_ctx.protocol = TQ_MTX_NO_PROTOCOL;
       ctx->tq_mtx_ctx.recursive = TQ_MTX_RECURSIVE_DEADLOCK;
       ctx->tq_mtx_ctx.priority_ceiling = PRIO_INVALID;
@@ -456,19 +414,18 @@ static void CPthreadReqMutexTimedlock_Pre_Mutex_Prepare(
       T_eq_int( pthread_mutexattr_init( &attr ), 0 );
       T_eq_int( pthread_mutexattr_settype( &attr, ctx->type ), 0 );
       T_eq_int( pthread_mutexattr_setprotocol( &attr, ctx->protocol ), 0 );
-
-      if ( ctx->protocol == PTHREAD_PRIO_PROTECT ) {
-        T_eq_int(
-          pthread_mutexattr_setprioceiling( &attr, ctx->prio_ceiling ),
-          0
-        );
-      }
-
-      T_eq_int( pthread_mutex_init( &ctx->mutex_storage, &attr ), 0 );
+      T_eq_int(
+        pthread_mutexattr_setprioceiling(
+          &attr,
+          ToPOSIXPriority( PRIO_VERY_HIGH )
+        ),
+        0
+      );
+      T_eq_int( pthread_mutex_init( &ctx->mutex_obj, &attr ), 0 );
       T_eq_int( pthread_mutexattr_destroy( &attr ), 0 );
-
-      ctx->mutex = &ctx->mutex_storage;
+      ctx->mutex = &ctx->mutex_obj;
       ctx->mutex_initialized = true;
+      ctx->tq_mtx_ctx.base.thread_queue_object = ctx->mutex;
       break;
     }
 
@@ -485,7 +442,7 @@ static void CPthreadReqMutexTimedlock_Pre_Timeout_Prepare(
   switch ( state ) {
     case CPthreadReqMutexTimedlock_Pre_Timeout_Future: {
       /*
-       * While the `abstime` parameter specifies a valid time point which is
+       * While the `abstime` parameter references a valid time point which is
        * later than the current time of CLOCK_REALTIME.
        */
       T_eq_int( clock_gettime( CLOCK_REALTIME, &ctx->abstime ), 0 );
@@ -495,22 +452,21 @@ static void CPthreadReqMutexTimedlock_Pre_Timeout_Prepare(
 
     case CPthreadReqMutexTimedlock_Pre_Timeout_Past: {
       /*
-       * While the `abstime` parameter specifies a valid time point which is
+       * While the `abstime` parameter references a valid time point which is
        * not later than the current time of CLOCK_REALTIME.
        */
       T_eq_int( clock_gettime( CLOCK_REALTIME, &ctx->abstime ), 0 );
       ctx->abstime.tv_sec -= 1;
-      ctx->direct = true;
       break;
     }
 
     case CPthreadReqMutexTimedlock_Pre_Timeout_Invalid: {
       /*
-       * While the `abstime` parameter does not specify a valid time point.
+       * While the `abstime` parameter references an object which is not a
+       * valid time point.
        */
       ctx->abstime.tv_sec = 0;
       ctx->abstime.tv_nsec = -1;
-      ctx->direct = true;
       break;
     }
 
@@ -535,11 +491,12 @@ static void CPthreadReqMutexTimedlock_Pre_Owner_Prepare(
 
     case CPthreadReqMutexTimedlock_Pre_Owner_Other: {
       /*
-       * While the mutex is owned by another thread.
+       * While the owner of the mutex is a thread other than the calling
+       * thread.
        */
+      ctx->owner_other = true;
       ctx->tq_mtx_ctx.base.thread_queue_object = ctx->mutex;
       ctx->tq_mtx_ctx.base.wait = TQ_WAIT_FOREVER;
-      ctx->owner_other = true;
       TQSend( &ctx->tq_mtx_ctx.base, TQ_BLOCKER_B, TQ_EVENT_ENQUEUE );
       break;
     }
@@ -557,8 +514,8 @@ static void CPthreadReqMutexTimedlock_Pre_Scheduler_Prepare(
   switch ( state ) {
     case CPthreadReqMutexTimedlock_Pre_Scheduler_Home: {
       /*
-       * While the scheduler instance of the mutex is the home scheduler of the
-       * calling thread.
+       * While the home scheduler of the calling thread is the scheduler
+       * instance of the mutex.
        */
       ctx->scheduler_other = false;
       break;
@@ -566,14 +523,13 @@ static void CPthreadReqMutexTimedlock_Pre_Scheduler_Prepare(
 
     case CPthreadReqMutexTimedlock_Pre_Scheduler_Other: {
       /*
-       * While the scheduler instance of the mutex is not the home scheduler of
-       * the calling thread.
+       * While the home scheduler of the calling thread is not the scheduler
+       * instance of the mutex.
        */
-      #if defined( RTEMS_SMP )
-      SetSelfScheduler( SCHEDULER_B_ID, PRIO_VERY_LOW );
       ctx->scheduler_other = true;
-      #else
-      ctx->Map.skip = true;
+
+      #if defined( RTEMS_SMP )
+      SetSelfScheduler( SCHEDULER_B_ID, PRIO_NORMAL );
       #endif
       break;
     }
@@ -618,119 +574,64 @@ static void CPthreadReqMutexTimedlock_Post_Status_Check(
   }
 }
 
+static void CPthreadReqMutexTimedlock_Post_Owner_Check(
+  CPthreadReqMutexTimedlock_Context   *ctx,
+  CPthreadReqMutexTimedlock_Post_Owner state
+)
+{
+  switch ( state ) {
+    case CPthreadReqMutexTimedlock_Post_Owner_Caller: {
+      /*
+       * The owner of the mutex shall be the calling thread.
+       */
+      T_eq_ptr( TQGetOwnerPOSIXMutex( &ctx->tq_mtx_ctx.base ), ctx->runner );
+      break;
+    }
+
+    case CPthreadReqMutexTimedlock_Post_Owner_Other: {
+      /*
+       * The owner of the mutex shall be the other thread.
+       */
+      T_eq_ptr(
+        TQGetOwnerPOSIXMutex( &ctx->tq_mtx_ctx.base ),
+        ctx->tq_mtx_ctx.base.worker_tcb[ TQ_BLOCKER_B ]
+      );
+      break;
+    }
+
+    case CPthreadReqMutexTimedlock_Post_Owner_None: {
+      /*
+       * The mutex shall have no owner.
+       */
+      T_null( TQGetOwnerPOSIXMutex( &ctx->tq_mtx_ctx.base ) );
+      break;
+    }
+
+    case CPthreadReqMutexTimedlock_Post_Owner_NA:
+      break;
+  }
+}
+
 static void CPthreadReqMutexTimedlock_Post_Action_Check(
   CPthreadReqMutexTimedlock_Context    *ctx,
   CPthreadReqMutexTimedlock_Post_Action state
 )
 {
   switch ( state ) {
-    case CPthreadReqMutexTimedlock_Post_Action_MtxNone: {
+    case CPthreadReqMutexTimedlock_Post_Action_MtxSeizeWait: {
       /*
-       * The calling thread shall attempt to seize the mutex referenced by the
-       * `mutex` parameter as specified by spec:/score/mtx/req/seize-wait where
-       * the mutex does not use a locking protocol, the thread queue of the
-       * mutex uses the FIFO discipline, a detected deadlock results in a
-       * return with a status code, and a recursive seize of the mutex results
-       * in a deadlock.
+       * The calling thread shall wait to seize the mutex as specified by
+       * spec:/score/mtx/req/seize-wait.
        */
+      /*
+       * The function call left the mutex owned by the calling thread, and a
+       * priority ceiling raised its priority.  Release it so that the
+       * delegated test starts with an unowned mutex and the calling thread at
+       * its normal priority.
+       */
+      T_eq_int( ctx->status, 0 );
       T_eq_int( pthread_mutex_unlock( ctx->mutex ), 0 );
-      ctx->tq_mtx_ctx.base.thread_queue_object = ctx->mutex;
-      ctx->tq_mtx_ctx.base.wait = TQ_WAIT_TIMED;
-      ScoreMtxReqSeizeWait_Run( &ctx->tq_mtx_ctx );
-      break;
-    }
 
-    case CPthreadReqMutexTimedlock_Post_Action_MtxNoneRecursive: {
-      /*
-       * The calling thread shall attempt to seize the mutex referenced by the
-       * `mutex` parameter as specified by spec:/score/mtx/req/seize-wait where
-       * the mutex does not use a locking protocol, the thread queue of the
-       * mutex uses the FIFO discipline, a detected deadlock results in a
-       * return with a status code, and a recursive seize of the mutex is
-       * allowed.
-       */
-      T_eq_int( pthread_mutex_unlock( ctx->mutex ), 0 );
-      ctx->tq_mtx_ctx.base.thread_queue_object = ctx->mutex;
-      ctx->tq_mtx_ctx.base.wait = TQ_WAIT_TIMED;
-      ScoreMtxReqSeizeWait_Run( &ctx->tq_mtx_ctx );
-      break;
-    }
-
-    case CPthreadReqMutexTimedlock_Post_Action_MtxInherit: {
-      /*
-       * The calling thread shall attempt to seize the mutex referenced by the
-       * `mutex` parameter as specified by spec:/score/mtx/req/seize-wait where
-       * the mutex uses the priority inheritance locking protocol, the thread
-       * queue of the mutex uses the priority discipline, a detected deadlock
-       * results in a return with a status code, and a recursive seize of the
-       * mutex results in a deadlock.
-       */
-      T_eq_int( pthread_mutex_unlock( ctx->mutex ), 0 );
-      ctx->tq_mtx_ctx.base.thread_queue_object = ctx->mutex;
-      ctx->tq_mtx_ctx.base.wait = TQ_WAIT_TIMED;
-      ScoreMtxReqSeizeWait_Run( &ctx->tq_mtx_ctx );
-      break;
-    }
-
-    case CPthreadReqMutexTimedlock_Post_Action_MtxInheritRecursive: {
-      /*
-       * The calling thread shall attempt to seize the mutex referenced by the
-       * `mutex` parameter as specified by spec:/score/mtx/req/seize-wait where
-       * the mutex uses the priority inheritance locking protocol, the thread
-       * queue of the mutex uses the priority discipline, a detected deadlock
-       * results in a return with a status code, and a recursive seize of the
-       * mutex is allowed.
-       */
-      T_eq_int( pthread_mutex_unlock( ctx->mutex ), 0 );
-      ctx->tq_mtx_ctx.base.thread_queue_object = ctx->mutex;
-      ctx->tq_mtx_ctx.base.wait = TQ_WAIT_TIMED;
-      ScoreMtxReqSeizeWait_Run( &ctx->tq_mtx_ctx );
-      break;
-    }
-
-    case CPthreadReqMutexTimedlock_Post_Action_MtxCeiling: {
-      /*
-       * The calling thread shall attempt to seize the mutex referenced by the
-       * `mutex` parameter as specified by spec:/score/mtx/req/seize-wait where
-       * the mutex uses the priority ceiling locking protocol, the thread queue
-       * of the mutex uses the priority discipline, a detected deadlock results
-       * in a return with a status code, and a recursive seize of the mutex
-       * results in a deadlock.
-       */
-      T_eq_int( pthread_mutex_unlock( ctx->mutex ), 0 );
-      ctx->tq_mtx_ctx.base.thread_queue_object = ctx->mutex;
-      ctx->tq_mtx_ctx.base.wait = TQ_WAIT_TIMED;
-      ScoreMtxReqSeizeWait_Run( &ctx->tq_mtx_ctx );
-      break;
-    }
-
-    case CPthreadReqMutexTimedlock_Post_Action_MtxCeilingRecursive: {
-      /*
-       * The calling thread shall attempt to seize the mutex referenced by the
-       * `mutex` parameter as specified by spec:/score/mtx/req/seize-wait where
-       * the mutex uses the priority ceiling locking protocol, the thread queue
-       * of the mutex uses the priority discipline, a detected deadlock results
-       * in a return with a status code, and a recursive seize of the mutex is
-       * allowed.
-       */
-      T_eq_int( pthread_mutex_unlock( ctx->mutex ), 0 );
-      ctx->tq_mtx_ctx.base.thread_queue_object = ctx->mutex;
-      ctx->tq_mtx_ctx.base.wait = TQ_WAIT_TIMED;
-      ScoreMtxReqSeizeWait_Run( &ctx->tq_mtx_ctx );
-      break;
-    }
-
-    case CPthreadReqMutexTimedlock_Post_Action_MtxStatic: {
-      /*
-       * The calling thread shall attempt to seize the mutex referenced by the
-       * `mutex` parameter as specified by spec:/score/mtx/req/seize-wait where
-       * the mutex does not use a locking protocol, the thread queue of the
-       * mutex uses the FIFO discipline, a detected deadlock results in a
-       * return with a status code, and a recursive seize of the mutex results
-       * in a deadlock.
-       */
-      T_eq_int( pthread_mutex_unlock( ctx->mutex ), 0 );
-      ctx->tq_mtx_ctx.base.thread_queue_object = ctx->mutex;
       ctx->tq_mtx_ctx.base.wait = TQ_WAIT_TIMED;
       ScoreMtxReqSeizeWait_Run( &ctx->tq_mtx_ctx );
       break;
@@ -745,13 +646,17 @@ static void CPthreadReqMutexTimedlock_Setup(
   CPthreadReqMutexTimedlock_Context *ctx
 )
 {
+  SetSelfPriority( PRIO_NORMAL );
   memset( ctx, 0, sizeof( *ctx ) );
+  ctx->runner = _Thread_Get_executing();
+  ctx->tq_mtx_ctx.base.enqueue_variant = TQ_ENQUEUE_BLOCKS;
+  ctx->tq_mtx_ctx.base.deadlock = TQ_DEADLOCK_STATUS;
+  ctx->tq_mtx_ctx.base.convert_status = TQConvertStatusPOSIX;
   ctx->tq_mtx_ctx.base.enqueue_prepare = TQEnqueuePrepareDefault;
   ctx->tq_mtx_ctx.base.enqueue_done = TQEnqueueDoneDefault;
   ctx->tq_mtx_ctx.base.enqueue = TQEnqueuePOSIXMutex;
   ctx->tq_mtx_ctx.base.surrender = TQSurrenderPOSIXMutex;
   ctx->tq_mtx_ctx.base.get_owner = TQGetOwnerPOSIXMutex;
-  ctx->tq_mtx_ctx.base.convert_status = TQConvertStatusPOSIX;
   TQInitialize( &ctx->tq_mtx_ctx.base );
 }
 
@@ -769,6 +674,7 @@ static void CPthreadReqMutexTimedlock_Teardown(
 )
 {
   TQDestroy( &ctx->tq_mtx_ctx.base );
+  RestoreRunnerPriority();
 }
 
 static void CPthreadReqMutexTimedlock_Teardown_Wrap( void *arg )
@@ -784,12 +690,12 @@ static void CPthreadReqMutexTimedlock_Prepare(
   CPthreadReqMutexTimedlock_Context *ctx
 )
 {
-  ctx->mutex_initialized = false;
+  ctx->protocol = PTHREAD_PRIO_NONE;
   ctx->type = PTHREAD_MUTEX_DEFAULT;
-  ctx->tq_mtx_ctx.recursive = TQ_MTX_RECURSIVE_DEADLOCK;
-  ctx->direct = false;
+  ctx->mutex_initialized = false;
   ctx->owner_other = false;
   ctx->scheduler_other = false;
+  ctx->status = -1;
   T_eq_int( clock_gettime( CLOCK_REALTIME, &ctx->abstime ), 0 );
   ctx->abstime.tv_sec += 3600;
 }
@@ -806,100 +712,99 @@ static void CPthreadReqMutexTimedlock_Cleanup(
 )
 {
   if ( ctx->scheduler_other ) {
-    SetSelfScheduler( SCHEDULER_A_ID, PRIO_VERY_LOW );
+    SetSelfScheduler( SCHEDULER_A_ID, PRIO_NORMAL );
+  }
+
+  if ( ctx->owner_other ) {
+    TQSend( &ctx->tq_mtx_ctx.base, TQ_BLOCKER_B, TQ_EVENT_SURRENDER );
   }
 
   if ( ctx->mutex_initialized ) {
-    if ( ctx->owner_other ) {
-      TQSend( &ctx->tq_mtx_ctx.base, TQ_BLOCKER_B, TQ_EVENT_SURRENDER );
-    } else if ( ctx->direct && ctx->status == 0 ) {
-      T_eq_int( pthread_mutex_unlock( &ctx->mutex_storage ), 0 );
+    /*
+     * The mutex may be still owned by the calling thread, possibly with
+     * recursive locks.
+     */
+    while ( pthread_mutex_unlock( ctx->mutex ) == 0 ) {
+      /* Release the mutex including all recursive locks */
     }
 
-    T_eq_int( pthread_mutex_destroy( &ctx->mutex_storage ), 0 );
+    T_eq_int( pthread_mutex_destroy( &ctx->mutex_obj ), 0 );
   }
-
-  ctx->mutex_initialized = false;
 }
 
 /* clang-format off */
 
 static const CPthreadReqMutexTimedlock_Entry
 CPthreadReqMutexTimedlock_Entries[] = {
-  { 0, 0, 0, 1, 0, 1, 1, 1, CPthreadReqMutexTimedlock_Post_Status_Inval,
+  { 1, 0, 0, 0, 0, 0, 0, CPthreadReqMutexTimedlock_Post_Status_NA,
+    CPthreadReqMutexTimedlock_Post_Owner_NA,
     CPthreadReqMutexTimedlock_Post_Action_NA },
-  { 0, 0, 0, 1, 0, 1, 1, 1, CPthreadReqMutexTimedlock_Post_Status_Ok,
-    CPthreadReqMutexTimedlock_Post_Action_MtxNone },
-  { 0, 0, 0, 1, 0, 1, 1, 1, CPthreadReqMutexTimedlock_Post_Status_Ok,
-    CPthreadReqMutexTimedlock_Post_Action_MtxInherit },
-  { 0, 0, 0, 1, 0, 1, 1, 1, CPthreadReqMutexTimedlock_Post_Status_Ok,
-    CPthreadReqMutexTimedlock_Post_Action_MtxCeiling },
-  { 0, 0, 0, 0, 0, 0, 0, 1, CPthreadReqMutexTimedlock_Post_Status_Ok,
+  { 0, 0, 0, 0, 0, 0, 1, CPthreadReqMutexTimedlock_Post_Status_Ok,
+    CPthreadReqMutexTimedlock_Post_Owner_Caller,
     CPthreadReqMutexTimedlock_Post_Action_NA },
-  { 0, 0, 0, 0, 0, 1, 1, 1, CPthreadReqMutexTimedlock_Post_Status_Ok,
+  { 0, 0, 0, 0, 0, 0, 1, CPthreadReqMutexTimedlock_Post_Status_TimedOut,
+    CPthreadReqMutexTimedlock_Post_Owner_Other,
     CPthreadReqMutexTimedlock_Post_Action_NA },
-  { 0, 0, 0, 0, 0, 0, 0, 1, CPthreadReqMutexTimedlock_Post_Status_TimedOut,
+  { 0, 0, 0, 0, 0, 0, 1, CPthreadReqMutexTimedlock_Post_Status_Inval,
+    CPthreadReqMutexTimedlock_Post_Owner_Other,
     CPthreadReqMutexTimedlock_Post_Action_NA },
-  { 0, 0, 0, 0, 0, 0, 0, 1, CPthreadReqMutexTimedlock_Post_Status_Inval,
+  { 0, 0, 0, 0, 0, 1, 1, CPthreadReqMutexTimedlock_Post_Status_NA,
+    CPthreadReqMutexTimedlock_Post_Owner_NA,
+    CPthreadReqMutexTimedlock_Post_Action_MtxSeizeWait },
+  { 0, 0, 0, 0, 0, 1, 0, CPthreadReqMutexTimedlock_Post_Status_NA,
+    CPthreadReqMutexTimedlock_Post_Owner_NA,
+    CPthreadReqMutexTimedlock_Post_Action_MtxSeizeWait },
+#if defined(RTEMS_SMP)
+  { 0, 0, 0, 0, 0, 1, 0, CPthreadReqMutexTimedlock_Post_Status_Inval,
+    CPthreadReqMutexTimedlock_Post_Owner_None,
     CPthreadReqMutexTimedlock_Post_Action_NA },
-  { 0, 0, 0, 0, 0, 1, 1, 1, CPthreadReqMutexTimedlock_Post_Status_Inval,
+#else
+  { 1, 0, 0, 0, 0, 1, 0, CPthreadReqMutexTimedlock_Post_Status_NA,
+    CPthreadReqMutexTimedlock_Post_Owner_NA,
     CPthreadReqMutexTimedlock_Post_Action_NA },
-  { 0, 0, 0, 0, 0, 0, 1, 1, CPthreadReqMutexTimedlock_Post_Status_Ok,
-    CPthreadReqMutexTimedlock_Post_Action_MtxNone },
-  { 0, 0, 0, 0, 0, 0, 1, 1, CPthreadReqMutexTimedlock_Post_Status_Ok,
-    CPthreadReqMutexTimedlock_Post_Action_MtxNoneRecursive },
-  { 0, 0, 0, 0, 0, 0, 1, 1, CPthreadReqMutexTimedlock_Post_Status_Ok,
-    CPthreadReqMutexTimedlock_Post_Action_MtxInherit },
-  { 0, 0, 0, 0, 0, 0, 1, 1, CPthreadReqMutexTimedlock_Post_Status_Ok,
-    CPthreadReqMutexTimedlock_Post_Action_MtxInheritRecursive },
-  { 0, 0, 0, 0, 0, 0, 1, 0, CPthreadReqMutexTimedlock_Post_Status_Inval,
+#endif
+  { 0, 1, 1, 0, 1, 1, 1, CPthreadReqMutexTimedlock_Post_Status_Inval,
+    CPthreadReqMutexTimedlock_Post_Owner_NA,
     CPthreadReqMutexTimedlock_Post_Action_NA },
-  { 0, 0, 0, 0, 0, 0, 1, 1, CPthreadReqMutexTimedlock_Post_Status_Ok,
-    CPthreadReqMutexTimedlock_Post_Action_MtxCeiling },
-  { 0, 0, 0, 0, 0, 0, 1, 1, CPthreadReqMutexTimedlock_Post_Status_Ok,
-    CPthreadReqMutexTimedlock_Post_Action_MtxCeilingRecursive },
-  { 0, 0, 0, 0, 0, 0, 1, 0, CPthreadReqMutexTimedlock_Post_Status_Ok,
-    CPthreadReqMutexTimedlock_Post_Action_MtxCeiling },
-  { 0, 0, 0, 0, 0, 0, 1, 0, CPthreadReqMutexTimedlock_Post_Status_Ok,
-    CPthreadReqMutexTimedlock_Post_Action_MtxCeilingRecursive }
+  { 0, 1, 1, 0, 0, 0, 1, CPthreadReqMutexTimedlock_Post_Status_Ok,
+    CPthreadReqMutexTimedlock_Post_Owner_Caller,
+    CPthreadReqMutexTimedlock_Post_Action_NA },
+  { 0, 1, 1, 0, 0, 1, 1, CPthreadReqMutexTimedlock_Post_Status_NA,
+    CPthreadReqMutexTimedlock_Post_Owner_NA,
+    CPthreadReqMutexTimedlock_Post_Action_MtxSeizeWait },
+  { 0, 1, 1, 0, 0, 0, 1, CPthreadReqMutexTimedlock_Post_Status_TimedOut,
+    CPthreadReqMutexTimedlock_Post_Owner_Other,
+    CPthreadReqMutexTimedlock_Post_Action_NA },
+  { 0, 1, 1, 0, 0, 0, 1, CPthreadReqMutexTimedlock_Post_Status_Inval,
+    CPthreadReqMutexTimedlock_Post_Owner_Other,
+    CPthreadReqMutexTimedlock_Post_Action_NA }
 };
 
 static const uint8_t
 CPthreadReqMutexTimedlock_Map[] = {
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
-  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 9, 9, 9, 9, 4, 4, 6, 6, 4, 4, 7, 7, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1,
-  1, 1, 1, 1, 1, 1, 10, 10, 10, 10, 4, 4, 6, 6, 4, 4, 7, 7, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
-  1, 1, 1, 1, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-  5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 9, 9, 9, 9,
-  4, 4, 6, 6, 4, 4, 7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 10, 10, 10, 10, 4, 4,
-  6, 6, 4, 4, 7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 11, 11, 11, 11, 4, 4, 6, 6,
-  4, 4, 7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 12, 12, 12, 12, 4, 4, 6, 6, 4, 4,
-  7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2,
-  2, 2, 2, 2, 2, 2, 2, 2, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2,
-  2, 2, 2, 2, 11, 11, 11, 11, 4, 4, 6, 6, 4, 4, 7, 7, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-  2, 2, 12, 12, 12, 12, 4, 4, 6, 6, 4, 4, 7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-  16, 13, 16, 13, 4, 4, 6, 6, 4, 4, 7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 17,
-  13, 17, 13, 4, 4, 6, 6, 4, 4, 7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 8, 8, 8, 8,
-  8, 8, 8, 8, 8, 8, 8, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 8, 8, 8, 8, 8, 8, 8, 8,
-  8, 8, 8, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 14, 14, 14, 14, 4, 4, 6, 6, 4, 4,
-  7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 15, 15, 15, 15, 4, 4, 6, 6, 4, 4, 7, 7
+  7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 0,
+  0, 0, 8, 0, 10, 0, 8, 0, 11, 0, 4, 0, 0, 0, 1, 0, 2, 0, 1, 0, 3, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 1, 0, 2, 0, 1, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 4, 0, 0, 0, 1, 0, 2, 0, 1, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4,
+  0, 0, 0, 1, 0, 2, 0, 1, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 1,
+  0, 2, 0, 1, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 1, 0, 2, 0, 1,
+  0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 1, 0, 2, 0, 1, 0, 3, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 1, 0, 2, 0, 1, 0, 3, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 5, 6, 0, 0, 1, 0, 2, 0, 1, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 5, 6, 0, 0, 1, 0, 2, 0, 1, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 6, 0,
+  0, 1, 0, 2, 0, 1, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 6, 0, 0, 1, 0, 2,
+  0, 1, 0, 3, 0
 };
 
 /* clang-format on */
@@ -930,56 +835,13 @@ static T_fixture CPthreadReqMutexTimedlock_Fixture = {
   .initial_context = &CPthreadReqMutexTimedlock_Instance
 };
 
-static const uint16_t CPthreadReqMutexTimedlock_Weights[] =
-  { 288, 96, 48, 12, 4, 2, 1 };
-
-static void CPthreadReqMutexTimedlock_Skip(
-  CPthreadReqMutexTimedlock_Context *ctx,
-  size_t                             index
-)
-{
-  switch ( index + 1 ) {
-    case 1:
-      ctx->Map.pci[ 1 ] = CPthreadReqMutexTimedlock_Pre_Ceiling_NA - 1;
-      /* Fall through */
-    case 2:
-      ctx->Map.pci[ 2 ] = CPthreadReqMutexTimedlock_Pre_Type_NA - 1;
-      /* Fall through */
-    case 3:
-      ctx->Map.pci[ 3 ] = CPthreadReqMutexTimedlock_Pre_Mutex_NA - 1;
-      /* Fall through */
-    case 4:
-      ctx->Map.pci[ 4 ] = CPthreadReqMutexTimedlock_Pre_Timeout_NA - 1;
-      /* Fall through */
-    case 5:
-      ctx->Map.pci[ 5 ] = CPthreadReqMutexTimedlock_Pre_Owner_NA - 1;
-      /* Fall through */
-    case 6:
-      ctx->Map.pci[ 6 ] = CPthreadReqMutexTimedlock_Pre_Scheduler_NA - 1;
-      break;
-  }
-}
-
 static inline CPthreadReqMutexTimedlock_Entry
 CPthreadReqMutexTimedlock_PopEntry( CPthreadReqMutexTimedlock_Context *ctx )
 {
   size_t index;
 
-  if ( ctx->Map.skip ) {
-    size_t i;
-
-    ctx->Map.skip = false;
-    index = 0;
-
-    for ( i = 0; i < 7; ++i ) {
-      index += CPthreadReqMutexTimedlock_Weights[ i ] * ctx->Map.pci[ i ];
-    }
-  } else {
-    index = ctx->Map.index;
-  }
-
+  index = ctx->Map.index;
   ctx->Map.index = index + 1;
-
   return CPthreadReqMutexTimedlock_Entries
     [ CPthreadReqMutexTimedlock_Map[ index ] ];
 }
@@ -988,33 +850,36 @@ static void CPthreadReqMutexTimedlock_SetPreConditionStates(
   CPthreadReqMutexTimedlock_Context *ctx
 )
 {
-  ctx->Map.pcs[ 0 ] = ctx->Map.pci[ 0 ];
-  ctx->Map.pcs[ 1 ] = ctx->Map.pci[ 1 ];
-
-  if ( ctx->Map.entry.Pre_Type_NA ) {
-    ctx->Map.pcs[ 2 ] = CPthreadReqMutexTimedlock_Pre_Type_NA;
+  if ( ctx->Map.entry.Pre_Protocol_NA ) {
+    ctx->Map.pcs[ 0 ] = CPthreadReqMutexTimedlock_Pre_Protocol_NA;
   } else {
-    ctx->Map.pcs[ 2 ] = ctx->Map.pci[ 2 ];
+    ctx->Map.pcs[ 0 ] = ctx->Map.pci[ 0 ];
   }
 
-  ctx->Map.pcs[ 3 ] = ctx->Map.pci[ 3 ];
+  if ( ctx->Map.entry.Pre_Type_NA ) {
+    ctx->Map.pcs[ 1 ] = CPthreadReqMutexTimedlock_Pre_Type_NA;
+  } else {
+    ctx->Map.pcs[ 1 ] = ctx->Map.pci[ 1 ];
+  }
+
+  ctx->Map.pcs[ 2 ] = ctx->Map.pci[ 2 ];
 
   if ( ctx->Map.entry.Pre_Timeout_NA ) {
-    ctx->Map.pcs[ 4 ] = CPthreadReqMutexTimedlock_Pre_Timeout_NA;
+    ctx->Map.pcs[ 3 ] = CPthreadReqMutexTimedlock_Pre_Timeout_NA;
+  } else {
+    ctx->Map.pcs[ 3 ] = ctx->Map.pci[ 3 ];
+  }
+
+  if ( ctx->Map.entry.Pre_Owner_NA ) {
+    ctx->Map.pcs[ 4 ] = CPthreadReqMutexTimedlock_Pre_Owner_NA;
   } else {
     ctx->Map.pcs[ 4 ] = ctx->Map.pci[ 4 ];
   }
 
-  if ( ctx->Map.entry.Pre_Owner_NA ) {
-    ctx->Map.pcs[ 5 ] = CPthreadReqMutexTimedlock_Pre_Owner_NA;
+  if ( ctx->Map.entry.Pre_Scheduler_NA ) {
+    ctx->Map.pcs[ 5 ] = CPthreadReqMutexTimedlock_Pre_Scheduler_NA;
   } else {
     ctx->Map.pcs[ 5 ] = ctx->Map.pci[ 5 ];
-  }
-
-  if ( ctx->Map.entry.Pre_Scheduler_NA ) {
-    ctx->Map.pcs[ 6 ] = CPthreadReqMutexTimedlock_Pre_Scheduler_NA;
-  } else {
-    ctx->Map.pcs[ 6 ] = ctx->Map.pci[ 6 ];
   }
 }
 
@@ -1023,29 +888,17 @@ static void CPthreadReqMutexTimedlock_TestVariant(
 )
 {
   CPthreadReqMutexTimedlock_Pre_Protocol_Prepare( ctx, ctx->Map.pcs[ 0 ] );
-  CPthreadReqMutexTimedlock_Pre_Ceiling_Prepare( ctx, ctx->Map.pcs[ 1 ] );
-
-  if ( ctx->Map.skip ) {
-    CPthreadReqMutexTimedlock_Skip( ctx, 1 );
-    return;
-  }
-
-  CPthreadReqMutexTimedlock_Pre_Type_Prepare( ctx, ctx->Map.pcs[ 2 ] );
-  CPthreadReqMutexTimedlock_Pre_Mutex_Prepare( ctx, ctx->Map.pcs[ 3 ] );
-  CPthreadReqMutexTimedlock_Pre_Timeout_Prepare( ctx, ctx->Map.pcs[ 4 ] );
-  CPthreadReqMutexTimedlock_Pre_Owner_Prepare( ctx, ctx->Map.pcs[ 5 ] );
-  CPthreadReqMutexTimedlock_Pre_Scheduler_Prepare( ctx, ctx->Map.pcs[ 6 ] );
-
-  if ( ctx->Map.skip ) {
-    CPthreadReqMutexTimedlock_Skip( ctx, 6 );
-    return;
-  }
-
+  CPthreadReqMutexTimedlock_Pre_Type_Prepare( ctx, ctx->Map.pcs[ 1 ] );
+  CPthreadReqMutexTimedlock_Pre_Mutex_Prepare( ctx, ctx->Map.pcs[ 2 ] );
+  CPthreadReqMutexTimedlock_Pre_Timeout_Prepare( ctx, ctx->Map.pcs[ 3 ] );
+  CPthreadReqMutexTimedlock_Pre_Owner_Prepare( ctx, ctx->Map.pcs[ 4 ] );
+  CPthreadReqMutexTimedlock_Pre_Scheduler_Prepare( ctx, ctx->Map.pcs[ 5 ] );
   CPthreadReqMutexTimedlock_Action( ctx );
   CPthreadReqMutexTimedlock_Post_Status_Check(
     ctx,
     ctx->Map.entry.Post_Status
   );
+  CPthreadReqMutexTimedlock_Post_Owner_Check( ctx, ctx->Map.entry.Post_Owner );
   CPthreadReqMutexTimedlock_Post_Action_Check(
     ctx,
     ctx->Map.entry.Post_Action
@@ -1065,7 +918,6 @@ T_TEST_CASE_FIXTURE(
   ctx = T_fixture_context();
   ctx->Map.in_action_loop = true;
   ctx->Map.index = 0;
-  ctx->Map.skip = false;
 
   for (
     ctx->Map.pci[ 0 ] = CPthreadReqMutexTimedlock_Pre_Protocol_None;
@@ -1073,42 +925,40 @@ T_TEST_CASE_FIXTURE(
     ++ctx->Map.pci[ 0 ]
   ) {
     for (
-      ctx->Map.pci[ 1 ] = CPthreadReqMutexTimedlock_Pre_Ceiling_Satisfied;
-      ctx->Map.pci[ 1 ] < CPthreadReqMutexTimedlock_Pre_Ceiling_NA;
+      ctx->Map.pci[ 1 ] = CPthreadReqMutexTimedlock_Pre_Type_Normal;
+      ctx->Map.pci[ 1 ] < CPthreadReqMutexTimedlock_Pre_Type_NA;
       ++ctx->Map.pci[ 1 ]
     ) {
       for (
-        ctx->Map.pci[ 2 ] = CPthreadReqMutexTimedlock_Pre_Type_Normal;
-        ctx->Map.pci[ 2 ] < CPthreadReqMutexTimedlock_Pre_Type_NA;
+        ctx->Map.pci[ 2 ] = CPthreadReqMutexTimedlock_Pre_Mutex_Null;
+        ctx->Map.pci[ 2 ] < CPthreadReqMutexTimedlock_Pre_Mutex_NA;
         ++ctx->Map.pci[ 2 ]
       ) {
         for (
-          ctx->Map.pci[ 3 ] = CPthreadReqMutexTimedlock_Pre_Mutex_Null;
-          ctx->Map.pci[ 3 ] < CPthreadReqMutexTimedlock_Pre_Mutex_NA;
+          ctx->Map.pci[ 3 ] = CPthreadReqMutexTimedlock_Pre_Timeout_Future;
+          ctx->Map.pci[ 3 ] < CPthreadReqMutexTimedlock_Pre_Timeout_NA;
           ++ctx->Map.pci[ 3 ]
         ) {
           for (
-            ctx->Map.pci[ 4 ] = CPthreadReqMutexTimedlock_Pre_Timeout_Future;
-            ctx->Map.pci[ 4 ] < CPthreadReqMutexTimedlock_Pre_Timeout_NA;
+            ctx->Map.pci[ 4 ] = CPthreadReqMutexTimedlock_Pre_Owner_None;
+            ctx->Map.pci[ 4 ] < CPthreadReqMutexTimedlock_Pre_Owner_NA;
             ++ctx->Map.pci[ 4 ]
           ) {
             for (
-              ctx->Map.pci[ 5 ] = CPthreadReqMutexTimedlock_Pre_Owner_None;
-              ctx->Map.pci[ 5 ] < CPthreadReqMutexTimedlock_Pre_Owner_NA;
+              ctx->Map.pci[ 5 ] = CPthreadReqMutexTimedlock_Pre_Scheduler_Home;
+              ctx->Map.pci[ 5 ] < CPthreadReqMutexTimedlock_Pre_Scheduler_NA;
               ++ctx->Map.pci[ 5 ]
             ) {
-              for (
-                ctx->Map.pci[ 6 ] =
-                  CPthreadReqMutexTimedlock_Pre_Scheduler_Home;
-                ctx->Map.pci[ 6 ] < CPthreadReqMutexTimedlock_Pre_Scheduler_NA;
-                ++ctx->Map.pci[ 6 ]
-              ) {
-                ctx->Map.entry = CPthreadReqMutexTimedlock_PopEntry( ctx );
-                CPthreadReqMutexTimedlock_SetPreConditionStates( ctx );
-                CPthreadReqMutexTimedlock_Prepare( ctx );
-                CPthreadReqMutexTimedlock_TestVariant( ctx );
-                CPthreadReqMutexTimedlock_Cleanup( ctx );
+              ctx->Map.entry = CPthreadReqMutexTimedlock_PopEntry( ctx );
+
+              if ( ctx->Map.entry.Skip ) {
+                continue;
               }
+
+              CPthreadReqMutexTimedlock_SetPreConditionStates( ctx );
+              CPthreadReqMutexTimedlock_Prepare( ctx );
+              CPthreadReqMutexTimedlock_TestVariant( ctx );
+              CPthreadReqMutexTimedlock_Cleanup( ctx );
             }
           }
         }

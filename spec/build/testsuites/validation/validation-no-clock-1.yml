@@ -26,6 +26,7 @@ source:
 - testsuites/validation/tc-pthread-mutex-getprioceiling.c
 - testsuites/validation/tc-pthread-mutex-lock.c
 - testsuites/validation/tc-pthread-mutex-setprioceiling.c
+- testsuites/validation/tc-pthread-mutex-timedlock-timeout.c
 - testsuites/validation/tc-pthread-mutex-timedlock.c
 - testsuites/validation/tc-pthread-mutex-trylock.c
 - testsuites/validation/tc-pthread-mutex-unlock.c
