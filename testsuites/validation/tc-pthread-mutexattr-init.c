@@ -242,8 +242,8 @@ static void CPthreadReqMutexattrInit_Post_Protocol_Check(
   switch ( state ) {
     case CPthreadReqMutexattrInit_Post_Protocol_None: {
       /*
-       * The protocol attribute of the mutex attributes object referenced by
-       * the `attr` parameter shall be PTHREAD_PRIO_NONE.
+       * The mutex protocol attribute of the mutex attributes object referenced
+       * by the `attr` parameter shall be PTHREAD_PRIO_NONE.
        */
       T_eq_int( ctx->attr_obj.protocol, PTHREAD_PRIO_NONE );
       break;
@@ -282,8 +282,8 @@ static void CPthreadReqMutexattrInit_Post_Type_Check(
   switch ( state ) {
     case CPthreadReqMutexattrInit_Post_Type_Default: {
       /*
-       * The type attribute of the mutex attributes object referenced by the
-       * `attr` parameter shall be PTHREAD_MUTEX_DEFAULT.
+       * The mutex type attribute of the mutex attributes object referenced by
+       * the `attr` parameter shall be PTHREAD_MUTEX_DEFAULT.
        */
       T_eq_int( ctx->attr_obj.type, PTHREAD_MUTEX_DEFAULT );
       break;
@@ -302,7 +302,7 @@ static void CPthreadReqMutexattrInit_Post_Ceiling_Check(
   switch ( state ) {
     case CPthreadReqMutexattrInit_Post_Ceiling_Max: {
       /*
-       * The priority ceiling attribute of the mutex attributes object
+       * The mutex priority ceiling attribute of the mutex attributes object
        * referenced by the `attr` parameter shall be the maximum of the type
        * int.
        */

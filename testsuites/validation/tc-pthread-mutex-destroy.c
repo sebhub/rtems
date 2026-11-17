@@ -86,19 +86,13 @@ typedef enum {
   CPthreadReqMutexDestroy_Post_Object_NA
 } CPthreadReqMutexDestroy_Post_Object;
 
-typedef enum {
-  CPthreadReqMutexDestroy_Post_Lock_Released,
-  CPthreadReqMutexDestroy_Post_Lock_NA
-} CPthreadReqMutexDestroy_Post_Lock;
-
 typedef struct {
-  uint16_t Skip : 1;
-  uint16_t Pre_Mutex_NA : 1;
-  uint16_t Pre_Kind_NA : 1;
-  uint16_t Pre_Locked_NA : 1;
-  uint16_t Post_Status : 2;
-  uint16_t Post_Object : 2;
-  uint16_t Post_Lock : 1;
+  uint8_t Skip : 1;
+  uint8_t Pre_Mutex_NA : 1;
+  uint8_t Pre_Kind_NA : 1;
+  uint8_t Pre_Locked_NA : 1;
+  uint8_t Post_Status : 2;
+  uint8_t Post_Object : 2;
 } CPthreadReqMutexDestroy_Entry;
 
 /**
@@ -357,12 +351,13 @@ static void CPthreadReqMutexDestroy_Post_Object_Check(
 
     case CPthreadReqMutexDestroy_Post_Object_Nop: {
       /*
-       * The object referenced by the `mutex` parameter, other than its SMP
-       * lock, shall not be modified.
+       * The mutex referenced by the `mutex` parameter shall not be modified.
        */
       pthread_mutex_t expected;
 
       memcpy( &expected, &ctx->mutex_before, sizeof( expected ) );
+
+      /* The call acquires and releases the lock of the thread queue. */
       #if defined( RTEMS_SMP )
       memcpy(
         &_POSIX_Mutex_Get( &expected )->Recursive.Mutex.Queue.Queue.Lock,
@@ -375,32 +370,6 @@ static void CPthreadReqMutexDestroy_Post_Object_Check(
     }
 
     case CPthreadReqMutexDestroy_Post_Object_NA:
-      break;
-  }
-}
-
-static void CPthreadReqMutexDestroy_Post_Lock_Check(
-  CPthreadReqMutexDestroy_Context  *ctx,
-  CPthreadReqMutexDestroy_Post_Lock state
-)
-{
-  switch ( state ) {
-    case CPthreadReqMutexDestroy_Post_Lock_Released: {
-      /*
-       * The SMP lock of the mutex referenced by the `mutex` parameter shall be
-       * released.
-       */
-      #if defined( RTEMS_SMP )
-      T_true( TicketLockIsAvailable(
-        &MutexOf( ctx )->Recursive.Mutex.Queue.Queue.Lock
-      ) );
-      #else
-      (void) ctx;
-      #endif
-      break;
-    }
-
-    case CPthreadReqMutexDestroy_Post_Lock_NA:
       break;
   }
 }
@@ -434,41 +403,17 @@ static void CPthreadReqMutexDestroy_Cleanup(
 static const CPthreadReqMutexDestroy_Entry
 CPthreadReqMutexDestroy_Entries[] = {
   { 1, 0, 0, 0, CPthreadReqMutexDestroy_Post_Status_NA,
-    CPthreadReqMutexDestroy_Post_Object_NA,
-    CPthreadReqMutexDestroy_Post_Lock_NA },
+    CPthreadReqMutexDestroy_Post_Object_NA },
   { 0, 0, 0, 1, CPthreadReqMutexDestroy_Post_Status_Inval,
-    CPthreadReqMutexDestroy_Post_Object_Nop,
-    CPthreadReqMutexDestroy_Post_Lock_NA },
-#if defined(RTEMS_SMP)
+    CPthreadReqMutexDestroy_Post_Object_Nop },
   { 0, 0, 0, 0, CPthreadReqMutexDestroy_Post_Status_Busy,
-    CPthreadReqMutexDestroy_Post_Object_Nop,
-    CPthreadReqMutexDestroy_Post_Lock_Released },
-#else
-  { 0, 0, 0, 0, CPthreadReqMutexDestroy_Post_Status_Busy,
-    CPthreadReqMutexDestroy_Post_Object_Nop,
-    CPthreadReqMutexDestroy_Post_Lock_NA },
-#endif
-#if defined(RTEMS_SMP)
+    CPthreadReqMutexDestroy_Post_Object_Nop },
   { 0, 0, 0, 0, CPthreadReqMutexDestroy_Post_Status_Ok,
-    CPthreadReqMutexDestroy_Post_Object_Destroyed,
-    CPthreadReqMutexDestroy_Post_Lock_Released },
-#else
-  { 0, 0, 0, 0, CPthreadReqMutexDestroy_Post_Status_Ok,
-    CPthreadReqMutexDestroy_Post_Object_Destroyed,
-    CPthreadReqMutexDestroy_Post_Lock_NA },
-#endif
-#if defined(RTEMS_SMP)
+    CPthreadReqMutexDestroy_Post_Object_Destroyed },
   { 0, 0, 0, 1, CPthreadReqMutexDestroy_Post_Status_Ok,
-    CPthreadReqMutexDestroy_Post_Object_Destroyed,
-    CPthreadReqMutexDestroy_Post_Lock_Released },
-#else
-  { 0, 0, 0, 1, CPthreadReqMutexDestroy_Post_Status_Ok,
-    CPthreadReqMutexDestroy_Post_Object_Destroyed,
-    CPthreadReqMutexDestroy_Post_Lock_NA },
-#endif
+    CPthreadReqMutexDestroy_Post_Object_Destroyed },
   { 0, 0, 1, 1, CPthreadReqMutexDestroy_Post_Status_Inval,
-    CPthreadReqMutexDestroy_Post_Object_NA,
-    CPthreadReqMutexDestroy_Post_Lock_NA }
+    CPthreadReqMutexDestroy_Post_Object_NA }
 };
 
 static const uint8_t
@@ -545,7 +490,6 @@ static void CPthreadReqMutexDestroy_TestVariant(
   CPthreadReqMutexDestroy_Action( ctx );
   CPthreadReqMutexDestroy_Post_Status_Check( ctx, ctx->Map.entry.Post_Status );
   CPthreadReqMutexDestroy_Post_Object_Check( ctx, ctx->Map.entry.Post_Object );
-  CPthreadReqMutexDestroy_Post_Lock_Check( ctx, ctx->Map.entry.Post_Lock );
 }
 
 /**

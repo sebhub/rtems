@@ -135,13 +135,11 @@ typedef enum {
 typedef enum {
   CPthreadReqMutexInit_Post_Ceiling_Maximum,
   CPthreadReqMutexInit_Post_Ceiling_Valid,
-  CPthreadReqMutexInit_Post_Ceiling_None,
   CPthreadReqMutexInit_Post_Ceiling_NA
 } CPthreadReqMutexInit_Post_Ceiling;
 
 typedef enum {
   CPthreadReqMutexInit_Post_Scheduler_Home,
-  CPthreadReqMutexInit_Post_Scheduler_None,
   CPthreadReqMutexInit_Post_Scheduler_NA
 } CPthreadReqMutexInit_Post_Scheduler;
 
@@ -164,7 +162,7 @@ typedef struct {
   uint32_t Post_Recursive : 2;
   uint32_t Post_Owner : 1;
   uint32_t Post_Ceiling : 2;
-  uint32_t Post_Scheduler : 2;
+  uint32_t Post_Scheduler : 1;
   uint32_t Post_AttrObj : 1;
 } CPthreadReqMutexInit_Entry;
 
@@ -748,8 +746,8 @@ static void CPthreadReqMutexInit_Post_Ceiling_Check(
   switch ( state ) {
     case CPthreadReqMutexInit_Post_Ceiling_Maximum: {
       /*
-       * The priority ceiling of the mutex initialized by the call shall be the
-       * highest thread priority.
+       * The mutex priority ceiling attribute of the mutex initialized by the
+       * call shall be the maximum thread priority.
        */
       T_eq_u64(
         _POSIX_Mutex_Get_priority( _POSIX_Mutex_Get( &ctx->mutex_obj ) ),
@@ -760,25 +758,13 @@ static void CPthreadReqMutexInit_Post_Ceiling_Check(
 
     case CPthreadReqMutexInit_Post_Ceiling_Valid: {
       /*
-       * The priority ceiling of the mutex initialized by the call shall be the
-       * priority which corresponds to the mutex priority ceiling attribute of
-       * the mutex attributes object.
+       * The mutex priority ceiling attribute of the mutex initialized by the
+       * call shall be the mutex priority ceiling attribute of the mutex
+       * attributes object.
        */
       T_eq_u64(
         _POSIX_Mutex_Get_priority( _POSIX_Mutex_Get( &ctx->mutex_obj ) ),
         _Scheduler_Map_priority( ctx->scheduler, PRIO_HIGH )
-      );
-      break;
-    }
-
-    case CPthreadReqMutexInit_Post_Ceiling_None: {
-      /*
-       * The priority ceiling of the mutex initialized by the call shall be
-       * zero.
-       */
-      T_eq_u64(
-        _POSIX_Mutex_Get_priority( _POSIX_Mutex_Get( &ctx->mutex_obj ) ),
-        0
       );
       break;
     }
@@ -803,14 +789,6 @@ static void CPthreadReqMutexInit_Post_Scheduler_Check(
         _POSIX_Mutex_Get( &ctx->mutex_obj )->scheduler,
         ctx->scheduler
       );
-      break;
-    }
-
-    case CPthreadReqMutexInit_Post_Scheduler_None: {
-      /*
-       * The mutex initialized by the call shall have no scheduler.
-       */
-      T_null( _POSIX_Mutex_Get( &ctx->mutex_obj )->scheduler );
       break;
     }
 
@@ -935,17 +913,15 @@ CPthreadReqMutexInit_Entries[] = {
     CPthreadReqMutexInit_Post_MutexObj_Initialized,
     CPthreadReqMutexInit_Post_Protocol_None,
     CPthreadReqMutexInit_Post_Recursive_No,
-    CPthreadReqMutexInit_Post_Owner_None,
-    CPthreadReqMutexInit_Post_Ceiling_None,
-    CPthreadReqMutexInit_Post_Scheduler_None,
+    CPthreadReqMutexInit_Post_Owner_None, CPthreadReqMutexInit_Post_Ceiling_NA,
+    CPthreadReqMutexInit_Post_Scheduler_NA,
     CPthreadReqMutexInit_Post_AttrObj_Nop },
   { 0, 0, 0, 0, 0, 0, 0, CPthreadReqMutexInit_Post_Status_Ok,
     CPthreadReqMutexInit_Post_MutexObj_Initialized,
     CPthreadReqMutexInit_Post_Protocol_Inherit,
     CPthreadReqMutexInit_Post_Recursive_No,
-    CPthreadReqMutexInit_Post_Owner_None,
-    CPthreadReqMutexInit_Post_Ceiling_None,
-    CPthreadReqMutexInit_Post_Scheduler_None,
+    CPthreadReqMutexInit_Post_Owner_None, CPthreadReqMutexInit_Post_Ceiling_NA,
+    CPthreadReqMutexInit_Post_Scheduler_NA,
     CPthreadReqMutexInit_Post_AttrObj_Nop },
   { 0, 0, 0, 0, 1, 0, 0, CPthreadReqMutexInit_Post_Status_Inval,
     CPthreadReqMutexInit_Post_MutexObj_Nop,
@@ -965,17 +941,15 @@ CPthreadReqMutexInit_Entries[] = {
     CPthreadReqMutexInit_Post_MutexObj_Initialized,
     CPthreadReqMutexInit_Post_Protocol_None,
     CPthreadReqMutexInit_Post_Recursive_Yes,
-    CPthreadReqMutexInit_Post_Owner_None,
-    CPthreadReqMutexInit_Post_Ceiling_None,
-    CPthreadReqMutexInit_Post_Scheduler_None,
+    CPthreadReqMutexInit_Post_Owner_None, CPthreadReqMutexInit_Post_Ceiling_NA,
+    CPthreadReqMutexInit_Post_Scheduler_NA,
     CPthreadReqMutexInit_Post_AttrObj_Nop },
   { 0, 0, 0, 0, 0, 0, 0, CPthreadReqMutexInit_Post_Status_Ok,
     CPthreadReqMutexInit_Post_MutexObj_Initialized,
     CPthreadReqMutexInit_Post_Protocol_Inherit,
     CPthreadReqMutexInit_Post_Recursive_Yes,
-    CPthreadReqMutexInit_Post_Owner_None,
-    CPthreadReqMutexInit_Post_Ceiling_None,
-    CPthreadReqMutexInit_Post_Scheduler_None,
+    CPthreadReqMutexInit_Post_Owner_None, CPthreadReqMutexInit_Post_Ceiling_NA,
+    CPthreadReqMutexInit_Post_Scheduler_NA,
     CPthreadReqMutexInit_Post_AttrObj_Nop },
   { 0, 0, 0, 0, 0, 0, 0, CPthreadReqMutexInit_Post_Status_Ok,
     CPthreadReqMutexInit_Post_MutexObj_Initialized,
@@ -1013,9 +987,8 @@ CPthreadReqMutexInit_Entries[] = {
     CPthreadReqMutexInit_Post_MutexObj_Initialized,
     CPthreadReqMutexInit_Post_Protocol_None,
     CPthreadReqMutexInit_Post_Recursive_No,
-    CPthreadReqMutexInit_Post_Owner_None,
-    CPthreadReqMutexInit_Post_Ceiling_None,
-    CPthreadReqMutexInit_Post_Scheduler_None,
+    CPthreadReqMutexInit_Post_Owner_None, CPthreadReqMutexInit_Post_Ceiling_NA,
+    CPthreadReqMutexInit_Post_Scheduler_NA,
     CPthreadReqMutexInit_Post_AttrObj_NA },
   { 0, 1, 1, 1, 1, 0, 0, CPthreadReqMutexInit_Post_Status_Inval,
     CPthreadReqMutexInit_Post_MutexObj_NA,

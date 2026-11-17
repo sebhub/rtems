@@ -41,6 +41,8 @@
 #include <pthread.h>
 #include <string.h>
 
+#include "tx-support.h"
+
 #include <rtems/test.h>
 
 /**
@@ -65,8 +67,8 @@ typedef enum {
 } CPthreadReqMutexattrGetprioceiling_Pre_Initialized;
 
 typedef enum {
-  CPthreadReqMutexattrGetprioceiling_Pre_Stored_Zero,
-  CPthreadReqMutexattrGetprioceiling_Pre_Stored_Positive,
+  CPthreadReqMutexattrGetprioceiling_Pre_Stored_Min,
+  CPthreadReqMutexattrGetprioceiling_Pre_Stored_Valid,
   CPthreadReqMutexattrGetprioceiling_Pre_Stored_Max,
   CPthreadReqMutexattrGetprioceiling_Pre_Stored_NA
 } CPthreadReqMutexattrGetprioceiling_Pre_Stored;
@@ -84,9 +86,7 @@ typedef enum {
 } CPthreadReqMutexattrGetprioceiling_Post_Status;
 
 typedef enum {
-  CPthreadReqMutexattrGetprioceiling_Post_Result_Zero,
-  CPthreadReqMutexattrGetprioceiling_Post_Result_Positive,
-  CPthreadReqMutexattrGetprioceiling_Post_Result_Max,
+  CPthreadReqMutexattrGetprioceiling_Post_Result_Stored,
   CPthreadReqMutexattrGetprioceiling_Post_Result_Nop,
   CPthreadReqMutexattrGetprioceiling_Post_Result_NA
 } CPthreadReqMutexattrGetprioceiling_Post_Result;
@@ -103,7 +103,7 @@ typedef struct {
   uint16_t Pre_Stored_NA : 1;
   uint16_t Pre_Out_NA : 1;
   uint16_t Post_Status : 2;
-  uint16_t Post_Result : 3;
+  uint16_t Post_Result : 2;
   uint16_t Post_Other : 1;
 } CPthreadReqMutexattrGetprioceiling_Entry;
 
@@ -145,7 +145,19 @@ typedef struct {
    */
   pthread_mutexattr_t attr_before;
 
+  /**
+   * @brief This member contains the value of the mutex priority ceiling
+   *   attribute which the preparation stores in the mutex attributes object.
+   */
+  int stored;
+
   struct {
+    /**
+     * @brief This member defines the pre-condition indices for the next
+     *   action.
+     */
+    size_t pci[ 4 ];
+
     /**
      * @brief This member defines the pre-condition states for the next action.
      */
@@ -185,7 +197,7 @@ static const char *const
     { "Yes", "No", "NA" };
 
 static const char *const CPthreadReqMutexattrGetprioceiling_PreDesc_Stored[] =
-  { "Zero", "Positive", "Max", "NA" };
+  { "Min", "Valid", "Max", "NA" };
 
 static const char *const CPthreadReqMutexattrGetprioceiling_PreDesc_Out[] =
   { "Obj", "Null", "NA" };
@@ -261,36 +273,38 @@ static void CPthreadReqMutexattrGetprioceiling_Pre_Stored_Prepare(
 )
 {
   switch ( state ) {
-    case CPthreadReqMutexattrGetprioceiling_Pre_Stored_Zero: {
+    case CPthreadReqMutexattrGetprioceiling_Pre_Stored_Min: {
       /*
-       * While the priority ceiling attribute of the object referenced by the
-       * `attr` parameter is equal to zero.
+       * While the mutex priority ceiling attribute of the object referenced by
+       * the `attr` parameter is the minimum of the type int.
        */
-      ctx->attr_obj.prio_ceiling = 0;
+      ctx->stored = INT_MIN;
       break;
     }
 
-    case CPthreadReqMutexattrGetprioceiling_Pre_Stored_Positive: {
+    case CPthreadReqMutexattrGetprioceiling_Pre_Stored_Valid: {
       /*
-       * While the priority ceiling attribute of the object referenced by the
-       * `attr` parameter is greater than zero.
+       * While the mutex priority ceiling attribute of the object referenced by
+       * the `attr` parameter is a valid thread priority.
        */
-      ctx->attr_obj.prio_ceiling = 5;
+      ctx->stored = ToPOSIXPriority( PRIO_HIGH );
       break;
     }
 
     case CPthreadReqMutexattrGetprioceiling_Pre_Stored_Max: {
       /*
-       * While the priority ceiling attribute of the object referenced by the
-       * `attr` parameter is equal to the maximum of the type int.
+       * While the mutex priority ceiling attribute of the object referenced by
+       * the `attr` parameter is the maximum of the type int.
        */
-      ctx->attr_obj.prio_ceiling = INT_MAX;
+      ctx->stored = INT_MAX;
       break;
     }
 
     case CPthreadReqMutexattrGetprioceiling_Pre_Stored_NA:
       break;
   }
+
+  ctx->attr_obj.prio_ceiling = ctx->stored;
 }
 
 static void CPthreadReqMutexattrGetprioceiling_Pre_Out_Prepare(
@@ -354,30 +368,13 @@ static void CPthreadReqMutexattrGetprioceiling_Post_Result_Check(
 )
 {
   switch ( state ) {
-    case CPthreadReqMutexattrGetprioceiling_Post_Result_Zero: {
+    case CPthreadReqMutexattrGetprioceiling_Post_Result_Stored: {
       /*
        * The value of the object referenced by the `prioceiling` parameter
-       * shall be zero.
+       * shall be the mutex priority ceiling attribute of the mutex attributes
+       * object.
        */
-      T_eq_int( ctx->out_obj, 0 );
-      break;
-    }
-
-    case CPthreadReqMutexattrGetprioceiling_Post_Result_Positive: {
-      /*
-       * The value of the object referenced by the `prioceiling` parameter
-       * shall be greater than zero.
-       */
-      T_gt_int( ctx->out_obj, 0 );
-      break;
-    }
-
-    case CPthreadReqMutexattrGetprioceiling_Post_Result_Max: {
-      /*
-       * The value of the object referenced by the `prioceiling` parameter
-       * shall be the maximum of the type int.
-       */
-      T_eq_int( ctx->out_obj, INT_MAX );
+      T_eq_int( ctx->out_obj, ctx->stored );
       break;
     }
 
@@ -403,8 +400,8 @@ static void CPthreadReqMutexattrGetprioceiling_Post_Other_Check(
   switch ( state ) {
     case CPthreadReqMutexattrGetprioceiling_Post_Other_Nop: {
       /*
-       * The content of the mutex attributes object referenced by the `attr`
-       * parameter shall not be modified.
+       * The mutex attributes object referenced by the `attr` parameter shall
+       * not be modified.
        */
       T_eq_mem( &ctx->attr_obj, &ctx->attr_before, sizeof( ctx->attr_obj ) );
       break;
@@ -434,32 +431,29 @@ static void CPthreadReqMutexattrGetprioceiling_Action(
 
 static const CPthreadReqMutexattrGetprioceiling_Entry
 CPthreadReqMutexattrGetprioceiling_Entries[] = {
-  { 0, 0, 0, 0, 0, CPthreadReqMutexattrGetprioceiling_Post_Status_Inval,
-    CPthreadReqMutexattrGetprioceiling_Post_Result_NA,
-    CPthreadReqMutexattrGetprioceiling_Post_Other_Nop },
-  { 0, 0, 0, 0, 0, CPthreadReqMutexattrGetprioceiling_Post_Status_Inval,
-    CPthreadReqMutexattrGetprioceiling_Post_Result_Nop,
-    CPthreadReqMutexattrGetprioceiling_Post_Other_NA },
-  { 0, 0, 0, 0, 0, CPthreadReqMutexattrGetprioceiling_Post_Status_Inval,
+  { 1, 0, 0, 0, 0, CPthreadReqMutexattrGetprioceiling_Post_Status_NA,
     CPthreadReqMutexattrGetprioceiling_Post_Result_NA,
     CPthreadReqMutexattrGetprioceiling_Post_Other_NA },
   { 0, 0, 0, 0, 0, CPthreadReqMutexattrGetprioceiling_Post_Status_Inval,
+    CPthreadReqMutexattrGetprioceiling_Post_Result_NA,
+    CPthreadReqMutexattrGetprioceiling_Post_Other_Nop },
+  { 0, 0, 0, 0, 0, CPthreadReqMutexattrGetprioceiling_Post_Status_Ok,
+    CPthreadReqMutexattrGetprioceiling_Post_Result_Stored,
+    CPthreadReqMutexattrGetprioceiling_Post_Other_Nop },
+  { 0, 0, 0, 0, 0, CPthreadReqMutexattrGetprioceiling_Post_Status_Inval,
     CPthreadReqMutexattrGetprioceiling_Post_Result_Nop,
     CPthreadReqMutexattrGetprioceiling_Post_Other_Nop },
-  { 0, 0, 0, 0, 0, CPthreadReqMutexattrGetprioceiling_Post_Status_Ok,
-    CPthreadReqMutexattrGetprioceiling_Post_Result_Zero,
-    CPthreadReqMutexattrGetprioceiling_Post_Other_Nop },
-  { 0, 0, 0, 0, 0, CPthreadReqMutexattrGetprioceiling_Post_Status_Ok,
-    CPthreadReqMutexattrGetprioceiling_Post_Result_Positive,
-    CPthreadReqMutexattrGetprioceiling_Post_Other_Nop },
-  { 0, 0, 0, 0, 0, CPthreadReqMutexattrGetprioceiling_Post_Status_Ok,
-    CPthreadReqMutexattrGetprioceiling_Post_Result_Max,
-    CPthreadReqMutexattrGetprioceiling_Post_Other_Nop }
+  { 0, 0, 1, 1, 0, CPthreadReqMutexattrGetprioceiling_Post_Status_Inval,
+    CPthreadReqMutexattrGetprioceiling_Post_Result_Nop,
+    CPthreadReqMutexattrGetprioceiling_Post_Other_NA },
+  { 0, 0, 1, 1, 0, CPthreadReqMutexattrGetprioceiling_Post_Status_Inval,
+    CPthreadReqMutexattrGetprioceiling_Post_Result_NA,
+    CPthreadReqMutexattrGetprioceiling_Post_Other_NA }
 };
 
 static const uint8_t
 CPthreadReqMutexattrGetprioceiling_Map[] = {
-  4, 0, 5, 0, 6, 0, 3, 0, 3, 0, 3, 0, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2
+  2, 1, 2, 1, 2, 1, 3, 1, 3, 1, 3, 1, 4, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 };
 
 /* clang-format on */
@@ -505,6 +499,27 @@ CPthreadReqMutexattrGetprioceiling_PopEntry(
   ctx->Map.index = index + 1;
   return CPthreadReqMutexattrGetprioceiling_Entries
     [ CPthreadReqMutexattrGetprioceiling_Map[ index ] ];
+}
+
+static void CPthreadReqMutexattrGetprioceiling_SetPreConditionStates(
+  CPthreadReqMutexattrGetprioceiling_Context *ctx
+)
+{
+  ctx->Map.pcs[ 0 ] = ctx->Map.pci[ 0 ];
+
+  if ( ctx->Map.entry.Pre_Initialized_NA ) {
+    ctx->Map.pcs[ 1 ] = CPthreadReqMutexattrGetprioceiling_Pre_Initialized_NA;
+  } else {
+    ctx->Map.pcs[ 1 ] = ctx->Map.pci[ 1 ];
+  }
+
+  if ( ctx->Map.entry.Pre_Stored_NA ) {
+    ctx->Map.pcs[ 2 ] = CPthreadReqMutexattrGetprioceiling_Pre_Stored_NA;
+  } else {
+    ctx->Map.pcs[ 2 ] = ctx->Map.pci[ 2 ];
+  }
+
+  ctx->Map.pcs[ 3 ] = ctx->Map.pci[ 3 ];
 }
 
 static void CPthreadReqMutexattrGetprioceiling_TestVariant(
@@ -554,28 +569,34 @@ T_TEST_CASE_FIXTURE(
   ctx->Map.index = 0;
 
   for (
-    ctx->Map.pcs[ 0 ] = CPthreadReqMutexattrGetprioceiling_Pre_Attr_Obj;
-    ctx->Map.pcs[ 0 ] < CPthreadReqMutexattrGetprioceiling_Pre_Attr_NA;
-    ++ctx->Map.pcs[ 0 ]
+    ctx->Map.pci[ 0 ] = CPthreadReqMutexattrGetprioceiling_Pre_Attr_Obj;
+    ctx->Map.pci[ 0 ] < CPthreadReqMutexattrGetprioceiling_Pre_Attr_NA;
+    ++ctx->Map.pci[ 0 ]
   ) {
     for (
-      ctx->Map.pcs[ 1 ] =
+      ctx->Map.pci[ 1 ] =
         CPthreadReqMutexattrGetprioceiling_Pre_Initialized_Yes;
-      ctx->Map.pcs[ 1 ] <
+      ctx->Map.pci[ 1 ] <
       CPthreadReqMutexattrGetprioceiling_Pre_Initialized_NA;
-      ++ctx->Map.pcs[ 1 ]
+      ++ctx->Map.pci[ 1 ]
     ) {
       for (
-        ctx->Map.pcs[ 2 ] = CPthreadReqMutexattrGetprioceiling_Pre_Stored_Zero;
-        ctx->Map.pcs[ 2 ] < CPthreadReqMutexattrGetprioceiling_Pre_Stored_NA;
-        ++ctx->Map.pcs[ 2 ]
+        ctx->Map.pci[ 2 ] = CPthreadReqMutexattrGetprioceiling_Pre_Stored_Min;
+        ctx->Map.pci[ 2 ] < CPthreadReqMutexattrGetprioceiling_Pre_Stored_NA;
+        ++ctx->Map.pci[ 2 ]
       ) {
         for (
-          ctx->Map.pcs[ 3 ] = CPthreadReqMutexattrGetprioceiling_Pre_Out_Obj;
-          ctx->Map.pcs[ 3 ] < CPthreadReqMutexattrGetprioceiling_Pre_Out_NA;
-          ++ctx->Map.pcs[ 3 ]
+          ctx->Map.pci[ 3 ] = CPthreadReqMutexattrGetprioceiling_Pre_Out_Obj;
+          ctx->Map.pci[ 3 ] < CPthreadReqMutexattrGetprioceiling_Pre_Out_NA;
+          ++ctx->Map.pci[ 3 ]
         ) {
           ctx->Map.entry = CPthreadReqMutexattrGetprioceiling_PopEntry( ctx );
+
+          if ( ctx->Map.entry.Skip ) {
+            continue;
+          }
+
+          CPthreadReqMutexattrGetprioceiling_SetPreConditionStates( ctx );
           CPthreadReqMutexattrGetprioceiling_Prepare( ctx );
           CPthreadReqMutexattrGetprioceiling_TestVariant( ctx );
         }
