@@ -165,6 +165,26 @@ pre-conditions:
       parameter is an initialized mutex.
   test-epilogue: null
   test-prologue: null
+- name: Scheduler
+  states:
+  - name: Home
+    test-code: |
+      ctx->scheduler_other = false;
+    text: |
+      While the ${/glossary/scheduler-home:/term} of the calling thread is the
+      ${/glossary/schedulerinstance:/term} of the mutex.
+  - name: Other
+    test-code: |
+      ctx->scheduler_other = true;
+
+      #if defined( RTEMS_SMP )
+      SetSelfScheduler( SCHEDULER_B_ID, PRIO_NORMAL );
+      #endif
+    text: |
+      While the ${/glossary/scheduler-home:/term} of the calling thread is not the
+      ${/glossary/schedulerinstance:/term} of the mutex.
+  test-epilogue: null
+  test-prologue: null
 rationale: |
   The validation of the ${../if/mutex-lock:/params[0]/name} parameter is not
   covered by ${/score/mtx/req/seize-wait:/spec}, which has no pre-condition for
@@ -172,7 +192,7 @@ rationale: |
   therefore specified by Status post-condition. For a valid mutex, the result
   depends on the owner of the mutex and on the priority of the calling thread
   with respect to the ${../glossary/mutex-priority-ceiling:/term}. Both are
-  pre-conditions of ${/score/mtx/req/seize-wait:/spec}, which also sepcifies the
+  pre-conditions of ${/score/mtx/req/seize-wait:/spec}, which also specifies the
   ${/c/errno/if/einval:/name} for a violated priority ceiling and the priority
   change of the owner. Post-condition Action alone therefore specifies the seize
   of a valid mutex. The priority ceiling is stated as a
@@ -180,8 +200,8 @@ rationale: |
   form. A statically initialized mutex has the ${../if/mutex-default:/name}
   ${../glossary/mutex-type:/term} and the ${../if/prio-none:/name}
   ${../glossary/mutex-protocol:/term}, and the first call of the function
-  initializes the mutex with these attributes. The code of post-conditon Action
-  checks that this calll left the mutex owned by the calling thread, and the
+  initializes the mutex with these attributes. The code of post-condition Action
+  checks that this call left the mutex owned by the calling thread, and the
   delegated test uses the initialized mutex.
 
   The ${../if/mutex-normal:/name}, the ${../if/mutex-errorcheck:/name} and the
@@ -197,12 +217,24 @@ rationale: |
   and the ${../if/prio-protect:/name} ${../glossary/mutex-protocol:/term} use the
   priority discipline. The discipline is therefore selected by the state of the
   Protocol pre-condition.
+
+  ${/score/mtx/req/seize-wait:/spec} has no pre-condition for the scheduler of
+  the calling thread. Pre-condition Scheduler specifies the
+  ${/c/errno/if/einval:/name} for a mutex with the ${../if/prio-protect:/name}
+  ${../glossary/mutex-protocol:/term} which a thread of another scheduler seizes.
 requirement-type: functional
-skip-reasons: {}
+skip-reasons:
+  NeedsSMP: |
+    Where the system is built with SMP support disabled, the system has exactly one
+    scheduler instance.
 test-action: |
   ctx->status = pthread_mutex_lock( ctx->mutex );
 test-brief: null
 test-cleanup: |
+  if ( ctx->scheduler_other ) {
+    SetSelfScheduler( SCHEDULER_A_ID, PRIO_NORMAL );
+  }
+
   if ( ctx->mutex_initialized ) {
     ctx->mutex_initialized = false;
 
@@ -254,6 +286,12 @@ test-context:
   description: null
   member: |
     bool mutex_initialized
+- brief: |
+    This member is true, if the home scheduler of the calling thread is not the
+    scheduler of the mutex.
+  description: null
+  member: |
+    bool scheduler_other
 test-context-support: null
 test-description: null
 test-header: null
@@ -270,6 +308,7 @@ test-prepare: |
   ctx->protocol = PTHREAD_PRIO_NONE;
   ctx->type = PTHREAD_MUTEX_DEFAULT;
   ctx->mutex_initialized = false;
+  ctx->scheduler_other = false;
 test-setup:
   brief: null
   code: |
@@ -306,6 +345,10 @@ transition-map:
           - 'Null'
           - Invalid
       then: Inval
+    - if:
+        pre-conditions:
+          Scheduler: Other
+      then: Inval
     - else: N/A
     Action:
     - if:
@@ -313,6 +356,10 @@ transition-map:
           Mutex:
           - 'Null'
           - Invalid
+      then: N/A
+    - if:
+        pre-conditions:
+          Scheduler: Other
       then: N/A
     - else: MtxSeizeWait
   pre-conditions:
@@ -325,4 +372,31 @@ transition-map:
         pre-conditions:
           Mutex: Init
     Mutex: all
+    Scheduler:
+      applicable:
+        pre-conditions:
+          Mutex: Init
+          Protocol: Protect
+- enabled-by: true
+  post-conditions: NeedsSMP
+  pre-conditions:
+    Protocol:
+    - Protect
+    Type: all
+    Mutex:
+    - Init
+    Scheduler:
+    - Other
+- enabled-by: RTEMS_SMP
+  post-conditions:
+    Status: Inval
+    Action: N/A
+  pre-conditions:
+    Protocol:
+    - Protect
+    Type: all
+    Mutex:
+    - Init
+    Scheduler:
+    - Other
 type: requirement
