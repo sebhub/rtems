@@ -170,6 +170,14 @@ typedef enum {
   RTEMS_FATAL_SOURCE_SPURIOUS_INTERRUPT = 14,
 
   /**
+   * @brief Fatal source for errors of the GNU Offloading and Multi Processing
+   *   Runtime Library (libgomp).
+   *
+   * The fatal code is the reason of the error defined by libgomp.
+   */
+  RTEMS_FATAL_SOURCE_LIBGOMP = 15,
+
+  /**
    * @brief The last available fatal source.
    *
    * This enum value ensures that the enum type needs at least 32-bits for
