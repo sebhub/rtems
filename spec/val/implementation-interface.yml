@@ -122,6 +122,8 @@ links:
 - role: validation
   uid: /score/interr/if/source-exit
 - role: validation
+  uid: /score/interr/if/source-libgomp
+- role: validation
   uid: /score/interr/if/source-panic
 - role: validation
   uid: /score/interr/if/source-smp
