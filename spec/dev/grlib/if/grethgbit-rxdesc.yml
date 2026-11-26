@@ -24,6 +24,8 @@ links:
   uid: group
 - role: interface-placement
   uid: grethgbit-header
+- role: reference
+  uid: /ref/ip/gaisler/grip-2026-3
 name: grethgbit_rx_desc
 notes: null
 register-block-group: GRETH_GBIT RX descriptor
@@ -35,14 +37,17 @@ registers:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: LENGTH
       properties:
       - r
       - w
       start: 0
+      unit: bytes
       width: 11
     - brief: null
       description: null
+      kind: bool
       name: EN
       properties:
       - r
@@ -51,6 +56,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: WR
       properties:
       - r
@@ -59,6 +65,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: IE
       properties:
       - r
@@ -67,6 +74,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: AE
       properties:
       - r
@@ -75,6 +83,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: FT
       properties:
       - r
@@ -83,6 +92,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: CE
       properties:
       - r
@@ -91,6 +101,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: OE
       properties:
       - r
@@ -99,6 +110,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: LE
       properties:
       - r
@@ -107,6 +119,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: ID
       properties:
       - r
@@ -115,6 +128,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: IR
       properties:
       - r
@@ -123,6 +137,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: UD
       properties:
       - r
@@ -131,6 +146,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: UR
       properties:
       - r
@@ -139,6 +155,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TD
       properties:
       - r
@@ -147,6 +164,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TR
       properties:
       - r
@@ -155,6 +173,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: IF
       properties:
       - r
@@ -163,6 +182,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: MC
       properties:
       - r
@@ -173,12 +193,14 @@ registers:
   brief: |
     Receive descriptor word 0
   description: null
+  locator: table 883, page 755
   name: CTRL
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: ADDRESS
       properties:
       - r
@@ -189,6 +211,7 @@ registers:
   brief: |
     Receive descriptor word 1
   description: null
+  locator: table 884, page 756
   name: ADDR
   width: 32
 type: interface

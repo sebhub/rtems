@@ -90,6 +90,8 @@ links:
   uid: group
 - role: interface-placement
   uid: grethgbit-header
+- role: reference
+  uid: /ref/ip/gaisler/grip-2026-3
 name: grethgbit
 notes: null
 register-block-group: GRETH_GBIT
@@ -100,6 +102,7 @@ registers:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: EA
       properties:
       - r
@@ -107,20 +110,29 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: BS
       properties:
       - r
+      range:
+      - 0
+      - 6
+      scale: 1024 * 2 ** value
       start: 28
+      unit: bytes
       width: 3
     - brief: null
       description: null
+      kind: bool
       name: GA
       properties:
       - r
+      reset: 1
       start: 27
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: MA
       properties:
       - r
@@ -128,6 +140,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: MC
       properties:
       - r
@@ -135,6 +148,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TC
       properties:
       - r
@@ -142,262 +156,323 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TS
       properties:
       - r
       - w
+      reset: 0
       start: 15
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: ED
       properties:
       - r
       - w
+      reset: external
       start: 14
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RD
       properties:
       - r
       - w
+      reset: 0
       start: 13
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: DD
       properties:
       - r
       - w
+      reset: 0
       start: 12
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: ME
       properties:
       - r
       - w
+      reset: 0
       start: 11
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: PI
       properties:
       - r
       - w
+      reset: 0
       start: 10
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: BM
       properties:
       - r
       - w
+      reset: 0
       start: 9
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: GB
       properties:
       - r
       - w
+      reset: 0
       start: 8
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: SP
       properties:
       - r
       - w
+      reset: 0
       start: 7
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RS
       properties:
       - r
       - w1c
+      reset: 0
       start: 6
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: PM
       properties:
       - r
       - w
+      reset: 0
       start: 5
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: FD
       properties:
       - r
       - w
+      reset: 0
       start: 4
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RI
       properties:
       - r
       - w
+      reset: 0
       start: 3
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TI
       properties:
       - r
       - w
+      reset: 0
       start: 2
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RE
       properties:
       - r
       - w
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TE
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     control register
   description: null
+  locator: table 893, page 762
   name: CR
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: PS
       properties:
       - r
       - w1c
+      reset: 0
       start: 8
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: IA
       properties:
       - r
       - w1c
+      reset: 0
       start: 7
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TS
       properties:
       - r
       - w1c
+      reset: 0
       start: 6
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TA
       properties:
       - r
       - w1c
+      reset: not-reset
       start: 5
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RA
       properties:
       - r
       - w1c
+      reset: not-reset
       start: 4
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TI
       properties:
       - r
       - w1c
+      reset: not-reset
       start: 3
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RI
       properties:
       - r
       - w1c
+      reset: not-reset
       start: 2
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TE
       properties:
       - r
       - w1c
+      reset: not-reset
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RE
       properties:
       - r
       - w1c
+      reset: not-reset
       start: 0
       width: 1
     variants: []
   brief: |
     status register.
   description: null
+  locator: table 894, page 764
   name: SR
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: MSB
       properties:
       - r
       - w
+      reset: not-reset
       start: 0
       width: 16
     variants: []
   brief: |
     MAC address MSB.
   description: null
+  locator: table 895, page 764
   name: MACMSB
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: LSB
       properties:
       - r
       - w
+      reset: not-reset
       start: 0
       width: 32
     variants: []
   brief: |
     MAC address LSB.
   description: null
+  locator: table 896, page 764
   name: MACLSB
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: DATA
       properties:
       - r
       - w
+      reset: 0
       start: 16
       width: 16
     - brief: null
       description: null
+      kind: uint
       name: PHYADDR
       properties:
       - r
@@ -406,148 +481,179 @@ registers:
       width: 5
     - brief: null
       description: null
+      kind: uint
       name: REGADDR
       properties:
       - r
       - w
+      reset: 0
       start: 6
       width: 5
     - brief: null
       description: null
+      kind: bool
       name: BU
       properties:
       - r
+      reset: 0
       start: 3
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: LF
       properties:
       - r
+      reset: 1
       start: 2
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RD
       properties:
       - r
       - w
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: WR
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     MDIO control/status register.
   description: null
+  locator: table 897, page 765
   name: MDIO
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: BASEADDR
       properties:
       - r
       - w
+      reset: not-reset
       start: 10
       width: 22
     - brief: null
       description: null
+      kind: uint
       name: DESCPNT
       properties:
       - r
       - w
+      reset: 0
       start: 3
       width: 7
     variants: []
   brief: |
     transmitter descriptor table base address register.
   description: null
+  locator: table 898, page 765
   name: TDTBA
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: BASEADDR
       properties:
       - r
       - w
+      reset: not-reset
       start: 10
       width: 22
     - brief: null
       description: null
+      kind: uint
       name: DESCPNT
       properties:
       - r
       - w
+      reset: 0
       start: 3
       width: 7
     variants: []
   brief: |
     receiver descriptor table base address register.
   description: null
+  locator: table 899, page 765
   name: RDTBA
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: EDCL_IP_ADDRESS
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     GRETH_GBIT EDCL IP register
   description: null
+  locator: table 900, page 766
   name: EDCLIP
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: HASH_TABLE_MSB
       properties:
       - r
       - w
+      reset: not-reset
       start: 0
       width: 32
     variants: []
   brief: |
     GRETH Hash table MSB register
   description: null
+  locator: table 901, page 766
   name: HMSB
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: HASH_TABLE_LSB
       properties:
       - r
       - w
+      reset: not-reset
       start: 0
       width: 32
     variants: []
   brief: |
     GRETH Hash table LSB register
   description: null
+  locator: table 902, page 766
   name: HLSB
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: MSB
       properties:
       - r
@@ -558,12 +664,14 @@ registers:
   brief: |
     EDCL MAC address MSB.
   description: null
+  locator: table 903, page 766
   name: EDCLMACMSB
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: LSB
       properties:
       - r
@@ -574,12 +682,14 @@ registers:
   brief: |
     EDCL MAC address LSB.
   description: null
+  locator: table 904, page 766
   name: EDCLMACLSB
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: TXRAM
       properties:
       - r
@@ -590,12 +700,14 @@ registers:
   brief: |
     Transmitter RAM debug area
   description: null
+  locator: table 892, page 761
   name: TXRAM
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: RXRAM
       properties:
       - r
@@ -606,12 +718,14 @@ registers:
   brief: |
     Receiver RAM debug area
   description: null
+  locator: table 892, page 761
   name: RXRAM
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: EDCLBUF
       properties:
       - r
@@ -622,6 +736,7 @@ registers:
   brief: |
     EDCL buffer RAM debug area
   description: null
+  locator: table 892, page 761
   name: EDCLBUF
   width: 32
 type: interface
