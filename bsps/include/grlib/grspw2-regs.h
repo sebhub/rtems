@@ -358,6 +358,9 @@ typedef struct grspw2_dma {
     ( ( ( _val ) << GRSPW2_CTRL_PNPA_SHIFT ) & GRSPW2_CTRL_PNPA_MASK ) )
 #define GRSPW2_CTRL_PNPA( _val ) \
   ( ( ( _val ) << GRSPW2_CTRL_PNPA_SHIFT ) & GRSPW2_CTRL_PNPA_MASK )
+#define GRSPW2_CTRL_PNPA_NONE           0U
+#define GRSPW2_CTRL_PNPA_IDENTIFICATION 1U
+#define GRSPW2_CTRL_PNPA_CONFIGURATION  2U
 
 #define GRSPW2_CTRL_RD 0x20000U
 
@@ -430,6 +433,12 @@ typedef struct grspw2_dma {
     ( ( ( _val ) << GRSPW2_STS_LS_SHIFT ) & GRSPW2_STS_LS_MASK ) )
 #define GRSPW2_STS_LS( _val ) \
   ( ( ( _val ) << GRSPW2_STS_LS_SHIFT ) & GRSPW2_STS_LS_MASK )
+#define GRSPW2_STS_LS_ERROR_RESET 0U
+#define GRSPW2_STS_LS_ERROR_WAIT  1U
+#define GRSPW2_STS_LS_READY       2U
+#define GRSPW2_STS_LS_STARTED     3U
+#define GRSPW2_STS_LS_CONNECTING  4U
+#define GRSPW2_STS_LS_RUN         5U
 
 #define GRSPW2_STS_AP 0x200U
 
