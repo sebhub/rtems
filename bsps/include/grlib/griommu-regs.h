@@ -98,6 +98,8 @@ extern "C" {
     ( ( ( _val ) << GRIOMMU_CAP0_FT_SHIFT ) & GRIOMMU_CAP0_FT_MASK ) )
 #define GRIOMMU_CAP0_FT( _val ) \
   ( ( ( _val ) << GRIOMMU_CAP0_FT_SHIFT ) & GRIOMMU_CAP0_FT_MASK )
+#define GRIOMMU_CAP0_FT_NONE   0U
+#define GRIOMMU_CAP0_FT_PARITY 1U
 
 #define GRIOMMU_CAP0_ST 0x10000U
 
@@ -333,6 +335,8 @@ extern "C" {
     ( ( ( _val ) << GRIOMMU_CTRL_PM_SHIFT ) & GRIOMMU_CTRL_PM_MASK ) )
 #define GRIOMMU_CTRL_PM( _val ) \
   ( ( ( _val ) << GRIOMMU_CTRL_PM_SHIFT ) & GRIOMMU_CTRL_PM_MASK )
+#define GRIOMMU_CTRL_PM_GROUP 0U
+#define GRIOMMU_CTRL_PM_IOMMU 1U
 
 #define GRIOMMU_CTRL_EN 0x1U
 
