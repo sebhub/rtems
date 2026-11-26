@@ -140,6 +140,8 @@ links:
   uid: group
 - role: interface-placement
   uid: grcan-header
+- role: reference
+  uid: /ref/ip/gaisler/grip-2026-3
 name: grcan
 notes: null
 register-block-group: GRCAN
@@ -150,1266 +152,1611 @@ registers:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: SCALER
       properties:
       - r
       - w
+      reset: 0
+      scale: value + 1
       start: 24
       width: 8
     - brief: null
       description: null
+      kind: uint
       name: PS1
       properties:
       - r
       - w
+      range:
+      - 1
+      - 15
+      reset: 0
+      scale: value + 1
       start: 20
+      unit: quanta
       width: 4
     - brief: null
       description: null
+      kind: uint
       name: PS2
       properties:
       - r
       - w
+      range:
+      - 2
+      - 8
+      reset: 0
       start: 16
+      unit: quanta
       width: 4
     - brief: null
       description: null
+      kind: uint
       name: RSJ
       properties:
       - r
       - w
+      range:
+      - 1
+      - 4
+      reset: 0
       start: 12
       width: 3
     - brief: null
       description: null
+      kind: uint
       name: BPR
       properties:
       - r
       - w
+      reset: 0
+      scale: 2 ** value
       start: 8
       width: 2
     - brief: null
       description: null
+      kind: bool
       name: SAM
       properties:
       - r
       - w
+      reset: 0
       start: 5
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: SILENT
       properties:
       - r
       - w
+      reset: 0
       start: 4
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: SELECT
       properties:
       - r
       - w
+      reset: 0
       start: 3
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: ENABLE1
       properties:
       - r
       - w
+      reset: 0
       start: 2
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: ENABLE0
       properties:
       - r
       - w
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: ABORT
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     Configuration Register
   description: null
+  locator: table 608, page 571
   name: CONF
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: TXCHANNELS
       properties:
       - r
+      reset: 0
+      scale: value + 1
       start: 28
+      unit: channels
       width: 4
     - brief: null
       description: null
+      kind: uint
       name: RXCHANNELS
       properties:
       - r
+      reset: 0
+      scale: value + 1
       start: 24
+      unit: channels
       width: 4
     - brief: null
       description: null
+      kind: uint
       name: TXERRCNTR
       properties:
       - r
+      reset: 0
       start: 16
       width: 8
     - brief: null
       description: null
+      kind: uint
       name: RXERRCNTR
       properties:
       - r
+      reset: 0
       start: 8
       width: 8
     - brief: null
       description: null
+      kind: bool
       name: ACTIVE
       properties:
       - r
+      reset: 0
       start: 4
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: BMERR
       properties:
       - r
+      reset: 0
       start: 3
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: OR
       properties:
       - r
+      reset: 0
       start: 2
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: BUSOFF
       properties:
       - r
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: ERRPASS
       properties:
       - r
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     Status Register
   description: null
+  locator: table 609, page 573
   name: STAT
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: RESET
       properties:
       - r
       - w
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: ENABLE
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     Control Register
   description: null
+  locator: table 610, page 573
   name: CTRL
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: MASK
       properties:
       - r
       - w
+      reset: 536870911
       start: 0
       width: 29
     variants: []
   brief: |
     SYNC Mask Filter Register
   description: null
+  locator: table 612, page 574
   name: SYNCMASK
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: CODE
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 29
     variants: []
   brief: |
     SYNC Code Filter Register
   description: null
+  locator: table 611, page 574
   name: SYNCCODE
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: TXLOSS
       properties:
       - r
+      reset: 0
       start: 16
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RXMISS
       properties:
       - r
+      reset: 0
       start: 15
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TXERRCNTR
       properties:
       - r
+      reset: 0
       start: 14
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RXERRCNTR
       properties:
       - r
+      reset: 0
       start: 13
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TXSYNC
       properties:
       - r
+      reset: 0
       start: 12
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RXSYNC
       properties:
       - r
+      reset: 0
       start: 11
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TX
       properties:
       - r
+      reset: 0
       start: 10
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RX
       properties:
       - r
+      reset: 0
       start: 9
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TXEMPTY
       properties:
       - r
+      reset: 0
       start: 8
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RXFULL
       properties:
       - r
+      reset: 0
       start: 7
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TXIRQ
       properties:
       - r
+      reset: 0
       start: 6
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RXIRQ
       properties:
       - r
+      reset: 0
       start: 5
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: BMRDERR
       properties:
       - r
+      reset: 0
       start: 4
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: BMWRERR
       properties:
       - r
+      reset: 0
       start: 3
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: OR
       properties:
       - r
+      reset: 0
       start: 2
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: 'OFF'
       properties:
       - r
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: PASS
       properties:
       - r
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     Pending interrupt masked status register
   description: null
+  locator: table 627, page 580
   name: PIMSR
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: TXLOSS
       properties:
       - r
+      reset: 0
       start: 16
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RXMISS
       properties:
       - r
+      reset: 0
       start: 15
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TXERRCNTR
       properties:
       - r
+      reset: 0
       start: 14
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RXERRCNTR
       properties:
       - r
+      reset: 0
       start: 13
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TXSYNC
       properties:
       - r
+      reset: 0
       start: 12
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RXSYNC
       properties:
       - r
+      reset: 0
       start: 11
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TX
       properties:
       - r
+      reset: 0
       start: 10
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RX
       properties:
       - r
+      reset: 0
       start: 9
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TXEMPTY
       properties:
       - r
+      reset: 0
       start: 8
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RXFULL
       properties:
       - r
+      reset: 0
       start: 7
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TXIRQ
       properties:
       - r
+      reset: 0
       start: 6
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RXIRQ
       properties:
       - r
+      reset: 0
       start: 5
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: BMRDERR
       properties:
       - r
+      reset: 0
       start: 4
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: BMWRERR
       properties:
       - r
+      reset: 0
       start: 3
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: OR
       properties:
       - r
+      reset: 0
       start: 2
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: 'OFF'
       properties:
       - r
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: PASS
       properties:
       - r
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     Pending interrupt masked register
   description: null
+  locator: table 627, page 580
   name: PIMR
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: TXLOSS
       properties:
       - r
+      reset: 0
       start: 16
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RXMISS
       properties:
       - r
+      reset: 0
       start: 15
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TXERRCNTR
       properties:
       - r
+      reset: 0
       start: 14
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RXERRCNTR
       properties:
       - r
+      reset: 0
       start: 13
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TXSYNC
       properties:
       - r
+      reset: 0
       start: 12
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RXSYNC
       properties:
       - r
+      reset: 0
       start: 11
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TX
       properties:
       - r
+      reset: 0
       start: 10
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RX
       properties:
       - r
+      reset: 0
       start: 9
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TXEMPTY
       properties:
       - r
+      reset: 0
       start: 8
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RXFULL
       properties:
       - r
+      reset: 0
       start: 7
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TXIRQ
       properties:
       - r
+      reset: 0
       start: 6
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RXIRQ
       properties:
       - r
+      reset: 0
       start: 5
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: BMRDERR
       properties:
       - r
+      reset: 0
       start: 4
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: BMWRERR
       properties:
       - r
+      reset: 0
       start: 3
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: OR
       properties:
       - r
+      reset: 0
       start: 2
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: 'OFF'
       properties:
       - r
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: PASS
       properties:
       - r
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     Pending interrupt status register
   description: null
+  locator: table 627, page 580
   name: PISR
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: TXLOSS
       properties:
       - r
       - w
+      reset: 0
       start: 16
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RXMISS
       properties:
       - r
       - w
+      reset: 0
       start: 15
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TXERRCNTR
       properties:
       - r
       - w
+      reset: 0
       start: 14
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RXERRCNTR
       properties:
       - r
       - w
+      reset: 0
       start: 13
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TXSYNC
       properties:
       - r
       - w
+      reset: 0
       start: 12
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RXSYNC
       properties:
       - r
       - w
+      reset: 0
       start: 11
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TX
       properties:
       - r
       - w
+      reset: 0
       start: 10
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RX
       properties:
       - r
       - w
+      reset: 0
       start: 9
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TXEMPTY
       properties:
       - r
       - w
+      reset: 0
       start: 8
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RXFULL
       properties:
       - r
       - w
+      reset: 0
       start: 7
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TXIRQ
       properties:
       - r
       - w
+      reset: 0
       start: 6
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RXIRQ
       properties:
       - r
       - w
+      reset: 0
       start: 5
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: BMRDERR
       properties:
       - r
       - w
+      reset: 0
       start: 4
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: BMWRERR
       properties:
       - r
       - w
+      reset: 0
       start: 3
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: OR
       properties:
       - r
       - w
+      reset: 0
       start: 2
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: 'OFF'
       properties:
       - r
       - w
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: PASS
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     Pending interrupt register
   description: null
+  locator: table 627, page 580
   name: PIR
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: TXLOSS
       properties:
       - r
       - w
+      reset: 0
       start: 16
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RXMISS
       properties:
       - r
       - w
+      reset: 0
       start: 15
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TXERRCNTR
       properties:
       - r
       - w
+      reset: 0
       start: 14
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RXERRCNTR
       properties:
       - r
       - w
+      reset: 0
       start: 13
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TXSYNC
       properties:
       - r
       - w
+      reset: 0
       start: 12
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RXSYNC
       properties:
       - r
       - w
+      reset: 0
       start: 11
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TX
       properties:
       - r
       - w
+      reset: 0
       start: 10
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RX
       properties:
       - r
       - w
+      reset: 0
       start: 9
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TXEMPTY
       properties:
       - r
       - w
+      reset: 0
       start: 8
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RXFULL
       properties:
       - r
       - w
+      reset: 0
       start: 7
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TXIRQ
       properties:
       - r
       - w
+      reset: 0
       start: 6
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RXIRQ
       properties:
       - r
       - w
+      reset: 0
       start: 5
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: BMRDERR
       properties:
       - r
       - w
+      reset: 0
       start: 4
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: BMWRERR
       properties:
       - r
       - w
+      reset: 0
       start: 3
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: OR
       properties:
       - r
       - w
+      reset: 0
       start: 2
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: 'OFF'
       properties:
       - r
       - w
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: PASS
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     Interrupt mask register
   description: null
+  locator: table 627, page 580
   name: IMR
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: TXLOSS
       properties:
       - w
+      reset: 0
       start: 16
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RXMISS
       properties:
       - w
+      reset: 0
       start: 15
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TXERRCNTR
       properties:
       - w
+      reset: 0
       start: 14
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RXERRCNTR
       properties:
       - w
+      reset: 0
       start: 13
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TXSYNC
       properties:
       - w
+      reset: 0
       start: 12
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RXSYNC
       properties:
       - w
+      reset: 0
       start: 11
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TX
       properties:
       - w
+      reset: 0
       start: 10
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RX
       properties:
       - w
+      reset: 0
       start: 9
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TXEMPTY
       properties:
       - w
+      reset: 0
       start: 8
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RXFULL
       properties:
       - w
+      reset: 0
       start: 7
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TXIRQ
       properties:
       - w
+      reset: 0
       start: 6
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RXIRQ
       properties:
       - w
+      reset: 0
       start: 5
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: BMRDERR
       properties:
       - w
+      reset: 0
       start: 4
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: BMWRERR
       properties:
       - w
+      reset: 0
       start: 3
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: OR
       properties:
       - w
+      reset: 0
       start: 2
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: 'OFF'
       properties:
       - w
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: PASS
       properties:
       - w
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     Pending interrupt clear register
   description: null
+  locator: table 627, page 580
   name: PICR
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: SINGLE
       properties:
       - r
       - w
+      reset: 0
       start: 2
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: ONGOING
       properties:
       - r
       - w
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: ENABLE
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     Transmit Channel Control Register
   description: null
+  locator: table 613, page 574
   name: TXCTRL
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: ADDR
       properties:
       - r
       - w
+      reset: 0
       start: 10
       width: 22
     variants: []
   brief: |
     Transmit Channel Address Register
   description: null
+  locator: table 614, page 575
   name: TXADDR
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: SIZE
       properties:
       - r
       - w
+      range:
+      - 0
+      - 16384
+      reset: 0
+      scale: value * 4
       start: 6
+      unit: messages
       width: 15
     variants: []
   brief: |
     Transmit Channel Size Register
   description: null
+  locator: table 615, page 575
   name: TXSIZE
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: WRITE
       properties:
       - r
       - w
+      reset: 0
       start: 4
+      unit: messages
       width: 16
     variants: []
   brief: |
     Transmit Channel Write Register
   description: null
+  locator: table 616, page 575
   name: TXWR
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: READ
       properties:
       - r
       - w
+      reset: 0
       start: 4
+      unit: messages
       width: 16
     variants: []
   brief: |
     Transmit Channel Read Register
   description: null
+  locator: table 617, page 576
   name: TXRD
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: IRQ
       properties:
       - r
       - w
+      reset: 0
       start: 4
+      unit: messages
       width: 16
     variants: []
   brief: |
     Transmit Channel Interrupt Register
   description: null
+  locator: table 618, page 576
   name: TXIRQ
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: ONGOING
       properties:
       - r
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: ENABLE
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     Receive Channel Control Register
   description: null
+  locator: table 619, page 577
   name: RXCTRL
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: ADDR
       properties:
       - r
       - w
+      reset: 0
       start: 10
       width: 22
     variants: []
   brief: |
     Receive Channel Address Register
   description: null
+  locator: table 620, page 577
   name: RXADDR
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: SIZE
       properties:
       - r
       - w
+      range:
+      - 0
+      - 16384
+      reset: 0
+      scale: value * 4
       start: 6
+      unit: messages
       width: 15
     variants: []
   brief: |
     Receive Channel Size Register
   description: null
+  locator: table 621, page 577
   name: RXSIZE
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: WRITE
       properties:
       - r
       - w
+      reset: 0
       start: 4
+      unit: messages
       width: 16
     variants: []
   brief: |
     Receive Channel Write Register
   description: null
+  locator: table 622, page 578
   name: RXWR
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: READ
       properties:
       - r
       - w
+      reset: 0
       start: 4
+      unit: messages
       width: 16
     variants: []
   brief: |
     Receive Channel Read Register
   description: null
+  locator: table 623, page 578
   name: RXRD
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: IRQ
       properties:
       - r
       - w
+      reset: 0
       start: 4
+      unit: messages
       width: 16
     variants: []
   brief: |
     Receive Channel Interrupt Register
   description: null
+  locator: table 624, page 578
   name: RXIRQ
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: AM
       properties:
       - r
       - w
+      reset: 536870911
       start: 0
       width: 29
     variants: []
   brief: |
     Receive Channel Mask Register
   description: null
+  locator: table 625, page 579
   name: RXMASK
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: AC
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 29
     variants: []
   brief: |
     Receive Channel Code Register
   description: null
+  locator: table 626, page 579
   name: RXCODE
   width: 32
 type: interface
