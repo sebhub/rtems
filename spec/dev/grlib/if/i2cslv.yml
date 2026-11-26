@@ -1,0 +1,256 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This structure defines the ${.:/register-block-group} register block memory
+  map.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+- default:
+    count: 1
+    name: SLVADDR
+  offset: 0x0
+  variants: []
+- default:
+    count: 1
+    name: CTRL
+  offset: 0x4
+  variants: []
+- default:
+    count: 1
+    name: STAT
+  offset: 0x8
+  variants: []
+- default:
+    count: 1
+    name: MASK
+  offset: 0xc
+  variants: []
+- default:
+    count: 1
+    name: RX
+  offset: 0x10
+  variants: []
+- default:
+    count: 1
+    name: TX
+  offset: 0x14
+  variants: []
+description: null
+enabled-by: true
+identifier: RTEMSDeviceGRLIBI2CSLV
+index-entries: []
+interface-type: register-block
+links:
+- role: interface-ingroup
+  uid: group
+- role: interface-placement
+  uid: i2cslv-header
+- role: reference
+  uid: /ref/ip/gaisler/grip-2026-3
+name: i2cslv
+notes: null
+register-block-group: I2CSLV
+register-block-size: 24
+register-prefix: null
+registers:
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: TBA
+      properties:
+      - r
+      - w
+      start: 31
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: SLVADDR
+      properties:
+      - r
+      - w
+      start: 0
+      width: 10
+    variants: []
+  brief: |
+    Slave address register
+  description: null
+  locator: table 1930, page 1584
+  name: SLVADDR
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: RMOD
+      properties:
+      - r
+      - w
+      reset: not-reset
+      start: 4
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: TMOD
+      properties:
+      - r
+      - w
+      reset: not-reset
+      start: 3
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: TV
+      properties:
+      - r
+      - w
+      reset: not-reset
+      start: 2
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: TAV
+      properties:
+      - r
+      - w
+      reset: not-reset
+      start: 1
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: EN
+      properties:
+      - r
+      - w
+      reset: not-reset
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    Control register
+  description: null
+  locator: table 1931, page 1584
+  name: CTRL
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: REC
+      properties:
+      - r
+      reset: 0
+      start: 2
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: TRA
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 1
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: NAK
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    Status register
+  description: null
+  locator: table 1932, page 1585
+  name: STAT
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: RECE
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 2
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: TRAE
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 1
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: NAKE
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    Mask register
+  description: null
+  locator: table 1933, page 1585
+  name: MASK
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: RECBYTE
+      properties:
+      - r
+      reset: not-reset
+      start: 0
+      width: 8
+    variants: []
+  brief: |
+    Receive register
+  description: null
+  locator: table 1934, page 1585
+  name: RX
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: TRABYTE
+      properties:
+      - r
+      - w
+      reset: not-reset
+      start: 0
+      width: 8
+    variants: []
+  brief: |
+    Transmit register
+  description: null
+  locator: table 1935, page 1586
+  name: TX
+  width: 32
+type: interface
