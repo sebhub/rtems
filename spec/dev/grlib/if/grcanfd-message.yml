@@ -1,0 +1,226 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This structure defines the ${.:/register-block-group} message descriptor memory
+  map.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+- default:
+    count: 1
+    name: FLAGS_0
+  offset: 0x0
+  variants: []
+- default:
+    count: 1
+    name: FLAGS_1
+  offset: 0x4
+  variants: []
+- default:
+    count: 1
+    name: DATA_0_1_2_3
+  offset: 0x8
+  variants: []
+- default:
+    count: 1
+    name: DATA_4_5_6_7
+  offset: 0xc
+  variants: []
+description: null
+enabled-by: true
+identifier: RTEMSDeviceGRCANFDMessage
+index-entries: []
+interface-type: register-block
+links:
+- role: interface-ingroup
+  uid: group
+- role: interface-placement
+  uid: grcanfd-header
+- role: reference
+  uid: /ref/ip/gaisler/grip-2026-3
+name: grcan_message
+notes: null
+register-block-group: GRCANFD Message
+register-block-size: 16
+register-domain: memory
+register-prefix: grcan_msg
+registers:
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: ID
+      properties:
+      - r
+      - w
+      start: 0
+      width: 29
+    - brief: null
+      description: null
+      kind: bool
+      name: RTR
+      properties:
+      - r
+      - w
+      start: 30
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: IDE
+      properties:
+      - r
+      - w
+      start: 31
+      width: 1
+    variants: []
+  brief: |
+    Message Identifier Word
+  description: null
+  locator: table 634, page 590
+  name: FLAGS_0
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: ERRPASS
+      properties:
+      - r
+      - w
+      start: 0
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: BUSOFF
+      properties:
+      - r
+      - w
+      start: 1
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: OR
+      properties:
+      - r
+      - w
+      start: 2
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: BMERR
+      properties:
+      - r
+      - w
+      start: 3
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: RXERRCNTR
+      properties:
+      - r
+      - w
+      start: 8
+      width: 8
+    - brief: null
+      description: null
+      kind: uint
+      name: TXERRCNTR
+      properties:
+      - r
+      - w
+      start: 16
+      width: 8
+    - brief: null
+      description: null
+      kind: bool
+      name: BRS
+      properties:
+      - r
+      - w
+      start: 25
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: FDF
+      properties:
+      - r
+      - w
+      start: 26
+      width: 1
+    - brief: null
+      description: null
+      enum:
+        BYTES_0: 0
+        BYTES_1: 1
+        BYTES_12: 9
+        BYTES_16: 10
+        BYTES_2: 2
+        BYTES_20: 11
+        BYTES_24: 12
+        BYTES_3: 3
+        BYTES_32: 13
+        BYTES_4: 4
+        BYTES_48: 14
+        BYTES_5: 5
+        BYTES_6: 6
+        BYTES_64: 15
+        BYTES_7: 7
+        BYTES_8: 8
+      kind: enum
+      name: DLC
+      properties:
+      - r
+      - w
+      start: 28
+      width: 4
+    variants: []
+  brief: |
+    Message Status and Length Word
+  description: null
+  locator: table 634, page 590
+  name: FLAGS_1
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: DATA
+      properties:
+      - r
+      - w
+      start: 0
+      width: 32
+    variants: []
+  brief: |
+    Message Data Word for Byte 0 to Byte 3
+  description: null
+  locator: table 634, page 590
+  name: DATA_0_1_2_3
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: DATA
+      properties:
+      - r
+      - w
+      start: 0
+      width: 32
+    variants: []
+  brief: |
+    Message Data Word for Byte 4 to Byte 7
+  description: null
+  locator: table 634, page 590
+  name: DATA_4_5_6_7
+  width: 32
+type: interface

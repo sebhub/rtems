@@ -34,6 +34,12 @@ links:
 - role: validation
   uid: /dev/grlib/if/grcan-message-max-count
 - role: validation
+  uid: /dev/grlib/if/grcanfd
+- role: validation
+  uid: /dev/grlib/if/grcanfd-message
+- role: validation
+  uid: /dev/grlib/if/grcanfd-message-max-count
+- role: validation
   uid: /dev/grlib/if/grclkgate
 - role: validation
   uid: /dev/grlib/if/grethgbit
