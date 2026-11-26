@@ -75,6 +75,8 @@ links:
   uid: group
 - role: interface-placement
   uid: memscrub-header
+- role: reference
+  uid: /ref/ip/gaisler/grip-2026-3
 name: memscrub
 notes: null
 register-block-group: MEMSCRUB
@@ -85,348 +87,442 @@ registers:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: CECNT
       properties:
       - r
       - w
+      reset: 0
       start: 22
+      unit: errors
       width: 10
     - brief: null
       description: null
+      kind: uint
       name: UECNT
       properties:
       - r
       - w
+      reset: 0
       start: 14
+      unit: errors
       width: 8
     - brief: null
       description: null
+      kind: bool
       name: DONE
       properties:
       - r
+      reset: 0
       start: 13
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: SEC
       properties:
       - r
       - w
+      reset: 0
       start: 11
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: SBC
       properties:
       - r
       - w
+      reset: 0
       start: 10
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: CE
       properties:
       - r
       - w
+      reset: 0
       start: 9
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: NE
       properties:
       - r
       - w
+      reset: 0
       start: 8
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: HWRITE
       properties:
       - r
+      reset: not-reset
       start: 7
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: HMASTER
       properties:
       - r
+      reset: not-reset
       start: 3
       width: 4
     - brief: null
       description: null
+      kind: uint
       name: HSIZE
       properties:
       - r
+      reset: not-reset
       start: 0
       width: 3
     variants: []
   brief: |
     AHB Status register
   description: null
+  locator: table 2200, page 1872
   name: AHBS
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: AHB_FAILING_ADDRESS
       properties:
       - r
+      reset: not-reset
       start: 0
       width: 32
     variants: []
   brief: |
     AHB Failing Address Register
   description: null
+  locator: table 2201, page 1872
   name: AHBFAR
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: CECNTT
       properties:
       - r
       - w
+      reset: 0
       start: 22
+      unit: errors
       width: 10
     - brief: null
       description: null
+      kind: uint
       name: UECNTT
       properties:
       - r
       - w
+      reset: 0
       start: 14
+      unit: errors
       width: 8
     - brief: null
       description: null
+      kind: bool
       name: CECTE
       properties:
       - r
       - w
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: UECTE
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     AHB Error configuration register
   description: null
+  locator: table 2202, page 1872
   name: AHBERC
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: RUNCOUNT
       properties:
       - r
+      reset: 0
       start: 22
+      unit: errors
       width: 10
     - brief: null
       description: null
+      kind: uint
       name: BLKCOUNT
       properties:
       - r
+      reset: 0
       start: 14
+      unit: errors
       width: 8
     - brief: null
       description: null
+      kind: bool
       name: DONE
       properties:
       - r
-      - w1c
+      - w
+      reset: 0
       start: 13
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: BURSTLEN
       properties:
       - r
+      scale: 2 ** value
       start: 1
+      unit: cycles
       width: 4
     - brief: null
       description: null
+      kind: bool
       name: ACTIVE
       properties:
       - r
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     Status register
   description: null
+  locator: table 2203, page 1873
   name: STAT
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: DELAY
       properties:
       - r
       - w
+      reset: 0
       start: 8
+      unit: cycles
       width: 8
     - brief: null
       description: null
+      kind: bool
       name: IRQD
       properties:
       - r
       - w
+      reset: 0
       start: 7
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: EC
       properties:
       - r
+      reset: 0
       start: 6
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: SERA
       properties:
       - r
       - w
+      reset: 0
       start: 5
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: LOOP
       properties:
       - r
       - w
+      reset: 0
       start: 4
       width: 1
     - brief: null
       description: null
+      enum:
+        INITIALIZE: 2
+        REGENERATE: 1
+        SCRUB: 0
+      kind: enum
       name: MODE
       properties:
       - r
       - w
+      reset: 0
       start: 2
       width: 2
     - brief: null
       description: null
+      kind: bool
       name: ES
       properties:
       - r
       - w
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: SCEN
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     Configuration register
   description: null
+  locator: table 2204, page 1873
   name: CONFIG
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: RLADDR
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Range low address register
   description: null
+  locator: table 2205, page 1873
   name: RANGEL
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: RHADDR
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Range high address register
   description: null
+  locator: table 2206, page 1874
   name: RANGEH
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: POSITION
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Position register
   description: null
+  locator: table 2207, page 1874
   name: POS
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: RECT
       properties:
       - r
       - w
+      reset: 0
       start: 22
+      unit: errors
       width: 10
     - brief: null
       description: null
+      kind: uint
       name: BECT
       properties:
       - r
       - w
+      reset: 0
       start: 14
+      unit: errors
       width: 8
     - brief: null
       description: null
+      kind: bool
       name: RECTE
       properties:
       - r
       - w
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: BECTE
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     Error threshold register
   description: null
+  locator: table 2208, page 1875
   name: ETHRES
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: DATA
       properties:
       - w
@@ -436,38 +532,45 @@ registers:
   brief: |
     Initialisation data register
   description: null
+  locator: table 2209, page 1875
   name: INIT
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: RLADDR
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Second range low address register
   description: null
+  locator: table 2210, page 1875
   name: RANGEL2
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: RHADDR
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Second range high address register
   description: null
+  locator: table 2211, page 1875
   name: RANGEH2
   width: 32
 type: interface
