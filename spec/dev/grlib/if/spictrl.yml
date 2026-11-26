@@ -90,6 +90,8 @@ links:
   uid: group
 - role: interface-placement
   uid: spictrl-header
+- role: reference
+  uid: /ref/ip/gaisler/grip-2026-3
 name: spictrl
 notes: null
 register-block-group: SPICTRL
@@ -100,13 +102,16 @@ registers:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: SSSZ
       properties:
       - r
       start: 24
+      unit: signals
       width: 8
     - brief: null
       description: null
+      kind: uint
       name: MAXWLEN
       properties:
       - r
@@ -114,6 +119,7 @@ registers:
       width: 4
     - brief: null
       description: null
+      kind: bool
       name: TWEN
       properties:
       - r
@@ -121,6 +127,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: AMODE
       properties:
       - r
@@ -128,6 +135,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: ASELA
       properties:
       - r
@@ -135,6 +143,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: SSEN
       properties:
       - r
@@ -142,13 +151,17 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: FDEPTH
       properties:
       - r
+      scale: value + 1
       start: 8
+      unit: words
       width: 8
     - brief: null
       description: null
+      kind: bool
       name: SR
       properties:
       - r
@@ -156,6 +169,11 @@ registers:
       width: 1
     - brief: null
       description: null
+      enum:
+        NONE: 0
+        PARITY_DMR: 1
+        TMR: 2
+      kind: enum
       name: FT
       properties:
       - r
@@ -163,173 +181,216 @@ registers:
       width: 2
     - brief: null
       description: null
+      kind: uint
       name: REV
       properties:
       - r
+      reset: 6
       start: 0
       width: 5
     variants: []
   brief: |
     Capability register
   description: null
+  locator: table 2447, page 2127
   name: CAP
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: AMEN
       properties:
       - r
       - w
+      reset: 0
       start: 31
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: LOOP
       properties:
       - r
       - w
+      reset: 0
       start: 30
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: CPOL
       properties:
       - r
       - w
+      reset: 0
       start: 29
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: CPHA
       properties:
       - r
       - w
+      reset: 0
       start: 28
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: DIV_16
       properties:
       - r
       - w
+      reset: 0
       start: 27
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: REV
       properties:
       - r
       - w
+      reset: 0
       start: 26
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: MS
       properties:
       - r
       - w
+      reset: 0
       start: 25
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: EN
       properties:
       - r
       - w
+      reset: 0
       start: 24
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: LEN
       properties:
       - r
       - w
+      reset: 0
       start: 20
       width: 4
     - brief: null
       description: null
+      kind: uint
       name: PM
       properties:
       - r
       - w
+      reset: 0
       start: 16
       width: 4
     - brief: null
       description: null
+      kind: bool
       name: TWEN
       properties:
       - r
       - w
+      reset: 0
       start: 15
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: ASEL
       properties:
       - r
       - w
+      reset: 0
       start: 14
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: FACT
       properties:
       - r
       - w
+      reset: 0
       start: 13
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: OD
       properties:
       - r
       - w
+      reset: 0
       start: 12
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: CG
       properties:
       - r
       - w
+      reset: 0
       start: 7
+      unit: cycles
       width: 5
     - brief: null
       description: null
+      kind: uint
       name: ASELDEL
       properties:
       - r
       - w
+      reset: 0
       start: 5
       width: 2
     - brief: null
       description: null
+      kind: bool
       name: TAC
       properties:
       - r
       - w
+      reset: 0
       start: 4
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TTO
       properties:
       - r
       - w
+      reset: 0
       start: 3
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: IGSEL
       properties:
       - r
       - w
+      reset: 0
       start: 2
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: CITE
       properties:
       - r
@@ -340,220 +401,275 @@ registers:
   brief: |
     Mode register
   description: null
+  locator: table 2449, page 2128
   name: MODE
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: TIP
       properties:
       - r
+      reset: 0
       start: 31
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: AT
       properties:
       - r
+      reset: 0
       start: 15
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: LT
       properties:
       - r
       - w1c
+      reset: 0
       start: 14
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: OV
       properties:
       - r
       - w1c
+      reset: 0
       start: 12
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: UN
       properties:
       - r
       - w1c
+      reset: 0
       start: 11
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: MME
       properties:
       - r
       - w1c
+      reset: 0
       start: 10
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: NE
       properties:
       - r
+      reset: 0
       start: 9
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: NF
       properties:
       - r
+      reset: 0
       start: 8
       width: 1
     variants: []
   brief: |
     Event register
   description: null
+  locator: table 2450, page 2130
   name: EVENT
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: TIPE
       properties:
       - r
       - w
+      reset: 0
       start: 31
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: AT
       properties:
       - r
       - w
+      reset: 0
       start: 15
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: LTE
       properties:
       - r
       - w
+      reset: 0
       start: 14
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: OVE
       properties:
       - r
       - w
+      reset: 0
       start: 12
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: UNE
       properties:
       - r
       - w
+      reset: 0
       start: 11
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: MMEE
       properties:
       - r
       - w
+      reset: 0
       start: 10
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: NEE
       properties:
       - r
       - w
+      reset: 0
       start: 9
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: NFE
       properties:
       - r
       - w
+      reset: 0
       start: 8
       width: 1
     variants: []
   brief: |
     Mask register
   description: null
+  locator: table 2451, page 2131
   name: MASK
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: LST
       properties:
       - w
+      reset: 0
       start: 22
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: PGRD
       properties:
       - w
+      reset: 0
       start: 3
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: DIR
       properties:
       - r
       - w
+      reset: 0
       start: 2
       width: 1
     - brief: null
       description: null
+      enum:
+        DUAL: 1
+        QUAD: 2
+        STANDARD: 0
+      kind: enum
       name: SPROT
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 2
     variants: []
   brief: |
     Command register
   description: null
+  locator: table 2452, page 2132
   name: CMD
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: TDATA
       properties:
       - w
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Transmit register
   description: null
+  locator: table 2453, page 2132
   name: TX
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: RDATA
       properties:
       - r
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Receive register
   description: null
+  locator: table 2454, page 2133
   name: RX
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: SLVSEL
       properties:
       - r
@@ -564,28 +680,37 @@ registers:
   brief: |
     Slave select register
   description: null
+  locator: table 2455, page 2133
   name: SLVSEL
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: ASLVSEL
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Automatic slave select register
   description: null
+  locator: table 2456, page 2133
   name: ASLVSEL
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      enum:
+        DUAL: 1
+        QUAD: 2
+        STANDARD: 0
+      kind: enum
       name: PROT
       properties:
       - r
@@ -595,28 +720,34 @@ registers:
   brief: |
     SPI controller Capability register 1
   description: null
+  locator: table 2448, page 2127
   name: CAP1
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: AMPER
       properties:
       - r
       - w
+      reset: 0
       start: 0
+      unit: cycles
       width: 32
     variants: []
   brief: |
     SPI controller AM period register
   description: null
+  locator: table 2458, page 2135
   name: AMPER
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: AM_MASK
       properties:
       - r
@@ -627,118 +758,144 @@ registers:
   brief: |
     SPI controller AM Mask register
   description: null
+  locator: table 2459, page 2135
   name: AMMASK
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: TDATA
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     SPI controller AM Transmit register
   description: null
+  locator: table 2460, page 2135
   name: AMTX
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: RDATA
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     SPI controller AM Receive register
   description: null
+  locator: table 2461, page 2136
   name: AMRX
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: ECGC
       properties:
       - r
       - w
+      reset: 0
       start: 8
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: LOCK
       properties:
       - r
       - w
+      reset: 0
       start: 7
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: ERPT
       properties:
       - r
       - w
+      reset: 0
       start: 6
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: SEQ
       properties:
       - r
       - w
+      reset: 0
       start: 5
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: STRICT
       properties:
       - r
       - w
+      reset: 0
       start: 4
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: OVTB
       properties:
       - r
       - w
+      reset: 0
       start: 3
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: OVDB
       properties:
       - r
       - w
+      reset: 0
       start: 2
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: ACT
       properties:
       - r
       - w
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: EACT
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     SPI controller AM configuration register
   description: null
+  locator: table 2457, page 2134
   name: AMCFG
   width: 32
 type: interface
