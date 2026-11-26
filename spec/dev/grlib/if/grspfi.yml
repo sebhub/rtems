@@ -1,0 +1,1144 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This structure defines the ${.:/register-block-group} register block memory
+  map.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+- default:
+    count: 1
+    name: GENCAP
+  offset: 0x0
+  variants: []
+- default:
+    count: 1
+    name: BUFCAP
+  offset: 0x4
+  variants: []
+- default:
+    count: 1
+    name: CCTRL
+  offset: 0x8
+  variants: []
+- default:
+    count: 1
+    name: LLSTAT
+  offset: 0xc
+  variants: []
+- default:
+    count: 1
+    name: RLSTAT
+  offset: 0x10
+  variants: []
+- default:
+    count: 1
+    name: DEFADDR
+  offset: 0x14
+  variants: []
+- default:
+    count: 1
+    name: TS
+  offset: 0x20
+  variants: []
+- default:
+    count: 1
+    name: TSCTRL
+  offset: 0x24
+  variants: []
+- default:
+    count: 1
+    name: TSLEN
+  offset: 0x28
+  variants: []
+- default:
+    count: 1
+    name: BCCONF
+  offset: 0x30
+  variants: []
+- default:
+    count: 32
+    name: VC
+  offset: 0x100
+  variants: []
+- default:
+    count: 1
+    name: DLCAP
+  offset: 0x800
+  variants: []
+- default:
+    count: 1
+    name: DLCTRL
+  offset: 0x804
+  variants: []
+- default:
+    count: 1
+    name: DLSTAT
+  offset: 0x808
+  variants: []
+- default:
+    count: 1
+    name: SPFIEN
+  offset: 0x80c
+  variants: []
+- default:
+    count: 1
+    name: BCTXADDR
+  offset: 0x810
+  variants: []
+- default:
+    count: 1
+    name: BCTXSIZE
+  offset: 0x814
+  variants: []
+- default:
+    count: 1
+    name: BCTXWPTR
+  offset: 0x818
+  variants: []
+- default:
+    count: 1
+    name: BCTXRPTR
+  offset: 0x81c
+  variants: []
+- default:
+    count: 1
+    name: BCRXADDR
+  offset: 0x820
+  variants: []
+- default:
+    count: 1
+    name: BCRXSIZE
+  offset: 0x824
+  variants: []
+- default:
+    count: 1
+    name: BCRXWPTR
+  offset: 0x828
+  variants: []
+- default:
+    count: 1
+    name: BCRXRPTR
+  offset: 0x82c
+  variants: []
+- default:
+    count: 1
+    name: BCMAP
+  offset: 0x830
+  variants: []
+- default:
+    count: 32
+    name: VCDESC
+  offset: 0x900
+  variants: []
+- default:
+    count: 8
+    name: DMACHAN
+  offset: 0xb00
+  variants: []
+- default:
+    count: 8
+    name: DMACHANSTAT
+  offset: 0xb80
+  variants: []
+description: null
+enabled-by: true
+identifier: RTEMSDeviceGRSPFI
+index-entries: []
+interface-type: register-block
+links:
+- role: interface-ingroup
+  uid: group
+- role: interface-placement
+  uid: grspfi-header
+- role: reference
+  uid: /ref/ip/gaisler/grip-2026-3
+- name: VC
+  role: register-block-include
+  uid: grspfi-vc
+- name: VCDESC
+  role: register-block-include
+  uid: grspfi-vcdesc
+- name: DMACHAN
+  role: register-block-include
+  uid: grspfi-dmachan
+- name: DMACHANSTAT
+  role: register-block-include
+  uid: grspfi-dmachan2
+name: grspfi
+notes: null
+register-block-group: GRSPFI
+register-block-size: 3072
+register-prefix: null
+registers:
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: NEB
+      properties:
+      - r
+      start: 28
+      unit: channels
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: NEV
+      properties:
+      - r
+      start: 22
+      unit: channels
+      width: 6
+    - brief: null
+      description: null
+      kind: uint
+      name: WBWC
+      properties:
+      - r
+      scale: value + 1
+      start: 17
+      unit: bits
+      width: 5
+    - brief: null
+      description: null
+      kind: uint
+      name: RFC
+      properties:
+      - r
+      scale: value + 1
+      start: 12
+      unit: bits
+      width: 5
+    - brief: null
+      description: null
+      kind: uint
+      name: FCTM
+      properties:
+      - r
+      scale: value + 1
+      start: 9
+      width: 3
+    - brief: null
+      description: null
+      kind: uint
+      name: NVC
+      properties:
+      - r
+      scale: value + 1
+      start: 4
+      unit: channels
+      width: 5
+    - brief: null
+      description: null
+      kind: bool
+      name: PI
+      properties:
+      - r
+      start: 3
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: BM
+      properties:
+      - r
+      start: 2
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: IED
+      properties:
+      - r
+      start: 1
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: SCK
+      properties:
+      - r
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    Codec general capabilities register
+  description: null
+  locator: table 1282, page 1094
+  name: GENCAP
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: VT
+      properties:
+      - r
+      scale: 2 ** (value + 1)
+      start: 20
+      unit: words
+      width: 5
+    - brief: null
+      description: null
+      kind: uint
+      name: VR
+      properties:
+      - r
+      scale: 2 ** (value + 1)
+      start: 15
+      unit: words
+      width: 5
+    - brief: null
+      description: null
+      kind: uint
+      name: RTB
+      properties:
+      - r
+      scale: 2 ** (value + 1)
+      start: 10
+      unit: words
+      width: 5
+    - brief: null
+      description: null
+      kind: uint
+      name: RTF
+      properties:
+      - r
+      scale: 2 ** (value + 1)
+      start: 5
+      unit: words
+      width: 5
+    - brief: null
+      description: null
+      kind: uint
+      name: RTD
+      properties:
+      - r
+      scale: 2 ** (value + 1)
+      start: 0
+      unit: words
+      width: 5
+    variants: []
+  brief: |
+    Codec buffers capabilities register
+  description: null
+  locator: table 1283, page 1094
+  name: BUFCAP
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: SCR
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 13
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: LB
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 12
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: SBR
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 4
+      width: 8
+    - brief: null
+      description: null
+      kind: bool
+      name: AS
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 3
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: LS
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 2
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: LNR
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 1
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: LIR
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    Codec control register
+  description: null
+  locator: table 1284, page 1095
+  name: CCTRL
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: FEC
+      properties:
+      - r
+      reset: 0
+      start: 20
+      width: 4
+    - brief: null
+      description: null
+      kind: uint
+      name: REC
+      properties:
+      - r
+      reset: 0
+      start: 12
+      unit: words
+      width: 8
+    - brief: null
+      description: null
+      kind: bool
+      name: REO
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 11
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: RXP
+      properties:
+      - r
+      reset: 0
+      start: 10
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: TO
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 9
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: FELC
+      properties:
+      - r
+      reset: 0
+      start: 7
+      width: 2
+    - brief: null
+      description: null
+      kind: bool
+      name: FEL
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 6
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: FES
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 5
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: FER
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 4
+      width: 1
+    - brief: null
+      description: null
+      enum:
+        ACTIVE: 8
+        CLEAR_LINE: 1
+        CONNECTED: 7
+        CONNECTING: 6
+        DISABLED: 2
+        INVERT_RX_POLARITY: 5
+        LOSS_OF_SIGNAL: 9
+        PREPARE_STANDBY: 10
+        STARTED: 4
+        WAIT: 3
+      kind: enum
+      name: LSTS
+      properties:
+      - r
+      reset: 1
+      start: 0
+      width: 4
+    variants: []
+  brief: |
+    Lane layer status register
+  description: null
+  locator: table 1285, page 1095
+  name: LLSTAT
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: RBE
+      properties:
+      - r
+      reset: 1
+      start: 10
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: PE
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 9
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: TME
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 8
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: RTC
+      properties:
+      - r
+      reset: 0
+      start: 4
+      width: 4
+    - brief: null
+      description: null
+      kind: bool
+      name: SE
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 3
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: FE
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 2
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: C8E
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 1
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: CE
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    Retry layer status register
+  description: null
+  locator: table 1286, page 1096
+  name: RLSTAT
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bits
+      name: DEFMSK
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 8
+      width: 8
+    - brief: null
+      description: null
+      kind: uint
+      name: DEFADDR
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 8
+    variants: []
+  brief: |
+    Default address register
+  description: null
+  locator: table 1287, page 1097
+  name: DEFADDR
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: CNT
+      properties:
+      - r
+      reset: 0
+      start: 8
+      unit: cycles
+      width: 22
+    - brief: null
+      description: null
+      kind: uint
+      name: TS
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 6
+    variants: []
+  brief: |
+    Time-slot register
+  description: null
+  locator: table 1288, page 1097
+  name: TS
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: ADJ
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 4
+      unit: cycles
+      width: 10
+    - brief: null
+      description: null
+      kind: bool
+      name: AS
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 3
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: AV
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 2
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: EG
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    Time-slot control register
+  description: null
+  locator: table 1289, page 1098
+  name: TSCTRL
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: NOMLEN
+      properties:
+      - r
+      - w
+      reset: 0
+      scale: value + 1
+      start: 0
+      unit: cycles
+      width: 21
+    variants: []
+  brief: |
+    Time-slot length register
+  description: null
+  locator: table 1290, page 1098
+  name: TSLEN
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: BW
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 16
+      width: 16
+    - brief: null
+      description: null
+      kind: bool
+      name: BD
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 8
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: CHN
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 8
+    variants: []
+  brief: |
+    Broadcast channel configuration register
+  description: null
+  locator: table 1291, page 1099
+  name: BCCONF
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: SPFI
+      properties:
+      - r
+      reset: 1
+      start: 31
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: CC
+      properties:
+      - r
+      start: 10
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: RC
+      properties:
+      - r
+      start: 9
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: RT
+      properties:
+      - r
+      start: 8
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: NDMA
+      properties:
+      - r
+      scale: value + 1
+      start: 4
+      unit: channels
+      width: 3
+    - brief: null
+      description: null
+      kind: uint
+      name: NTXD
+      properties:
+      - r
+      scale: 64 * 2 ** value
+      start: 2
+      unit: descriptors
+      width: 2
+    - brief: null
+      description: null
+      kind: uint
+      name: NRXD
+      properties:
+      - r
+      scale: 128 * 2 ** value
+      start: 0
+      unit: descriptors
+      width: 2
+    variants: []
+  brief: |
+    DMA layer capabilities register
+  description: null
+  locator: table 1299, page 1102
+  name: DLCAP
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: BTE
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 2
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: BRE
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 1
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: LE
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    DMA layer control register
+  description: null
+  locator: table 1300, page 1103
+  name: DLCTRL
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bits
+      name: DCI
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 16
+      width: 8
+    - brief: null
+      description: null
+      kind: bool
+      name: TO
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 3
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: BT
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 2
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: BR
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 1
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: LE
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    DMA layer status register
+  description: null
+  locator: table 1301, page 1103
+  name: DLSTAT
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: EN
+      properties:
+      - r
+      - w
+      reset: 1
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    SpaceFibre enable register
+  description: null
+  locator: table 1302, page 1104
+  name: SPFIEN
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: TXADDR
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 10
+      width: 22
+    variants: []
+  brief: |
+    Broadcast channel TX address register
+  description: null
+  locator: table 1303, page 1104
+  name: BCTXADDR
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: SIZE
+      properties:
+      - r
+      - w
+      reset: 0
+      scale: value + 1
+      start: 4
+      unit: messages
+      width: 16
+    variants: []
+  brief: |
+    Broadcast channel TX size register
+  description: null
+  locator: table 1304, page 1104
+  name: BCTXSIZE
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: WRPTR
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 4
+      width: 16
+    variants: []
+  brief: |
+    Broadcast channel TX write pointer register
+  description: null
+  locator: table 1305, page 1105
+  name: BCTXWPTR
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: RDPTR
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 4
+      width: 16
+    variants: []
+  brief: |
+    Broadcast channel TX read pointer register
+  description: null
+  locator: table 1306, page 1105
+  name: BCTXRPTR
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: RXADDR
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 10
+      width: 22
+    variants: []
+  brief: |
+    Broadcast channel RX address register
+  description: null
+  locator: table 1307, page 1105
+  name: BCRXADDR
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: SIZE
+      properties:
+      - r
+      - w
+      reset: 0
+      scale: value + 1
+      start: 4
+      unit: messages
+      width: 16
+    variants: []
+  brief: |
+    Broadcast channel RX size register
+  description: null
+  locator: table 1308, page 1106
+  name: BCRXSIZE
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: WRPTR
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 4
+      width: 16
+    variants: []
+  brief: |
+    Broadcast channel RX write pointer register
+  description: null
+  locator: table 1309, page 1106
+  name: BCRXWPTR
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: RDPTR
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 4
+      width: 16
+    variants: []
+  brief: |
+    Broadcast channel RX read pointer register
+  description: null
+  locator: table 1310, page 1106
+  name: BCRXRPTR
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: MAP
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 5
+    variants: []
+  brief: |
+    Broadcast channel mapping register
+  description: null
+  locator: table 1311, page 1107
+  name: BCMAP
+  width: 32
+type: interface

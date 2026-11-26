@@ -1,0 +1,259 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This structure defines the ${.:/register-block-group} register block memory
+  map.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+- default:
+    count: 1
+    name: DCCTRL
+  offset: 0x0
+  variants: []
+- default:
+    count: 1
+    name: DCSTAT
+  offset: 0x4
+  variants: []
+- default:
+    count: 1
+    name: DCMAP
+  offset: 0x8
+  variants: []
+- default:
+    count: 1
+    name: DCICTRL
+  offset: 0xc
+  variants: []
+description: null
+enabled-by: true
+identifier: RTEMSDeviceGRSPFIDMAChannel
+index-entries: []
+interface-type: register-block
+links:
+- role: interface-ingroup
+  uid: grspfi
+- role: interface-placement
+  uid: grspfi-header
+- role: reference
+  uid: /ref/ip/gaisler/grip-2026-3
+name: grspfi_dmachan
+notes: null
+register-block-group: GRSPFIDMACHAN
+register-block-size: 16
+register-prefix: null
+registers:
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: TS
+      properties:
+      - w
+      reset: 0
+      start: 3
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: RS
+      properties:
+      - w
+      reset: 0
+      start: 2
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: TE
+      properties:
+      - w
+      reset: 0
+      start: 1
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: RE
+      properties:
+      - w
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    DMA channel control register
+  description: null
+  locator: table 1316, page 1109
+  name: DCCTRL
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: RD
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 25
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: BMEVC
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 20
+      width: 5
+    - brief: null
+      description: null
+      kind: uint
+      name: BMEDSC
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 8
+      width: 10
+    - brief: null
+      description: null
+      enum:
+        FETCH_RX_DESCRIPTOR: 1
+        FETCH_TX_BROADCAST: 9
+        FETCH_TX_DATA: 7
+        FETCH_TX_DESCRIPTOR: 5
+        FETCH_TX_HEADER: 6
+        NO_ERROR: 0
+        RMAP_READ: 11
+        RMAP_WRITE: 10
+        STORE_RX_BROADCAST: 4
+        STORE_RX_PACKET: 2
+        UPDATE_RX_DESCRIPTOR: 3
+        UPDATE_TX_DESCRIPTOR: 8
+      kind: enum
+      name: BMECD
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 4
+      width: 4
+    - brief: null
+      description: null
+      kind: bool
+      name: TX
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 3
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: RX
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 2
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: TA
+      properties:
+      - r
+      reset: 0
+      start: 1
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: RA
+      properties:
+      - r
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    DMA channel status register
+  description: null
+  locator: table 1317, page 1109
+  name: DCSTAT
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bits
+      name: VCMAP
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 32
+    variants: []
+  brief: |
+    DMA channel VC mapping register
+  description: null
+  locator: table 1318, page 1110
+  name: DCMAP
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: RMI
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 3
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: BEI
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 2
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: TI
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 1
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: RI
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    DMA channel IRQ control register
+  description: null
+  locator: table 1319, page 1111
+  name: DCICTRL
+  width: 32
+type: interface

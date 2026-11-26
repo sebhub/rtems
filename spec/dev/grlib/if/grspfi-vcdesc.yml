@@ -1,0 +1,198 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This structure defines the ${.:/register-block-group} register block memory
+  map.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+- default:
+    count: 1
+    name: VCTXDADDR
+  offset: 0x0
+  variants: []
+- default:
+    count: 1
+    name: VCRXDADDR
+  offset: 0x4
+  variants: []
+- default:
+    count: 1
+    name: VCDCTRL
+  offset: 0x8
+  variants: []
+- default:
+    count: 1
+    name: VCSTAT
+  offset: 0xc
+  variants: []
+description: null
+enabled-by: true
+identifier: RTEMSDeviceGRSPFIVCDescriptor
+index-entries: []
+interface-type: register-block
+links:
+- role: interface-ingroup
+  uid: grspfi
+- role: interface-placement
+  uid: grspfi-header
+- role: reference
+  uid: /ref/ip/gaisler/grip-2026-3
+name: grspfi_vcdesc
+notes: null
+register-block-group: GRSPFIVCDESC
+register-block-size: 16
+register-prefix: null
+registers:
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: TXADDR
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 13
+      width: 19
+    - brief: null
+      description: null
+      kind: uint
+      name: TXDESCSEL
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 4
+      width: 9
+    variants: []
+  brief: |
+    VC TX descriptor table address register
+  description: null
+  locator: table 1312, page 1107
+  name: VCTXDADDR
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: RXADDR
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 13
+      width: 19
+    - brief: null
+      description: null
+      kind: uint
+      name: RXDESCSEL
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 3
+      width: 10
+    variants: []
+  brief: |
+    VC RX descriptor table address register
+  description: null
+  locator: table 1313, page 1108
+  name: VCRXDADDR
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: TDA
+      properties:
+      - r
+      reset: 0
+      start: 31
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: RDA
+      properties:
+      - r
+      reset: 0
+      start: 30
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: CTD
+      properties:
+      - w
+      reset: 0
+      start: 3
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: CRD
+      properties:
+      - w
+      reset: 0
+      start: 2
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: NTD
+      properties:
+      - w
+      reset: 0
+      start: 1
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: NRD
+      properties:
+      - w
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    VC descriptor control register
+  description: null
+  locator: table 1314, page 1108
+  name: VCDCTRL
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: TX
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 16
+      unit: packets
+      width: 16
+    - brief: null
+      description: null
+      kind: uint
+      name: RX
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 0
+      unit: packets
+      width: 16
+    variants: []
+  brief: |
+    VC statistics register
+  description: null
+  locator: table 1315, page 1109
+  name: VCSTAT
+  width: 32
+type: interface

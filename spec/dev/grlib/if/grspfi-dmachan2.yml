@@ -1,0 +1,123 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This structure defines the ${.:/register-block-group} register block memory
+  map.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+- default:
+    count: 1
+    name: DCSTAT2
+  offset: 0x0
+  variants: []
+description: null
+enabled-by: true
+identifier: RTEMSDeviceGRSPFIDMAChannelStatus
+index-entries: []
+interface-type: register-block
+links:
+- role: interface-ingroup
+  uid: grspfi
+- role: interface-placement
+  uid: grspfi-header
+- role: reference
+  uid: /ref/ip/gaisler/grip-2026-3
+name: grspfi_dmachan2
+notes: null
+register-block-group: GRSPFIDMACHAN2
+register-block-size: 16
+register-prefix: null
+registers:
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: RC
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 16
+      unit: commands
+      width: 16
+    - brief: null
+      description: null
+      kind: bool
+      name: TAF
+      properties:
+      - r
+      reset: 0
+      start: 15
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: TF
+      properties:
+      - r
+      reset: 0
+      start: 14
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: TS
+      properties:
+      - r
+      reset: 0
+      start: 13
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: TFS
+      properties:
+      - r
+      reset: 1
+      start: 8
+      width: 5
+    - brief: null
+      description: null
+      kind: bool
+      name: RAE
+      properties:
+      - r
+      reset: 1
+      start: 7
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: RE
+      properties:
+      - r
+      reset: 1
+      start: 6
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: RS
+      properties:
+      - r
+      reset: 0
+      start: 5
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: RFS
+      properties:
+      - r
+      reset: 1
+      start: 0
+      width: 5
+    variants: []
+  brief: |
+    DMA channel extended status register
+  description: null
+  locator: table 1320, page 1111
+  name: DCSTAT2
+  width: 32
+type: interface

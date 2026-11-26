@@ -1,0 +1,291 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This structure defines the ${.:/register-block-group} register block memory
+  map.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+- default:
+    count: 1
+    name: VCCTRL
+  offset: 0x0
+  variants: []
+- default:
+    count: 1
+    name: VCSTAT
+  offset: 0x4
+  variants: []
+- default:
+    count: 1
+    name: VCMAXLEN
+  offset: 0x8
+  variants: []
+- default:
+    count: 1
+    name: VCADDR
+  offset: 0xc
+  variants: []
+- default:
+    count: 1
+    name: VCTS1
+  offset: 0x10
+  variants: []
+- default:
+    count: 1
+    name: VCTS2
+  offset: 0x14
+  variants: []
+- default:
+    count: 1
+    name: VCKEY
+  offset: 0x18
+  variants: []
+description: null
+enabled-by: true
+identifier: RTEMSDeviceGRSPFIVC
+index-entries: []
+interface-type: register-block
+links:
+- role: interface-ingroup
+  uid: grspfi
+- role: interface-placement
+  uid: grspfi-header
+- role: reference
+  uid: /ref/ip/gaisler/grip-2026-3
+name: grspfi_vc
+notes: null
+register-block-group: GRSPFIVC
+register-block-size: 32
+register-prefix: null
+registers:
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: VBW
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 16
+      width: 16
+    - brief: null
+      description: null
+      kind: uint
+      name: PR
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 12
+      width: 4
+    - brief: null
+      description: null
+      kind: uint
+      name: EFC
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 4
+      width: 5
+    - brief: null
+      description: null
+      kind: bool
+      name: BD
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 3
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: RE
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 1
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: AE
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    Virtual channel control register
+  description: null
+  locator: table 1292, page 1099
+  name: VCCTRL
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: FCO
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 4
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: IBO
+      properties:
+      - r
+      reset: 0
+      start: 3
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: DHC
+      properties:
+      - r
+      reset: 0
+      start: 2
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: BUU
+      properties:
+      - r
+      reset: 0
+      start: 1
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: BOU
+      properties:
+      - r
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    Virtual channel status register
+  description: null
+  locator: table 1293, page 1100
+  name: VCSTAT
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: MAXLGTH
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      unit: bytes
+      width: 25
+    variants: []
+  brief: |
+    Virtual channel RX max length register
+  description: null
+  locator: table 1294, page 1100
+  name: VCMAXLEN
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bits
+      name: VCMSK
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 8
+      width: 8
+    - brief: null
+      description: null
+      kind: uint
+      name: VCADDR
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 8
+    variants: []
+  brief: |
+    Virtual channel address register
+  description: null
+  locator: table 1295, page 1101
+  name: VCADDR
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bits
+      name: TSLOT1
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 32
+    variants: []
+  brief: |
+    Virtual channel time-slot 1 register
+  description: null
+  locator: table 1296, page 1101
+  name: VCTS1
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bits
+      name: TSLOT2
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 32
+    variants: []
+  brief: |
+    Virtual channel time-slot 2 register
+  description: null
+  locator: table 1297, page 1101
+  name: VCTS2
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: KEY
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 8
+    variants: []
+  brief: |
+    Virtual channel destination key register
+  description: null
+  locator: table 1298, page 1102
+  name: VCKEY
+  width: 32
+type: interface

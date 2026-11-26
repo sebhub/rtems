@@ -82,6 +82,16 @@ links:
 - role: validation
   uid: /dev/grlib/if/grscrub
 - role: validation
+  uid: /dev/grlib/if/grspfi
+- role: validation
+  uid: /dev/grlib/if/grspfi-dmachan
+- role: validation
+  uid: /dev/grlib/if/grspfi-dmachan2
+- role: validation
+  uid: /dev/grlib/if/grspfi-vc
+- role: validation
+  uid: /dev/grlib/if/grspfi-vcdesc
+- role: validation
   uid: /dev/grlib/if/grspw2
 - role: validation
   uid: /dev/grlib/if/grspw2-dma
