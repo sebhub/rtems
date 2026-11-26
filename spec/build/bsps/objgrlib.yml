@@ -31,6 +31,7 @@ install:
   - bsps/include/grlib/grscrub-regs.h
   - bsps/include/grlib/grspfi-regs.h
   - bsps/include/grlib/grspw2-regs.h
+  - bsps/include/grlib/grwizl-regs.h
   - bsps/include/grlib/grspwrouter-regs.h
   - bsps/include/grlib/irqamp.h
   - bsps/include/grlib/irqamp-regs.h
