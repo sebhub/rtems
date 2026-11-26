@@ -160,6 +160,8 @@ links:
   uid: group
 - role: interface-placement
   uid: grspw2-header
+- role: reference
+  uid: /ref/ip/gaisler/grip-2026-3
 - name: DMA
   role: register-block-include
   uid: grspw2-dma
@@ -173,6 +175,7 @@ registers:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: RA
       properties:
       - r
@@ -180,6 +183,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RX
       properties:
       - r
@@ -187,6 +191,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RC
       properties:
       - r
@@ -194,20 +199,27 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: NCH
       properties:
       - r
+      scale: value + 1
       start: 27
+      unit: channels
       width: 2
     - brief: null
       description: null
+      kind: uint
       name: PO
       properties:
       - r
+      scale: value + 1
       start: 26
+      unit: ports
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: CC
       properties:
       - r
@@ -215,6 +227,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: ID
       properties:
       - r
@@ -222,30 +235,41 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: LE
       properties:
       - r
       - w
+      reset: 0
       start: 22
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: PS
       properties:
       - r
       - w
+      reset: 0
       start: 21
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: NP
       properties:
       - r
       - w
+      reset: external
       start: 20
       width: 1
     - brief: null
       description: null
+      enum:
+        CONFIGURATION: 2
+        IDENTIFICATION: 1
+        NONE: 0
+      kind: enum
       name: PNPA
       properties:
       - r
@@ -253,242 +277,310 @@ registers:
       width: 2
     - brief: null
       description: null
+      kind: bool
       name: RD
       properties:
       - r
       - w
+      reset: 0
       start: 17
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RE
       properties:
       - r
       - w
+      reset: external
       start: 16
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: PE
       properties:
       - r
       - w
+      reset: external
       start: 15
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TL
       properties:
       - r
       - w
+      reset: 0
       start: 13
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TF
       properties:
       - r
       - w
+      reset: 0
       start: 12
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TR
       properties:
       - r
       - w
+      reset: 0
       start: 11
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TT
       properties:
       - r
       - w
+      reset: 0
       start: 10
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: LI
       properties:
       - r
       - w
+      reset: 0
       start: 9
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TQ
       properties:
       - r
       - w
+      reset: 0
       start: 8
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RS
       properties:
       - r
       - w
+      reset: 0
       start: 6
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: PM
       properties:
       - r
       - w
+      reset: 0
       start: 5
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TI
       properties:
       - r
       - w
+      reset: 0
       start: 4
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: IE
       properties:
       - r
       - w
+      reset: 0
       start: 3
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: AS
       properties:
       - r
       - w
+      reset: external
       start: 2
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: LS
       properties:
       - r
       - w
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: LD
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     Control
   description: null
+  locator: table 1440, page 1215
   name: CTRL
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: NRXD
       properties:
       - r
+      scale: 128 * 2 ** value
       start: 26
+      unit: descriptors
       width: 2
     - brief: null
       description: null
+      kind: uint
       name: NTXD
       properties:
       - r
+      scale: 64 * 2 ** value
       start: 24
+      unit: descriptors
       width: 2
     - brief: null
       description: null
+      enum:
+        CONNECTING: 4
+        ERROR_RESET: 0
+        ERROR_WAIT: 1
+        READY: 2
+        RUN: 5
+        STARTED: 3
+      kind: enum
       name: LS
       properties:
       - r
+      reset: 0
       start: 21
       width: 3
     - brief: null
       description: null
+      kind: bool
       name: AP
       properties:
       - r
+      reset: 0
       start: 9
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: EE
       properties:
       - r
       - w1c
+      reset: 0
       start: 8
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: IA
       properties:
       - r
       - w1c
+      reset: 0
       start: 7
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: PE
       properties:
       - r
       - w1c
+      reset: 0
       start: 4
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: DE
       properties:
       - r
       - w1c
+      reset: 0
       start: 3
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: ER
       properties:
       - r
       - w1c
+      reset: 0
       start: 2
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: CE
       properties:
       - r
       - w1c
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TO
       properties:
       - r
       - w1c
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     Status
   description: null
+  locator: table 1441, page 1217
   name: STS
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: DEFMASK
       properties:
       - r
       - w
+      reset: 0
       start: 8
       width: 8
     - brief: null
       description: null
+      kind: uint
       name: DEFADDR
       properties:
       - r
@@ -499,36 +591,43 @@ registers:
   brief: |
     Default address
   description: null
+  locator: table 1442, page 1217
   name: DEFADDR
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: CLKDIVSTART
       properties:
       - r
       - w
+      reset: external
       start: 8
       width: 8
     - brief: null
       description: null
+      kind: uint
       name: CLKDIVRUN
       properties:
       - r
       - w
+      reset: external
       start: 0
       width: 8
     variants: []
   brief: |
     Clock divisor
   description: null
+  locator: table 1443, page 1218
   name: CLKDIV
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: DESTKEY
       properties:
       - r
@@ -539,244 +638,296 @@ registers:
   brief: |
     Destination key
   description: null
+  locator: table 1444, page 1218
   name: DKEY
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: TCTRL
       properties:
       - r
       - w
+      reset: 0
       start: 6
       width: 2
     - brief: null
       description: null
+      kind: uint
       name: TIMECNT
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 6
     variants: []
   brief: |
     Time-code
   description: null
+  locator: table 1445, page 1218
   name: TC
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: INTNUM
       properties:
       - r
       - w
+      reset: external
       start: 26
       width: 6
     - brief: null
       description: null
+      kind: bool
       name: RS
       properties:
       - r
       - w
+      reset: 0
       start: 25
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: EE
       properties:
       - r
       - w
+      reset: 0
       start: 24
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: IA
       properties:
       - r
       - w
+      reset: 0
       start: 23
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TQ
       properties:
       - r
       - w
+      reset: 0
       start: 20
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: AQ
       properties:
       - r
       - w
+      reset: 0
       start: 19
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: IQ
       properties:
       - r
       - w
+      reset: 0
       start: 18
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: AA
       properties:
       - r
       - w
+      reset: 0
       start: 15
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: AT
       properties:
       - r
       - w
+      reset: 0
       start: 14
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: IT
       properties:
       - r
       - w
+      reset: 0
       start: 13
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: ID
       properties:
       - r
       - w1c
+      reset: 0
       start: 7
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: II
       properties:
       - r
       - w
+      reset: 0
       start: 6
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: TXINT
       properties:
       - r
       - w
+      reset: external
       start: 0
       width: 6
     variants: []
   brief: |
     Interrupt distribution control
   description: null
+  locator: table 1451, page 1222
   name: INTCTRL
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: RXIRQ
       properties:
       - r
       - w1c
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Interrupt-code receive
   description: null
+  locator: table 1452, page 1224
   name: INTRX
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: RXACK_INTRXEXT
       properties:
       - r
       - w1c
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Interrupt-acknowledge-code receive / Interrupt receive extended
   description: null
+  locator: table 1453, page 1224
   name: ACKRX_INTRXEXT
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: INTTO
       properties:
       - r
       - w1c
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Interrupt timeout
   description: null
+  locator: table 1454, page 1224
   name: INTTO
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: INTTOEXT
       properties:
       - r
       - w1c
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Interrupt timeout extended
   description: null
+  locator: table 1455, page 1224
   name: INTTOEXT
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: MASK
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Interrupt tick-out mask
   description: null
+  locator: table 1456, page 1225
   name: TICKMASK
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: AAMASK
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Interrupt-code auto acknowledge mask / interrupt tick-out mask extended
   description: null
+  locator: table 1457, page 1225
   name: AUTOACK_TICKMASKEXT
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: INTNUM3
       properties:
       - r
@@ -785,6 +936,7 @@ registers:
       width: 6
     - brief: null
       description: null
+      kind: uint
       name: INTNUM2
       properties:
       - r
@@ -793,6 +945,7 @@ registers:
       width: 6
     - brief: null
       description: null
+      kind: uint
       name: INTNUM1
       properties:
       - r
@@ -801,6 +954,7 @@ registers:
       width: 6
     - brief: null
       description: null
+      kind: uint
       name: INTNUM0
       properties:
       - r
@@ -809,173 +963,212 @@ registers:
       width: 6
     - brief: null
       description: null
+      kind: uint
       name: NUMINT
       properties:
       - r
+      reset: 0
+      scale: 2 ** value
       start: 4
+      unit: interrupts
       width: 4
     - brief: null
       description: null
+      kind: bool
       name: PR
       properties:
       - r
       - w
+      reset: 0
       start: 3
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: IR
       properties:
       - r
       - w
+      reset: 0
       start: 2
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: IT
       properties:
       - r
       - w
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: EE
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     Interrupt distribution configuration
   description: null
+  locator: table 1458, page 1225
   name: INTCFG
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: ISR
       properties:
       - r
       - w1c
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Interrupt distribution ISR
   description: null
+  locator: table 1459, page 1226
   name: ISR
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: ISR
       properties:
       - r
       - w1c
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Interrupt distribution ISR extended
   description: null
+  locator: table 1460, page 1226
   name: ISREXT
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: RL
       properties:
       - r
       - w
+      reset: external
       start: 0
+      unit: clocks
       width: 31
     variants: []
   brief: |
     Interrupt distribution prescaler reload
   description: null
+  locator: table 1461, page 1226
   name: PRESCALER
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: EN
       properties:
       - r
       - w
+      reset: 1
       start: 31
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: RL
       properties:
       - r
       - w
+      reset: external
       start: 0
       width: 31
     variants: []
   brief: |
     Interrupt distribution ISR timer reload
   description: null
+  locator: table 1462, page 1227
   name: ISRTIMER
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: EN
       properties:
       - r
       - w
+      reset: 1
       start: 31
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: RL
       properties:
       - r
       - w
+      reset: external
       start: 0
       width: 31
     variants: []
   brief: |
     Interrupt distribution INT / ACK timer reload
   description: null
+  locator: table 1463, page 1227
   name: IATIMER
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: EN
       properties:
       - r
       - w
+      reset: 1
       start: 31
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: RL
       properties:
       - r
       - w
+      reset: external
       start: 0
       width: 31
     variants: []
   brief: |
     Interrupt distribution change timer reload
   description: null
+  locator: table 1464, page 1227
   name: ICTIMER
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: VEND
       properties:
       - r
@@ -983,6 +1176,7 @@ registers:
       width: 16
     - brief: null
       description: null
+      kind: uint
       name: PROD
       properties:
       - r
@@ -992,40 +1186,50 @@ registers:
   brief: |
     SpaceWire Plug-and-Play - Device Vendor and Product ID
   description: null
+  locator: table 1465, page 1228
   name: PNPVEND
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: OLA
       properties:
       - r
+      reset: 0
       start: 24
       width: 8
     - brief: null
       description: null
+      kind: uint
       name: OAL
       properties:
       - r
+      reset: 0
       start: 22
       width: 2
     - brief: null
       description: null
+      kind: uint
       name: OL
       properties:
       - r
+      reset: 0
       start: 16
       width: 5
     - brief: null
       description: null
+      kind: uint
       name: RL
       properties:
       - r
+      reset: 0
       start: 8
       width: 5
     - brief: null
       description: null
+      kind: bool
       name: T
       properties:
       - r
@@ -1033,122 +1237,148 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: U
       properties:
       - r
+      reset: 0
       start: 6
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: LC
       properties:
       - r
+      reset: 19
       start: 0
+      unit: ports
       width: 5
     variants: []
   brief: |
     SpaceWire Plug-and-Play - Link Information
   description: null
+  locator: table 1466, page 1228
   name: PNPLINFO
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: RA
       properties:
       - r
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     SpaceWire Plug-and-Play - Owner Address 0
   description: null
+  locator: table 1467, page 1228
   name: PNPOA0
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: RA
       properties:
       - r
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     SpaceWire Plug-and-Play - Owner Address 1
   description: null
+  locator: table 1468, page 1228
   name: PNPOA1
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: RA
       properties:
       - r
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     SpaceWire Plug-and-Play - Owner Address 2
   description: null
+  locator: table 1469, page 1228
   name: PNPOA2
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: DID
       properties:
       - r
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     SpaceWire Plug-and-Play - Device ID
   description: null
+  locator: table 1470, page 1229
   name: PNPDEVID
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: VEND
       properties:
       - r
       - w
+      reset: external
       start: 16
       width: 16
     - brief: null
       description: null
+      kind: uint
       name: PROD
       properties:
       - r
       - w
+      reset: external
       start: 0
       width: 16
     variants: []
   brief: |
     SpaceWire Plug-and-Play - Unit Vendor and Product ID
   description: null
+  locator: table 1471, page 1229
   name: PNPUVEND
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: USN
       properties:
       - r
       - w
+      reset: external
       start: 0
       width: 32
     variants: []
   brief: |
     SpaceWire Plug-and-Play - Unit Serial Number
   description: null
+  locator: table 1472, page 1229
   name: PNPUSN
   width: 32
 type: interface
