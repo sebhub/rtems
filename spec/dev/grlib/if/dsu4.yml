@@ -130,6 +130,8 @@ links:
   uid: group
 - role: interface-placement
   uid: dsu4-header
+- role: reference
+  uid: /ref/ip/gaisler/grip-2026-3
 name: dsu4
 notes: null
 register-block-group: DSU4
@@ -140,43 +142,54 @@ registers:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: PW
       properties:
       - r
+      reset: 0
       start: 11
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: HL
       properties:
       - r
       - w
+      reset: 0
       start: 10
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: PE
       properties:
       - r
       - w1c
+      reset: 0
       start: 9
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: EB
       properties:
       - r
+      reset: external
       start: 8
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: EE
       properties:
       - r
+      reset: external
       start: 7
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: DM
       properties:
       - r
@@ -184,6 +197,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: BZ
       properties:
       - r
@@ -192,6 +206,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: BX
       properties:
       - r
@@ -200,14 +215,17 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: BS
       properties:
       - r
       - w
+      reset: 0
       start: 3
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: BW
       properties:
       - r
@@ -216,6 +234,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: BE
       properties:
       - r
@@ -224,6 +243,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TE
       properties:
       - r
@@ -234,139 +254,173 @@ registers:
   brief: |
     DSU control register
   description: null
+  locator: table 320, page 289
   name: CTRL
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: TIMETAG
       properties:
       - r
       - w
+      reset: 0
       start: 0
+      unit: clocks
       width: 32
     variants: []
   brief: |
     DSU time tag counter register
   description: null
+  locator: table 324, page 291
   name: DTTC
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: SS
       properties:
       - r
       - w
+      reset: 0
       start: 16
       width: 16
     - brief: null
       description: null
+      kind: bits
       name: BN
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 16
     variants: []
   brief: |
     DSU break and single step register
   description: null
+  locator: table 321, page 290
   name: BRSS
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: DM
       properties:
       - r
       - w
+      reset: 0
       start: 16
       width: 16
     - brief: null
       description: null
+      kind: bits
       name: ED
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 16
     variants: []
   brief: |
     DSU debug mode mask register
   description: null
+  locator: table 322, page 290
   name: DBGM
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: DCNT
       properties:
       - r
       - w
+      reset: 0
       start: 16
+      unit: traces
       width: 16
     - brief: null
       description: null
+      kind: bool
       name: DF
       properties:
       - r
       - w
+      reset: 0
       start: 8
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: SF
       properties:
       - r
       - w
+      reset: 0
       start: 7
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TE
       properties:
       - r
       - w
+      reset: 0
       start: 6
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TF
       properties:
       - r
       - w
+      reset: 0
       start: 5
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: BW
       properties:
       - r
+      scale: 32 * 2 ** value
       start: 3
+      unit: bits
       width: 2
     - brief: null
       description: null
+      kind: bool
       name: BR
       properties:
       - r
       - w
+      reset: 0
       start: 2
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: DM
       properties:
       - r
       - w
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: EN
       properties:
       - r
@@ -377,284 +431,345 @@ registers:
   brief: |
     AHB trace buffer control register
   description: null
+  locator: table 326, page 292
   name: ATBC
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: INDEX
       properties:
       - r
       - w
+      reset: not-reset
       start: 4
       width: 28
     variants: []
   brief: |
     AHB trace buffer index register
   description: null
+  locator: table 327, page 292
   name: ATBI
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: WPF
       properties:
       - r
       - w
+      reset: 0
       start: 12
       width: 2
     - brief: null
       description: null
+      kind: bits
       name: BPF
       properties:
       - r
       - w
+      reset: 0
       start: 8
       width: 2
     - brief: null
       description: null
+      kind: bool
       name: PF
       properties:
       - r
       - w
+      reset: 0
       start: 3
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: AF
       properties:
       - r
       - w
+      reset: 0
       start: 2
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: FR
       properties:
       - r
       - w
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: FW
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     AHB trace buffer filter control register
   description: null
+  locator: table 328, page 292
   name: ATBFC
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: SMASK
       properties:
       - r
       - w
+      reset: 0
       start: 16
       width: 16
     - brief: null
       description: null
+      kind: bits
       name: MMASK
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 16
     variants: []
   brief: |
     AHB trace buffer filter mask register
   description: null
+  locator: table 329, page 293
   name: ATBFM
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: BADDR_31_2
       properties:
       - r
       - w
+      reset: not-reset
       start: 2
       width: 30
     variants: []
   brief: |
     AHB trace buffer break address registers
   description: null
+  locator: table 330, page 293
   name: ATBBA
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: BMASK_31_2
       properties:
       - r
       - w
+      reset: not-reset
       start: 2
       width: 30
     - brief: null
       description: null
+      kind: bool
       name: LD
       properties:
       - r
       - w
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: ST
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     AHB trace buffer break mask registers
   description: null
+  locator: table 331, page 294
   name: ATBBM
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: CE
       properties:
       - r
       - w
+      reset: 0
       start: 31
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: IC
       properties:
       - r
       - w
+      reset: 0
       start: 30
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: PE
       properties:
       - r
       - w
+      reset: 0
       start: 29
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: ICOUNT
       properties:
       - r
       - w
+      reset: not-reset
       start: 0
       width: 29
     variants: []
   brief: |
     Instruction trace count register
   description: null
+  locator: table 334, page 295
   name: ICNT
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: IN2
       properties:
       - r
       - w
+      reset: 0
       start: 6
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: CP2
       properties:
       - r
       - w
+      reset: 0
       start: 5
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: EN2
       properties:
       - r
       - w
+      reset: 0
       start: 4
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: IN1
       properties:
       - r
       - w
+      reset: 0
       start: 2
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: CP1
       properties:
       - r
       - w
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: EN1
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     AHB watchpoint control register
   description: null
+  locator: table 335, page 296
   name: AHBWPC
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: DATA
       properties:
       - r
       - w
+      reset: not-reset
       start: 0
       width: 32
     variants: []
   brief: |
     AHB watchpoint data registers
   description: null
+  locator: table 336, page 296
   name: AHBWPD
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: MASK
       properties:
       - r
       - w
+      reset: not-reset
       start: 0
       width: 32
     variants: []
   brief: |
     AHB watchpoint mask registers
   description: null
+  locator: table 337, page 296
   name: AHBWPM
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: ITBUF
       properties:
       - r
@@ -665,124 +780,160 @@ registers:
   brief: |
     Instruction trace buffer area
   description: null
+  locator: table 317, page 287
   name: ITBUF
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      enum:
+        ALL: 0
+        CALL: 4
+        CONTROL_FLOW: 2
+        FORMAT_2: 1
+        FORMAT_3: 8
+        LOAD_STORE: 12
+        LOAD_STORE_ASI: 13
+        LOAD_STORE_ASI_DIGIT: 14
+      kind: enum
       name: TFILT
       properties:
       - r
       - w
+      reset: 0
       start: 28
       width: 4
     - brief: null
       description: null
+      kind: uint
       name: ITPOINTER
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 16
     variants: []
   brief: |
     Instruction trace buffer control register 0
   description: null
+  locator: table 332, page 294
   name: ITBC0
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: ITBAF
       properties:
       - r
       - w
+      reset: 0
       start: 28
       width: 4
     - brief: null
       description: null
+      kind: bool
       name: WO
       properties:
       - r
       - w
+      reset: 0
       start: 27
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: TLIM
       properties:
       - r
       - w
+      reset: 0
       start: 24
       width: 3
     - brief: null
       description: null
+      kind: bool
       name: TOV
       properties:
       - r
       - w
+      reset: 0
       start: 23
       width: 1
     - brief: null
       description: null
+      kind: bits
       name: ITBAFO
       properties:
       - r
       - w
+      reset: 0
       start: 16
       width: 4
     - brief: null
       description: null
+      kind: bits
       name: ASIFMASK
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 16
     variants: []
   brief: |
     Instruction trace buffer control register 1
   description: null
+  locator: table 333, page 295
   name: ITBC1
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: EM
       properties:
       - r
+      reset: not-reset
       start: 12
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: TRAPTYPE
       properties:
       - r
+      reset: not-reset
       start: 4
       width: 8
     variants: []
   brief: |
     DSU trap register
   description: null
+  locator: table 323, page 291
   name: DTR
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: ASI
       properties:
       - r
       - w
+      reset: not-reset
       start: 0
       width: 8
     variants: []
   brief: |
     DSU ASI diagnostic access register
   description: null
+  locator: table 325, page 291
   name: DASI
   width: 32
 type: interface
