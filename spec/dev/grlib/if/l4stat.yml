@@ -35,6 +35,8 @@ links:
   uid: group
 - role: interface-placement
   uid: l4stat-header
+- role: reference
+  uid: /ref/ip/gaisler/grip-2026-3
 name: l4stat
 notes: null
 register-block-group: L4STAT
@@ -45,29 +47,36 @@ registers:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: CVAL
       properties:
       - r
       - w
+      reset: not-reset
       start: 0
       width: 32
     variants: []
   brief: |
     Counter 0-31 value register
   description: null
+  locator: table 2034, page 1658
   name: CVAL
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: NCNT
       properties:
       - r
+      scale: value + 1
       start: 23
+      unit: counters
       width: 9
     - brief: null
       description: null
+      kind: bool
       name: MC
       properties:
       - r
@@ -75,6 +84,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: IA
       properties:
       - r
@@ -82,6 +92,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: DS
       properties:
       - r
@@ -89,6 +100,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: EE
       properties:
       - r
@@ -96,6 +108,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: AE
       properties:
       - r
@@ -103,96 +116,117 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: EL
       properties:
       - r
       - w
+      reset: not-reset
       start: 17
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: CD
       properties:
       - r
       - w
+      reset: not-reset
       start: 16
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: SU
       properties:
       - r
       - w
+      reset: not-reset
       start: 14
       width: 2
     - brief: null
       description: null
+      kind: bool
       name: CL
       properties:
       - r
       - w
+      reset: not-reset
       start: 13
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: EN
       properties:
       - r
       - w
+      reset: 0
       start: 12
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: EVENT_ID
       properties:
       - r
       - w
+      reset: not-reset
       start: 4
       width: 8
     - brief: null
       description: null
+      kind: uint
       name: CPU_AHBM
       properties:
       - r
       - w
+      reset: not-reset
       start: 0
       width: 4
     variants: []
   brief: |
     Counter 0-31 control register
   description: null
+  locator: table 2035, page 1658
   name: CCTRL
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: CSVAL
       properties:
       - r
       - w
+      reset: not-reset
       start: 0
       width: 32
     variants: []
   brief: |
     Counter 0-31 max/latch register
   description: null
+  locator: table 2036, page 1659
   name: CSVAL
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: TSTAMP
       properties:
       - r
       - w
+      reset: not-reset
       start: 0
       width: 32
     variants: []
   brief: |
     Timestamp register
   description: null
+  locator: table 2037, page 1659
   name: TSTAMP
   width: 32
 type: interface
