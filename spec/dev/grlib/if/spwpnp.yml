@@ -127,6 +127,8 @@ links:
   uid: group
 - role: interface-placement
   uid: spwpnp-header
+- role: reference
+  uid: /ref/ip/gaisler/grip-2026-3
 name: spwpnp
 notes: null
 register-block-group: SpaceWire Plug-and-Play
@@ -137,6 +139,7 @@ registers:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: VEND
       properties:
       - r
@@ -144,6 +147,7 @@ registers:
       width: 16
     - brief: null
       description: null
+      kind: uint
       name: PROD
       properties:
       - r
@@ -153,12 +157,14 @@ registers:
   brief: |
     SpaceWire Plug-and-Play - Device Vendor and Product ID
   description: null
+  locator: table 1412, page 1203
   name: PNPVEND
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: MAJOR
       properties:
       - r
@@ -166,6 +172,7 @@ registers:
       width: 8
     - brief: null
       description: null
+      kind: uint
       name: MINOR
       properties:
       - r
@@ -173,6 +180,7 @@ registers:
       width: 8
     - brief: null
       description: null
+      kind: uint
       name: PATCH
       properties:
       - r
@@ -182,30 +190,36 @@ registers:
   brief: |
     SpaceWire Plug-and-Play - Version
   description: null
+  locator: table 1413, page 1203
   name: PNPVER
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: STATUS
       properties:
       - r
+      reset: 0
       start: 0
       width: 8
     variants: []
   brief: |
     SpaceWire Plug-and-Play - Device Status
   description: null
+  locator: table 1414, page 1203
   name: PNPDEVSTS
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: ACTIVE
       properties:
       - r
+      reset: 0
       start: 0
       width: 32
     variants: []
@@ -214,40 +228,50 @@ registers:
   description: |
     Bit 0 of ACTIVE is reserved. ACTIVE includes it, so that bit n of ACTIVE
     corresponds to port n.
+  locator: table 1415, page 1203
   name: PNPACTLNK
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: OLA
       properties:
       - r
+      reset: 0
       start: 24
       width: 8
     - brief: null
       description: null
+      kind: uint
       name: OAL
       properties:
       - r
+      reset: 0
       start: 22
       width: 2
     - brief: null
       description: null
+      kind: uint
       name: OL
       properties:
       - r
+      reset: 0
       start: 16
       width: 5
     - brief: null
       description: null
+      kind: uint
       name: RL
       properties:
       - r
+      reset: 0
       start: 8
       width: 5
     - brief: null
       description: null
+      kind: bool
       name: T
       properties:
       - r
@@ -255,172 +279,208 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: U
       properties:
       - r
+      reset: 0
       start: 6
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: LC
       properties:
       - r
+      reset: 19
       start: 0
+      unit: ports
       width: 5
     variants: []
   brief: |
     SpaceWire Plug-and-Play - Link Information
   description: null
+  locator: table 1416, page 1204
   name: PNPLINFO
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: RA
       properties:
       - r
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     SpaceWire Plug-and-Play - Owner Address 0
   description: null
+  locator: table 1417, page 1204
   name: PNPOA0
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: RA
       properties:
       - r
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     SpaceWire Plug-and-Play - Owner Address 1
   description: null
+  locator: table 1418, page 1204
   name: PNPOA1
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: RA
       properties:
       - r
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     SpaceWire Plug-and-Play - Owner Address 2
   description: null
+  locator: table 1419, page 1204
   name: PNPOA2
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: DID
       properties:
       - r
       - w
       - cas
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     SpaceWire Plug-and-Play - Device ID
   description: null
+  locator: table 1420, page 1205
   name: PNPDEVID
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: VEND
       properties:
       - r
+      reset: external
       start: 16
       width: 16
     - brief: null
       description: null
+      kind: uint
       name: PROD
       properties:
       - r
+      reset: external
       start: 0
       width: 16
     variants: []
   brief: |
     SpaceWire Plug-and-Play - Unit Vendor and Product ID
   description: null
+  locator: table 1421, page 1205
   name: PNPUVEND
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: USN
       properties:
       - r
+      reset: external
       start: 0
       width: 32
     variants: []
   brief: |
     SpaceWire Plug-and-Play - Unit Serial Number
   description: null
+  locator: table 1422, page 1205
   name: PNPUSN
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: LEN
       properties:
       - r
+      reset: 0
       start: 0
       width: 15
     variants: []
   brief: |
     SpaceWire Plug-and-Play - Vendor String Length
   description: null
+  locator: table 1423, page 1205
   name: PNPVSTRL
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: LEN
       properties:
       - r
+      reset: 0
       start: 0
       width: 15
     variants: []
   brief: |
     SpaceWire Plug-and-Play - Product String Length
   description: null
+  locator: table 1424, page 1205
   name: PNPPSTRL
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: PC
       properties:
       - r
       start: 0
+      unit: protocols
       width: 5
     variants: []
   brief: |
     SpaceWire Plug-and-Play - Protocol Count
   description: null
+  locator: table 1425, page 1206
   name: PNPPCNT
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: PID1
       properties:
       - r
@@ -430,12 +490,14 @@ registers:
   brief: |
     SpaceWire Plug-and-Play - Protocol Identification 1
   description: null
+  locator: table 1411, page 1201
   name: PNPPID1
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: PID2
       properties:
       - r
@@ -445,176 +507,225 @@ registers:
   brief: |
     SpaceWire Plug-and-Play - Protocol Identification 2
   description: null
+  locator: table 1411, page 1201
   name: PNPPID2
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: AC
       properties:
       - r
+      reset: 0
       start: 0
+      unit: applications
       width: 8
     variants: []
   brief: |
     SpaceWire Plug-and-Play - Application Count
   description: null
+  locator: table 1426, page 1206
   name: PNPACNT
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: TC
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 6
     variants: []
   brief: |
     SpaceWire Plug-and-Play - Time-Code Counter
   description: null
+  locator: table 1427, page 1206
   name: PNPTCC
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: ND
       properties:
       - r
+      reset: 1
       start: 31
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: LT
       properties:
       - r
+      reset: 1
       start: 30
       width: 1
     - brief: null
       description: null
+      enum:
+        CONNECTING: 4
+        ERROR_RESET: 0
+        ERROR_WAIT: 1
+        READY: 2
+        RUN: 5
+        STARTED: 3
+      kind: enum
       name: LS
       properties:
       - r
+      reset: 0
       start: 16
       width: 3
     - brief: null
       description: null
+      kind: bool
       name: CE
       properties:
       - r
       - w
+      reset: 0
       start: 6
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: ER
       properties:
       - r
       - w
+      reset: 0
       start: 5
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: PE
       properties:
       - r
       - w
+      reset: 0
       start: 4
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: DE
       properties:
       - r
       - w
+      reset: 0
       start: 3
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: IA
       properties:
       - r
       - w
+      reset: 0
       start: 1
       width: 1
     variants: []
   brief: |
     SpaceWire Plug-and-Play - Link Status
   description: null
+  locator: table 1428, page 1206
   name: PNPLSTS
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: TT
       properties:
       - r
       - w
+      reset: 0
       start: 4
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: LD
       properties:
       - r
       - w
+      reset: 0
       start: 2
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: LS
       properties:
       - r
       - w
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: AS
       properties:
       - r
       - w
+      reset: external
       start: 0
       width: 1
     variants: []
   brief: |
     SpaceWire Plug-and-Play - Link Control
   description: null
+  locator: table 1429, page 1207
   name: PNPLCTRL
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: LEN
       properties:
       - r
+      reset: 2
       start: 0
+      unit: fields
       width: 15
     variants: []
   brief: |
     SpaceWire Plug-and-Play - Maximum Write Length
   description: null
+  locator: table 1430, page 1207
   name: PNPMWLEN
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: LEN
       properties:
       - r
+      reset: 16384
       start: 0
+      unit: fields
       width: 15
     variants: []
   brief: |
     SpaceWire Plug-and-Play - Maximum Read Length
   description: null
+  locator: table 1431, page 1207
   name: PNPMRLEN
   width: 32
 type: interface
