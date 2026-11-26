@@ -43,6 +43,7 @@ install:
   - bsps/include/grlib/mmctrl-regs.h
   - bsps/include/grlib/nandfctrl2-regs.h
   - bsps/include/grlib/spictrl-regs.h
+  - bsps/include/grlib/spimctrl-regs.h
   - bsps/include/grlib/spwpnp-regs.h
   - bsps/include/grlib/spwtdp-regs.h
 links:
