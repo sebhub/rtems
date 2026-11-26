@@ -35,6 +35,8 @@ links:
   uid: group
 - role: interface-placement
   uid: ahbstat-header
+- role: reference
+  uid: /ref/ip/gaisler/grip-2026-3
 name: ahbstat
 notes: null
 register-block-group: AHBSTAT
@@ -45,91 +47,113 @@ registers:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: ME
       properties:
       - r
       - w
+      reset: 0
       start: 13
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: FW
       properties:
       - w
+      reset: 0
       start: 12
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: CF
       properties:
       - r
       - w
+      reset: 0
       start: 11
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: AF
       properties:
       - r
       - w
+      reset: 0
       start: 10
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: CE
       properties:
       - r
       - w
+      reset: 0
       start: 9
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: NE
       properties:
       - r
       - w
+      reset: 0
       start: 8
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: HWRITE
       properties:
       - r
+      reset: not-reset
       start: 7
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: HMASTER
       properties:
       - r
+      reset: not-reset
       start: 3
       width: 4
     - brief: null
       description: null
+      kind: uint
       name: HSIZE
       properties:
       - r
+      reset: not-reset
       start: 0
       width: 3
     variants: []
   brief: |
     AHB Status register
   description: null
+  locator: table 73, page 92
   name: AHBS
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: HADDR
       properties:
       - r
+      reset: not-reset
       start: 0
       width: 32
     variants: []
   brief: |
     AHB Failing address register
   description: null
+  locator: table 74, page 92
   name: AHBFAR
   width: 32
 type: interface
