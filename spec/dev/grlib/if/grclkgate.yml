@@ -35,6 +35,8 @@ links:
   uid: group
 - role: interface-placement
   uid: grclkgate-header
+- role: reference
+  uid: /ref/ip/gaisler/grip-2026-3
 name: grclkgate
 notes: null
 register-block-group: GRCLKGATE
@@ -45,22 +47,26 @@ registers:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: UNLOCK
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Unlock register
   description: null
+  locator: table 669, page 627
   name: UNLOCK
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: ENABLE
       properties:
       - r
@@ -71,46 +77,55 @@ registers:
   brief: |
     Clock enable register
   description: null
+  locator: table 670, page 627
   name: CLKEN
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: RESET
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Reset register
   description: null
+  locator: table 671, page 627
   name: RESET
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: FOVERRIDE
       properties:
       - r
       - w
+      reset: 0
       start: 16
       width: 16
     - brief: null
       description: null
+      kind: bits
       name: OVERRIDE
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 16
     variants: []
   brief: |
     CPU/FPU override register
   description: null
+  locator: table 672, page 627
   name: OVERRIDE
   width: 32
 type: interface
