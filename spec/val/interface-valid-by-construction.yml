@@ -64,6 +64,14 @@ links:
 - role: validation
   uid: /dev/grlib/if/griommu
 - role: validation
+  uid: /dev/grlib/if/griommu2
+- role: validation
+  uid: /dev/grlib/if/griommu2-bhpm
+- role: validation
+  uid: /dev/grlib/if/griommu2-bridge
+- role: validation
+  uid: /dev/grlib/if/griommu2-msicfg
+- role: validation
   uid: /dev/grlib/if/grpci2
 - role: validation
   uid: /dev/grlib/if/grspw2

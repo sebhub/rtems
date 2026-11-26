@@ -1,0 +1,254 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This structure defines the ${.:/register-block-group} register block memory
+  map.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+- default:
+    count: 1
+    name: CAP
+  offset: 0x0
+  variants: []
+- default:
+    count: 1
+    name: CTRL
+  offset: 0x4
+  variants: []
+- default:
+    count: 1
+    name: GCFG
+  offset: 0x8
+  variants: []
+- default:
+    count: 64
+    name: DID
+  offset: 0x100
+  variants: []
+- default:
+    count: 1
+    name: BHPMREAD
+  offset: 0x200
+  variants: []
+- default:
+    count: 1
+    name: BHPMWRITE
+  offset: 0x220
+  variants: []
+- default:
+    count: 1
+    name: BHPMBYPASS
+  offset: 0x260
+  variants: []
+- default:
+    count: 1
+    name: BHPMERROR
+  offset: 0x280
+  variants: []
+- default:
+    count: 1
+    name: BHPMABORT
+  offset: 0x2a0
+  variants: []
+- default:
+    count: 512
+    name: HCONFIG
+  offset: 0x1000
+  variants: []
+description: null
+enabled-by: true
+identifier: RTEMSDeviceGRIOMMU2Bridge
+index-entries: []
+interface-type: register-block
+links:
+- role: interface-ingroup
+  uid: group
+- role: interface-placement
+  uid: griommu2-header
+- role: reference
+  uid: /ref/ip/gaisler/grip-2026-3
+- name: BHPMREAD
+  role: register-block-include
+  uid: griommu2-bhpm
+- name: BHPMWRITE
+  role: register-block-include
+  uid: griommu2-bhpm
+- name: BHPMBYPASS
+  role: register-block-include
+  uid: griommu2-bhpm
+- name: BHPMERROR
+  role: register-block-include
+  uid: griommu2-bhpm
+- name: BHPMABORT
+  role: register-block-include
+  uid: griommu2-bhpm
+name: griommu2_bridge
+notes: null
+register-block-group: GRIOMMU2BRIDGE
+register-block-size: 6144
+register-prefix: null
+registers:
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: PADDRW
+      properties:
+      - r
+      start: 16
+      unit: bits
+      width: 8
+    - brief: null
+      description: null
+      kind: uint
+      name: NDMAMST
+      properties:
+      - r
+      start: 8
+      unit: masters
+      width: 8
+    - brief: null
+      description: null
+      kind: bool
+      name: BHPM
+      properties:
+      - r
+      start: 4
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: END
+      properties:
+      - r
+      start: 3
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: BREG
+      properties:
+      - r
+      start: 2
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: HPMP
+      properties:
+      - r
+      start: 1
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: HMMU
+      properties:
+      - r
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    Capabilities register
+  description: null
+  locator: table 1022, page 902
+  name: CAP
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: IRQFFE
+      properties:
+      - r
+      - w
+      reset: 1
+      start: 1
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: IRQFEN
+      properties:
+      - r
+      - w
+      reset: 1
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    Control register
+  description: null
+  locator: table 1023, page 902
+  name: CTRL
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: RM
+      properties:
+      - r
+      start: 8
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: GRAN1
+      properties:
+      - r
+      start: 2
+      width: 2
+    - brief: null
+      description: null
+      kind: uint
+      name: GRAN0
+      properties:
+      - r
+      start: 0
+      width: 2
+    variants: []
+  brief: |
+    Global configuration register
+  description: null
+  locator: table 1024, page 903
+  name: GCFG
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: DID
+      properties:
+      - r
+      start: 0
+      width: 24
+    variants: []
+  brief: |
+    Device ID area
+  description: null
+  locator: table 1025, page 903
+  name: DID
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: HCONFIG
+      properties:
+      - r
+      start: 0
+      width: 32
+    variants: []
+  brief: |
+    HCONFIG area
+  description: null
+  locator: table 1021, page 901
+  name: HCONFIG
+  width: 32
+type: interface

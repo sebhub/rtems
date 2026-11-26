@@ -1,0 +1,98 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This structure defines the ${.:/register-block-group} register block memory
+  map.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+- default:
+    count: 1
+    name: MSGADDR
+  offset: 0x0
+  variants: []
+- default:
+    count: 1
+    name: MSGDATA
+  offset: 0x8
+  variants: []
+- default:
+    count: 1
+    name: VECTCTRL
+  offset: 0xc
+  variants: []
+description: null
+enabled-by: true
+identifier: RTEMSDeviceGRIOMMU2MSIConfig
+index-entries: []
+interface-type: register-block
+links:
+- role: interface-ingroup
+  uid: griommu2
+- role: interface-placement
+  uid: griommu2-header
+- role: reference
+  uid: /ref/ip/gaisler/grip-2026-3
+name: griommu2_msicfg
+notes: null
+register-block-group: GRIOMMU2MSICFG
+register-block-size: 16
+register-prefix: null
+registers:
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: ADDR
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 2
+      width: 54
+    variants: []
+  brief: |
+    MSI configuration table message address
+  description: null
+  locator: table 1077, page 930
+  name: MSGADDR
+  width: 64
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: DATA
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 32
+    variants: []
+  brief: |
+    MSI configuration table message data
+  description: null
+  locator: table 1078, page 931
+  name: MSGDATA
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: M
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    MSI configuration table vector control
+  description: null
+  locator: table 1079, page 931
+  name: VECTCTRL
+  width: 32
+type: interface

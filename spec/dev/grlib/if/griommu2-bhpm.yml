@@ -1,0 +1,123 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This structure defines the ${.:/register-block-group} register block memory
+  map.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+- default:
+    count: 1
+    name: CNT
+  offset: 0x0
+  variants: []
+- default:
+    count: 1
+    name: MSK
+  offset: 0x8
+  variants: []
+- default:
+    count: 1
+    name: FLTR
+  offset: 0x10
+  variants: []
+- default:
+    count: 1
+    name: FMSK
+  offset: 0x18
+  variants: []
+description: null
+enabled-by: true
+identifier: RTEMSDeviceGRIOMMU2BridgeHPM
+index-entries: []
+interface-type: register-block
+links:
+- role: interface-ingroup
+  uid: griommu2-bridge
+- role: interface-placement
+  uid: griommu2-header
+- role: reference
+  uid: /ref/ip/gaisler/grip-2026-3
+name: griommu2_bhpm
+notes: null
+register-block-group: GRIOMMU2BHPM
+register-block-size: 32
+register-prefix: null
+registers:
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: CNT
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      unit: events
+      width: 64
+    variants: []
+  brief: |
+    Bridge HPM counter
+  description: null
+  locator: table 1027, page 904
+  name: CNT
+  width: 64
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bits
+      name: MSK
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 64
+    variants: []
+  brief: |
+    Bridge HPM DMA mask
+  description: null
+  locator: table 1028, page 904
+  name: MSK
+  width: 64
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: FLTR
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 2
+      width: 62
+    variants: []
+  brief: |
+    Bridge HPM address filter
+  description: null
+  locator: table 1029, page 904
+  name: FLTR
+  width: 64
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bits
+      name: FMSK
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 2
+      width: 62
+    variants: []
+  brief: |
+    Bridge HPM address filter mask
+  description: null
+  locator: table 1030, page 905
+  name: FMSK
+  width: 64
+type: interface

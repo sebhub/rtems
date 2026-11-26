@@ -1,0 +1,2183 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This structure defines the ${.:/register-block-group} register block memory
+  map.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+- default:
+    count: 1
+    name: CAP
+  offset: 0x0
+  variants: []
+- default:
+    count: 1
+    name: FCTL
+  offset: 0x8
+  variants: []
+- default:
+    count: 1
+    name: DDTP
+  offset: 0x10
+  variants: []
+- default:
+    count: 1
+    name: CQB
+  offset: 0x18
+  variants: []
+- default:
+    count: 1
+    name: CQH
+  offset: 0x20
+  variants: []
+- default:
+    count: 1
+    name: CQT
+  offset: 0x24
+  variants: []
+- default:
+    count: 1
+    name: FQB
+  offset: 0x28
+  variants: []
+- default:
+    count: 1
+    name: FQH
+  offset: 0x30
+  variants: []
+- default:
+    count: 1
+    name: FQT
+  offset: 0x34
+  variants: []
+- default:
+    count: 1
+    name: CQCSR
+  offset: 0x48
+  variants: []
+- default:
+    count: 1
+    name: FQCSR
+  offset: 0x4c
+  variants: []
+- default:
+    count: 1
+    name: IPSR
+  offset: 0x54
+  variants: []
+- default:
+    count: 1
+    name: IOCOUNTOVF
+  offset: 0x58
+  variants: []
+- default:
+    count: 1
+    name: IOCOUNTINH
+  offset: 0x5c
+  variants: []
+- default:
+    count: 1
+    name: IOHPMCYCLES
+  offset: 0x60
+  variants: []
+- default:
+    count: 31
+    name: IOHPMCTR
+  offset: 0x68
+  variants: []
+- default:
+    count: 31
+    name: IOHPMEVT
+  offset: 0x160
+  variants: []
+- default:
+    count: 1
+    name: TR_REQ_IOVA
+  offset: 0x258
+  variants: []
+- default:
+    count: 1
+    name: TR_REQ_CTL
+  offset: 0x260
+  variants: []
+- default:
+    count: 1
+    name: TR_RESPONSE
+  offset: 0x268
+  variants: []
+- default:
+    count: 1
+    name: RCMD0
+  offset: 0x2b0
+  variants: []
+- default:
+    count: 1
+    name: RCMD1
+  offset: 0x2b8
+  variants: []
+- default:
+    count: 1
+    name: ICVEC
+  offset: 0x2f8
+  variants: []
+- default:
+    count: 16
+    name: MSICFG
+  offset: 0x300
+  variants: []
+- default:
+    count: 1
+    name: CTX_INDEX
+  offset: 0x1000
+  variants: []
+- default:
+    count: 1
+    name: CTX_DIAG0
+  offset: 0x1008
+  variants: []
+- default:
+    count: 1
+    name: CTX_DIAG1
+  offset: 0x1010
+  variants: []
+- default:
+    count: 1
+    name: CTX_DIAG2
+  offset: 0x1018
+  variants: []
+- default:
+    count: 1
+    name: CTX_DIAG3
+  offset: 0x1020
+  variants: []
+- default:
+    count: 1
+    name: CTX_DIAG4
+  offset: 0x1028
+  variants: []
+- default:
+    count: 1
+    name: CTX_DIAG5
+  offset: 0x1030
+  variants: []
+- default:
+    count: 1
+    name: CTX_DIAG6
+  offset: 0x1038
+  variants: []
+- default:
+    count: 1
+    name: SV_INDEX
+  offset: 0x1040
+  variants: []
+- default:
+    count: 1
+    name: SV_DIAG0
+  offset: 0x1048
+  variants: []
+- default:
+    count: 1
+    name: SV_DIAG1
+  offset: 0x1050
+  variants: []
+- default:
+    count: 1
+    name: SV_DIAG2
+  offset: 0x1058
+  variants: []
+- default:
+    count: 1
+    name: G_INDEX
+  offset: 0x1080
+  variants: []
+- default:
+    count: 1
+    name: G_DIAG0
+  offset: 0x1088
+  variants: []
+- default:
+    count: 1
+    name: G_DIAG1
+  offset: 0x1090
+  variants: []
+- default:
+    count: 1
+    name: MSI_INDEX
+  offset: 0x10c0
+  variants: []
+- default:
+    count: 1
+    name: MSI_DIAG0
+  offset: 0x10c8
+  variants: []
+- default:
+    count: 1
+    name: MSI_DIAG1
+  offset: 0x10d0
+  variants: []
+- default:
+    count: 1
+    name: MSI_DIAG2
+  offset: 0x10d8
+  variants: []
+description: null
+enabled-by: true
+identifier: RTEMSDeviceGRIOMMU2
+index-entries: []
+interface-type: register-block
+links:
+- role: interface-ingroup
+  uid: group
+- role: interface-placement
+  uid: griommu2-header
+- role: reference
+  uid: /ref/ip/gaisler/grip-2026-3
+- name: MSICFG
+  role: register-block-include
+  uid: griommu2-msicfg
+name: griommu2
+notes: null
+register-block-group: GRIOMMU2
+register-block-size: 4320
+register-prefix: null
+registers:
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: PD20
+      properties:
+      - r
+      start: 40
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: PD17
+      properties:
+      - r
+      start: 39
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: PD8
+      properties:
+      - r
+      start: 38
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: PAS
+      properties:
+      - r
+      reset: 32
+      start: 32
+      unit: bits
+      width: 6
+    - brief: null
+      description: null
+      kind: bool
+      name: DBG
+      properties:
+      - r
+      start: 31
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: HPM
+      properties:
+      - r
+      start: 30
+      width: 1
+    - brief: null
+      description: null
+      enum:
+        MSI: 0
+        MSI_WSI: 2
+        WSI: 1
+      kind: enum
+      name: IGS
+      properties:
+      - r
+      reset: 2
+      start: 28
+      width: 2
+    - brief: null
+      description: null
+      kind: bool
+      name: END
+      properties:
+      - r
+      reset: 0
+      start: 27
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: T2GPA
+      properties:
+      - r
+      reset: 0
+      start: 26
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: ATS
+      properties:
+      - r
+      reset: 0
+      start: 25
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: AMO_HWAD
+      properties:
+      - r
+      reset: 1
+      start: 24
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: MSI_MRIF
+      properties:
+      - r
+      reset: 1
+      start: 23
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: MSI_FLAT
+      properties:
+      - r
+      start: 22
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: AMO_MRIF
+      properties:
+      - r
+      reset: 1
+      start: 21
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: SV57X4
+      properties:
+      - r
+      reset: 0
+      start: 19
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: SV48X4
+      properties:
+      - r
+      reset: 0
+      start: 18
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: SV39X4
+      properties:
+      - r
+      start: 17
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: SV32X4
+      properties:
+      - r
+      start: 16
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: SVPBMT
+      properties:
+      - r
+      reset: 0
+      start: 15
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: SVRSW60T59B
+      properties:
+      - r
+      start: 14
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: SV57
+      properties:
+      - r
+      reset: 0
+      start: 11
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: SV48
+      properties:
+      - r
+      reset: 0
+      start: 10
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: SV39
+      properties:
+      - r
+      start: 9
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: SV32
+      properties:
+      - r
+      start: 8
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: VERSION
+      properties:
+      - r
+      reset: 16
+      start: 0
+      width: 8
+    variants: []
+  brief: |
+    Capabilities
+  description: null
+  locator: table 1053, page 915
+  name: CAP
+  width: 64
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: BPEN
+      properties:
+      - r
+      - w
+      reset: 1
+      start: 21
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: MSIEN
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 20
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: GEN
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 19
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: SVEN
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 18
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: CTXEN
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 17
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: INVL
+      properties:
+      - r
+      - w
+      reset: 1
+      start: 16
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: GXL
+      properties:
+      - r
+      start: 2
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: WSI
+      properties:
+      - r
+      - w
+      reset: 1
+      start: 1
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: BE
+      properties:
+      - r
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    Feature control
+  description: null
+  locator: table 1054, page 918
+  name: FCTL
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: PPN
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 10
+      width: 44
+    - brief: null
+      description: null
+      kind: bool
+      name: BUSY
+      properties:
+      - r
+      reset: 0
+      start: 4
+      width: 1
+    - brief: null
+      description: null
+      enum:
+        BARE: 1
+        LEVEL_1: 2
+        LEVEL_2: 3
+        LEVEL_3: 4
+        'OFF': 0
+      kind: enum
+      name: MODE
+      properties:
+      - r
+      - w
+      start: 0
+      width: 4
+    variants: []
+  brief: |
+    Device directory table pointer
+  description: null
+  locator: table 1055, page 918
+  name: DDTP
+  width: 64
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: PPN
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 10
+      width: 44
+    - brief: null
+      description: null
+      kind: uint
+      name: SIZE
+      properties:
+      - r
+      - w
+      reset: 0
+      scale: 2 ** (value + 1)
+      start: 0
+      unit: entries
+      width: 5
+    variants: []
+  brief: |
+    Command-queue base
+  description: null
+  locator: table 1056, page 920
+  name: CQB
+  width: 64
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: INDEX
+      properties:
+      - r
+      reset: 0
+      start: 0
+      width: 32
+    variants: []
+  brief: |
+    Command-queue head
+  description: null
+  locator: table 1057, page 920
+  name: CQH
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: INDEX
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 32
+    variants: []
+  brief: |
+    Command-queue tail
+  description: null
+  locator: table 1058, page 920
+  name: CQT
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: PPN
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 10
+      width: 44
+    - brief: null
+      description: null
+      kind: uint
+      name: SIZE
+      properties:
+      - r
+      - w
+      reset: 0
+      scale: 2 ** (value + 1)
+      start: 0
+      unit: entries
+      width: 5
+    variants: []
+  brief: |
+    Fault-queue base
+  description: null
+  locator: table 1059, page 920
+  name: FQB
+  width: 64
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: INDEX
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 32
+    variants: []
+  brief: |
+    Fault-queue head
+  description: null
+  locator: table 1060, page 922
+  name: FQH
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: INDEX
+      properties:
+      - r
+      reset: 0
+      start: 0
+      width: 32
+    variants: []
+  brief: |
+    Fault-queue tail
+  description: null
+  locator: table 1061, page 922
+  name: FQT
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: BUSY
+      properties:
+      - r
+      reset: 0
+      start: 17
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: CQON
+      properties:
+      - r
+      reset: 0
+      start: 16
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: FWIP
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 11
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: CMD_ILL
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 10
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: CMD_TO
+      properties:
+      - r
+      reset: 0
+      start: 9
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: CQMF
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 8
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: CIE
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 1
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: CQEN
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    Command-queue CSR
+  description: null
+  locator: table 1062, page 922
+  name: CQCSR
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: BUSY
+      properties:
+      - r
+      reset: 0
+      start: 17
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: FQON
+      properties:
+      - r
+      reset: 0
+      start: 16
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: FQOF
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 9
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: FQMF
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 8
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: FIE
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 1
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: FQEN
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    Fault-queue CSR
+  description: null
+  locator: table 1063, page 924
+  name: FQCSR
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: PIP
+      properties:
+      - r
+      reset: 0
+      start: 3
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: PMIP
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 2
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: FIP
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 1
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: CIP
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    Interrupt pending status register
+  description: null
+  locator: table 1064, page 924
+  name: IPSR
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bits
+      name: HPM
+      properties:
+      - r
+      reset: 0
+      start: 1
+      width: 31
+    - brief: null
+      description: null
+      kind: bool
+      name: CY
+      properties:
+      - r
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    Performance-monitoring counter overflow status
+  description: null
+  locator: table 1065, page 926
+  name: IOCOUNTOVF
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bits
+      name: HPM
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 1
+      width: 31
+    - brief: null
+      description: null
+      kind: bool
+      name: CY
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    Performance-monitoring counter inhibits
+  description: null
+  locator: table 1066, page 926
+  name: IOCOUNTINH
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: OF
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 63
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: COUNTER
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      unit: cycles
+      width: 63
+    variants: []
+  brief: |
+    Performance-monitoring cycles counter
+  description: null
+  locator: table 1067, page 926
+  name: IOHPMCYCLES
+  width: 64
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: COUNTER
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      unit: events
+      width: 64
+    variants: []
+  brief: |
+    Performance-monitoring event counter
+  description: null
+  locator: table 1068, page 926
+  name: IOHPMCTR
+  width: 64
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: OF
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 63
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: IDT
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 62
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: DV_GSCV
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 61
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: PV_PSCV
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 60
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: DID_GSCID
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 36
+      width: 24
+    - brief: null
+      description: null
+      kind: uint
+      name: PID_PSCID
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 16
+      width: 20
+    - brief: null
+      description: null
+      kind: bool
+      name: DMASK
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 15
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: EVENTID
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 15
+    variants: []
+  brief: |
+    Performance-monitoring event selector
+  description: null
+  locator: table 1069, page 927
+  name: IOHPMEVT
+  width: 64
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: VPN
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 12
+      width: 52
+    variants: []
+  brief: |
+    Translation-request IOVA
+  description: null
+  locator: table 1070, page 927
+  name: TR_REQ_IOVA
+  width: 64
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: DID
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 40
+      width: 24
+    - brief: null
+      description: null
+      kind: bool
+      name: CACHE
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 36
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: PV
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 32
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: PID
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 12
+      width: 20
+    - brief: null
+      description: null
+      kind: bool
+      name: NW
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 3
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: EXE
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 2
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: PRIV
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 1
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: GO
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    Translation-request control
+  description: null
+  locator: table 1071, page 927
+  name: TR_REQ_CTL
+  width: 64
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: PPN
+      properties:
+      - r
+      reset: 0
+      start: 10
+      width: 44
+    - brief: null
+      description: null
+      kind: bool
+      name: S
+      properties:
+      - r
+      reset: 0
+      start: 9
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: PBMT
+      properties:
+      - r
+      reset: 0
+      start: 7
+      width: 2
+    - brief: null
+      description: null
+      kind: bool
+      name: FAULT
+      properties:
+      - r
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    Translation-response
+  description: null
+  locator: table 1072, page 929
+  name: TR_RESPONSE
+  width: 64
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: CMD
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 64
+    variants: []
+  brief: |
+    In-register command 0
+  description: null
+  locator: table 1074, page 930
+  name: RCMD0
+  width: 64
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: CMD
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 64
+    variants: []
+  brief: |
+    In-register command 1
+  description: null
+  locator: table 1075, page 930
+  name: RCMD1
+  width: 64
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: PIV
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 12
+      width: 4
+    - brief: null
+      description: null
+      kind: uint
+      name: PMIV
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 8
+      width: 4
+    - brief: null
+      description: null
+      kind: uint
+      name: FIV
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 4
+      width: 4
+    - brief: null
+      description: null
+      kind: uint
+      name: CIV
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 4
+    variants: []
+  brief: |
+    Interrupt-cause-to-vector register
+  description: null
+  locator: table 1073, page 929
+  name: ICVEC
+  width: 64
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: NUM_CTX
+      properties:
+      - r
+      reset: 0
+      start: 16
+      unit: entries
+      width: 16
+    - brief: null
+      description: null
+      kind: uint
+      name: IND
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 16
+    variants: []
+  brief: |
+    CTX TLB index selector
+  description: null
+  locator: table 1080, page 931
+  name: CTX_INDEX
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: LCK
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 63
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: PIDV
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 45
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: PID
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 25
+      width: 20
+    - brief: null
+      description: null
+      kind: uint
+      name: DID
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 1
+      width: 24
+    - brief: null
+      description: null
+      kind: bool
+      name: V
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    CTX TLB diagnostic interface, word 0
+  description: null
+  locator: table 1081, page 931
+  name: CTX_DIAG0
+  width: 64
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: SATP_M
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 44
+      width: 4
+    - brief: null
+      description: null
+      kind: uint
+      name: SATP_PPN
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 44
+    variants: []
+  brief: |
+    CTX TLB diagnostic interface, word 1
+  description: null
+  locator: table 1082, page 932
+  name: CTX_DIAG1
+  width: 64
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: GATP_M
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 44
+      width: 4
+    - brief: null
+      description: null
+      kind: uint
+      name: GATP_PPN
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 44
+    variants: []
+  brief: |
+    CTX TLB diagnostic interface, word 2
+  description: null
+  locator: table 1083, page 932
+  name: CTX_DIAG2
+  width: 64
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: GADE
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 41
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: SADE
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 40
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: DTF
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 39
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: BYP
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 38
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: SUM
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 37
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: ENS
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 36
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: GSCID
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 20
+      width: 16
+    - brief: null
+      description: null
+      kind: uint
+      name: PSCID
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 20
+    variants: []
+  brief: |
+    CTX TLB diagnostic interface, word 3
+  description: null
+  locator: table 1084, page 932
+  name: CTX_DIAG3
+  width: 64
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: MSI_M
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 44
+      width: 4
+    - brief: null
+      description: null
+      kind: uint
+      name: MSI_PPN
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 44
+    variants: []
+  brief: |
+    CTX TLB diagnostic interface, word 4
+  description: null
+  locator: table 1085, page 933
+  name: CTX_DIAG4
+  width: 64
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bits
+      name: MSI_MSK
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 52
+    variants: []
+  brief: |
+    CTX TLB diagnostic interface, word 5
+  description: null
+  locator: table 1086, page 933
+  name: CTX_DIAG5
+  width: 64
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: MSI_PAT
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 52
+    variants: []
+  brief: |
+    CTX TLB diagnostic interface, word 6
+  description: null
+  locator: table 1087, page 933
+  name: CTX_DIAG6
+  width: 64
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: NUM_SV
+      properties:
+      - r
+      reset: 0
+      start: 16
+      unit: entries
+      width: 16
+    - brief: null
+      description: null
+      kind: uint
+      name: IND
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 16
+    variants: []
+  brief: |
+    SV-stage TLB index selector
+  description: null
+  locator: table 1088, page 934
+  name: SV_INDEX
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: LCK
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 63
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: PPN
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 2
+      width: 44
+    - brief: null
+      description: null
+      kind: bool
+      name: GSV
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 1
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: V
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    SV-stage TLB diagnostic interface, word 0
+  description: null
+  locator: table 1089, page 934
+  name: SV_DIAG0
+  width: 64
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: SADE
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 36
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: PSCID
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 16
+      width: 20
+    - brief: null
+      description: null
+      kind: uint
+      name: GSCID
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 16
+    variants: []
+  brief: |
+    SV-stage TLB diagnostic interface, word 1
+  description: null
+  locator: table 1090, page 934
+  name: SV_DIAG1
+  width: 64
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: X
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 51
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: D
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 50
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: A
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 49
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: U
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 48
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: W
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 46
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: PPN
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 2
+      width: 44
+    - brief: null
+      description: null
+      kind: uint
+      name: LVL
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 2
+    variants: []
+  brief: |
+    SV-stage TLB diagnostic interface, word 2
+  description: null
+  locator: table 1091, page 935
+  name: SV_DIAG2
+  width: 64
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: NUM_G
+      properties:
+      - r
+      reset: 0
+      start: 16
+      unit: entries
+      width: 16
+    - brief: null
+      description: null
+      kind: uint
+      name: IND
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 16
+    variants: []
+  brief: |
+    G-stage TLB index selector
+  description: null
+  locator: table 1092, page 935
+  name: G_INDEX
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: LCK
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 63
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: GSCID
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 45
+      width: 16
+    - brief: null
+      description: null
+      kind: uint
+      name: GPA
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 1
+      width: 44
+    - brief: null
+      description: null
+      kind: bool
+      name: V
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    G-stage TLB diagnostic interface, word 0
+  description: null
+  locator: table 1093, page 935
+  name: G_DIAG0
+  width: 64
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: X
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 51
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: D
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 50
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: A
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 49
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: U
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 48
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: W
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 46
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: PPN
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 2
+      width: 44
+    - brief: null
+      description: null
+      kind: uint
+      name: LVL
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 2
+    variants: []
+  brief: |
+    G-stage TLB diagnostic interface, word 1
+  description: null
+  locator: table 1094, page 936
+  name: G_DIAG1
+  width: 64
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: NUM_MSI
+      properties:
+      - r
+      reset: 0
+      start: 16
+      unit: entries
+      width: 16
+    - brief: null
+      description: null
+      kind: uint
+      name: IND
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 16
+    variants: []
+  brief: |
+    MSI TLB index selector
+  description: null
+  locator: table 1095, page 936
+  name: MSI_INDEX
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: LCK
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 63
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: GSCID
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 45
+      width: 16
+    - brief: null
+      description: null
+      kind: uint
+      name: GPA
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 1
+      width: 44
+    - brief: null
+      description: null
+      kind: bool
+      name: V
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    MSI TLB diagnostic interface, word 0
+  description: null
+  locator: table 1096, page 937
+  name: MSI_DIAG0
+  width: 64
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: NID
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 49
+      width: 11
+    - brief: null
+      description: null
+      kind: bool
+      name: C
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 48
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: ADDR
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 1
+      width: 47
+    - brief: null
+      description: null
+      kind: bool
+      name: MRIF
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    MSI TLB diagnostic interface, word 1
+  description: null
+  locator: table 1097, page 937
+  name: MSI_DIAG1
+  width: 64
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: NPPN
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 44
+    variants: []
+  brief: |
+    MSI TLB diagnostic interface, word 2
+  description: null
+  locator: table 1098, page 937
+  name: MSI_DIAG2
+  width: 64
+type: interface
