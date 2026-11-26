@@ -360,6 +360,8 @@ links:
   uid: group
 - role: interface-placement
   uid: spwtdp-header
+- role: reference
+  uid: /ref/ip/gaisler/grip-2026-3
 name: spwtdp
 notes: null
 register-block-group: SPWTDP
@@ -370,70 +372,87 @@ registers:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: JE
       properties:
       - r
       - w
+      reset: 0
       start: 24
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: ST
       properties:
       - r
       - w
+      reset: 0
       start: 21
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: EP
       properties:
       - r
       - w
+      reset: 1
       start: 20
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: ET
       properties:
       - r
       - w
+      reset: 0
       start: 19
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: SP
       properties:
       - r
       - w
+      reset: 1
       start: 18
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: SE
       properties:
       - r
       - w
+      reset: 0
       start: 17
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: LE
       properties:
       - r
       - w
+      reset: 0
       start: 16
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: AE
       properties:
       - r
       - w
+      reset: 0
       start: 15
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: MAPPING
       properties:
       - r
@@ -442,70 +461,86 @@ registers:
       width: 5
     - brief: null
       description: null
+      kind: bool
       name: TD
       properties:
       - r
       - w
+      reset: 0
       start: 7
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: MU
       properties:
       - r
       - w
+      reset: 0
       start: 6
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: SEL
       properties:
       - r
       - w
+      reset: 0
       start: 4
       width: 2
     - brief: null
       description: null
+      kind: bool
       name: ME
       properties:
       - r
       - w
+      reset: 0
       start: 3
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RE
       properties:
       - r
       - w
+      reset: 0
       start: 2
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TE
       properties:
       - r
       - w
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RS
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     Configuration 0
   description: null
+  locator: table 1645, page 1391
   name: CONF0
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: FSINC
       properties:
       - r
@@ -516,12 +551,14 @@ registers:
   brief: |
     Configuration 1
   description: null
+  locator: table 1646, page 1392
   name: CONF1
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: CV
       properties:
       - r
@@ -530,6 +567,7 @@ registers:
       width: 24
     - brief: null
       description: null
+      kind: uint
       name: ETINC
       properties:
       - r
@@ -540,164 +578,206 @@ registers:
   brief: |
     Configuration 2
   description: null
+  locator: table 1647, page 1392
   name: CONF2
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: OUTPORT
       properties:
       - r
       - w
+      reset: 0
       start: 28
       width: 4
     - brief: null
       description: null
+      kind: bits
       name: INPORT
       properties:
       - r
       - w
+      reset: 0
       start: 24
       width: 4
     - brief: null
       description: null
+      kind: bits
       name: STM
       properties:
       - r
       - w
+      reset: 0
       start: 16
       width: 6
     - brief: null
       description: null
+      kind: bool
       name: DI64R
       properties:
       - r
       - w
+      reset: 0
       start: 13
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: DI64T
       properties:
       - r
       - w
+      reset: 0
       start: 12
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: DI64
       properties:
       - r
       - w
+      reset: 0
       start: 11
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: DI
       properties:
       - r
       - w
+      reset: 0
       start: 10
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: INRX
       properties:
       - r
       - w
+      reset: 0
       start: 5
       width: 5
     - brief: null
       description: null
+      kind: uint
       name: INTX
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 5
     variants: []
   brief: |
     Configuration 3
   description: null
+  locator: table 1648, page 1393
   name: CONF3
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: MA
       properties:
       - r
+      reset: 0
       start: 31
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: RP
       properties:
       - r
+      reset: 0
       start: 29
       width: 2
     - brief: null
       description: null
+      kind: bits
       name: EDS
       properties:
       - r
+      reset: 0
       start: 24
       width: 4
     - brief: null
       description: null
+      kind: uint
       name: FW
       properties:
       - r
+      reset: 0
       start: 16
+      unit: bits
       width: 7
     - brief: null
       description: null
+      kind: uint
       name: CW
       properties:
       - r
+      reset: 0
       start: 8
+      unit: bits
       width: 6
     - brief: null
       description: null
+      kind: bool
       name: ARM
       properties:
       - r
+      reset: 0
       start: 3
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: LC
       properties:
       - r
       - w1c
+      reset: 0
       start: 2
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TCQ
       properties:
       - r
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: INSYNC
       properties:
       - r
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     Status Register 0
   description: null
+  locator: table 1649, page 1394
   name: STAT0
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: IV
       properties:
       - r
@@ -707,1226 +787,1481 @@ registers:
   brief: |
     Status Register 1
   description: null
+  locator: table 1650, page 1394
   name: STAT1
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: NC
       properties:
       - r
       - w
+      reset: 0
       start: 31
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: IS
       properties:
       - r
       - w
+      reset: 0
       start: 30
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: SPWTC
       properties:
       - r
       - w
+      reset: 0
       start: 16
       width: 8
     - brief: null
       description: null
+      kind: uint
       name: CPF
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 16
     variants: []
   brief: |
     Control
   description: null
+  locator: table 1651, page 1395
   name: CTRL
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: CET0
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Command Elapsed Time 0
   description: null
+  locator: table 1652, page 1395
   name: CET0
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: CET1
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Command Elapsed Time 1
   description: null
+  locator: table 1653, page 1395
   name: CET1
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: CET2
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Command Elapsed Time 2
   description: null
+  locator: table 1654, page 1396
   name: CET2
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: CET3
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Command Elapsed Time 3
   description: null
+  locator: table 1655, page 1396
   name: CET3
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: CET4
       properties:
       - r
       - w
+      reset: 0
       start: 24
       width: 8
     variants: []
   brief: |
     Command Elapsed Time 4
   description: null
+  locator: table 1656, page 1396
   name: CET4
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: DPF
       properties:
       - r
+      reset: 12032
       start: 0
       width: 16
     variants: []
   brief: |
     Datation Preamble Field
   description: null
+  locator: table 1657, page 1396
   name: DPF
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: DET0
       properties:
       - r
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Datation Elapsed Time 0
   description: null
+  locator: table 1658, page 1397
   name: DET0
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: DET1
       properties:
       - r
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Datation Elapsed Time 1
   description: null
+  locator: table 1659, page 1397
   name: DET1
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: DET2
       properties:
       - r
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Datation Elapsed Time 2
   description: null
+  locator: table 1660, page 1397
   name: DET2
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: DET3
       properties:
       - r
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Datation Elapsed Time 3
   description: null
+  locator: table 1661, page 1397
   name: DET3
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: DET4
       properties:
       - r
+      reset: 0
       start: 24
       width: 8
     variants: []
   brief: |
     Datation Elapsed Time 4
   description: null
+  locator: table 1662, page 1398
   name: DET4
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: TRPF
       properties:
       - r
+      reset: 12032
       start: 0
       width: 16
     variants: []
   brief: |
     Time-Stamp Preamble Field Rx
   description: null
+  locator: table 1663, page 1398
   name: TRPFRX
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: TR0
       properties:
       - r
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Time Stamp Elapsed Time 0 Rx
   description: null
+  locator: table 1664, page 1398
   name: TR0
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: TR1
       properties:
       - r
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Time Stamp Elapsed Time 1 Rx
   description: null
+  locator: table 1665, page 1398
   name: TR1
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: TR2
       properties:
       - r
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Time Stamp Elapsed Time 2 Rx
   description: null
+  locator: table 1666, page 1398
   name: TR2
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: TR3
       properties:
       - r
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Time Stamp Elapsed Time 3 Rx
   description: null
+  locator: table 1667, page 1399
   name: TR3
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: TR4
       properties:
       - r
+      reset: 0
       start: 24
       width: 8
     variants: []
   brief: |
     Time Stamp Elapsed Time 4 Rx
   description: null
+  locator: table 1668, page 1399
   name: TR4
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: TSTC
       properties:
       - r
       - w
+      reset: 0
       start: 24
       width: 8
     - brief: null
       description: null
+      kind: uint
       name: TTPF
       properties:
       - r
+      reset: 10240
       start: 0
       width: 16
     variants: []
   brief: |
     Time-Stamp SpaceWire Time-Code and Preamble Field Tx
   description: null
+  locator: table 1669, page 1399
   name: TTPFTX
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: TT0
       properties:
       - r
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Time Stamp Elapsed Time 0 Tx
   description: null
+  locator: table 1670, page 1399
   name: TT0
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: TT1
       properties:
       - r
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Time Stamp Elapsed Time 1 Tx
   description: null
+  locator: table 1671, page 1400
   name: TT1
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: TT2
       properties:
       - r
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Time Stamp Elapsed Time 2 Tx
   description: null
+  locator: table 1672, page 1400
   name: TT2
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: TT3
       properties:
       - r
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Time Stamp Elapsed Time 3 Tx
   description: null
+  locator: table 1673, page 1400
   name: TT3
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: TT4
       properties:
       - r
+      reset: 0
       start: 24
       width: 8
     variants: []
   brief: |
     Time Stamp Elapsed Time 4 Tx
   description: null
+  locator: table 1674, page 1400
   name: TT4
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: LPF
       properties:
       - r
+      reset: 12032
       start: 0
       width: 16
     variants: []
   brief: |
     Latency Preamble Field
   description: null
+  locator: table 1675, page 1400
   name: LPF
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: LE0
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Latency Elapsed Time 0
   description: null
+  locator: table 1676, page 1401
   name: LE0
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: LE1
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Latency Elapsed Time 1
   description: null
+  locator: table 1677, page 1401
   name: LE1
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: LE2
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Latency Elapsed Time 2
   description: null
+  locator: table 1678, page 1401
   name: LE2
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: LE3
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Latency Elapsed Time 3
   description: null
+  locator: table 1679, page 1401
   name: LE3
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: LE4
       properties:
       - r
       - w
+      reset: 0
       start: 24
       width: 8
     variants: []
   brief: |
     Latency Elapsed Time 4
   description: null
+  locator: table 1680, page 1401
   name: LE4
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: NCTCE
       properties:
       - r
       - w
+      reset: 0
       start: 19
       width: 1
     - brief: null
       description: null
+      kind: bits
       name: PE
       properties:
       - r
       - w
+      reset: 0
       start: 11
       width: 8
     - brief: null
       description: null
+      kind: bool
       name: SETE
       properties:
       - r
       - w
+      reset: 0
       start: 10
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: EDIE3
       properties:
       - r
       - w
+      reset: 0
       start: 9
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: EDIE2
       properties:
       - r
       - w
+      reset: 0
       start: 8
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: EDIE1
       properties:
       - r
       - w
+      reset: 0
       start: 7
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: EDIE0
       properties:
       - r
       - w
+      reset: 0
       start: 6
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: DITE
       properties:
       - r
       - w
+      reset: 0
       start: 5
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: DIRE
       properties:
       - r
       - w
+      reset: 0
       start: 4
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TTE
       properties:
       - r
       - w
+      reset: 0
       start: 3
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TME
       properties:
       - r
       - w
+      reset: 0
       start: 2
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TRE
       properties:
       - r
       - w
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: SE
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     Interrupt Enable
   description: null
+  locator: table 1681, page 1402
   name: IE
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: NCTC
       properties:
       - r
       - w1c
+      reset: 0
       start: 19
       width: 1
     - brief: null
       description: null
+      kind: bits
       name: P
       properties:
       - r
       - w1c
+      reset: 0
       start: 11
       width: 8
     - brief: null
       description: null
+      kind: bool
       name: SET
       properties:
       - r
       - w1c
+      reset: 0
       start: 10
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: EDI3
       properties:
       - r
       - w1c
+      reset: 0
       start: 9
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: EDI2
       properties:
       - r
       - w1c
+      reset: 0
       start: 8
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: EDI1
       properties:
       - r
       - w1c
+      reset: 0
       start: 7
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: EDI0
       properties:
       - r
       - w1c
+      reset: 0
       start: 6
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: DIT
       properties:
       - r
       - w1c
+      reset: 0
       start: 5
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: DIR
       properties:
       - r
       - w1c
+      reset: 0
       start: 4
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TT
       properties:
       - r
       - w1c
+      reset: 0
       start: 3
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TM
       properties:
       - r
       - w1c
+      reset: 0
       start: 2
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TR
       properties:
       - r
       - w1c
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: S
       properties:
       - r
       - w1c
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     Interrupt Status
   description: null
+  locator: table 1682, page 1402
   name: IS
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: DC
       properties:
       - r
+      reset: 32767
       start: 0
+      unit: clocks
       width: 15
     variants: []
   brief: |
     Delay Count
   description: null
+  locator: table 1683, page 1403
   name: DC
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: EN
       properties:
       - r
       - w
+      reset: 0
       start: 31
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: CD
       properties:
       - r
       - w
+      reset: 16777215
       start: 0
       width: 24
     variants: []
   brief: |
     Disable Sync
   description: null
+  locator: table 1684, page 1403
   name: DS
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: EDM0
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     External Datation 0 Mask
   description: null
+  locator: table 1685, page 1403
   name: EDM0
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: EDM1
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     External Datation 1 Mask
   description: null
+  locator: table 1685, page 1403
   name: EDM1
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: EDM2
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     External Datation 2 Mask
   description: null
+  locator: table 1685, page 1403
   name: EDM2
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: EDM3
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     External Datation 3 Mask
   description: null
+  locator: table 1685, page 1403
   name: EDM3
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: EDPF0
       properties:
       - r
+      reset: 12032
       start: 0
       width: 16
     variants: []
   brief: |
     External Datation 0 Preamble Field
   description: null
+  locator: table 1686, page 1403
   name: EDPF0
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: ED0ET0
       properties:
       - r
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     External Datation 0 Elapsed Time 0
   description: null
+  locator: table 1687, page 1405
   name: ED0ET0
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: ED0ET1
       properties:
       - r
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     External Datation 0 Elapsed Time 1
   description: null
+  locator: table 1688, page 1405
   name: ED0ET1
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: ED0ET2
       properties:
       - r
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     External Datation 0 Elapsed Time 2
   description: null
+  locator: table 1689, page 1405
   name: ED0ET2
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: ED0ET3
       properties:
       - r
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     External Datation 0 Elapsed Time 3
   description: null
+  locator: table 1690, page 1405
   name: ED0ET3
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: ED0ET4
       properties:
       - r
+      reset: 0
       start: 24
       width: 8
     variants: []
   brief: |
     External Datation 0 Elapsed Time 4
   description: null
+  locator: table 1691, page 1405
   name: ED0ET4
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: EDPF1
       properties:
       - r
+      reset: 12032
       start: 0
       width: 16
     variants: []
   brief: |
     External Datation 1 Preamble Field
   description: null
+  locator: table 1686, page 1403
   name: EDPF1
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: ED1ET0
       properties:
       - r
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     External Datation 1 Elapsed Time 0
   description: null
+  locator: table 1687, page 1405
   name: ED1ET0
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: ED1ET1
       properties:
       - r
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     External Datation 1 Elapsed Time 1
   description: null
+  locator: table 1688, page 1405
   name: ED1ET1
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: ED1ET2
       properties:
       - r
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     External Datation 1 Elapsed Time 2
   description: null
+  locator: table 1689, page 1405
   name: ED1ET2
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: ED1ET3
       properties:
       - r
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     External Datation 1 Elapsed Time 3
   description: null
+  locator: table 1690, page 1405
   name: ED1ET3
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: ED1ET4
       properties:
       - r
+      reset: 0
       start: 24
       width: 8
     variants: []
   brief: |
     External Datation 1 Elapsed Time 4
   description: null
+  locator: table 1691, page 1405
   name: ED1ET4
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: EDPF2
       properties:
       - r
+      reset: 12032
       start: 0
       width: 16
     variants: []
   brief: |
     External Datation 2 Preamble Field
   description: null
+  locator: table 1686, page 1403
   name: EDPF2
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: ED2ET0
       properties:
       - r
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     External Datation 2 Elapsed Time 0
   description: null
+  locator: table 1687, page 1405
   name: ED2ET0
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: ED2ET1
       properties:
       - r
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     External Datation 2 Elapsed Time 1
   description: null
+  locator: table 1688, page 1405
   name: ED2ET1
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: ED2ET2
       properties:
       - r
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     External Datation 2 Elapsed Time 2
   description: null
+  locator: table 1689, page 1405
   name: ED2ET2
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: ED2ET3
       properties:
       - r
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     External Datation 2 Elapsed Time 3
   description: null
+  locator: table 1690, page 1405
   name: ED2ET3
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: ED2ET4
       properties:
       - r
+      reset: 0
       start: 24
       width: 8
     variants: []
   brief: |
     External Datation 2 Elapsed Time 4
   description: null
+  locator: table 1691, page 1405
   name: ED2ET4
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: EDPF3
       properties:
       - r
+      reset: 12032
       start: 0
       width: 16
     variants: []
   brief: |
     External Datation 3 Preamble Field
   description: null
+  locator: table 1686, page 1403
   name: EDPF3
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: ED3ET0
       properties:
       - r
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     External Datation 3 Elapsed Time 0
   description: null
+  locator: table 1687, page 1405
   name: ED3ET0
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: ED3ET1
       properties:
       - r
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     External Datation 3 Elapsed Time 1
   description: null
+  locator: table 1688, page 1405
   name: ED3ET1
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: ED3ET2
       properties:
       - r
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     External Datation 3 Elapsed Time 2
   description: null
+  locator: table 1689, page 1405
   name: ED3ET2
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: ED3ET3
       properties:
       - r
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     External Datation 3 Elapsed Time 3
   description: null
+  locator: table 1690, page 1405
   name: ED3ET3
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: ED3ET4
       properties:
       - r
+      reset: 0
       start: 24
       width: 8
     variants: []
   brief: |
     External Datation 3 Elapsed Time 4
   description: null
+  locator: table 1691, page 1405
   name: ED3ET4
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: PP
       properties:
       - r
       - w
+      reset: 0
       start: 20
       width: 4
     - brief: null
       description: null
+      kind: uint
       name: PW
       properties:
       - r
       - w
+      reset: 0
       start: 16
       width: 4
     - brief: null
       description: null
+      kind: bool
       name: PL
       properties:
       - r
       - w
+      reset: 1
       start: 10
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: PE
       properties:
       - r
       - w
+      reset: 0
       start: 1
       width: 1
     variants: []
   brief: |
     Pulse Definition Register 0 to 7
   description: null
+  locator: table 1692, page 1406
   name: PDR
   width: 32
 type: interface
