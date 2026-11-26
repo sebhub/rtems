@@ -398,6 +398,849 @@ typedef struct griommu2_bridge {
 
 /** @} */
 
+/* Find related documentation with spec:/dev/grlib/if/griommu2-iopmp-entry */
+
+/**
+ * @defgroup RTEMSDeviceGRIOMMU2IOPMPEntry GRIOMMU2IOPMPENTRY
+ *
+ * @ingroup RTEMSDeviceGRIOMMU2IOPMP
+ *
+ * @brief This group contains the GRIOMMU2IOPMPENTRY interfaces.
+ *
+ * @{
+ */
+
+/**
+ * @defgroup RTEMSDeviceGRIOMMU2IOPMPEntryENTRYADDR \
+ *   Entry address register (ENTRY_ADDR)
+ *
+ * @brief This group contains register bit definitions.
+ *
+ * @{
+ */
+
+#define GRIOMMU2_IOPMP_ENTRY_ENTRY_ADDR_ADDR_SHIFT 0
+#define GRIOMMU2_IOPMP_ENTRY_ENTRY_ADDR_ADDR_MASK  0xffffffffffffffffULL
+#define GRIOMMU2_IOPMP_ENTRY_ENTRY_ADDR_ADDR_GET( _reg )        \
+  ( ( ( _reg ) & GRIOMMU2_IOPMP_ENTRY_ENTRY_ADDR_ADDR_MASK ) >> \
+    GRIOMMU2_IOPMP_ENTRY_ENTRY_ADDR_ADDR_SHIFT )
+#define GRIOMMU2_IOPMP_ENTRY_ENTRY_ADDR_ADDR_SET( _reg, _val )  \
+  ( ( ( _reg ) & ~GRIOMMU2_IOPMP_ENTRY_ENTRY_ADDR_ADDR_MASK ) | \
+    ( ( ( (uint64_t) ( _val ) )                                 \
+        << GRIOMMU2_IOPMP_ENTRY_ENTRY_ADDR_ADDR_SHIFT ) &       \
+      GRIOMMU2_IOPMP_ENTRY_ENTRY_ADDR_ADDR_MASK ) )
+#define GRIOMMU2_IOPMP_ENTRY_ENTRY_ADDR_ADDR( _val )    \
+  ( ( ( (uint64_t) ( _val ) )                           \
+      << GRIOMMU2_IOPMP_ENTRY_ENTRY_ADDR_ADDR_SHIFT ) & \
+    GRIOMMU2_IOPMP_ENTRY_ENTRY_ADDR_ADDR_MASK )
+
+/** @} */
+
+/**
+ * @defgroup RTEMSDeviceGRIOMMU2IOPMPEntryENTRYCFG \
+ *   Entry configuration register (ENTRY_CFG)
+ *
+ * @brief This group contains register bit definitions.
+ *
+ * @{
+ */
+
+#define GRIOMMU2_IOPMP_ENTRY_ENTRY_CFG_SEXE 0x400U
+
+#define GRIOMMU2_IOPMP_ENTRY_ENTRY_CFG_SEWE 0x200U
+
+#define GRIOMMU2_IOPMP_ENTRY_ENTRY_CFG_SERE 0x100U
+
+#define GRIOMMU2_IOPMP_ENTRY_ENTRY_CFG_SIXE 0x80U
+
+#define GRIOMMU2_IOPMP_ENTRY_ENTRY_CFG_SIWE 0x40U
+
+#define GRIOMMU2_IOPMP_ENTRY_ENTRY_CFG_SIRE 0x20U
+
+#define GRIOMMU2_IOPMP_ENTRY_ENTRY_CFG_A_SHIFT 3
+#define GRIOMMU2_IOPMP_ENTRY_ENTRY_CFG_A_MASK  0x18U
+#define GRIOMMU2_IOPMP_ENTRY_ENTRY_CFG_A_GET( _reg )        \
+  ( ( ( _reg ) & GRIOMMU2_IOPMP_ENTRY_ENTRY_CFG_A_MASK ) >> \
+    GRIOMMU2_IOPMP_ENTRY_ENTRY_CFG_A_SHIFT )
+#define GRIOMMU2_IOPMP_ENTRY_ENTRY_CFG_A_SET( _reg, _val )     \
+  ( ( ( _reg ) & ~GRIOMMU2_IOPMP_ENTRY_ENTRY_CFG_A_MASK ) |    \
+    ( ( ( _val ) << GRIOMMU2_IOPMP_ENTRY_ENTRY_CFG_A_SHIFT ) & \
+      GRIOMMU2_IOPMP_ENTRY_ENTRY_CFG_A_MASK ) )
+#define GRIOMMU2_IOPMP_ENTRY_ENTRY_CFG_A( _val )             \
+  ( ( ( _val ) << GRIOMMU2_IOPMP_ENTRY_ENTRY_CFG_A_SHIFT ) & \
+    GRIOMMU2_IOPMP_ENTRY_ENTRY_CFG_A_MASK )
+#define GRIOMMU2_IOPMP_ENTRY_ENTRY_CFG_A_OFF   0U
+#define GRIOMMU2_IOPMP_ENTRY_ENTRY_CFG_A_TOR   1U
+#define GRIOMMU2_IOPMP_ENTRY_ENTRY_CFG_A_NA4   2U
+#define GRIOMMU2_IOPMP_ENTRY_ENTRY_CFG_A_NAPOT 3U
+
+#define GRIOMMU2_IOPMP_ENTRY_ENTRY_CFG_X 0x4U
+
+#define GRIOMMU2_IOPMP_ENTRY_ENTRY_CFG_W 0x2U
+
+#define GRIOMMU2_IOPMP_ENTRY_ENTRY_CFG_R 0x1U
+
+/** @} */
+
+/**
+ * @brief This structure defines the GRIOMMU2IOPMPENTRY register block memory
+ *   map.
+ */
+typedef struct griommu2_iopmp_entry {
+  /**
+   * @brief See @ref RTEMSDeviceGRIOMMU2IOPMPEntryENTRYADDR.
+   */
+  uint64_t entry_addr;
+
+  /**
+   * @brief See @ref RTEMSDeviceGRIOMMU2IOPMPEntryENTRYCFG.
+   */
+  uint32_t entry_cfg;
+
+  uint32_t reserved_c_10;
+} griommu2_iopmp_entry;
+
+/** @} */
+
+/* Find related documentation with spec:/dev/grlib/if/griommu2-iopmp-srcmd */
+
+/**
+ * @defgroup RTEMSDeviceGRIOMMU2IOPMPSRCMD GRIOMMU2IOPMPSRCMD
+ *
+ * @ingroup RTEMSDeviceGRIOMMU2IOPMP
+ *
+ * @brief This group contains the GRIOMMU2IOPMPSRCMD interfaces.
+ *
+ * @{
+ */
+
+/**
+ * @defgroup RTEMSDeviceGRIOMMU2IOPMPSRCMDSRCMDEN \
+ *   RRID memory domain enable register (SRCMD_EN)
+ *
+ * @brief This group contains register bit definitions.
+ *
+ * L is sticky. A write of one sets it until the core is reset.
+ *
+ * @{
+ */
+
+#define GRIOMMU2_IOPMP_SRCMD_SRCMD_EN_MD_SHIFT 1
+#define GRIOMMU2_IOPMP_SRCMD_SRCMD_EN_MD_MASK  0xfffffffffffffffeULL
+#define GRIOMMU2_IOPMP_SRCMD_SRCMD_EN_MD_GET( _reg )        \
+  ( ( ( _reg ) & GRIOMMU2_IOPMP_SRCMD_SRCMD_EN_MD_MASK ) >> \
+    GRIOMMU2_IOPMP_SRCMD_SRCMD_EN_MD_SHIFT )
+#define GRIOMMU2_IOPMP_SRCMD_SRCMD_EN_MD_SET( _reg, _val )                    \
+  ( ( ( _reg ) & ~GRIOMMU2_IOPMP_SRCMD_SRCMD_EN_MD_MASK ) |                   \
+    ( ( ( (uint64_t) ( _val ) ) << GRIOMMU2_IOPMP_SRCMD_SRCMD_EN_MD_SHIFT ) & \
+      GRIOMMU2_IOPMP_SRCMD_SRCMD_EN_MD_MASK ) )
+#define GRIOMMU2_IOPMP_SRCMD_SRCMD_EN_MD( _val )                            \
+  ( ( ( (uint64_t) ( _val ) ) << GRIOMMU2_IOPMP_SRCMD_SRCMD_EN_MD_SHIFT ) & \
+    GRIOMMU2_IOPMP_SRCMD_SRCMD_EN_MD_MASK )
+
+#define GRIOMMU2_IOPMP_SRCMD_SRCMD_EN_L 0x1U
+
+/** @} */
+
+/**
+ * @brief This structure defines the GRIOMMU2IOPMPSRCMD register block memory
+ *   map.
+ */
+typedef struct griommu2_iopmp_srcmd {
+  /**
+   * @brief See @ref RTEMSDeviceGRIOMMU2IOPMPSRCMDSRCMDEN.
+   */
+  uint64_t srcmd_en;
+
+  uint64_t reserved_8_20[ 3 ];
+} griommu2_iopmp_srcmd;
+
+/** @} */
+
+/* Find related documentation with spec:/dev/grlib/if/griommu2-iopmp */
+
+/**
+ * @defgroup RTEMSDeviceGRIOMMU2IOPMP GRIOMMU2IOPMP
+ *
+ * @ingroup RTEMSDeviceGRLIB
+ *
+ * @brief This group contains the GRIOMMU2IOPMP interfaces.
+ *
+ * @{
+ */
+
+/**
+ * @defgroup RTEMSDeviceGRIOMMU2IOPMPVERSION Version register (VERSION)
+ *
+ * @brief This group contains register bit definitions.
+ *
+ * @{
+ */
+
+#define GRIOMMU2_IOPMP_VERSION_SPECVER_SHIFT 24
+#define GRIOMMU2_IOPMP_VERSION_SPECVER_MASK  0xff000000U
+#define GRIOMMU2_IOPMP_VERSION_SPECVER_GET( _reg )        \
+  ( ( ( _reg ) & GRIOMMU2_IOPMP_VERSION_SPECVER_MASK ) >> \
+    GRIOMMU2_IOPMP_VERSION_SPECVER_SHIFT )
+#define GRIOMMU2_IOPMP_VERSION_SPECVER_SET( _reg, _val )     \
+  ( ( ( _reg ) & ~GRIOMMU2_IOPMP_VERSION_SPECVER_MASK ) |    \
+    ( ( ( _val ) << GRIOMMU2_IOPMP_VERSION_SPECVER_SHIFT ) & \
+      GRIOMMU2_IOPMP_VERSION_SPECVER_MASK ) )
+#define GRIOMMU2_IOPMP_VERSION_SPECVER( _val )             \
+  ( ( ( _val ) << GRIOMMU2_IOPMP_VERSION_SPECVER_SHIFT ) & \
+    GRIOMMU2_IOPMP_VERSION_SPECVER_MASK )
+
+#define GRIOMMU2_IOPMP_VERSION_VENDOR_SHIFT 0
+#define GRIOMMU2_IOPMP_VERSION_VENDOR_MASK  0xffffffU
+#define GRIOMMU2_IOPMP_VERSION_VENDOR_GET( _reg )        \
+  ( ( ( _reg ) & GRIOMMU2_IOPMP_VERSION_VENDOR_MASK ) >> \
+    GRIOMMU2_IOPMP_VERSION_VENDOR_SHIFT )
+#define GRIOMMU2_IOPMP_VERSION_VENDOR_SET( _reg, _val )     \
+  ( ( ( _reg ) & ~GRIOMMU2_IOPMP_VERSION_VENDOR_MASK ) |    \
+    ( ( ( _val ) << GRIOMMU2_IOPMP_VERSION_VENDOR_SHIFT ) & \
+      GRIOMMU2_IOPMP_VERSION_VENDOR_MASK ) )
+#define GRIOMMU2_IOPMP_VERSION_VENDOR( _val )             \
+  ( ( ( _val ) << GRIOMMU2_IOPMP_VERSION_VENDOR_SHIFT ) & \
+    GRIOMMU2_IOPMP_VERSION_VENDOR_MASK )
+
+/** @} */
+
+/**
+ * @defgroup RTEMSDeviceGRIOMMU2IOPMPIMPL Implementation register (IMPL)
+ *
+ * @brief This group contains register bit definitions.
+ *
+ * @{
+ */
+
+#define GRIOMMU2_IOPMP_IMPL_IMPID_SHIFT 0
+#define GRIOMMU2_IOPMP_IMPL_IMPID_MASK  0xffffffffU
+#define GRIOMMU2_IOPMP_IMPL_IMPID_GET( _reg )        \
+  ( ( ( _reg ) & GRIOMMU2_IOPMP_IMPL_IMPID_MASK ) >> \
+    GRIOMMU2_IOPMP_IMPL_IMPID_SHIFT )
+#define GRIOMMU2_IOPMP_IMPL_IMPID_SET( _reg, _val )     \
+  ( ( ( _reg ) & ~GRIOMMU2_IOPMP_IMPL_IMPID_MASK ) |    \
+    ( ( ( _val ) << GRIOMMU2_IOPMP_IMPL_IMPID_SHIFT ) & \
+      GRIOMMU2_IOPMP_IMPL_IMPID_MASK ) )
+#define GRIOMMU2_IOPMP_IMPL_IMPID( _val )             \
+  ( ( ( _val ) << GRIOMMU2_IOPMP_IMPL_IMPID_SHIFT ) & \
+    GRIOMMU2_IOPMP_IMPL_IMPID_MASK )
+
+/** @} */
+
+/**
+ * @defgroup RTEMSDeviceGRIOMMU2IOPMPHWCFG0 \
+ *   Hardware configuration register 0 (HWCFG0)
+ *
+ * @brief This group contains register bit definitions.
+ *
+ * ENABLE is sticky. A write of one sets it until the core is reset.
+ *
+ * @{
+ */
+
+#define GRIOMMU2_IOPMP_HWCFG0_TOR_EN 0x80000000U
+
+#define GRIOMMU2_IOPMP_HWCFG0_ADDRH_EN 0x40000000U
+
+#define GRIOMMU2_IOPMP_HWCFG0_MD_NUM_SHIFT 24
+#define GRIOMMU2_IOPMP_HWCFG0_MD_NUM_MASK  0x3f000000U
+#define GRIOMMU2_IOPMP_HWCFG0_MD_NUM_GET( _reg )        \
+  ( ( ( _reg ) & GRIOMMU2_IOPMP_HWCFG0_MD_NUM_MASK ) >> \
+    GRIOMMU2_IOPMP_HWCFG0_MD_NUM_SHIFT )
+#define GRIOMMU2_IOPMP_HWCFG0_MD_NUM_SET( _reg, _val )     \
+  ( ( ( _reg ) & ~GRIOMMU2_IOPMP_HWCFG0_MD_NUM_MASK ) |    \
+    ( ( ( _val ) << GRIOMMU2_IOPMP_HWCFG0_MD_NUM_SHIFT ) & \
+      GRIOMMU2_IOPMP_HWCFG0_MD_NUM_MASK ) )
+#define GRIOMMU2_IOPMP_HWCFG0_MD_NUM( _val )             \
+  ( ( ( _val ) << GRIOMMU2_IOPMP_HWCFG0_MD_NUM_SHIFT ) & \
+    GRIOMMU2_IOPMP_HWCFG0_MD_NUM_MASK )
+
+#define GRIOMMU2_IOPMP_HWCFG0_NO_ERR 0x800000U
+
+#define GRIOMMU2_IOPMP_HWCFG0_HW3_EN 0x4U
+
+#define GRIOMMU2_IOPMP_HWCFG0_HW2_EN 0x2U
+
+#define GRIOMMU2_IOPMP_HWCFG0_ENABLE 0x1U
+
+/** @} */
+
+/**
+ * @defgroup RTEMSDeviceGRIOMMU2IOPMPHWCFG1 \
+ *   Hardware configuration register 1 (HWCFG1)
+ *
+ * @brief This group contains register bit definitions.
+ *
+ * @{
+ */
+
+#define GRIOMMU2_IOPMP_HWCFG1_ENTRY_NUM_SHIFT 16
+#define GRIOMMU2_IOPMP_HWCFG1_ENTRY_NUM_MASK  0xffff0000U
+#define GRIOMMU2_IOPMP_HWCFG1_ENTRY_NUM_GET( _reg )        \
+  ( ( ( _reg ) & GRIOMMU2_IOPMP_HWCFG1_ENTRY_NUM_MASK ) >> \
+    GRIOMMU2_IOPMP_HWCFG1_ENTRY_NUM_SHIFT )
+#define GRIOMMU2_IOPMP_HWCFG1_ENTRY_NUM_SET( _reg, _val )     \
+  ( ( ( _reg ) & ~GRIOMMU2_IOPMP_HWCFG1_ENTRY_NUM_MASK ) |    \
+    ( ( ( _val ) << GRIOMMU2_IOPMP_HWCFG1_ENTRY_NUM_SHIFT ) & \
+      GRIOMMU2_IOPMP_HWCFG1_ENTRY_NUM_MASK ) )
+#define GRIOMMU2_IOPMP_HWCFG1_ENTRY_NUM( _val )             \
+  ( ( ( _val ) << GRIOMMU2_IOPMP_HWCFG1_ENTRY_NUM_SHIFT ) & \
+    GRIOMMU2_IOPMP_HWCFG1_ENTRY_NUM_MASK )
+
+#define GRIOMMU2_IOPMP_HWCFG1_RRID_NUM_SHIFT 0
+#define GRIOMMU2_IOPMP_HWCFG1_RRID_NUM_MASK  0xffffU
+#define GRIOMMU2_IOPMP_HWCFG1_RRID_NUM_GET( _reg )        \
+  ( ( ( _reg ) & GRIOMMU2_IOPMP_HWCFG1_RRID_NUM_MASK ) >> \
+    GRIOMMU2_IOPMP_HWCFG1_RRID_NUM_SHIFT )
+#define GRIOMMU2_IOPMP_HWCFG1_RRID_NUM_SET( _reg, _val )     \
+  ( ( ( _reg ) & ~GRIOMMU2_IOPMP_HWCFG1_RRID_NUM_MASK ) |    \
+    ( ( ( _val ) << GRIOMMU2_IOPMP_HWCFG1_RRID_NUM_SHIFT ) & \
+      GRIOMMU2_IOPMP_HWCFG1_RRID_NUM_MASK ) )
+#define GRIOMMU2_IOPMP_HWCFG1_RRID_NUM( _val )             \
+  ( ( ( _val ) << GRIOMMU2_IOPMP_HWCFG1_RRID_NUM_SHIFT ) & \
+    GRIOMMU2_IOPMP_HWCFG1_RRID_NUM_MASK )
+
+/** @} */
+
+/**
+ * @defgroup RTEMSDeviceGRIOMMU2IOPMPHWCFG2 \
+ *   Hardware configuration register 2 (HWCFG2)
+ *
+ * @brief This group contains register bit definitions.
+ *
+ * @{
+ */
+
+#define GRIOMMU2_IOPMP_HWCFG2_MFR_EN 0x80000000U
+
+#define GRIOMMU2_IOPMP_HWCFG2_STALL_EN 0x40000000U
+
+#define GRIOMMU2_IOPMP_HWCFG2_SPS_EN 0x20000000U
+
+#define GRIOMMU2_IOPMP_HWCFG2_PEES 0x10000000U
+
+#define GRIOMMU2_IOPMP_HWCFG2_PEIS 0x8000000U
+
+#define GRIOMMU2_IOPMP_HWCFG2_MSI_EN 0x4000000U
+
+#define GRIOMMU2_IOPMP_HWCFG2_NPEN 0x20000U
+
+#define GRIOMMU2_IOPMP_HWCFG2_PPROG 0x10000U
+
+#define GRIOMMU2_IOPMP_HWCFG2_PRIO_SHIFT 0
+#define GRIOMMU2_IOPMP_HWCFG2_PRIO_MASK  0xffffU
+#define GRIOMMU2_IOPMP_HWCFG2_PRIO_GET( _reg )        \
+  ( ( ( _reg ) & GRIOMMU2_IOPMP_HWCFG2_PRIO_MASK ) >> \
+    GRIOMMU2_IOPMP_HWCFG2_PRIO_SHIFT )
+#define GRIOMMU2_IOPMP_HWCFG2_PRIO_SET( _reg, _val )     \
+  ( ( ( _reg ) & ~GRIOMMU2_IOPMP_HWCFG2_PRIO_MASK ) |    \
+    ( ( ( _val ) << GRIOMMU2_IOPMP_HWCFG2_PRIO_SHIFT ) & \
+      GRIOMMU2_IOPMP_HWCFG2_PRIO_MASK ) )
+#define GRIOMMU2_IOPMP_HWCFG2_PRIO( _val )             \
+  ( ( ( _val ) << GRIOMMU2_IOPMP_HWCFG2_PRIO_SHIFT ) & \
+    GRIOMMU2_IOPMP_HWCFG2_PRIO_MASK )
+
+/** @} */
+
+/**
+ * @defgroup RTEMSDeviceGRIOMMU2IOPMPHWCFG3 \
+ *   Hardware configuration register 3 (HWCFG3)
+ *
+ * @brief This group contains register bit definitions.
+ *
+ * @{
+ */
+
+#define GRIOMMU2_IOPMP_HWCFG3_RRID_TRANSL_SHIFT 16
+#define GRIOMMU2_IOPMP_HWCFG3_RRID_TRANSL_MASK  0xffff0000U
+#define GRIOMMU2_IOPMP_HWCFG3_RRID_TRANSL_GET( _reg )        \
+  ( ( ( _reg ) & GRIOMMU2_IOPMP_HWCFG3_RRID_TRANSL_MASK ) >> \
+    GRIOMMU2_IOPMP_HWCFG3_RRID_TRANSL_SHIFT )
+#define GRIOMMU2_IOPMP_HWCFG3_RRID_TRANSL_SET( _reg, _val )     \
+  ( ( ( _reg ) & ~GRIOMMU2_IOPMP_HWCFG3_RRID_TRANSL_MASK ) |    \
+    ( ( ( _val ) << GRIOMMU2_IOPMP_HWCFG3_RRID_TRANSL_SHIFT ) & \
+      GRIOMMU2_IOPMP_HWCFG3_RRID_TRANSL_MASK ) )
+#define GRIOMMU2_IOPMP_HWCFG3_RRID_TRANSL( _val )             \
+  ( ( ( _val ) << GRIOMMU2_IOPMP_HWCFG3_RRID_TRANSL_SHIFT ) & \
+    GRIOMMU2_IOPMP_HWCFG3_RRID_TRANSL_MASK )
+
+#define GRIOMMU2_IOPMP_HWCFG3_RRID_T_PROG 0x8000U
+
+#define GRIOMMU2_IOPMP_HWCFG3_RRID_T_EN 0x4000U
+
+#define GRIOMMU2_IOPMP_HWCFG3_NO_W 0x2000U
+
+#define GRIOMMU2_IOPMP_HWCFG3_NO_X 0x1000U
+
+#define GRIOMMU2_IOPMP_HWCFG3_XINR 0x800U
+
+#define GRIOMMU2_IOPMP_HWCFG3_MD_E_NUM_SHIFT 4
+#define GRIOMMU2_IOPMP_HWCFG3_MD_E_NUM_MASK  0x7f0U
+#define GRIOMMU2_IOPMP_HWCFG3_MD_E_NUM_GET( _reg )        \
+  ( ( ( _reg ) & GRIOMMU2_IOPMP_HWCFG3_MD_E_NUM_MASK ) >> \
+    GRIOMMU2_IOPMP_HWCFG3_MD_E_NUM_SHIFT )
+#define GRIOMMU2_IOPMP_HWCFG3_MD_E_NUM_SET( _reg, _val )     \
+  ( ( ( _reg ) & ~GRIOMMU2_IOPMP_HWCFG3_MD_E_NUM_MASK ) |    \
+    ( ( ( _val ) << GRIOMMU2_IOPMP_HWCFG3_MD_E_NUM_SHIFT ) & \
+      GRIOMMU2_IOPMP_HWCFG3_MD_E_NUM_MASK ) )
+#define GRIOMMU2_IOPMP_HWCFG3_MD_E_NUM( _val )             \
+  ( ( ( _val ) << GRIOMMU2_IOPMP_HWCFG3_MD_E_NUM_SHIFT ) & \
+    GRIOMMU2_IOPMP_HWCFG3_MD_E_NUM_MASK )
+
+#define GRIOMMU2_IOPMP_HWCFG3_SRCMD_FMT_SHIFT 2
+#define GRIOMMU2_IOPMP_HWCFG3_SRCMD_FMT_MASK  0xcU
+#define GRIOMMU2_IOPMP_HWCFG3_SRCMD_FMT_GET( _reg )        \
+  ( ( ( _reg ) & GRIOMMU2_IOPMP_HWCFG3_SRCMD_FMT_MASK ) >> \
+    GRIOMMU2_IOPMP_HWCFG3_SRCMD_FMT_SHIFT )
+#define GRIOMMU2_IOPMP_HWCFG3_SRCMD_FMT_SET( _reg, _val )     \
+  ( ( ( _reg ) & ~GRIOMMU2_IOPMP_HWCFG3_SRCMD_FMT_MASK ) |    \
+    ( ( ( _val ) << GRIOMMU2_IOPMP_HWCFG3_SRCMD_FMT_SHIFT ) & \
+      GRIOMMU2_IOPMP_HWCFG3_SRCMD_FMT_MASK ) )
+#define GRIOMMU2_IOPMP_HWCFG3_SRCMD_FMT( _val )             \
+  ( ( ( _val ) << GRIOMMU2_IOPMP_HWCFG3_SRCMD_FMT_SHIFT ) & \
+    GRIOMMU2_IOPMP_HWCFG3_SRCMD_FMT_MASK )
+
+#define GRIOMMU2_IOPMP_HWCFG3_MDCFG_FMT_SHIFT 0
+#define GRIOMMU2_IOPMP_HWCFG3_MDCFG_FMT_MASK  0x3U
+#define GRIOMMU2_IOPMP_HWCFG3_MDCFG_FMT_GET( _reg )        \
+  ( ( ( _reg ) & GRIOMMU2_IOPMP_HWCFG3_MDCFG_FMT_MASK ) >> \
+    GRIOMMU2_IOPMP_HWCFG3_MDCFG_FMT_SHIFT )
+#define GRIOMMU2_IOPMP_HWCFG3_MDCFG_FMT_SET( _reg, _val )     \
+  ( ( ( _reg ) & ~GRIOMMU2_IOPMP_HWCFG3_MDCFG_FMT_MASK ) |    \
+    ( ( ( _val ) << GRIOMMU2_IOPMP_HWCFG3_MDCFG_FMT_SHIFT ) & \
+      GRIOMMU2_IOPMP_HWCFG3_MDCFG_FMT_MASK ) )
+#define GRIOMMU2_IOPMP_HWCFG3_MDCFG_FMT( _val )             \
+  ( ( ( _val ) << GRIOMMU2_IOPMP_HWCFG3_MDCFG_FMT_SHIFT ) & \
+    GRIOMMU2_IOPMP_HWCFG3_MDCFG_FMT_MASK )
+
+/** @} */
+
+/**
+ * @defgroup RTEMSDeviceGRIOMMU2IOPMPHWCFGUSER \
+ *   Custom hardware configuration register (HWCFG_USER)
+ *
+ * @brief This group contains register bit definitions.
+ *
+ * @{
+ */
+
+#define GRIOMMU2_IOPMP_HWCFG_USER_CACHE_EN 0x1U
+
+/** @} */
+
+/**
+ * @defgroup RTEMSDeviceGRIOMMU2IOPMPENTRYOFFSET \
+ *   Entry offset register (ENTRYOFFSET)
+ *
+ * @brief This group contains register bit definitions.
+ *
+ * @{
+ */
+
+#define GRIOMMU2_IOPMP_ENTRYOFFSET_OFFSET_SHIFT 0
+#define GRIOMMU2_IOPMP_ENTRYOFFSET_OFFSET_MASK  0xffffffffU
+#define GRIOMMU2_IOPMP_ENTRYOFFSET_OFFSET_GET( _reg )        \
+  ( ( ( _reg ) & GRIOMMU2_IOPMP_ENTRYOFFSET_OFFSET_MASK ) >> \
+    GRIOMMU2_IOPMP_ENTRYOFFSET_OFFSET_SHIFT )
+#define GRIOMMU2_IOPMP_ENTRYOFFSET_OFFSET_SET( _reg, _val )     \
+  ( ( ( _reg ) & ~GRIOMMU2_IOPMP_ENTRYOFFSET_OFFSET_MASK ) |    \
+    ( ( ( _val ) << GRIOMMU2_IOPMP_ENTRYOFFSET_OFFSET_SHIFT ) & \
+      GRIOMMU2_IOPMP_ENTRYOFFSET_OFFSET_MASK ) )
+#define GRIOMMU2_IOPMP_ENTRYOFFSET_OFFSET( _val )             \
+  ( ( ( _val ) << GRIOMMU2_IOPMP_ENTRYOFFSET_OFFSET_SHIFT ) & \
+    GRIOMMU2_IOPMP_ENTRYOFFSET_OFFSET_MASK )
+
+/** @} */
+
+/**
+ * @defgroup RTEMSDeviceGRIOMMU2IOPMPMDSTALL \
+ *   Memory domain stall control register (MDSTALL)
+ *
+ * @brief This group contains register bit definitions.
+ *
+ * A write of BUSY selects whether the stall applies to the RRIDs associated
+ * with the selected memory domains or to the other RRIDs. A read of BUSY
+ * returns whether the last stall request is pending.
+ *
+ * @{
+ */
+
+#define GRIOMMU2_IOPMP_MDSTALL_MD_SHIFT 1
+#define GRIOMMU2_IOPMP_MDSTALL_MD_MASK  0xfffffffffffffffeULL
+#define GRIOMMU2_IOPMP_MDSTALL_MD_GET( _reg )        \
+  ( ( ( _reg ) & GRIOMMU2_IOPMP_MDSTALL_MD_MASK ) >> \
+    GRIOMMU2_IOPMP_MDSTALL_MD_SHIFT )
+#define GRIOMMU2_IOPMP_MDSTALL_MD_SET( _reg, _val )                    \
+  ( ( ( _reg ) & ~GRIOMMU2_IOPMP_MDSTALL_MD_MASK ) |                   \
+    ( ( ( (uint64_t) ( _val ) ) << GRIOMMU2_IOPMP_MDSTALL_MD_SHIFT ) & \
+      GRIOMMU2_IOPMP_MDSTALL_MD_MASK ) )
+#define GRIOMMU2_IOPMP_MDSTALL_MD( _val )                            \
+  ( ( ( (uint64_t) ( _val ) ) << GRIOMMU2_IOPMP_MDSTALL_MD_SHIFT ) & \
+    GRIOMMU2_IOPMP_MDSTALL_MD_MASK )
+
+#define GRIOMMU2_IOPMP_MDSTALL_BUSY 0x1U
+
+/** @} */
+
+/**
+ * @defgroup RTEMSDeviceGRIOMMU2IOPMPRRIDSCP \
+ *   RRID cherry pick stall control register (RRIDSCP)
+ *
+ * @brief This group contains register bit definitions.
+ *
+ * A write of OP selects an operation on the RRID. A read of OP returns the
+ * stall status of the RRID.
+ *
+ * @{
+ */
+
+#define GRIOMMU2_IOPMP_RRIDSCP_OP_SHIFT 30
+#define GRIOMMU2_IOPMP_RRIDSCP_OP_MASK  0xc0000000U
+#define GRIOMMU2_IOPMP_RRIDSCP_OP_GET( _reg )        \
+  ( ( ( _reg ) & GRIOMMU2_IOPMP_RRIDSCP_OP_MASK ) >> \
+    GRIOMMU2_IOPMP_RRIDSCP_OP_SHIFT )
+#define GRIOMMU2_IOPMP_RRIDSCP_OP_SET( _reg, _val )     \
+  ( ( ( _reg ) & ~GRIOMMU2_IOPMP_RRIDSCP_OP_MASK ) |    \
+    ( ( ( _val ) << GRIOMMU2_IOPMP_RRIDSCP_OP_SHIFT ) & \
+      GRIOMMU2_IOPMP_RRIDSCP_OP_MASK ) )
+#define GRIOMMU2_IOPMP_RRIDSCP_OP( _val )             \
+  ( ( ( _val ) << GRIOMMU2_IOPMP_RRIDSCP_OP_SHIFT ) & \
+    GRIOMMU2_IOPMP_RRIDSCP_OP_MASK )
+
+#define GRIOMMU2_IOPMP_RRIDSCP_RRID_SHIFT 0
+#define GRIOMMU2_IOPMP_RRIDSCP_RRID_MASK  0xffffU
+#define GRIOMMU2_IOPMP_RRIDSCP_RRID_GET( _reg )        \
+  ( ( ( _reg ) & GRIOMMU2_IOPMP_RRIDSCP_RRID_MASK ) >> \
+    GRIOMMU2_IOPMP_RRIDSCP_RRID_SHIFT )
+#define GRIOMMU2_IOPMP_RRIDSCP_RRID_SET( _reg, _val )     \
+  ( ( ( _reg ) & ~GRIOMMU2_IOPMP_RRIDSCP_RRID_MASK ) |    \
+    ( ( ( _val ) << GRIOMMU2_IOPMP_RRIDSCP_RRID_SHIFT ) & \
+      GRIOMMU2_IOPMP_RRIDSCP_RRID_MASK ) )
+#define GRIOMMU2_IOPMP_RRIDSCP_RRID( _val )             \
+  ( ( ( _val ) << GRIOMMU2_IOPMP_RRIDSCP_RRID_SHIFT ) & \
+    GRIOMMU2_IOPMP_RRIDSCP_RRID_MASK )
+
+/** @} */
+
+/**
+ * @defgroup RTEMSDeviceGRIOMMU2IOPMPMDLCK Memory domain lock register (MDLCK)
+ *
+ * @brief This group contains register bit definitions.
+ *
+ * MD and L are sticky. A write of one sets a bit until the core is reset.
+ *
+ * @{
+ */
+
+#define GRIOMMU2_IOPMP_MDLCK_MD_SHIFT 1
+#define GRIOMMU2_IOPMP_MDLCK_MD_MASK  0xfffffffffffffffeULL
+#define GRIOMMU2_IOPMP_MDLCK_MD_GET( _reg )        \
+  ( ( ( _reg ) & GRIOMMU2_IOPMP_MDLCK_MD_MASK ) >> \
+    GRIOMMU2_IOPMP_MDLCK_MD_SHIFT )
+#define GRIOMMU2_IOPMP_MDLCK_MD_SET( _reg, _val )                    \
+  ( ( ( _reg ) & ~GRIOMMU2_IOPMP_MDLCK_MD_MASK ) |                   \
+    ( ( ( (uint64_t) ( _val ) ) << GRIOMMU2_IOPMP_MDLCK_MD_SHIFT ) & \
+      GRIOMMU2_IOPMP_MDLCK_MD_MASK ) )
+#define GRIOMMU2_IOPMP_MDLCK_MD( _val )                            \
+  ( ( ( (uint64_t) ( _val ) ) << GRIOMMU2_IOPMP_MDLCK_MD_SHIFT ) & \
+    GRIOMMU2_IOPMP_MDLCK_MD_MASK )
+
+#define GRIOMMU2_IOPMP_MDLCK_L 0x1U
+
+/** @} */
+
+/**
+ * @defgroup RTEMSDeviceGRIOMMU2IOPMPMDCFGLCK \
+ *   Memory domain configuration lock register (MDCFGLCK)
+ *
+ * @brief This group contains register bit definitions.
+ *
+ * @{
+ */
+
+#define GRIOMMU2_IOPMP_MDCFGLCK_F_SHIFT 1
+#define GRIOMMU2_IOPMP_MDCFGLCK_F_MASK  0x7eU
+#define GRIOMMU2_IOPMP_MDCFGLCK_F_GET( _reg )        \
+  ( ( ( _reg ) & GRIOMMU2_IOPMP_MDCFGLCK_F_MASK ) >> \
+    GRIOMMU2_IOPMP_MDCFGLCK_F_SHIFT )
+#define GRIOMMU2_IOPMP_MDCFGLCK_F_SET( _reg, _val )     \
+  ( ( ( _reg ) & ~GRIOMMU2_IOPMP_MDCFGLCK_F_MASK ) |    \
+    ( ( ( _val ) << GRIOMMU2_IOPMP_MDCFGLCK_F_SHIFT ) & \
+      GRIOMMU2_IOPMP_MDCFGLCK_F_MASK ) )
+#define GRIOMMU2_IOPMP_MDCFGLCK_F( _val )             \
+  ( ( ( _val ) << GRIOMMU2_IOPMP_MDCFGLCK_F_SHIFT ) & \
+    GRIOMMU2_IOPMP_MDCFGLCK_F_MASK )
+
+#define GRIOMMU2_IOPMP_MDCFGLCK_L 0x1U
+
+/** @} */
+
+/**
+ * @defgroup RTEMSDeviceGRIOMMU2IOPMPENTRYLCK Entry lock register (ENTRYLCK)
+ *
+ * @brief This group contains register bit definitions.
+ *
+ * F accepts a write of a value greater than its current value. L is sticky. A
+ * write of one sets it until the core is reset.
+ *
+ * @{
+ */
+
+#define GRIOMMU2_IOPMP_ENTRYLCK_F_SHIFT 1
+#define GRIOMMU2_IOPMP_ENTRYLCK_F_MASK  0x1fffeU
+#define GRIOMMU2_IOPMP_ENTRYLCK_F_GET( _reg )        \
+  ( ( ( _reg ) & GRIOMMU2_IOPMP_ENTRYLCK_F_MASK ) >> \
+    GRIOMMU2_IOPMP_ENTRYLCK_F_SHIFT )
+#define GRIOMMU2_IOPMP_ENTRYLCK_F_SET( _reg, _val )     \
+  ( ( ( _reg ) & ~GRIOMMU2_IOPMP_ENTRYLCK_F_MASK ) |    \
+    ( ( ( _val ) << GRIOMMU2_IOPMP_ENTRYLCK_F_SHIFT ) & \
+      GRIOMMU2_IOPMP_ENTRYLCK_F_MASK ) )
+#define GRIOMMU2_IOPMP_ENTRYLCK_F( _val )             \
+  ( ( ( _val ) << GRIOMMU2_IOPMP_ENTRYLCK_F_SHIFT ) & \
+    GRIOMMU2_IOPMP_ENTRYLCK_F_MASK )
+
+#define GRIOMMU2_IOPMP_ENTRYLCK_L 0x1U
+
+/** @} */
+
+/**
+ * @defgroup RTEMSDeviceGRIOMMU2IOPMPERRCFG \
+ *   Error configuration register (ERR_CFG)
+ *
+ * @brief This group contains register bit definitions.
+ *
+ * @{
+ */
+
+#define GRIOMMU2_IOPMP_ERR_CFG_RS 0x4U
+
+#define GRIOMMU2_IOPMP_ERR_CFG_IE 0x2U
+
+#define GRIOMMU2_IOPMP_ERR_CFG_L 0x1U
+
+/** @} */
+
+/**
+ * @defgroup RTEMSDeviceGRIOMMU2IOPMPERRINFO \
+ *   Error information register (ERR_INFO)
+ *
+ * @brief This group contains register bit definitions.
+ *
+ * @{
+ */
+
+#define GRIOMMU2_IOPMP_ERR_INFO_ETYPE_SHIFT 4
+#define GRIOMMU2_IOPMP_ERR_INFO_ETYPE_MASK  0xf0U
+#define GRIOMMU2_IOPMP_ERR_INFO_ETYPE_GET( _reg )        \
+  ( ( ( _reg ) & GRIOMMU2_IOPMP_ERR_INFO_ETYPE_MASK ) >> \
+    GRIOMMU2_IOPMP_ERR_INFO_ETYPE_SHIFT )
+#define GRIOMMU2_IOPMP_ERR_INFO_ETYPE_SET( _reg, _val )     \
+  ( ( ( _reg ) & ~GRIOMMU2_IOPMP_ERR_INFO_ETYPE_MASK ) |    \
+    ( ( ( _val ) << GRIOMMU2_IOPMP_ERR_INFO_ETYPE_SHIFT ) & \
+      GRIOMMU2_IOPMP_ERR_INFO_ETYPE_MASK ) )
+#define GRIOMMU2_IOPMP_ERR_INFO_ETYPE( _val )             \
+  ( ( ( _val ) << GRIOMMU2_IOPMP_ERR_INFO_ETYPE_SHIFT ) & \
+    GRIOMMU2_IOPMP_ERR_INFO_ETYPE_MASK )
+#define GRIOMMU2_IOPMP_ERR_INFO_ETYPE_NONE          0U
+#define GRIOMMU2_IOPMP_ERR_INFO_ETYPE_ILLEGAL_READ  1U
+#define GRIOMMU2_IOPMP_ERR_INFO_ETYPE_ILLEGAL_WRITE 2U
+#define GRIOMMU2_IOPMP_ERR_INFO_ETYPE_ILLEGAL_FETCH 3U
+#define GRIOMMU2_IOPMP_ERR_INFO_ETYPE_PARTIAL_HIT   4U
+#define GRIOMMU2_IOPMP_ERR_INFO_ETYPE_NO_HIT        5U
+#define GRIOMMU2_IOPMP_ERR_INFO_ETYPE_UNKNOWN_RRID  6U
+
+#define GRIOMMU2_IOPMP_ERR_INFO_TTYPE_SHIFT 1
+#define GRIOMMU2_IOPMP_ERR_INFO_TTYPE_MASK  0x6U
+#define GRIOMMU2_IOPMP_ERR_INFO_TTYPE_GET( _reg )        \
+  ( ( ( _reg ) & GRIOMMU2_IOPMP_ERR_INFO_TTYPE_MASK ) >> \
+    GRIOMMU2_IOPMP_ERR_INFO_TTYPE_SHIFT )
+#define GRIOMMU2_IOPMP_ERR_INFO_TTYPE_SET( _reg, _val )     \
+  ( ( ( _reg ) & ~GRIOMMU2_IOPMP_ERR_INFO_TTYPE_MASK ) |    \
+    ( ( ( _val ) << GRIOMMU2_IOPMP_ERR_INFO_TTYPE_SHIFT ) & \
+      GRIOMMU2_IOPMP_ERR_INFO_TTYPE_MASK ) )
+#define GRIOMMU2_IOPMP_ERR_INFO_TTYPE( _val )             \
+  ( ( ( _val ) << GRIOMMU2_IOPMP_ERR_INFO_TTYPE_SHIFT ) & \
+    GRIOMMU2_IOPMP_ERR_INFO_TTYPE_MASK )
+#define GRIOMMU2_IOPMP_ERR_INFO_TTYPE_READ  1U
+#define GRIOMMU2_IOPMP_ERR_INFO_TTYPE_WRITE 2U
+#define GRIOMMU2_IOPMP_ERR_INFO_TTYPE_FETCH 3U
+
+#define GRIOMMU2_IOPMP_ERR_INFO_V 0x1U
+
+/** @} */
+
+/**
+ * @defgroup RTEMSDeviceGRIOMMU2IOPMPERRREQADDR \
+ *   Errored request address register (ERR_REQADDR)
+ *
+ * @brief This group contains register bit definitions.
+ *
+ * @{
+ */
+
+#define GRIOMMU2_IOPMP_ERR_REQADDR_ADDR_SHIFT 0
+#define GRIOMMU2_IOPMP_ERR_REQADDR_ADDR_MASK  0xffffffffffffffffULL
+#define GRIOMMU2_IOPMP_ERR_REQADDR_ADDR_GET( _reg )        \
+  ( ( ( _reg ) & GRIOMMU2_IOPMP_ERR_REQADDR_ADDR_MASK ) >> \
+    GRIOMMU2_IOPMP_ERR_REQADDR_ADDR_SHIFT )
+#define GRIOMMU2_IOPMP_ERR_REQADDR_ADDR_SET( _reg, _val )                    \
+  ( ( ( _reg ) & ~GRIOMMU2_IOPMP_ERR_REQADDR_ADDR_MASK ) |                   \
+    ( ( ( (uint64_t) ( _val ) ) << GRIOMMU2_IOPMP_ERR_REQADDR_ADDR_SHIFT ) & \
+      GRIOMMU2_IOPMP_ERR_REQADDR_ADDR_MASK ) )
+#define GRIOMMU2_IOPMP_ERR_REQADDR_ADDR( _val )                            \
+  ( ( ( (uint64_t) ( _val ) ) << GRIOMMU2_IOPMP_ERR_REQADDR_ADDR_SHIFT ) & \
+    GRIOMMU2_IOPMP_ERR_REQADDR_ADDR_MASK )
+
+/** @} */
+
+/**
+ * @defgroup RTEMSDeviceGRIOMMU2IOPMPERRREQID \
+ *   Errored request identifier register (ERR_REQID)
+ *
+ * @brief This group contains register bit definitions.
+ *
+ * @{
+ */
+
+#define GRIOMMU2_IOPMP_ERR_REQID_EID_SHIFT 16
+#define GRIOMMU2_IOPMP_ERR_REQID_EID_MASK  0xffff0000U
+#define GRIOMMU2_IOPMP_ERR_REQID_EID_GET( _reg )        \
+  ( ( ( _reg ) & GRIOMMU2_IOPMP_ERR_REQID_EID_MASK ) >> \
+    GRIOMMU2_IOPMP_ERR_REQID_EID_SHIFT )
+#define GRIOMMU2_IOPMP_ERR_REQID_EID_SET( _reg, _val )     \
+  ( ( ( _reg ) & ~GRIOMMU2_IOPMP_ERR_REQID_EID_MASK ) |    \
+    ( ( ( _val ) << GRIOMMU2_IOPMP_ERR_REQID_EID_SHIFT ) & \
+      GRIOMMU2_IOPMP_ERR_REQID_EID_MASK ) )
+#define GRIOMMU2_IOPMP_ERR_REQID_EID( _val )             \
+  ( ( ( _val ) << GRIOMMU2_IOPMP_ERR_REQID_EID_SHIFT ) & \
+    GRIOMMU2_IOPMP_ERR_REQID_EID_MASK )
+
+#define GRIOMMU2_IOPMP_ERR_REQID_RRID_SHIFT 0
+#define GRIOMMU2_IOPMP_ERR_REQID_RRID_MASK  0xffffU
+#define GRIOMMU2_IOPMP_ERR_REQID_RRID_GET( _reg )        \
+  ( ( ( _reg ) & GRIOMMU2_IOPMP_ERR_REQID_RRID_MASK ) >> \
+    GRIOMMU2_IOPMP_ERR_REQID_RRID_SHIFT )
+#define GRIOMMU2_IOPMP_ERR_REQID_RRID_SET( _reg, _val )     \
+  ( ( ( _reg ) & ~GRIOMMU2_IOPMP_ERR_REQID_RRID_MASK ) |    \
+    ( ( ( _val ) << GRIOMMU2_IOPMP_ERR_REQID_RRID_SHIFT ) & \
+      GRIOMMU2_IOPMP_ERR_REQID_RRID_MASK ) )
+#define GRIOMMU2_IOPMP_ERR_REQID_RRID( _val )             \
+  ( ( ( _val ) << GRIOMMU2_IOPMP_ERR_REQID_RRID_SHIFT ) & \
+    GRIOMMU2_IOPMP_ERR_REQID_RRID_MASK )
+
+/** @} */
+
+/**
+ * @brief This structure defines the GRIOMMU2IOPMP register block memory map.
+ */
+typedef struct griommu2_iopmp {
+  /**
+   * @brief See @ref RTEMSDeviceGRIOMMU2IOPMPVERSION.
+   */
+  uint32_t version;
+
+  /**
+   * @brief See @ref RTEMSDeviceGRIOMMU2IOPMPIMPL.
+   */
+  uint32_t impl;
+
+  /**
+   * @brief See @ref RTEMSDeviceGRIOMMU2IOPMPHWCFG0.
+   */
+  uint32_t hwcfg0;
+
+  /**
+   * @brief See @ref RTEMSDeviceGRIOMMU2IOPMPHWCFG1.
+   */
+  uint32_t hwcfg1;
+
+  /**
+   * @brief See @ref RTEMSDeviceGRIOMMU2IOPMPHWCFG2.
+   */
+  uint32_t hwcfg2;
+
+  /**
+   * @brief See @ref RTEMSDeviceGRIOMMU2IOPMPHWCFG3.
+   */
+  uint32_t hwcfg3;
+
+  uint32_t reserved_18_28[ 4 ];
+
+  /**
+   * @brief See @ref RTEMSDeviceGRIOMMU2IOPMPHWCFGUSER.
+   */
+  uint32_t hwcfg_user;
+
+  /**
+   * @brief See @ref RTEMSDeviceGRIOMMU2IOPMPENTRYOFFSET.
+   */
+  uint32_t entryoffset;
+
+  /**
+   * @brief See @ref RTEMSDeviceGRIOMMU2IOPMPMDSTALL.
+   */
+  uint64_t mdstall;
+
+  /**
+   * @brief See @ref RTEMSDeviceGRIOMMU2IOPMPRRIDSCP.
+   */
+  uint32_t rridscp;
+
+  uint32_t reserved_3c_40;
+
+  /**
+   * @brief See @ref RTEMSDeviceGRIOMMU2IOPMPMDLCK.
+   */
+  uint64_t mdlck;
+
+  /**
+   * @brief See @ref RTEMSDeviceGRIOMMU2IOPMPMDCFGLCK.
+   */
+  uint32_t mdcfglck;
+
+  /**
+   * @brief See @ref RTEMSDeviceGRIOMMU2IOPMPENTRYLCK.
+   */
+  uint32_t entrylck;
+
+  uint32_t reserved_50_60[ 4 ];
+
+  /**
+   * @brief See @ref RTEMSDeviceGRIOMMU2IOPMPERRCFG.
+   */
+  uint32_t err_cfg;
+
+  /**
+   * @brief See @ref RTEMSDeviceGRIOMMU2IOPMPERRINFO.
+   */
+  uint32_t err_info;
+
+  /**
+   * @brief See @ref RTEMSDeviceGRIOMMU2IOPMPERRREQADDR.
+   */
+  uint64_t err_reqaddr;
+
+  /**
+   * @brief See @ref RTEMSDeviceGRIOMMU2IOPMPERRREQID.
+   */
+  uint32_t err_reqid;
+
+  uint32_t reserved_74_1000[ 995 ];
+
+  /**
+   * @brief See @ref RTEMSDeviceGRIOMMU2IOPMPSRCMD.
+   */
+  griommu2_iopmp_srcmd srcmd[ 384 ];
+
+  /**
+   * @brief See @ref RTEMSDeviceGRIOMMU2IOPMPEntry.
+   */
+  griommu2_iopmp_entry entry[ 65535 ];
+} griommu2_iopmp;
+
+/** @} */
+
 /* Find related documentation with spec:/dev/grlib/if/griommu2-msicfg */
 
 /**
