@@ -18,6 +18,8 @@ links:
 - role: validation
   uid: /dev/grlib/if/dsu4
 - role: validation
+  uid: /dev/grlib/if/ftaddr
+- role: validation
   uid: /dev/grlib/if/ftmctrl
 - role: validation
   uid: /dev/grlib/if/gptimer

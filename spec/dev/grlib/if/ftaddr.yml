@@ -1,0 +1,4070 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This structure defines the ${.:/register-block-group} register block memory
+  map.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+- default:
+    count: 1
+    name: FSR
+  offset: 0x0
+  variants: []
+- default:
+    count: 1
+    name: BSR
+  offset: 0x4
+  variants: []
+- default:
+    count: 1
+    name: MCFG1
+  offset: 0x8
+  variants: []
+- default:
+    count: 1
+    name: MCFG2
+  offset: 0xc
+  variants: []
+- default:
+    count: 1
+    name: MCFG3
+  offset: 0x10
+  variants: []
+- default:
+    count: 1
+    name: MCFG4
+  offset: 0x14
+  variants: []
+- default:
+    count: 1
+    name: SCFG1
+  offset: 0x18
+  variants: []
+- default:
+    count: 1
+    name: SCFG2
+  offset: 0x1c
+  variants: []
+- default:
+    count: 1
+    name: PHYTIM1
+  offset: 0x20
+  variants: []
+- default:
+    count: 1
+    name: PHYTIM2
+  offset: 0x24
+  variants: []
+- default:
+    count: 1
+    name: DACTRL1
+  offset: 0x28
+  variants: []
+- default:
+    count: 1
+    name: DACTRL2
+  offset: 0x2c
+  variants: []
+- default:
+    count: 1
+    name: DASTAT
+  offset: 0x30
+  variants: []
+- default:
+    count: 1
+    name: DACB
+  offset: 0x34
+  variants: []
+- default:
+    count: 1
+    name: DADATA1
+  offset: 0x38
+  variants: []
+- default:
+    count: 1
+    name: DADATA2
+  offset: 0x3c
+  variants: []
+- default:
+    count: 8
+    name: ODTCFG
+  offset: 0x40
+  variants: []
+- default:
+    count: 1
+    name: ODTDEF
+  offset: 0x60
+  variants: []
+- default:
+    count: 1
+    name: ODTIRTIM
+  offset: 0x64
+  variants: []
+- default:
+    count: 1
+    name: CMD
+  offset: 0x68
+  variants: []
+- default:
+    count: 1
+    name: SREFCFG
+  offset: 0x6c
+  variants: []
+- default:
+    count: 1
+    name: BEECNT
+  offset: 0x70
+  variants: []
+- default:
+    count: 1
+    name: STCNT
+  offset: 0x74
+  variants: []
+- default:
+    count: 1
+    name: PHYIADDR
+  offset: 0x78
+  variants: []
+- default:
+    count: 1
+    name: PHYIDATA
+  offset: 0x7c
+  variants: []
+- default:
+    count: 1
+    name: PHYGCTRL
+  offset: 0x80
+  variants: []
+- default:
+    count: 1
+    name: TTCNT
+  offset: 0x84
+  variants: []
+- default:
+    count: 1
+    name: BEFECNT
+  offset: 0x88
+  variants: []
+- default:
+    count: 1
+    name: TSCFG1
+  offset: 0x8c
+  variants: []
+- default:
+    count: 4
+    name: TSCFG
+  offset: 0x90
+  variants: []
+- default:
+    count: 1
+    name: PARCFG
+  offset: 0xa0
+  variants: []
+- default:
+    count: 7
+    name: MRDEF
+  offset: 0xa4
+  variants: []
+- default:
+    count: 1
+    name: ARBNUDGE
+  offset: 0xc0
+  variants: []
+- default:
+    count: 1
+    name: PHYTIM3
+  offset: 0xc4
+  variants: []
+- default:
+    count: 1
+    name: ODTERTIM
+  offset: 0xc8
+  variants: []
+- default:
+    count: 1
+    name: ODTEWTIM
+  offset: 0xcc
+  variants: []
+- default:
+    count: 1
+    name: AHBADEC
+  offset: 0x200
+  variants: []
+- default:
+    count: 1
+    name: AHBACFG
+  offset: 0x204
+  variants: []
+- default:
+    count: 1
+    name: PFCFG
+  offset: 0x208
+  variants: []
+- default:
+    count: 1
+    name: SCRUBCFG1
+  offset: 0x20c
+  variants: []
+- default:
+    count: 1
+    name: SCRUBCFG2
+  offset: 0x210
+  variants: []
+- default:
+    count: 1
+    name: IRQPEND
+  offset: 0x214
+  variants: []
+- default:
+    count: 1
+    name: IRQEN
+  offset: 0x218
+  variants: []
+- default:
+    count: 1
+    name: SCRUBUE
+  offset: 0x21c
+  variants: []
+- default:
+    count: 3
+    name: BLECNT
+  offset: 0x220
+  variants: []
+- default:
+    count: 1
+    name: BLECNT4
+  offset: 0x22c
+  variants: []
+- default:
+    count: 1
+    name: AECNT1
+  offset: 0x230
+  variants: []
+- default:
+    count: 2
+    name: AECNT2
+  offset: 0x234
+  variants: []
+- default:
+    count: 1
+    name: AECNT4
+  offset: 0x23c
+  variants: []
+- default:
+    count: 8
+    name: AHBERRLOC
+  offset: 0x240
+  variants: []
+- default:
+    count: 4
+    name: PFSTAT
+  offset: 0x260
+  variants: []
+- default:
+    count: 1
+    name: PFBSTAT
+  offset: 0x270
+  variants: []
+- default:
+    count: 1
+    name: SCRUBSTART
+  offset: 0x274
+  variants: []
+- default:
+    count: 1
+    name: SCRUBEND
+  offset: 0x278
+  variants: []
+- default:
+    count: 1
+    name: FEFECNT
+  offset: 0x27c
+  variants: []
+- default:
+    count: 4
+    name: INITPAT
+  offset: 0x280
+  variants: []
+- default:
+    count: 4
+    name: SCRUBPOS
+  offset: 0x290
+  variants: []
+- default:
+    count: 8
+    name: AHBERRLOCHI
+  offset: 0x2a0
+  variants: []
+- default:
+    count: 1
+    name: SCRUBUEEXT
+  offset: 0x300
+  variants: []
+- default:
+    count: 1
+    name: AECNT2EXT
+  offset: 0x304
+  variants: []
+- default:
+    count: 4
+    name: PFSTATEXT
+  offset: 0x308
+  variants: []
+- default:
+    count: 1
+    name: SCRUBSTARTEXT
+  offset: 0x318
+  variants: []
+- default:
+    count: 1
+    name: SCRUBENDEXT
+  offset: 0x31c
+  variants: []
+- default:
+    count: 4
+    name: SCRUBPOSEXT
+  offset: 0x320
+  variants: []
+- default:
+    count: 1
+    name: STKERR1
+  offset: 0x330
+  variants: []
+- default:
+    count: 1
+    name: STKERR2
+  offset: 0x334
+  variants: []
+description: null
+enabled-by: true
+identifier: RTEMSDeviceGRLIBFTADDR
+index-entries: []
+interface-type: register-block
+links:
+- role: interface-ingroup
+  uid: group
+- role: interface-placement
+  uid: ftaddr-header
+- role: reference
+  uid: /ref/ip/gaisler/grip-2026-3
+name: ftaddr
+notes: null
+register-block-group: FTADDR
+register-block-size: 824
+register-prefix: null
+registers:
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: PHYIMPL
+      properties:
+      - r
+      start: 24
+      width: 8
+    - brief: null
+      description: null
+      kind: uint
+      name: FREQRATIO
+      properties: &id001
+      - r
+      scale: 2 ** value
+      start: 22
+      width: 2
+    - brief: null
+      description: null
+      kind: bool
+      name: TRANS
+      properties: *id001
+      start: 15
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: ECCS
+      properties:
+      - r
+      reset: 1
+      start: 14
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: PARS
+      properties:
+      - r
+      reset: 1
+      start: 13
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: NCSMAX
+      properties:
+      - r
+      scale: value + 1
+      start: 10
+      unit: banks
+      width: 3
+    - brief: null
+      description: null
+      kind: uint
+      name: NPORT
+      properties:
+      - r
+      scale: 2 ** value
+      start: 8
+      unit: ports
+      width: 2
+    - brief: null
+      description: null
+      kind: uint
+      name: DDRWIDTH
+      properties:
+      - r
+      start: 0
+      width: 8
+    variants: []
+  brief: |
+    Feature set register
+  description: null
+  locator: table 359, page 336
+  name: FSR
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bits
+      name: INTERROR
+      properties:
+      - r
+      reset: 0
+      start: 26
+      width: 6
+    - brief: null
+      description: null
+      kind: bits
+      name: BANKSTATUS1
+      properties: *id001
+      start: 16
+      width: 4
+    - brief: null
+      description: null
+      kind: bits
+      name: BANKSTATUS0
+      properties: *id001
+      start: 12
+      width: 4
+    - brief: null
+      description: null
+      kind: bits
+      name: CMDFIFOVALID
+      properties: *id001
+      start: 8
+      width: 4
+    - brief: null
+      description: null
+      kind: bool
+      name: RDS
+      properties: *id001
+      start: 5
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: BESTATE
+      properties:
+      - r
+      start: 0
+      width: 5
+    variants: []
+  brief: |
+    Backend status register
+  description: null
+  locator: table 360, page 337
+  name: BSR
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: DDRT
+      properties:
+      - r
+      - w
+      reset: 1
+      start: 31
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: HWID
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 30
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: ENX4
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 29
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: PWRU
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 28
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: SKIPCALIB
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 27
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: SKIPINIT
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 26
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: CASLAT
+      properties:
+      - r
+      - w
+      reset: 2
+      start: 22
+      unit: cycles
+      width: 4
+    - brief: null
+      description: null
+      kind: uint
+      name: WLAT
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 20
+      width: 2
+    - brief: null
+      description: null
+      kind: uint
+      name: DRAS
+      properties:
+      - r
+      - w
+      reset: 127
+      scale: value + 3
+      start: 13
+      unit: cycles
+      width: 7
+    - brief: null
+      description: null
+      kind: uint
+      name: DRP
+      properties:
+      - r
+      - w
+      reset: 127
+      scale: value + 3
+      start: 6
+      unit: cycles
+      width: 7
+    - brief: null
+      description: null
+      kind: uint
+      name: DFAW
+      properties:
+      - r
+      - w
+      reset: 7
+      start: 3
+      unit: cycles
+      width: 3
+    - brief: null
+      description: null
+      kind: uint
+      name: DRRD
+      properties:
+      - r
+      - w
+      reset: 7
+      scale: value + 2
+      start: 0
+      unit: cycles
+      width: 3
+    variants: []
+  brief: |
+    Memory configuration register 1
+  description: |
+    CASLAT gives bits 3 to 0 and MCFG4.CASLAT4 gives bit 4 of the CAS latency code.
+    WLAT gives bits 1 and 0 and MCFG4.WLAT2 gives bit 2 of the CAS write latency
+    code.
+  locator: table 361, page 339
+  name: MCFG1
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: DDRT
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 31
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: HWID
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 30
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: DWTR
+      properties:
+      - r
+      - w
+      reset: 31
+      start: 25
+      unit: cycles
+      width: 5
+    - brief: null
+      description: null
+      kind: uint
+      name: DWR
+      properties:
+      - r
+      - w
+      reset: 31
+      start: 20
+      unit: cycles
+      width: 5
+    - brief: null
+      description: null
+      kind: uint
+      name: DRTP
+      properties:
+      - r
+      - w
+      reset: 15
+      start: 16
+      unit: cycles
+      width: 4
+    - brief: null
+      description: null
+      kind: uint
+      name: DRCD
+      properties:
+      - r
+      - w
+      reset: 15
+      scale: value + 2
+      start: 12
+      unit: cycles
+      width: 4
+    - brief: null
+      description: null
+      kind: uint
+      name: DRFC
+      properties:
+      - r
+      - w
+      reset: 511
+      scale: value + 3
+      start: 3
+      unit: cycles
+      width: 9
+    - brief: null
+      description: null
+      kind: bool
+      name: DLLDIS
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 2
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: RDIMM
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 1
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: T2
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    Memory configuration register 2
+  description: null
+  locator: table 362, page 339
+  name: MCFG2
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: M3OVR
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 31
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: DRTW
+      properties:
+      - r
+      - w
+      start: 16
+      width: 4
+    - brief: null
+      description: null
+      kind: uint
+      name: DRTRXCS
+      properties:
+      - r
+      - w
+      reset: 6
+      start: 12
+      unit: cycles
+      width: 4
+    - brief: null
+      description: null
+      kind: uint
+      name: DWTWXCS
+      properties:
+      - r
+      - w
+      reset: 4
+      start: 8
+      unit: cycles
+      width: 4
+    - brief: null
+      description: null
+      kind: uint
+      name: DRTWXCS
+      properties:
+      - r
+      - w
+      start: 4
+      width: 4
+    - brief: null
+      description: null
+      kind: uint
+      name: DWTRXCS
+      properties:
+      - r
+      - w
+      start: 0
+      width: 4
+    variants: []
+  brief: |
+    Memory configuration register 3
+  description: null
+  locator: table 363, page 341
+  name: MCFG3
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bits
+      name: DATA_BYTE_DISABLE
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 20
+      width: 12
+    - brief: null
+      description: null
+      kind: bool
+      name: CASLAT4
+      properties: &id002
+      - r
+      - w
+      reset: 0
+      start: 16
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: DRRDL
+      properties:
+      - r
+      - w
+      reset: 7
+      start: 13
+      unit: cycles
+      width: 3
+    - brief: null
+      description: null
+      kind: uint
+      name: DWTRL
+      properties:
+      - r
+      - w
+      reset: 15
+      start: 9
+      unit: cycles
+      width: 4
+    - brief: null
+      description: null
+      kind: uint
+      name: DCCDL
+      properties:
+      - r
+      - w
+      reset: 7
+      start: 6
+      unit: cycles
+      width: 3
+    - brief: null
+      description: null
+      kind: bool
+      name: WLAT2
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 5
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: DMOD
+      properties:
+      - r
+      - w
+      reset: 9
+      scale: value + 3
+      start: 0
+      unit: cycles
+      width: 5
+    variants: []
+  brief: |
+    Memory configuration register 4
+  description: null
+  locator: table 364, page 341
+  name: MCFG4
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: SHOLD
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 31
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: FREOP
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 28
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: MRREPIVAL
+      properties:
+      - r
+      - w
+      reset: 255
+      start: 20
+      width: 8
+    - brief: null
+      description: null
+      kind: uint
+      name: REFIVAL
+      properties:
+      - r
+      - w
+      reset: 1
+      start: 12
+      width: 8
+    - brief: null
+      description: null
+      kind: uint
+      name: SRVBASEPER
+      properties:
+      - r
+      - w
+      reset: 1298
+      start: 0
+      unit: cycles
+      width: 12
+    variants: []
+  brief: |
+    Service configuration register 1
+  description: null
+  locator: table 365, page 342
+  name: SCFG1
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: U100MULT
+      properties:
+      - r
+      - w
+      reset: 25
+      start: 24
+      width: 8
+    - brief: null
+      description: null
+      kind: uint
+      name: ZQCSIVAL
+      properties: *id002
+      reset: 255
+      start: 16
+      width: 8
+    - brief: null
+      description: null
+      kind: uint
+      name: FTRAINIVAL
+      properties:
+      - r
+      - w
+      reset: 255
+      start: 8
+      width: 8
+    - brief: null
+      description: null
+      kind: uint
+      name: ITRAINIVAL
+      properties:
+      - r
+      - w
+      reset: 255
+      start: 0
+      width: 8
+    variants: []
+  brief: |
+    Service configuration register 2
+  description: null
+  locator: table 366, page 342
+  name: SCFG2
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: PTOR
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 31
+      width: 1
+    - brief: null
+      description: null
+      kind: bits
+      name: RDEN_MASK
+      properties:
+      - r
+      - w
+      start: 0
+      width: 28
+    variants: []
+  brief: |
+    PHY timing register 1
+  description: null
+  locator: table 367, page 343
+  name: PHYTIM1
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bits
+      name: WREN_MASK
+      properties:
+      - r
+      - w
+      start: 0
+      width: 21
+    variants: []
+  brief: |
+    PHY timing register 2
+  description: null
+  locator: table 368, page 343
+  name: PHYTIM2
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: DIAGBG
+      properties: *id002
+      reset: not-reset
+      start: 24
+      width: 2
+    - brief: null
+      description: null
+      kind: uint
+      name: DIAGCS
+      properties:
+      - r
+      - w
+      reset: not-reset
+      start: 20
+      width: 4
+    - brief: null
+      description: null
+      kind: bool
+      name: R16
+      properties: *id002
+      reset: not-reset
+      start: 19
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: DIAGBANK
+      properties:
+      - r
+      - w
+      reset: not-reset
+      start: 16
+      width: 3
+    - brief: null
+      description: null
+      kind: uint
+      name: DIAGROW
+      properties:
+      - r
+      - w
+      reset: not-reset
+      start: 0
+      width: 16
+    variants: []
+  brief: |
+    Diagnostic access control register 1
+  description: null
+  locator: table 369, page 344
+  name: DACTRL1
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: DODG
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 31
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: DGWR
+      properties:
+      - r
+      - w
+      reset: not-reset
+      start: 30
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: MANE
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 29
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: MRASN
+      properties:
+      - r
+      - w
+      reset: not-reset
+      start: 28
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: MCASN
+      properties:
+      - r
+      - w
+      reset: not-reset
+      start: 27
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: MWEN
+      properties:
+      - r
+      - w
+      reset: not-reset
+      start: 26
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: MRDC
+      properties:
+      - w
+      reset: 0
+      start: 25
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: MWRC
+      properties:
+      - w
+      reset: 0
+      start: 24
+      width: 1
+    - brief: null
+      description: null
+      kind: bits
+      name: MANUAL_CSN
+      properties:
+      - r
+      - w
+      reset: 255
+      start: 16
+      width: 8
+    - brief: null
+      description: null
+      kind: bool
+      name: MGTRD
+      properties:
+      - w
+      reset: 0
+      start: 15
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: MSREF
+      properties: *id002
+      reset: 0
+      start: 14
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: DIAGCOL
+      properties:
+      - r
+      - w
+      reset: not-reset
+      start: 0
+      width: 12
+    variants: []
+  brief: |
+    Diagnostic access control register 2
+  description: null
+  locator: table 370, page 344
+  name: DACTRL2
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: DDONE
+      properties:
+      - r
+      reset: 0
+      start: 31
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: DGUE
+      properties:
+      - r
+      reset: not-reset
+      start: 24
+      width: 1
+    - brief: null
+      description: null
+      kind: bits
+      name: DIAGCEMASK
+      properties:
+      - r
+      reset: not-reset
+      start: 0
+      width: 24
+    variants: []
+  brief: |
+    Diagnostic access status register
+  description: null
+  locator: table 371, page 346
+  name: DASTAT
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: DIAGCB
+      properties:
+      - r
+      - w
+      reset: not-reset
+      start: 0
+      width: 32
+    variants: []
+  brief: |
+    Diagnostic checkbit register
+  description: null
+  locator: table 372, page 346
+  name: DACB
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: DIAGDATA1
+      properties:
+      - r
+      - w
+      reset: not-reset
+      start: 0
+      width: 32
+    variants: []
+  brief: |
+    Diagnostic data register 1
+  description: null
+  locator: table 373, page 346
+  name: DADATA1
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: DIAGDATA2
+      properties:
+      - r
+      - w
+      reset: not-reset
+      start: 0
+      width: 32
+    variants: []
+  brief: |
+    Diagnostic data register 2
+  description: null
+  locator: table 374, page 347
+  name: DADATA2
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: ODTWL
+      properties:
+      - r
+      - w
+      reset: 1
+      start: 26
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: RTTWL
+      properties:
+      - r
+      - w
+      reset: 1
+      start: 24
+      width: 2
+    - brief: null
+      description: null
+      kind: uint
+      name: RTT
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 21
+      width: 3
+    - brief: null
+      description: null
+      kind: uint
+      name: RTTWR
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 19
+      width: 2
+    - brief: null
+      description: null
+      kind: uint
+      name: DIC
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 17
+      width: 2
+    - brief: null
+      description: null
+      kind: bool
+      name: RLODT
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 16
+      width: 1
+    - brief: null
+      description: null
+      kind: bits
+      name: RDODT
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 8
+      width: 8
+    - brief: null
+      description: null
+      kind: bits
+      name: WRODT
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 8
+    variants: []
+  brief: |
+    ODT configuration register for chip select
+  description: null
+  locator: table 375, page 347
+  name: ODTCFG
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bits
+      name: ODTDEFAULT
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 8
+    variants: []
+  brief: |
+    ODT default value register
+  description: null
+  locator: table 376, page 348
+  name: ODTDEF
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bits
+      name: LODTRMASK
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 28
+    variants: []
+  brief: |
+    ODT internal read timing register
+  description: null
+  locator: table 377, page 348
+  name: ODTIRTIM
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bits
+      name: BL_DISABLE
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 20
+      width: 12
+    - brief: null
+      description: null
+      kind: bool
+      name: MREB
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 18
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: DOZQL
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 17
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: DOZQS
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 16
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: SPRST
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 15
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: TRLANE
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 11
+      width: 4
+    - brief: null
+      description: null
+      kind: bool
+      name: BLRDT
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 10
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: BLGT
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 9
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: BLWLT
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 8
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: FRDT
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 7
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: FGT
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 6
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: FWLT
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 5
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: INRDT
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 4
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: INGT
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 3
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: INWLT
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 2
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: DOMR
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 1
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: DOREF
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    Command register
+  description: null
+  locator: table 378, page 349
+  name: CMD
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: SREFTHRES
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 1
+      width: 3
+    - brief: null
+      description: null
+      kind: bool
+      name: ASRFE
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    Self-refresh mode configuration register
+  description: null
+  locator: table 379, page 350
+  name: SREFCFG
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      enum:
+        ECC_80_72: 3
+        EDAC: 2
+        NONE: 0
+        PARITY: 1
+      kind: enum
+      name: ECCMODE
+      properties:
+      - r
+      - w
+      reset: 2
+      start: 30
+      width: 2
+    - brief: null
+      description: null
+      kind: bool
+      name: ERET
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 29
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: RDEEN
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 28
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: DRMW
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 27
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: RETTEST
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 4
+    variants: []
+  brief: |
+    Backend EDAC and FIFO error counter register
+  description: null
+  locator: table 380, page 350
+  name: BEECNT
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: SITICK
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 28
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: MRREPCTR
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 20
+      width: 8
+    - brief: null
+      description: null
+      kind: uint
+      name: REFCTR
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 12
+      width: 8
+    - brief: null
+      description: null
+      kind: uint
+      name: SICTR
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 12
+    variants: []
+  brief: |
+    Service time counter register
+  description: null
+  locator: table 381, page 351
+  name: STCNT
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bits
+      name: PHY_READ_ERROR_INDICATOR
+      properties:
+      - r
+      reset: 0
+      start: 20
+      width: 12
+    - brief: null
+      description: null
+      kind: uint
+      name: PHY_REGISTER_ADDRESS
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 8
+    variants: []
+  brief: |
+    PHY indirect address register
+  description: null
+  locator: table 382, page 351
+  name: PHYIADDR
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: PHY_REGISTER_DATA
+      properties:
+      - r
+      - w
+      start: 0
+      width: 32
+    variants: []
+  brief: |
+    PHY indirect data register
+  description: null
+  locator: table 383, page 352
+  name: PHYIDATA
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bits
+      name: PHY_GENERIC_CONTROL
+      properties:
+      - r
+      - w
+      start: 0
+      width: 32
+    variants: []
+  brief: |
+    PHY generic control register
+  description: null
+  locator: table 384, page 352
+  name: PHYGCTRL
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: FTRAINCTR
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 24
+      width: 8
+    - brief: null
+      description: null
+      kind: uint
+      name: ITRAINCTR
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 16
+      width: 8
+    - brief: null
+      description: null
+      kind: bool
+      name: TICK10
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 15
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: M10CTR
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 8
+      width: 7
+    - brief: null
+      description: null
+      kind: uint
+      name: U100CTR
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 8
+    variants: []
+  brief: |
+    Training time counter register
+  description: null
+  locator: table 385, page 352
+  name: TTCNT
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: RTRCTR
+      properties: &id003
+      - r
+      - w1c
+      start: 24
+      width: 2
+    - brief: null
+      description: null
+      kind: bool
+      name: CM3UE
+      properties:
+      - r
+      - w1c
+      reset: not-reset
+      start: 23
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: CM3CE
+      properties:
+      - r
+      - w1c
+      reset: not-reset
+      start: 21
+      unit: errors
+      width: 2
+    - brief: null
+      description: null
+      kind: bool
+      name: WD3UE
+      properties:
+      - r
+      - w1c
+      reset: not-reset
+      start: 20
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: WD3CE
+      properties:
+      - r
+      - w1c
+      reset: not-reset
+      start: 18
+      unit: errors
+      width: 2
+    - brief: null
+      description: null
+      kind: bool
+      name: CM2UE
+      properties:
+      - r
+      - w1c
+      reset: not-reset
+      start: 17
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: CM2CE
+      properties:
+      - r
+      - w1c
+      reset: not-reset
+      start: 15
+      unit: errors
+      width: 2
+    - brief: null
+      description: null
+      kind: bool
+      name: WD2UE
+      properties:
+      - r
+      - w1c
+      reset: not-reset
+      start: 14
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: WD2CE
+      properties:
+      - r
+      - w1c
+      reset: not-reset
+      start: 12
+      unit: errors
+      width: 2
+    - brief: null
+      description: null
+      kind: bool
+      name: CM1UE
+      properties:
+      - r
+      - w1c
+      reset: not-reset
+      start: 11
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: CM1CE
+      properties:
+      - r
+      - w1c
+      reset: not-reset
+      start: 9
+      unit: errors
+      width: 2
+    - brief: null
+      description: null
+      kind: bool
+      name: WD1UE
+      properties:
+      - r
+      - w1c
+      reset: not-reset
+      start: 8
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: WD1CE
+      properties:
+      - r
+      - w1c
+      reset: not-reset
+      start: 6
+      unit: errors
+      width: 2
+    - brief: null
+      description: null
+      kind: bool
+      name: CM0UE
+      properties:
+      - r
+      - w1c
+      reset: not-reset
+      start: 5
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: CM0CE
+      properties:
+      - r
+      - w1c
+      reset: not-reset
+      start: 3
+      unit: errors
+      width: 2
+    - brief: null
+      description: null
+      kind: bool
+      name: WD0UE
+      properties:
+      - r
+      - w1c
+      reset: not-reset
+      start: 2
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: WD0CE
+      properties:
+      - r
+      - w1c
+      reset: not-reset
+      start: 0
+      unit: errors
+      width: 2
+    variants: []
+  brief: |
+    Back-end FIFO error counter register
+  description: null
+  locator: table 386, page 353
+  name: BEFECNT
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: SRVSLT_MAX
+      properties: *id002
+      reset: 0
+      start: 20
+      unit: cycles
+      width: 10
+    - brief: null
+      description: null
+      kind: uint
+      name: TSTRANDUR
+      properties: *id002
+      reset: 32
+      scale: value + 1
+      start: 8
+      unit: cycles
+      width: 10
+    - brief: null
+      description: null
+      kind: uint
+      name: CURTS
+      properties: *id001
+      reset: 0
+      start: 4
+      width: 3
+    - brief: null
+      description: null
+      kind: bool
+      name: TSSRV
+      properties: *id001
+      reset: 0
+      start: 3
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: TSTRANS
+      properties: *id001
+      reset: 0
+      start: 2
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: TSIDLE
+      properties: *id001
+      reset: 1
+      start: 1
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: TSEN
+      properties: *id002
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    Time slot configuration register 1
+  description: null
+  locator: table 387, page 353
+  name: TSCFG1
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bits
+      name: TS_2N_1_MSK
+      properties: *id002
+      reset: 15
+      start: 28
+      width: 4
+    - brief: null
+      description: null
+      kind: uint
+      name: TS_2N_1_DUR
+      properties: *id002
+      reset: 0
+      start: 16
+      unit: cycles
+      width: 12
+    - brief: null
+      description: null
+      kind: bits
+      name: TS_2N_0_MSK
+      properties: *id002
+      reset: 15
+      start: 12
+      width: 4
+    - brief: null
+      description: null
+      kind: uint
+      name: TS_2N_0_DUR
+      properties: *id002
+      reset: 0
+      start: 0
+      unit: cycles
+      width: 12
+    variants: []
+  brief: |
+    Time slot configuration register
+  description: |
+    Register N holds the time slots 2N and 2N + 1. A duration of zero disables the
+    time slot.
+  locator: table 388, page 354
+  name: TSCFG
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: INV
+      properties: *id002
+      reset: 0
+      start: 31
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: CAPLM
+      properties: *id002
+      reset: 0
+      start: 28
+      width: 3
+    - brief: null
+      description: null
+      kind: bool
+      name: ACTMSK
+      properties: *id002
+      reset: 1
+      start: 22
+      width: 1
+    - brief: null
+      description: null
+      kind: bits
+      name: BAMSK
+      properties: *id002
+      reset: 3
+      start: 20
+      width: 2
+    - brief: null
+      description: null
+      kind: bits
+      name: BGMSK
+      properties: *id002
+      reset: 3
+      start: 18
+      width: 2
+    - brief: null
+      description: null
+      kind: bits
+      name: ADDRMSK
+      properties: *id002
+      reset: 131071
+      start: 0
+      width: 17
+    variants: []
+  brief: |
+    Parity configuration register
+  description: null
+  locator: table 389, page 355
+  name: PARCFG
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: OVR
+      properties: *id002
+      reset: 0
+      start: 31
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: MRDEF
+      properties: *id002
+      reset: not-reset
+      start: 0
+      width: 17
+    variants: []
+  brief: |
+    Mode register default value register
+  description: |
+    Register N holds the default value of the mode register N of the memory
+    devices.
+  locator: table 390, page 355
+  name: MRDEF
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: NEN
+      properties: *id002
+      reset: 0
+      start: 31
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: NDLY
+      properties: *id002
+      start: 0
+      unit: cycles
+      width: 8
+    variants: []
+  brief: |
+    Arbiter nudge control register
+  description: null
+  locator: table 391, page 355
+  name: ARBNUDGE
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bits
+      name: WRDATA_MASK
+      properties:
+      - r
+      - w
+      start: 0
+      width: 21
+    variants: []
+  brief: |
+    PHY timing register 3
+  description: null
+  locator: table 392, page 357
+  name: PHYTIM3
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bits
+      name: ODTRDMASK
+      properties:
+      - r
+      - w
+      start: 1
+      width: 27
+    variants: []
+  brief: |
+    ODT external read timing register
+  description: null
+  locator: table 393, page 357
+  name: ODTERTIM
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bits
+      name: ODTWRMASK
+      properties:
+      - r
+      - w
+      start: 1
+      width: 19
+    variants: []
+  brief: |
+    ODT external write timing register
+  description: null
+  locator: table 394, page 357
+  name: ODTEWTIM
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: OORER
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 31
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: MEMMAP
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 21
+      width: 2
+    - brief: null
+      description: null
+      kind: uint
+      name: HADDRWM32
+      properties:
+      - r
+      start: 16
+      width: 5
+    - brief: null
+      description: null
+      kind: uint
+      name: NCS
+      properties:
+      - r
+      - w
+      reset: 7
+      start: 13
+      width: 3
+    - brief: null
+      description: null
+      kind: uint
+      name: CSBASE
+      properties:
+      - r
+      - w
+      reset: 3
+      start: 9
+      width: 4
+    - brief: null
+      description: null
+      kind: uint
+      name: BANKBASE
+      properties:
+      - r
+      - w
+      reset: 5
+      start: 5
+      width: 4
+    - brief: null
+      description: null
+      kind: uint
+      name: ROWBASE
+      properties:
+      - r
+      - w
+      reset: 2
+      start: 2
+      width: 3
+    - brief: null
+      description: null
+      kind: uint
+      name: COLBASE
+      properties:
+      - r
+      - w
+      reset: 2
+      start: 0
+      width: 2
+    variants: []
+  brief: |
+    AHB address decode register
+  description: null
+  locator: table 395, page 358
+  name: AHBADEC
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: PRELIMHI
+      properties:
+      - r
+      - w
+      reset: 4
+      start: 28
+      width: 4
+    - brief: null
+      description: null
+      kind: uint
+      name: PREFLIMLO
+      properties:
+      - r
+      - w
+      reset: 2
+      start: 24
+      width: 4
+    - brief: null
+      description: null
+      kind: uint
+      name: WQUEUEMAX
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 16
+      width: 3
+    - brief: null
+      description: null
+      kind: uint
+      name: ROWIDLECNT
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 13
+      width: 3
+    - brief: null
+      description: null
+      kind: uint
+      name: ROWOTM
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 5
+      width: 8
+    - brief: null
+      description: null
+      kind: uint
+      name: ROWOPOL
+      properties:
+      - r
+      - w
+      reset: 1
+      start: 3
+      width: 2
+    - brief: null
+      description: null
+      kind: bool
+      name: UEERR
+      properties:
+      - r
+      - w
+      reset: 1
+      start: 2
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: UESIG
+      properties:
+      - r
+      - w
+      reset: 1
+      start: 1
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: CESIG
+      properties:
+      - r
+      - w
+      reset: 1
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    AHB access configuration register
+  description: null
+  locator: table 396, page 359
+  name: AHBACFG
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: PREFTO
+      properties:
+      - r
+      - w
+      reset: 1023
+      start: 16
+      unit: cycles
+      width: 10
+    - brief: null
+      description: null
+      kind: bits
+      name: PREFETCH_MASTER_MASK
+      properties:
+      - r
+      - w
+      reset: 65535
+      start: 0
+      width: 16
+    variants: []
+  brief: |
+    Prefetch configuration register
+  description: null
+  locator: table 397, page 360
+  name: PFCFG
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bits
+      name: INITEN
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 28
+      width: 4
+    - brief: null
+      description: null
+      kind: bits
+      name: READBACK
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 24
+      width: 4
+    - brief: null
+      description: null
+      kind: bits
+      name: SCRUBPEND
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 20
+      width: 4
+    - brief: null
+      description: null
+      kind: bool
+      name: SBDEN
+      properties: *id002
+      reset: 0
+      start: 13
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: RGALL
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 12
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: IEXD
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 11
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: IADR
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 10
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: SFCAL
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 9
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: BESFI
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 8
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: SFIDBL
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 7
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: SEFISTATE
+      properties:
+      - r
+      reset: 0
+      start: 5
+      width: 2
+    - brief: null
+      description: null
+      kind: bool
+      name: SHOLD
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 4
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: SEFIEN
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 3
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: SCRUBCNT
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 1
+      width: 2
+    - brief: null
+      description: null
+      kind: bool
+      name: SCREN
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    Scrubber configuration register 1
+  description: null
+  locator: table 398, page 360
+  name: SCRUBCFG1
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bits
+      name: SEFI_BL_MSK
+      properties:
+      - r
+      reset: 0
+      start: 16
+      width: 12
+    - brief: null
+      description: null
+      kind: uint
+      name: SCRUBB_INTERVAL
+      properties:
+      - r
+      - w
+      reset: 65535
+      start: 0
+      width: 16
+    variants: []
+  brief: |
+    Scrubber configuration register 2
+  description: null
+  locator: table 399, page 361
+  name: SCRUBCFG2
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: STKB
+      properties: *id003
+      reset: 0
+      start: 12
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: PSFI
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 11
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: BEREI
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 10
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: BESCI
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 9
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: SFI
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 8
+      width: 1
+    - brief: null
+      description: null
+      kind: bits
+      name: UEI
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 4
+      width: 4
+    - brief: null
+      description: null
+      kind: bits
+      name: CEI
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 0
+      width: 4
+    variants: []
+  brief: |
+    IRQ pending register
+  description: null
+  locator: table 400, page 362
+  name: IRQPEND
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: STKBE
+      properties: *id002
+      reset: 0
+      start: 12
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: PSFIE
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 11
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: BEREIE
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 10
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: BESCIE
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 9
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: SFIE
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 8
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: UEIE
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 4
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: CEIE
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    IRQ enable register
+  description: null
+  locator: table 401, page 362
+  name: IRQEN
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: SCRUE
+      properties:
+      - r
+      - w1c
+      reset: not-reset
+      start: 31
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: RBERR
+      properties:
+      - r
+      - w1c
+      reset: not-reset
+      start: 30
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: SECSNO
+      properties:
+      - r
+      reset: not-reset
+      start: 27
+      width: 3
+    - brief: null
+      description: null
+      kind: uint
+      name: SEBANK
+      properties:
+      - r
+      reset: not-reset
+      start: 24
+      width: 3
+    - brief: null
+      description: null
+      kind: uint
+      name: SEROW
+      properties:
+      - r
+      reset: not-reset
+      start: 8
+      width: 16
+    - brief: null
+      description: null
+      kind: uint
+      name: SECOLHI
+      properties:
+      - r
+      reset: not-reset
+      start: 0
+      width: 8
+    variants: []
+  brief: |
+    Scrubber uncorrectable error register
+  description: null
+  locator: table 402, page 363
+  name: SCRUBUE
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: LANE_4N_3_ERRCNT
+      properties:
+      - r
+      reset: 0
+      start: 24
+      unit: errors
+      width: 6
+    - brief: null
+      description: null
+      kind: uint
+      name: LANE_4N_2_ERRCNT
+      properties:
+      - r
+      reset: 0
+      start: 16
+      unit: errors
+      width: 6
+    - brief: null
+      description: null
+      kind: uint
+      name: LANE_4N_1_ERRCNT
+      properties:
+      - r
+      reset: 0
+      start: 8
+      unit: errors
+      width: 6
+    - brief: null
+      description: null
+      kind: uint
+      name: LANE_4N_0_ERRCNT
+      properties:
+      - r
+      reset: 0
+      start: 0
+      unit: errors
+      width: 6
+    variants: []
+  brief: |
+    Byte lane error counter register
+  description: null
+  locator: table 403, page 363
+  name: BLECNT
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: BLCLR
+      properties:
+      - w
+      reset: 0
+      start: 31
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: BL_WMRK
+      properties:
+      - r
+      reset: 0
+      start: 0
+      unit: errors
+      width: 6
+    variants: []
+  brief: |
+    Byte lane error counter register 4
+  description: null
+  locator: table 404, page 364
+  name: BLECNT4
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: AECLR
+      properties:
+      - w
+      reset: 0
+      start: 31
+      width: 1
+    - brief: null
+      description: null
+      kind: int
+      name: ADCTRCS2
+      properties:
+      - r
+      reset: not-reset
+      start: 24
+      width: 4
+    - brief: null
+      description: null
+      kind: int
+      name: ADCTRCS1
+      properties:
+      - r
+      reset: not-reset
+      start: 20
+      width: 4
+    - brief: null
+      description: null
+      kind: int
+      name: ADCTRCS0
+      properties:
+      - r
+      reset: not-reset
+      start: 16
+      width: 4
+    - brief: null
+      description: null
+      kind: int
+      name: ADCTRBA2
+      properties:
+      - r
+      reset: not-reset
+      start: 8
+      width: 4
+    - brief: null
+      description: null
+      kind: int
+      name: ADCTRBA1
+      properties:
+      - r
+      reset: not-reset
+      start: 4
+      width: 4
+    - brief: null
+      description: null
+      kind: int
+      name: ADCTRBA0
+      properties:
+      - r
+      reset: not-reset
+      start: 0
+      width: 4
+    variants: []
+  brief: |
+    Address error counter register 1
+  description: null
+  locator: table 405, page 364
+  name: AECNT1
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: int
+      name: ADCTRROW15_7
+      properties:
+      - r
+      reset: not-reset
+      start: 28
+      width: 4
+    - brief: null
+      description: null
+      kind: int
+      name: ADCTRROW14_6
+      properties:
+      - r
+      reset: not-reset
+      start: 24
+      width: 4
+    - brief: null
+      description: null
+      kind: int
+      name: ADCTRROW13_5
+      properties:
+      - r
+      reset: not-reset
+      start: 20
+      width: 4
+    - brief: null
+      description: null
+      kind: int
+      name: ADCTRROW12_4
+      properties:
+      - r
+      reset: not-reset
+      start: 16
+      width: 4
+    - brief: null
+      description: null
+      kind: int
+      name: ADCTRROW11_3
+      properties:
+      - r
+      reset: not-reset
+      start: 12
+      width: 4
+    - brief: null
+      description: null
+      kind: int
+      name: ADCTRROW10_2
+      properties:
+      - r
+      reset: not-reset
+      start: 8
+      width: 4
+    - brief: null
+      description: null
+      kind: int
+      name: ADCTRROW9_1
+      properties:
+      - r
+      reset: not-reset
+      start: 4
+      width: 4
+    - brief: null
+      description: null
+      kind: int
+      name: ADCTRROW8_0
+      properties:
+      - r
+      reset: not-reset
+      start: 0
+      width: 4
+    variants: []
+  brief: |
+    Address error counter register 2 and 3
+  description: null
+  locator: table 406, page 365
+  name: AECNT2
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: int
+      name: ADCTRCOL11
+      properties:
+      - r
+      reset: not-reset
+      start: 28
+      width: 4
+    - brief: null
+      description: null
+      kind: int
+      name: ADCTRCOL10
+      properties:
+      - r
+      reset: not-reset
+      start: 24
+      width: 4
+    - brief: null
+      description: null
+      kind: int
+      name: ADCTRCOL9
+      properties:
+      - r
+      reset: not-reset
+      start: 20
+      width: 4
+    - brief: null
+      description: null
+      kind: int
+      name: ADCTRCOL8
+      properties:
+      - r
+      reset: not-reset
+      start: 16
+      width: 4
+    - brief: null
+      description: null
+      kind: int
+      name: ADCTRCOL7
+      properties:
+      - r
+      reset: not-reset
+      start: 12
+      width: 4
+    - brief: null
+      description: null
+      kind: int
+      name: ADCTRCOL6
+      properties:
+      - r
+      reset: not-reset
+      start: 8
+      width: 4
+    - brief: null
+      description: null
+      kind: int
+      name: ADCTRCOL5
+      properties:
+      - r
+      reset: not-reset
+      start: 4
+      width: 4
+    - brief: null
+      description: null
+      kind: int
+      name: ADCTRCOL4
+      properties:
+      - r
+      reset: not-reset
+      start: 0
+      width: 4
+    variants: []
+  brief: |
+    Address error counter register 4
+  description: null
+  locator: table 407, page 365
+  name: AECNT4
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: CEUEADDRESS
+      properties:
+      - r
+      reset: not-reset
+      start: 0
+      width: 32
+    variants: []
+  brief: |
+    AHB correctable and uncorrectable error location
+  description: null
+  locator: table 408, page 366
+  name: AHBERRLOC
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: PFACT
+      properties:
+      - r
+      reset: 0
+      start: 31
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: PFDRN
+      properties:
+      - r
+      reset: 0
+      start: 30
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: PREF_FETCH_POS
+      properties:
+      - r
+      reset: not-reset
+      start: 25
+      width: 5
+    - brief: null
+      description: null
+      kind: uint
+      name: PREF_READOUT_POS
+      properties:
+      - r
+      reset: not-reset
+      start: 16
+      width: 9
+    - brief: null
+      description: null
+      kind: uint
+      name: PREFETCH_ROW
+      properties:
+      - r
+      reset: not-reset
+      start: 0
+      width: 16
+    variants: []
+  brief: |
+    Prefetch status register
+  description: null
+  locator: table 409, page 366
+  name: PFSTAT
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: PREF3BG
+      properties:
+      - r
+      reset: not-reset
+      start: 30
+      width: 2
+    - brief: null
+      description: null
+      kind: uint
+      name: PREF3CS
+      properties:
+      - r
+      reset: not-reset
+      start: 27
+      width: 3
+    - brief: null
+      description: null
+      kind: uint
+      name: PREF3IBANK
+      properties:
+      - r
+      reset: not-reset
+      start: 24
+      width: 3
+    - brief: null
+      description: null
+      kind: uint
+      name: PREF2BG
+      properties:
+      - r
+      reset: not-reset
+      start: 22
+      width: 2
+    - brief: null
+      description: null
+      kind: uint
+      name: PREF2CS
+      properties:
+      - r
+      reset: not-reset
+      start: 19
+      width: 3
+    - brief: null
+      description: null
+      kind: uint
+      name: PREF2IBANK
+      properties:
+      - r
+      reset: not-reset
+      start: 16
+      width: 3
+    - brief: null
+      description: null
+      kind: uint
+      name: PREF1BG
+      properties:
+      - r
+      reset: not-reset
+      start: 14
+      width: 2
+    - brief: null
+      description: null
+      kind: uint
+      name: PREF1CS
+      properties:
+      - r
+      reset: not-reset
+      start: 11
+      width: 3
+    - brief: null
+      description: null
+      kind: uint
+      name: PREF1IBANK
+      properties:
+      - r
+      reset: not-reset
+      start: 8
+      width: 3
+    - brief: null
+      description: null
+      kind: uint
+      name: PREF0BG
+      properties:
+      - r
+      reset: not-reset
+      start: 6
+      width: 2
+    - brief: null
+      description: null
+      kind: uint
+      name: PREF0CS
+      properties:
+      - r
+      reset: not-reset
+      start: 3
+      width: 3
+    - brief: null
+      description: null
+      kind: uint
+      name: PREF0IBANK
+      properties:
+      - r
+      reset: not-reset
+      start: 0
+      width: 3
+    variants: []
+  brief: |
+    Prefetch bank status register
+  description: null
+  locator: table 410, page 367
+  name: PFBSTAT
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: SCSTCS
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 28
+      width: 3
+    - brief: null
+      description: null
+      kind: uint
+      name: SCSTIBANK
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 25
+      width: 3
+    - brief: null
+      description: null
+      kind: uint
+      name: SCSTROW
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 9
+      width: 16
+    - brief: null
+      description: null
+      kind: uint
+      name: SCSTCOL
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 9
+    variants: []
+  brief: |
+    Scrubber start address register
+  description: null
+  locator: table 411, page 367
+  name: SCRUBSTART
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: SCEDCS
+      properties:
+      - r
+      - w
+      reset: 7
+      start: 28
+      width: 3
+    - brief: null
+      description: null
+      kind: uint
+      name: SCEDIBANK
+      properties:
+      - r
+      - w
+      reset: 7
+      start: 25
+      width: 3
+    - brief: null
+      description: null
+      kind: uint
+      name: SCEDROW
+      properties:
+      - r
+      - w
+      reset: 65535
+      start: 9
+      width: 16
+    - brief: null
+      description: null
+      kind: uint
+      name: SCEDCOL
+      properties:
+      - r
+      - w
+      reset: 511
+      start: 0
+      width: 9
+    variants: []
+  brief: |
+    Scrubber end address register
+  description: null
+  locator: table 412, page 368
+  name: SCRUBEND
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: RS3UE
+      properties:
+      - r
+      - w1c
+      reset: not-reset
+      start: 30
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: RS3CE
+      properties:
+      - r
+      - w1c
+      reset: not-reset
+      start: 28
+      unit: errors
+      width: 2
+    - brief: null
+      description: null
+      kind: bool
+      name: RD3UE
+      properties:
+      - r
+      - w1c
+      reset: not-reset
+      start: 27
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: PF3UE
+      properties:
+      - r
+      - w1c
+      reset: not-reset
+      start: 26
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: RDPF3CE
+      properties:
+      - r
+      - w1c
+      reset: not-reset
+      start: 24
+      unit: errors
+      width: 2
+    - brief: null
+      description: null
+      kind: bool
+      name: RS2UE
+      properties:
+      - r
+      - w1c
+      reset: not-reset
+      start: 22
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: RS2CE
+      properties:
+      - r
+      - w1c
+      reset: not-reset
+      start: 20
+      unit: errors
+      width: 2
+    - brief: null
+      description: null
+      kind: bool
+      name: RD2UE
+      properties:
+      - r
+      - w1c
+      reset: not-reset
+      start: 19
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: PF2UE
+      properties:
+      - r
+      - w1c
+      reset: not-reset
+      start: 18
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: RDPF2CE
+      properties:
+      - r
+      - w1c
+      reset: not-reset
+      start: 16
+      unit: errors
+      width: 2
+    - brief: null
+      description: null
+      kind: bool
+      name: RS1UE
+      properties:
+      - r
+      - w1c
+      reset: not-reset
+      start: 14
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: RS1CE
+      properties:
+      - r
+      - w1c
+      reset: not-reset
+      start: 12
+      unit: errors
+      width: 2
+    - brief: null
+      description: null
+      kind: bool
+      name: RD1UE
+      properties:
+      - r
+      - w1c
+      reset: not-reset
+      start: 11
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: PF1UE
+      properties:
+      - r
+      - w1c
+      reset: not-reset
+      start: 10
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: RDPF1CE
+      properties:
+      - r
+      - w1c
+      reset: not-reset
+      start: 8
+      unit: errors
+      width: 2
+    - brief: null
+      description: null
+      kind: bool
+      name: RS0UE
+      properties:
+      - r
+      - w1c
+      reset: not-reset
+      start: 6
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: RS0CE
+      properties:
+      - r
+      - w1c
+      reset: not-reset
+      start: 4
+      unit: errors
+      width: 2
+    - brief: null
+      description: null
+      kind: bool
+      name: RD0UE
+      properties:
+      - r
+      - w1c
+      reset: not-reset
+      start: 3
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: PF0UE
+      properties:
+      - r
+      - w1c
+      reset: not-reset
+      start: 2
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: RDPF0CE
+      properties:
+      - r
+      - w1c
+      reset: not-reset
+      start: 0
+      unit: errors
+      width: 2
+    variants: []
+  brief: |
+    Frontend FIFO error counter register
+  description: null
+  locator: table 413, page 369
+  name: FEFECNT
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: INIT_PATTERN_DATA
+      properties:
+      - r
+      - w
+      start: 0
+      width: 32
+    variants: []
+  brief: |
+    Initialization pattern register
+  description: null
+  locator: table 414, page 370
+  name: INITPAT
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: SCWR
+      properties:
+      - r
+      reset: 0
+      start: 31
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: SCCURCS
+      properties:
+      - r
+      reset: 0
+      start: 28
+      width: 3
+    - brief: null
+      description: null
+      kind: uint
+      name: SCCURIBANK
+      properties:
+      - r
+      reset: 0
+      start: 25
+      width: 3
+    - brief: null
+      description: null
+      kind: uint
+      name: SCCURROW
+      properties:
+      - r
+      reset: 0
+      start: 9
+      width: 16
+    - brief: null
+      description: null
+      kind: uint
+      name: SCCURCOL
+      properties:
+      - r
+      reset: 0
+      start: 0
+      width: 9
+    variants: []
+  brief: |
+    Scrubber position register
+  description: null
+  locator: table 415, page 370
+  name: SCRUBPOS
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: CEUEADDRESSHIGHPART
+      properties: *id001
+      reset: not-reset
+      start: 0
+      width: 32
+    variants: []
+  brief: |
+    AHB correctable and uncorrectable error location high part
+  description: null
+  locator: table 416, page 371
+  name: AHBERRLOCHI
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: SEBG
+      properties: *id001
+      reset: not-reset
+      start: 2
+      width: 2
+    - brief: null
+      description: null
+      kind: bool
+      name: SEROW16
+      properties: *id001
+      reset: not-reset
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    Scrubber uncorrectable error extended register
+  description: null
+  locator: table 417, page 371
+  name: SCRUBUEEXT
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: int
+      name: ADCTRROW16
+      properties: *id001
+      reset: not-reset
+      start: 0
+      width: 4
+    variants: []
+  brief: |
+    Address error counter register 2 extended
+  description: null
+  locator: table 418, page 371
+  name: AECNT2EXT
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: PFR16
+      properties: *id001
+      reset: not-reset
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    Prefetch status extended register
+  description: null
+  locator: table 419, page 372
+  name: PFSTATEXT
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: SSBG1
+      properties: *id002
+      reset: 0
+      start: 3
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: SSR16
+      properties: *id002
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    Scrubber start address extended register
+  description: null
+  locator: table 420, page 372
+  name: SCRUBSTARTEXT
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: SEBG1
+      properties: *id002
+      reset: 1
+      start: 3
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: SER16
+      properties: *id002
+      reset: 1
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    Scrubber end address extended register
+  description: null
+  locator: table 421, page 372
+  name: SCRUBENDEXT
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: SCR16
+      properties: *id001
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    Scrubber position extended register
+  description: null
+  locator: table 422, page 373
+  name: SCRUBPOSEXT
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: VA
+      properties: *id003
+      reset: 0
+      start: 31
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: MU
+      properties: *id001
+      reset: 0
+      start: 30
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: STKERR_CSEL
+      properties: *id001
+      reset: 0
+      start: 22
+      width: 3
+    - brief: null
+      description: null
+      kind: uint
+      name: STKERR_BANK
+      properties: *id001
+      reset: 0
+      start: 19
+      width: 3
+    - brief: null
+      description: null
+      kind: uint
+      name: STKERR_ROW
+      properties: *id001
+      reset: 0
+      start: 2
+      width: 17
+    variants: []
+  brief: |
+    Stuck-bit detection register 1
+  description: null
+  locator: table 423, page 373
+  name: STKERR1
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: STKERR_COL
+      properties: *id001
+      reset: 0
+      start: 0
+      width: 9
+    variants: []
+  brief: |
+    Stuck-bit detection register 2
+  description: null
+  locator: table 424, page 373
+  name: STKERR2
+  width: 32
+type: interface
