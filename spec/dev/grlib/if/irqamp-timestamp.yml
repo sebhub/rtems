@@ -35,6 +35,8 @@ links:
   uid: irqamp
 - role: interface-placement
   uid: irqamp-header
+- role: reference
+  uid: /ref/ip/gaisler/grip-2026-3
 name: irqamp_timestamp
 notes: null
 register-block-group: IRQ(A)MP Timestamp
@@ -45,92 +47,112 @@ registers:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: TCNT
       properties:
       - r
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Interrupt timestamp counter n register
   description: null
+  locator: table 1971, page 1609
   name: ITCNT
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: TSTAMP
       properties:
       - r
       start: 27
+      unit: sets
       width: 5
     - brief: null
       description: null
+      kind: bool
       name: S1
       properties:
       - r
       - w1c
+      reset: 0
       start: 26
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: S2
       properties:
       - r
       - w1c
+      reset: 0
       start: 25
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: KS
       properties:
       - r
       - w
+      reset: 0
       start: 5
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: TSISEL
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 5
     variants: []
   brief: |
     Interrupt timestamp n control register
   description: null
+  locator: table 1972, page 1609
   name: ITSTMPC
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: TASSERTION
       properties:
       - r
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Interrupt Assertion Timestamp n register
   description: null
+  locator: table 1973, page 1610
   name: ITSTMPAS
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: TACKNOWLEDGE
       properties:
       - r
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Interrupt Acknowledge Timestamp n register
   description: null
+  locator: table 1974, page 1610
   name: ITSTMPAC
   width: 32
 type: interface

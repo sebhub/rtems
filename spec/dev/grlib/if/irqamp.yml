@@ -95,6 +95,8 @@ links:
   uid: group
 - role: interface-placement
   uid: irqamp-header
+- role: reference
+  uid: /ref/ip/gaisler/grip-2026-3
 - name: ITSTMP
   role: register-block-include
   uid: irqamp-timestamp
@@ -108,10 +110,12 @@ registers:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: IL
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 16
     variants: []
@@ -120,24 +124,29 @@ registers:
   description: |
     Bit 0 of IL is reserved. IL includes it, so that bit n of IL corresponds to
     interrupt n.
+  locator: table 1957, page 1605
   name: ILEVEL
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: EIP
       properties:
       - r
       - w
+      reset: 0
       start: 16
       width: 16
     - brief: null
       description: null
+      kind: bits
       name: IP
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 16
     variants: []
@@ -146,16 +155,19 @@ registers:
   description: |
     Bit 0 of IP is reserved. IP includes it, so that bit n of IP corresponds to
     interrupt n.
+  locator: table 1958, page 1605
   name: IPEND
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: IF
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 16
     variants: []
@@ -164,22 +176,27 @@ registers:
   description: |
     Bit 0 of IF is reserved. IF includes it, so that bit n of IF corresponds to
     interrupt n.
+  locator: table 1959, page 1605
   name: IFORCE0
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: EIC
       properties:
       - w
+      reset: 0
       start: 16
       width: 16
     - brief: null
       description: null
+      kind: bits
       name: IC
       properties:
       - w
+      reset: 0
       start: 0
       width: 16
     variants: []
@@ -188,19 +205,24 @@ registers:
   description: |
     Bit 0 of IC is reserved. IC includes it, so that bit n of IC corresponds to
     interrupt n.
+  locator: table 1960, page 1605
   name: ICLEAR
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: NCPU
       properties:
       - r
+      scale: value + 1
       start: 28
+      unit: processors
       width: 4
     - brief: null
       description: null
+      kind: bool
       name: BA
       properties:
       - r
@@ -208,6 +230,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: ER
       properties:
       - r
@@ -215,6 +238,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: EIRQ
       properties:
       - r
@@ -222,6 +246,7 @@ registers:
       width: 4
     - brief: null
       description: null
+      kind: bits
       name: STATUS
       properties:
       - r
@@ -232,16 +257,19 @@ registers:
   brief: |
     Multiprocessor status register
   description: null
+  locator: table 1961, page 1606
   name: MPSTAT
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: BM
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 16
     variants: []
@@ -250,12 +278,14 @@ registers:
   description: |
     Bit 0 of BM is reserved. BM includes it, so that bit n of BM corresponds to
     interrupt n.
+  locator: table 1962, page 1606
   name: BRDCST
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: ERRMODE
       properties:
       - r
@@ -266,12 +296,14 @@ registers:
   brief: |
     Error Mode Status Register
   description: null
+  locator: table 1963, page 1606
   name: ERRSTAT
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: NWDOG
       properties:
       - r
@@ -279,145 +311,179 @@ registers:
       width: 5
     - brief: null
       description: null
+      kind: uint
       name: WDOGIRQ
       properties:
       - r
       - w
+      reset: not-reset
       start: 16
       width: 4
     - brief: null
       description: null
+      kind: bits
       name: WDOGMSK
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 16
     variants: []
   brief: |
     Watchdog control register
   description: null
+  locator: table 1964, page 1607
   name: WDOGCTRL
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: NCTRL
       properties:
       - r
+      scale: value + 1
       start: 28
+      unit: controllers
       width: 4
     - brief: null
       description: null
+      kind: bool
       name: ICF
       properties:
       - r
       - w
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: L
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     Asymmetric multiprocessing control register
   description: null
+  locator: table 1965, page 1607
   name: ASMPCTRL
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: ICSEL0
       properties:
       - r
       - w
+      reset: 0
       start: 28
       width: 4
     - brief: null
       description: null
+      kind: uint
       name: ICSEL1
       properties:
       - r
       - w
+      reset: 0
       start: 24
       width: 4
     - brief: null
       description: null
+      kind: uint
       name: ICSEL2
       properties:
       - r
       - w
+      reset: 0
       start: 20
       width: 4
     - brief: null
       description: null
+      kind: uint
       name: ICSEL3
       properties:
       - r
       - w
+      reset: 0
       start: 16
       width: 4
     - brief: null
       description: null
+      kind: uint
       name: ICSEL4
       properties:
       - r
       - w
+      reset: 0
       start: 12
       width: 4
     - brief: null
       description: null
+      kind: uint
       name: ICSEL5
       properties:
       - r
       - w
+      reset: 0
       start: 8
       width: 4
     - brief: null
       description: null
+      kind: uint
       name: ICSEL6
       properties:
       - r
       - w
+      reset: 0
       start: 4
       width: 4
     - brief: null
       description: null
+      kind: uint
       name: ICSEL7
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 4
     variants: []
   brief: |
     Interrupt controller select register
   description: null
+  locator: table 1966, page 1607
   name: ICSELR
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: EIM
       properties:
       - r
       - w
+      reset: 0
       start: 16
       width: 16
     - brief: null
       description: null
+      kind: bits
       name: IM
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 16
     variants: []
@@ -426,24 +492,29 @@ registers:
   description: |
     Bit 0 of IM is reserved. IM includes it, so that bit n of IM corresponds to
     interrupt n.
+  locator: table 1968, page 1608
   name: PIMASK
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: IFC
       properties:
       - r
       - w1c
+      reset: 0
       start: 16
       width: 16
     - brief: null
       description: null
+      kind: bits
       name: IF
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 16
     variants: []
@@ -453,27 +524,32 @@ registers:
     Bit 0 of IF is reserved. IF includes it, so that bit n of IF corresponds to
     interrupt n. Bit 16 of the register is reserved. IFC includes it, so that bit n
     of IFC corresponds to interrupt n.
+  locator: table 1969, page 1608
   name: PIFORCE
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: EID
       properties:
       - r
+      reset: 0
       start: 0
       width: 5
     variants: []
   brief: |
     Processor n extended interrupt acknowledge register
   description: null
+  locator: table 1970, page 1609
   name: PEXTACK
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: BOOTADDR_31_3
       properties:
       - w
@@ -481,6 +557,7 @@ registers:
       width: 29
     - brief: null
       description: null
+      kind: bool
       name: AS
       properties:
       - w
@@ -490,12 +567,14 @@ registers:
   brief: |
     Processor n Boot Address register
   description: null
+  locator: table 1975, page 1610
   name: BADDR
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: IRQMAP_4_N_0
       properties:
       - r
@@ -504,6 +583,7 @@ registers:
       width: 8
     - brief: null
       description: null
+      kind: uint
       name: IRQMAP_4_N_1
       properties:
       - r
@@ -512,6 +592,7 @@ registers:
       width: 8
     - brief: null
       description: null
+      kind: uint
       name: IRQMAP_4_N_2
       properties:
       - r
@@ -520,6 +601,7 @@ registers:
       width: 8
     - brief: null
       description: null
+      kind: uint
       name: IRQMAP_4_N_3
       properties:
       - r
@@ -530,6 +612,7 @@ registers:
   brief: |
     Interrupt map register n
   description: null
+  locator: table 1976, page 1610
   name: IRQMAP
   width: 32
 type: interface
