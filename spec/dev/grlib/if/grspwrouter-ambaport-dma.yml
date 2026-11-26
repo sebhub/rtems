@@ -40,6 +40,8 @@ links:
   uid: grspwrouter
 - role: interface-placement
   uid: grspwrouter-header
+- role: reference
+  uid: /ref/ip/gaisler/grip-2026-3
 name: grspwrouter_ambaport_dma
 notes: null
 register-block-group: SpaceWire Router AMBA Port DMA
@@ -50,225 +52,280 @@ registers:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: INTNUM
       properties:
       - r
       - w
+      reset: 0
       start: 26
       width: 6
     - brief: null
       description: null
+      kind: bool
       name: EP
       properties:
       - r
       - w1c
+      reset: 0
       start: 23
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TR
       properties:
       - r
       - w1c
+      reset: 0
       start: 22
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: IE
       properties:
       - r
       - w
+      reset: 0
       start: 21
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: IT
       properties:
       - r
       - w
+      reset: 0
       start: 20
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RP
       properties:
       - r
       - w1c
+      reset: 0
       start: 19
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TP
       properties:
       - r
       - w1c
+      reset: 0
       start: 18
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: SP
       properties:
       - r
       - w
+      reset: 0
       start: 15
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: SA
       properties:
       - r
       - w
+      reset: 0
       start: 14
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: EN
       properties:
       - r
       - w
+      reset: 0
       start: 13
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: NS
       properties:
       - r
       - w
+      reset: 0
       start: 12
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RD
       properties:
       - r
       - w
+      reset: 0
       start: 11
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RX
       properties:
       - r
+      reset: 0
       start: 10
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: AT
       properties:
       - r
       - w
+      reset: 0
       start: 9
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RA
       properties:
       - r
       - w1c
+      reset: 0
       start: 8
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TA
       properties:
       - r
       - w1c
+      reset: 0
       start: 7
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: PR
       properties:
       - r
       - w1c
+      reset: 0
       start: 6
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: PS
       properties:
       - r
       - w1c
+      reset: 0
       start: 5
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: AI
       properties:
       - r
       - w
+      reset: not-reset
       start: 4
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RI
       properties:
       - r
       - w
+      reset: not-reset
       start: 3
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TI
       properties:
       - r
       - w
+      reset: not-reset
       start: 2
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RE
       properties:
       - r
       - w
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TE
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     AMBA port DMA control/status
   description: null
+  locator: table 1554, page 1330
   name: AMBADMACTRL
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: RXMAXLEN
       properties:
       - r
       - w
+      reset: not-reset
       start: 2
+      unit: words
       width: 23
     variants: []
   brief: |
     AMBA port DMA RX maximum length
   description: null
+  locator: table 1555, page 1331
   name: AMBADMAMAXLEN
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: DESCBASEADDR
       properties:
       - r
       - w
+      reset: not-reset
       start: 13
       width: 19
     - brief: null
       description: null
+      kind: uint
       name: DESCSEL
       properties:
       - r
       - w
+      reset: 0
       start: 4
       width: 9
     variants: []
@@ -278,24 +335,29 @@ registers:
     DESCBASEADDR and DESCSEL take the form of a descriptor table of 8 KiB. The
     boundary between them is bit 9 plus AMBASTS.NTXD. A driver which uses a smaller
     table accesses the register as a whole.
+  locator: table 1556, page 1331
   name: AMBADMATXDESC
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: DESCBASEADDR
       properties:
       - r
       - w
+      reset: not-reset
       start: 13
       width: 19
     - brief: null
       description: null
+      kind: uint
       name: DESCSEL
       properties:
       - r
       - w
+      reset: 0
       start: 3
       width: 10
     variants: []
@@ -305,30 +367,36 @@ registers:
     DESCBASEADDR and DESCSEL take the form of a descriptor table of 8 KiB. The
     boundary between them is bit 9 plus AMBASTS.NRXD. A driver which uses a smaller
     table accesses the register as a whole.
+  locator: table 1557, page 1332
   name: AMBADMARXDESC
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: MASK
       properties:
       - r
       - w
+      reset: not-reset
       start: 8
       width: 8
     - brief: null
       description: null
+      kind: uint
       name: ADDR
       properties:
       - r
       - w
+      reset: not-reset
       start: 0
       width: 8
     variants: []
   brief: |
     AMBA port DMA address
   description: null
+  locator: table 1558, page 1332
   name: AMBADMAADDR
   width: 32
 type: interface

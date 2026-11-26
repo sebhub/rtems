@@ -80,6 +80,8 @@ links:
   uid: grspwrouter
 - role: interface-placement
   uid: grspwrouter-header
+- role: reference
+  uid: /ref/ip/gaisler/grip-2026-3
 - name: DMA
   role: register-block-include
   uid: grspwrouter-ambaport-dma
@@ -93,6 +95,7 @@ registers:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: RA
       properties:
       - r
@@ -100,6 +103,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RX
       properties:
       - r
@@ -107,6 +111,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RC
       properties:
       - r
@@ -114,13 +119,17 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: NCH
       properties:
       - r
+      scale: value + 1
       start: 27
+      unit: channels
       width: 2
     - brief: null
       description: null
+      kind: bool
       name: CC
       properties:
       - r
@@ -128,6 +137,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: DI
       properties:
       - r
@@ -135,92 +145,115 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: ME
       properties:
       - r
       - w
+      reset: 0
       start: 23
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RD
       properties:
       - r
       - w
+      reset: 0
       start: 17
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RE
       properties:
       - r
       - w
+      reset: 1
       start: 16
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TQ
       properties:
       - r
       - w
+      reset: 0
       start: 8
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TO
       properties:
       - r
+      reset: 0
       start: 7
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RS
       properties:
       - r
       - w
+      reset: 0
       start: 6
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: PM
       properties:
       - r
       - w
+      reset: 0
       start: 5
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TI
       properties:
       - r
       - w
+      reset: 0
       start: 4
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: IE
       properties:
       - r
       - w
+      reset: 0
       start: 3
       width: 1
     variants: []
   brief: |
     AMBA port Control
   description: null
+  locator: table 1549, page 1328
   name: AMBACTRL
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: NIRQ
       properties:
       - r
+      scale: 2 ** value
       start: 28
+      unit: interrupts
       width: 3
     - brief: null
       description: null
+      kind: uint
       name: NRXD
       properties:
       - r
@@ -228,6 +261,7 @@ registers:
       width: 2
     - brief: null
       description: null
+      kind: uint
       name: NTXD
       properties:
       - r
@@ -235,320 +269,389 @@ registers:
       width: 2
     - brief: null
       description: null
+      kind: bool
       name: ME
       properties:
       - r
       - w1c
+      reset: 0
       start: 12
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: EE
       properties:
       - r
       - w1c
+      reset: 0
       start: 8
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: IA
       properties:
       - r
       - w1c
+      reset: 0
       start: 7
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TO
       properties:
       - r
       - w1c
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     AMBA port Status
   description: null
+  locator: table 1550, page 1329
   name: AMBASTS
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: DEFMASK
       properties:
       - r
       - w
+      reset: 0
       start: 8
       width: 8
     - brief: null
       description: null
+      kind: uint
       name: DEFADDR
       properties:
       - r
       - w
+      reset: 254
       start: 0
       width: 8
     variants: []
   brief: |
     AMBA port Default address
   description: null
+  locator: table 1551, page 1329
   name: AMBADEFADDR
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: DESTKEY
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 8
     variants: []
   brief: |
     AMBA port Destination key
   description: null
+  locator: table 1552, page 1329
   name: AMBADKEY
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: TCMSK
       properties:
       - r
       - w
+      reset: 0
       start: 24
       width: 8
     - brief: null
       description: null
+      kind: uint
       name: TCVAL
       properties:
       - r
       - w
+      reset: 0
       start: 16
       width: 8
     - brief: null
       description: null
+      kind: uint
       name: TCTRL
       properties:
       - r
       - w
+      reset: 0
       start: 6
       width: 2
     - brief: null
       description: null
+      kind: uint
       name: TIMECNT
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 6
     variants: []
   brief: |
     AMBA port Time-code
   description: null
+  locator: table 1553, page 1329
   name: AMBATC
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: INTNUM
       properties:
       - r
       - w
+      reset: 0
       start: 26
       width: 6
     - brief: null
       description: null
+      kind: bool
       name: EE
       properties:
       - r
       - w
+      reset: 0
       start: 24
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: IA
       properties:
       - r
       - w
+      reset: 0
       start: 23
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TQ
       properties:
       - r
       - w
+      reset: 0
       start: 20
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: AQ
       properties:
       - r
       - w
+      reset: 0
       start: 19
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: IQ
       properties:
       - r
       - w
+      reset: 0
       start: 18
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: AA
       properties:
       - r
       - w
+      reset: 0
       start: 15
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: AT
       properties:
       - r
       - w
+      reset: 1
       start: 14
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: IT
       properties:
       - r
       - w
+      reset: 1
       start: 13
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: ID
       properties:
       - r
       - w1c
+      reset: 0
       start: 7
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: II
       properties:
       - r
       - w
+      reset: 0
       start: 6
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: TXINT
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 6
     variants: []
   brief: |
     AMBA port Distributed interrupt control
   description: null
+  locator: table 1559, page 1332
   name: AMBAINTCTRL
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: RXIRQ
       properties:
       - r
       - w1c
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     AMBA port Interrupt receive
   description: null
+  locator: table 1560, page 1333
   name: AMBAINTRX
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: RXACK
       properties:
       - r
       - w1c
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     AMBA port Interrupt acknowledgment / extended interrupt receive
   description: null
+  locator: table 1561, page 1333
   name: AMBAACKRX
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: INTTO
       properties:
       - r
       - w1c
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     AMBA port Interrupt timeout, interrupt 0-31
   description: null
+  locator: table 1562, page 1334
   name: AMBAINTTO0
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: INTTO
       properties:
       - r
       - w1c
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     AMBA port Interrupt timeout, interrupt 32-63
   description: null
+  locator: table 1563, page 1334
   name: AMBAINTTO1
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: MASK
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     AMBA port Interrupt mask, interrupt 0-31
   description: null
+  locator: table 1564, page 1334
   name: AMBAINTMSK0
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: MASK
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     AMBA port Interrupt mask, interrupt 32-63
   description: null
+  locator: table 1565, page 1334
   name: AMBAINTMSK1
   width: 32
 type: interface

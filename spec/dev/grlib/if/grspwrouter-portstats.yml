@@ -35,6 +35,8 @@ links:
   uid: grspwrouter
 - role: interface-placement
   uid: grspwrouter-header
+- role: reference
+  uid: /ref/ip/gaisler/grip-2026-3
 name: grspwrouter_portstats
 notes: null
 register-block-group: SpaceWire Router Port Statistics
@@ -45,96 +47,120 @@ registers:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: OR
       properties:
       - r
       - w1c
+      reset: 0
       start: 31
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: CC
       properties:
       - r
       - w
+      reset: 0
       start: 0
+      unit: characters
       width: 31
     variants: []
   brief: |
     Outgoing character counter, ports > 0
   description: null
+  locator: table 1599, page 1356
   name: OCHARCNT
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: OR
       properties:
       - r
       - w1c
+      reset: 0
       start: 31
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: CC
       properties:
       - r
       - w
+      reset: 0
       start: 0
+      unit: characters
       width: 31
     variants: []
   brief: |
     Incoming character counter, ports > 0
   description: null
+  locator: table 1600, page 1356
   name: ICHARCNT
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: OR
       properties:
       - r
       - w1c
+      reset: 0
       start: 31
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: PC
       properties:
       - r
       - w
+      reset: 0
       start: 0
+      unit: packets
       width: 31
     variants: []
   brief: |
     Outgoing packet counter, ports > 0
   description: null
+  locator: table 1601, page 1356
   name: OPKTCNT
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: OR
       properties:
       - r
       - w1c
+      reset: 0
       start: 31
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: PC
       properties:
       - r
       - w
+      reset: 0
       start: 0
+      unit: packets
       width: 31
     variants: []
   brief: |
     Incoming packet counter, ports > 0
   description: null
+  locator: table 1602, page 1357
   name: IPKTCNT
   width: 32
 type: interface
