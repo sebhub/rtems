@@ -119,6 +119,9 @@ extern "C" {
     ( ( ( _val ) << SPICTRL_CAP_FT_SHIFT ) & SPICTRL_CAP_FT_MASK ) )
 #define SPICTRL_CAP_FT( _val ) \
   ( ( ( _val ) << SPICTRL_CAP_FT_SHIFT ) & SPICTRL_CAP_FT_MASK )
+#define SPICTRL_CAP_FT_NONE       0U
+#define SPICTRL_CAP_FT_PARITY_DMR 1U
+#define SPICTRL_CAP_FT_TMR        2U
 
 #define SPICTRL_CAP_REV_SHIFT 0
 #define SPICTRL_CAP_REV_MASK  0x1fU
@@ -290,6 +293,9 @@ extern "C" {
     ( ( ( _val ) << SPICTRL_CMD_SPROT_SHIFT ) & SPICTRL_CMD_SPROT_MASK ) )
 #define SPICTRL_CMD_SPROT( _val ) \
   ( ( ( _val ) << SPICTRL_CMD_SPROT_SHIFT ) & SPICTRL_CMD_SPROT_MASK )
+#define SPICTRL_CMD_SPROT_STANDARD 0U
+#define SPICTRL_CMD_SPROT_DUAL     1U
+#define SPICTRL_CMD_SPROT_QUAD     2U
 
 /** @} */
 
@@ -396,6 +402,9 @@ extern "C" {
     ( ( ( _val ) << SPICTRL_CAP1_PROT_SHIFT ) & SPICTRL_CAP1_PROT_MASK ) )
 #define SPICTRL_CAP1_PROT( _val ) \
   ( ( ( _val ) << SPICTRL_CAP1_PROT_SHIFT ) & SPICTRL_CAP1_PROT_MASK )
+#define SPICTRL_CAP1_PROT_STANDARD 0U
+#define SPICTRL_CAP1_PROT_DUAL     1U
+#define SPICTRL_CAP1_PROT_QUAD     2U
 
 /** @} */
 
