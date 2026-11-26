@@ -1,0 +1,751 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This structure defines the ${.:/register-block-group} register block memory
+  map.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+- default:
+    count: 1
+    name: STATUS
+  offset: 0x0
+  variants: []
+- default:
+    count: 1
+    name: CONFIG
+  offset: 0x4
+  variants: []
+- default:
+    count: 1
+    name: IDCODE
+  offset: 0x8
+  variants: []
+- default:
+    count: 1
+    name: DELAY
+  offset: 0xc
+  variants: []
+- default:
+    count: 1
+    name: FCR
+  offset: 0x10
+  variants: []
+- default:
+    count: 1
+    name: LFAR
+  offset: 0x14
+  variants: []
+- default:
+    count: 1
+    name: LGBAR
+  offset: 0x18
+  variants: []
+- default:
+    count: 1
+    name: HGBAR
+  offset: 0x1c
+  variants: []
+- default:
+    count: 1
+    name: LGSFAR
+  offset: 0x20
+  variants: []
+- default:
+    count: 1
+    name: LMASKAR
+  offset: 0x24
+  variants: []
+- default:
+    count: 1
+    name: LFMAPAR
+  offset: 0x28
+  variants: []
+- default:
+    count: 1
+    name: LCRCAR
+  offset: 0x2c
+  variants: []
+- default:
+    count: 1
+    name: LGRBKAR
+  offset: 0x30
+  variants: []
+- default:
+    count: 1
+    name: ECNT
+  offset: 0x34
+  variants: []
+- default:
+    count: 1
+    name: SETUP
+  offset: 0x38
+  variants: []
+- default:
+    count: 1
+    name: CAP
+  offset: 0x3c
+  variants: []
+- default:
+    count: 1
+    name: FRAMEID
+  offset: 0x40
+  variants: []
+- default:
+    count: 1
+    name: ERRFRMID
+  offset: 0x44
+  variants: []
+description: null
+enabled-by: true
+identifier: RTEMSDeviceGRSCRUB
+index-entries: []
+interface-type: register-block
+links:
+- role: interface-ingroup
+  uid: group
+- role: interface-placement
+  uid: grscrub-header
+- role: reference
+  uid: /ref/ip/gaisler/grip-2026-3
+name: grscrub
+notes: null
+register-block-group: GRSCRUB
+register-block-size: 72
+register-prefix: null
+registers:
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: SCRUND
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 12
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: HOLD
+      properties:
+      - r
+      reset: 0
+      start: 11
+      width: 1
+    - brief: null
+      description: null
+      enum:
+        CI_INTEGRITY_ERROR: 8
+        DMA_MEM_READ_ERROR: 3
+        DMA_MEM_WRITE_ERROR: 4
+        FRAME_MAPPING_ERROR: 6
+        NO_ERROR: 0
+        PROGRAM_ERROR: 1
+        READBACK_ERROR: 5
+        UNCORRECTABLE_BIT_ERROR: 2
+        WRITE_FRAME_ERROR: 7
+      kind: enum
+      name: ERRID
+      properties:
+      - r
+      reset: 0
+      start: 6
+      width: 5
+    - brief: null
+      description: null
+      kind: bool
+      name: SCRERR
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 5
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: OPDONE
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 4
+      width: 1
+    - brief: null
+      description: null
+      enum:
+        GOLDEN_CRC: 4
+        IDLE: 0
+        MAPPING: 3
+        PROGRAMMING: 1
+        SCRUBBING: 2
+      kind: enum
+      name: STATE
+      properties:
+      - r
+      reset: 0
+      start: 0
+      width: 4
+    variants: []
+  brief: |
+    Status register
+  description: null
+  locator: table 1224, page 1041
+  name: STATUS
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: IRQSDEN
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 13
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: FFCEN
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 12
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: CRCEN
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 11
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: WRBKEN
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 10
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: IRQEEN
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 9
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: IRQDEN
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 8
+      width: 1
+    - brief: null
+      description: null
+      enum:
+        GOLDEN_CRC: 4
+        IDLE: 0
+        MAPPING: 3
+        PROGRAMMING: 1
+        SCRUBBING: 2
+      kind: enum
+      name: OPMODE
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 4
+      width: 4
+    - brief: null
+      description: null
+      kind: bool
+      name: CORM
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 3
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: SCRM
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 2
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: SCRUN
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 1
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: EN
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    Configuration mode register
+  description: null
+  locator: table 1225, page 1041
+  name: CONFIG
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: IDCODE
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 32
+    variants: []
+  brief: |
+    FPGA device identifier register
+  description: null
+  locator: table 1226, page 1042
+  name: IDCODE
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: DELAY
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      unit: ticks
+      width: 32
+    variants: []
+  brief: |
+    Delay register
+  description: null
+  locator: table 1227, page 1042
+  name: DELAY
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: FCNT
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 9
+      unit: frames
+      width: 16
+    - brief: null
+      description: null
+      kind: uint
+      name: FLEN
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 2
+      unit: words
+      width: 7
+    variants: []
+  brief: |
+    Frame configuration register
+  description: null
+  locator: table 1228, page 1043
+  name: FCR
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: LFAR
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 32
+    variants: []
+  brief: |
+    Low frame address register
+  description: null
+  locator: table 1229, page 1043
+  name: LFAR
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: LGBAR
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 32
+    variants: []
+  brief: |
+    Low golden bitstream address register
+  description: null
+  locator: table 1230, page 1043
+  name: LGBAR
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: HGBAR
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 32
+    variants: []
+  brief: |
+    High golden bitstream address register
+  description: null
+  locator: table 1231, page 1043
+  name: HGBAR
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: LGSFAR
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 32
+    variants: []
+  brief: |
+    Low golden start frame address register
+  description: null
+  locator: table 1232, page 1044
+  name: LGSFAR
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: LMASKAR
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 32
+    variants: []
+  brief: |
+    Low golden mask address register
+  description: null
+  locator: table 1233, page 1044
+  name: LMASKAR
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: LFMAPAR
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 32
+    variants: []
+  brief: |
+    Low golden frame mapping address register
+  description: null
+  locator: table 1234, page 1044
+  name: LFMAPAR
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: LCRCAR
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 32
+    variants: []
+  brief: |
+    Low golden CRC address register
+  description: null
+  locator: table 1235, page 1044
+  name: LCRCAR
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: LGRBKAR
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 32
+    variants: []
+  brief: |
+    Low golden readback data address register
+  description: null
+  locator: table 1236, page 1044
+  name: LGRBKAR
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: UECNT
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 16
+      unit: errors
+      width: 16
+    - brief: null
+      description: null
+      kind: uint
+      name: RECNT
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      unit: errors
+      width: 16
+    variants: []
+  brief: |
+    Number of errors detected register
+  description: null
+  locator: table 1237, page 1045
+  name: ECNT
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: CICHECK
+      properties:
+      - r
+      - w
+      reset: 1
+      start: 30
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: BLKFRAME
+      properties:
+      - r
+      - w
+      reset: 1
+      start: 22
+      unit: frames
+      width: 8
+    - brief: null
+      description: null
+      kind: bool
+      name: BITSWPEN
+      properties:
+      - r
+      - w
+      reset: 1
+      start: 21
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: CISEL
+      properties:
+      - r
+      reset: 0
+      start: 20
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: TPROG
+      properties:
+      - r
+      - w
+      reset: 150
+      start: 12
+      unit: cycles
+      width: 8
+    - brief: null
+      description: null
+      kind: uint
+      name: ROWBND
+      properties:
+      - r
+      - w
+      reset: 2
+      start: 4
+      unit: frames
+      width: 8
+    variants: []
+  brief: |
+    FPGA setup register
+  description: null
+  locator: table 1238, page 1045
+  name: SETUP
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: GMSK
+      properties:
+      - r
+      reset: 0
+      start: 23
+      width: 1
+    - brief: null
+      description: null
+      kind: bits
+      name: DATACK
+      properties:
+      - r
+      reset: 0
+      start: 20
+      width: 3
+    - brief: null
+      description: null
+      kind: uint
+      name: SMBUS
+      properties:
+      - r
+      reset: 0
+      scale: 8 * 2 ** value
+      start: 18
+      unit: bits
+      width: 2
+    - brief: null
+      description: null
+      kind: bits
+      name: CINT
+      properties:
+      - r
+      reset: 0
+      start: 16
+      width: 2
+    - brief: null
+      description: null
+      kind: bits
+      name: FAMILY
+      properties:
+      - r
+      reset: 0
+      start: 4
+      width: 12
+    variants: []
+  brief: |
+    Capability register
+  description: null
+  locator: table 1239, page 1046
+  name: CAP
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: FRMID
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 16
+    variants: []
+  brief: |
+    Frame id code register
+  description: null
+  locator: table 1240, page 1046
+  name: FRAMEID
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: UE_FRMID
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 16
+      width: 16
+    - brief: null
+      description: null
+      kind: uint
+      name: ERR_FRMID
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 16
+    variants: []
+  brief: |
+    Error frame id code register
+  description: null
+  locator: table 1241, page 1047
+  name: ERRFRMID
+  width: 32
+type: interface

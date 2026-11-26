@@ -80,6 +80,8 @@ links:
 - role: validation
   uid: /dev/grlib/if/grpci2
 - role: validation
+  uid: /dev/grlib/if/grscrub
+- role: validation
   uid: /dev/grlib/if/grspw2
 - role: validation
   uid: /dev/grlib/if/grspw2-dma
