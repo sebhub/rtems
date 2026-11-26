@@ -70,6 +70,12 @@ links:
 - role: validation
   uid: /dev/grlib/if/griommu2-bridge
 - role: validation
+  uid: /dev/grlib/if/griommu2-iopmp
+- role: validation
+  uid: /dev/grlib/if/griommu2-iopmp-entry
+- role: validation
+  uid: /dev/grlib/if/griommu2-iopmp-srcmd
+- role: validation
   uid: /dev/grlib/if/griommu2-msicfg
 - role: validation
   uid: /dev/grlib/if/grpci2

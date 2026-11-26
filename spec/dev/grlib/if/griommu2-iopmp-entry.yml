@@ -1,0 +1,144 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This structure defines the ${.:/register-block-group} register block memory
+  map.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+- default:
+    count: 1
+    name: ENTRY_ADDR
+  offset: 0x0
+  variants: []
+- default:
+    count: 1
+    name: ENTRY_CFG
+  offset: 0x8
+  variants: []
+description: null
+enabled-by: true
+identifier: RTEMSDeviceGRIOMMU2IOPMPEntry
+index-entries: []
+interface-type: register-block
+links:
+- role: interface-ingroup
+  uid: griommu2-iopmp
+- role: interface-placement
+  uid: griommu2-header
+- role: reference
+  uid: /ref/ip/gaisler/grip-2026-3
+name: griommu2_iopmp_entry
+notes: null
+register-block-group: GRIOMMU2IOPMPENTRY
+register-block-size: 16
+register-prefix: null
+registers:
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: ADDR
+      properties: &id001
+      - r
+      - w
+      reset: 0
+      scale: value * 4
+      start: 0
+      width: 64
+    variants: []
+  brief: |
+    Entry address register
+  description: null
+  locator: table 1050, page 913
+  name: ENTRY_ADDR
+  width: 64
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: SEXE
+      properties: *id001
+      start: 10
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: SEWE
+      properties: *id001
+      start: 9
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: SERE
+      properties: *id001
+      start: 8
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: SIXE
+      properties: *id001
+      start: 7
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: SIWE
+      properties: *id001
+      start: 6
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: SIRE
+      properties: *id001
+      start: 5
+      width: 1
+    - brief: null
+      description: null
+      enum:
+        NA4: 2
+        NAPOT: 3
+        'OFF': 0
+        TOR: 1
+      kind: enum
+      name: A
+      properties: *id001
+      reset: 0
+      start: 3
+      width: 2
+    - brief: null
+      description: null
+      kind: bool
+      name: X
+      properties: *id001
+      reset: 0
+      start: 2
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: W
+      properties: *id001
+      reset: 0
+      start: 1
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: R
+      properties: *id001
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    Entry configuration register
+  description: null
+  locator: table 1051, page 914
+  name: ENTRY_CFG
+  width: 32
+type: interface

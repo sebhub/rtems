@@ -1,0 +1,59 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This structure defines the ${.:/register-block-group} register block memory
+  map.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+- default:
+    count: 1
+    name: SRCMD_EN
+  offset: 0x0
+  variants: []
+description: null
+enabled-by: true
+identifier: RTEMSDeviceGRIOMMU2IOPMPSRCMD
+index-entries: []
+interface-type: register-block
+links:
+- role: interface-ingroup
+  uid: griommu2-iopmp
+- role: interface-placement
+  uid: griommu2-header
+- role: reference
+  uid: /ref/ip/gaisler/grip-2026-3
+name: griommu2_iopmp_srcmd
+notes: null
+register-block-group: GRIOMMU2IOPMPSRCMD
+register-block-size: 32
+register-prefix: null
+registers:
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bits
+      name: MD
+      properties: &id001
+      - r
+      - w
+      reset: 0
+      start: 1
+      width: 63
+    - brief: null
+      description: null
+      kind: bool
+      name: L
+      properties: *id001
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    RRID memory domain enable register
+  description: |
+    L is sticky. A write of one sets it until the core is reset.
+  locator: table 1049, page 913
+  name: SRCMD_EN
+  width: 64
+type: interface

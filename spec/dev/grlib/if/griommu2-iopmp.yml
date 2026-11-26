@@ -1,0 +1,715 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This structure defines the ${.:/register-block-group} register block memory
+  map.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+- default:
+    count: 1
+    name: VERSION
+  offset: 0x0
+  variants: []
+- default:
+    count: 1
+    name: IMPL
+  offset: 0x4
+  variants: []
+- default:
+    count: 1
+    name: HWCFG0
+  offset: 0x8
+  variants: []
+- default:
+    count: 1
+    name: HWCFG1
+  offset: 0xc
+  variants: []
+- default:
+    count: 1
+    name: HWCFG2
+  offset: 0x10
+  variants: []
+- default:
+    count: 1
+    name: HWCFG3
+  offset: 0x14
+  variants: []
+- default:
+    count: 1
+    name: HWCFG_USER
+  offset: 0x28
+  variants: []
+- default:
+    count: 1
+    name: ENTRYOFFSET
+  offset: 0x2c
+  variants: []
+- default:
+    count: 1
+    name: MDSTALL
+  offset: 0x30
+  variants: []
+- default:
+    count: 1
+    name: RRIDSCP
+  offset: 0x38
+  variants: []
+- default:
+    count: 1
+    name: MDLCK
+  offset: 0x40
+  variants: []
+- default:
+    count: 1
+    name: MDCFGLCK
+  offset: 0x48
+  variants: []
+- default:
+    count: 1
+    name: ENTRYLCK
+  offset: 0x4c
+  variants: []
+- default:
+    count: 1
+    name: ERR_CFG
+  offset: 0x60
+  variants: []
+- default:
+    count: 1
+    name: ERR_INFO
+  offset: 0x64
+  variants: []
+- default:
+    count: 1
+    name: ERR_REQADDR
+  offset: 0x68
+  variants: []
+- default:
+    count: 1
+    name: ERR_REQID
+  offset: 0x70
+  variants: []
+- default:
+    count: 384
+    name: SRCMD
+  offset: 0x1000
+  variants: []
+- default:
+    count: 65535
+    name: ENTRY
+  offset: 0x4000
+  variants: []
+description: null
+enabled-by: true
+identifier: RTEMSDeviceGRIOMMU2IOPMP
+index-entries: []
+interface-type: register-block
+links:
+- role: interface-ingroup
+  uid: group
+- role: interface-placement
+  uid: griommu2-header
+- role: reference
+  uid: /ref/ip/gaisler/grip-2026-3
+- name: SRCMD
+  role: register-block-include
+  uid: griommu2-iopmp-srcmd
+- name: ENTRY
+  role: register-block-include
+  uid: griommu2-iopmp-entry
+name: griommu2_iopmp
+notes: null
+register-block-group: GRIOMMU2IOPMP
+register-block-size: 1064944
+register-prefix: null
+registers:
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: SPECVER
+      properties: &id001
+      - r
+      reset: 8
+      start: 24
+      width: 8
+    - brief: null
+      description: null
+      kind: uint
+      name: VENDOR
+      properties: *id001
+      reset: 0
+      start: 0
+      width: 24
+    variants: []
+  brief: |
+    Version register
+  description: null
+  locator: table 1032, page 906
+  name: VERSION
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: IMPID
+      properties: *id001
+      reset: 0
+      start: 0
+      width: 32
+    variants: []
+  brief: |
+    Implementation register
+  description: null
+  locator: table 1033, page 907
+  name: IMPL
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: TOR_EN
+      properties: *id001
+      reset: 1
+      start: 31
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: ADDRH_EN
+      properties: *id001
+      start: 30
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: MD_NUM
+      properties: *id001
+      start: 24
+      width: 6
+    - brief: null
+      description: null
+      kind: bool
+      name: NO_ERR
+      properties: *id001
+      reset: 0
+      start: 23
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: HW3_EN
+      properties: *id001
+      reset: 1
+      start: 2
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: HW2_EN
+      properties: *id001
+      reset: 1
+      start: 1
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: ENABLE
+      properties: &id002
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    Hardware configuration register 0
+  description: |
+    ENABLE is sticky. A write of one sets it until the core is reset.
+  locator: table 1034, page 907
+  name: HWCFG0
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: ENTRY_NUM
+      properties: *id001
+      start: 16
+      unit: entries
+      width: 16
+    - brief: null
+      description: null
+      kind: uint
+      name: RRID_NUM
+      properties: *id001
+      start: 0
+      width: 16
+    variants: []
+  brief: |
+    Hardware configuration register 1
+  description: null
+  locator: table 1035, page 907
+  name: HWCFG1
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: MFR_EN
+      properties: *id001
+      reset: 0
+      start: 31
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: STALL_EN
+      properties: *id001
+      reset: 1
+      start: 30
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: SPS_EN
+      properties: *id001
+      reset: 0
+      start: 29
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: PEES
+      properties: *id001
+      reset: 0
+      start: 28
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: PEIS
+      properties: *id001
+      reset: 0
+      start: 27
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: MSI_EN
+      properties: *id001
+      reset: 0
+      start: 26
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: NPEN
+      properties: *id001
+      reset: 1
+      start: 17
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: PPROG
+      properties: *id001
+      reset: 0
+      start: 16
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: PRIO
+      properties: *id001
+      start: 0
+      unit: entries
+      width: 16
+    variants: []
+  brief: |
+    Hardware configuration register 2
+  description: null
+  locator: table 1036, page 908
+  name: HWCFG2
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: RRID_TRANSL
+      properties: *id001
+      reset: 0
+      start: 16
+      width: 16
+    - brief: null
+      description: null
+      kind: bool
+      name: RRID_T_PROG
+      properties: *id001
+      reset: 0
+      start: 15
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: RRID_T_EN
+      properties: *id001
+      reset: 0
+      start: 14
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: NO_W
+      properties: *id001
+      reset: 0
+      start: 13
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: NO_X
+      properties: *id001
+      reset: 0
+      start: 12
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: XINR
+      properties: *id001
+      reset: 0
+      start: 11
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: MD_E_NUM
+      properties: *id001
+      scale: value + 1
+      start: 4
+      unit: entries
+      width: 7
+    - brief: null
+      description: null
+      kind: uint
+      name: SRCMD_FMT
+      properties: *id001
+      reset: 0
+      start: 2
+      width: 2
+    - brief: null
+      description: null
+      kind: uint
+      name: MDCFG_FMT
+      properties: *id001
+      reset: 1
+      start: 0
+      width: 2
+    variants: []
+  brief: |
+    Hardware configuration register 3
+  description: null
+  locator: table 1037, page 909
+  name: HWCFG3
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: CACHE_EN
+      properties: *id002
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    Custom hardware configuration register
+  description: null
+  locator: table 1038, page 909
+  name: HWCFG_USER
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: OFFSET
+      properties: *id001
+      reset: 16384
+      start: 0
+      unit: bytes
+      width: 32
+    variants: []
+  brief: |
+    Entry offset register
+  description: null
+  locator: table 1039, page 909
+  name: ENTRYOFFSET
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bits
+      name: MD
+      properties: *id002
+      reset: 0
+      start: 1
+      width: 63
+    - brief: null
+      description: null
+      kind: bool
+      name: BUSY
+      properties: *id002
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    Memory domain stall control register
+  description: |
+    A write of BUSY selects whether the stall applies to the RRIDs associated with
+    the selected memory domains or to the other RRIDs. A read of BUSY returns
+    whether the last stall request is pending.
+  locator: table 1040, page 910
+  name: MDSTALL
+  width: 64
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: OP
+      properties: *id002
+      reset: 0
+      start: 30
+      width: 2
+    - brief: null
+      description: null
+      kind: uint
+      name: RRID
+      properties: *id002
+      reset: 0
+      start: 0
+      width: 16
+    variants: []
+  brief: |
+    RRID cherry pick stall control register
+  description: |
+    A write of OP selects an operation on the RRID. A read of OP returns the stall
+    status of the RRID.
+  locator: table 1041, page 910
+  name: RRIDSCP
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bits
+      name: MD
+      properties: *id002
+      reset: 0
+      start: 1
+      width: 63
+    - brief: null
+      description: null
+      kind: bool
+      name: L
+      properties: *id002
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    Memory domain lock register
+  description: |
+    MD and L are sticky. A write of one sets a bit until the core is reset.
+  locator: table 1042, page 911
+  name: MDLCK
+  width: 64
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: F
+      properties: *id001
+      reset: 0
+      start: 1
+      width: 6
+    - brief: null
+      description: null
+      kind: bool
+      name: L
+      properties: *id002
+      reset: 1
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    Memory domain configuration lock register
+  description: null
+  locator: table 1043, page 911
+  name: MDCFGLCK
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: F
+      properties: *id002
+      reset: 0
+      start: 1
+      unit: entries
+      width: 16
+    - brief: null
+      description: null
+      kind: bool
+      name: L
+      properties: *id002
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    Entry lock register
+  description: |
+    F accepts a write of a value greater than its current value. L is sticky. A
+    write of one sets it until the core is reset.
+  locator: table 1044, page 911
+  name: ENTRYLCK
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: RS
+      properties: *id002
+      reset: 0
+      start: 2
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: IE
+      properties: *id002
+      reset: 0
+      start: 1
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: L
+      properties: *id002
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    Error configuration register
+  description: null
+  locator: table 1045, page 912
+  name: ERR_CFG
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      enum:
+        ILLEGAL_FETCH: 3
+        ILLEGAL_READ: 1
+        ILLEGAL_WRITE: 2
+        NONE: 0
+        NO_HIT: 5
+        PARTIAL_HIT: 4
+        UNKNOWN_RRID: 6
+      kind: enum
+      name: ETYPE
+      properties: *id001
+      reset: 0
+      start: 4
+      width: 4
+    - brief: null
+      description: null
+      enum:
+        FETCH: 3
+        READ: 1
+        WRITE: 2
+      kind: enum
+      name: TTYPE
+      properties: *id001
+      reset: 0
+      start: 1
+      width: 2
+    - brief: null
+      description: null
+      kind: bool
+      name: V
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    Error information register
+  description: null
+  locator: table 1046, page 912
+  name: ERR_INFO
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: ADDR
+      properties: *id001
+      reset: 0
+      scale: value * 4
+      start: 0
+      width: 64
+    variants: []
+  brief: |
+    Errored request address register
+  description: null
+  locator: table 1047, page 913
+  name: ERR_REQADDR
+  width: 64
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: EID
+      properties: *id001
+      reset: 0
+      start: 16
+      width: 16
+    - brief: null
+      description: null
+      kind: uint
+      name: RRID
+      properties: *id001
+      reset: 0
+      start: 0
+      width: 16
+    variants: []
+  brief: |
+    Errored request identifier register
+  description: null
+  locator: table 1048, page 913
+  name: ERR_REQID
+  width: 32
+type: interface
