@@ -35,6 +35,8 @@ links:
   uid: gptimer
 - role: interface-placement
   uid: gptimer-header
+- role: reference
+  uid: /ref/ip/gaisler/grip-2026-3
 name: gptimer_timer
 notes: null
 register-block-group: GPTIMER TIMER
@@ -45,22 +47,26 @@ registers:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: TCVAL
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Timer n counter value register
   description: null
+  locator: table 492, page 478
   name: TCNTVAL
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: TRLDVAL
       properties:
       - r
@@ -71,59 +77,73 @@ registers:
   brief: |
     Timer n counter reload value register
   description: null
+  locator: table 493, page 479
   name: TRLDVAL
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: WDOGWINC
       properties:
       - r
       - w
+      reset: 0
       start: 16
       width: 16
     - brief: null
       description: null
+      kind: bool
       name: WS
       properties:
       - r
       - w
+      reset: 0
       start: 8
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: WN
       properties:
       - r
       - w
+      reset: 0
       start: 7
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: DH
       properties:
       - r
+      reset: 0
       start: 6
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: CH
       properties:
       - r
       - w
+      reset: 0
       start: 5
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: IP
       properties:
       - r
       - w1c
+      reset: 0
       start: 4
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: IE
       properties:
       - r
@@ -132,14 +152,17 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: LD
       properties:
       - r
       - w
+      reset: 0
       start: 2
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RS
       properties:
       - r
@@ -148,6 +171,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: EN
       properties:
       - r
@@ -158,21 +182,25 @@ registers:
   brief: |
     Timer n control register
   description: null
+  locator: table 494, page 479
   name: TCTRL
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: LTCV
       properties:
       - r
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Timer n latch register
   description: null
+  locator: table 495, page 479
   name: TLATCH
   width: 32
 type: interface

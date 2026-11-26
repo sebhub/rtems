@@ -40,6 +40,8 @@ links:
   uid: group
 - role: interface-placement
   uid: gptimer-header
+- role: reference
+  uid: /ref/ip/gaisler/grip-2026-3
 - name: TIMER
   role: register-block-include
   uid: gptimer-timer
@@ -53,6 +55,7 @@ registers:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: SCALER
       properties:
       - r
@@ -63,12 +66,14 @@ registers:
   brief: |
     Scaler value register
   description: null
+  locator: table 488, page 477
   name: SCALER
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: SRELOAD
       properties:
       - r
@@ -79,59 +84,73 @@ registers:
   brief: |
     Scaler reload value register
   description: null
+  locator: table 489, page 477
   name: SRELOAD
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: TIMEREN
       properties:
       - w
+      reset: 0
       start: 16
       width: 7
     - brief: null
       description: null
+      kind: bool
       name: EV
       properties:
       - r
       - w
+      reset: 0
       start: 13
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: ES
       properties:
       - r
       - w
+      reset: 0
       start: 12
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: EL
       properties:
       - r
       - w
+      reset: 0
       start: 11
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: EE
       properties:
       - r
       - w
+      reset: 0
       start: 10
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: DF
       properties:
       - r
       - w
+      reset: 0
       start: 9
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: SI
       properties:
       - r
@@ -139,6 +158,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: IRQ
       properties:
       - r
@@ -146,6 +166,7 @@ registers:
       width: 5
     - brief: null
       description: null
+      kind: uint
       name: TIMERS
       properties:
       - r
@@ -155,22 +176,26 @@ registers:
   brief: |
     Configuration register
   description: null
+  locator: table 490, page 478
   name: CONFIG
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: LATCHSEL
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Timer latch configuration register
   description: null
+  locator: table 491, page 478
   name: LATCHCFG
   width: 32
 type: interface
