@@ -95,6 +95,8 @@ links:
   uid: group
 - role: interface-placement
   uid: griommu-header
+- role: reference
+  uid: /ref/ip/gaisler/grip-2026-3
 name: griommu
 notes: null
 register-block-group: GRIOMMU
@@ -105,6 +107,7 @@ registers:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: A
       properties:
       - r
@@ -112,6 +115,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: AC
       properties:
       - r
@@ -119,6 +123,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: CA
       properties:
       - r
@@ -126,6 +131,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: CP
       properties:
       - r
@@ -133,13 +139,16 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: NARB
       properties:
       - r
       start: 20
+      unit: blocks
       width: 4
     - brief: null
       description: null
+      kind: bool
       name: CS
       properties:
       - r
@@ -147,6 +156,10 @@ registers:
       width: 1
     - brief: null
       description: null
+      enum:
+        NONE: 0
+        PARITY: 1
+      kind: enum
       name: FT
       properties:
       - r
@@ -154,6 +167,7 @@ registers:
       width: 2
     - brief: null
       description: null
+      kind: bool
       name: ST
       properties:
       - r
@@ -161,6 +175,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: I
       properties:
       - r
@@ -168,6 +183,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: IT
       properties:
       - r
@@ -175,6 +191,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: IA
       properties:
       - r
@@ -182,6 +199,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: IP
       properties:
       - r
@@ -189,6 +207,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: MB
       properties:
       - r
@@ -196,28 +215,36 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: GRPS
       properties:
       - r
+      scale: value + 1
       start: 4
+      unit: groups
       width: 4
     - brief: null
       description: null
+      kind: uint
       name: MSTS
       properties:
       - r
+      scale: value + 1
       start: 0
+      unit: masters
       width: 4
     variants: []
   brief: |
     Capability register 0
   description: null
+  locator: table 1002, page 862
   name: CAP0
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: CADDR
       properties:
       - r
@@ -225,42 +252,54 @@ registers:
       width: 12
     - brief: null
       description: null
+      kind: uint
       name: CMASK
       properties:
       - r
       start: 16
+      unit: bits
       width: 4
     - brief: null
       description: null
+      kind: uint
       name: CTAGBITS
       properties:
       - r
       start: 8
+      unit: bits
       width: 8
     - brief: null
       description: null
+      kind: uint
       name: CISIZE
       properties:
       - r
+      scale: 4 * 2 ** value
       start: 5
+      unit: bytes
       width: 3
     - brief: null
       description: null
+      kind: uint
       name: CLINES
       properties:
       - r
+      scale: 2 ** value
       start: 0
+      unit: lines
       width: 5
     variants: []
   brief: |
     Capability register 1
   description: null
+  locator: table 1003, page 863
   name: CAP1
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: TMASK
       properties:
       - r
@@ -268,6 +307,7 @@ registers:
       width: 8
     - brief: null
       description: null
+      kind: uint
       name: MTYPE
       properties:
       - r
@@ -275,6 +315,7 @@ registers:
       width: 2
     - brief: null
       description: null
+      kind: uint
       name: TTYPE
       properties:
       - r
@@ -282,131 +323,170 @@ registers:
       width: 2
     - brief: null
       description: null
+      kind: uint
       name: TTAGBITS
       properties:
       - r
       start: 8
+      unit: bits
       width: 8
     - brief: null
       description: null
+      kind: uint
       name: ISIZE
       properties:
       - r
+      scale: 4 * 2 ** value
       start: 5
+      unit: bytes
       width: 3
     - brief: null
       description: null
+      kind: uint
       name: TLBENT
       properties:
       - r
+      scale: 2 ** value
       start: 0
+      unit: entries
       width: 5
     variants: []
   brief: |
     Capability register 2
   description: null
+  locator: table 1004, page 864
   name: CAP2
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: PGSZ
       properties:
       - r
       - w
+      reset: 0
+      scale: 4 * 2 ** value
       start: 18
+      unit: kilobytes
       width: 3
     - brief: null
       description: null
+      kind: bool
       name: LB
       properties:
       - r
       - w
+      reset: 0
       start: 17
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: SP
       properties:
       - r
       - w
+      reset: 0
       start: 16
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: ITR
       properties:
       - r
       - w
+      reset: 0
       start: 12
       width: 4
     - brief: null
       description: null
+      kind: bool
       name: DP
       properties:
       - r
       - w
+      reset: 0
       start: 11
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: SIV
       properties:
       - r
       - w
+      reset: 0
       start: 10
       width: 1
     - brief: null
       description: null
+      kind: bits
       name: HPROT
       properties:
       - r
       - w
+      reset: 0
       start: 8
       width: 2
     - brief: null
       description: null
+      kind: bool
       name: AU
       properties:
       - r
       - w
+      reset: 0
       start: 7
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: WP
       properties:
       - r
       - w
+      reset: 0
       start: 6
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: DM
       properties:
       - r
       - w
+      reset: 0
       start: 5
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: GS
       properties:
       - r
       - w
+      reset: 0
       start: 4
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: CE
       properties:
       - r
       - w
+      reset: 0
       start: 3
       width: 1
     - brief: null
       description: null
+      enum:
+        GROUP: 0
+        IOMMU: 1
+      kind: enum
       name: PM
       properties:
       - r
@@ -415,187 +495,229 @@ registers:
       width: 2
     - brief: null
       description: null
+      kind: bool
       name: EN
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     Control register
   description: null
+  locator: table 1005, page 864
   name: CTRL
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: FGRP
       properties:
       - r
       - w
+      reset: 0
       start: 4
       width: 4
     - brief: null
       description: null
+      kind: bool
       name: GF
       properties:
       - r
       - w
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: F
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     TLB/cache flush register
   description: null
+  locator: table 1006, page 867
   name: FLUSH
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: PE
       properties:
       - r
       - w1c
+      reset: 0
       start: 5
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: DE
       properties:
       - r
       - w1c
+      reset: 0
       start: 4
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: FC
       properties:
       - r
       - w1c
+      reset: 0
       start: 3
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: FL
       properties:
       - r
       - w1c
+      reset: 0
       start: 2
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: AD
       properties:
       - r
       - w1c
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TE
       properties:
       - r
       - w1c
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     Status register
   description: null
+  locator: table 1007, page 867
   name: STATUS
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: PEI
       properties:
       - r
       - w
+      reset: 0
       start: 5
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: FCI
       properties:
       - r
       - w
+      reset: 0
       start: 3
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: FLI
       properties:
       - r
       - w
+      reset: 0
       start: 2
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: ADI
       properties:
       - r
       - w
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TEI
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     Interrupt mask register
   description: null
+  locator: table 1008, page 868
   name: IMASK
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: FADDR_31_5
       properties:
       - r
+      reset: 0
       start: 5
       width: 27
     - brief: null
       description: null
+      kind: bool
       name: FW
       properties:
       - r
+      reset: 0
       start: 4
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: FMASTER
       properties:
       - r
+      reset: 0
       start: 0
       width: 4
     variants: []
   brief: |
     AHB failing access register
   description: null
+  locator: table 1009, page 868
   name: AHBFAS
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: VENDOR
       properties:
       - r
@@ -603,6 +725,7 @@ registers:
       width: 8
     - brief: null
       description: null
+      kind: uint
       name: DEVICE
       properties:
       - r
@@ -610,216 +733,262 @@ registers:
       width: 12
     - brief: null
       description: null
+      kind: bool
       name: BS
       properties:
       - r
       - w
+      reset: 0
       start: 4
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: GROUP
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 4
     variants: []
   brief: |
     Master configuration register 0 - 9
   description: null
+  locator: table 1010, page 868
   name: MSTCFG
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: BASE_31_2
       properties:
       - r
       - w
+      reset: 0
       start: 2
       width: 30
     - brief: null
       description: null
+      kind: bool
       name: P
       properties:
       - r
       - w
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: AG
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     Group control register 0 - 7
   description: null
+  locator: table 1011, page 870
   name: GRPCTRL
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: DA
       properties:
       - r
       - w
+      reset: 0
       start: 31
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RW
       properties:
       - r
       - w
+      reset: 0
       start: 30
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: DP
       properties:
       - r
       - w
+      reset: 0
       start: 21
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TP
       properties:
       - r
       - w
+      reset: 0
       start: 20
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: SETADDR
       properties:
       - r
       - w
+      reset: not-reset
       start: 0
       width: 19
     variants: []
   brief: |
     Diagnostic cache access register
   description: null
+  locator: table 1012, page 870
   name: DIAGCTRL
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: CDATAN
       properties:
       - r
       - w
+      reset: not-reset
       start: 0
       width: 32
     variants: []
   brief: |
     Diagnostic cache access data register 0 - 7
   description: null
+  locator: table 1013, page 872
   name: DIAGD
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: TAG
       properties:
       - r
       - w
+      reset: not-reset
       start: 1
       width: 31
     - brief: null
       description: null
+      kind: bool
       name: V
       properties:
       - r
       - w
+      reset: not-reset
       start: 0
       width: 1
     variants: []
   brief: |
     Diagnostic cache access tag register
   description: null
+  locator: table 1014, page 872
   name: DIAGT
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: DPERRINJ
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Data RAM error injection register
   description: null
+  locator: table 1015, page 872
   name: DERRI
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: TPERRINJ
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Tag RAM error injection register
   description: null
+  locator: table 1016, page 872
   name: TERRI
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: FC
       properties:
       - r
       - w
+      reset: 0
       start: 18
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: SC
       properties:
       - r
       - w
+      reset: 0
       start: 17
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: MC
       properties:
       - r
       - w
+      reset: 0
       start: 16
       width: 1
     - brief: null
       description: null
+      kind: bits
       name: GRPACCSZCTRL
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 16
     variants: []
   brief: |
     ASMP access control registers 0 - 3
   description: null
+  locator: table 1017, page 873
   name: ASMPCTRL
   width: 32
 type: interface
