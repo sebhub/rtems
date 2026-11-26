@@ -50,6 +50,8 @@ links:
   uid: group
 - role: interface-placement
   uid: mmctrl-header
+- role: reference
+  uid: /ref/soc/gaisler/gr740/gr740-um-ds-2-10
 name: mmctrl
 notes: null
 register-block-group: MMCTRL
@@ -60,146 +62,193 @@ registers:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: RF
       properties:
       - r
       - w
+      reset: 0
       start: 31
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: TRP
       properties:
       - r
       - w
+      reset: 1
+      scale: value + 2
       start: 30
+      unit: clocks
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: TRFC
       properties:
       - r
       - w
+      reset: 7
+      scale: value + 3
       start: 27
+      unit: clocks
       width: 3
     - brief: null
       description: null
+      kind: uint
       name: TC
       properties:
       - r
       - w
+      reset: 1
+      scale: value + 2
       start: 26
+      unit: cycles
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: BANKSZ
       properties:
       - r
       - w
+      reset: 0
       start: 23
       width: 3
     - brief: null
       description: null
+      kind: uint
       name: COLSZ
       properties:
       - r
       - w
+      reset: 2
       start: 21
       width: 2
     - brief: null
       description: null
+      enum:
+        AUTO_REFRESH: 4
+        LOAD_COMMAND_REGISTER: 6
+        PRECHARGE: 2
+      kind: enum
       name: COMMAND
       properties:
       - r
       - w
+      reset: 0
       start: 18
       width: 3
     - brief: null
       description: null
+      kind: bool
       name: MS
       properties:
       - r
+      reset: 0
       start: 16
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: '64'
       properties:
       - r
+      reset: external
       start: 15
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: RFLOAD
       properties:
       - r
       - w
+      reset: not-reset
+      scale: value + 1
       start: 0
+      unit: cycles
       width: 15
     variants: []
   brief: |
     SDRAM configuration register 1
   description: null
+  locator: table 95, page 114
   name: SDCFG1
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: CE
       properties:
       - r
       - w
+      reset: 1
       start: 30
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: EN2T
       properties:
       - r
       - w
+      reset: 0
       start: 15
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: DCS
       properties:
       - r
       - w
+      reset: 0
       start: 14
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: BPARK
       properties:
       - r
       - w
+      reset: 0
       start: 13
       width: 1
     variants: []
   brief: |
     SDRAM configuration register 2
   description: null
+  locator: table 96, page 115
   name: SDCFG2
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: ERRLOC
       properties:
       - r
+      reset: 0
       start: 20
       width: 12
     - brief: null
       description: null
+      kind: bool
       name: DDERR
       properties:
       - r
+      reset: 0
       start: 19
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: DWIDTH
       properties:
       - r
@@ -207,85 +256,111 @@ registers:
       width: 3
     - brief: null
       description: null
+      kind: uint
       name: BEID
       properties:
       - r
+      reset: 1
       start: 12
       width: 4
     - brief: null
       description: null
+      enum:
+        CHECKBITS_79_64: 5
+        DATA_15_0: 1
+        DATA_31_16: 2
+        DATA_47_32: 3
+        DATA_63_48: 4
+        NONE: 0
+      kind: enum
       name: DATAMUX
       properties:
       - r
       - w
+      reset: 0
       start: 5
       width: 3
     - brief: null
       description: null
+      kind: bool
       name: CEN
       properties:
       - r
       - w
+      reset: 0
       start: 4
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: BAUPD
       properties:
       - r
       - w
+      reset: 0
       start: 3
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: BAEN
       properties:
       - r
       - w
+      reset: 0
       start: 2
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: CODE
       properties:
       - r
       - w
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: EDEN
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     Mux configuration register
   description: null
+  locator: table 97, page 116
   name: MUXCFG
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: FTDA
       properties:
       - r
       - w
+      reset: 0
       start: 2
       width: 30
     variants: []
   brief: |
     FT diagnostic address register
   description: null
+  locator: table 98, page 116
   name: FTDA
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: CBD
       properties:
       - r
@@ -294,6 +369,7 @@ registers:
       width: 8
     - brief: null
       description: null
+      kind: bits
       name: CBC
       properties:
       - r
@@ -302,6 +378,7 @@ registers:
       width: 8
     - brief: null
       description: null
+      kind: bits
       name: CBB
       properties:
       - r
@@ -310,6 +387,7 @@ registers:
       width: 8
     - brief: null
       description: null
+      kind: bits
       name: CBA
       properties:
       - r
@@ -320,12 +398,14 @@ registers:
   brief: |
     FT diagnostic checkbits register
   description: null
+  locator: table 99, page 117
   name: FTDC
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: DATA
       properties:
       - r
@@ -336,22 +416,26 @@ registers:
   brief: |
     FT diagnostic data register
   description: null
+  locator: table 100, page 117
   name: FTDD
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: FTBND_31_3
       properties:
       - r
       - w
+      reset: 0
       start: 3
       width: 29
     variants: []
   brief: |
     FT boundary address register
   description: null
+  locator: table 101, page 117
   name: FTBND
   width: 32
 type: interface
