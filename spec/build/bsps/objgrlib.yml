@@ -26,6 +26,7 @@ install:
   - bsps/include/grlib/grethgbit-regs.h
   - bsps/include/grlib/grgpio-regs.h
   - bsps/include/grlib/griommu-regs.h
+  - bsps/include/grlib/griommu2-regs.h
   - bsps/include/grlib/grpci2-regs.h
   - bsps/include/grlib/grspw2-regs.h
   - bsps/include/grlib/grspwrouter-regs.h
