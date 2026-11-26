@@ -105,6 +105,8 @@ links:
   uid: group
 - role: interface-placement
   uid: grpci2-header
+- role: reference
+  uid: /ref/ip/gaisler/grip-2026-3
 name: grpci2
 notes: null
 register-block-group: GRPCI2
@@ -115,126 +117,156 @@ registers:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: RE
       properties:
       - r
       - w
+      reset: 0
       start: 31
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: MR
       properties:
       - r
       - w
+      reset: 0
       start: 30
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TR
       properties:
       - r
       - w
+      reset: 0
       start: 29
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: SI
       properties:
       - r
       - w
+      reset: 0
       start: 27
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: PE
       properties:
       - r
       - w
+      reset: 0
       start: 26
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: ER
       properties:
       - r
       - w
+      reset: 0
       start: 25
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: EI
       properties:
       - r
       - w
+      reset: 0
       start: 24
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: BUS_NUMBER
       properties:
       - r
       - w
+      reset: 0
       start: 16
       width: 8
     - brief: null
       description: null
+      kind: bool
       name: DFA
       properties:
       - r
       - w
+      reset: 0
       start: 11
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: IB
       properties:
       - r
       - w
+      reset: 0
       start: 10
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: CB
       properties:
       - r
       - w
+      reset: 0
       start: 9
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: DIF
       properties:
       - r
       - w
+      reset: 0
       start: 8
       width: 1
     - brief: null
       description: null
+      kind: bits
       name: DEVICE_INT_MASK
       properties:
       - r
       - w
+      reset: 0
       start: 4
       width: 4
     - brief: null
       description: null
+      kind: bits
       name: HOST_INT_MASK
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 4
     variants: []
   brief: |
     Control register
   description: null
+  locator: table 1135, page 966
   name: CTRL
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: HOST
       properties:
       - r
@@ -242,6 +274,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: MST
       properties:
       - r
@@ -249,6 +282,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TAR
       properties:
       - r
@@ -256,6 +290,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: DMA
       properties:
       - r
@@ -263,6 +298,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: DI
       properties:
       - r
@@ -270,6 +306,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: HI
       properties:
       - r
@@ -277,6 +314,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: IRQ_MODE
       properties:
       - r
@@ -284,6 +322,7 @@ registers:
       width: 2
     - brief: null
       description: null
+      kind: bool
       name: TRACE
       properties:
       - r
@@ -291,44 +330,55 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: ECAP
       properties:
       - r
+      reset: 0
       start: 22
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: FH
       properties:
       - r
+      reset: 0
       start: 21
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: CFGDO
       properties:
       - r
       - w1c
+      reset: 0
       start: 20
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: CFGER
       properties:
       - r
       - w1c
+      reset: 0
       start: 19
       width: 1
     - brief: null
       description: null
+      kind: bits
       name: CORE_INT_STATUS
       properties:
       - r
       - w1c
+      reset: 0
       start: 12
       width: 7
     - brief: null
       description: null
+      kind: bits
       name: HOST_INT_STATUS
       properties:
       - r
@@ -336,13 +386,21 @@ registers:
       width: 4
     - brief: null
       description: null
+      kind: uint
       name: FDEPTH
       properties:
       - r
+      scale: 2 ** value
       start: 2
+      unit: words
       width: 3
     - brief: null
       description: null
+      enum:
+        FIFOS_2: 2
+        FIFOS_3: 3
+        FIFOS_4: 0
+      kind: enum
       name: FNUM
       properties:
       - r
@@ -352,201 +410,248 @@ registers:
   brief: |
     Status and Capability register
   description: null
+  locator: table 1136, page 966
   name: STATCAP
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: AHB_MASTER_UNMASK
       properties:
       - r
       - w
+      reset: 0
       start: 16
       width: 16
     - brief: null
       description: null
+      kind: uint
       name: BURST_LENGTH
       properties:
       - r
       - w
+      reset: 255
+      scale: value + 1
       start: 0
+      unit: beats
       width: 8
     variants: []
   brief: |
     PCI master prefetch burst limit
   description: null
+  locator: table 1137, page 968
   name: BCIM
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: AHB_TO_PCI_IO
       properties:
       - r
       - w
+      reset: 0
       start: 16
       width: 16
     variants: []
   brief: |
     AHB to PCI mapping for PCI IO
   description: null
+  locator: table 1138, page 968
   name: AHB2PCI
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: SAFE
       properties:
       - r
       - w
+      reset: 1
       start: 31
       width: 1
     - brief: null
       description: null
+      kind: bits
       name: CHIRQ
       properties:
       - r
       - w1c
+      reset: 0
       start: 12
       width: 8
     - brief: null
       description: null
+      kind: bool
       name: MA
       properties:
       - r
       - w1c
+      reset: 0
       start: 11
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TA
       properties:
       - r
       - w1c
+      reset: 0
       start: 10
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: PE
       properties:
       - r
       - w1c
+      reset: 0
       start: 9
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: AE
       properties:
       - r
       - w1c
+      reset: 0
       start: 8
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: DE
       properties:
       - r
       - w1c
+      reset: 0
       start: 7
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: NUMCH
       properties:
       - r
       - w
+      reset: 0
       start: 4
+      unit: channels
       width: 3
     - brief: null
       description: null
+      kind: bool
       name: ACTIVE
       properties:
       - r
+      reset: 0
       start: 3
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: DIS
       properties:
       - r
       - w
+      reset: 0
       start: 2
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: IE
       properties:
       - r
       - w
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: EN
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     DMA control and status register
   description: null
+  locator: table 1139, page 968
   name: DMACTRL
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: BASE
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     DMA descriptor base address register
   description: null
+  locator: table 1140, page 969
   name: DMABASE
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: CHAN
       properties:
       - r
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     DMA channel active register
   description: null
+  locator: table 1141, page 969
   name: DMACHAN
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: ADDR
       properties:
       - r
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     PCI BAR to AHB address mapping register
   description: null
+  locator: table 1142, page 969
   name: PCI2AHB
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: PF
       properties:
       - r
@@ -556,56 +661,70 @@ registers:
   brief: |
     Extended Capability register
   description: null
+  locator: table 1143, page 969
   name: EXTCAP
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: ADDR
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     AHB master to PCI memory address mapping register
   description: null
+  locator: table 1144, page 969
   name: AHBM2PCI
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: TRIG_INDEX
       properties:
       - r
+      reset: not-reset
       start: 16
       width: 16
     - brief: null
       description: null
+      kind: bool
       name: AR
       properties:
       - r
+      reset: 0
       start: 15
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: EN
       properties:
       - r
+      reset: 0
       start: 14
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: DEPTH
       properties:
       - r
+      scale: 2 ** value
       start: 4
+      unit: entries
       width: 8
     - brief: null
       description: null
+      kind: bool
       name: SO
       properties:
       - w
@@ -613,6 +732,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: SA
       properties:
       - w
@@ -622,431 +742,536 @@ registers:
   brief: |
     PCI trace Control and Status register
   description: null
+  locator: table 1145, page 970
   name: TCTRC
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: TRACING_MODE
       properties:
       - r
       - w
+      reset: 0
       start: 24
       width: 4
     - brief: null
       description: null
+      kind: uint
       name: TRIG_COUNT
       properties:
       - r
       - w
+      reset: 0
       start: 16
       width: 8
     - brief: null
       description: null
+      kind: uint
       name: DELAYED_STOP
       properties:
       - r
       - w
+      reset: 0
       start: 0
+      unit: entries
       width: 16
     variants: []
   brief: |
     PCI trace counter and mode register
   description: null
+  locator: table 1146, page 970
   name: TMODE
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: PATTERN
       properties:
       - r
       - w
+      reset: not-reset
       start: 0
       width: 32
     variants: []
   brief: |
     PCI trace AD pattern register
   description: null
+  locator: table 1147, page 970
   name: TADP
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: MASK
       properties:
       - r
       - w
+      reset: not-reset
       start: 0
       width: 32
     variants: []
   brief: |
     PCI trace AD mask register
   description: null
+  locator: table 1148, page 970
   name: TADM
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: CBE_3_0
       properties:
       - r
       - w
+      reset: not-reset
       start: 16
       width: 4
     - brief: null
       description: null
+      kind: bool
       name: FRAME
       properties:
       - r
       - w
+      reset: not-reset
       start: 15
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: IRDY
       properties:
       - r
       - w
+      reset: not-reset
       start: 14
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TRDY
       properties:
       - r
       - w
+      reset: not-reset
       start: 13
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: STOP
       properties:
       - r
       - w
+      reset: not-reset
       start: 12
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: DEVSEL
       properties:
       - r
       - w
+      reset: not-reset
       start: 11
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: PAR
       properties:
       - r
       - w
+      reset: not-reset
       start: 10
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: PERR
       properties:
       - r
       - w
+      reset: not-reset
       start: 9
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: SERR
       properties:
       - r
       - w
+      reset: not-reset
       start: 8
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: IDSEL
       properties:
       - r
       - w
+      reset: not-reset
       start: 7
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: REQ
       properties:
       - r
       - w
+      reset: not-reset
       start: 6
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: GNT
       properties:
       - r
       - w
+      reset: not-reset
       start: 5
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: LOCK
       properties:
       - r
       - w
+      reset: not-reset
       start: 4
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RST
       properties:
       - r
       - w
+      reset: not-reset
       start: 3
       width: 1
     variants: []
   brief: |
     PCI trace Ctrl signal pattern register
   description: null
+  locator: table 1149, page 971
   name: TCP
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: CBE_3_0
       properties:
       - r
       - w
+      reset: not-reset
       start: 16
       width: 4
     - brief: null
       description: null
+      kind: bool
       name: FRAME
       properties:
       - r
       - w
+      reset: not-reset
       start: 15
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: IRDY
       properties:
       - r
       - w
+      reset: not-reset
       start: 14
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TRDY
       properties:
       - r
       - w
+      reset: not-reset
       start: 13
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: STOP
       properties:
       - r
       - w
+      reset: not-reset
       start: 12
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: DEVSEL
       properties:
       - r
       - w
+      reset: not-reset
       start: 11
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: PAR
       properties:
       - r
       - w
+      reset: not-reset
       start: 10
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: PERR
       properties:
       - r
       - w
+      reset: not-reset
       start: 9
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: SERR
       properties:
       - r
       - w
+      reset: not-reset
       start: 8
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: IDSEL
       properties:
       - r
       - w
+      reset: not-reset
       start: 7
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: REQ
       properties:
       - r
       - w
+      reset: not-reset
       start: 6
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: GNT
       properties:
       - r
       - w
+      reset: not-reset
       start: 5
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: LOCK
       properties:
       - r
       - w
+      reset: not-reset
       start: 4
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RST
       properties:
       - r
       - w
+      reset: not-reset
       start: 3
       width: 1
     variants: []
   brief: |
     PCI trace Ctrl signal mask register
   description: null
+  locator: table 1150, page 971
   name: TCM
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: SIGNAL
       properties:
       - r
+      reset: not-reset
       start: 0
       width: 32
     variants: []
   brief: |
     PCI trace PCI AD state register
   description: null
+  locator: table 1151, page 971
   name: TADS
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: CBE_3_0
       properties:
       - r
+      reset: not-reset
       start: 16
       width: 4
     - brief: null
       description: null
+      kind: bool
       name: FRAME
       properties:
       - r
+      reset: not-reset
       start: 15
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: IRDY
       properties:
       - r
+      reset: not-reset
       start: 14
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TRDY
       properties:
       - r
+      reset: not-reset
       start: 13
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: STOP
       properties:
       - r
+      reset: not-reset
       start: 12
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: DEVSEL
       properties:
       - r
+      reset: not-reset
       start: 11
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: PAR
       properties:
       - r
+      reset: not-reset
       start: 10
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: PERR
       properties:
       - r
+      reset: not-reset
       start: 9
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: SERR
       properties:
       - r
+      reset: not-reset
       start: 8
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: IDSEL
       properties:
       - r
+      reset: not-reset
       start: 7
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: REQ
       properties:
       - r
+      reset: not-reset
       start: 6
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: GNT
       properties:
       - r
+      reset: not-reset
       start: 5
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: LOCK
       properties:
       - r
+      reset: not-reset
       start: 4
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RST
       properties:
       - r
+      reset: not-reset
       start: 3
       width: 1
     variants: []
   brief: |
     PCI trace PCI Ctrl signal state register
   description: null
+  locator: table 1152, page 971
   name: TCS
   width: 32
 type: interface
