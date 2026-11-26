@@ -180,6 +180,8 @@ links:
   uid: group
 - role: interface-placement
   uid: grgpio-header
+- role: reference
+  uid: /ref/ip/gaisler/grip-2026-3
 name: grgpio
 notes: null
 register-block-group: GRGPIO
@@ -190,6 +192,7 @@ registers:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: DATA
       properties:
       - r
@@ -199,108 +202,128 @@ registers:
   brief: |
     I/O port data register
   description: null
+  locator: table 948, page 819
   name: DATA
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: DATA
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     I/O port output register
   description: null
+  locator: table 949, page 819
   name: OUTPUT
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: DIR
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     I/O port direction register
   description: null
+  locator: table 950, page 819
   name: DIRECTION
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: MASK
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Interrupt mask register
   description: null
+  locator: table 951, page 819
   name: IMASK
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: POL
       properties:
       - r
       - w
+      reset: not-reset
       start: 0
       width: 32
     variants: []
   brief: |
     Interrupt polarity register
   description: null
+  locator: table 952, page 819
   name: IPOL
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: EDGE
       properties:
       - r
       - w
+      reset: not-reset
       start: 0
       width: 32
     variants: []
   brief: |
     Interrupt edge register
   description: null
+  locator: table 953, page 820
   name: IEDGE
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: BYPASS
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Bypass register
   description: null
+  locator: table 954, page 820
   name: BYPASS
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: PU
       properties:
       - r
@@ -308,6 +331,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: IER
       properties:
       - r
@@ -315,6 +339,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: IFL
       properties:
       - r
@@ -322,6 +347,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: IRQGEN
       properties:
       - r
@@ -329,61 +355,75 @@ registers:
       width: 5
     - brief: null
       description: null
+      kind: uint
       name: NLINES
       properties:
       - r
+      scale: value + 1
       start: 0
+      unit: pins
       width: 5
     variants: []
   brief: |
     Capability register
   description: null
+  locator: table 955, page 820
   name: CAP
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: IRQMAP_I_0
       properties:
       - r
       - w
+      reset: 0
       start: 24
       width: 5
     - brief: null
       description: null
+      kind: uint
       name: IRQMAP_I_1
       properties:
       - r
       - w
+      reset: 0
       start: 16
       width: 5
     - brief: null
       description: null
+      kind: uint
       name: IRQMAP_I_2
       properties:
       - r
       - w
+      reset: 0
       start: 8
       width: 5
     - brief: null
       description: null
+      kind: uint
       name: IRQMAP_I_3
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 5
     variants: []
   brief: |
     Interrupt map register n, where n = 0 .. 3
   description: null
+  locator: table 956, page 821
   name: IRQMAPR
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: IMASK
       properties:
       - r
@@ -393,60 +433,71 @@ registers:
   brief: |
     Interrupt available register
   description: null
+  locator: table 957, page 821
   name: IAVAIL
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: IFLAG
       properties:
       - r
       - w1c
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Interrupt flag register
   description: null
+  locator: table 958, page 821
   name: IFLAG
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: IPEN
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Interrupt enable register
   description: null
+  locator: table 959, page 821
   name: IPEN
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: PULSE
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Pulse register
   description: null
+  locator: table 960, page 822
   name: PULSE
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: DATA
       properties:
       - w
@@ -456,12 +507,14 @@ registers:
   brief: |
     Logical-OR registers
   description: null
+  locator: table 961, page 822
   name: LOR
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: DATA
       properties:
       - w
@@ -471,12 +524,14 @@ registers:
   brief: |
     Logical-AND registers
   description: null
+  locator: table 961, page 822
   name: LAND
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: DATA
       properties:
       - w
@@ -486,12 +541,14 @@ registers:
   brief: |
     Logical-XOR registers
   description: null
+  locator: table 961, page 822
   name: LXOR
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: VALUE
       properties:
       - w
@@ -505,6 +562,7 @@ registers:
     write goes to the lower address of the pair and sets bits. The second write
     goes to the higher address and clears bits. An access to the core between the
     two writes cancels the update.
+  locator: table 962, page 822
   name: LSR
   width: 32
 type: interface
