@@ -15,6 +15,7 @@ install:
   - bsps/include/grlib/apbuart.h
   - bsps/include/grlib/apbuart-regs.h
   - bsps/include/grlib/dsu4-regs.h
+  - bsps/include/grlib/ftaddr-regs.h
   - bsps/include/grlib/ftmctrl-regs.h
   - bsps/include/grlib/gptimer-regs.h
   - bsps/include/grlib/gr1553b-regs.h
