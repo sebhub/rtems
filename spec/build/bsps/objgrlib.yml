@@ -21,6 +21,7 @@ install:
   - bsps/include/grlib/gr1553b-regs.h
   - bsps/include/grlib/grcan-regs.h
   - bsps/include/grlib/grcanfd-regs.h
+  - bsps/include/grlib/grdmac2-regs.h
   - bsps/include/grlib/grclkgate-regs.h
   - bsps/include/grlib/grethgbit-regs.h
   - bsps/include/grlib/grgpio-regs.h
