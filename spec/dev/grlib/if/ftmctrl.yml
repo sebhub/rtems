@@ -50,6 +50,8 @@ links:
   uid: group
 - role: interface-placement
   uid: ftmctrl-header
+- role: reference
+  uid: /ref/ip/gaisler/grip-2026-3
 name: ftmctrl
 notes: null
 register-block-group: FTMCTRL
@@ -60,166 +62,226 @@ registers:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: PBRDY
       properties:
       - r
       - w
+      reset: 0
       start: 30
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: ABRDY
       properties:
       - r
       - w
+      reset: 0
       start: 29
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: IOBUSW
       properties:
       - r
       - w
+      reset: not-reset
+      scale: 8 * 2 ** value
       start: 27
+      unit: bits
       width: 2
     - brief: null
       description: null
+      kind: bool
       name: IBRDY
       properties:
       - r
       - w
+      reset: 0
       start: 26
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: BEXCN
       properties:
       - r
       - w
+      reset: 0
       start: 25
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: IO_WAITSTATES
       properties:
       - r
       - w
+      reset: 0
       start: 20
+      unit: waitstates
       width: 4
     - brief: null
       description: null
+      kind: bool
       name: IOEN
       properties:
       - r
       - w
+      reset: 0
       start: 19
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: ROMBANKSZ
       properties:
       - r
       - w
+      reset: 0
       start: 14
       width: 4
     - brief: null
       description: null
+      kind: bool
       name: PWEN
       properties:
       - r
       - w
+      reset: 0
       start: 11
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: PROM_WIDTH
       properties:
       - r
       - w
+      reset: external
+      scale: 8 * 2 ** value
       start: 8
+      unit: bits
       width: 2
     - brief: null
       description: null
+      kind: uint
       name: PROM_WRITE_WS
       properties:
       - r
       - w
+      reset: 15
+      scale: value * 2
       start: 4
+      unit: waitstates
       width: 4
     - brief: null
       description: null
+      kind: uint
       name: PROM_READ_WS
       properties:
       - r
       - w
+      reset: 15
+      scale: value * 2
       start: 0
+      unit: waitstates
       width: 4
     variants: []
   brief: |
     Memory configuration register 1
   description: null
+  locator: table 443, page 411
   name: MCFG1
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: SDRF
       properties:
       - r
       - w
+      reset: 0
       start: 31
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: TRP
       properties:
       - r
       - w
+      reset: 1
+      scale: value + 2
       start: 30
+      unit: clocks
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: SDRAM_TRFC
       properties:
       - r
       - w
+      reset: 3
+      scale: value + 3
       start: 27
+      unit: clocks
       width: 3
     - brief: null
       description: null
+      kind: uint
       name: TCAS
       properties:
       - r
       - w
+      reset: 1
+      scale: value + 2
       start: 26
+      unit: cycles
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: SDRAM_BANKSZ
       properties:
       - r
       - w
+      reset: 0
       start: 23
       width: 3
     - brief: null
       description: null
+      kind: uint
       name: SDRAM_COLSZ
       properties:
       - r
       - w
+      reset: 2
       start: 21
       width: 2
     - brief: null
       description: null
+      enum:
+        AUTO_REFRESH: 2
+        LOAD_COMMAND_REGISTER: 3
+        NONE: 0
+        PRECHARGE: 1
+      kind: enum
       name: SDRAM_CMD
       properties:
       - r
       - w
+      reset: 0
       start: 19
       width: 2
     - brief: null
       description: null
+      kind: bool
       name: D64
       properties:
       - r
@@ -227,157 +289,198 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: SDPB
       properties:
       - r
       - w
+      reset: 0
       start: 17
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: SE
       properties:
       - r
       - w
+      reset: 0
       start: 14
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: SI
       properties:
       - r
       - w
+      reset: 0
       start: 13
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: RAM_BANK_SIZE
       properties:
       - r
       - w
+      reset: not-reset
       start: 9
       width: 4
     - brief: null
       description: null
+      kind: bool
       name: RBRDY
       properties:
       - r
       - w
+      reset: not-reset
       start: 7
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RMW
       properties:
       - r
       - w
+      reset: not-reset
       start: 6
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: RAM_WIDTH
       properties:
       - r
       - w
+      reset: not-reset
       start: 4
       width: 2
     - brief: null
       description: null
+      kind: uint
       name: RAM_WRITE_WS
       properties:
       - r
       - w
+      reset: 0
       start: 2
+      unit: waitstates
       width: 2
     - brief: null
       description: null
+      kind: uint
       name: RAM_READ_WS
       properties:
       - r
       - w
+      reset: 0
       start: 0
+      unit: waitstates
       width: 2
     variants: []
   brief: |
     Memory configuration register 2
   description: null
+  locator: table 444, page 412
   name: MCFG2
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: RSE
       properties:
       - r
       - w
+      reset: 0
       start: 28
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: ME
       properties:
       - r
+      reset: 1
       start: 27
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: SDRAM_REFRESH_COUNTER
       properties:
       - r
       - w
+      reset: not-reset
+      scale: value + 1
       start: 12
+      unit: cycles
       width: 15
     - brief: null
       description: null
+      kind: bool
       name: WB
       properties:
       - r
       - w
+      reset: 0
       start: 11
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RB
       properties:
       - r
       - w
+      reset: 0
       start: 10
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RE
       properties:
       - r
       - w
+      reset: not-reset
       start: 9
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: PE
       properties:
       - r
       - w
+      reset: external
       start: 8
       width: 1
     - brief: null
       description: null
+      kind: bits
       name: TCB
       properties:
       - r
       - w
+      reset: not-reset
       start: 0
       width: 8
     variants: []
   brief: |
     Memory configuration register 3
   description: null
+  locator: table 445, page 413
   name: MCFG3
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: WB
       properties:
       - r
@@ -386,6 +489,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bits
       name: TCB
       properties:
       - r
@@ -396,70 +500,92 @@ registers:
   brief: |
     Memory configuration register 4
   description: null
+  locator: table 446, page 414
   name: MCFG4
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: IOHWS
       properties:
       - r
       - w
+      reset: 0
+      scale: value % 16 * 2 ** (value // 16)
       start: 23
+      unit: cycles
       width: 7
     - brief: null
       description: null
+      kind: uint
       name: ROMHWS
       properties:
       - r
       - w
+      reset: 0
+      scale: value % 16 * 2 ** (value // 16)
       start: 7
+      unit: cycles
       width: 7
     variants: []
   brief: |
     Memory configuration register 5
   description: null
+  locator: table 447, page 414
   name: MCFG5
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: RAMHWS
       properties:
       - r
       - w
+      reset: 0
+      scale: value % 16 * 2 ** (value // 16)
       start: 7
+      unit: cycles
       width: 7
     variants: []
   brief: |
     Memory configuration register 6
   description: null
+  locator: table 448, page 414
   name: MCFG6
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: BRDYNCNT
       properties:
       - r
       - w
+      reset: 0
       start: 16
+      unit: cycles
       width: 16
     - brief: null
       description: null
+      kind: uint
       name: BRDYNRLD
       properties:
       - r
       - w
+      reset: 0
       start: 0
+      unit: cycles
       width: 16
     variants: []
   brief: |
     Memory configuration register 7
   description: null
+  locator: table 449, page 415
   name: MCFG7
   width: 32
 type: interface
