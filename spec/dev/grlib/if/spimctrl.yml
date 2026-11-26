@@ -1,0 +1,577 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This structure defines the ${.:/register-block-group} register block memory
+  map.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+- default:
+    count: 1
+    name: CONF
+  offset: 0x0
+  variants: []
+- default:
+    count: 1
+    name: CTRL
+  offset: 0x4
+  variants: []
+- default:
+    count: 1
+    name: STAT
+  offset: 0x8
+  variants: []
+- default:
+    count: 1
+    name: RX
+  offset: 0xc
+  variants: []
+- default:
+    count: 1
+    name: TX
+  offset: 0x10
+  variants: []
+- default:
+    count: 1
+    name: ECTRL
+  offset: 0x14
+  variants: []
+- default:
+    count: 1
+    name: ESTAT
+  offset: 0x18
+  variants: []
+- default:
+    count: 1
+    name: CTRL2
+  offset: 0x1c
+  variants: []
+- default:
+    count: 1
+    name: SOFF
+  offset: 0x20
+  variants: []
+- default:
+    count: 1
+    name: DOFF
+  offset: 0x24
+  variants: []
+- default:
+    count: 1
+    name: SCALER
+  offset: 0x28
+  variants: []
+description: null
+enabled-by: true
+identifier: RTEMSDeviceGRLIBSPIMCTRL
+index-entries: []
+interface-type: register-block
+links:
+- role: interface-ingroup
+  uid: group
+- role: interface-placement
+  uid: spimctrl-header
+- role: reference
+  uid: /ref/ip/gaisler/grip-2026-3
+name: spimctrl
+notes: null
+register-block-group: SPIMCTRL
+register-block-size: 44
+register-prefix: null
+registers:
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: WRITECMD
+      properties:
+      - r
+      - w
+      start: 24
+      width: 8
+    - brief: null
+      description: null
+      kind: bool
+      name: XIP
+      properties:
+      - r
+      - w
+      start: 20
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: QIN
+      properties:
+      - r
+      - w
+      start: 19
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: DIN
+      properties:
+      - r
+      - w
+      start: 18
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: QOUT
+      properties:
+      - r
+      - w
+      start: 17
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: DOUT
+      properties:
+      - r
+      - w
+      start: 16
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: DBYTE
+      properties:
+      - r
+      - w
+      start: 15
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: ADDR
+      properties:
+      - r
+      - w
+      start: 14
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: QSPI
+      properties:
+      - r
+      - w
+      start: 13
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: DSPI
+      properties:
+      - r
+      - w
+      start: 12
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: DCYCLES
+      properties:
+      - r
+      - w
+      start: 8
+      unit: cycles
+      width: 4
+    - brief: null
+      description: null
+      kind: uint
+      name: READCMD
+      properties:
+      - r
+      - w
+      start: 0
+      width: 8
+    variants: []
+  brief: |
+    Configuration register
+  description: null
+  locator: table 2469, page 2148
+  name: CONF
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: DS
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 5
+      width: 2
+    - brief: null
+      description: null
+      kind: bool
+      name: RST
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 4
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: CSN
+      properties:
+      - r
+      - w
+      reset: 1
+      start: 3
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: EAS
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 2
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: IEN
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 1
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: USRC
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    Control register
+  description: null
+  locator: table 2470, page 2148
+  name: CTRL
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: EDAC
+      properties:
+      - r
+      start: 11
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: DSCAL
+      properties:
+      - r
+      start: 10
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: DOFFS
+      properties:
+      - r
+      start: 9
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: MCSN
+      properties:
+      - r
+      start: 8
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: WRTR
+      properties:
+      - r
+      start: 7
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: RECONF
+      properties:
+      - r
+      start: 6
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: INIT
+      properties:
+      - r
+      reset: 1
+      start: 2
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: BUSY
+      properties:
+      - r
+      reset: 0
+      start: 1
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: DONE
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    Status register
+  description: null
+  locator: table 2471, page 2150
+  name: STAT
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: RDATA
+      properties:
+      - r
+      - w
+      reset: not-reset
+      start: 0
+      width: 8
+    variants: []
+  brief: |
+    Receive register
+  description: null
+  locator: table 2472, page 2150
+  name: RX
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: TDATA
+      properties:
+      - w
+      reset: 0
+      start: 0
+      width: 8
+    variants: []
+  brief: |
+    Transmit register
+  description: null
+  locator: table 2473, page 2150
+  name: TX
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: TYPE
+      properties:
+      - r
+      start: 28
+      width: 4
+    - brief: null
+      description: null
+      kind: bool
+      name: AERR
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 2
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: UERR
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 1
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: EN
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    EDAC control register
+  description: null
+  locator: table 2474, page 2151
+  name: ECTRL
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: UERR
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 1
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: CERR
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    EDAC status register
+  description: null
+  locator: table 2475, page 2151
+  name: ESTAT
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: CSNWR
+      properties:
+      - r
+      - w
+      scale: value * 4 + 1
+      start: 24
+      unit: cycles
+      width: 8
+    - brief: null
+      description: null
+      kind: uint
+      name: CSNRD
+      properties:
+      - r
+      - w
+      scale: value * 4 + 1
+      start: 16
+      unit: cycles
+      width: 8
+    - brief: null
+      description: null
+      kind: bool
+      name: WRT
+      properties:
+      - r
+      - w
+      start: 4
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: DSCONF
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 4
+    variants: []
+  brief: |
+    Control register 2
+  description: null
+  locator: table 2476, page 2152
+  name: CTRL2
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: SOFF
+      properties:
+      - r
+      reset: 0
+      start: 0
+      unit: bytes
+      width: 32
+    variants: []
+  brief: |
+    Static address offset register
+  description: null
+  locator: table 2477, page 2152
+  name: SOFF
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: DOFF
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      unit: bytes
+      width: 32
+    variants: []
+  brief: |
+    Dynamic address offset register
+  description: |
+    DOFF is writable if the core implements the dynamic address offset, see
+    STAT.DOFFS.
+  locator: table 2478, page 2152
+  name: DOFF
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: SCALER
+      properties:
+      - r
+      - w
+      start: 0
+      width: 32
+    variants: []
+  brief: |
+    SPI clock scaler register
+  description: |
+    SCALER is writable if the core implements the dynamic scaler, see STAT.DSCAL.
+    The field takes the bits from bit 0 up to the configured scaler width.
+  locator: table 2479, page 2153
+  name: SCALER
+  width: 32
+type: interface

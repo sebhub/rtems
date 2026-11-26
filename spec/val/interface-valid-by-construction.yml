@@ -126,6 +126,8 @@ links:
 - role: validation
   uid: /dev/grlib/if/spictrl
 - role: validation
+  uid: /dev/grlib/if/spimctrl
+- role: validation
   uid: /dev/grlib/if/spwpnp
 - role: validation
   uid: /dev/grlib/if/spwtdp
