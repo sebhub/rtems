@@ -104,6 +104,8 @@ links:
 - role: validation
   uid: /dev/grlib/if/grspwrouter-portstats
 - role: validation
+  uid: /dev/grlib/if/grwizl
+- role: validation
   uid: /dev/grlib/if/irqamp
 - role: validation
   uid: /dev/grlib/if/irqamp-timestamp
