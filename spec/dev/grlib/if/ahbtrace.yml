@@ -60,6 +60,8 @@ links:
   uid: group
 - role: interface-placement
   uid: ahbtrace-header
+- role: reference
+  uid: /ref/ip/gaisler/grip-2026-3
 name: ahbtrace
 notes: null
 register-block-group: AHBTRACE
@@ -70,14 +72,18 @@ registers:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: DCNT
       properties:
       - r
       - w
+      reset: 0
       start: 16
+      unit: traces
       width: 16
     - brief: null
       description: null
+      kind: bool
       name: BA
       properties:
       - r
@@ -85,76 +91,96 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: BSEL
       properties:
       - r
       - w
+      reset: 0
       start: 12
       width: 3
     - brief: null
       description: null
+      kind: bool
       name: EF
       properties:
       - r
       - w
+      reset: not-reset
       start: 9
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: PF
       properties:
       - r
       - w
+      reset: not-reset
       start: 8
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: BW
       properties:
       - r
+      scale: 32 * 2 ** value
       start: 6
+      unit: bits
       width: 2
     - brief: null
       description: null
+      kind: bool
       name: RF
       properties:
       - r
       - w
+      reset: not-reset
       start: 5
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: AF
       properties:
       - r
       - w
+      reset: not-reset
       start: 4
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: FR
       properties:
       - r
       - w
+      reset: not-reset
       start: 3
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: FW
       properties:
       - r
       - w
+      reset: not-reset
       start: 2
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: DM
       properties:
       - r
+      reset: not-reset
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: EN
       properties:
       - r
@@ -165,115 +191,139 @@ registers:
   brief: |
     Trace buffer control register
   description: null
+  locator: table 81, page 98
   name: CTRL
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: INDEX
       properties:
       - r
       - w
+      reset: not-reset
       start: 4
       width: 28
     variants: []
   brief: |
     Trace buffer index register
   description: null
+  locator: table 82, page 98
   name: INDEX
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: TIMETAG
       properties:
       - r
+      reset: 0
       start: 0
+      unit: clocks
       width: 32
     variants: []
   brief: |
     Trace buffer time tag register
   description: null
+  locator: table 83, page 99
   name: TIMETAG
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: SMASK
       properties:
       - r
       - w
+      reset: 0
       start: 16
       width: 16
     - brief: null
       description: null
+      kind: bits
       name: MMASK
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 16
     variants: []
   brief: |
     Trace buffer master/slave filter register
   description: null
+  locator: table 84, page 99
   name: MSFILT
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: BADDR_31_2
       properties:
       - r
       - w
+      reset: not-reset
       start: 2
       width: 30
     variants: []
   brief: |
     Trace buffer break address registers
   description: null
+  locator: table 85, page 99
   name: TBBA
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: BMASK_31_2
       properties:
       - r
       - w
+      reset: not-reset
       start: 2
       width: 30
     - brief: null
       description: null
+      kind: bool
       name: LD
       properties:
       - r
       - w
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: ST
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     Trace buffer break mask registers
   description: null
+  locator: table 86, page 99
   name: TBBM
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: TBUF
       properties:
       - r
@@ -284,6 +334,7 @@ registers:
   brief: |
     Trace buffer area
   description: null
+  locator: table 78, page 95
   name: TBUF
   width: 32
 type: interface
