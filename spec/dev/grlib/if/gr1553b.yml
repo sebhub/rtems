@@ -180,6 +180,8 @@ links:
   uid: group
 - role: interface-placement
   uid: gr1553b-header
+- role: reference
+  uid: /ref/ip/gaisler/grip-2026-3
 name: gr1553b
 notes: null
 register-block-group: GR1553B
@@ -190,150 +192,185 @@ registers:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: BMTOF
       properties:
       - r
       - w1c
+      reset: 0
       start: 17
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: BMD
       properties:
       - r
       - w1c
+      reset: 0
       start: 16
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RTTE
       properties:
       - r
       - w1c
+      reset: 0
       start: 10
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RTD
       properties:
       - r
       - w1c
+      reset: 0
       start: 9
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RTEV
       properties:
       - r
       - w1c
+      reset: 0
       start: 8
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: BCWK
       properties:
       - r
       - w1c
+      reset: 0
       start: 2
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: BCD
       properties:
       - r
       - w1c
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: BCEV
       properties:
       - r
       - w1c
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     GR1553B IRQ Register
   description: null
+  locator: table 519, page 501
   name: IRQ
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: BMTOE
       properties:
       - r
       - w
+      reset: 0
       start: 17
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: BMDE
       properties:
       - r
       - w
+      reset: 0
       start: 16
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RTTEE
       properties:
       - r
       - w
+      reset: 0
       start: 10
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RTDE
       properties:
       - r
       - w
+      reset: 0
       start: 9
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RTEVE
       properties:
       - r
       - w
+      reset: 0
       start: 8
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: BCWKE
       properties:
       - r
       - w
+      reset: 0
       start: 2
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: BCDE
       properties:
       - r
       - w
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: BCEVE
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     GR1553B IRQ Enable Register
   description: null
+  locator: table 520, page 501
   name: IRQE
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: MOD
       properties:
       - r
@@ -341,6 +378,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: DBUF
       properties:
       - r
@@ -349,6 +387,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: CVER
       properties:
       - r
@@ -357,6 +396,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: XKEYS
       properties:
       - r
@@ -364,6 +404,10 @@ registers:
       width: 1
     - brief: null
       description: null
+      enum:
+        BIG: 0
+        LITTLE: 1
+      kind: enum
       name: ENDIAN
       properties:
       - r
@@ -371,6 +415,7 @@ registers:
       width: 2
     - brief: null
       description: null
+      kind: bool
       name: SCLK
       properties:
       - r
@@ -378,21 +423,25 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: CCFREQ
       properties:
       - r
       start: 0
+      unit: megahertz
       width: 8
     variants: []
   brief: |
     GR1553B Hardware Configuration Register
   description: null
+  locator: table 521, page 501
   name: HC
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: BCSUP
       properties:
       - r
@@ -400,6 +449,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bits
       name: BCFEAT
       properties:
       - r
@@ -407,50 +457,72 @@ registers:
       width: 3
     - brief: null
       description: null
+      kind: bool
       name: BCCHK
       properties:
       - r
       - w
+      reset: 0
       start: 16
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: ASADL
       properties:
       - r
+      reset: 0
       start: 11
       width: 5
     - brief: null
       description: null
+      enum:
+        EXECUTING: 1
+        STOPPED: 0
+        WAITING_FOR_TIME_SLOT: 2
+      kind: enum
       name: ASST
       properties:
       - r
+      reset: 0
       start: 8
       width: 2
     - brief: null
       description: null
+      kind: uint
       name: SCADL
       properties:
       - r
+      reset: 0
       start: 3
       width: 5
     - brief: null
       description: null
+      enum:
+        EXECUTING: 1
+        STOPPED: 0
+        SUSPENDED: 3
+        WAITING_FOR_EXTERNAL_TRIGGER: 4
+        WAITING_FOR_TIME_SLOT: 2
+      kind: enum
       name: SCST
       properties:
       - r
+      reset: 0
       start: 0
       width: 3
     variants: []
   brief: |
     GR1553B BC Status and Config Register
   description: null
+  locator: table 522, page 502
   name: BCSC
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: BCKEY
       properties:
       - w
@@ -458,6 +530,7 @@ registers:
       width: 16
     - brief: null
       description: null
+      kind: bool
       name: ASSTP
       properties:
       - w
@@ -465,6 +538,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: ASSRT
       properties:
       - w
@@ -472,6 +546,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: CLRT
       properties:
       - w
@@ -479,6 +554,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: SETT
       properties:
       - w
@@ -486,6 +562,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: SCSTP
       properties:
       - w
@@ -493,6 +570,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: SCSUS
       properties:
       - w
@@ -500,6 +578,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: SCSRT
       properties:
       - w
@@ -509,145 +588,175 @@ registers:
   brief: |
     GR1553B BC Action Register
   description: null
+  locator: table 523, page 502
   name: BCA
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: POINTER
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     GR1553B BC Transfer list next pointer register
   description: null
+  locator: table 524, page 502
   name: BCTNP
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: POINTER
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     GR1553B BC Asynchronous list next pointer register
   description: null
+  locator: table 525, page 503
   name: BCANP
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: SCTM
       properties:
       - r
+      reset: 0
       start: 0
+      unit: microseconds
       width: 24
     variants: []
   brief: |
     GR1553B BC Timer register
   description: null
+  locator: table 526, page 503
   name: BCT
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: WKEN
       properties:
       - r
       - w
+      reset: 0
       start: 31
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: WKTM
       properties:
       - r
       - w
+      reset: 0
       start: 0
+      unit: microseconds
       width: 24
     variants: []
   brief: |
     GR1553B BC Timer wake-up register
   description: null
+  locator: table 527, page 503
   name: BCTW
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: POSITION
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     GR1553B BC Transfer-triggered IRQ ring position register
   description: null
+  locator: table 528, page 503
   name: BCRP
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: SWAP
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     GR1553B BC per-RT Bus swap register
   description: null
+  locator: table 529, page 504
   name: BCBS
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: POINTER
       properties:
       - r
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     GR1553B BC Transfer list current slot pointer
   description: null
+  locator: table 530, page 504
   name: BCTCP
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: POINTER
       properties:
       - r
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     GR1553B BC Asynchronous list current slot pointer
   description: null
+  locator: table 531, page 504
   name: BCACP
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: RTSUP
       properties:
       - r
@@ -655,6 +764,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: ACT
       properties:
       - r
@@ -662,6 +772,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: SHDA
       properties:
       - r
@@ -669,6 +780,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: SHDB
       properties:
       - r
@@ -676,6 +788,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RUN
       properties:
       - r
@@ -685,391 +798,559 @@ registers:
   brief: |
     GR1553B RT Status register
   description: null
+  locator: table 532, page 504
   name: RTS
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: RTKEY
       properties:
       - w
+      reset: 0
       start: 16
       width: 16
     - brief: null
       description: null
+      kind: bool
       name: SYS
       properties:
       - r
       - w
+      reset: 1
       start: 15
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: SYDS
       properties:
       - r
       - w
+      reset: 1
       start: 14
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: BRS
       properties:
       - r
       - w
+      reset: 1
       start: 13
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RTEIS
       properties:
       - r
+      reset: external
       start: 6
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: RTADDR
       properties:
       - r
       - w
+      range:
+      - 0
+      - 30
+      reset: external
       start: 1
       width: 5
     - brief: null
       description: null
+      kind: bool
       name: RTEN
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     GR1553B RT Config register
   description: null
+  locator: table 533, page 505
   name: RTC
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: TFDE
       properties:
       - r
       - w
+      reset: 0
       start: 8
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: SREQ
       properties:
       - r
       - w
+      reset: 0
       start: 4
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: BUSY
       properties:
       - r
       - w
+      reset: 0
       start: 3
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: SSF
       properties:
       - r
       - w
+      reset: 0
       start: 2
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: DBCA
       properties:
       - r
       - w
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TFLG
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     GR1553B RT Bus status register
   description: null
+  locator: table 534, page 505
   name: RTBS
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: BITW
       properties:
       - r
       - w
+      reset: 0
       start: 16
       width: 16
     - brief: null
       description: null
+      kind: uint
       name: VECW
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 16
     variants: []
   brief: |
     GR1553B RT Status words register
   description: null
+  locator: table 535, page 505
   name: RTSW
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: SYTM
       properties:
       - r
+      reset: 0
       start: 16
       width: 16
     - brief: null
       description: null
+      kind: uint
       name: SYD
       properties:
       - r
+      reset: 0
       start: 0
       width: 16
     variants: []
   brief: |
     GR1553B RT Sync register
   description: null
+  locator: table 536, page 506
   name: RTSY
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: SATB
       properties:
       - r
       - w
+      reset: 0
       start: 9
       width: 23
     variants: []
   brief: |
     GR1553B RT Subaddress table base address register
   description: null
+  locator: table 537, page 506
   name: RTSTBA
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      enum:
+        ILLEGAL: 0
+        LEGAL: 1
+        LEGAL_LOG: 2
+        LEGAL_LOG_IRQ: 3
+      kind: enum
       name: RRTB
       properties:
       - r
       - w
+      reset: 0
       start: 28
       width: 2
     - brief: null
       description: null
+      enum:
+        ILLEGAL: 0
+        LEGAL: 1
+        LEGAL_LOG: 2
+        LEGAL_LOG_IRQ: 3
+      kind: enum
       name: RRT
       properties:
       - r
       - w
+      reset: 0
       start: 26
       width: 2
     - brief: null
       description: null
+      enum:
+        ILLEGAL: 0
+        LEGAL: 1
+        LEGAL_LOG: 2
+        LEGAL_LOG_IRQ: 3
+      kind: enum
       name: ITFB
       properties:
       - r
       - w
+      reset: 0
       start: 24
       width: 2
     - brief: null
       description: null
+      enum:
+        ILLEGAL: 0
+        LEGAL: 1
+        LEGAL_LOG: 2
+        LEGAL_LOG_IRQ: 3
+      kind: enum
       name: ITF
       properties:
       - r
       - w
+      reset: 0
       start: 22
       width: 2
     - brief: null
       description: null
+      enum:
+        ILLEGAL: 0
+        LEGAL: 1
+        LEGAL_LOG: 2
+        LEGAL_LOG_IRQ: 3
+      kind: enum
       name: ISTB
       properties:
       - r
       - w
+      reset: 0
       start: 20
       width: 2
     - brief: null
       description: null
+      enum:
+        ILLEGAL: 0
+        LEGAL: 1
+        LEGAL_LOG: 2
+        LEGAL_LOG_IRQ: 3
+      kind: enum
       name: IST
       properties:
       - r
       - w
+      reset: 0
       start: 18
       width: 2
     - brief: null
       description: null
+      enum:
+        ILLEGAL: 0
+        LEGAL: 1
+        LEGAL_LOG: 2
+        LEGAL_LOG_IRQ: 3
+      kind: enum
       name: DBC
       properties:
       - r
       - w
+      reset: 0
       start: 16
       width: 2
     - brief: null
       description: null
+      enum:
+        ILLEGAL: 0
+        LEGAL: 1
+        LEGAL_LOG: 2
+        LEGAL_LOG_IRQ: 3
+      kind: enum
       name: TBW
       properties:
       - r
       - w
+      reset: 0
       start: 14
       width: 2
     - brief: null
       description: null
+      enum:
+        ILLEGAL: 0
+        LEGAL: 1
+        LEGAL_LOG: 2
+        LEGAL_LOG_IRQ: 3
+      kind: enum
       name: TVW
       properties:
       - r
       - w
+      reset: 0
       start: 12
       width: 2
     - brief: null
       description: null
+      enum:
+        ILLEGAL: 0
+        LEGAL: 1
+        LEGAL_LOG: 2
+        LEGAL_LOG_IRQ: 3
+      kind: enum
       name: TSB
       properties:
       - r
       - w
+      reset: 1
       start: 10
       width: 2
     - brief: null
       description: null
+      enum:
+        ILLEGAL: 0
+        LEGAL: 1
+        LEGAL_LOG: 2
+        LEGAL_LOG_IRQ: 3
+      kind: enum
       name: TS
       properties:
       - r
       - w
+      reset: 1
       start: 8
       width: 2
     - brief: null
       description: null
+      enum:
+        ILLEGAL: 0
+        LEGAL: 1
+        LEGAL_LOG: 2
+        LEGAL_LOG_IRQ: 3
+      kind: enum
       name: SDB
       properties:
       - r
       - w
+      reset: 1
       start: 6
       width: 2
     - brief: null
       description: null
+      enum:
+        ILLEGAL: 0
+        LEGAL: 1
+        LEGAL_LOG: 2
+        LEGAL_LOG_IRQ: 3
+      kind: enum
       name: SD
       properties:
       - r
       - w
+      reset: 1
       start: 4
       width: 2
     - brief: null
       description: null
+      enum:
+        ILLEGAL: 0
+        LEGAL: 1
+        LEGAL_LOG: 2
+        LEGAL_LOG_IRQ: 3
+      kind: enum
       name: SB
       properties:
       - r
       - w
+      reset: 1
       start: 2
       width: 2
     - brief: null
       description: null
+      enum:
+        ILLEGAL: 0
+        LEGAL: 1
+        LEGAL_LOG: 2
+        LEGAL_LOG_IRQ: 3
+      kind: enum
       name: S
       properties:
       - r
       - w
+      reset: 1
       start: 0
       width: 2
     variants: []
   brief: |
     GR1553B RT Mode code control register
   description: null
+  locator: table 538, page 506
   name: RTMCC
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: TRES
       properties:
       - r
       - w
+      reset: 0
+      scale: value + 1
       start: 16
+      unit: microseconds
       width: 16
     - brief: null
       description: null
+      kind: uint
       name: TVAL
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 16
     variants: []
   brief: |
     GR1553B RT Time tag control register
   description: null
+  locator: table 539, page 507
   name: RTTTC
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: MASK
       properties:
       - r
       - w
+      reset: 1073741823
       start: 2
       width: 30
     variants: []
   brief: |
     GR1553B RT Event log size mask register
   description: null
+  locator: table 540, page 507
   name: RTELM
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: POINTER
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     GR1553B RT Event log position register
   description: null
+  locator: table 541, page 507
   name: RTELP
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: POINTER
       properties:
       - r
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     GR1553B RT Event Log interrupt position register
   description: null
+  locator: table 542, page 507
   name: RTELIP
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: BMSUP
       properties:
       - r
@@ -1077,6 +1358,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: KEYEN
       properties:
       - r
@@ -1086,334 +1368,411 @@ registers:
   brief: |
     GR1553B BM Status register
   description: null
+  locator: table 543, page 507
   name: BMS
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: BMKEY
       properties:
       - r
       - w
+      reset: 0
       start: 16
       width: 16
     - brief: null
       description: null
+      kind: bool
       name: WRSTP
       properties:
       - r
       - w
+      reset: 0
       start: 5
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: EXST
       properties:
       - r
       - w
+      reset: 0
       start: 4
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: IMCL
       properties:
       - r
       - w
+      reset: 0
       start: 3
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: UDWL
       properties:
       - r
       - w
+      reset: 0
       start: 2
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: MANL
       properties:
       - r
       - w
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: BMEN
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     GR1553B BM Control register
   description: null
+  locator: table 544, page 508
   name: BMC
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: MASK
       properties:
       - r
       - w
+      reset: 4294967295
       start: 0
       width: 32
     variants: []
   brief: |
     GR1553B BM RT Address filter register
   description: null
+  locator: table 545, page 508
   name: BMRTAF
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: MASK
       properties:
       - r
       - w
+      reset: 4294967295
       start: 0
       width: 32
     variants: []
   brief: |
     GR1553B BM RT Subaddress filter register
   description: null
+  locator: table 546, page 508
   name: BMRTSF
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: STSB
       properties:
       - r
       - w
+      reset: 1
       start: 18
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: STS
       properties:
       - r
       - w
+      reset: 1
       start: 17
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TLC
       properties:
       - r
       - w
+      reset: 1
       start: 16
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TSW
       properties:
       - r
       - w
+      reset: 1
       start: 15
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RRTB
       properties:
       - r
       - w
+      reset: 1
       start: 14
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RRT
       properties:
       - r
       - w
+      reset: 1
       start: 13
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: ITFB
       properties:
       - r
       - w
+      reset: 1
       start: 12
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: ITF
       properties:
       - r
       - w
+      reset: 1
       start: 11
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: ISTB
       properties:
       - r
       - w
+      reset: 1
       start: 10
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: IST
       properties:
       - r
       - w
+      reset: 1
       start: 9
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: DBC
       properties:
       - r
       - w
+      reset: 1
       start: 8
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TBW
       properties:
       - r
       - w
+      reset: 1
       start: 7
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TVW
       properties:
       - r
       - w
+      reset: 1
       start: 6
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TSB
       properties:
       - r
       - w
+      reset: 1
       start: 5
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TS
       properties:
       - r
       - w
+      reset: 1
       start: 4
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: SDB
       properties:
       - r
       - w
+      reset: 1
       start: 3
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: SD
       properties:
       - r
       - w
+      reset: 1
       start: 2
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: SB
       properties:
       - r
       - w
+      reset: 1
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: S
       properties:
       - r
       - w
+      reset: 1
       start: 0
       width: 1
     variants: []
   brief: |
     GR1553B BM RT Mode code filter register
   description: null
+  locator: table 547, page 509
   name: BMRTMC
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: START
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     GR1553B BM Log buffer start
   description: null
+  locator: table 548, page 509
   name: BMLBS
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: END
       properties:
       - r
       - w
+      reset: 0
       start: 3
       width: 19
     variants: []
   brief: |
     GR1553B BM Log buffer end
   description: null
+  locator: table 549, page 509
   name: BMLBE
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: POSITION
       properties:
       - r
       - w
+      reset: 0
       start: 3
       width: 19
     variants: []
   brief: |
     GR1553B BM Log buffer position
   description: null
+  locator: table 550, page 510
   name: BMLBP
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: TRES
       properties:
       - r
       - w
+      reset: 0
+      scale: value + 1
       start: 24
+      unit: microseconds
       width: 8
     - brief: null
       description: null
+      kind: uint
       name: TVAL
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 24
     variants: []
   brief: |
     GR1553B BM Time tag control register
   description: null
+  locator: table 551, page 510
   name: BMTTC
   width: 32
 type: interface
