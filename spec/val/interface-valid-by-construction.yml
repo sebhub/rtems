@@ -106,6 +106,8 @@ links:
 - role: validation
   uid: /dev/grlib/if/grwizl
 - role: validation
+  uid: /dev/grlib/if/i2cmst
+- role: validation
   uid: /dev/grlib/if/irqamp
 - role: validation
   uid: /dev/grlib/if/irqamp-timestamp

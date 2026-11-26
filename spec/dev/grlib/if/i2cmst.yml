@@ -1,0 +1,260 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This structure defines the ${.:/register-block-group} register block memory
+  map.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+- default:
+    count: 1
+    name: PRESCALE
+  offset: 0x0
+  variants: []
+- default:
+    count: 1
+    name: CTRL
+  offset: 0x4
+  variants: []
+- default:
+    count: 1
+    name: TXRX
+  offset: 0x8
+  variants: []
+- default:
+    count: 1
+    name: CMDSTAT
+  offset: 0xc
+  variants: []
+- default:
+    count: 1
+    name: FILT
+  offset: 0x10
+  variants: []
+description: null
+enabled-by: true
+identifier: RTEMSDeviceGRLIBI2CMST
+index-entries: []
+interface-type: register-block
+links:
+- role: interface-ingroup
+  uid: group
+- role: interface-placement
+  uid: i2cmst-header
+- role: reference
+  uid: /ref/ip/gaisler/grip-2026-3
+name: i2cmst
+notes: null
+register-block-group: I2CMST
+register-block-size: 20
+register-prefix: null
+registers:
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: CLOCK_PRESCALE
+      properties:
+      - r
+      - w
+      reset: 65535
+      start: 0
+      width: 16
+    variants: []
+  brief: |
+    I2C-master clock prescale register
+  description: null
+  locator: table 1917, page 1575
+  name: PRESCALE
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: EN
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 7
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: IEN
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 6
+      width: 1
+    variants: []
+  brief: |
+    I2C-master control register
+  description: null
+  locator: table 1918, page 1575
+  name: CTRL
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: TDATA
+      properties:
+      - w
+      reset: 0
+      start: 1
+      width: 7
+    - brief: null
+      description: null
+      kind: uint
+      name: RW
+      properties:
+      - w
+      reset: 0
+      start: 0
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: RDATA
+      properties:
+      - r
+      reset: 0
+      start: 0
+      width: 8
+    variants: []
+  brief: |
+    I2C-master transmit and receive register
+  description: null
+  locator: tables 1919 and 1920, page 1575
+  name: TXRX
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: STA
+      properties:
+      - w
+      reset: 0
+      start: 7
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: STO
+      properties:
+      - w
+      reset: 0
+      start: 6
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: RD
+      properties:
+      - w
+      reset: 0
+      start: 5
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: WR
+      properties:
+      - w
+      reset: 0
+      start: 4
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: ACK
+      properties:
+      - w
+      reset: 0
+      start: 3
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: IACK
+      properties:
+      - w
+      reset: 0
+      start: 0
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: RXACK
+      properties:
+      - r
+      reset: 0
+      start: 7
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: BUSY
+      properties:
+      - r
+      reset: 0
+      start: 6
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: AL
+      properties:
+      - r
+      reset: 0
+      start: 5
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: TIP
+      properties:
+      - r
+      start: 1
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: IF
+      properties:
+      - r
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    I2C-master command and status register
+  description: null
+  locator: tables 1921 and 1922, page 1576
+  name: CMDSTAT
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: FILT
+      properties:
+      - r
+      - w
+      start: 0
+      unit: clocks
+      width: 32
+    variants: []
+  brief: |
+    I2C-master dynamic filter register
+  description: null
+  locator: table 1923, page 1577
+  name: FILT
+  width: 32
+type: interface
