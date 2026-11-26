@@ -135,6 +135,8 @@ links:
   uid: group
 - role: interface-placement
   uid: l2cache-header
+- role: reference
+  uid: /ref/ip/gaisler/grip-2026-3
 name: l2cache
 notes: null
 register-block-group: L2CACHE
@@ -145,30 +147,47 @@ registers:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: EN
       properties:
       - r
       - w
+      reset: 0
       start: 31
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: EDAC
       properties:
       - r
       - w
+      reset: 0
       start: 30
       width: 1
     - brief: null
       description: null
+      enum:
+        LRU: 0
+        MASTER_INDEX_MODULUS: 3
+        MASTER_INDEX_WAY: 2
+        RANDOM: 1
+      kind: enum
       name: REPL
       properties:
       - r
       - w
+      reset: 0
       start: 28
       width: 2
     - brief: null
       description: null
+      enum:
+        BITS_128: 4
+        BITS_32: 2
+        BITS_64: 3
+        NO_UPDATE: 0
+      kind: enum
       name: BBS
       properties:
       - r
@@ -177,78 +196,97 @@ registers:
       width: 3
     - brief: null
       description: null
+      kind: uint
       name: INDEX_WAY
       properties:
       - r
       - w
+      reset: 0
       start: 12
       width: 4
     - brief: null
       description: null
+      kind: uint
       name: LOCK
       properties:
       - r
       - w
+      reset: 0
       start: 8
+      unit: ways
       width: 4
     - brief: null
       description: null
+      kind: bool
       name: HPRHB
       properties:
       - r
       - w
+      reset: 0
       start: 5
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: HPB
       properties:
       - r
       - w
+      reset: 0
       start: 4
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: UC
       properties:
       - r
       - w
+      reset: 0
       start: 3
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: HC
       properties:
       - r
       - w
+      reset: 0
       start: 2
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: WP
       properties:
       - r
       - w
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: HP
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     L2C Control register
   description: null
+  locator: table 1984, page 1623
   name: L2CC
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: DP
       properties:
       - r
@@ -256,13 +294,17 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: LS
       properties:
       - r
+      scale: 32 * 2 ** value
       start: 24
+      unit: bytes
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: AT
       properties:
       - r
@@ -270,6 +312,7 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: MP
       properties:
       - r
@@ -277,804 +320,1025 @@ registers:
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: MTRR
       properties:
       - r
       start: 16
+      unit: registers
       width: 6
     - brief: null
       description: null
+      enum:
+        BITS_128: 1
+        BITS_32: 4
+        BITS_64: 2
+      kind: enum
       name: BBUS_W
       properties:
       - r
+      reset: 1
       start: 13
       width: 3
     - brief: null
       description: null
+      kind: uint
       name: WAY_SIZE
       properties:
       - r
       start: 2
+      unit: kilobytes
       width: 11
     - brief: null
       description: null
+      kind: uint
       name: WAY
       properties:
       - r
+      scale: value + 1
       start: 0
+      unit: ways
       width: 2
     variants: []
   brief: |
     L2C Status register
   description: null
+  locator: table 1985, page 1623
   name: L2CS
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: ADDR
       properties:
       - r
       - w
+      reset: not-reset
       start: 5
       width: 27
     - brief: null
       description: null
+      kind: bool
       name: DI
       properties:
       - w
+      reset: 0
       start: 3
       width: 1
     - brief: null
       description: null
+      enum:
+        INVALIDATE_ALL: 5
+        INVALIDATE_AND_WRITE_BACK_ALL: 7
+        INVALIDATE_AND_WRITE_BACK_LINE: 3
+        INVALIDATE_LINE: 1
+        WRITE_BACK_ALL: 6
+        WRITE_BACK_LINE: 2
+      kind: enum
       name: FMODE
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 3
     variants: []
   brief: |
     L2C Flush (Memory address) register
   description: null
+  locator: table 1986, page 1625
   name: L2CFMA
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: INDEX
       properties:
       - r
       - w
+      reset: not-reset
       start: 16
       width: 16
     - brief: null
       description: null
+      kind: uint
       name: TAG
       properties:
       - r
       - w
+      reset: not-reset
       start: 10
       width: 22
     - brief: null
       description: null
+      kind: bool
       name: FL
       properties:
       - r
       - w
+      reset: 0
       start: 9
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: VB
       properties:
       - r
       - w
+      reset: 0
       start: 8
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: DB
       properties:
       - r
       - w
+      reset: 0
       start: 7
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: WAY
       properties:
       - r
       - w
+      reset: 0
       start: 4
       width: 2
     - brief: null
       description: null
+      kind: bool
       name: DI
       properties:
       - w
+      reset: 0
       start: 3
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: WF
       properties:
       - r
       - w
+      reset: 0
       start: 2
       width: 1
     - brief: null
       description: null
+      enum:
+        INVALIDATE: 1
+        INVALIDATE_AND_WRITE_BACK: 3
+        WRITE_BACK: 2
+      kind: enum
       name: FMODE
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 2
     variants: []
   brief: |
     L2C Flush (Set, Index) register
   description: null
+  locator: table 1987, page 1625
   name: L2CFSI
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: ACCESS_COUNTER
       properties:
       - r
       - w1c
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Access counter register
   description: null
+  locator: table 1988, page 1626
   name: L2CACC
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: HIT_COUNTER
       properties:
       - r
       - w1c
+      reset: 0
       start: 0
       width: 32
     variants: []
   brief: |
     Hit counter register
   description: null
+  locator: table 1989, page 1626
   name: L2CHIT
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: BUS_CYCLE_COUNTER
       properties:
       - r
       - w1c
+      reset: 0
       start: 0
+      unit: cycles
       width: 32
     variants: []
   brief: |
     Front-side bus cycle counter register
   description: null
+  locator: table 1990, page 1626
   name: L2CFSCCNT
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: BUS_USAGE_COUNTER
       properties:
       - r
       - w1c
+      reset: 0
       start: 0
+      unit: cycles
       width: 32
     variants: []
   brief: |
     Front-side bus usage counter register
   description: null
+  locator: table 1991, page 1626
   name: L2CFSUCNT
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: AHB_MASTER_INDEX
       properties:
       - r
+      reset: not-reset
       start: 28
       width: 4
     - brief: null
       description: null
+      kind: bool
       name: SCRUB
       properties:
       - r
+      reset: not-reset
       start: 27
       width: 1
     - brief: null
       description: null
+      enum:
+        BACKEND_READ_AHB_ERROR: 5
+        BACKEND_WRITE_AHB_ERROR: 6
+        CACHE_READ: 0
+        CACHE_WRITE: 1
+        MEMORY_FETCH: 2
+        MEMORY_WRITE: 3
+        WRITE_PROTECTION_HIT: 4
+      kind: enum
       name: TYPE
       properties:
       - r
+      reset: not-reset
       start: 24
       width: 3
     - brief: null
       description: null
+      kind: bool
       name: TAG_DATA
       properties:
       - r
+      reset: not-reset
       start: 23
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: COR_UCOR
       properties:
       - r
+      reset: not-reset
       start: 22
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: MULTI
       properties:
       - r
+      reset: not-reset
       start: 21
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: VALID
       properties:
       - r
+      reset: not-reset
       start: 20
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: DISERESP
       properties:
       - r
       - w
+      reset: 0
       start: 19
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: CORRECTABLE_ERROR_COUNTER
       properties:
       - r
+      reset: not-reset
       start: 16
       width: 3
     - brief: null
       description: null
+      kind: bits
       name: IRQ_PENDING
       properties:
       - r
+      reset: not-reset
       start: 12
       width: 4
     - brief: null
       description: null
+      kind: bits
       name: IRQ_MASK
       properties:
       - r
       - w
+      reset: 0
       start: 8
       width: 4
     - brief: null
       description: null
+      enum:
+        GENERATED: 0
+        REGISTER: 1
+        XOR: 2
+      kind: enum
       name: SELECT_CB
       properties:
       - r
       - w
+      reset: 0
       start: 6
       width: 2
     - brief: null
       description: null
+      enum:
+        GENERATED: 0
+        REGISTER: 1
+        XOR: 2
+      kind: enum
       name: SELECT_TCB
       properties:
       - r
       - w
+      reset: 0
       start: 4
       width: 2
     - brief: null
       description: null
+      kind: bool
       name: XCB
       properties:
       - r
       - w
+      reset: 0
       start: 3
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RCB
       properties:
       - r
       - w
+      reset: 0
       start: 2
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: COMP
       properties:
       - r
       - w
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RST
       properties:
       - w
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     L2CError status/control register
   description: null
+  locator: table 1992, page 1626
   name: L2CERR
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: EADDR
       properties:
       - r
+      reset: not-reset
       start: 0
       width: 32
     variants: []
   brief: |
     L2C Error address register
   description: null
+  locator: table 1993, page 1628
   name: L2CERRA
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: TCB
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 7
     variants: []
   brief: |
     L2C TAG-Check-Bits register
   description: null
+  locator: table 1994, page 1628
   name: L2CTCB
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: CB
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 28
     variants: []
   brief: |
     L2C Data-Check-Bits register
   description: null
+  locator: table 1996, page 1629
   name: L2CCB
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: INDEX
       properties:
       - r
       - w
+      reset: 0
       start: 16
       width: 16
     - brief: null
       description: null
+      kind: uint
       name: WAY
       properties:
       - r
       - w
+      reset: 0
       start: 4
       width: 2
     - brief: null
       description: null
+      kind: bool
       name: PEN
       properties:
       - r
       - w
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: EN
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     L2C Scrub control/status register
   description: null
+  locator: table 1998, page 1630
   name: L2CSCRUB
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: DEL
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 16
     variants: []
   brief: |
     L2C Scrub delay register
   description: null
+  locator: table 1999, page 1630
   name: L2CSDEL
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: ADDR
       properties:
       - r
       - w
+      reset: 0
       start: 2
       width: 30
     - brief: null
       description: null
+      kind: bool
       name: INJ
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     L2C Error injection register
   description: null
+  locator: table 2000, page 1630
   name: L2CEINJ
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: AXCACHE
       properties:
       - r
       - w
+      reset: 65518
       start: 16
       width: 16
     - brief: null
       description: null
+      kind: bool
       name: DSC
       properties:
       - r
       - w
+      reset: 0
       start: 14
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: SH
       properties:
       - r
       - w
+      reset: 0
       start: 13
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: RFCL
       properties:
       - r
       - w
+      reset: 0
       start: 12
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: PS
       properties:
       - r
       - w
+      reset: 0
       start: 11
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: SPLITQ
       properties:
       - r
       - w
+      reset: 0
       start: 10
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: NHM
       properties:
       - r
       - w
+      reset: 0
       start: 9
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: BERR
       properties:
       - r
       - w
+      reset: 0
       start: 8
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: OAPM
       properties:
       - r
       - w
+      reset: 0
       start: 7
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: FLINE
       properties:
       - r
       - w
+      reset: 0
       start: 6
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: DBPF
       properties:
       - r
       - w
+      reset: 0
       start: 5
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: 128WF
       properties:
       - r
       - w
+      reset: 0
       start: 4
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: DBPWS
       properties:
       - r
       - w
+      reset: 0
       start: 2
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: SPLIT
       properties:
       - r
       - w
+      reset: 0
       start: 1
       width: 1
     variants: []
   brief: |
     L2C Access control register
   description: null
+  locator: table 2002, page 1631
   name: L2CACCC
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: ADDR
       properties:
       - r
       - w
+      reset: 0
       start: 5
       width: 27
     - brief: null
       description: null
+      kind: bool
       name: P
       properties:
       - r
       - w
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: EN
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     L2C priming start register
   description: null
+  locator: table 2003, page 1631
   name: PSTART0
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: ADDR
       properties:
       - r
       - w
+      reset: 0
       start: 5
       width: 27
     variants: []
   brief: |
     L2C priming stop register
   description: null
+  locator: table 2004, page 1633
   name: PSTOP0
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: ADDR
       properties:
       - r
       - w
+      reset: 0
       start: 5
       width: 27
     - brief: null
       description: null
+      kind: bool
       name: P
       properties:
       - r
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: EN
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     L2C priming start (second area) register
   description: null
+  locator: table 2005, page 1633
   name: PSTART1
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: ADDR
       properties:
       - r
       - w
+      reset: 0
       start: 5
       width: 27
     variants: []
   brief: |
     L2C priming stop (second area) register
   description: null
+  locator: table 2006, page 1633
   name: PSTOP1
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: EDI
       properties:
       - r
       - w
+      reset: 0
       start: 10
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: TER
       properties:
       - r
       - w
+      reset: 0
       start: 9
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: IMD
       properties:
       - r
       - w
+      reset: 0
       start: 8
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: M
       properties:
       - r
       - w
+      reset: 0
       start: 3
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: PI
       properties:
       - r
       - w
+      reset: 0
       start: 2
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: DT
       properties:
       - r
       - w
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: CB
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     L2C injection configuration register
   description: null
+  locator: table 2007, page 1633
   name: L2CEINJCFG
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: ADDR
       properties:
       - r
       - w
+      reset: 0
       start: 18
       width: 14
     - brief: null
       description: null
+      enum:
+        UNCACHED: 0
+        WRITE_THROUGH: 1
+      kind: enum
       name: ACC
       properties:
       - r
       - w
+      reset: 0
       start: 16
       width: 2
     - brief: null
       description: null
+      kind: bits
       name: MASK
       properties:
       - r
       - w
+      reset: 0
       start: 2
       width: 14
     - brief: null
       description: null
+      kind: bool
       name: WP
       properties:
       - r
       - w
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: AC
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     L2C Memory type range register
   description: null
+  locator: table 2008, page 1634
   name: L2CMTRR
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: L2CDTAG
       properties:
       - r
@@ -1085,12 +1349,14 @@ registers:
   brief: |
     L2C diagnostic tag area
   description: null
+  locator: table 1983, page 1621
   name: L2CDTAG
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: L2CDDATA
       properties:
       - r
@@ -1101,6 +1367,7 @@ registers:
   brief: |
     L2C diagnostic data area
   description: null
+  locator: table 1983, page 1621
   name: L2CDDATA
   width: 32
 type: interface
