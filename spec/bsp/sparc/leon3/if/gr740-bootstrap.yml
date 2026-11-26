@@ -20,6 +20,8 @@ links:
   uid: group
 - role: interface-placement
   uid: gr740-bootstrap-header
+- role: reference
+  uid: /ref/soc/gaisler/gr740/gr740-um-ds-2-10
 name: gr740_bootstrap
 notes: null
 register-block-group: GR740 Bootstrap Signals
@@ -30,96 +32,119 @@ registers:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: B10
       properties:
       - r
       - w
+      reset: external
       start: 25
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: B9
       properties:
       - r
       - w
+      reset: external
       start: 24
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: B8
       properties:
       - r
       - w
+      reset: external
       start: 23
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: B7
       properties:
       - r
       - w
+      reset: external
       start: 22
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: B6
       properties:
       - r
       - w
+      reset: external
       start: 21
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: B5
       properties:
       - r
       - w
+      reset: external
       start: 20
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: B4
       properties:
       - r
       - w
+      reset: external
       start: 19
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: B3
       properties:
       - r
       - w
+      reset: external
       start: 18
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: B2
       properties:
       - r
       - w
+      reset: external
       start: 17
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: B1
       properties:
       - r
       - w
+      reset: external
       start: 16
       width: 1
     - brief: null
       description: null
+      kind: bits
       name: GPIO
       properties:
       - r
       - w
+      reset: external
       start: 0
       width: 16
     variants: []
   brief: |
     Bootstrap register
   description: null
+  locator: table 445, page 363
   name: BOOTSTRAP
   width: 32
 type: interface

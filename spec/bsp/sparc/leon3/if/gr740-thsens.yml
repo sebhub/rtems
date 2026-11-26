@@ -30,6 +30,8 @@ links:
   uid: group
 - role: interface-placement
   uid: gr740-thsens-header
+- role: reference
+  uid: /ref/soc/gaisler/gr740/gr740-um-ds-2-10
 name: gr740_thsens
 notes: null
 register-block-group: GR740 Temperature Sensor Controller
@@ -40,133 +42,169 @@ registers:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: DIV
       properties:
       - r
       - w
+      reset: 0
+      scale: value * 2
       start: 16
       width: 10
     - brief: null
       description: null
+      kind: bool
       name: ALEN
       properties:
       - r
       - w
+      reset: 0
       start: 8
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: PDN
       properties:
       - r
       - w
+      reset: 0
       start: 7
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: DCORRECT
       properties:
       - r
       - w
+      reset: 0
       start: 2
       width: 5
     - brief: null
       description: null
+      kind: bool
       name: SRSTN
       properties:
       - r
       - w
+      reset: 0
       start: 1
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: CLKEN
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 1
     variants: []
   brief: |
     Control register
   description: null
+  locator: table 447, page 365
   name: CTRL
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: MAX
       properties:
       - r
       - w
+      reset: 0
       start: 24
+      unit: celsius
       width: 7
     - brief: null
       description: null
+      kind: uint
       name: MIN
       properties:
       - r
       - w
+      reset: 127
       start: 16
+      unit: celsius
       width: 7
     - brief: null
       description: null
+      kind: bool
       name: SCLK
       properties:
       - r
+      reset: 0
       start: 15
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: WE
       properties:
       - r
       - w
+      reset: 0
       start: 10
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: UPD
       properties:
       - r
+      reset: 0
       start: 9
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: ALACT
       properties:
       - r
       - w1c
+      reset: 0
       start: 8
       width: 1
     - brief: null
       description: null
+      kind: uint
       name: DATA
       properties:
       - r
+      reset: 0
       start: 0
+      unit: celsius
       width: 7
     variants: []
   brief: |
     Status register
   description: null
+  locator: table 448, page 366
   name: STATUS
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: THRES
       properties:
       - r
       - w
+      reset: 0
       start: 0
+      unit: celsius
       width: 7
     variants: []
   brief: |
     Threshold register
   description: null
+  locator: table 449, page 366
   name: THRES
   width: 32
 type: interface

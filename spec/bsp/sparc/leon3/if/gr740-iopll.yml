@@ -60,6 +60,8 @@ links:
   uid: group
 - role: interface-placement
   uid: gr740-iopll-header
+- role: reference
+  uid: /ref/soc/gaisler/gr740/gr740-um-ds-2-10
 name: gr740_iopll
 notes: null
 register-block-group: GR740 I/O and PLL Configuration
@@ -70,356 +72,537 @@ registers:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: FTMEN
       properties:
       - r
       - w
+      reset: external
       start: 0
       width: 22
     variants: []
   brief: |
     FTMCTRL function enable register
   description: null
+  locator: table 453, page 369
   name: FTMFUNC
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: ALTEN
       properties:
       - r
       - w
+      reset: 4194303
       start: 0
       width: 22
     variants: []
   brief: |
     Alternative function enable register
   description: null
+  locator: table 454, page 369
   name: ALTFUNC
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bool
       name: SMEM
       properties:
       - r
       - w
+      reset: 1
       start: 17
       width: 1
     - brief: null
       description: null
+      kind: bool
       name: DMEM
       properties:
       - r
       - w
+      reset: 1
       start: 16
       width: 1
     - brief: null
       description: null
+      kind: bits
       name: SPWOE
       properties:
       - r
       - w
+      reset: 255
       start: 0
       width: 8
     variants: []
   brief: |
     LVDS and memory clock pad enable register
   description: null
+  locator: table 455, page 370
   name: LVDSMCLK
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: SWTAG
       properties:
       - r
       - w
+      reset: 0
       start: 27
       width: 2
     - brief: null
       description: null
+      kind: uint
       name: SPWPLLCFG
       properties:
       - r
       - w
+      reset: 0
       start: 18
       width: 9
     - brief: null
       description: null
+      kind: uint
       name: MEMPLLCFG
       properties:
       - r
       - w
+      reset: 0
       start: 9
       width: 9
     - brief: null
       description: null
+      kind: uint
       name: SYSPLLCFG
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 9
     variants: []
   brief: |
     PLL new configuration register
   description: null
+  locator: table 456, page 370
   name: PLLNEWCFG
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: RECONF
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 3
     variants: []
   brief: |
     PLL reconfigure command register
   description: null
+  locator: table 457, page 370
   name: PLLRECFG
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: uint
       name: SWTAG
       properties:
       - r
+      reset: 0
       start: 27
       width: 2
     - brief: null
       description: null
+      kind: uint
       name: SPWPLLCFG
       properties:
       - r
+      reset: 16
       start: 18
       width: 9
     - brief: null
       description: null
+      kind: uint
       name: MEMPLLCFG
       properties:
       - r
+      reset: 10
       start: 9
       width: 9
     - brief: null
       description: null
+      kind: uint
       name: SYSPLLCFG
       properties:
       - r
+      reset: 21
       start: 0
       width: 9
     variants: []
   brief: |
     PLL current configuration register
   description: null
+  locator: table 458, page 371
   name: PLLCURCFG
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      enum:
+        MA_10: 3
+        MA_4: 0
+        MA_6: 2
+        MA_8: 1
+      kind: enum
       name: S9
       properties:
       - r
       - w
+      reset: 3
       start: 18
       width: 2
     - brief: null
       description: null
+      enum:
+        MA_10: 3
+        MA_4: 0
+        MA_6: 2
+        MA_8: 1
+      kind: enum
       name: S8
       properties:
       - r
       - w
+      reset: 3
       start: 16
       width: 2
     - brief: null
       description: null
+      enum:
+        MA_10: 3
+        MA_4: 0
+        MA_6: 2
+        MA_8: 1
+      kind: enum
       name: S7
       properties:
       - r
       - w
+      reset: 3
       start: 14
       width: 2
     - brief: null
       description: null
+      enum:
+        MA_10: 3
+        MA_4: 0
+        MA_6: 2
+        MA_8: 1
+      kind: enum
       name: S6
       properties:
       - r
       - w
+      reset: 3
       start: 12
       width: 2
     - brief: null
       description: null
+      enum:
+        MA_10: 3
+        MA_4: 0
+        MA_6: 2
+        MA_8: 1
+      kind: enum
       name: S5
       properties:
       - r
       - w
+      reset: 3
       start: 10
       width: 2
     - brief: null
       description: null
+      enum:
+        MA_10: 3
+        MA_4: 0
+        MA_6: 2
+        MA_8: 1
+      kind: enum
       name: S4
       properties:
       - r
       - w
+      reset: 3
       start: 8
       width: 2
     - brief: null
       description: null
+      enum:
+        MA_10: 3
+        MA_4: 0
+        MA_6: 2
+        MA_8: 1
+      kind: enum
       name: S3
       properties:
       - r
       - w
+      reset: 3
       start: 6
       width: 2
     - brief: null
       description: null
+      enum:
+        MA_10: 3
+        MA_4: 0
+        MA_6: 2
+        MA_8: 1
+      kind: enum
       name: S2
       properties:
       - r
       - w
+      reset: 3
       start: 4
       width: 2
     - brief: null
       description: null
+      enum:
+        MA_10: 3
+        MA_4: 0
+        MA_6: 2
+        MA_8: 1
+      kind: enum
       name: S1
       properties:
       - r
       - w
+      reset: 3
       start: 2
       width: 2
     - brief: null
       description: null
+      enum:
+        MA_10: 3
+        MA_4: 0
+        MA_6: 2
+        MA_8: 1
+      kind: enum
       name: S0
       properties:
       - r
       - w
+      reset: 3
       start: 0
       width: 2
     variants: []
   brief: |
     Drive strength configuration register 1
   description: null
+  locator: table 459, page 372
   name: DRVSTR1
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      enum:
+        MA_10: 3
+        MA_4: 0
+        MA_6: 2
+        MA_8: 1
+      kind: enum
       name: S19
       properties:
       - r
       - w
+      reset: 3
       start: 18
       width: 2
     - brief: null
       description: null
+      enum:
+        MA_10: 3
+        MA_4: 0
+        MA_6: 2
+        MA_8: 1
+      kind: enum
       name: S18
       properties:
       - r
       - w
+      reset: 3
       start: 16
       width: 2
     - brief: null
       description: null
+      enum:
+        MA_10: 3
+        MA_4: 0
+        MA_6: 2
+        MA_8: 1
+      kind: enum
       name: S17
       properties:
       - r
       - w
+      reset: 3
       start: 14
       width: 2
     - brief: null
       description: null
+      enum:
+        MA_10: 3
+        MA_4: 0
+        MA_6: 2
+        MA_8: 1
+      kind: enum
       name: S16
       properties:
       - r
       - w
+      reset: 3
       start: 12
       width: 2
     - brief: null
       description: null
+      enum:
+        MA_10: 3
+        MA_4: 0
+        MA_6: 2
+        MA_8: 1
+      kind: enum
       name: S15
       properties:
       - r
       - w
+      reset: 3
       start: 10
       width: 2
     - brief: null
       description: null
+      enum:
+        MA_10: 3
+        MA_4: 0
+        MA_6: 2
+        MA_8: 1
+      kind: enum
       name: S14
       properties:
       - r
       - w
+      reset: 3
       start: 8
       width: 2
     - brief: null
       description: null
+      enum:
+        MA_10: 3
+        MA_4: 0
+        MA_6: 2
+        MA_8: 1
+      kind: enum
       name: S13
       properties:
       - r
       - w
+      reset: 3
       start: 6
       width: 2
     - brief: null
       description: null
+      enum:
+        MA_10: 3
+        MA_4: 0
+        MA_6: 2
+        MA_8: 1
+      kind: enum
       name: S12
       properties:
       - r
       - w
+      reset: 3
       start: 4
       width: 2
     - brief: null
       description: null
+      enum:
+        MA_10: 3
+        MA_4: 0
+        MA_6: 2
+        MA_8: 1
+      kind: enum
       name: S11
       properties:
       - r
       - w
+      reset: 3
       start: 2
       width: 2
     - brief: null
       description: null
+      enum:
+        MA_10: 3
+        MA_4: 0
+        MA_6: 2
+        MA_8: 1
+      kind: enum
       name: S10
       properties:
       - r
       - w
+      reset: 3
       start: 0
       width: 2
     variants: []
   brief: |
     Drive strength configuration register 2
   description: null
+  locator: table 460, page 372
   name: DRVSTR2
   width: 32
 - bits:
   - default:
     - brief: null
       description: null
+      kind: bits
       name: PERMANENT
       properties:
       - r
       - w
+      reset: 0
       start: 16
       width: 8
     - brief: null
       description: null
+      kind: bits
       name: REVOCABLE
       properties:
       - r
       - w
+      reset: 0
       start: 0
       width: 8
     variants: []
   brief: |
     Configuration lockdown register
   description: null
+  locator: table 461, page 373
   name: LOCKDOWN
   width: 32
 type: interface
