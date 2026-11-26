@@ -42,6 +42,8 @@ links:
 - role: validation
   uid: /dev/grlib/if/grclkgate
 - role: validation
+  uid: /dev/grlib/if/grdmac2
+- role: validation
   uid: /dev/grlib/if/grethgbit
 - role: validation
   uid: /dev/grlib/if/grethgbit-desc-alignment

@@ -1,0 +1,621 @@
+SPDX-License-Identifier: CC-BY-SA-4.0 OR BSD-2-Clause
+brief: |
+  This structure defines the ${.:/register-block-group} register block memory
+  map.
+copyrights:
+- Copyright (C) 2026 embedded brains GmbH & Co. KG
+definition:
+- default:
+    count: 1
+    name: CTRL
+  offset: 0x0
+  variants: []
+- default:
+    count: 1
+    name: STS
+  offset: 0x4
+  variants: []
+- default:
+    count: 1
+    name: TRST
+  offset: 0x8
+  variants: []
+- default:
+    count: 1
+    name: CAP
+  offset: 0xc
+  variants: []
+- default:
+    count: 1
+    name: FPTR
+  offset: 0x10
+  variants: []
+- default:
+    count: 1
+    name: DCTR
+  offset: 0x14
+  variants: []
+- default:
+    count: 1
+    name: DNXT
+  offset: 0x18
+  variants: []
+- default:
+    count: 1
+    name: DFNX
+  offset: 0x1c
+  variants: []
+- default:
+    count: 1
+    name: DPOL
+  offset: 0x20
+  variants: []
+- default:
+    count: 1
+    name: DSTS
+  offset: 0x24
+  variants: []
+- default:
+    count: 1
+    name: DDTA
+  offset: 0x28
+  variants: []
+- default:
+    count: 1
+    name: DMSK
+  offset: 0x2c
+  variants: []
+- default:
+    count: 1
+    name: DPTR
+  offset: 0x30
+  variants: []
+description: null
+enabled-by: true
+identifier: RTEMSDeviceGRDMAC2
+index-entries: []
+interface-type: register-block
+links:
+- role: interface-ingroup
+  uid: group
+- role: interface-placement
+  uid: grdmac2-header
+- role: reference
+  uid: /ref/ip/gaisler/grip-2026-3
+name: grdmac2
+notes: null
+register-block-group: GRDMAC2
+register-block-size: 52
+register-prefix: null
+registers:
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bool
+      name: TE
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 7
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: IER
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 6
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: IM
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 5
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: IE
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 4
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: RT
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 3
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: KICK
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 2
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: RST
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 1
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: EN
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    Control register
+  description: null
+  locator: table 749, page 677
+  name: CTRL
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: ST
+      properties:
+      - r
+      reset: 0
+      start: 27
+      width: 5
+    - brief: null
+      description: null
+      kind: uint
+      name: FP
+      properties:
+      - r
+      reset: 0
+      start: 17
+      width: 10
+    - brief: null
+      description: null
+      kind: bool
+      name: FE
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 16
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: NPE
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 15
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: WDE
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 14
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: RDE
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 13
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: TO
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 12
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: WBE
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 11
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: TRE
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 10
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: PE
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 9
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: RE
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 8
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: DE
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 7
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: KP
+      properties:
+      - r
+      reset: 0
+      start: 6
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: RSP
+      properties:
+      - r
+      reset: 0
+      start: 5
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: IF
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 4
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: PAU
+      properties:
+      - r
+      reset: 0
+      start: 3
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: ONG
+      properties:
+      - r
+      reset: 0
+      start: 2
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: ERR
+      properties:
+      - r
+      - w1c
+      reset: 0
+      start: 1
+      width: 1
+    - brief: null
+      description: null
+      kind: bool
+      name: CMP
+      properties:
+      - r
+      reset: 0
+      start: 0
+      width: 1
+    variants: []
+  brief: |
+    Status register
+  description: null
+  locator: table 750, page 677
+  name: STS
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: VAL
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 32
+    variants: []
+  brief: |
+    Timer reset value register
+  description: null
+  locator: table 752, page 679
+  name: TRST
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: BFDP
+      properties:
+      - r
+      scale: 2 ** value
+      start: 28
+      unit: words
+      width: 4
+    - brief: null
+      description: null
+      kind: uint
+      name: ACC
+      properties:
+      - r
+      start: 12
+      width: 5
+    - brief: null
+      description: null
+      kind: uint
+      name: DW
+      properties:
+      - r
+      start: 9
+      width: 3
+    - brief: null
+      description: null
+      kind: bool
+      name: TE
+      properties:
+      - r
+      start: 8
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: FT
+      properties:
+      - r
+      start: 5
+      width: 3
+    - brief: null
+      description: null
+      kind: bool
+      name: BM1
+      properties:
+      - r
+      start: 4
+      width: 1
+    - brief: null
+      description: null
+      kind: uint
+      name: VER
+      properties:
+      - r
+      start: 0
+      width: 4
+    variants: []
+  brief: |
+    Capability Register
+  description: null
+  locator: table 753, page 679
+  name: CAP
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: ADDR
+      properties:
+      - r
+      - w
+      reset: 0
+      start: 0
+      width: 32
+    variants: []
+  brief: |
+    First descriptor pointer
+  description: null
+  locator: table 754, page 679
+  name: FPTR
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: CTRL
+      properties:
+      - r
+      reset: 0
+      start: 0
+      width: 32
+    variants: []
+  brief: |
+    Descriptor control word for debug capability
+  description: null
+  locator: table 755, page 679
+  name: DCTR
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: ADDR
+      properties:
+      - r
+      reset: 0
+      start: 0
+      width: 32
+    variants: []
+  brief: |
+    Next Descriptor pointer for debug capability
+  description: null
+  locator: table 756, page 680
+  name: DNXT
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: ADDR
+      properties:
+      - r
+      reset: 0
+      start: 0
+      width: 32
+    variants: []
+  brief: |
+    fnext/dest.addr for debug capability
+  description: null
+  locator: table 757, page 680
+  name: DFNX
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: ADDR
+      properties:
+      - r
+      reset: 0
+      start: 0
+      width: 32
+    variants: []
+  brief: |
+    Poll or source address for debug capability
+  description: null
+  locator: table 758, page 680
+  name: DPOL
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: STS
+      properties:
+      - r
+      reset: 0
+      start: 0
+      width: 32
+    variants: []
+  brief: |
+    Descriptor status for debug capability
+  description: null
+  locator: table 759, page 680
+  name: DSTS
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: DATA
+      properties:
+      - r
+      reset: 0
+      start: 0
+      width: 32
+    variants: []
+  brief: |
+    Expected data for debug capability
+  description: null
+  locator: table 760, page 681
+  name: DDTA
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: bits
+      name: MASK
+      properties:
+      - r
+      reset: 0
+      start: 0
+      width: 32
+    variants: []
+  brief: |
+    Conditional mask for debug capability
+  description: null
+  locator: table 761, page 681
+  name: DMSK
+  width: 32
+- bits:
+  - default:
+    - brief: null
+      description: null
+      kind: uint
+      name: ADDR
+      properties:
+      - r
+      reset: 0
+      start: 0
+      width: 32
+    variants: []
+  brief: |
+    Current descriptor pointer for debug capability
+  description: null
+  locator: table 762, page 681
+  name: DPTR
+  width: 32
+type: interface
