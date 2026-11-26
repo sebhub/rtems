@@ -122,6 +122,8 @@ links:
 - role: validation
   uid: /dev/grlib/if/mmctrl
 - role: validation
+  uid: /dev/grlib/if/nandfctrl2
+- role: validation
   uid: /dev/grlib/if/spictrl
 - role: validation
   uid: /dev/grlib/if/spwpnp
