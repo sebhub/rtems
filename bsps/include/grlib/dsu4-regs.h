@@ -484,6 +484,14 @@ extern "C" {
     ( ( ( _val ) << DSU4_ITBC0_TFILT_SHIFT ) & DSU4_ITBC0_TFILT_MASK ) )
 #define DSU4_ITBC0_TFILT( _val ) \
   ( ( ( _val ) << DSU4_ITBC0_TFILT_SHIFT ) & DSU4_ITBC0_TFILT_MASK )
+#define DSU4_ITBC0_TFILT_ALL                  0U
+#define DSU4_ITBC0_TFILT_FORMAT_2             1U
+#define DSU4_ITBC0_TFILT_CONTROL_FLOW         2U
+#define DSU4_ITBC0_TFILT_CALL                 4U
+#define DSU4_ITBC0_TFILT_FORMAT_3             8U
+#define DSU4_ITBC0_TFILT_LOAD_STORE           12U
+#define DSU4_ITBC0_TFILT_LOAD_STORE_ASI       13U
+#define DSU4_ITBC0_TFILT_LOAD_STORE_ASI_DIGIT 14U
 
 #define DSU4_ITBC0_ITPOINTER_SHIFT 0
 #define DSU4_ITBC0_ITPOINTER_MASK  0xffffU
